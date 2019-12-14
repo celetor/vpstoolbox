@@ -409,7 +409,7 @@ systemctl enable v2ray
 }
 
 nginxv2ray(){
-  cat > "/etc/nginx/conf.d/trojan.conf" << EOF
+  cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
   listen 127.0.0.1:80; #放在Trojan后面即可做伪装也可以是真正的网站
     server_name $domain;
