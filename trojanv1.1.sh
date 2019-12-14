@@ -410,18 +410,12 @@ server {
         proxy_redirect off;
         proxy_pass http://127.0.0.1:10000;
         proxy_http_version 1.1;
-EOF
-echo 'proxy_set_header Early-Data $ssl_early_data;' >> /etc/nginx/conf.d/trojan.conf
-echo 'proxy_set_header Upgrade $http_upgrade;' >> /etc/nginx/conf.d/trojan.conf
-echo 'proxy_set_header Connection "upgrade'; >> /etc/nginx/conf.d/trojan.conf
-echo 'proxy_set_header Host $http_host;' >> /etc/nginx/conf.d/trojan.conf
-echo 'proxy_set_header X-Real-IP $remote_addr;' >> /etc/nginx/conf.d/trojan.conf
-echo 'proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' >> /etc/nginx/conf.d/trojan.conf
-  cat > '/etc/nginx/conf.d/trojan.conf' << EOF      
-        error_page 400 = @errpage;
-        }
-        location @errpage {
-        return 403;
+        proxy_set_header Early-Data @ssl_early_data;
+        proxy_set_header Upgrade @http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host @http_host;
+        proxy_set_header X-Real-IP @remote_addr;
+        proxy_set_header X-Forwarded-For @proxy_add_x_forwarded_for;
         }
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
 }
@@ -440,6 +434,7 @@ server {
     return 444;
 }
 EOF
+sed  -i 's/@/$/g' /etc/nginx/conf.d/trojan.conf
 }
 ##########Remove Trojan-Gfw##########
 removetrojan(){
