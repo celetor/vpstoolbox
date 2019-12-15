@@ -2,8 +2,6 @@
 This script will help you set up a trojan-gfw server in an extremely fast way.
 https://www.johnrosen1.com/trojan/ main course
 Auto install and setup Trojan-Gfw and nginx.
-Auto enable tcp-bbr and disable tcp slow start
-
 
 sudo bash -c "$(wget -O- https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojanv1.3.sh)"
 
@@ -17,6 +15,7 @@ Bash Features:
 6. Auto iptables firewall config and iptables-persistent
 7. Auto generate client config
 8. Auto random vmess uuid generate
-7. Support auto vmess + tls + websocket + nginx config
-8. Support manually force renew certificate
-9. Support Remove Trojan-gfw or V2ray
+9. Auto enable tcp-bbr and disable tcp slow start
+10. Support auto vmess + tls + websocket + nginx config
+11. Support manually force renew certificate
+12. Support Remove Trojan-gfw or V2ray
