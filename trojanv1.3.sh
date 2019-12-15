@@ -124,11 +124,11 @@ openfirewall(){
 installrely(){
 	echo installing trojan-gfw nginx and acme
 	if [[ $dist = centos ]]; then
-    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils -y
+    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release -y
  elif [[ $dist = ubuntu ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release -y
  elif [[ $dist = debian ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release -y
  else
   clear
     echo "error can't update system"
