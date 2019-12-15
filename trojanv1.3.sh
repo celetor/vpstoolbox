@@ -190,7 +190,7 @@ installacme(){
 
 issuecert(){
   systemctl start nginx
-	sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256
+	sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256 --debug
   systemctl stop nginx
 }
 
