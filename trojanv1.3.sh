@@ -148,8 +148,10 @@ nginxapt(){
 	wget https://nginx.org/keys/nginx_signing.key
 	apt-key add nginx_signing.key
   touch /etc/apt/sources.list.d/nginx.list
-	echo "deb https://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx" >> /etc/apt/sources.list.d/nginx.list
-	echo "deb-src https://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx" >> /etc/apt/sources.list.d/nginx.list
+  cat > '/etc/apt/sources.list.d/nginx.list' << EOF
+deb https://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx
+deb-src https://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx
+EOF
 	apt-get update
 	apt-get install nginx -y
 }
@@ -158,8 +160,10 @@ nginxubuntu(){
 	wget https://nginx.org/keys/nginx_signing.key
 	apt-key add nginx_signing.key
   touch /etc/apt/sources.list.d/nginx.list
-	echo "deb https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx" >> /etc/apt/sources.list.d/nginx.list
-	echo "deb-src https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx" >> /etc/apt/sources.list.d/nginx.list
+  cat > '/etc/apt/sources.list.d/nginx.list' << EOF
+deb https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx
+deb-src https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx
+EOF
 	apt-get update
 	apt-get install nginx -y
 }
