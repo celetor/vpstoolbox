@@ -185,17 +185,17 @@ installnginx(){
 installacme(){
 	curl https://get.acme.sh | sh
   sudo ~/.acme.sh/acme.sh --upgrade --auto-upgrade
+  rm -rf /etc/trojan/
 	mkdir /etc/trojan/
 }
 
 issuecert(){
   systemctl start nginx
-	sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256 --debug
-  systemctl stop nginx
+	sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256 --log
 }
 
 renewcert(){
-  sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256 --force --debug
+  sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256 --force --log
 }
 
 installcert(){
@@ -250,7 +250,6 @@ EOF
 #echo "trojan-gfw config complete!"
 autostart(){
 	systemctl start trojan
-	systemctl start nginx
 	systemctl enable nginx
 	systemctl enable trojan
 }
@@ -676,6 +675,9 @@ _EOF_
         echo "installing acme"
         installacme
         clear
+        echo "autoconfiging nginx"
+        nginxtrojan
+        clear
         echo "issueing let\'s encrypt certificate"
         issuecert
         clear
@@ -688,9 +690,6 @@ _EOF_
         clear
         echo "autoconfiging trojan-gfw"
         changepasswd
-        clear
-        echo "autoconfiging nginx"
-        nginxtrojan
         clear
         echo "starting trojan-gfw and nginx | setting up boot autostart"
         autostart
@@ -736,6 +735,9 @@ _EOF_
         echo "installing acme"
         installacme
         clear
+        echo "configing v2ray vmess+tls+Websocket"
+        nginxv2ray
+        clear
         echo "issueing let\'s encrypt certificate"
         issuecert
         echo "issueing let\'s encrypt certificate"
@@ -746,8 +748,6 @@ _EOF_
         changepasswd
         echo "installing V2ray"
         installv2ray
-        echo "configing v2ray vmess+tls+Websocket"
-        nginxv2ray
         echo "starting trojan-gfw v2ray and nginx | setting up boot autostart"
         autostart
         echo "Setting up tcp-bbr boost technology"
@@ -800,7 +800,7 @@ _EOF_
         ;;
       5)
         userinput
-	osdist
+        osdist
         installrely
         if isresolved $domain
         then
