@@ -3,6 +3,25 @@ if [[ $(id -u) != 0 ]]; then
     echo Please run this script as root.
     exit 1
 fi
+isresolved(){
+    if [ $# = 2 ]
+    then
+        myip=$2
+    else
+        myip=`curl http://dynamicdns.park-your-domain.com/getip`
+    fi
+    ips=(`nslookup $1 1.1.1.1 | grep -v 1.1.1.1 | grep Address | cut -d " " -f 2`)
+    for ip in "${ips[@]}"
+    do
+        if [ $ip == $myip ]
+        then
+            return 0
+        else
+            continue
+        fi
+    done
+    return 1
+}
 
 userinput(){
 echo "Hello, "$USER".  This script will help you set up a trojan-gfw server."
@@ -12,6 +31,13 @@ read domain
     echo
     echo -n "INPUT ERROR! Please Enter your domain again and press [ENTER]: "
     read domain
+  fi
+  if isresolved $domain
+  then
+    :
+  else 
+    echo "Resolve error,Please check your domain DNS config and vps firewall !"
+    exit -1
   fi
 echo -n "It\'s nice to meet you $domain"
 echo
