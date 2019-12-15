@@ -224,7 +224,7 @@ rm -rf /etc/nginx/conf.d/default.conf
 touch /etc/nginx/conf.d/trojan.conf
   cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
-  listen 127.0.0.1:80; #放在Trojan后面即可做伪装也可以是真正的网站
+  listen 127.0.0.1:80;
     server_name $domain;
     location / {
       root /usr/share/nginx/html/;
@@ -237,7 +237,7 @@ server {
     listen 80;
     listen [::]:80;
     server_name $domain;
-    root /usr/share/nginx/html/; #用于自动更新证书
+    root /usr/share/nginx/html/; #needed for certificate auto renew
 }
 
 server {
@@ -396,7 +396,7 @@ rm -rf /etc/nginx/conf.d/default.conf
 touch /etc/nginx/conf.d/trojan.conf
   cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
-  listen 127.0.0.1:80; #放在Trojan后面即可做伪装也可以是真正的网站
+  listen 127.0.0.1:80;
     server_name $domain;
     location / {
       root /usr/share/nginx/html/;
@@ -422,7 +422,7 @@ server {
     listen 80;
     listen [::]:80;
     server_name $domain;
-    root /usr/share/nginx/html/; #用于自动更新证书
+    root /usr/share/nginx/html/; #needed for certificate auto renew
 }
 
 server {
