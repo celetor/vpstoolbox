@@ -191,11 +191,13 @@ installacme(){
 
 issuecert(){
   systemctl start nginx
-	sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256 --log
+	#sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256 --log
+	sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --log
 }
 
 renewcert(){
-  sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256 --force --log
+  #sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256 --force --log
+  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log
 }
 
 installcert(){
