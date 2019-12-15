@@ -32,13 +32,6 @@ read domain
     echo -n "INPUT ERROR! Please Enter your domain again and press [ENTER]: "
     read domain
   fi
-  if isresolved $domain
-  then
-    :
-  else 
-    echo "Resolve error,Please check your domain DNS config and vps firewall !"
-    exit -1
-  fi
 echo -n "It\'s nice to meet you $domain"
 echo
 echo -n "Please Enter your desired password1 and press [ENTER]: "
@@ -131,11 +124,11 @@ openfirewall(){
 installrely(){
 	echo installing trojan-gfw nginx and acme
 	if [[ $dist = centos ]]; then
-    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 -y
+    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils -y
  elif [[ $dist = ubuntu ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils -y
  elif [[ $dist = debian ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils -y
  else
   clear
     echo "error can't update system"
@@ -656,12 +649,19 @@ _EOF_
         echo "Your os codename is $dist"
         echo "Updating system"
         updatesystem
+        echo "installing rely"
+        installrely
+        if isresolved $domain
+        then
+        :
+        else 
+        echo "Resolve error,Please check your domain DNS config and vps firewall !"
+        exit -1
+        fi
         echo "Upgrading system"
         upgradesystem
         echo "configing firewall"
         openfirewall
-        echo "installing rely"
-        installrely
         clear
         echo "installing trojan-gfw"
         installtrojan-gfw
@@ -711,12 +711,19 @@ _EOF_
         echo "Your os codename is $dist"
         echo "Updating system"
         updatesystem
+        echo "installing rely"
+        installrely
+        if isresolved $domain
+        then
+        :
+        else 
+        echo "Resolve error,Please check your domain DNS config and vps firewall !"
+        exit -1
+        fi
         echo "Upgrading system"
         upgradesystem
         echo "configing firewall"
         openfirewall
-        echo "installing rely"
-        installrely
         clear
         echo "installing trojan-gfw"
         installtrojan-gfw
@@ -789,6 +796,14 @@ _EOF_
         ;;
       5)
         userinput
+        installrely
+        if isresolved $domain
+        then
+        :
+        else 
+        echo "Resolve error,Please check your domain DNS config and vps firewall !"
+        exit -1
+        fi
         renewcert
         break
         ;;
