@@ -800,6 +800,7 @@ _EOF_
         ;;
       5)
         userinput
+	osdist
         installrely
         if isresolved $domain
         then
