@@ -5,4 +5,4 @@ Auto install and setup Trojan-Gfw and nginx.
 Auto enable tcp-bbr and disable tcp slow start
 
 
-sudo bash -c "$(wget -O- https://github.com/johnrosen1/trojan-gfw-script/releases/download/v1.3/trojanv1.3.sh)"
+sudo bash -c "$(wget -O- https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojanv1.3.sh)"
