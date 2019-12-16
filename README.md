@@ -22,7 +22,7 @@ Bash Features:
 8. Auto random vmess uuid generate
 9. Auto enable tcp-bbr and disable tcp slow start
 10. Support auto vmess + tls + websocket + nginx config
-11. Support manually check for update include Trojan-gfw and v2ray
+11. Support manually check for update include both Trojan-gfw and v2ray
 12. Support manually force renew certificate
 13. Support Full Uninstall
 
