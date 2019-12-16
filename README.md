@@ -25,6 +25,6 @@ Bash Features:
 11. Support manually force renew certificate
 12. Support Remove Trojan-gfw or V2ray
 
-Friendly Warning:
+Friendly Reminder:
 1. Please Purchase a domain and finish a dns resolve before running this bash script!
 2. Please manually change system dns to frequently updated dns like 1.1.1.1 instead of those who update slowly like aliyun lan dns !
