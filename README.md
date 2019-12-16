@@ -22,9 +22,11 @@ Bash Features:
 8. Auto random vmess uuid generate
 9. Auto enable tcp-bbr and disable tcp slow start
 10. Support auto vmess + tls + websocket + nginx config
-11. Support manually force renew certificate
-12. Support Remove Trojan-gfw or V2ray
+11. Support manually check for update include Trojan-gfw and v2ray
+12. Support manually force renew certificate
+13. Support Full Uninstall
 
 Friendly Reminder:
 1. Please Purchase a domain and finish a dns resolve before running this bash script!
 2. Please manually change system dns to frequently updated dns like 1.1.1.1 instead of those who update slowly like aliyun lan dns !
+3. Please choose option2 if you want to use v2ray !
