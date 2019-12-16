@@ -173,7 +173,7 @@ deb https://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx
 deb-src https://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx
 EOF
 	apt-get update -q
-	apt-get install nginx -y
+	apt-get install nginx -q -y
 }
 
 nginxubuntu(){
@@ -185,7 +185,7 @@ deb https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx
 deb-src https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx
 EOF
 	apt-get update -q
-	apt-get install nginx -y
+	apt-get install nginx -q -y
 }
 
 installnginx(){
