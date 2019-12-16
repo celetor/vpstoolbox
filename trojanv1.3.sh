@@ -121,7 +121,7 @@ openfirewall(){
   iptables -I OUTPUT -j ACCEPT
 }
 
-installrely(){
+installdependency(){
 	echo installing trojan-gfw nginx and acme
 	if [[ $dist = centos ]]; then
     yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release -y
@@ -655,7 +655,7 @@ _EOF_
         echo "Updating system"
         updatesystem
         echo "installing rely"
-        installrely
+        installdependency
         if isresolved $domain
         then
         :
@@ -717,7 +717,7 @@ _EOF_
         echo "Updating system"
         updatesystem
         echo "installing rely"
-        installrely
+        installdependency
         if isresolved $domain
         then
         :
@@ -779,7 +779,7 @@ _EOF_
         echo "configing firewall"
         openfirewall
         echo "installing rely"
-        installrely
+        installdependency
         echo "installing trojan-gfw"
         installtrojan-gfw
         break
@@ -795,7 +795,7 @@ _EOF_
         echo "configing firewall"
         openfirewall
         echo "installing rely"
-        installrely
+        installdependency
         echo "installing nginx"
         installnginx
         break
@@ -803,7 +803,7 @@ _EOF_
       5)
         userinput
         osdist
-        installrely
+        installdependency
         if isresolved $domain
         then
         :
