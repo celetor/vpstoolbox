@@ -283,6 +283,165 @@ tcp-bbr(){
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.d/99-sysctl.conf
 	sysctl -p
+    cat > '/etc/systemd/system.conf' << EOF
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation; either version 2.1 of the License, or
+#  (at your option) any later version.
+#
+# Entries in this file show the compile time defaults.
+# You can change settings by editing this file.
+# Defaults can be restored by simply deleting this file.
+#
+# See systemd-system.conf(5) for details.
+
+[Manager]
+#LogLevel=info
+#LogTarget=journal-or-kmsg
+#LogColor=yes
+#LogLocation=no
+#DumpCore=yes
+#ShowStatus=yes
+#CrashChangeVT=no
+#CrashShell=no
+#CrashReboot=no
+#CtrlAltDelBurstAction=reboot-force
+#CPUAffinity=1 2
+#RuntimeWatchdogSec=0
+#ShutdownWatchdogSec=10min
+#WatchdogDevice=
+#CapabilityBoundingSet=
+#NoNewPrivileges=no
+#SystemCallArchitectures=
+#TimerSlackNSec=
+#DefaultTimerAccuracySec=1min
+#DefaultStandardOutput=journal
+#DefaultStandardError=inherit
+#DefaultTimeoutStartSec=90s
+DefaultTimeoutStopSec=30s
+#DefaultRestartSec=100ms
+#DefaultStartLimitIntervalSec=10s
+#DefaultStartLimitBurst=5
+#DefaultEnvironment=
+#DefaultCPUAccounting=no
+#DefaultIOAccounting=no
+#DefaultIPAccounting=no
+#DefaultBlockIOAccounting=no
+#DefaultMemoryAccounting=yes
+#DefaultTasksAccounting=yes
+#DefaultTasksMax=
+#DefaultLimitCPU=
+#DefaultLimitFSIZE=
+#DefaultLimitDATA=
+#DefaultLimitSTACK=
+#DefaultLimitCORE=
+#DefaultLimitRSS=
+#DefaultLimitNOFILE=1024:524288
+#DefaultLimitAS=
+#DefaultLimitNPROC=
+#DefaultLimitMEMLOCK=
+#DefaultLimitLOCKS=
+#DefaultLimitSIGPENDING=
+#DefaultLimitMSGQUEUE=
+#DefaultLimitNICE=
+#DefaultLimitRTPRIO=
+#DefaultLimitRTTIME=
+DefaultLimitCORE=infinity
+DefaultLimitNOFILE=51200
+DefaultLimitNPROC=51200
+EOF
+    cat > '/etc/security/limits.conf' << EOF
+# /etc/security/limits.conf
+#
+#Each line describes a limit for a user in the form:
+#
+#<domain>        <type>  <item>  <value>
+#
+#Where:
+#<domain> can be:
+#        - a user name
+#        - a group name, with @group syntax
+#        - the wildcard *, for default entry
+#        - the wildcard %, can be also used with %group syntax,
+#                 for maxlogin limit
+#        - NOTE: group and wildcard limits are not applied to root.
+#          To apply a limit to the root user, <domain> must be
+#          the literal username root.
+#
+#<type> can have the two values:
+#        - "soft" for enforcing the soft limits
+#        - "hard" for enforcing hard limits
+#
+#<item> can be one of the following:
+#        - core - limits the core file size (KB)
+#        - data - max data size (KB)
+#        - fsize - maximum filesize (KB)
+#        - memlock - max locked-in-memory address space (KB)
+#        - nofile - max number of open file descriptors
+#        - rss - max resident set size (KB)
+#        - stack - max stack size (KB)
+#        - cpu - max CPU time (MIN)
+#        - nproc - max number of processes
+#        - as - address space limit (KB)
+#        - maxlogins - max number of logins for this user
+#        - maxsyslogins - max number of logins on the system
+#        - priority - the priority to run user process with
+#        - locks - max number of file locks the user can hold
+#        - sigpending - max number of pending signals
+#        - msgqueue - max memory used by POSIX message queues (bytes)
+#        - nice - max nice priority allowed to raise to values: [-20, 19]
+#        - rtprio - max realtime priority
+#        - chroot - change root to directory (Debian-specific)
+#
+#<domain>      <type>  <item>         <value>
+#
+
+#*               soft    core            0
+#root            hard    core            100000
+#*               hard    rss             10000
+#@student        hard    nproc           20
+#@faculty        soft    nproc           20
+#@faculty        hard    nproc           50
+#ftp             hard    nproc           0
+#ftp             -       chroot          /ftp
+#@student        -       maxlogins       4
+
+# End of file
+* soft nofile 51200
+* hard nofile 51200
+EOF
+    cat > '/etc/profile' << EOF
+# /etc/profile: system-wide .profile file for the Bourne shell (sh(1))
+# and Bourne compatible shells (bash(1), ksh(1), ash(1), ...).
+
+if [ "${PS1-}" ]; then
+  if [ "${BASH-}" ] && [ "$BASH" != "/bin/sh" ]; then
+    # The file bash.bashrc already sets the default PS1.
+    # PS1='\h:\w\$ '
+    if [ -f /etc/bash.bashrc ]; then
+      . /etc/bash.bashrc
+    fi
+  else
+    if [ "`id -u`" -eq 0 ]; then
+      PS1='# '
+    else
+      PS1='$ '
+    fi
+  fi
+fi
+
+if [ -d /etc/profile.d ]; then
+  for i in /etc/profile.d/*.sh; do
+    if [ -r $i ]; then
+      . $i
+    fi
+  done
+  unset i
+fi
+ulimit -SHn 51200
+EOF
 }
 
 iptables-persistent(){
