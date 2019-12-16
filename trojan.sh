@@ -125,8 +125,10 @@ upgradesystem(){
 	if [[ $dist = centos ]]; then
     yum upgrade -q -y
  elif [[ $dist = ubuntu ]]; then
+     export DEBIAN_FRONTEND=noninteractive 
     apt-get upgrade -q -y
  elif [[ $dist = debian ]]; then
+     export DEBIAN_FRONTEND=noninteractive 
     apt-get upgrade -q -y
  else
   clear
@@ -287,8 +289,10 @@ iptables-persistent(){
   if [[ $dist = centos ]]; then
     yum install iptables-persistent -q -y
  elif [[ $dist = ubuntu ]]; then
+     export DEBIAN_FRONTEND=noninteractive 
     apt-get install iptables-persistent -q -y
  elif [[ $dist = debian ]]; then
+     export DEBIAN_FRONTEND=noninteractive 
     apt-get install iptables-persistent -q -y
  else
   clear
