@@ -991,7 +991,7 @@ _EOF_
         colorEcho ${INFO} "Updating system"
         updatesystem
         colorEcho ${WARNING} "Dnsmasq can acclerate dns resolve by caching dns requests,continue?"
-        if ! [[ -n "$dist" ]] || promp ${WARNING} "continue?"; then
+        if ! [[ -n "$dist" ]] || prompt ${WARNING} "continue?"; then
         colorEcho ${INFO} "Installing dnsmasq"
         dnsmasq
         else
@@ -1072,7 +1072,7 @@ _EOF_
         colorEcho ${INFO} "Updating system"
         updatesystem
         colorEcho ${WARNING} "Dnsmasq can acclerate dns resolve by caching dns requests,continue?"
-        if ! [[ -n "$dist" ]] || promp ${WARNING} "continue?"; then
+        if ! [[ -n "$dist" ]] || prompt ${WARNING} "continue?"; then
         colorEcho ${INFO} "Installing dnsmasq"
         dnsmasq
         else
