@@ -614,11 +614,6 @@ installv2ray(){
         "geosite:cn"
       ],
       "outboundTag": "blocked"
-      },
-      {
-        "type" :"field",
-        "outboundTag": "blocked",
-        "domain": ["geosite:category-ads"]
       }
     ]
   }
