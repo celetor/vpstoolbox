@@ -890,7 +890,24 @@ trojanlink(){
     colorEcho ${ERROR} "QR generate Fail ! Because Ubuntu 16.04 does not support python3-qrcode,Please change your os!"
   fi
 }
-#####################################
+########V2ray share link############
+v2raylink(){
+  wget https://github.com/boypt/vmess2json/raw/master/json2vmess.py -q
+  chmod +x json2vmess.py
+  touch /etc/v2ray/$uuid.txt
+  v2link=$(./json2vmess.py --addr $domain --filter ws --amend port:443 --amend tls:tls /etc/v2ray/config.json)
+    cat > "/etc/v2ray/$uuid.txt" << EOF
+$v2link
+EOF
+  cp /etc/v2ray/$uuid.txt /usr/share/nginx/html/
+  colorEcho ${INFO} "Your v2ray share link is"
+  cat /etc/v2ray/$uuid.txt
+  colorEcho ${INFO} "Please visit the link below to download your v2ray share link"
+  colorEcho ${LINK} "https://$domain/$uuid.txt"
+  rm -rf json2vmess.py
+  colorEcho ${INFO} "Please manually run cat /etc/v2ray/$uuid.txt to show share link again!"
+}
+####################################
 DELAY=3 # Number of seconds to display results
 
 while true; do
@@ -1058,6 +1075,7 @@ _EOF_
         v2rayclient
         colorEcho ${INFO} "Your V2ray client config"
         cat /etc/v2ray/client.json
+        v2raylink
         colorEcho ${INFO} "https://github.com/v2ray/v2ray-core/releases/latest"
         colorEcho ${INFO} "Install Success,Enjoy it!"
         break
