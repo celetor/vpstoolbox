@@ -820,6 +820,7 @@ removenginx(){
   systemctl stop nginx
   systemctl disable nginx
   apt purge nginx -p -y
+  rm -rf /etc/apt/sources.list.d/nginx.list
   sudo ~/.acme.sh/acme.sh --uninstall
 }
 ##########Check for update############
