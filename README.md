@@ -21,10 +21,11 @@ Bash Features:
 7. Auto generate client config
 8. Auto random vmess uuid generate
 9. Auto enable tcp-bbr and disable tcp slow start
+10. Auto Trojan-GFW share link and QR code generate
 10. Support auto vmess + tls + websocket + nginx config
-11. Support manually check for update include both Trojan-gfw and v2ray
-12. Support manually force renew certificate
-13. Support Full Uninstall
+12. Support manually check for update include both Trojan-gfw and v2ray
+13. Support manually force renew certificate
+14. Support Full Uninstall
 
 Friendly Reminder:
 1. Please Purchase a domain and finish a dns resolve before running this bash script!
