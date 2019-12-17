@@ -3,16 +3,13 @@ if [[ $(id -u) != 0 ]]; then
     echo Please run this script as root.
     exit 1
 fi
-
 #######color code############
 ERROR="31m"      # Error message
 SUCCESS="32m"    # Success message
 WARNING="33m"   # Warning message
 INFO="93m"     # Info message
 LINK="95m"     # Share Link Message
-
 #############################
-
 function prompt() {
     while true; do
         read -p "$1 [y/N] " yn
@@ -22,13 +19,22 @@ function prompt() {
         esac
     done
 }
-
-
+############################
+function promp() {
+    while true; do
+        read -p "$1 [y/N] " yn
+        case $yn in
+            [Yy]|"" ) return 0;;
+            [Nn] ) return 1;;
+        esac
+    done
+}
+####################################
 colorEcho(){
     COLOR=$1
     echo -e "\033[${COLOR}${@:2}\033[0m"
 }
-
+#########Domain resolve verification###################
 isresolved(){
     if [ $# = 2 ]
     then
@@ -48,7 +54,7 @@ isresolved(){
     done
     return 1
 }
-
+###############User input for option1################
 userinput(){
 echo "Hello, "$USER".  This script will help you set up a trojan-gfw server."
 colorEcho ${WARNING} "Please Enter your domain and press [ENTER]: "
@@ -73,7 +79,7 @@ read password2
   fi
 colorEcho ${INFO} "Your password2 is $password2"
 }
-
+###############OS detect####################
 osdist(){
 
 set -e
@@ -107,7 +113,7 @@ set -e
     exit 1;
  fi
 }
-
+###############Update system################
 updatesystem(){
 	if [[ $dist = centos ]]; then
     yum update -qq
@@ -121,7 +127,7 @@ updatesystem(){
     exit 1;
  fi
 }
-
+##############Upgrade system optional########
 upgradesystem(){
 	if [[ $dist = centos ]]; then
     yum upgrade -q -y
@@ -139,41 +145,41 @@ upgradesystem(){
     exit 1;
  fi
 }
-
+#########Open ports########################
 openfirewall(){
   iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
   iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
   iptables -I OUTPUT -j ACCEPT
 }
-
+##########install dependencies#############
 installdependency(){
 	echo "installing trojan-gfw nginx and acme"
 	if [[ $dist = centos ]]; then
-    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
+    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip resolvconf -qq -y
  elif [[ $dist = ubuntu ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf -qq -y
     if [[ $(lsb_release -cs) == xenial ]]; then
       colorEcho ${ERROR} "Ubuntu 16.04 does not support python3-qrcode,Skipping generating QR code!"
       else
         apt-get install python3-qrcode -qq -y
     fi
  elif [[ $dist = debian ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip resolvconf -qq -y
  else
   clear
     colorEcho ${ERROR} "error can't install dependency"
     exit 1;
  fi
 }
-
+###install trojan-gfw from offical bash####
 installtrojan-gfw(){
 	bash -c "$(wget -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
 }
-
+##########nginx install for cnetos#########
 nginxyum(){
 	yum install nginx -q -y > /dev/null
 }
-
+##########nginx install for debian################
 nginxapt(){
 	wget https://nginx.org/keys/nginx_signing.key -q
 	apt-key add nginx_signing.key
@@ -186,7 +192,7 @@ EOF
 	apt-get update -qq
 	apt-get install nginx -q -y
 }
-
+##########nginx install for ubuntu###############
 nginxubuntu(){
 	wget https://nginx.org/keys/nginx_signing.key -q
 	apt-key add nginx_signing.key
@@ -199,7 +205,7 @@ EOF
 	apt-get update -qq
 	apt-get install nginx -q -y
 }
-
+############install nginx########################
 installnginx(){
 	if [[ $dist = centos ]]; then
     nginxyum
@@ -213,33 +219,33 @@ installnginx(){
     exit 1;
  fi
 }
-
+#############install acme#####################
 installacme(){
 	curl https://get.acme.sh | sh
   sudo ~/.acme.sh/acme.sh --upgrade --auto-upgrade > /dev/null
   rm -rf /etc/trojan/
 	mkdir /etc/trojan/
 }
-
+##################################################
 issuecert(){
   systemctl start nginx
 	sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256 --log
   #sudo ~/.acme.sh/acme.sh --issue --nginx /etc/nginx/conf.d/trojan.conf -d $domain -k ec-256 --log
 }
-
+##################################################
 renewcert(){
   sudo ~/.acme.sh/acme.sh --issue -d $domain --webroot /usr/share/nginx/html/ -k ec-256 --force --log
   #sudo ~/.acme.sh/acme.sh --issue --nginx /etc/nginx/conf.d/trojan.conf -d $domain -k ec-256 --log
 }
-
+##################################################
 installcert(){
 	sudo ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
 }
-
+##################################################
 installkey(){
 	chmod +r /etc/trojan/trojan.key
 }
-
+##################################################
 changepasswd(){
 	sed  -i 's/path/etc/g' /usr/local/etc/trojan/config.json
 	sed  -i 's/to/trojan/g' /usr/local/etc/trojan/config.json
@@ -248,7 +254,7 @@ changepasswd(){
 	sed  -i "s/password1/$password1/g" /usr/local/etc/trojan/config.json
 	sed  -i "s/password2/$password2/g" /usr/local/etc/trojan/config.json
 }
-
+########Nginx config for Trojan only##############
 nginxtrojan(){
 rm -rf /etc/nginx/sites-available/*
 rm -rf /etc/nginx/sites-enabled/*
@@ -280,14 +286,13 @@ server {
 }
 EOF
 }
-
-#echo "trojan-gfw config complete!"
+##########Auto boot start###############
 autostart(){
 	systemctl start trojan
 	systemctl enable nginx
 	systemctl enable trojan
 }
-
+##########tcp-bbr#####################
 tcp-bbr(){
 	echo "net.ipv4.tcp_slow_start_after_idle = 0" >> /etc/sysctl.d/99-sysctl.conf
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
@@ -455,7 +460,7 @@ ulimit -SHn 51200
 EOF
 systemctl daemon-reload
 }
-
+##########iptables-persistent########
 iptables-persistent(){
   if [[ $dist = centos ]]; then
     yum install iptables-persistent -q -y > /dev/null
@@ -471,7 +476,48 @@ iptables-persistent(){
     exit 1;
  fi
 }
-
+############DNSMASQ#################
+dnsmasq(){
+    if [[ $dist = centos ]]; then
+    yum install dnsmasq -q -y > /dev/null
+ elif [[ $dist = ubuntu ]]; then
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get install dnsmasq -q -y > /dev/null
+ elif [[ $dist = debian ]]; then
+    export DEBIAN_FRONTEND=noninteractive 
+    apt-get install dnsmasq -q -y > /dev/null
+ else
+  clear
+    colorEcho ${ERROR} "error can't install dnsmasq"
+    exit 1;
+ fi
+ if [[ $dist = ubuntu ]]; then
+   systemctl stop systemd-resolved
+   systemctl disable systemd-resolved
+ fi
+ mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
+ touch /etc/dnsmasq.conf
+     cat > '/etc/dnsmasq.conf' << EOF
+port=53
+domain-needed
+bogus-priv
+no-resolv
+server=8.8.4.4#53
+server=1.1.1.1#53
+interface=lo
+bind-interfaces
+listen-address=127.0.0.1
+cache-size=10000
+no-negcache
+log-queries 
+log-facility=/var/log/dnsmasq.log 
+EOF
+  cat > '/etc/resolv.conf' << EOF
+nameserver 127.0.0.1
+EOF
+systemctl restart dnsmasq
+systemctl enable dnsmasq
+}
 ############Set UP V2ray############
 v2input(){
 echo "Hello, "$USER".  This script will help you set up a trojan-gfw server."
@@ -944,6 +990,13 @@ _EOF_
         colorEcho ${INFO} "Your os codename is $dist $(lsb_release -cs)"
         colorEcho ${INFO} "Updating system"
         updatesystem
+        colorEcho ${WARNING} "Dnsmasq can acclerate dns resolve by caching dns requests,continue?"
+        if ! [[ -n "$dist" ]] || promp ${WARNING} "continue?"; then
+        colorEcho ${INFO} "Installing dnsmasq"
+        dnsmasq
+        else
+        echo Skipping dnsmasq config...
+        fi
         colorEcho ${WARNING} "Upgrade system may cause unwanted bugs...,continue?"
         if ! [[ -n "$dist" ]] || prompt ${WARNING} "continue?"; then
         colorEcho ${INFO} "Upgrading system"
@@ -1018,6 +1071,13 @@ _EOF_
         colorEcho ${INFO} "Your os codename is $dist $(lsb_release -cs)"
         colorEcho ${INFO} "Updating system"
         updatesystem
+        colorEcho ${WARNING} "Dnsmasq can acclerate dns resolve by caching dns requests,continue?"
+        if ! [[ -n "$dist" ]] || promp ${WARNING} "continue?"; then
+        colorEcho ${INFO} "Installing dnsmasq"
+        dnsmasq
+        else
+        echo Skipping dnsmasq config...
+        fi
         colorEcho ${WARNING} "Upgrade system may cause unwanted bugs...,continue?"
         if ! [[ -n "$dist" ]] || prompt ${WARNING} "continue?"; then
         colorEcho ${INFO} "Upgrading system"
