@@ -10,7 +10,7 @@ sudo bash -c "$(wget -O- https://raw.githubusercontent.com/johnrosen1/trojan-gfw
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
-Bash Features:
+#### Bash Features:
 
 1. Auto install Trojan-GFW NGINX V2ray and Dnsmasq
 2. Auto config Trojan-GFW NGINX V2ray and Dnsmasq
@@ -28,7 +28,7 @@ Bash Features:
 14. Support manually force renew certificate
 15. Support Full Uninstall
 
-Friendly Reminder:
+#### Friendly Reminder:
 1. Please Purchase a domain and finish a dns resolve before running this bash script!
 2. Please manually change system dns to frequently updated dns like 1.1.1.1 instead of those who update slowly like aliyun lan dns !
 3. Please choose option2 if you want to use v2ray !
@@ -38,3 +38,8 @@ Friendly Reminder:
 7. Due to the lack of support for python3-qrcode in Ubuntu 16.04,Trojan-GFW QR code generating will be skipped !
 8. Due to personal demands , Dnsmasq installation is not forced ,press [ENTER] to continue or manually enter N to skip.
 9. If "sudo command not found" , please manually remove "sudo" from the beginning of the command and run as root !
+
+#### Telegram Channel
+
+### https://t.me/johnrosen1
+
