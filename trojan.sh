@@ -287,6 +287,7 @@ tcp-bbr(){
 	echo "net.ipv4.tcp_slow_start_after_idle = 0" >> /etc/sysctl.d/99-sysctl.conf
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.ipv4.tcp_max_syn_backlog = 12800" >> /etc/sysctl.d/99-sysctl.conf
 	sysctl -p
     cat > '/etc/systemd/system.conf' << EOF
 #  This file is part of systemd.
