@@ -127,9 +127,11 @@ upgradesystem(){
  elif [[ $dist = ubuntu ]]; then
      export DEBIAN_FRONTEND=noninteractive 
     apt-get upgrade -q -y
+    apt-get autoremove -q -y
  elif [[ $dist = debian ]]; then
      export DEBIAN_FRONTEND=noninteractive 
     apt-get upgrade -q -y
+    apt-get autoremove -q -y
  else
   clear
     colorEcho ${ERROR} "error can't upgrade system"
@@ -443,6 +445,7 @@ if [ -d /etc/profile.d ]; then
 fi
 ulimit -SHn 51200
 EOF
+systemctl daemon-reload
 }
 
 iptables-persistent(){
