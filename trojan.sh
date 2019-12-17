@@ -1053,7 +1053,6 @@ _EOF_
         colorEcho ${INFO} "Your Trojan-Gfw client config profile 2"
         cat /etc/trojan/client2.json
         trojanlink
-        trojanlink
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"
         v2rayclient
