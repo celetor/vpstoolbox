@@ -149,11 +149,11 @@ openfirewall(){
 installdependency(){
 	echo "installing trojan-gfw nginx and acme"
 	if [[ $dist = centos ]]; then
-    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
+    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
  elif [[ $dist = ubuntu ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
  elif [[ $dist = debian ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
  else
   clear
     colorEcho ${ERROR} "error can't install dependency"
