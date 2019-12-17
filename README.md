@@ -21,7 +21,7 @@ Bash Features:
 7. Auto generate client config
 8. Auto random vmess uuid generate
 9. Auto enable tcp-bbr and disable tcp slow start
-10. Auto Trojan-GFW share link and QR code generate
+10. Auto Trojan-GFW trojan:// share link and QR code generate
 11. Auto V2ray vmess:// share link generate
 12. Support auto vmess + tls + websocket + nginx config
 13. Support manually check for update include both Trojan-gfw and v2ray
