@@ -149,7 +149,7 @@ openfirewall(){
 installdependency(){
 	echo "installing trojan-gfw nginx and acme"
 	if [[ $dist = centos ]]; then
-    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
+    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip -qq -y
  elif [[ $dist = ubuntu ]]; then
     apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip -qq -y
     if [[ $(lsb_release -cs) == xenial ]]; then
@@ -1048,8 +1048,11 @@ _EOF_
         iptables-persistent
         clear
         trojanclient
-        colorEcho ${INFO} "Your Trojan-Gfw client config"
-        cat /etc/trojan/client.json
+        colorEcho ${INFO} "Your Trojan-Gfw client config profile 1"
+        cat /etc/trojan/client1.json
+        colorEcho ${INFO} "Your Trojan-Gfw client config profile 2"
+        cat /etc/trojan/client2.json
+        trojanlink
         trojanlink
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"
