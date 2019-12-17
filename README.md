@@ -1,12 +1,12 @@
 # Trojan-GFW Script
-This script will help you set up a trojan-gfw server in an extremely fast way.
-For more Info: https://www.johnrosen1.com/trojan/ 
+## This script will help you set up a trojan-gfw server in an extremely fast way.
+### For more Info: https://www.johnrosen1.com/trojan/ 
 
-via wget
+#### via wget
 ```
 sudo bash -c "$(wget -O- https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
-or via curl
+#### or via curl
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
