@@ -176,7 +176,7 @@ nginxyum(){
 
 nginxapt(){
 	wget https://nginx.org/keys/nginx_signing.key -q
-	apt-key add nginx_signing.key > /dev/null
+	apt-key add nginx_signing.key
   rm -rf nginx_signing.key
   touch /etc/apt/sources.list.d/nginx.list
   cat > '/etc/apt/sources.list.d/nginx.list' << EOF
@@ -189,7 +189,7 @@ EOF
 
 nginxubuntu(){
 	wget https://nginx.org/keys/nginx_signing.key -q
-	apt-key add nginx_signing.key > /dev/null
+	apt-key add nginx_signing.key
   rm -rf nginx_signing.key
   touch /etc/apt/sources.list.d/nginx.list
   cat > '/etc/apt/sources.list.d/nginx.list' << EOF
