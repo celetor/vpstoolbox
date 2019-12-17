@@ -255,6 +255,7 @@ changepasswd(){
 	sed  -i "s/password2/$password2/g" /usr/local/etc/trojan/config.json
         sed  -i 's/"prefer_ipv4": false,/"prefer_ipv4": true,/g' /usr/local/etc/trojan/config.json
         sed  -i 's/"fast_open": false,/"fast_open": true,/g' /usr/local/etc/trojan/config.json
+        sed  -i 's/"session_ticket": false,/"session_ticket": true,/g' /usr/local/etc/trojan/config.json
 }
 ########Nginx config for Trojan only##############
 nginxtrojan(){
