@@ -1,4 +1,4 @@
- Trojan-GFW Script
+# Trojan-GFW Script
 This script will help you set up a trojan-gfw server in an extremely fast way.
 For more Info: https://www.johnrosen1.com/trojan/ 
 
