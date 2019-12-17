@@ -9,6 +9,7 @@ ERROR="31m"      # Error message
 SUCCESS="32m"    # Success message
 WARNING="33m"   # Warning message
 INFO="93m"     # Info message
+LINK="95m"     # Share Link Message
 
 #############################
 
@@ -109,11 +110,11 @@ set -e
 
 updatesystem(){
 	if [[ $dist = centos ]]; then
-    yum update -q
+    yum update -qq
  elif [[ $dist = ubuntu ]]; then
-    apt-get update -q
+    apt-get update -qq
  elif [[ $dist = debian ]]; then
-    apt-get update -q
+    apt-get update -qq
  else
   clear
     colorEcho ${ERROR} "error can't update system"
@@ -125,13 +126,13 @@ upgradesystem(){
 	if [[ $dist = centos ]]; then
     yum upgrade -q -y
  elif [[ $dist = ubuntu ]]; then
-     export DEBIAN_FRONTEND=noninteractive 
+    export UBUNTU_FRONTEND=noninteractive 
     apt-get upgrade -q -y
-    apt-get autoremove -q -y
+    apt-get autoremove -qq -y > /dev/null
  elif [[ $dist = debian ]]; then
-     export DEBIAN_FRONTEND=noninteractive 
+    export DEBIAN_FRONTEND=noninteractive 
     apt-get upgrade -q -y
-    apt-get autoremove -q -y
+    apt-get autoremove -qq -y > /dev/null
  else
   clear
     colorEcho ${ERROR} "error can't upgrade system"
@@ -148,11 +149,11 @@ openfirewall(){
 installdependency(){
 	echo "installing trojan-gfw nginx and acme"
 	if [[ $dist = centos ]]; then
-    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release python3-qrcode python-pil unzip -q -y
+    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
  elif [[ $dist = ubuntu ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release python3-qrcode python-pil unzip -q -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
  elif [[ $dist = debian ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release python3-qrcode python-pil unzip -q -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
  else
   clear
     colorEcho ${ERROR} "error can't install dependency"
@@ -165,32 +166,32 @@ installtrojan-gfw(){
 }
 
 nginxyum(){
-	yum install nginx -q -y
+	yum install nginx -q -y > /dev/null
 }
 
 nginxapt(){
-	wget https://nginx.org/keys/nginx_signing.key
-	apt-key add nginx_signing.key
-        rm -rf nginx_signing.key
+	wget https://nginx.org/keys/nginx_signing.key -q
+	apt-key add nginx_signing.key > /dev/null
+  rm -rf nginx_signing.key
   touch /etc/apt/sources.list.d/nginx.list
   cat > '/etc/apt/sources.list.d/nginx.list' << EOF
 deb https://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx
 deb-src https://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx
 EOF
-	apt-get update -q
+	apt-get update -qq
 	apt-get install nginx -q -y
 }
 
 nginxubuntu(){
-	wget https://nginx.org/keys/nginx_signing.key
-	apt-key add nginx_signing.key
-        rm -rf nginx_signing.key
+	wget https://nginx.org/keys/nginx_signing.key -q
+	apt-key add nginx_signing.key > /dev/null
+  rm -rf nginx_signing.key
   touch /etc/apt/sources.list.d/nginx.list
   cat > '/etc/apt/sources.list.d/nginx.list' << EOF
 deb https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx
 deb-src https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx
 EOF
-	apt-get update -q
+	apt-get update -qq
 	apt-get install nginx -q -y
 }
 
@@ -210,7 +211,7 @@ installnginx(){
 
 installacme(){
 	curl https://get.acme.sh | sh
-  sudo ~/.acme.sh/acme.sh --upgrade --auto-upgrade
+  sudo ~/.acme.sh/acme.sh --upgrade --auto-upgrade > /dev/null
   rm -rf /etc/trojan/
 	mkdir /etc/trojan/
 }
@@ -286,7 +287,6 @@ tcp-bbr(){
 	echo "net.ipv4.tcp_slow_start_after_idle = 0" >> /etc/sysctl.d/99-sysctl.conf
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.d/99-sysctl.conf
-	echo "net.ipv4.tcp_max_syn_backlog = 12800" >> /etc/sysctl.d/99-sysctl.conf
 	sysctl -p
     cat > '/etc/systemd/system.conf' << EOF
 #  This file is part of systemd.
@@ -452,27 +452,18 @@ systemctl daemon-reload
 
 iptables-persistent(){
   if [[ $dist = centos ]]; then
-    yum install iptables-persistent -q -y
+    yum install iptables-persistent -q -y > /dev/null
  elif [[ $dist = ubuntu ]]; then
-     export DEBIAN_FRONTEND=noninteractive 
-    apt-get install iptables-persistent -q -y
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get install iptables-persistent -q -y > /dev/null
  elif [[ $dist = debian ]]; then
-     export DEBIAN_FRONTEND=noninteractive 
-    apt-get install iptables-persistent -q -y
+    export DEBIAN_FRONTEND=noninteractive 
+    apt-get install iptables-persistent -q -y > /dev/null
  else
   clear
     colorEcho ${ERROR} "error can't install iptables-persistent"
     exit 1;
  fi
-}
-###########Trojan share link########
-sharelink(){
-  cd
-  wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py
-  ./trojan-url.py -i /etc/trojan/client.json
-  echo "Your Trojan-Gfw Share link1 is: trojan://$password1@$domain:443"
-  echo "Your Trojan-Gfw Share link1 is: trojan://$password2@$domain:443"
-  echo ""
 }
 
 ############Set UP V2ray############
@@ -504,7 +495,7 @@ read path
 colorEcho ${INFO} "Your path is $path"
 }
 installv2ray(){
-  bash <(curl -L -s https://install.direct/go.sh)
+  bash <(curl -L -s https://install.direct/go.sh) > /dev/null
   rm -rf /etc/v2ray/config.json
   colorEcho ${INFO} "generating random uuid"
   uuid=$(/usr/bin/v2ray/v2ctl uuid)
@@ -631,13 +622,14 @@ sed  -i 's/@/$/g' /etc/nginx/conf.d/trojan.conf
 }
 ###########Trojan Client Config#############
 trojanclient(){
-  touch /etc/trojan/client.json
-    cat > '/etc/trojan/client.json' << EOF
+  touch /etc/trojan/client1.json
+  touch /etc/trojan/client2.json
+    cat > '/etc/trojan/client1.json' << EOF
 {
     "run_type": "client",
     "local_addr": "127.0.0.1",
     "local_port": 1080,
-    "remote_addr": "$domain",
+    "remote_addr": "$myip",
     "remote_port": 443,
     "password": [
         "$password1"
@@ -648,7 +640,40 @@ trojanclient(){
         "verify_hostname": true,
         "cert": "",
         "cipher": "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:RSA-AES128-GCM-SHA256:RSA-AES256-GCM-SHA384:RSA-AES128-SHA:RSA-AES256-SHA:RSA-3DES-EDE-SHA",
-        "sni": "",
+        "sni": "$domain",
+        "alpn": [
+            "h2",
+            "http/1.1"
+        ],
+        "reuse_session": true,
+        "session_ticket": false,
+        "curves": ""
+    },
+    "tcp": {
+        "no_delay": true,
+        "keep_alive": true,
+        "fast_open": false,
+        "fast_open_qlen": 20
+    }
+}
+EOF
+    cat > '/etc/trojan/client2.json' << EOF
+{
+    "run_type": "client",
+    "local_addr": "127.0.0.1",
+    "local_port": 1080,
+    "remote_addr": "$myip",
+    "remote_port": 443,
+    "password": [
+        "$password2"
+    ],
+    "log_level": 1,
+    "ssl": {
+        "verify": true,
+        "verify_hostname": true,
+        "cert": "",
+        "cipher": "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:RSA-AES128-GCM-SHA256:RSA-AES256-GCM-SHA384:RSA-AES128-SHA:RSA-AES256-SHA:RSA-3DES-EDE-SHA",
+        "sni": "$domain",
         "alpn": [
             "h2",
             "http/1.1"
@@ -813,7 +838,7 @@ removev2ray(){
   systemctl disable v2ray
   systemctl daemon-reload
   cd
-  wget https://install.direct/go.sh
+  wget https://install.direct/go.sh -q
   sudo bash go.sh --remove
   rm go.sh
 }
@@ -828,12 +853,34 @@ removenginx(){
 ##########Check for update############
 checkupdate(){
   cd
-  wget https://install.direct/go.sh
+  wget https://install.direct/go.sh -q
   sudo bash go.sh --check
   rm go.sh
   bash -c "$(wget -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
 }
-######################################
+###########Trojan share link########
+trojanlink(){
+  cd
+  wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
+  chmod +x trojan-url.py
+  #./trojan-url.py -i /etc/trojan/client.json
+  ./trojan-url.py -q -i /etc/trojan/client1.json -o $password1.png
+  ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png
+  cp $password1.png /usr/share/nginx/html/
+  cp $password2.png /usr/share/nginx/html/
+  colorEcho ${INFO} "Your Trojan-Gfw Share link1 is"
+  colorEcho ${LINK} "trojan://$password1@$domain:443"
+  colorEcho ${INFO} "Your Trojan-Gfw Share link2 is"
+  colorEcho ${LINK} "trojan://$password2@$domain:443"
+  colorEcho ${INFO} "Please visit the link below to get your QR code1"
+  colorEcho ${LINK} "https://$domain/$password1.png"
+  colorEcho ${INFO} "Please visit the link below to get your QR code2"
+  colorEcho ${LINK} "https://$domain/$password2.png"
+  rm -rf trojan-url.py
+  rm -rf $password1.png
+  rm -rf $password2.png
+}
+#####################################
 DELAY=3 # Number of seconds to display results
 
 while true; do
@@ -877,6 +924,7 @@ _EOF_
         else
         echo Skipping system upgrade...
         fi
+        clear
         colorEcho ${INFO} "installing dependency"
         installdependency       
         if isresolved $domain
@@ -924,8 +972,11 @@ _EOF_
         iptables-persistent
         clear
         trojanclient
-        colorEcho ${INFO} "Your Trojan-Gfw client config"
-        cat /etc/trojan/client.json
+        colorEcho ${INFO} "Your Trojan-Gfw client config profile 1"
+        cat /etc/trojan/client1.json
+        colorEcho ${INFO} "Your Trojan-Gfw client config profile 2"
+        cat /etc/trojan/client2.json
+        trojanlink
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"        
         colorEcho ${SUCCESS} "Install Success,Enjoy it!"
@@ -947,6 +998,7 @@ _EOF_
         else
         echo Skipping system upgrade...
         fi
+        clear
         colorEcho ${INFO} "installing dependency"
         installdependency
         if isresolved $domain
@@ -988,6 +1040,7 @@ _EOF_
         trojanclient
         colorEcho ${INFO} "Your Trojan-Gfw client config"
         cat /etc/trojan/client.json
+        trojanlink
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"
         v2rayclient
