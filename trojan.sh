@@ -149,9 +149,14 @@ openfirewall(){
 installdependency(){
 	echo "installing trojan-gfw nginx and acme"
 	if [[ $dist = centos ]]; then
-    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
+    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip -qq -y
  elif [[ $dist = ubuntu ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip -qq -y
+    if [[ $(lsb_release -cs) == xenial ]]; then
+      colorEcho ${ERROR} "Ubuntu 16.04 does not support python3-qrcode,Skipping generating QR code!"
+      else
+        apt-get install python3-qrcode -qq -y
+    fi
  elif [[ $dist = debian ]]; then
     apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip -qq -y
  else
@@ -287,7 +292,7 @@ tcp-bbr(){
 	echo "net.ipv4.tcp_slow_start_after_idle = 0" >> /etc/sysctl.d/99-sysctl.conf
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.d/99-sysctl.conf
-	echo "net.ipv4.tcp_max_syn_backlog = 12800" >> /etc/sysctl.d/99-sysctl.conf
+  echo "net.ipv4.tcp_max_syn_backlog = 12800" >> /etc/sysctl.d/99-sysctl.conf
 	sysctl -p
     cat > '/etc/systemd/system.conf' << EOF
 #  This file is part of systemd.
@@ -862,6 +867,7 @@ checkupdate(){
 ###########Trojan share link########
 trojanlink(){
   cd
+  if [[ $(lsb_release -cs) != xenial ]]; then
   wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
   chmod +x trojan-url.py
   #./trojan-url.py -i /etc/trojan/client.json
@@ -880,6 +886,9 @@ trojanlink(){
   rm -rf trojan-url.py
   rm -rf $password1.png
   rm -rf $password2.png
+  else
+    colorEcho ${ERROR} "QR generate Fail ! Because Ubuntu 16.04 does not support python3-qrcode,Please change your os!"
+  fi
 }
 #####################################
 DELAY=3 # Number of seconds to display results
