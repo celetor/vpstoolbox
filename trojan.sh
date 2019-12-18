@@ -305,7 +305,7 @@ changepasswd(){
             "http/1.1"
         ],
         "reuse_session": true,
-        "session_ticket": false,
+        "session_ticket": true,
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
