@@ -46,3 +46,5 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ### https://t.me/johnrosen1
 
 ### https://t.me/trojanscript
+
+附： Trojan一键脚本功能已基本齐全，从此停止更新，如需更多功能请移步Github issue，我会考虑的。
