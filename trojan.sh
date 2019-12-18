@@ -1306,14 +1306,14 @@ _EOF_
         colorEcho ${INFO} "Your os codename is $dist $(lsb_release -cs)"
         colorEcho ${INFO} "Updating system"
         updatesystem
-        colorEcho ${WARNING} "Dnsmasq can acclerate dns resolve by caching dns requests,continue?"
+        colorEcho ${WARNING} "Dnsmasq can acclerate dns resolve by caching dns requests,continue? If you are unsure,Please press [ENTER] to skip!"
         if ! [[ -n "$dist" ]] || prompt ${WARNING} "continue?"; then
         colorEcho ${INFO} "Installing dnsmasq"
         dnsmasq
         else
         echo Skipping dnsmasq config...
         fi
-        colorEcho ${WARNING} "Upgrade system may cause unwanted bugs...,continue?"
+        colorEcho ${WARNING} "Upgrade system may cause unwanted bugs...,continue? If you are unsure,Please press [ENTER] to skip!"
         if ! [[ -n "$dist" ]] || prompt ${WARNING} "continue?"; then
         colorEcho ${INFO} "Upgrading system"
         upgradesystem
