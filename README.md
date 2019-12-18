@@ -39,7 +39,8 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 8. Due to personal demands , Dnsmasq installation is not forced ,press [ENTER] to skip or manually enter y to install dnsmasq.
 9. If "sudo command not found" , please manually remove "sudo" from the beginning of the command and run as root !
 
-#### Telegram Channel
+#### Telegram Channel And Group
 
 ### https://t.me/johnrosen1
 
+### https://t.me/trojanscript
