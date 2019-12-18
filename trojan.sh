@@ -732,13 +732,13 @@ trojanclient(){
             "http/1.1"
         ],
         "reuse_session": true,
-        "session_ticket": false,
+        "session_ticket": true,
         "curves": ""
     },
     "tcp": {
         "no_delay": true,
         "keep_alive": true,
-        "fast_open": false,
+        "fast_open": true,
         "fast_open_qlen": 20
     }
 }
@@ -765,13 +765,13 @@ EOF
             "http/1.1"
         ],
         "reuse_session": true,
-        "session_ticket": false,
+        "session_ticket": true,
         "curves": ""
     },
     "tcp": {
         "no_delay": true,
         "keep_alive": true,
-        "fast_open": false,
+        "fast_open": true,
         "fast_open_qlen": 20
     }
 }
