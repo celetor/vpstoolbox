@@ -782,7 +782,7 @@ read password2
     read password2
   fi
 colorEcho ${INFO} "Your password2 is $password2"
-colorEcho ${WARNING} "Please Enter your desired Websocket path and press [ENTER]: "
+colorEcho ${WARNING} "Please Enter your desired Websocket path (such as /secret )and press [ENTER]: "
 read path
 colorEcho ${INFO} "Your path is $path"
 }
