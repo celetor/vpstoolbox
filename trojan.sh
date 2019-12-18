@@ -267,7 +267,7 @@ server {
     #}
 }
 EOF
-  sudo ~/.acme.sh/acme.sh --issue --nginx /etc/nginx/conf.d/default.conf -d $domain -k ec-256 --log
+  sudo ~/.acme.sh/acme.sh --issue --nginx /etc/nginx/conf.d/default.conf -d $domain -k ec-256 --force --log
 }
 ##################################################
 renewcert(){
