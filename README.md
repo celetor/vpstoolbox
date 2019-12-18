@@ -20,7 +20,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 6. Auto iptables firewall config and iptables-persistent
 7. Auto generate client config
 8. Auto random vmess uuid generate
-9. Auto TCP Turbo enable ( includes more than tcp-bbr )
+9. Auto TCP Turbo enable ( **TCP-BBR** included)
 10. Auto Nginx Performance Optimization (Centos exclued due to too old nginx version)
 11. Auto Trojan-GFW trojan:// share link and QR code generate
 12. Auto V2ray vmess:// share link generate
