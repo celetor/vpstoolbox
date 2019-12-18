@@ -1112,7 +1112,7 @@ while true; do
   cat << _EOF_
 This script will help you set up a trojan-gfw server in an extremely fast way.
 For more Info: https://www.johnrosen1.com/trojan/
-If you are not sure,Please choose option 1 !
+If you are not sure,Please choose option 1 or 2 and press [ENTER] to skip all optional options !
 Please Select:
 
 1. Normal Install (new machine)
