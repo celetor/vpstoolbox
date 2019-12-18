@@ -928,11 +928,12 @@ removev2ray(){
   sudo bash go.sh --remove
   rm go.sh
 }
-###########Remove Nginx and acme###############
+###########Remove Nginx dnsmasq and acme###############
 removenginx(){
   systemctl stop nginx
   systemctl disable nginx
   apt purge nginx -p -y
+  apt purge dnsmasq -p -y
   rm -rf /etc/apt/sources.list.d/nginx.list
   sudo ~/.acme.sh/acme.sh --uninstall
 }
