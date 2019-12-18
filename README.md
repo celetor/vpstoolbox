@@ -32,7 +32,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 1. Please Purchase a domain and finish a dns resolve before running this bash script!
 2. Please manually change system dns to frequently updated dns like 1.1.1.1 instead of those who update slowly like aliyun lan dns !
 3. Please choose option2 if you want to use v2ray !
-4. Please do not any special symbols like ! in password1 or 2 , or error will occur !
+4. Please do not any special symbols like "!" in password1 or 2 , or error will occur !
 5. Please do not use enter / in websocket option ,enter someting else like /secret !
 6. For security reasons, system upgrade is not forced ,press [ENTER] to skip or manually enter y to upgrade system.
 7. Due to the lack of support for python3-qrcode in Ubuntu 16.04,Trojan-GFW QR code generating will be skipped !
