@@ -50,4 +50,4 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 
 ### https://t.me/trojanscript
 
-Attachment: Trojan-GFW one-click script's function is basically complete. Stop updating from now on. If you need more functions, please visit Github issue.
+Attachment: Trojan-GFW one-click script's function is basically complete. Stop updating from now on. If you need more functions, please use Github issue function.
