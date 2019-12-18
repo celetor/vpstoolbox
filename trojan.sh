@@ -292,10 +292,6 @@ changepasswd(){
     }
 }
 EOF
-	#sed  -i 's/path/etc/g' /usr/local/etc/trojan/config.json
-	#sed  -i 's/to/trojan/g' /usr/local/etc/trojan/config.json
-	#sed  -i 's/certificate.crt/trojan.crt/g' /usr/local/etc/trojan/config.json
-	#sed  -i 's/private.key/trojan.key/g' /usr/local/etc/trojan/config.json
 	sed  -i "s/password1/$password1/g" /usr/local/etc/trojan/config.json
 	sed  -i "s/password2/$password2/g" /usr/local/etc/trojan/config.json
 }
