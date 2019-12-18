@@ -645,13 +645,6 @@ installv2ray(){
     "rules": [
       {
         "type": "field",
-        "ip": [
-        "geoip:cn"
-      ],
-      "outboundTag": "blocked"
-      },
-      {
-        "type": "field",
         "domain": [
         "baidu.com",
         "qq.com",
