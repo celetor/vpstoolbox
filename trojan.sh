@@ -904,6 +904,7 @@ server {
 }
 EOF
 sed  -i 's/@/$/g' /etc/nginx/conf.d/trojan.conf
+nginx -s reload
 }
 ###########Trojan Client Config#############
 trojanclient(){
