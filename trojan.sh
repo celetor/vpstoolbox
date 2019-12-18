@@ -984,7 +984,7 @@ v2rayclient(){
 {
   "inbounds": [
     {
-      "listen": "0.0.0.0",
+      "listen": "127.0.0.1",
       "port": 8001,
       "protocol": "http",
       "sniffing": {
@@ -1018,7 +1018,7 @@ v2rayclient(){
             "users": [
               {
                 "id": "$uuid",
-                "alterId": 0,
+                "alterId": 64,
                 "security": "none" //使用TLS则无需二次加密
               }
             ]
