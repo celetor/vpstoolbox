@@ -10,6 +10,12 @@ sudo bash -c "$(wget -O- https://raw.githubusercontent.com/johnrosen1/trojan-gfw
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
+
+### 汉化GUI版本
+```
+sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojangui.sh)"
+```
+附：汉化GUI版本我写着玩的，有问题别来找我。
 #### Bash Features:
 
 1. Auto install Trojan-GFW NGINX V2ray and Dnsmasq
