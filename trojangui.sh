@@ -1218,7 +1218,7 @@ function advancedMenu() {
         trojanlink
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"        
-        whiptail --title "Option 1" --msgbox "安装成功，享受吧！多行不義必自斃，子姑待之。" 8 78
+        whiptail --title "Option 1" --msgbox "安装成功，享受吧！多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" 8 78
         ;;
         2)    
         v2input
