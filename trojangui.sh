@@ -1127,7 +1127,7 @@ EOF
 ##################################
 clear
 function advancedMenu() {
-    ADVSEL=$(whiptail --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option" 25 78 16 \
+    ADVSEL=$(whiptail --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
         "1" "正常安装" \
         "2" "扩展安装（包含V2ray Websocket三件套）" \
         "3" "检查更新" \
@@ -1301,7 +1301,7 @@ function advancedMenu() {
         v2raylink
         colorEcho ${INFO} "https://github.com/v2ray/v2ray-core/releases/latest"
         colorEcho ${INFO} "Install Success,Enjoy it!"
-        whiptail --title "Option 1" --msgbox "安装成功,享受吧! 多行不義必自斃，子姑待之。" 8 78
+        whiptail --title "Option 1" --msgbox "安装成功,享受吧! 多行不義必自斃，子姑待之。 RTFM: https://www.johnrosen1.com/trojan/" 8 78
         ;;
        	3)
         checkupdate
