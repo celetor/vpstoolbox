@@ -179,6 +179,7 @@ nginxapt(){
 deb https://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx
 deb-src https://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx
 EOF
+  apt-get remove nginx-common -qq -y
   apt-get update -qq
   apt-get install nginx -q -y
 }
@@ -192,6 +193,7 @@ nginxubuntu(){
 deb https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx
 deb-src https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx
 EOF
+  apt-get remove nginx-common -qq -y
   apt-get update -qq
   apt-get install nginx -q -y
 }
