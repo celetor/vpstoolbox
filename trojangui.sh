@@ -1305,18 +1305,17 @@ function advancedMenu() {
         ;;
        	3)
         checkupdate
-        break
+	colorEcho ${SUCCESS} "RTFM: https://www.johnrosen1.com/trojan/"
         ;;
       	4)
         removetrojan
         removev2ray
         removenginx
         colorEcho ${SUCCESS} "Remove complete"
-        break
         ;;
         5)
         exit
-        whiptail --title "脚本已退出" --msgbox "脚本已退出" 8 78
+        whiptail --title "脚本已退出" --msgbox "脚本已退出 RTFM: https://www.johnrosen1.com/trojan/" 8 78
         ;;
     esac
 }
