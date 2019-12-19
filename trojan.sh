@@ -754,9 +754,7 @@ no-negcache
 log-queries 
 log-facility=/var/log/dnsmasq.log 
 EOF
-  cat > '/etc/resolv.conf' << EOF
-nameserver 127.0.0.1
-EOF
+echo "nameserver 127.0.0.1" > '/etc/resolv.conf'
 systemctl restart dnsmasq
 systemctl enable dnsmasq
 }
