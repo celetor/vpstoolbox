@@ -32,10 +32,11 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 11. Auto Trojan-GFW trojan:// share link and QR code generate
 12. Auto V2ray vmess:// share link generate
 13. Auto https 301 redirect without affecting certificate renew
-14. Support auto vmess + tls + websocket + nginx config
-15. Support manually check for update include both Trojan-gfw and v2ray
-16. Support manually force renew certificate
-17. Support Full Uninstall
+14. Auto enable **TLS1.3 ONLY**
+15. Support auto vmess + tls + websocket + nginx config
+16. Support manually check for update include both Trojan-gfw and v2ray
+17. Support manually force renew certificate
+18. Support Full Uninstall
 
 #### Friendly Reminder:
 1. Please Purchase a domain and finish a dns resolve before running this bash script!
