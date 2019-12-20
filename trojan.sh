@@ -302,7 +302,7 @@ changepasswd(){
         "cert": "/etc/trojan/trojan.crt",
         "key": "/etc/trojan/trojan.key",
         "key_password": "",
-        "cipher": "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256",
+        "cipher": "TLS_AES_128_GCM_SHA256",
         "prefer_server_cipher": true,
         "alpn": [
             "http/1.1"
