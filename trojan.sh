@@ -1042,6 +1042,10 @@ v2rayclient(){
         "allowInsecureCiphers": false,
         "disableSystemRoot": false
       },
+      	"sockopt": {
+			"mark": 255
+			}
+		},
       "mux": {
         "enabled": false
       }
