@@ -150,10 +150,7 @@ installdependency(){
     apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf -qq -y
     if [[ $(lsb_release -cs) == xenial ]]; then
       colorEcho ${ERROR} "Ubuntu 16.04 does not support python3-qrcode,Skipping generating QR code!"
-      else
-        apt-get install python3-qrcode -qq -y
-    fi
-        if [[ $(lsb_release -cs) == trusty ]]; then
+      elif [[ $(lsb_release -cs) == trusty ]]; then
       colorEcho ${ERROR} "Ubuntu 14.04 does not support python3-qrcode,Skipping generating QR code!"
       else
         apt-get install python3-qrcode -qq -y
