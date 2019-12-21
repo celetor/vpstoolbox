@@ -1103,11 +1103,6 @@ v2rayclient(){
         "protocol": [
           "bittorrent"
         ]
-      },
-      {
-        "type" :"field",
-        "outboundTag": "adblock",
-        "domain": ["geosite:category-ads"]
       }
     ]
   }
