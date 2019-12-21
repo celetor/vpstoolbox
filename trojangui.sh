@@ -109,6 +109,7 @@ installdependency(){
     	TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "Ubuntu 16.04 does not support python3-qrcode,Skipping generating QR code!" 8 78
       else
         apt-get install python3-qrcode -qq -y
+    fi
  elif [[ $dist = debian ]]; then
     apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip resolvconf -qq -y
  else
