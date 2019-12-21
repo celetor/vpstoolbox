@@ -105,7 +105,7 @@ installdependency(){
     yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils python3-qrcode python-pil unzip resolvconf -qq -y
  elif [[ $dist = ubuntu ]]; then
     apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf -qq -y
-    if [[ $(lsb_release -cs) == xenial ]]; then
+    if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
     	TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "Ubuntu 16.04 does not support python3-qrcode,Skipping generating QR code!" 8 78
       else
         apt-get install python3-qrcode -qq -y
