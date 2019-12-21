@@ -1088,7 +1088,7 @@ checkupdate(){
 ###########Trojan share link########
 trojanlink(){
   cd
-  if [[ $(lsb_release -cs) != xenial ]]; then
+  if [[ $(lsb_release -cs) != xenial ]] || [[ $(lsb_release -cs) == trusty ]] || [[ $(lsb_release -cs) == jessie ]]; then
   wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
   chmod +x trojan-url.py
   #./trojan-url.py -i /etc/trojan/client.json
