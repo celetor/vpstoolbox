@@ -154,7 +154,12 @@ installdependency(){
         apt-get install python3-qrcode -qq -y
     fi
  elif [[ $dist = debian ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip resolvconf -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf -qq -y
+    if [[ $(lsb_release -cs) == jessie ]]; then
+      colorEcho ${ERROR} "Debian8 does not support python3-qrcode,Skipping generating QR code!"
+      else
+        apt-get install python3-qrcode -qq -y
+    fi
  else
   clear
     colorEcho ${ERROR} "error can't install dependency"
