@@ -48,7 +48,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 4. Please do not any special symbols like "!" in password1 or 2 , or error will occur !
 5. Please do not use enter / in websocket option ,enter someting else like /secret !
 6. For security reasons, system upgrade is not forced ,press [ENTER] to skip or manually enter y to upgrade system.
-7. Due to the lack of support for python3-qrcode in Ubuntu 16.04,Trojan-GFW QR code generating will be skipped !
+7. Due to the lack of support for python3-qrcode in Ubuntu 16.04 and 14.04,Trojan-GFW QR code generating will be skipped !
 8. Due to personal demands , Dnsmasq installation is not forced ,press [ENTER] to skip or manually enter y to install dnsmasq.
 9. If "sudo command not found" , please manually remove "sudo" from the beginning of the command and run as root !
 
