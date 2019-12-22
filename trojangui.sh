@@ -1132,10 +1132,10 @@ EOF
 clear
 function advancedMenu() {
     ADVSEL=$(whiptail --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
-        "1" "正常安装" \
-        "2" "扩展安装（包含V2ray Websocket三件套）" \
-        "3" "检查更新" \
-        "4" "完全卸载" \
+        "1" "正常安裝" \
+        "2" "擴展安裝（包含V2ray Websocket三件套）" \
+        "3" "檢查更新" \
+        "4" "完全卸載" \
         "5" "退出" 3>&1 1>&2 2>&3)
     case $ADVSEL in
         1)
