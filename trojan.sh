@@ -848,8 +848,7 @@ installv2ray(){
         "domain": [
         "baidu.com",
         "qq.com",
-        "sina.com",
-        "geosite:cn"
+        "sina.com"
       ],
       "outboundTag": "blocked"
       }
