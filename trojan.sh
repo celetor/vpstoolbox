@@ -145,7 +145,7 @@ openfirewall(){
 installdependency(){
   echo "installing trojan-gfw nginx and acme"
   if [[ $dist = centos ]]; then
-    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils python3-qrcode unzip -qq -y
+    yum install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 python3-qrcode unzip -qq -y
  elif [[ $dist = ubuntu ]]; then
     apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf -qq -y
     if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
