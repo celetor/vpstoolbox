@@ -1325,9 +1325,6 @@ _EOF_
         colorEcho ${INFO} "starting trojan-gfw and nginx | setting up boot autostart"
         autostart
         clear
-        colorEcho ${INFO} "Setting up tcp-bbr boost technology"
-        tcp-bbr
-        clear
         iptables-persistent
         clear
         trojanclient
@@ -1339,6 +1336,8 @@ _EOF_
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"        
         colorEcho ${SUCCESS} "Install Success,Enjoy it!"
+	colorEcho ${INFO} "Setting up tcp-bbr boost technology"
+        tcp-bbr
         break
         ;;
       2)
@@ -1399,8 +1398,6 @@ _EOF_
         installv2ray
         colorEcho ${INFO} "starting trojan-gfw v2ray and nginx | setting up boot autostart"
         autostart
-        colorEcho ${INFO} "Setting up tcp-bbr boost technology"
-        tcp-bbr
         iptables-persistent
         clear
         trojanclient
@@ -1417,6 +1414,8 @@ _EOF_
         v2raylink
         colorEcho ${INFO} "https://github.com/v2ray/v2ray-core/releases/latest"
         colorEcho ${INFO} "Install Success,Enjoy it!"
+        colorEcho ${INFO} "Setting up tcp-bbr boost technology"
+        tcp-bbr
         break
         ;;
       3)
