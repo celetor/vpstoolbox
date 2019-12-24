@@ -17,10 +17,15 @@ apt/yum install whiptail -y
 sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojangui.sh)"
 ```
 附：不保证中文兼容性
+### Qbittorrent Version
+```
+apt/yum install whiptail -y
+sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojangui-qbt.sh)"
+```
 #### Bash Features:
 
-1. Auto install Trojan-GFW NGINX V2ray and Dnsmasq
-2. Auto config Trojan-GFW NGINX V2ray and Dnsmasq
+1. Auto install Trojan-GFW NGINX V2ray Qbittorrent and Dnsmasq
+2. Auto config Trojan-GFW NGINX V2ray Qbittorrent and Dnsmasq
 3. Auto issue and renew let's encrypt certificate
 4. Auto OS Detect ***Support Centos Debian Ubuntu and Fedorea***
 5. Auto domain resolve verification
