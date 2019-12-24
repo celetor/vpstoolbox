@@ -225,7 +225,8 @@ installacme(){
 }
 ##################################################
 issuecert(){
-  systemctl start nginx
+  rm -rf /etc/nginx/sites-enabled/*
+  rm -rf /etc/nginx/sites-available/*
   rm -rf /etc/nginx/conf.d/*
   touch /etc/nginx/conf.d/default.conf
     cat > '/etc/nginx/conf.d/default.conf' << EOF
@@ -274,7 +275,7 @@ server {
     #}
 }
 EOF
-  nginx -s reload
+  systemctl start nginx
   sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log
 }
 ##################################################
