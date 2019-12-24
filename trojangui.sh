@@ -1248,9 +1248,6 @@ function advancedMenu() {
         colorEcho ${INFO} "starting trojan-gfw and nginx | setting up boot autostart"
         autostart
         clear
-        colorEcho ${INFO} "Setting up tcp-bbr boost technology"
-        tcp-bbr
-        clear
         iptables-persistent
         clear
         trojanclient
@@ -1262,6 +1259,8 @@ function advancedMenu() {
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"        
         whiptail --title "Option 1" --msgbox "安装成功，享受吧！多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" 8 78
+	colorEcho ${INFO} "Setting up tcp-bbr boost technology"
+        tcp-bbr
         ;;
         2)    
         v2input
@@ -1326,8 +1325,6 @@ function advancedMenu() {
         installv2ray
         colorEcho ${INFO} "starting trojan-gfw v2ray and nginx | setting up boot autostart"
         autostart
-        colorEcho ${INFO} "Setting up tcp-bbr boost technology"
-        tcp-bbr
         iptables-persistent
         clear
         trojanclient
@@ -1345,6 +1342,8 @@ function advancedMenu() {
         colorEcho ${INFO} "https://github.com/v2ray/v2ray-core/releases/latest"
         colorEcho ${INFO} "Install Success,Enjoy it!"
         whiptail --title "Option 1" --msgbox "安装成功,享受吧! 多行不義必自斃，子姑待之。 RTFM: https://www.johnrosen1.com/trojan/" 8 78
+	colorEcho ${INFO} "Setting up tcp-bbr boost technology"
+        tcp-bbr
         ;;
        	3)
         checkupdate
