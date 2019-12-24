@@ -130,7 +130,45 @@ installtrojan-gfw(){
 ##########nginx install for cnetos#########
 nginxyum(){
   rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
-  yum install nginx -qq -y
+  yum install nginx -q -y
+  rm -rf /etc/nginx/nginx.conf
+  touch /etc/nginx/nginx.conf
+    cat > '/etc/nginx/nginx.conf' << EOF
+user nginx;
+worker_processes auto;
+
+error_log /var/log/nginx/error.log warn;
+pid /var/run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+events {
+  worker_connections 1024;
+  use epoll;
+  multi_accept on;
+}
+
+http {
+  aio threads;
+  charset UTF-8;
+  tcp_nodelay on;
+  tcp_nopush on;
+  server_tokens off;
+
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+
+  access_log /var/log/nginx/access.log;
+
+
+  log_format  main  '@remote_addr - @remote_user [$time_local] "@request" '
+    '@status $body_bytes_sent "@http_referer" '
+    '"@http_user_agent" "@http_x_forwarded_for"';
+
+  sendfile on;
+  gzip on;
+
+  include /etc/nginx/conf.d/*.conf; 
+}
+EOF
 }
 ##########nginx install for debian################
 nginxapt(){
