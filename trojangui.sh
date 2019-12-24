@@ -1141,14 +1141,14 @@ function advancedMenu() {
         clear
         userinput
         if (whiptail --title "System Upgrade" --yesno --defaultno "System Upgrade?" 8 78); then
-    	system_upgrade = 1
+    	system_upgrade=1
 		else
-    	system_upgrade = 0
+    	system_upgrade=0
 		fi
 		if (whiptail --title "Dnsmasq Install" --yesno --defaultno "This is an example of a yes/no box." 8 78); then
-    	dnsmasq_install = 1
+    	dnsmasq_install=1
 		else
-    	dnsmasq_install = 0
+    	dnsmasq_install=0
 		fi
         clear
         colorEcho ${INFO} "Detecting OS version"
