@@ -1146,7 +1146,7 @@ function advancedMenu() {
 		else
     	system_upgrade=0
 		fi
-		if (whiptail --title "Dnsmasq Install" --yesno --defaultno "This is an example of a yes/no box." 8 78); then
+		if (whiptail --title "Dnsmasq Install" --yesno --defaultno "Install Dnsmasq?" 8 78); then
     	dnsmasq_install=1
 		else
     	dnsmasq_install=0
