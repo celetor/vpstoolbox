@@ -66,5 +66,3 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 Attachment: Trojan-GFW one-click script's function is basically complete. Stop updating from now on. If you need more functions, please use Github issue function.
 
 ## If you found it useful , please fork this project and give a star ,thanks!
-
-#### 关于centos兼容问题，我实在不会centos，实在想用centos的请自己修改代码并提交pr
