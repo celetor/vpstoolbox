@@ -767,7 +767,7 @@ iptables-persistent(){
 ############DNSMASQ#################
 dnsmasq(){
     if [[ $dist = centos ]]; then
-    yum install dnsmasq -q -y > /dev/null
+    :
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     apt-get install dnsmasq -q -y > /dev/null
