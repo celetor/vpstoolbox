@@ -711,7 +711,7 @@ systemctl daemon-reload
 ##########iptables-persistent########
 iptables-persistent(){
   if [[ $dist = centos ]]; then
-    yum install iptables-persistent -q -y > /dev/null
+    :
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     apt-get install iptables-persistent -q -y > /dev/null
