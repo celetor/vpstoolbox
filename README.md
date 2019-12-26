@@ -27,21 +27,22 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 1. Auto install Trojan-GFW NGINX V2ray Qbittorrent and Dnsmasq
 2. Auto config Trojan-GFW NGINX V2ray Qbittorrent and Dnsmasq
 3. Auto issue and renew let's encrypt certificate
-4. Auto OS Detect ***Support Centos Debian Ubuntu***
+4. Auto OS Detect ***Support Centos Debian Ubuntu*** (Centos not recommended)
 5. Auto domain resolve verification
 6. Auto iptables firewall config and iptables-persistent
 7. Auto generate client config
 8. Auto random vmess uuid generate
 9. Auto TCP Turbo enable ( **TCP-BBR** included)
-10. Auto Nginx Performance Optimization (Centos exclued due to too old nginx version)
+10. Auto Nginx Performance Optimization
 11. Auto Trojan-GFW trojan:// share link and QR code generate
 12. Auto V2ray vmess:// share link generate
 13. Auto https 301 redirect without affecting certificate renew
-14. Auto enable **TLS1.3 ONLY**
-15. Support auto vmess + tls + websocket + nginx config
-16. Support manually check for update include both Trojan-gfw and v2ray
-17. Support manually force renew certificate
-18. Support Full Uninstall
+14. Auto enable HSTS header
+15. Auto enable **TLS1.3 ONLY**
+16. Support auto vmess + tls + websocket + nginx config
+17. Support manually check for update include both Trojan-gfw and v2ray
+18. Support manually force renew certificate
+19. Support Full Uninstall
 
 #### Friendly Reminder:
 1. Please Purchase a domain and finish a dns resolve before running this bash script!
