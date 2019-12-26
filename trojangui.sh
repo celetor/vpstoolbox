@@ -363,6 +363,7 @@ server {
     listen [::]:80;
     server_name $domain;
     return 301 https://$domain;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
 }
 
 server {
