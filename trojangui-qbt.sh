@@ -1240,12 +1240,12 @@ function advancedMenu() {
         1)
         clear
         userinput
-    if (whiptail --title "System Upgrade" --yesno --defaultno "System Upgrade?" 8 78); then
+    if (whiptail --title "System Upgrade" --yesno "System Upgrade?" 8 78); then
     	system_upgrade=1
 		else
     	system_upgrade=0
 		fi
-		if (whiptail --title "Dnsmasq Install" --yesno --defaultno "Install Dnsmasq?" 8 78); then
+		if (whiptail --title "Dnsmasq Install" --yesno "Install Dnsmasq?" 8 78); then
     	dnsmasq_install=1
 		else
     	dnsmasq_install=0
