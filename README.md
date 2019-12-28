@@ -11,7 +11,7 @@ sudo bash -c "$(wget -O- https://raw.githubusercontent.com/johnrosen1/trojan-gfw
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
 
-### 汉化GUI版本 (No Centos7 and below Support)
+### 汉化GUI版本 (No Centos7 and older Centos Version Support)
 ```
 apt/yum install whiptail -y
 sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojangui.sh)"
