@@ -331,6 +331,7 @@ installkey(){
 }
 ##################################################
 changepasswd(){
+  openssl dhparam -out /etc/trojan/trojan.pem 2048
   cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
@@ -358,7 +359,7 @@ changepasswd(){
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": ""
+        "dhparam": "/etc/trojan/trojan.pem"
     },
     "tcp": {
         "prefer_ipv4": true,
