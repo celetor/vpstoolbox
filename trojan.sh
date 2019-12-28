@@ -975,6 +975,7 @@ trojanclient(){
         "verify_hostname": true,
         "cert": "",
         "cipher": "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:RSA-AES128-GCM-SHA256:RSA-AES256-GCM-SHA384:RSA-AES128-SHA:RSA-AES256-SHA:RSA-3DES-EDE-SHA",
+	"cipher_tls13":"TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
         "sni": "$domain",
         "alpn": [
             "h2",
@@ -987,6 +988,7 @@ trojanclient(){
     "tcp": {
         "no_delay": true,
         "keep_alive": true,
+	"reuse_port": true,
         "fast_open": true,
         "fast_open_qlen": 20
     }
@@ -1020,6 +1022,7 @@ EOF
     "tcp": {
         "no_delay": true,
         "keep_alive": true,
+	"reuse_port": true,
         "fast_open": true,
         "fast_open_qlen": 20
     }
