@@ -34,12 +34,12 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 8. Auto random vmess uuid generate
 9. Auto TCP Turbo enable ( **TCP-BBR** included)
 10. Auto Nginx Performance Optimization
-11. Auto Trojan-GFW trojan:// share link and QR code generate
-12. Auto V2ray vmess:// share link generate
+11. Auto Trojan-GFW ***trojan://*** share link and QR code generate
+12. Auto V2ray ***vmess://*** share link generate
 13. Auto https 301 redirect without affecting certificate renew
 14. Auto enable HSTS header
 15. Auto enable **TLS1.3 ONLY**
-16. Support auto vmess + tls + websocket + nginx config
+16. Support auto ***vmess + tls + websocket + nginx*** config
 17. Support manually check for update include both Trojan-gfw and v2ray
 18. Support manually force renew certificate
 19. Support Full Uninstall
@@ -50,7 +50,7 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 ```
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 ```
-3. Please choose option2 if you want to use v2ray !
+3. Please ***choose option2 if you want to use v2ray !***
 4. Please do not any special symbols like "!" in password1 or 2 , or error will occur !
 5. Please do not use enter / in websocket option ,enter someting else like /secret !
 6. For security reasons, system upgrade is not forced ,press [ENTER] to skip or manually enter y to upgrade system.
