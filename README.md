@@ -11,13 +11,13 @@ sudo bash -c "$(wget -O- https://raw.githubusercontent.com/johnrosen1/trojan-gfw
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
 
-### 汉化GUI版本
+### 汉化GUI版本 (No Cnetos7 and below Support)
 ```
 apt/yum install whiptail -y
 sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojangui.sh)"
 ```
 附：不保证中文兼容性
-### Qbittorrent Version
+### Qbittorrent Version (No Centos Support completely)
 ```
 apt/yum install whiptail -y
 sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojangui-qbt.sh)"
