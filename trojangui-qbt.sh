@@ -361,12 +361,10 @@ server {
     proxy_set_header        Origin                  '';
     # add_header              X-Frame-Options         "SAMEORIGIN"; # not needed since 4.1.0
         }
-    location /announce {
-        access_log off; 
+    location /announce { 
         proxy_redirect off;
         proxy_pass http://127.0.0.1:9000;
         proxy_http_version 1.1;
-        proxy_set_header Early-Data @ssl_early_data;
         proxy_set_header Upgrade @http_upgrade;
         proxy_set_header Connection "upgrade";
         proxy_set_header Host @http_host;
@@ -934,11 +932,9 @@ server {
     # add_header              X-Frame-Options         "SAMEORIGIN"; # not needed since 4.1.0
         }
     location /announce {
-        access_log off;
         proxy_redirect off;
         proxy_pass http://127.0.0.1:9000;
         proxy_http_version 1.1;
-        proxy_set_header Early-Data @ssl_early_data;
         proxy_set_header Upgrade @http_upgrade;
         proxy_set_header Connection "upgrade";
         proxy_set_header Host @http_host;
