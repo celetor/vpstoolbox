@@ -169,6 +169,7 @@ installdependency(){
 ###install trojan-gfw from offical bash####
 installtrojan-gfw(){
   bash -c "$(wget -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
+  systemctl daemon-reload
 }
 ##########nginx install for cnetos#########
 nginxyum(){
