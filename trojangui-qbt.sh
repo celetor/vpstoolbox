@@ -769,7 +769,6 @@ server=8.8.4.4#53
 server=1.1.1.1#53
 interface=lo
 bind-interfaces
-listen-address=127.0.0.1
 cache-size=10000
 no-negcache
 log-queries 
