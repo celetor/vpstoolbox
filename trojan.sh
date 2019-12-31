@@ -1085,7 +1085,7 @@ v2rayclient(){
 			},
 			"tlsSetting": {
 				"allowInsecure": false,
-				"alpn": ["http/1.1"],
+				"alpn": ["http/1.1","h2"],
 				"serverName": "$domain",
                 "allowInsecureCiphers": false,
                 "disableSystemRoot": false
