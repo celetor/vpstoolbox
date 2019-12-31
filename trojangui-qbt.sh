@@ -1038,130 +1038,136 @@ v2rayclient(){
   touch /etc/v2ray/client.json
   cat > '/etc/v2ray/client.json' << EOF
 {
-  "inbounds": [
-    {
-      "listen": "127.0.0.1",
-      "port": 8001,
-      "protocol": "http",
-      "sniffing": {
-        "enabled": true,
-        "destOverride": ["http","tls"]
-      }
-    },
-    {
-      "port": 1081,
-      "listen": "127.0.0.1",
-      "protocol": "socks",
-      "sniffing": {
-        "enabled": true,
-        "destOverride": ["http", "tls"]
-      },
-      "settings": {
-        "auth": "noauth",
-        "udp": false
-      }
-    }
-  ],
-  "outbounds": [
-    {
-      "tag": "proxy",
-      "protocol": "vmess",
-      "settings": {
-        "vnext": [
-          {
-            "address": "$domain",
-            "port": 443,
-            "users": [
-              {
-                "id": "$uuid",
-                "alterId": 64,
-                "security": "none" //使用TLS则无需二次加密
-              }
-            ]
-          }
-        ]
-      },
-      "streamSettings": {
-      "network": "ws",
-      "security": "tls",
-      "wsSettings": {
-        "path": "$path",
-        "headers": {
-          "Host": "$domain"
-        }
-      },
-      "tlsSetting": {
-        "allowInsecure": false,
-        "alpn": ["http/1.1","h2"],
-        "serverName": "$domain",
-        "allowInsecureCiphers": false,
-        "disableSystemRoot": false
-      },
-      "mux": {
-        "enabled": false
-      }
-    },
-    {
-      "tag": "direct",
-      "protocol": "freedom",
-      "settings": {}
-    },
-    {
-      "tag": "adblock",
-      "protocol" : "blackhole",
-      "settings": {}
-    }
-  ],
-  "dns": {
-    "servers": [
-      "8.8.8.8",
-      {
-        "address": "114.114.114.114",
-        "port": 53,
-        "domains": [
-          "geosite:cn"
-        ]
-      }
-    ]
-  },
-  "routing": {
-    "domainStrategy": "IPIfNonMatch",
-    "rules": [
-      {
-        "type": "field",
-        "outboundTag": "direct",
-        "ip": [
-          "geoip:private"
-        ]
-      },
-      {
-        "type": "field",
-        "outboundTag": "direct",
-        "ip": [
-          "geoip:cn"
-        ]
-      },
-      {
-        "type": "field",
-        "outboundTag": "direct",
-        "domain": [
-          "geosite:cn"
-        ]
-      },
-      {
-        "type": "field",
-        "outboundTag": "direct",
-        "protocol": [
-          "bittorrent"
-        ]
-      },
-      {
-        "type" :"field",
-        "outboundTag": "adblock",
-        "domain": ["geosite:category-ads"]
-      }
-    ]
-  }
+	"inbounds": [
+        {
+            "listen": "127.0.0.1",
+            "port": 1081,
+            "protocol": "socks",
+            "settings":{},
+            "sniffing": {
+                "enabled": true,
+                "destOverride": ["http","tls"]
+                        }
+                },
+		{
+			"listen": "127.0.0.1",
+			"port": 8001,
+			"protocol": "http",
+            "settings": {},
+			"sniffing": {
+				"enabled": true,
+				"destOverride": ["http","tls"]
+			}
+		}
+	],
+	"outbounds": [
+		{
+			"tag": "proxy",
+			"protocol": "vmess",
+			"settings": {
+				"vnext": [
+					{
+						"address": "$domain",
+						"port": 443,
+						"users": [
+							{
+								"id": "$uuid",
+								"alterId": 64,
+								"security": "none" //使用TLS则无需二次加密
+							}
+						]
+					}
+				]
+			},
+			"streamSettings": {
+			"network": "ws",
+			"security": "tls",
+			"wsSettings": {
+				"path": "$path",
+				"headers": {
+					"Host": "$domain"
+				}
+			},
+			"tlsSetting": {
+				"allowInsecure": false,
+				"alpn": ["http/1.1","h2"],
+				"serverName": "$domain",
+                "allowInsecureCiphers": false,
+                "disableSystemRoot": false
+			},
+				"sockopt": {
+					"mark": 255
+				}
+			},
+			"mux": {
+				"enabled": false
+			}
+		},
+		{
+			"tag": "direct",
+			"protocol": "freedom",
+			"settings": {},
+			"streamSettings": {
+				"sockopt": {
+					"mark": 255
+				}
+			}
+		},
+        {
+            "tag": "adblock",
+            "protocol" : "blackhole",
+            "settings": {},
+            "streamSettings": {
+                "sockopt": {
+                    "mark": 255
+                    }
+            }
+        },
+		{
+			"protocol": "dns",
+			"tag": "dns-out"
+		}
+	],
+	"dns": {
+		"servers": [
+			"8.8.8.8",
+			{
+				"address": "114.114.114.114",
+				"port": 53,
+				"domains": ["geosite:cn"]
+			}
+		]
+	},
+	"routing": {
+		"domainStrategy": "IPIfNonMatch",
+		"rules": [
+			{
+				"type": "field",
+				"inboundTag": ["dns-in"],
+				"outboundTag": "dns-out"
+			},
+			{
+				"type": "field",
+				"outboundTag": "direct",
+				"ip": ["geoip:private"]
+			},
+			{
+				"type": "field",
+				"outboundTag": "direct",
+				"ip": ["geoip:cn"]
+			},
+			{
+				"type": "field",
+				"outboundTag": "direct",
+				"domain": ["geosite:cn"]
+			},
+			{
+                "type": "field",
+                "outboundTag": "direct",
+                "protocol": ["bittorrent"]
+            }
+		]
+	}
 }
 EOF
 }
