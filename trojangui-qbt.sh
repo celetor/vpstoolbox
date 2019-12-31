@@ -8,7 +8,7 @@ ERROR="31m"      # Error message
 SUCCESS="32m"    # Success message
 WARNING="33m"   # Warning message
 INFO="36m"     # Info message
-LINK="44m"     # Share Link Message
+LINK="92m"     # Share Link Message
 #############################
 colorEcho(){
     COLOR=$1
