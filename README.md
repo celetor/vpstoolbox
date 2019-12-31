@@ -39,6 +39,7 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 13. Auto https 301 redirect without affecting certificate renew
 14. Auto enable HSTS header
 15. Auto enable **TLS1.3 ONLY**
+16. Auto ***Random Html Template Choose***
 16. Support auto ***vmess + tls + websocket + nginx*** config
 17. Support manually check for update include both Trojan-gfw and v2ray
 18. Support manually force renew certificate
