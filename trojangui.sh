@@ -1180,6 +1180,14 @@ EOF
   rm -rf json2vmess.py
   colorEcho ${INFO} "Please manually run cat /etc/v2ray/$uuid.txt to show share link again!"
 }
+#######HTML Random Choose########E
+html(){
+  htmlcode=$(shuf -i 1-3 -n 1)
+  wget https://github.com/johnrosen1/trojan-gfw-script/raw/master/$htmlcode.zip
+  unzip -o $htmlcode.zip -d /usr/share/nginx/html/
+  rm -rf $htmlcode.zip
+}
+
 ##################################
 clear
 function advancedMenu() {
@@ -1247,6 +1255,7 @@ function advancedMenu() {
         clear
         colorEcho ${INFO} "autoconfiging nginx"
         nginxtrojan
+	html
         clear
         colorEcho ${INFO} "issue complete,installing certificate"
         installcert
@@ -1330,6 +1339,7 @@ function advancedMenu() {
         colorEcho ${INFO} "certificate install complete!"
         colorEcho ${INFO} "configing nginx for v2ray vmess+tls+Websocket"
         nginxv2ray
+	html
         clear
         colorEcho ${INFO} "giving private key read authority"
         installkey
