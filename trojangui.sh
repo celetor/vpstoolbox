@@ -1126,7 +1126,13 @@ trojanlink(){
   colorEcho ${LINK} "trojan://$password1@$domain:443"
   colorEcho ${INFO} "Your Trojan-Gfw Share link2 is"
   colorEcho ${LINK} "trojan://$password2@$domain:443"
-  if [[ $(lsb_release -cs) != xenial ]] || [[ $(lsb_release -cs) != trusty ]] || [[ $(lsb_release -cs) != jessie ]] || [[ $dist != centos ]]; then
+if [[ $dist = centos ]]
+then
+colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
+elif [[ $(lsb_release -cs) = xenial ]] || [[ $(lsb_release -cs) = trusty ]] || [[ $(lsb_release -cs) = jessie ]]
+then
+colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
+else
   wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
   chmod +x trojan-url.py
   #./trojan-url.py -i /etc/trojan/client.json
@@ -1141,9 +1147,7 @@ trojanlink(){
   rm -rf trojan-url.py
   rm -rf $password1.png
   rm -rf $password2.png
-  else
-    colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please change your os!"
-  fi
+fi
 }
 ########V2ray share link############
 v2raylink(){
