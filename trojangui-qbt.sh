@@ -76,7 +76,7 @@ updatesystem(){
 ##############Upgrade system optional########
 upgradesystem(){
   if [[ $dist = centos ]]; then
-    yum upgrade -q -y
+    yum upgrade -y
  elif [[ $dist = ubuntu ]]; then
     export UBUNTU_FRONTEND=noninteractive 
     apt-get upgrade -q -y
