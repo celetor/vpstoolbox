@@ -13,7 +13,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 
 ### 汉化GUI版本
 ```
-apt-get install whiptail -y | yum install newt -y
+apt-get install sudo whiptail -y | yum install sudo newt -y
 sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojangui.sh)"
 ```
 附：不保证中文兼容性
