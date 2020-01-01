@@ -78,6 +78,7 @@ sudo systemctl status v2ray
 sudo systemctl status nginx
 sudo systemctl status dnsmasq
 sudo systemctl status qbittorrent
+crontab -l
 ```
 
 
