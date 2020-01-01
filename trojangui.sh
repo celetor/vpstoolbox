@@ -63,7 +63,7 @@ set -e
 ###############Update system################
 updatesystem(){
   if [[ $dist = centos ]]; then
-    yum update -qq
+    yum update -y
  elif [[ $dist = ubuntu ]]; then
     apt-get update -qq
  elif [[ $dist = debian ]]; then
