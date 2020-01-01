@@ -1122,9 +1122,9 @@ checkupdate(){
 ###########Trojan share link########
 trojanlink(){
   cd
-  colorEcho ${INFO} "Your Trojan-Gfw Share link1 is"
+  colorEcho ${INFO} "你的 Trojan-Gfw 分享链接1 is"
   colorEcho ${LINK} "trojan://$password1@$domain:443"
-  colorEcho ${INFO} "Your Trojan-Gfw Share link2 is"
+  colorEcho ${INFO} "你的 Trojan-Gfw 分享链接2 is"
   colorEcho ${LINK} "trojan://$password2@$domain:443"
 if [[ $dist = centos ]]
 then
@@ -1140,9 +1140,9 @@ else
   ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png
   cp $password1.png /usr/share/nginx/html/
   cp $password2.png /usr/share/nginx/html/
-  colorEcho ${INFO} "Please visit the link below to get your QR code1"
+  colorEcho ${INFO} "请访问下面的链接获取Trojan-GFW 二维码 1"
   colorEcho ${LINK} "https://$domain/$password1.png"
-  colorEcho ${INFO} "Please visit the link below to get your QR code2"
+  colorEcho ${INFO} "请访问下面的链接获取Trojan-GFW 二维码 2"
   colorEcho ${LINK} "https://$domain/$password2.png"
   rm -rf trojan-url.py
   rm -rf $password1.png
@@ -1159,9 +1159,9 @@ v2raylink(){
 $v2link
 EOF
   cp /etc/v2ray/$uuid.txt /usr/share/nginx/html/
-  colorEcho ${INFO} "Your v2ray share link is"
+  colorEcho ${INFO} "你的V2ray分享链接"
   cat /etc/v2ray/$uuid.txt
-  colorEcho ${INFO} "Please visit the link below to download your v2ray share link"
+  colorEcho ${INFO} "请访问下面的链接获取你的V2ray分享链接"
   colorEcho ${LINK} "https://$domain/$uuid.txt"
   rm -rf json2vmess.py
   colorEcho ${INFO} "Please manually run cat /etc/v2ray/$uuid.txt to show share link again!"
