@@ -730,7 +730,12 @@ systemctl daemon-reload
 ##########iptables-persistent########
 iptables-persistent(){
   if [[ $dist = centos ]]; then
-    :
+    systemctl stop firewalld
+    systemctl disable firewalld
+    yum install -y iptables-services
+    systemctl enable iptables.service
+    sudo /usr/libexec/iptables/iptables.init save
+    systemctl start iptables.service
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     apt-get install iptables-persistent -q -y > /dev/null
@@ -746,7 +751,7 @@ iptables-persistent(){
 ############DNSMASQ#################
 dnsmasq(){
     if [[ $dist = centos ]]; then
-    :
+    yum install -y dnsmasq
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     apt-get install dnsmasq -q -y > /dev/null
