@@ -25,8 +25,8 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 
 1. Auto install Trojan-GFW NGINX V2ray Qbittorrent and Dnsmasq
 2. Auto config Trojan-GFW NGINX V2ray Qbittorrent and Dnsmasq
-3. Auto issue and renew let's encrypt certificate
-4. Auto OS Detect ***Support Centos Debian Ubuntu*** (Centos not recommended)
+3. Auto issue renew let's encrypt certificate and **auto restart Trojan-GFW every two months**
+4. Auto OS Detect **Support Centos Debian Ubuntu** (Centos not recommended)
 5. Auto domain resolve verification
 6. Auto iptables(includes ipv6) firewall config and iptables-persistent
 7. Auto generate client config
@@ -37,7 +37,7 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 12. Auto V2ray ***vmess://*** share link generate
 13. Auto https 301 redirect without affecting certificate renew
 14. Auto enable HSTS header
-15. Auto enable **TLS1.3 ONLY**
+15. Auto enable ***TLS1.3 ONLY***
 16. Auto ***Random Html Template Choose***
 17. Auto enable ***Full IPv6 Support***
 18. Support auto ***vmess + tls + websocket + nginx*** config
