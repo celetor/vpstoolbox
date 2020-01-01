@@ -52,7 +52,6 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 ```
 3. Please ***choose option2 if you want to use v2ray !***
-4. Please do not any special symbols like "!" in password1 or 2 , or error will occur !
 5. Please do not use enter / in websocket option ,enter someting else like /secret !
 6. For security reasons, system upgrade is not forced ,press [ENTER] to skip or manually enter y to upgrade system.
 7. Trojan-GFW QR code generate will be skipped on os who do not support python3-qrcode!
