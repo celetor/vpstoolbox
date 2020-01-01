@@ -1210,32 +1210,32 @@ function advancedMenu() {
 		:
 		fi
         clear
-        colorEcho ${INFO} "installing dependency"
+        colorEcho ${INFO} "安装 dependency"
         installdependency       
         if isresolved $domain
         then
         :
         else 
-        colorEcho ${ERROR} "Resolve error,Please check your domain DNS config and vps firewall !"
+        colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙是否打开!!!"
         exit -1
         clear
         fi
         colorEcho ${INFO} "configing firewall"
         openfirewall
         clear
-        colorEcho ${INFO} "installing trojan-gfw"
+        colorEcho ${INFO} "安装 trojan-gfw"
         installtrojan-gfw
         clear
-        colorEcho ${INFO} "installing nginx"
+        colorEcho ${INFO} "安装 nginx"
         installnginx
         clear
-        colorEcho ${INFO} "installing acme"
+        colorEcho ${INFO} "安装 acme"
         installacme
         clear
-        colorEcho ${INFO} "issueing let\'s encrypt certificate"
+        colorEcho ${INFO} "申请 let\'s encrypt certificate"
         issuecert
         clear
-        colorEcho ${INFO} "autoconfiging nginx"
+        colorEcho ${INFO} "配置 nginx"
         nginxtrojan
 	html
         clear
@@ -1246,24 +1246,24 @@ function advancedMenu() {
         colorEcho ${INFO} "giving private key read authority"
         installkey
         clear
-        colorEcho ${INFO} "autoconfiging trojan-gfw"
+        colorEcho ${INFO} "配置 trojan-gfw"
         changepasswd
         clear
-        colorEcho ${INFO} "starting trojan-gfw and nginx | setting up boot autostart"
+        colorEcho ${INFO} "启动 trojan-gfw and nginx | setting up boot autostart"
         autostart
         clear
         iptables-persistent
         clear
         trojanclient
-        colorEcho ${INFO} "Your Trojan-Gfw client config profile 1"
+        colorEcho ${INFO} "你的 Trojan-Gfw 客户端 config profile 1"
         cat /etc/trojan/client1.json
-        colorEcho ${INFO} "Your Trojan-Gfw client config profile 2"
+        colorEcho ${INFO} "你的 Trojan-Gfw 客户端 config profile 2"
         cat /etc/trojan/client2.json
         trojanlink
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"        
         whiptail --title "Option 1" --msgbox "安装成功，享受吧！多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" 8 78
-	colorEcho ${INFO} "Setting up tcp-bbr boost technology"
+	colorEcho ${INFO} "设置 tcp-bbr boost technology"
         tcp-bbr
         ;;
         2)    
@@ -1273,7 +1273,7 @@ function advancedMenu() {
 		else
     	system_upgrade=0
 		fi
-		if (whiptail --title "Dnsmasq Install" --yesno --defaultno "Install dnsmasq?." 8 78); then
+		if (whiptail --title "Dnsmasq Install" --yesno --defaultno "安装 dnsmasq?." 8 78); then
     	dnsmasq_install=1
 		else
     	dnsmasq_install=0
@@ -1281,7 +1281,7 @@ function advancedMenu() {
         clear
         colorEcho ${INFO} "Detecting OS version"
         osdist
-        colorEcho ${INFO} "Your os codename is $dist $(lsb_release -cs)"
+        colorEcho ${INFO} "你的 os codename is $dist $(lsb_release -cs)"
         colorEcho ${INFO} "Updating system"
         updatesystem
         if [[ $system_upgrade = 1 ]]; then
@@ -1295,13 +1295,13 @@ function advancedMenu() {
 		:
 		fi
         clear
-        colorEcho ${INFO} "installing dependency"
+        colorEcho ${INFO} "安装 dependency"
         installdependency
         if isresolved $domain
         then
         :
         else 
-        colorEcho ${ERROR} "Resolve error,Please check your domain DNS config and vps firewall !"
+        colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙是否打开!!!"
         exit -1
         fi
         colorEcho ${INFO} "configing firewall"
@@ -1326,16 +1326,16 @@ function advancedMenu() {
         colorEcho ${INFO} "giving private key read authority"
         installkey
         changepasswd
-        colorEcho ${INFO} "installing V2ray"
+        colorEcho ${INFO} "安装 V2ray"
         installv2ray
         colorEcho ${INFO} "starting trojan-gfw v2ray and nginx | setting up boot autostart"
         autostart
         iptables-persistent
         clear
         trojanclient
-        colorEcho ${INFO} "Your Trojan-Gfw client config profile 1"
+        colorEcho ${INFO} "Your Trojan-Gfw 客户端 config profile 1"
         cat /etc/trojan/client1.json
-        colorEcho ${INFO} "Your Trojan-Gfw client config profile 2"
+        colorEcho ${INFO} "Your Trojan-Gfw 客户端 config profile 2"
         cat /etc/trojan/client2.json
         trojanlink
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
@@ -1347,7 +1347,7 @@ function advancedMenu() {
         colorEcho ${INFO} "https://github.com/v2ray/v2ray-core/releases/latest"
         colorEcho ${INFO} "Install Success,Enjoy it!"
         whiptail --title "Option 1" --msgbox "安装成功,享受吧! 多行不義必自斃，子姑待之。 RTFM: https://www.johnrosen1.com/trojan/" 8 78
-	colorEcho ${INFO} "Setting up tcp-bbr boost technology"
+	colorEcho ${INFO} "设置 tcp-BBR boost technology"
         tcp-bbr
         ;;
        	3)
