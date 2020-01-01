@@ -142,7 +142,7 @@ user nginx;
 worker_processes auto;
 
 error_log /var/log/nginx/error.log warn;
-pid /var/run/nginx.pid;
+#pid /var/run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 events {
   worker_connections 1024;
