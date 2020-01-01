@@ -54,7 +54,7 @@ read domain
     read domain
   fi
 colorEcho ${INFO} "It\'s nice to meet you $domain"
-colorEcho ${WARNING} "Please Enter your desired password1 (NO special symbols like "!" Allowed ) and press [ENTER]: "
+colorEcho ${WARNING} "Please Enter your desired password1 and press [ENTER]: "
 read password1
   if [[ -z "$password1" ]]; then
     colorEcho ${ERROR} "INPUT ERROR! Please Enter your password1 again and press [ENTER]: "
@@ -64,7 +64,7 @@ colorEcho ${INFO} "Your password1 is $password1"
 colorEcho ${WARNING} "Please Enter your password2 and press [ENTER]: "
 read password2
   if [[ -z "$password2" ]]; then
-    colorEcho ${ERROR} "INPUT ERROR! Please Enter your password2 (NO special symbols like "!" Allowed ) again and press [ENTER]: "
+    colorEcho ${ERROR} "INPUT ERROR! Please Enter your password2 again and press [ENTER]: "
     read password2
   fi
 colorEcho ${INFO} "Your password2 is $password2"
