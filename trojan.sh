@@ -172,6 +172,22 @@ installdependency(){
 ###install trojan-gfw from offical bash####
 installtrojan-gfw(){
   bash -c "$(wget -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
+  cp /etc/systemd/system/trojan.service /etc/systemd/system/trojan6.service
+      cat > '/etc/systemd/system/trojan6.service' << EOF
+[Unit]
+Description=trojan
+Documentation=https://trojan-gfw.github.io/trojan/config https://trojan-gfw.github.io/trojan/
+After=network.target network-online.target nss-lookup.target mysql.service mariadb.service mysqld.service
+
+[Service]
+Type=simple
+StandardError=journal
+ExecStart="/usr/local/bin/trojan" "/usr/local/etc/trojan/config6.json"
+ExecReload=/bin/kill -HUP \$MAINPID
+
+[Install]
+WantedBy=multi-user.target
+EOF
   systemctl daemon-reload
 }
 ##########nginx install for cnetos#########
@@ -326,7 +342,7 @@ changepasswd(){
         "key": "/etc/trojan/trojan.key",
         "key_password": "",
         "cipher": "TLS_AES_128_GCM_SHA256",
-	"cipher_tls13":"TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+  "cipher_tls13":"TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
         "prefer_server_cipher": true,
         "alpn": [
             "http/1.1"
@@ -356,8 +372,57 @@ changepasswd(){
     }
 }
 EOF
+  cat > '/usr/local/etc/trojan/config6.json' << EOF
+{
+    "run_type": "server",
+    "local_addr": "::",
+    "local_port": 443,
+    "remote_addr": "127.0.0.1",
+    "remote_port": 80,
+    "password": [
+        "password1",
+        "password2"
+    ],
+    "log_level": 1,
+    "ssl": {
+        "cert": "/etc/trojan/trojan.crt",
+        "key": "/etc/trojan/trojan.key",
+        "key_password": "",
+        "cipher": "TLS_AES_128_GCM_SHA256",
+  "cipher_tls13":"TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+        "prefer_server_cipher": true,
+        "alpn": [
+            "http/1.1"
+        ],
+        "reuse_session": true,
+        "session_ticket": true,
+        "session_timeout": 600,
+        "plain_http_response": "",
+        "curves": "",
+        "dhparam": "/etc/trojan/trojan.pem"
+    },
+    "tcp": {
+        "prefer_ipv4": false,
+        "no_delay": true,
+        "keep_alive": true,
+        "reuse_port": true,
+        "fast_open": true,
+        "fast_open_qlen": 20
+    },
+    "mysql": {
+        "enabled": false,
+        "server_addr": "127.0.0.1",
+        "server_port": 3306,
+        "database": "trojan",
+        "username": "trojan",
+        "password": ""
+    }
+}
+EOF
   sed  -i "s/password1/$password1/g" /usr/local/etc/trojan/config.json
   sed  -i "s/password2/$password2/g" /usr/local/etc/trojan/config.json
+  sed  -i "s/password1/$password1/g" /usr/local/etc/trojan/config6.json
+  sed  -i "s/password2/$password2/g" /usr/local/etc/trojan/config6.json
 }
 ########Nginx config for Trojan only##############
 nginxtrojan(){
@@ -441,8 +506,10 @@ sed  -i 's/@/$/g' /etc/nginx/nginx.conf
 ##########Auto boot start###############
 autostart(){
   systemctl start trojan
+  systemctl start trojan6
   systemctl enable nginx
   systemctl enable trojan
+  systemctl enable trojan6
 }
 ##########tcp-bbr#####################
 tcp-bbr(){
