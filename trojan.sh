@@ -1307,7 +1307,10 @@ html(){
   unzip -o $htmlcode.zip -d /usr/share/nginx/html/
   rm -rf $htmlcode.zip
 }
-
+#########Cron Job#################
+cronjob(){
+  (crontab -l && echo "30 03 01 */2 * systemctl restart trojan") | crontab -
+}
 ####################################
 DELAY=3 # Number of seconds to display results
 
@@ -1401,6 +1404,7 @@ _EOF_
         clear
         colorEcho ${INFO} "starting trojan-gfw and nginx | setting up boot autostart"
         autostart
+	cronjob
         clear
         iptables-persistent
         clear
@@ -1476,6 +1480,7 @@ _EOF_
         installv2ray
         colorEcho ${INFO} "starting trojan-gfw v2ray and nginx | setting up boot autostart"
         autostart
+	cronjob
         iptables-persistent
         clear
         trojanclient
