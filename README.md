@@ -39,10 +39,11 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 14. Auto enable HSTS header
 15. Auto enable **TLS1.3 ONLY**
 16. Auto ***Random Html Template Choose***
-16. Support auto ***vmess + tls + websocket + nginx*** config
-17. Support manually check for update include both Trojan-gfw and v2ray
-18. Support manually force renew certificate
-19. Support Full Uninstall
+17. Auto ***Full IPv6 Support***
+18. Support auto ***vmess + tls + websocket + nginx*** config
+19. Support manually check for update include both Trojan-gfw and v2ray
+20. Support manually force renew certificate
+21. Support Full Uninstall
 
 #### Friendly Reminder:
 1. Please Purchase a domain and finish a dns resolve before running this bash script!
