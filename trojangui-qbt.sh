@@ -225,9 +225,6 @@ server {
     listen       80;
     server_name  $domain;
 
-    #charset koi8-r;
-    #access_log  /var/log/nginx/host.access.log  main;
-
     location / {
         root   /usr/share/nginx/html;
         index  index.html index.htm;
@@ -241,29 +238,6 @@ server {
     location = /50x.html {
         root   /usr/share/nginx/html;
     }
-
-    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
-    #
-    #location ~ \.php$ {
-    #    proxy_pass   http://127.0.0.1;
-    #}
-
-    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-    #
-    #location ~ \.php$ {
-    #    root           html;
-    #    fastcgi_pass   127.0.0.1:9000;
-    #    fastcgi_index  index.php;
-    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
-    #    include        fastcgi_params;
-    #}
-
-    # deny access to .htaccess files, if Apache's document root
-    # concurs with nginx's one
-    #
-    #location ~ /\.ht {
-    #    deny  all;
-    #}
 }
 EOF
   systemctl start nginx
@@ -399,7 +373,7 @@ user nginx;
 worker_processes auto;
 
 error_log /var/log/nginx/error.log warn;
-pid /var/run/nginx.pid;
+#pid /var/run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 events {
   worker_connections 1024;
@@ -1210,6 +1184,10 @@ checkupdate(){
 ###########Trojan share link########
 trojanlink(){
   cd
+  colorEcho ${INFO} "Your Trojan-Gfw Share link1 is"
+  colorEcho ${LINK} "trojan://$password1@$domain:443"
+  colorEcho ${INFO} "Your Trojan-Gfw Share link2 is"
+  colorEcho ${LINK} "trojan://$password2@$domain:443"
   if [[ $(lsb_release -cs) != xenial ]]; then
   wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
   chmod +x trojan-url.py
@@ -1218,10 +1196,6 @@ trojanlink(){
   ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png
   cp $password1.png /usr/share/nginx/html/
   cp $password2.png /usr/share/nginx/html/
-  colorEcho ${INFO} "Your Trojan-Gfw Share link1 is"
-  colorEcho ${LINK} "trojan://$password1@$domain:443"
-  colorEcho ${INFO} "Your Trojan-Gfw Share link2 is"
-  colorEcho ${LINK} "trojan://$password2@$domain:443"
   colorEcho ${INFO} "Please visit the link below to get your QR code1"
   colorEcho ${LINK} "https://$domain/$password1.png"
   colorEcho ${INFO} "Please visit the link below to get your QR code2"
@@ -1230,7 +1204,7 @@ trojanlink(){
   rm -rf $password1.png
   rm -rf $password2.png
   else
-    colorEcho ${ERROR} "QR generate Fail ! Because Ubuntu 16.04 does not support python3-qrcode,Please change your os!"
+    colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
   fi
 }
 ########V2ray share link############
