@@ -109,7 +109,7 @@ installdependency(){
  elif [[ $dist = ubuntu ]]; then
     apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf -qq -y
     if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
-    	TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "Ubuntu 16.04 does not support python3-qrcode,Skipping generating QR code!" 8 78
+    	TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "你的操作系统不支持 python3-qrcode,Skipping generating QR code!" 8 78
       else
         apt-get install python3-qrcode -qq -y
     fi
@@ -1165,7 +1165,7 @@ EOF
 #######HTML Random Choose########E
 html(){
   htmlcode=$(shuf -i 1-3 -n 1)
-  wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/$htmlcode.zip
+  wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/$htmlcode.zip -q
   unzip -o $htmlcode.zip -d /usr/share/nginx/html/
   rm -rf $htmlcode.zip
 }
@@ -1188,7 +1188,7 @@ function advancedMenu() {
 		else
     	system_upgrade=0
 		fi
-		if (whiptail --title "Dnsmasq Install" --yesno --defaultno "Install Dnsmasq?" 8 78); then
+		if (whiptail --title "Dnsmasq Install" --yesno --defaultno "安装 Dnsmasq?" 8 78); then
     	dnsmasq_install=1
 		else
     	dnsmasq_install=0
@@ -1220,7 +1220,7 @@ function advancedMenu() {
         exit -1
         clear
         fi
-        colorEcho ${INFO} "configing firewall"
+        colorEcho ${INFO} "设置 firewall"
         openfirewall
         clear
         colorEcho ${INFO} "安装 trojan-gfw"
@@ -1263,7 +1263,7 @@ function advancedMenu() {
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"        
         whiptail --title "Option 1" --msgbox "安装成功，享受吧！多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" 8 78
-	colorEcho ${INFO} "设置 tcp-bbr boost technology"
+	colorEcho ${INFO} "设置 TCP-BBR boost technology"
         tcp-bbr
         ;;
         2)    
@@ -1304,14 +1304,14 @@ function advancedMenu() {
         colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙是否打开!!!"
         exit -1
         fi
-        colorEcho ${INFO} "configing firewall"
+        colorEcho ${INFO} "设置 firewall"
         openfirewall
         clear
-        colorEcho ${INFO} "installing trojan-gfw"
+        colorEcho ${INFO} "安装 trojan-gfw"
         installtrojan-gfw
-        colorEcho ${INFO} "installing nginx"
+        colorEcho ${INFO} "安装 nginx"
         installnginx
-        colorEcho ${INFO} "installing acme"
+        colorEcho ${INFO} "安装 acme"
         installacme
         clear
         colorEcho ${INFO} "issueing let\'s encrypt certificate"
@@ -1319,7 +1319,7 @@ function advancedMenu() {
         colorEcho ${INFO} "issue complete,installing certificate"
         installcert
         colorEcho ${INFO} "certificate install complete!"
-        colorEcho ${INFO} "configing nginx for v2ray vmess+tls+Websocket"
+        colorEcho ${INFO} "配置 nginx for v2ray vmess+tls+Websocket"
         nginxv2ray
 	html
         clear
@@ -1333,21 +1333,21 @@ function advancedMenu() {
         iptables-persistent
         clear
         trojanclient
-        colorEcho ${INFO} "Your Trojan-Gfw 客户端 config profile 1"
+        colorEcho ${INFO} "你的 Trojan-Gfw 客户端 config profile 1"
         cat /etc/trojan/client1.json
-        colorEcho ${INFO} "Your Trojan-Gfw 客户端 config profile 2"
+        colorEcho ${INFO} "你的 Trojan-Gfw 客户端 config profile 2"
         cat /etc/trojan/client2.json
         trojanlink
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"
         v2rayclient
-        colorEcho ${INFO} "Your V2ray client config"
+        colorEcho ${INFO} "你的 V2ray 客户端 config"
         cat /etc/v2ray/client.json
         v2raylink
         colorEcho ${INFO} "https://github.com/v2ray/v2ray-core/releases/latest"
         colorEcho ${INFO} "Install Success,Enjoy it!"
         whiptail --title "Option 1" --msgbox "安装成功,享受吧! 多行不義必自斃，子姑待之。 RTFM: https://www.johnrosen1.com/trojan/" 8 78
-	colorEcho ${INFO} "设置 tcp-BBR boost technology"
+	colorEcho ${INFO} "设置 TCP-BBR boost technology"
         tcp-bbr
         ;;
        	3)
