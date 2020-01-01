@@ -733,7 +733,8 @@ iptables-persistent(){
     systemctl stop firewalld
     systemctl disable firewalld
     yum install -y iptables-services
-    systemctl enable iptables.service
+    systemctl enable iptables
+    systemctl enable ip6tables
     sudo /usr/libexec/iptables/iptables.init save
     systemctl start iptables.service
  elif [[ $dist = ubuntu ]]; then
