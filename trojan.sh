@@ -1221,7 +1221,7 @@ removetrojan(){
   systemctl disable trojan
   rm -rf /usr/local/etc/trojan/*
   rm -rf /etc/trojan/*
-  rm -rf /etc/systemd/system/trojan.service
+  rm -rf /etc/systemd/system/trojan*
   rm -rf ~/.acme.sh/$domain
 }
 ##########Remove V2ray###############
