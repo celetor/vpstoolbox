@@ -73,8 +73,8 @@ Attachment: Trojan-GFW one-click script's function is basically complete. Stop F
 ```
 sudo systemctl status trojan
 sudo systemctl status trojan6
-sudo systemctl status v2ray
 sudo systemctl status nginx
+sudo systemctl status v2ray
 sudo systemctl status dnsmasq
 sudo systemctl status qbittorrent
 crontab -l
