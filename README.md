@@ -57,7 +57,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 6. For security reasons, system upgrade is not forced ,press [ENTER] to skip or manually enter y to upgrade system.
 7. Trojan-GFW QR code generate will be skipped on os who do not support python3-qrcode!
 8. Due to personal demands , Dnsmasq installation is not forced ,press [ENTER] to skip or manually enter y to install dnsmasq.
-9. If "sudo command not found" , please manually remove "sudo" from the beginning of the command and run as root !
+9. If "sudo command not found" , please manually install sudo from the command above !
 
 #### Telegram Channel And Group
 
