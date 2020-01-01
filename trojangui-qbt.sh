@@ -145,7 +145,7 @@ events {
 }
 
 http {
-  aio threads;
+  #aio threads;
   charset UTF-8;
   tcp_nodelay on;
   tcp_nopush on;
