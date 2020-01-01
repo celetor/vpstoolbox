@@ -68,3 +68,18 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 Attachment: Trojan-GFW one-click script's function is basically complete. Stop Function-based updating from now on. **If you need more functions, please open a Github issue.**
 
 ## If you found it useful , please give a star ,thanks!
+
+### Debug Guide
+
+```
+sudo systemctl status trojan
+sudo systemctl status trojan6
+sudo systemctl status v2ray
+sudo systemctl status nginx
+sudo systemctl status dnsmasq
+sudo systemctl status qbittorrent
+```
+
+
+
+
