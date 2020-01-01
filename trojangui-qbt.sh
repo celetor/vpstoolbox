@@ -104,7 +104,7 @@ openfirewall(){
 installdependency(){
   echo "installing trojan-gfw nginx and acme"
   if [[ $dist = centos ]]; then
-    yum install -y sudo curl socat wget gnupg gnupg2 python3-qrcode unzip bind-utils
+    yum install -y sudo curl socat wget gnupg gnupg2 python3-qrcode unzip bind-utils epel-release
  elif [[ $dist = ubuntu ]]; then
     apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf -qq -y
     if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
@@ -127,8 +127,7 @@ installtrojan-gfw(){
 }
 ##########nginx install for cnetos#########
 nginxyum(){
-  rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
-  yum install nginx -q -y
+  yum install nginx -y
   rm -rf /etc/nginx/nginx.conf
   touch /etc/nginx/nginx.conf
     cat > '/etc/nginx/nginx.conf' << EOF
