@@ -1126,7 +1126,7 @@ trojanlink(){
   colorEcho ${LINK} "trojan://$password1@$domain:443"
   colorEcho ${INFO} "Your Trojan-Gfw Share link2 is"
   colorEcho ${LINK} "trojan://$password2@$domain:443"
-  if [[ $(lsb_release -cs) != xenial ]] || [[ $(lsb_release -cs) == trusty ]] || [[ $(lsb_release -cs) == jessie ]] || [[ $dist != centos ]]; then
+  if [[ $(lsb_release -cs) != xenial ]] || [[ $(lsb_release -cs) != trusty ]] || [[ $(lsb_release -cs) != jessie ]] || [[ $dist != centos ]]; then
   wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
   chmod +x trojan-url.py
   #./trojan-url.py -i /etc/trojan/client.json
