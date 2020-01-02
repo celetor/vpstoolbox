@@ -1358,6 +1358,8 @@ _EOF_
         colorEcho ${INFO} "Your os codename is $dist $(lsb_release -cs)"
         colorEcho ${INFO} "Updating system"
         updatesystem
+        colorEcho ${INFO} "installing dependency"
+        installdependency
         colorEcho ${WARNING} "Dnsmasq can acclerate dns resolve by caching dns requests,continue? If you are unsure,Please press [ENTER] to skip"
         if ! [[ -n "$dist" ]] || prompt ${WARNING} "continue?"; then
         colorEcho ${INFO} "Installing dnsmasq"
@@ -1372,9 +1374,7 @@ _EOF_
         else
         echo Skipping system upgrade...
         fi
-        clear
-        colorEcho ${INFO} "installing dependency"
-        installdependency       
+        clear    
         if isresolved $domain
         then
         :
