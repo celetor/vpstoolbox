@@ -1419,8 +1419,6 @@ function advancedMenu() {
   cronjob
   timesync
         clear
-        iptables-persistent
-        clear
         trojanclient
         colorEcho ${INFO} "Your Trojan-Gfw client config profile 1"
         cat /etc/trojan/client1.json
@@ -1511,7 +1509,6 @@ function advancedMenu() {
         autostart
   cronjob
   timesync
-        iptables-persistent
         clear
         trojanclient
         colorEcho ${INFO} "Your Trojan-Gfw client config profile 1"
