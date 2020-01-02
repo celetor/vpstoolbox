@@ -860,7 +860,8 @@ RestartSec=3s
 [Install]
 WantedBy=multi-user.target
 EOF
-rm -rf /root/.config/qBittorrent/*
+rm -rf /root/.config/*
+mkdir /root/.config/
 mkdir /root/.config/qBittorrent/
   cat > '/root/.config/qBittorrent/qBittorrent.conf' << EOF
 [AutoRun]
