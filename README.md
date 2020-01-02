@@ -29,7 +29,7 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 4. Auto OS Detect **Support Centos Debian Ubuntu** (Centos not recommended)
 5. Auto domain resolve verification
 6. Auto iptables(includes ipv6) firewall config and iptables-persistent
-7. Auto generate client config
+7. Auto generate client config (includes both Trojan-GFW and V2ray )
 8. Auto random vmess uuid generate
 9. Auto TCP Turbo enable ( **TCP-BBR** included)
 10. Auto Nginx Performance Optimization
