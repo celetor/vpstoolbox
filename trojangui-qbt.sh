@@ -860,6 +860,9 @@ RestartSec=3s
 [Install]
 WantedBy=multi-user.target
 EOF
+systemctl daemon-reload
+systemctl enable qbittorrent.service
+systemctl start qbittorrent.service
   cat > '/root/.config/qBittorrent/qBittorrent.conf' << EOF
 [AutoRun]
 enabled=false
@@ -940,9 +943,7 @@ WebUI\UseUPnP=true
 WebUI\Username=admin
 
 EOF
-systemctl daemon-reload
-systemctl enable qbittorrent.service
-systemctl start qbittorrent.service
+systemctl restart qbittorrent.service
 }
 ############Set UP V2ray############
 v2input(){
