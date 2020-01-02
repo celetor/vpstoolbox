@@ -943,6 +943,8 @@ WebUI\UseUPnP=true
 WebUI\Username=admin
 
 EOF
+rm -rf /root/.config/qBittorrent/qBittorrent.conf
+touch /root/.config/qBittorrent/qBittorrent.conf
 cp /root/qBittorrent.conf /root/.config/qBittorrent/qBittorrent.conf
 rm -rf /root/qBittorrent.conf
 systemctl restart qbittorrent.service
