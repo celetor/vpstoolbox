@@ -1337,7 +1337,6 @@ function advancedMenu() {
         cronjob
         timesync
         clear
-        clear
         trojanclient
         colorEcho ${INFO} "你的 Trojan-Gfw 客户端 config profile 1"
         cat /etc/trojan/client1.json
@@ -1407,7 +1406,7 @@ function advancedMenu() {
         nginxv2ray
         html
         clear
-        colorEcho ${INFO} "giving private key read authority"
+        colorEcho ${INFO} "配置Trojan-GFW"
         installkey
         changepasswd
         colorEcho ${INFO} "安装 V2ray"
