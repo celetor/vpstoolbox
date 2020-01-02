@@ -55,7 +55,7 @@ set -e
  elif cat /etc/*release | grep ^NAME | grep Debian; then
     dist=debian
  else
- 	TERM=ansi whiptail --title "OS SUPPORT" --infobox "OS NOT SUPPORTED, couldn't install Trojan-gfw" 8 78
+  TERM=ansi whiptail --title "OS SUPPORT" --infobox "OS NOT SUPPORTED, couldn't install Trojan-gfw" 8 78
     exit 1;
  fi
 }
@@ -99,21 +99,40 @@ openfirewall(){
   ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
   ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
   ip6tables -I OUTPUT -j ACCEPT
+    if [[ $dist = centos ]]; then
+    systemctl stop firewalld
+    systemctl disable firewalld
+    yum install -y iptables-services
+    systemctl enable iptables
+    systemctl enable ip6tables
+    sudo /usr/libexec/iptables/iptables.init save
+    systemctl start iptables.service
+ elif [[ $dist = ubuntu ]]; then
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get install iptables-persistent -q -y > /dev/null
+ elif [[ $dist = debian ]]; then
+    export DEBIAN_FRONTEND=noninteractive 
+    apt-get install iptables-persistent -q -y > /dev/null
+ else
+  clear
+  TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
+    exit 1;
+ fi
 }
 ##########install dependencies#############
 installdependency(){
   echo "installing trojan-gfw nginx and acme"
   if [[ $dist = centos ]]; then
-    yum install -y sudo curl socat wget gnupg gnupg2 python3-qrcode unzip bind-utils epel-release
+    yum install -y sudo curl socat wget gnupg gnupg2 python3-qrcode unzip bind-utils epel-release chrony
  elif [[ $dist = ubuntu ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf ntpdate -qq -y
     if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
-    	TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "Ubuntu 16.04 does not support python3-qrcode,Skipping generating QR code!" 8 78
+      TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "Ubuntu 16.04 does not support python3-qrcode,Skipping generating QR code!" 8 78
       else
         apt-get install python3-qrcode -qq -y
     fi
  elif [[ $dist = debian ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip resolvconf -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python3-qrcode python-pil unzip resolvconf ntpdate -qq -y
  else
   clear
   TERM=ansi whiptail --title "error can't install dependency" --infobox "error can't install dependency" 8 78
@@ -386,7 +405,7 @@ touch /etc/nginx/conf.d/trojan.conf
   if [[ $dist != centos ]]; then
     nginxconf
  else
- 	TERM=ansi whiptail --title "continuing..." --infobox "continuing..." 8 78
+  TERM=ansi whiptail --title "continuing..." --infobox "continuing..." 8 78
  fi
   cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
@@ -768,28 +787,6 @@ ulimit -SHn 51200
 EOF
 systemctl daemon-reload
 }
-##########iptables-persistent########
-iptables-persistent(){
-  if [[ $dist = centos ]]; then
-    systemctl stop firewalld
-    systemctl disable firewalld
-    yum install -y iptables-services
-    systemctl enable iptables
-    systemctl enable ip6tables
-    sudo /usr/libexec/iptables/iptables.init save
-    systemctl start iptables.service
- elif [[ $dist = ubuntu ]]; then
-    export DEBIAN_FRONTEND=noninteractive
-    apt-get install iptables-persistent -q -y > /dev/null
- elif [[ $dist = debian ]]; then
-    export DEBIAN_FRONTEND=noninteractive 
-    apt-get install iptables-persistent -q -y > /dev/null
- else
-  clear
-  TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
-    exit 1;
- fi
-}
 ############DNSMASQ#################
 dnsmasq(){
     if [[ $dist = centos ]]; then
@@ -949,7 +946,7 @@ touch /etc/nginx/conf.d/trojan.conf
   if [[ $dist != centos ]]; then
     nginxconf
  else
- 	TERM=ansi whiptail --title "continuing..." --infobox "continuing..." 8 78
+  TERM=ansi whiptail --title "continuing..." --infobox "continuing..." 8 78
  fi
   cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
@@ -1029,7 +1026,7 @@ trojanclient(){
         "verify_hostname": true,
         "cert": "",
         "cipher": "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:RSA-AES128-GCM-SHA256:RSA-AES256-GCM-SHA384:RSA-AES128-SHA:RSA-AES256-SHA:RSA-3DES-EDE-SHA",
-	"cipher_tls13":"TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+  "cipher_tls13":"TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
         "sni": "$domain",
         "alpn": [
             "h2",
@@ -1042,7 +1039,7 @@ trojanclient(){
     "tcp": {
         "no_delay": true,
         "keep_alive": true,
-	"reuse_port": true,
+  "reuse_port": true,
         "fast_open": true,
         "fast_open_qlen": 20
     }
@@ -1064,7 +1061,7 @@ EOF
         "verify_hostname": true,
         "cert": "",
         "cipher": "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:RSA-AES128-GCM-SHA256:RSA-AES256-GCM-SHA384:RSA-AES128-SHA:RSA-AES256-SHA:RSA-3DES-EDE-SHA",
-	"cipher_tls13":"TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+  "cipher_tls13":"TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
         "sni": "$domain",
         "alpn": [
             "h2",
@@ -1077,7 +1074,7 @@ EOF
     "tcp": {
         "no_delay": true,
         "keep_alive": true,
-	"reuse_port": true,
+  "reuse_port": true,
         "fast_open": true,
         "fast_open_qlen": 20
     }
@@ -1089,7 +1086,7 @@ v2rayclient(){
   touch /etc/v2ray/client.json
   cat > '/etc/v2ray/client.json' << EOF
 {
-	"inbounds": [
+  "inbounds": [
         {
             "listen": "127.0.0.1",
             "port": 1081,
@@ -1100,70 +1097,70 @@ v2rayclient(){
                 "destOverride": ["http","tls"]
                         }
                 },
-		{
-			"listen": "127.0.0.1",
-			"port": 8001,
-			"protocol": "http",
+    {
+      "listen": "127.0.0.1",
+      "port": 8001,
+      "protocol": "http",
             "settings": {},
-			"sniffing": {
-				"enabled": true,
-				"destOverride": ["http","tls"]
-			}
-		}
-	],
-	"outbounds": [
-		{
-			"tag": "proxy",
-			"protocol": "vmess",
-			"settings": {
-				"vnext": [
-					{
-						"address": "$domain",
-						"port": 443,
-						"users": [
-							{
-								"id": "$uuid",
-								"alterId": 64,
-								"security": "none" //使用TLS则无需二次加密
-							}
-						]
-					}
-				]
-			},
-			"streamSettings": {
-			"network": "ws",
-			"security": "tls",
-			"wsSettings": {
-				"path": "$path",
-				"headers": {
-					"Host": "$domain"
-				}
-			},
-			"tlsSetting": {
-				"allowInsecure": false,
-				"alpn": ["http/1.1","h2"],
-				"serverName": "$domain",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http","tls"]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "$domain",
+            "port": 443,
+            "users": [
+              {
+                "id": "$uuid",
+                "alterId": 64,
+                "security": "none" //使用TLS则无需二次加密
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+      "network": "ws",
+      "security": "tls",
+      "wsSettings": {
+        "path": "$path",
+        "headers": {
+          "Host": "$domain"
+        }
+      },
+      "tlsSetting": {
+        "allowInsecure": false,
+        "alpn": ["http/1.1","h2"],
+        "serverName": "$domain",
                 "allowInsecureCiphers": false,
                 "disableSystemRoot": false
-			},
-				"sockopt": {
-					"mark": 255
-				}
-			},
-			"mux": {
-				"enabled": false
-			}
-		},
-		{
-			"tag": "direct",
-			"protocol": "freedom",
-			"settings": {},
-			"streamSettings": {
-				"sockopt": {
-					"mark": 255
-				}
-			}
-		},
+      },
+        "sockopt": {
+          "mark": 255
+        }
+      },
+      "mux": {
+        "enabled": false
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {},
+      "streamSettings": {
+        "sockopt": {
+          "mark": 255
+        }
+      }
+    },
         {
             "tag": "adblock",
             "protocol" : "blackhole",
@@ -1174,51 +1171,51 @@ v2rayclient(){
                     }
             }
         },
-		{
-			"protocol": "dns",
-			"tag": "dns-out"
-		}
-	],
-	"dns": {
-		"servers": [
-			"8.8.8.8",
-			{
-				"address": "114.114.114.114",
-				"port": 53,
-				"domains": ["geosite:cn"]
-			}
-		]
-	},
-	"routing": {
-		"domainStrategy": "IPIfNonMatch",
-		"rules": [
-			{
-				"type": "field",
-				"inboundTag": ["dns-in"],
-				"outboundTag": "dns-out"
-			},
-			{
-				"type": "field",
-				"outboundTag": "direct",
-				"ip": ["geoip:private"]
-			},
-			{
-				"type": "field",
-				"outboundTag": "direct",
-				"ip": ["geoip:cn"]
-			},
-			{
-				"type": "field",
-				"outboundTag": "direct",
-				"domain": ["geosite:cn"]
-			},
-			{
+    {
+      "protocol": "dns",
+      "tag": "dns-out"
+    }
+  ],
+  "dns": {
+    "servers": [
+      "8.8.8.8",
+      {
+        "address": "114.114.114.114",
+        "port": 53,
+        "domains": ["geosite:cn"]
+      }
+    ]
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": ["dns-in"],
+        "outboundTag": "dns-out"
+      },
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "ip": ["geoip:private"]
+      },
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "ip": ["geoip:cn"]
+      },
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "domain": ["geosite:cn"]
+      },
+      {
                 "type": "field",
                 "outboundTag": "direct",
                 "protocol": ["bittorrent"]
             }
-		]
-	}
+    ]
+  }
 }
 EOF
 }
@@ -1317,6 +1314,12 @@ cronjob(){
   (crontab -l && echo "30 03 01 */2 * systemctl restart trojan") | crontab -
 }
 ##################################
+timesync(){
+  timedatectl set-timezone Asia/Hong_Kong
+  timedatectl set-ntp on
+  ntpdate -qu 1.ro.pool.ntp.org
+}
+##################################
 clear
 function advancedMenu() {
     ADVSEL=$(whiptail --title "Trojan-Gfw Script Menu --Qbittorrent version" --menu --nocancel "Choose an option" 25 78 16 \
@@ -1330,15 +1333,15 @@ function advancedMenu() {
         clear
         userinput
     if (whiptail --title "System Upgrade" --yesno "System Upgrade?" 8 78); then
-    	system_upgrade=1
-		else
-    	system_upgrade=0
-		fi
-		if (whiptail --title "Dnsmasq Install" --yesno "Install Dnsmasq?" 8 78); then
-    	dnsmasq_install=1
-		else
-    	dnsmasq_install=0
-		fi
+      system_upgrade=1
+    else
+      system_upgrade=0
+    fi
+    if (whiptail --title "Dnsmasq Install" --yesno "Install Dnsmasq?" 8 78); then
+      dnsmasq_install=1
+    else
+      dnsmasq_install=0
+    fi
     if (whiptail --title "Qbittorrent Install" --yesno "Install Qbittorrent?" 8 78); then
       qbt_install=1
     else
@@ -1351,15 +1354,15 @@ function advancedMenu() {
         colorEcho ${INFO} "Updating system"
         updatesystem
         if [[ $system_upgrade = 1 ]]; then
-		upgradesystem
-		else
-		:
-		fi
+    upgradesystem
+    else
+    :
+    fi
     if [[ $dnsmasq_install = 1 ]]; then
-		dnsmasq
-		else
-		:
-		fi
+    dnsmasq
+    else
+    :
+    fi
     if [[ $qbt_install = 1 ]]; then
     colorEcho ${INFO} "qBittorrent"
     qbittorrent
@@ -1394,7 +1397,7 @@ function advancedMenu() {
         clear
         colorEcho ${INFO} "autoconfiging nginx"
         nginxtrojan
-	html
+  html
         clear
         colorEcho ${INFO} "issue complete,installing certificate"
         installcert
@@ -1408,7 +1411,8 @@ function advancedMenu() {
         clear
         colorEcho ${INFO} "starting trojan-gfw and nginx | setting up boot autostart"
         autostart
-	cronjob
+  cronjob
+  timesync
         clear
         iptables-persistent
         clear
@@ -1423,21 +1427,21 @@ function advancedMenu() {
         colorEcho ${INFO} "Please visit the link below to visit your qBittorrent webui default username admin default password adminadmin"
         colorEcho ${LINK} "https://$domain/qbt/"        
         whiptail --title "Option 1" --msgbox "安装成功，享受吧！多行不義必自斃，子姑待之。" 8 78
-	colorEcho ${INFO} "Setting up tcp-bbr boost technology"
+  colorEcho ${INFO} "Setting up tcp-bbr boost technology"
         tcp-bbr
         ;;
         2)    
         v2input
     if (whiptail --title "System Upgrade" --yesno "System Upgrade?" 8 78); then
-    	system_upgrade=1
-		else
-    	system_upgrade=0
-		fi
-		if (whiptail --title "Dnsmasq Install" --yesno "Install dnsmasq?." 8 78); then
-    	dnsmasq_install=1
-		else
-    	dnsmasq_install=0
-		fi
+      system_upgrade=1
+    else
+      system_upgrade=0
+    fi
+    if (whiptail --title "Dnsmasq Install" --yesno "Install dnsmasq?." 8 78); then
+      dnsmasq_install=1
+    else
+      dnsmasq_install=0
+    fi
     if (whiptail --title "Qbittorrent Install" --yesno "Install Qbittorrent?" 8 78); then
       qbt_install=1
     else
@@ -1450,15 +1454,15 @@ function advancedMenu() {
         colorEcho ${INFO} "Updating system"
         updatesystem
         if [[ $system_upgrade = 1 ]]; then
-		upgradesystem
-		else
-		:
-		fi
+    upgradesystem
+    else
+    :
+    fi
     if [[ $dnsmasq_install = 1 ]]; then
-		dnsmasq
-		else
-		:
-		fi
+    dnsmasq
+    else
+    :
+    fi
     if [[ $qbt_install = 1 ]]; then
     qbittorrent
     else
@@ -1491,7 +1495,7 @@ function advancedMenu() {
         colorEcho ${INFO} "certificate install complete!"
         colorEcho ${INFO} "configing nginx for v2ray vmess+tls+Websocket"
         nginxv2ray
-	html
+  html
         clear
         colorEcho ${INFO} "giving private key read authority"
         installkey
@@ -1500,7 +1504,8 @@ function advancedMenu() {
         installv2ray
         colorEcho ${INFO} "starting trojan-gfw v2ray and nginx | setting up boot autostart"
         autostart
-	cronjob
+  cronjob
+  timesync
         iptables-persistent
         clear
         trojanclient
@@ -1520,14 +1525,14 @@ function advancedMenu() {
         colorEcho ${INFO} "Please visit the link below to visit your qBittorrent webui default username admin default password adminadmin"
         colorEcho ${LINK} "https://$domain/qbt/"
         whiptail --title "Option 1" --msgbox "安装成功,享受吧! 多行不義必自斃，子姑待之。" 8 78
-	colorEcho ${INFO} "Setting up tcp-bbr boost technology"
+  colorEcho ${INFO} "Setting up tcp-bbr boost technology"
         tcp-bbr
         ;;
-       	3)
+        3)
         checkupdate
         break
         ;;
-      	4)
+        4)
         removetrojan
         removev2ray
         removenginx
