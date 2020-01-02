@@ -884,7 +884,7 @@ AutoDeleteAddedTorrentFile=Never
 Accepted=true
 
 [Network]
-Cookies="__cfduid=da7fe91fc030343a96738800e2b34bbf11575812757; HttpOnly; expires=Tue, 07-Jan-2020 13:45:57 GMT; domain=.geolite.maxmind.com; path=/"
+Cookies=""
 
 [Preferences]
 Advanced\AnnounceToAllTrackers=true
