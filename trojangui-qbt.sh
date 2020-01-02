@@ -870,6 +870,7 @@ domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可
 password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快输入你想要的密码一并按回车" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快输入想要的密码二并按回车" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
+alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
 }
 installv2ray(){
   bash <(curl -L -s https://install.direct/go.sh) > /dev/null
@@ -895,7 +896,7 @@ installv2ray(){
             "clients": [
                 {
                     "id": "$uuid",
-                    "alterId": 64
+                    "alterId": $alterid
                 }
             ]
         },
@@ -1120,7 +1121,7 @@ v2rayclient(){
             "users": [
               {
                 "id": "$uuid",
-                "alterId": 64,
+                "alterId": $alterid,
                 "security": "auto"
               }
             ]
