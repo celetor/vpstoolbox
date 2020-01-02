@@ -883,6 +883,9 @@ colorEcho ${INFO} "Your password2 is $password2"
 colorEcho ${WARNING} "Please Enter your desired Websocket path (such as /secret )and press [ENTER]: "
 read path
 colorEcho ${INFO} "Your path is $path"
+colorEcho ${WARNING} "Please Enter your desired alter id (such as 64 )and press [ENTER]: "
+read alterid
+colorEcho ${INFO} "Your path is $alterid"
 }
 installv2ray(){
   bash <(curl -L -s https://install.direct/go.sh) > /dev/null
@@ -909,7 +912,7 @@ installv2ray(){
             "clients": [
                 {
                     "id": "$uuid",
-                    "alterId": 64
+                    "alterId": $alterid
                 }
             ]
         },
@@ -1115,7 +1118,7 @@ v2rayclient(){
             "users": [
               {
                 "id": "$uuid",
-                "alterId": 64,
+                "alterId": $alterid,
                 "security": "auto"
               }
             ]
