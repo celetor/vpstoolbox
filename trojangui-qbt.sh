@@ -1458,6 +1458,8 @@ function advancedMenu() {
         colorEcho ${INFO} "Your os codename is $dist $(lsb_release -cs)"
         colorEcho ${INFO} "Updating system"
         updatesystem
+        colorEcho ${INFO} "installing dependency"
+        installdependency
         if [[ $system_upgrade = 1 ]]; then
     upgradesystem
     else
@@ -1474,8 +1476,6 @@ function advancedMenu() {
     :
     fi
         clear
-        colorEcho ${INFO} "installing dependency"
-        installdependency
         if isresolved $domain
         then
         :
