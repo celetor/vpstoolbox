@@ -329,11 +329,11 @@ server {
 }
 EOF
   systemctl start nginx
-  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log
+  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan"
 }
 ##################################################
 renewcert(){
-  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log
+  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan"
 }
 ##################################################
 installcert(){
@@ -1414,7 +1414,7 @@ _EOF_
         clear
         colorEcho ${INFO} "starting trojan-gfw and nginx | setting up boot autostart"
         autostart
-        cronjob
+        #cronjob
         timesync
         clear
         trojanclient
@@ -1489,7 +1489,7 @@ _EOF_
         installv2ray
         colorEcho ${INFO} "starting trojan-gfw v2ray and nginx | setting up boot autostart"
         autostart
-        cronjob
+        #cronjob
         timesync
         clear
         trojanclient
