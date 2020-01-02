@@ -1318,7 +1318,7 @@ timesync(){
   if [[ $dist = centos ]]; then
     :
     else
-      ntpdate -qu 1.ro.pool.ntp.org
+      ntpdate -qu 1.hk.pool.ntp.org
   fi
 }
 ####################################
