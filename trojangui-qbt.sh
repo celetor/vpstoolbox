@@ -863,7 +863,7 @@ EOF
 systemctl daemon-reload
 systemctl enable qbittorrent.service
 systemctl start qbittorrent.service
-  cat > '/root/.config/qBittorrent/qBittorrent.conf' << EOF
+  cat > '/root/qBittorrent.conf' << EOF
 [AutoRun]
 enabled=false
 program=
@@ -943,6 +943,8 @@ WebUI\UseUPnP=true
 WebUI\Username=admin
 
 EOF
+cp /root/qBittorrent.conf /root/.config/qBittorrent/qBittorrent.conf
+rm -rf /root/qBittorrent.conf
 systemctl restart qbittorrent.service
 }
 ############Set UP V2ray############
