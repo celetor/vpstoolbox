@@ -40,6 +40,7 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 15. Auto enable ***TLS1.3 ONLY***
 16. Auto ***Random Html Template Choose***
 17. Auto enable ***Full IPv6 Support***
+17. Auto enable ***time sync***
 18. Support auto ***vmess + tls + websocket + nginx*** config
 19. Support manually check for update include both Trojan-gfw and v2ray
 20. Support manually force renew certificate
@@ -78,6 +79,7 @@ sudo systemctl status v2ray
 sudo systemctl status dnsmasq
 sudo systemctl status qbittorrent
 crontab -l
+timedatectl
 ```
 
 
