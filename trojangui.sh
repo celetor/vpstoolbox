@@ -1050,7 +1050,7 @@ v2rayclient(){
               {
                 "id": "$uuid",
                 "alterId": 64,
-                "security": "none" //使用TLS则无需二次加密
+                "security": "auto"
               }
             ]
           }
