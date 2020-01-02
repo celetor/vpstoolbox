@@ -11,7 +11,7 @@ sudo bash -c "$(wget -O- https://raw.githubusercontent.com/johnrosen1/trojan-gfw
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
 
-### 汉化GUI版本
+### 中文GUI版本
 ```
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
 sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojangui.sh)"
