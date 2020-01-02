@@ -199,6 +199,7 @@ http {
 
   sendfile on;
   gzip on;
+  gzip_comp_level 4;
 
   include /etc/nginx/conf.d/*.conf; 
 }
@@ -488,6 +489,7 @@ http {
 
   sendfile on;
   gzip on;
+  gzip_comp_level 4;
 
   include /etc/nginx/conf.d/*.conf; 
 }
