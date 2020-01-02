@@ -100,21 +100,40 @@ openfirewall(){
   ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
   ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
   ip6tables -I OUTPUT -j ACCEPT
+  if [[ $dist = centos ]]; then
+    systemctl stop firewalld
+    systemctl disable firewalld
+    yum install -y iptables-services
+    systemctl enable iptables
+    systemctl enable ip6tables
+    sudo /usr/libexec/iptables/iptables.init save
+    systemctl start iptables.service
+ elif [[ $dist = ubuntu ]]; then
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get install iptables-persistent -q -y > /dev/null
+ elif [[ $dist = debian ]]; then
+    export DEBIAN_FRONTEND=noninteractive 
+    apt-get install iptables-persistent -q -y > /dev/null
+ else
+  clear
+  TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
+    exit 1;
+ fi
 }
 ##########install dependencies#############
 installdependency(){
   echo "installing trojan-gfw nginx and acme"
   if [[ $dist = centos ]]; then
-    yum install -y sudo curl socat wget gnupg gnupg2 python3-qrcode unzip bind-utils epel-release
+    yum install -y sudo curl socat wget gnupg gnupg2 python3-qrcode unzip bind-utils epel-release chrony
  elif [[ $dist = ubuntu ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf ntpdate -qq -y
     if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
       TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "你的操作系统不支持 python3-qrcode,Skipping generating QR code!" 8 78
       else
         apt-get install python3-qrcode -qq -y
     fi
  elif [[ $dist = debian ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf ntpdate -qq -y
         if [[ $(lsb_release -cs) == jessie ]]; then
       colorEcho ${ERROR} "Debian8 does not support python3-qrcode,Skipping generating QR code!"
       else
@@ -755,28 +774,6 @@ ulimit -SHn 51200
 EOF
 systemctl daemon-reload
 }
-##########iptables-persistent########
-iptables-persistent(){
-  if [[ $dist = centos ]]; then
-    systemctl stop firewalld
-    systemctl disable firewalld
-    yum install -y iptables-services
-    systemctl enable iptables
-    systemctl enable ip6tables
-    sudo /usr/libexec/iptables/iptables.init save
-    systemctl start iptables.service
- elif [[ $dist = ubuntu ]]; then
-    export DEBIAN_FRONTEND=noninteractive
-    apt-get install iptables-persistent -q -y > /dev/null
- elif [[ $dist = debian ]]; then
-    export DEBIAN_FRONTEND=noninteractive 
-    apt-get install iptables-persistent -q -y > /dev/null
- else
-  clear
-  TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
-    exit 1;
- fi
-}
 ############DNSMASQ#################
 dnsmasq(){
     if [[ $dist = centos ]]; then
@@ -1246,6 +1243,12 @@ cronjob(){
   (crontab -l && echo "30 03 01 */2 * systemctl restart trojan") | crontab -
 }
 ##################################
+timesync(){
+  timedatectl set-timezone Asia/Hong_Kong
+  timedatectl set-ntp on
+  ntpdate -qu 1.ro.pool.ntp.org
+}
+##################################
 clear
 function advancedMenu() {
     ADVSEL=$(whiptail --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
@@ -1312,7 +1315,7 @@ function advancedMenu() {
         clear
         colorEcho ${INFO} "配置 nginx"
         nginxtrojan
-  html
+        html
         clear
         colorEcho ${INFO} "issue complete,installing certificate"
         installcert
@@ -1327,8 +1330,8 @@ function advancedMenu() {
         colorEcho ${INFO} "启动 trojan-gfw and nginx | setting up boot autostart"
         autostart
         cronjob
+        timesync
         clear
-        iptables-persistent
         clear
         trojanclient
         colorEcho ${INFO} "你的 Trojan-Gfw 客户端 config profile 1"
@@ -1339,7 +1342,7 @@ function advancedMenu() {
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
         colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"        
         whiptail --title "Option 1" --msgbox "安装成功，享受吧！多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" 8 78
-  colorEcho ${INFO} "设置 TCP-BBR boost technology"
+        colorEcho ${INFO} "设置 TCP-BBR boost technology"
         tcp-bbr
         ;;
         2)    
@@ -1397,7 +1400,7 @@ function advancedMenu() {
         colorEcho ${INFO} "certificate install complete!"
         colorEcho ${INFO} "配置 nginx for v2ray vmess+tls+Websocket"
         nginxv2ray
-  html
+        html
         clear
         colorEcho ${INFO} "giving private key read authority"
         installkey
@@ -1407,7 +1410,7 @@ function advancedMenu() {
         colorEcho ${INFO} "starting trojan-gfw v2ray and nginx | setting up boot autostart"
         autostart
         cronjob
-        iptables-persistent
+        timesync
         clear
         trojanclient
         colorEcho ${INFO} "你的 Trojan-Gfw 客户端 config profile 1"
@@ -1424,12 +1427,12 @@ function advancedMenu() {
         colorEcho ${INFO} "https://github.com/v2ray/v2ray-core/releases/latest"
         colorEcho ${INFO} "Install Success,Enjoy it!"
         whiptail --title "Option 1" --msgbox "安装成功,享受吧! 多行不義必自斃，子姑待之。 RTFM: https://www.johnrosen1.com/trojan/" 8 78
-  colorEcho ${INFO} "设置 TCP-BBR boost technology"
+        colorEcho ${INFO} "设置 TCP-BBR boost technology"
         tcp-bbr
         ;;
         3)
         checkupdate
-  colorEcho ${SUCCESS} "RTFM: https://www.johnrosen1.com/trojan/"
+        colorEcho ${SUCCESS} "RTFM: https://www.johnrosen1.com/trojan/"
         ;;
         4)
         removetrojan
