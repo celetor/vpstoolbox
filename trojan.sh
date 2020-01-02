@@ -1312,7 +1312,11 @@ cronjob(){
 timesync(){
   timedatectl set-timezone Asia/Hong_Kong
   timedatectl set-ntp on
-  ntpdate -qu 1.ro.pool.ntp.org
+  if [[ $dist = centos ]]; then
+    :
+    else
+      ntpdate -qu 1.ro.pool.ntp.org
+  fi
 }
 ####################################
 DELAY=3 # Number of seconds to display results
