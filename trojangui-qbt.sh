@@ -850,7 +850,9 @@ systemctl enable dnsmasq
 ############Qbittorrent#############
 qbittorrent(){
   if [[ $dist = centos ]]; then
-    yum install qbittorrent-nox -y
+  yum install -y epel-release
+  yum update -y
+  yum install qbittorrent-nox -y
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
