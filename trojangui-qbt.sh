@@ -82,7 +82,25 @@ upgradesystem(){
     apt-get upgrade -q -y
     apt-get autoremove -qq -y > /dev/null
  elif [[ $dist = debian ]]; then
-    export DEBIAN_FRONTEND=noninteractive 
+    export DEBIAN_FRONTEND=noninteractive
+          cat > '/etc/apt/sources.list' << EOF
+#------------------------------------------------------------------------------#
+#                   OFFICIAL DEBIAN REPOS                    
+#------------------------------------------------------------------------------#
+
+###### Debian Main Repos
+deb http://deb.debian.org/debian/ stable main contrib non-free
+deb-src http://deb.debian.org/debian/ stable main contrib non-free
+
+deb http://deb.debian.org/debian/ stable-updates main contrib non-free
+deb-src http://deb.debian.org/debian/ stable-updates main contrib non-free
+
+deb http://deb.debian.org/debian-security stable/updates main
+deb-src http://deb.debian.org/debian-security stable/updates main
+
+deb http://ftp.debian.org/debian buster-backports main
+deb-src http://ftp.debian.org/debian buster-backports main
+EOF
     apt-get upgrade -q -y
     apt-get autoremove -qq -y > /dev/null
  else
