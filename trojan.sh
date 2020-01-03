@@ -1195,6 +1195,11 @@ v2rayclient(){
         "inboundTag": ["dns-in"],
         "outboundTag": "dns-out"
       },
+      {                                                                   
+        "type": "field",                                                  
+        "domain": ["geosite:qihoo360"],                                   
+        "outboundTag": "adblock"                                          
+      },
       {
         "type": "field",
         "outboundTag": "direct",
@@ -1209,11 +1214,6 @@ v2rayclient(){
         "type": "field",
         "outboundTag": "direct",
         "domain": ["geosite:cn"]
-      },
-      {                                                                   
-        "type": "field",                                                  
-        "domain": ["geosite:qihoo360"],                                   
-        "outboundTag": "adblock"                                          
       },
       {
         "type": "field",
