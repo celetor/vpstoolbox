@@ -853,6 +853,7 @@ qbittorrent(){
     yum install qbittorrent-nox -y
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
+    add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
     apt-get install qbittorrent-nox -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
