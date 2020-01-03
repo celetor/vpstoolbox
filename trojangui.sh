@@ -287,11 +287,11 @@ server {
 }
 EOF
   systemctl start nginx
-  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "kill -HUP $(pidof trojan)"
+  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl restart trojan && systemctl restart trojan6"
 }
 ##################################################
 renewcert(){
-  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "kill -HUP $(pidof trojan)"
+  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl restart trojan && systemctl restart trojan6"
 }
 ##################################################
 installcert(){
@@ -485,8 +485,8 @@ sed  -i 's/@/$/g' /etc/nginx/nginx.conf
 }
 ##########Auto boot start###############
 autostart(){
-  systemctl start trojan
-  systemctl start trojan6
+  systemctl restart trojan
+  systemctl restart trojan6
   systemctl enable nginx
   systemctl enable trojan
   systemctl enable trojan6
