@@ -949,9 +949,9 @@ installv2ray(){
       {
         "type": "field",
         "domain": [
-        "baidu.com",
-        "qq.com",
-        "sina.com"
+        "domain:baidu.com",
+        "domain:qq.com",
+        "domain:sina.com"
       ],
       "outboundTag": "blocked"
       }
