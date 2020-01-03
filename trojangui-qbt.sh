@@ -1276,7 +1276,7 @@ removenginx(){
 checkupdate(){
   cd
   wget https://install.direct/go.sh -q
-  sudo bash go.sh --check
+  sudo bash go.sh
   rm go.sh
   bash -c "$(wget -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
 }
