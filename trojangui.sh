@@ -878,7 +878,8 @@ installv2ray(){
         "domain": [
         "domain:baidu.com",
         "domain:qq.com",
-        "domain:sina.com"
+        "domain:sina.com",
+        "geosite:qihoo360"
       ],
       "outboundTag": "blocked"
       }
@@ -1141,11 +1142,16 @@ v2rayclient(){
         "outboundTag": "direct",
         "domain": ["geosite:cn"]
       },
+      {                                                                   
+        "type": "field",                                                  
+        "domain": ["geosite:qihoo360"],                                   
+        "outboundTag": "adblock"                                          
+      },
       {
-                "type": "field",
-                "outboundTag": "direct",
-                "protocol": ["bittorrent"]
-            }
+        "type": "field",
+        "outboundTag": "direct",
+        "protocol": ["bittorrent"]
+      }
     ]
   }
 }
