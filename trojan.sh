@@ -330,11 +330,11 @@ server {
 }
 EOF
   systemctl start nginx
-  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "/bin/kill -HUP $(pidof trojan)"
+  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "kill -HUP $(pidof trojan)"
 }
 ##################################################
 renewcert(){
-  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "/bin/kill -HUP $(pidof trojan)"
+  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "kill -HUP $(pidof trojan)"
 }
 ##################################################
 installcert(){
