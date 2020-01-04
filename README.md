@@ -94,6 +94,7 @@ timedatectl
 ```
 trojan://trojanscript@www.johnrosen.top:443
 ```
+![alt text](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojanscript.png)
 
 
 
