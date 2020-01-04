@@ -24,7 +24,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ### Qbittorrent Version (No Centos8 Support)
 ```
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
-sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojangui-qbt.sh)"
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui-qbt.sh)"
 ```
 #### Bash Features:
 
