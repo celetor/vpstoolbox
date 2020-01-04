@@ -14,7 +14,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ### 中文GUI版本
 ```
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
-sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojangui.sh)"
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
 ### Shadowsocks(ws+tls) Version (Testing Version , no production Guarantee)
 ```
