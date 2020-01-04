@@ -1202,13 +1202,17 @@ v2rayclient(){
       "tag": "dns-out"
     }
   ],
-  "dns": {
+    "dns": {
+      "hosts": {
+    "geosite:qihoo360": "0.0.0.0"
+    },
     "servers": [
-      "8.8.8.8",
-      {
-        "address": "114.114.114.114",
-        "port": 53,
-        "domains": ["geosite:cn"]
+      "8.8.4.4",
+      "1.1.1.1",
+        {
+           "address": "114.114.114.114",
+           "port": 53,
+           "domains": ["geosite:cn","ntp.org"]
       }
     ]
   },
