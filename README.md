@@ -16,7 +16,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
-### Shadowsocks Version (ws+tls+V2ray-plugin) | (For testing only , no production Guarantee)
+### Shadowsocks Version (ws+tls+V2ray-plugin) | For testing only , no production Guarantee
 ```
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan-ss.sh)"
