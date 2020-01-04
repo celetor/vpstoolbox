@@ -90,7 +90,11 @@ crontab -l
 sudo ~/.acme.sh/acme.sh --cron
 timedatectl
 ```
-
+### Result Example
+```
+trojan://trojanscript@www.johnrosen.top:443
+```
+![alt text](https://www.johnrosen.top/trojanscript.png)
 
 
 
