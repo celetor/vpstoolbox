@@ -80,6 +80,7 @@ sudo systemctl status nginx
 sudo systemctl status v2ray
 sudo systemctl status dnsmasq
 sudo systemctl status qbittorrent
+journalctl -e -u trojan.service
 crontab -l
 sudo ~/.acme.sh/acme.sh --cron
 timedatectl
