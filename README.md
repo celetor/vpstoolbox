@@ -16,6 +16,11 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
 sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojangui.sh)"
 ```
+### Shadowsocks（ws+tls) Version (Testing Version , no production Guarantee)
+```
+apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
+sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/master/trojan-ss.sh)"
+```
 ### Qbittorrent Version (No Centos8 Support)
 ```
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
@@ -23,8 +28,8 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 ```
 #### Bash Features:
 
-1. Auto install Trojan-GFW NGINX V2ray Qbittorrent and Dnsmasq
-2. Auto config Trojan-GFW NGINX V2ray Qbittorrent and Dnsmasq
+1. Auto install Trojan-GFW NGINX V2ray Shadowsocks Qbittorrent and Dnsmasq
+2. Auto config Trojan-GFW NGINX V2ray Shadowsocks Qbittorrent and Dnsmasq
 3. Auto issue renew let's encrypt certificate and **auto reload Trojan-GFW after renewal**
 4. Auto OS Detect **Support Centos Debian Ubuntu** (Centos not recommended)
 5. Auto domain resolve verification
