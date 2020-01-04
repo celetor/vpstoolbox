@@ -41,6 +41,7 @@ sudo bash -c "$(curl -fsSL https://github.com/johnrosen1/trojan-gfw-script/raw/m
 16. Auto ***Random Html Template Choose***
 17. Auto enable ***Full IPv6 Support***
 18. Auto enable ***time sync***
+19. Auto enable ***Fail Restart*** 
 19. Support auto ***vmess + tls + websocket + nginx*** config
 20. Support custom websocket path and alterid
 21. Support manually check for update include both Trojan-gfw and v2ray
