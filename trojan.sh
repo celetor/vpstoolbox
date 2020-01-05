@@ -1273,8 +1273,8 @@ removenginx(){
     yum remove nginx dnsmasq -y
     else
     apt purge nginx dnsmasq -p -y
+    rm -rf /etc/apt/sources.list.d/nginx.list
   fi
-  rm -rf /etc/apt/sources.list.d/nginx.list
   sudo ~/.acme.sh/acme.sh --uninstall
 }
 ##########Check for update############
