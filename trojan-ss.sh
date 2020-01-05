@@ -28,7 +28,7 @@ rm -rf /lib/systemd/system/cloud-config.target
 rm -rf /lib/systemd/system/cloud-final.service
 rm -rf /lib/systemd/system/cloud-init-local.service
 rm -rf /lib/systemd/system/cloud-init.service
-sudo systemctl daemon-reload
+systemctl daemon-reload
 fi
 #######color code############
 ERROR="31m"      # Error message
