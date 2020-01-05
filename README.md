@@ -46,7 +46,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 17. Auto enable ***Full IPv6 Support***
 18. Auto enable ***time sync***
 19. Auto enable ***Fail Restart*** 
-20. Auto uninstall aliyun aegis
+20. Auto uninstall Aliyun Aegis
 19. Support auto ***vmess or ss + tls + websocket + nginx*** config
 20. Support custom websocket path and alterid
 21. Support manually check for update include both Trojan-gfw and v2ray
