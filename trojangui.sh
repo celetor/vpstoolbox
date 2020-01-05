@@ -1300,9 +1300,6 @@ function advancedMenu() {
       dnsmasq_install=0
     fi
         clear
-        colorEcho ${INFO} "Detecting OS version"
-        osdist
-        colorEcho ${INFO} "Your os codename is $dist $(lsb_release -cs)"
         colorEcho ${INFO} "Updating system"
         updatesystem
         colorEcho ${INFO} "安装 dependency"
@@ -1384,9 +1381,6 @@ function advancedMenu() {
       dnsmasq_install=0
     fi
         clear
-        colorEcho ${INFO} "Detecting OS version"
-        osdist
-        colorEcho ${INFO} "你的 os codename is $dist $(lsb_release -cs)"
         colorEcho ${INFO} "Updating system"
         updatesystem
         colorEcho ${INFO} "安装 dependency"
@@ -1474,5 +1468,6 @@ function advancedMenu() {
 #export LC_ALL=en_US.UTF-8
 export LANG=C.UTF-8
 export LANGUAGE=C.UTF-8
+osdist
 advancedMenu
 echo "Program terminated."
