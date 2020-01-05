@@ -1281,9 +1281,12 @@ removev2ray(){
 removenginx(){
   systemctl stop nginx
   systemctl disable nginx
-  apt purge nginx -p -y
-  apt purge dnsmasq -p -y
-  rm -rf /etc/apt/sources.list.d/nginx.list
+    if [[ $dist = centos ]]; then
+    yum remove nginx dnsmasq -y
+    else
+    apt purge nginx dnsmasq -p -y
+    rm -rf /etc/apt/sources.list.d/nginx.list
+  fi
   sudo ~/.acme.sh/acme.sh --uninstall
 }
 ##########Check for update############
