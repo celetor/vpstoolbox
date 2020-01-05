@@ -488,6 +488,7 @@ touch /etc/nginx/conf.d/trojan.conf
 server {
   listen 127.0.0.1:80;
     server_name $domain;
+    if (\$http_user_agent = "") { return 444; }
     location / {
       root /usr/share/nginx/html/;
         index index.html;
@@ -999,6 +1000,7 @@ touch /etc/nginx/conf.d/trojan.conf
 server {
   listen 127.0.0.1:80; #放在Trojan后面即可做伪装也可以是真正的网站
     server_name $domain;
+    if (\$http_user_agent = "") { return 444; }
     location / {
       root /usr/share/nginx/html/;
         index index.html;
@@ -1008,11 +1010,11 @@ server {
         proxy_redirect off;
         proxy_pass http://127.0.0.1:10000;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade @http_upgrade;
+        proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "upgrade";
-        proxy_set_header Host @http_host;
-        proxy_set_header X-Real-IP @remote_addr;
-        proxy_set_header X-Forwarded-For @proxy_add_x_forwarded_for;
+        proxy_set_header Host \$http_host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
 }
@@ -1031,7 +1033,6 @@ server {
     return 444;
 }
 EOF
-sed  -i 's/@/$/g' /etc/nginx/conf.d/trojan.conf
 nginx -s reload
 }
 ###########Trojan Client Config#############
