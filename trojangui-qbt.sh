@@ -146,6 +146,8 @@ openfirewall(){
   ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
   ip6tables -I OUTPUT -j ACCEPT
     if [[ $dist = centos ]]; then
+    firewall-cmd --zone=public --add-port=80/tcp --permanent
+    firewall-cmd --zone=public --add-port=443/tcp --permanent
     systemctl stop firewalld
     systemctl disable firewalld
     yum install -y iptables-services
