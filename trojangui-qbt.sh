@@ -1289,16 +1289,16 @@ removev2ray(){
   sudo bash go.sh --remove
   rm go.sh
 }
-###########Remove Nginx dnsmasq and acme###############
+###########Remove Nginx dnsmasq qbittorrent and acme###############
 removenginx(){
   systemctl stop nginx
   systemctl disable nginx
     if [[ $dist = centos ]]; then
-    yum remove nginx dnsmasq -y
+    yum remove nginx dnsmasq qbittorrent-nox -y
     else
-    apt purge nginx dnsmasq -p -y
+    apt purge nginx dnsmasq qbittorrent-nox -p -y
+    rm -rf /etc/apt/sources.list.d/nginx.list
   fi
-  rm -rf /etc/apt/sources.list.d/nginx.list
   sudo ~/.acme.sh/acme.sh --uninstall
 }
 ##########Check for update############
