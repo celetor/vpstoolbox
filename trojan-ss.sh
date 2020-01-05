@@ -1359,10 +1359,6 @@ html(){
   unzip -o $htmlcode.zip -d /usr/share/nginx/html/
   rm -rf $htmlcode.zip
 }
-#########Cron Job#################
-cronjob(){
-  (crontab -l && echo "30 03 01 */2 * systemctl restart trojan") | crontab -
-}
 ##################################
 timesync(){
   timedatectl set-timezone Asia/Hong_Kong
@@ -1454,7 +1450,6 @@ function advancedMenu() {
         clear
         colorEcho ${INFO} "启动 trojan-gfw and nginx | setting up boot autostart"
         autostart
-        #cronjob
         timesync
         clear
         trojanclient
@@ -1533,7 +1528,6 @@ function advancedMenu() {
         installv2ray
         colorEcho ${INFO} "starting trojan-gfw v2ray and nginx | setting up boot autostart"
         autostart
-        #cronjob
         timesync
         clear
         trojanclient
