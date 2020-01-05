@@ -201,7 +201,7 @@ StandardError=journal
 ExecStart="/usr/local/bin/trojan" "/usr/local/etc/trojan/config6.json"
 ExecReload=/bin/kill -HUP \$MAINPID
 Restart=on-failure
-RestartSec=1s
+RestartSec=3s
 
 [Install]
 WantedBy=multi-user.target
