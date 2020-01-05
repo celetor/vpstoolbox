@@ -3,6 +3,33 @@ if [[ $(id -u) != 0 ]]; then
     echo Please run this script as root.
     exit 1
 fi
+
+if [[ -f /etc/init.d/aegis ]]; then
+systemctl stop aegis
+systemctl disable aegis
+rm -rf /etc/init.d/aegis
+systemctl stop aliyun
+systemctl disable aliyun
+systemctl stop cloud-config
+systemctl disable cloud-config
+systemctl stop cloud-final
+systemctl disable cloud-final
+systemctl stop cloud-init-local.service
+systemctl disable cloud-init-local.service
+systemctl stop cloud-init
+systemctl disable cloud-init
+systemctl stop exim4
+systemctl disable exim4
+systemctl stop apparmor
+systemctl disable apparmor
+rm -rf /etc/systemd/system/aliyun.service
+rm -rf /lib/systemd/system/cloud-config.service
+rm -rf /lib/systemd/system/cloud-config.target
+rm -rf /lib/systemd/system/cloud-final.service
+rm -rf /lib/systemd/system/cloud-init-local.service
+rm -rf /lib/systemd/system/cloud-init.service
+sudo systemctl daemon-reload
+fi
 #######color code############
 ERROR="31m"      # Error message
 SUCCESS="32m"    # Success message
