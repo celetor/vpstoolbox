@@ -18,7 +18,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
-### BBRPLUS VERSION
+### [BBRPLUS](https://github.com/chiakge/Linux-NetSpeed) VERSION
 ```
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui%20-bbrplus.sh)"
