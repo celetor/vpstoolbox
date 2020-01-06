@@ -1344,15 +1344,15 @@ else
   #./trojan-url.py -i /etc/trojan/client.json
   ./trojan-url.py -q -i /etc/trojan/client1.json -o $password1.png || true
   ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png || true
-  cp $password1.png /usr/share/nginx/html/
-  cp $password2.png /usr/share/nginx/html/
+  cp $password1.png /usr/share/nginx/html/ || true
+  cp $password2.png /usr/share/nginx/html/ || true
   colorEcho ${INFO} "Please visit the link below to get your QR code1"
   colorEcho ${LINK} "https://$domain/$password1.png"
   colorEcho ${INFO} "Please visit the link below to get your QR code2"
   colorEcho ${LINK} "https://$domain/$password2.png"
   rm -rf trojan-url.py
-  rm -rf $password1.png
-  rm -rf $password2.png
+  rm -rf $password1.png || true
+  rm -rf $password2.png || true
 fi
 }
 ########V2ray share link############
@@ -1381,12 +1381,12 @@ html(){
 }
 ##################################
 timesync(){
-  timedatectl set-timezone Asia/Hong_Kong
-  timedatectl set-ntp on
+  timedatectl set-timezone Asia/Hong_Kong || true
+  timedatectl set-ntp on || true
   if [[ $dist = centos ]]; then
     :
     else
-      ntpdate -qu 1.hk.pool.ntp.org
+      ntpdate -qu 1.hk.pool.ntp.org || true
   fi
 }
 ##################################
