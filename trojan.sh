@@ -1327,8 +1327,8 @@ else
   colorEcho ${INFO} "Please visit the link below to get your QR code2"
   colorEcho ${LINK} "https://$domain/$password2.png"
   rm -rf trojan-url.py
-  rm -rf $password1.png
-  rm -rf $password2.png
+  rm -rf $password1.png || true
+  rm -rf $password2.png || true
 fi
 }
 ########V2ray share link############
