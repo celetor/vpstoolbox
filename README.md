@@ -4,7 +4,7 @@
 
 #### via wget
 ```
-apt-get update && apt-get install sudo wget -y | yum install sudo curl -y
+apt-get update && apt-get install sudo wget -y | yum install sudo wget -y
 sudo bash -c "$(wget -O- https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
 #### or via curl
