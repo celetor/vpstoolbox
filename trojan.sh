@@ -4,7 +4,7 @@ if [[ $(id -u) != 0 ]]; then
     exit 1
 fi
 
-if [[ -f /etc/init.d/aegis ]]; then
+if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
 systemctl stop aegis || true
 systemctl disable aegis || true
 rm -rf /etc/init.d/aegis || true
