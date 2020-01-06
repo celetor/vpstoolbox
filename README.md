@@ -1,5 +1,5 @@
 ![logo](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/logo.png)
-# Trojan-GFW Script
+# Trojan-GFW Script (NO Centos7 Support!!!)
 ## This script will help you set up a [Trojan-GFW](https://github.com/trojan-gfw/trojan) server in an extremely fast way.
 ### Read The Fucking Manual: https://www.johnrosen1.com/trojan/ 
 
@@ -29,7 +29,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan-ss.sh)"
 ```
-### [Qbittorrent](https://www.johnrosen1.com/qbt/) Version (No Centos8 Support)
+### [Qbittorrent](https://www.johnrosen1.com/qbt/) Version (No Centos Support)
 ```
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui-qbt.sh)"
