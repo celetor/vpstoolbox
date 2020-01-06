@@ -50,7 +50,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 14. Auto enable HSTS header
 15. Auto enable ***TLS1.3 ONLY***
 16. Auto ***Random Html Template Choose***
-17. Auto enable ***Full IPv6 Support***
+17. Auto enable [***Full IPv6 Support***](https://en.wikipedia.org/wiki/IPv6)
 18. Auto enable ***time sync***
 19. Auto enable ***Fail Restart*** 
 20. Auto uninstall Aliyun Aegis
