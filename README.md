@@ -35,7 +35,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ```
 #### Bash Features:
 
-1. Auto install and config Trojan-GFW NGINX Dnsmasq V2ray Shadowsocks and Qbittorrent
+1. Auto install and config [Trojan-GFW](https://github.com/trojan-gfw/trojan) [NGINX](https://www.nginx.com/) [Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [V2ray](https://www.v2ray.com/index.html) [Shadowsocks](https://shadowsocks.org/en/index.html) and [Qbittorrent](https://www.qbittorrent.org/)
 3. Auto issue renew let's encrypt certificate and **auto reload Trojan-GFW after renewal**
 4. Auto OS Detect **Support Centos Debian Ubuntu** (Centos not recommended)
 5. Auto domain resolve verification
