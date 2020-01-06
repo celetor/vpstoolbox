@@ -54,7 +54,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 18. Auto enable ***time sync***
 19. Auto enable ***Fail Restart*** 
 20. Auto uninstall Aliyun Aegis
-19. Support auto [***vmess or ss + tls + websocket + nginx*** config](https://guide.v2fly.org/advanced/wss_and_web.html#%E9%85%8D%E7%BD%AE)
+19. Support auto [***vmess or ss + tls + websocket + nginx*** config](https://guide.v2fly.org/advanced/wss_and_web.html)
 20. Support custom websocket path and alterid
 21. Support manually check for update include both Trojan-gfw and v2ray
 22. Support manually force renew certificate
