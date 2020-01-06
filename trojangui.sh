@@ -155,14 +155,14 @@ installdependency(){
   if [[ $dist = centos ]]; then
     yum install -y sudo curl socat wget gnupg gnupg2 python3-qrcode unzip bind-utils epel-release chrony systemd
  elif [[ $dist = ubuntu ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus -qq -y
     if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
       TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "你的操作系统不支持 python3-qrcode,Skipping generating QR code!" 8 78
       else
         apt-get install python3-qrcode -qq -y
     fi
  elif [[ $dist = debian ]]; then
-    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf ntpdate -qq -y
+    apt-get install sudo curl socat xz-utils wget apt-transport-https gnupg gnupg2 dnsutils lsb-release python-pil unzip resolvconf ntpdate dbus -qq -y
         if [[ $(lsb_release -cs) == jessie ]]; then
       colorEcho ${ERROR} "Debian8 does not support python3-qrcode,Skipping generating QR code!"
       else
