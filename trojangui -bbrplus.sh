@@ -1249,17 +1249,17 @@ else
   wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
   chmod +x trojan-url.py
   #./trojan-url.py -i /etc/trojan/client.json
-  ./trojan-url.py -q -i /etc/trojan/client1.json -o $password1.png
-  ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png
-  cp $password1.png /usr/share/nginx/html/
-  cp $password2.png /usr/share/nginx/html/
+  ./trojan-url.py -q -i /etc/trojan/client1.json -o $password1.png || true
+  ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png || true
+  cp $password1.png /usr/share/nginx/html/ || true
+  cp $password2.png /usr/share/nginx/html/ || true
   colorEcho ${INFO} "请访问下面的链接获取Trojan-GFW 二维码 1"
   colorEcho ${LINK} "https://$domain/$password1.png"
   colorEcho ${INFO} "请访问下面的链接获取Trojan-GFW 二维码 2"
   colorEcho ${LINK} "https://$domain/$password2.png"
   rm -rf trojan-url.py
-  rm -rf $password1.png
-  rm -rf $password2.png
+  rm -rf $password1.png || true
+  rm -rf $password2.png || true
 fi
 }
 ########V2ray share link############
