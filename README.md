@@ -63,7 +63,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 23. Support Full Uninstall
 
 #### Friendly Reminder:
-1. Please [Purchase a domain](https://www.namesilo.com/?rid=685fb47qi) and finish a dns resolve before running this bash script!
+1. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and finish a dns resolve before running this bash script!
 2. Please manually change system dns to frequently updated dns like [1.1.1.1](https://1.1.1.1/) instead of those who update slowly like aliyun lan dns !
 ```
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
