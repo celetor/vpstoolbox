@@ -37,7 +37,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 
 1. Auto install and config [Trojan-GFW](https://github.com/trojan-gfw/trojan) [NGINX](https://www.nginx.com/) [Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [V2ray](https://www.v2ray.com/index.html) [Shadowsocks](https://shadowsocks.org/en/index.html) and [Qbittorrent](https://www.qbittorrent.org/)
 3. Auto issue renew [let's encrypt certificate](https://letsencrypt.org/) and **auto reload Trojan-GFW after renewal**
-4. Auto OS Detect **Support Centos Debian Ubuntu** (Centos not recommended)
+4. Auto OS Detect **Support Centos Debian Ubuntu** (Centos not recommended !!!)
 5. Auto domain resolve verification
 6. Auto iptables(includes ipv6) firewall config and iptables-persistent
 7. Auto generate client config (includes both Trojan-GFW and V2ray )
