@@ -334,8 +334,12 @@ installacme(){
 }
 ##################################################
 issuecert(){
-  rm -rf /etc/nginx/sites-enabled/*
-  rm -rf /etc/nginx/sites-available/*
+  if [[ -f /etc/trojan/trojan.crt ]]; then
+    :
+    else
+  mkdir /etc/trojan/ &
+  rm -rf /etc/nginx/sites-available/* &
+  rm -rf /etc/nginx/sites-enabled/* &
   rm -rf /etc/nginx/conf.d/*
   touch /etc/nginx/conf.d/default.conf
     cat > '/etc/nginx/conf.d/default.conf' << EOF
@@ -347,14 +351,12 @@ server {
 EOF
   systemctl start nginx
   sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl restart trojan && systemctl restart trojan6"
+  sudo ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
+  fi
 }
 ##################################################
 renewcert(){
   sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl restart trojan && systemctl restart trojan6"
-}
-##################################################
-installcert(){
-  sudo ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
 }
 ##################################################
 installkey(){
@@ -1430,9 +1432,6 @@ _EOF_
         nginxtrojan
         html
         clear
-        colorEcho ${INFO} "issue complete,installing certificate"
-        installcert
-        clear
         colorEcho ${INFO} "certificate install complete!"
         colorEcho ${INFO} "giving private key read authority"
         installkey
@@ -1502,8 +1501,6 @@ _EOF_
         clear
         colorEcho ${INFO} "issueing let\'s encrypt certificate"
         issuecert
-        colorEcho ${INFO} "issue complete,installing certificate"
-        installcert
         colorEcho ${INFO} "certificate install complete!"
         colorEcho ${INFO} "configing nginx for v2ray vmess+tls+Websocket"
         nginxv2ray
