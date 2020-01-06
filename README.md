@@ -44,8 +44,8 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 8. Auto random vmess uuid generate
 9. Auto [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks) enable ( **[TCP-BBR](https://github.com/google/bbr)** included)
 10. Auto [Nginx Performance Optimization](https://www.johnrosen1.com/nginx1/)
-11. Auto Trojan-GFW ***trojan://*** share link and QR code generate
-12. Auto V2ray ***vmess://*** share link generate
+11. Auto [Trojan-GFW ***trojan://*** share link and QR code generate](https://github.com/trojan-gfw/trojan-url)
+12. Auto [V2ray ***vmess://*** share link generate](https://github.com/boypt/vmess2json)
 13. Auto https 301 redirect without affecting certificate renew
 14. Auto enable HSTS header
 15. Auto enable ***TLS1.3 ONLY***
