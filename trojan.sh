@@ -5,30 +5,30 @@ if [[ $(id -u) != 0 ]]; then
 fi
 
 if [[ -f /etc/init.d/aegis ]]; then
-systemctl stop aegis
-systemctl disable aegis
-rm -rf /etc/init.d/aegis
-systemctl stop aliyun
-systemctl disable aliyun
-systemctl stop cloud-config
-systemctl disable cloud-config
-systemctl stop cloud-final
-systemctl disable cloud-final
-systemctl stop cloud-init-local.service
-systemctl disable cloud-init-local.service
-systemctl stop cloud-init
-systemctl disable cloud-init
-systemctl stop exim4
-systemctl disable exim4
-systemctl stop apparmor
-systemctl disable apparmor
-rm -rf /etc/systemd/system/aliyun.service
-rm -rf /lib/systemd/system/cloud-config.service
-rm -rf /lib/systemd/system/cloud-config.target
-rm -rf /lib/systemd/system/cloud-final.service
-rm -rf /lib/systemd/system/cloud-init-local.service
-rm -rf /lib/systemd/system/cloud-init.service
-systemctl daemon-reload
+systemctl stop aegis || true
+systemctl disable aegis || true
+rm -rf /etc/init.d/aegis || true
+systemctl stop aliyun || true
+systemctl disable aliyun || true
+systemctl stop cloud-config || true
+systemctl disable cloud-config || true
+systemctl stop cloud-final || true
+systemctl disable cloud-final || true
+systemctl stop cloud-init-local.service || true
+systemctl disable cloud-init-local.service || true
+systemctl stop cloud-init || true
+systemctl disable cloud-init || true
+systemctl stop exim4 || true
+systemctl disable exim4 || true
+systemctl stop apparmor || true
+systemctl disable apparmor || true
+rm -rf /etc/systemd/system/aliyun.service || true
+rm -rf /lib/systemd/system/cloud-config.service || true
+rm -rf /lib/systemd/system/cloud-config.target || true
+rm -rf /lib/systemd/system/cloud-final.service || true
+rm -rf /lib/systemd/system/cloud-init-local.service || true
+rm -rf /lib/systemd/system/cloud-init.service || true
+systemctl daemon-reload || true
 fi
 #######color code############
 ERROR="31m"      # Error message
@@ -171,7 +171,7 @@ openfirewall(){
   ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
   ip6tables -I OUTPUT -j ACCEPT
     if [[ $dist = centos ]]; then
-        setenforce 0
+        setenforce 0 || true
           cat > '/etc/selinux/config' << EOF
 # This file controls the state of SELinux on the system.
 # SELINUX= can take one of these three values:
@@ -185,15 +185,15 @@ SELINUX=disabled
 #     mls - Multi Level Security protection.
 SELINUXTYPE=targeted
 EOF
-    firewall-cmd --zone=public --add-port=80/tcp --permanent
-    firewall-cmd --zone=public --add-port=443/tcp --permanent
-    systemctl stop firewalld
-    systemctl disable firewalld
-    yum install -y iptables-services
-    systemctl enable iptables
-    systemctl enable ip6tables
-    sudo /usr/libexec/iptables/iptables.init save
-    systemctl start iptables.service
+    firewall-cmd --zone=public --add-port=80/tcp --permanent || true
+    firewall-cmd --zone=public --add-port=443/tcp --permanent || true
+    systemctl stop firewalld || true
+    systemctl disable firewalld || true
+    yum install -y iptables-services || true
+    systemctl enable iptables || true
+    systemctl enable ip6tables || true
+    sudo /usr/libexec/iptables/iptables.init save || true
+    systemctl start iptables.service || true
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     apt-get install iptables-persistent -q -y > /dev/null
@@ -354,7 +354,7 @@ issuecert(){
   mkdir /etc/trojan/ &
   rm -rf /etc/nginx/sites-available/* &
   rm -rf /etc/nginx/sites-enabled/* &
-  rm -rf /etc/nginx/conf.d/*
+  rm -rf /etc/nginx/conf.d/* || true
   touch /etc/nginx/conf.d/default.conf
     cat > '/etc/nginx/conf.d/default.conf' << EOF
 server {
@@ -480,9 +480,9 @@ EOF
 }
 ########Nginx config for Trojan only##############
 nginxtrojan(){
-rm -rf /etc/nginx/sites-available/*
-rm -rf /etc/nginx/sites-enabled/*
-rm -rf /etc/nginx/conf.d/*
+rm -rf /etc/nginx/sites-available/* || true
+rm -rf /etc/nginx/sites-enabled/* || true
+rm -rf /etc/nginx/conf.d/* || true
 touch /etc/nginx/conf.d/trojan.conf
   if [[ $dist != centos ]]; then
     nginxconf
@@ -561,11 +561,11 @@ sed  -i 's/@/$/g' /etc/nginx/nginx.conf
 }
 ##########Auto boot start###############
 autostart(){
-  systemctl restart trojan
-  systemctl restart trojan6
-  systemctl enable nginx
-  systemctl enable trojan
-  systemctl enable trojan6
+  systemctl restart trojan || true
+  systemctl restart trojan6 || true
+  systemctl enable nginx || true
+  systemctl enable trojan || true
+  systemctl enable trojan6 || true
 }
 ##########tcp-bbr#####################
 tcp-bbr(){
@@ -1264,18 +1264,18 @@ EOF
 }
 ##########Remove Trojan-Gfw##########
 removetrojan(){
-  systemctl stop trojan
-  systemctl disable trojan
-  rm -rf /usr/local/etc/trojan/*
-  rm -rf /etc/trojan/*
-  rm -rf /etc/systemd/system/trojan*
-  rm -rf ~/.acme.sh/$domain
+  systemctl stop trojan || true
+  systemctl disable trojan || true
+  rm -rf /usr/local/etc/trojan/* || true
+  rm -rf /etc/trojan/* || true
+  rm -rf /etc/systemd/system/trojan* || true
+  rm -rf ~/.acme.sh/$domain || true
 }
 ##########Remove V2ray###############
 removev2ray(){
-  systemctl stop v2ray
-  systemctl disable v2ray
-  systemctl daemon-reload
+  systemctl stop v2ray || true
+  systemctl disable v2ray || true
+  systemctl daemon-reload || true
   cd
   wget https://install.direct/go.sh -q
   sudo bash go.sh --remove
@@ -1283,13 +1283,13 @@ removev2ray(){
 }
 ###########Remove Nginx dnsmasq and acme###############
 removenginx(){
-  systemctl stop nginx
-  systemctl disable nginx
+  systemctl stop nginx || true
+  systemctl disable nginx || true
     if [[ $dist = centos ]]; then
-    yum remove nginx dnsmasq -y
+    yum remove nginx dnsmasq -y || true
     else
-    apt purge nginx dnsmasq -p -y
-    rm -rf /etc/apt/sources.list.d/nginx.list
+    apt purge nginx dnsmasq -p -y || true
+    rm -rf /etc/apt/sources.list.d/nginx.list || true
   fi
   sudo ~/.acme.sh/acme.sh --uninstall
 }
@@ -1318,10 +1318,10 @@ else
   wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
   chmod +x trojan-url.py
   #./trojan-url.py -i /etc/trojan/client.json
-  ./trojan-url.py -q -i /etc/trojan/client1.json -o $password1.png
-  ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png
-  cp $password1.png /usr/share/nginx/html/
-  cp $password2.png /usr/share/nginx/html/
+  ./trojan-url.py -q -i /etc/trojan/client1.json -o $password1.png || true
+  ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png || true
+  cp $password1.png /usr/share/nginx/html/ || true
+  cp $password2.png /usr/share/nginx/html/ || true
   colorEcho ${INFO} "Please visit the link below to get your QR code1"
   colorEcho ${LINK} "https://$domain/$password1.png"
   colorEcho ${INFO} "Please visit the link below to get your QR code2"
@@ -1336,7 +1336,7 @@ v2raylink(){
   wget https://github.com/boypt/vmess2json/raw/master/json2vmess.py -q
   chmod +x json2vmess.py
   touch /etc/v2ray/$uuid.txt
-  v2link=$(./json2vmess.py --addr $domain --filter ws --amend port:443 --amend tls:tls /etc/v2ray/config.json)
+  v2link=$(./json2vmess.py --addr $domain --filter ws --amend port:443 --amend tls:tls /etc/v2ray/config.json) || true
     cat > "/etc/v2ray/$uuid.txt" << EOF
 $v2link
 EOF
