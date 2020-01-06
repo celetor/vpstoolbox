@@ -1547,7 +1547,6 @@ function advancedMenu() {
         ;;
     esac
 }
-#export LC_ALL=en_US.UTF-8
 export LANG=C.UTF-8
 export LANGUAGE=C.UTF-8
 osdist
