@@ -228,9 +228,9 @@ http {
   access_log /var/log/nginx/access.log;
 
 
-  log_format  main  '@remote_addr - @remote_user [$time_local] "@request" '
-    '@status $body_bytes_sent "@http_referer" '
-    '"@http_user_agent" "@http_x_forwarded_for"';
+  log_format  main  '\$remote_addr - \$remote_user [$time_local] "\$request" '
+    '\$status $body_bytes_sent "\$http_referer" '
+    '"\$http_user_agent" "\$http_x_forwarded_for"';
 
   sendfile on;
   gzip on;
@@ -286,13 +286,15 @@ installnginx(){
 installacme(){
   curl -s https://get.acme.sh | sh
   sudo ~/.acme.sh/acme.sh --upgrade --auto-upgrade > /dev/null
-  rm -rf /etc/trojan/
-  mkdir /etc/trojan/
 }
 ##################################################
 issuecert(){
-  rm -rf /etc/nginx/sites-available/*
-  rm -rf /etc/nginx/sites-enabled/*
+  if [[ -f /etc/trojan/trojan.crt ]]; then
+    TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
+    else
+  mkdir /etc/trojan/ &
+  rm -rf /etc/nginx/sites-available/* &
+  rm -rf /etc/nginx/sites-enabled/* &
   rm -rf /etc/nginx/conf.d/*
   touch /etc/nginx/conf.d/default.conf
     cat > '/etc/nginx/conf.d/default.conf' << EOF
@@ -304,14 +306,12 @@ server {
 EOF
   systemctl start nginx
   sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl restart trojan && systemctl restart trojan6"
+  sudo ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
+  fi
 }
 ##################################################
 renewcert(){
   sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl restart trojan && systemctl restart trojan6"
-}
-##################################################
-installcert(){
-  sudo ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
 }
 ##################################################
 installkey(){
@@ -319,7 +319,11 @@ installkey(){
 }
 ##################################################
 changepasswd(){
-  openssl dhparam -out /etc/trojan/trojan.pem 2048
+  if [[ -f /etc/trojan/trojan.pem ]]; then
+    colorEcho ${INFO} "DH已有，跳过生成。。。"
+    else
+      openssl dhparam -out /etc/trojan/trojan.pem 2048
+  fi
   cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
@@ -328,8 +332,8 @@ changepasswd(){
     "remote_addr": "127.0.0.1",
     "remote_port": 80,
     "password": [
-        "password1",
-        "password2"
+        "$password1",
+        "$password2"
     ],
     "log_level": 1,
     "ssl": {
@@ -375,8 +379,8 @@ EOF
     "remote_addr": "127.0.0.1",
     "remote_port": 80,
     "password": [
-        "password1",
-        "password2"
+        "$password1",
+        "$password2"
     ],
     "log_level": 1,
     "ssl": {
@@ -414,10 +418,6 @@ EOF
     }
 }
 EOF
-  sed  -i "s/password1/$password1/g" /usr/local/etc/trojan/config.json
-  sed  -i "s/password2/$password2/g" /usr/local/etc/trojan/config.json
-  sed  -i "s/password1/$password1/g" /usr/local/etc/trojan/config6.json
-  sed  -i "s/password2/$password2/g" /usr/local/etc/trojan/config6.json
 }
 ########Nginx config for Trojan only##############
 nginxtrojan(){
@@ -486,9 +486,9 @@ http {
   access_log /var/log/nginx/access.log;
 
 
-  log_format  main  '@remote_addr - @remote_user [$time_local] "@request" '
-    '@status $body_bytes_sent "@http_referer" '
-    '"@http_user_agent" "@http_x_forwarded_for"';
+  log_format  main  '\$remote_addr - \$remote_user [$time_local] "\$request" '
+    '\$status $body_bytes_sent "\$http_referer" '
+    '"\$http_user_agent" "\$http_x_forwarded_for"';
 
   sendfile on;
   gzip on;
@@ -497,7 +497,6 @@ http {
   include /etc/nginx/conf.d/*.conf; 
 }
 EOF
-sed  -i 's/@/$/g' /etc/nginx/nginx.conf
 }
 ##########Auto boot start###############
 autostart(){
@@ -1347,9 +1346,6 @@ function advancedMenu() {
         nginxtrojan
         html
         clear
-        colorEcho ${INFO} "issue complete,installing certificate"
-        installcert
-        clear
         colorEcho ${INFO} "certificate install complete!"
         colorEcho ${INFO} "giving private key read authority"
         installkey
@@ -1357,7 +1353,7 @@ function advancedMenu() {
         colorEcho ${INFO} "配置 trojan-gfw"
         changepasswd
         clear
-        colorEcho ${INFO} "启动 trojan-gfw and nginx | setting up boot autostart"
+        colorEcho ${INFO} "启动 trojan-gfw and nginx 并设置开机自启ing..."
         autostart
         timesync
         clear
@@ -1420,8 +1416,6 @@ function advancedMenu() {
         clear
         colorEcho ${INFO} "issueing let\'s encrypt certificate"
         issuecert
-        colorEcho ${INFO} "issue complete,installing certificate"
-        installcert
         colorEcho ${INFO} "certificate install complete!"
         colorEcho ${INFO} "配置 nginx for v2ray vmess+tls+Websocket"
         nginxv2ray
