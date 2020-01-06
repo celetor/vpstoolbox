@@ -449,6 +449,7 @@ touch /etc/nginx/conf.d/trojan.conf
 server {
   listen 127.0.0.1:80;
     server_name $domain;
+    if (\$http_user_agent = "") { return 444; }
     location / {
       root /usr/share/nginx/html/;
         index index.html;
