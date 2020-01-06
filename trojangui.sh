@@ -515,11 +515,11 @@ EOF
 }
 ##########Auto boot start###############
 autostart(){
-  systemctl restart trojan
-  systemctl restart trojan6
-  systemctl enable nginx
-  systemctl enable trojan
-  systemctl enable trojan6
+  systemctl restart trojan || true
+  systemctl restart trojan6 || true
+  systemctl enable nginx || true
+  systemctl enable trojan || true
+  systemctl enable trojan6 || true
 }
 ##########tcp-bbr#####################
 tcp-bbr(){
