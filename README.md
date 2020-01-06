@@ -53,7 +53,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 17. Auto enable [***Full IPv6 Support***](https://en.wikipedia.org/wiki/IPv6)
 18. Auto enable ***time sync***
 19. Auto enable ***Fail Restart*** 
-20. Auto uninstall Aliyun Aegis
+20. Auto [uninstall Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
 21. Auto [shutdown and disable SElinux](https://support.plesk.com/hc/en-us/articles/213947705-How-to-disable-SELinux-on-a-server)
 19. Support auto [***vmess or ss + tls + websocket + nginx*** config](https://guide.v2fly.org/advanced/wss_and_web.html)
 20. Support custom websocket path and alterid
