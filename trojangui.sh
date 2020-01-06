@@ -822,8 +822,8 @@ dnsmasq(){
     exit 1;
  fi
  if [[ $dist = ubuntu ]]; then
-   systemctl stop systemd-resolved
-   systemctl disable systemd-resolved
+   systemctl stop systemd-resolved || true
+   systemctl disable systemd-resolved || true
  fi
  mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
  touch /etc/dnsmasq.conf
