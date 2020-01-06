@@ -4,10 +4,12 @@
 
 #### via wget
 ```
+apt-get update && apt-get install sudo wget -y | yum install sudo curl -y
 sudo bash -c "$(wget -O- https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
 #### or via curl
 ```
+apt-get update && apt-get install sudo curl -y | yum install sudo curl -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
 
