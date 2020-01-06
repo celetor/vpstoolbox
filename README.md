@@ -1,4 +1,4 @@
-![logo](https://github.com/johnrosen1/trojan-gfw-script/raw/master/logo.jpg)
+![logo](https://github.com/johnrosen1/trojan-gfw-script/raw/master/logo.png)
 
 # Trojan-GFW Script
 ## This script will help you set up a [Trojan-GFW](https://github.com/trojan-gfw/trojan) server in an extremely fast way.
