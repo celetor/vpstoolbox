@@ -74,7 +74,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 8. Due to personal demands , Dnsmasq installation is not forced ,press [ENTER] to skip or manually enter y to install dnsmasq.
 9. If "sudo command not found" , please manually install sudo from the command above !
 
-#### Telegram Channel And Group
+#### [Telegram](https://telegram.org/) Channel And Group
 
 ### https://t.me/johnrosen1
 
