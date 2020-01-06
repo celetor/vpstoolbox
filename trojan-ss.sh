@@ -321,7 +321,11 @@ installkey(){
 }
 ##################################################
 changepasswd(){
-  openssl dhparam -out /etc/trojan/trojan.pem 2048
+  if [[ -f /etc/trojan/trojan.pem ]]; then
+    colorEcho ${INFO} "DH已有，跳过生成。。。"
+    else
+      openssl dhparam -out /etc/trojan/trojan.pem 2048
+  fi
   cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
@@ -330,8 +334,8 @@ changepasswd(){
     "remote_addr": "127.0.0.1",
     "remote_port": 80,
     "password": [
-        "password1",
-        "password2"
+        "$password1",
+        "$password2"
     ],
     "log_level": 1,
     "ssl": {
@@ -377,8 +381,8 @@ EOF
     "remote_addr": "127.0.0.1",
     "remote_port": 80,
     "password": [
-        "password1",
-        "password2"
+        "$password1",
+        "$password2"
     ],
     "log_level": 1,
     "ssl": {
@@ -416,10 +420,6 @@ EOF
     }
 }
 EOF
-  sed  -i "s/password1/$password1/g" /usr/local/etc/trojan/config.json
-  sed  -i "s/password2/$password2/g" /usr/local/etc/trojan/config.json
-  sed  -i "s/password1/$password1/g" /usr/local/etc/trojan/config6.json
-  sed  -i "s/password2/$password2/g" /usr/local/etc/trojan/config6.json
 }
 ########Nginx config for Trojan only##############
 nginxtrojan(){
