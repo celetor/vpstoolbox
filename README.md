@@ -39,7 +39,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 3. Auto issue renew [let's encrypt certificate](https://letsencrypt.org/) and **auto reload Trojan-GFW after renewal**
 4. Auto OS Detect **Support Centos Debian Ubuntu** (Centos not recommended !!!)
 5. Auto domain resolve verification
-6. Auto iptables(includes ipv6) firewall config and iptables-persistent
+6. Auto [iptables](https://en.wikipedia.org/wiki/Iptables)(includes ipv6) firewall config and iptables-persistent
 7. Auto generate client config (includes both Trojan-GFW and V2ray )
 8. Auto random vmess uuid generate
 9. Auto [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks) enable ( **[TCP-BBR](https://github.com/google/bbr)** included)
