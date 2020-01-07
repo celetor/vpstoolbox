@@ -68,7 +68,7 @@ Attachment: **If you need more functions, please open a Github issue.(No Centos 
 
 #### https://www.kamatera.com/
 
-#### Related Link
+#### Related Links
 
 https://github.com/chiakge/Linux-NetSpeed
 
