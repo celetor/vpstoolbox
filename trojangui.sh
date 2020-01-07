@@ -70,7 +70,7 @@ domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可
 password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快输入你想要的密码一并按回车" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快输入想要的密码二并按回车" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 
-whiptail --title "Test" --checklist --separate-output "Choose:" 20 78 7 \
+whiptail --title "User choose" --checklist --separate-output "Choose:" 20 78 7 \
 "1" "系统升级(System Upgrade)" on \
 "2" "仅启用TLS1.3(TLS1.3 ONLY)" off \
 "3" "安装V2ray(Vmess+Websocket+tls+nginx)" off \
