@@ -19,21 +19,6 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
-### [BBRPLUS](https://github.com/chiakge/Linux-NetSpeed) VERSION
-```
-apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui%20-bbrplus.sh)"
-```
-### Shadowsocks Version (ws+tls+[V2ray-plugin](https://github.com/shadowsocks/v2ray-plugin))
-```
-apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan-ss.sh)"
-```
-### [Qbittorrent](https://www.johnrosen1.com/qbt/) Version (No Centos Support)
-```
-apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui-qbt.sh)"
-```
 #### Bash Features:
 
 1. Auto install and config [Trojan-GFW](https://github.com/trojan-gfw/trojan) [NGINX](https://www.nginx.com/) [Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [V2ray](https://www.v2ray.com/index.html) [Shadowsocks](https://shadowsocks.org/en/index.html) and [Qbittorrent](https://www.qbittorrent.org/)
