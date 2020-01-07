@@ -1,5 +1,5 @@
 ![logo](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/logo.png)
-# Trojan-GFW Script (NO Centos7 Support!!!)
+# Trojan-GFW Script (NO Centos Guarantee!!!)
 ## This script will help you set up a [Trojan-GFW](https://github.com/trojan-gfw/trojan) server in an extremely fast way.
 ### Read The Fucking Manual: https://www.johnrosen1.com/trojan/ 
 
@@ -23,7 +23,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 
 1. Auto install and config [Trojan-GFW](https://github.com/trojan-gfw/trojan) [NGINX](https://www.nginx.com/) [Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [V2ray](https://www.v2ray.com/index.html) [Shadowsocks](https://shadowsocks.org/en/index.html) and [Qbittorrent](https://www.qbittorrent.org/)
 3. Auto issue renew [let's encrypt certificate](https://letsencrypt.org/) and **auto reload Trojan-GFW after renewal**
-4. Auto OS Detect **Support [Centos](https://www.centos.org/) [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)** (Centos not recommended !!!)
+4. Auto OS Detect **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)** (Centos has not Guarantee !!!)
 5. Auto domain resolve verification
 6. Auto [iptables](https://en.wikipedia.org/wiki/Iptables)(includes ipv6) firewall config and iptables-persistent
 7. Auto generate client config (includes both Trojan-GFW and V2ray )
