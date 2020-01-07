@@ -108,11 +108,11 @@ upgradesystem(){
  elif [[ $dist = ubuntu ]]; then
     export UBUNTU_FRONTEND=noninteractive 
     apt-get upgrade -q -y
-    apt-get autoremove -qq -y > /dev/null
+    apt-get autoremove -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
     apt-get upgrade -q -y
-    apt-get autoremove -qq -y > /dev/null
+    apt-get autoremove -qq -y
  else
   clear
   TERM=ansi whiptail --title "error can't upgrade system" --infobox "error can't upgrade system" 8 78
@@ -435,9 +435,9 @@ EOF
 }
 ########Nginx config for Trojan only##############
 nginxtrojan(){
-rm -rf /etc/nginx/sites-available/*
-rm -rf /etc/nginx/sites-enabled/*
-rm -rf /etc/nginx/conf.d/*
+rm -rf /etc/nginx/sites-available/* || true
+rm -rf /etc/nginx/sites-enabled/* || true
+rm -rf /etc/nginx/conf.d/* || true
 touch /etc/nginx/conf.d/trojan.conf
   if [[ $dist != centos ]]; then
     nginxconf
@@ -812,10 +812,10 @@ dnsmasq(){
     yum install -y dnsmasq  || true
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
-    apt-get install dnsmasq -q -y > /dev/null
+    apt-get install dnsmasq -qq -y || true
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
-    apt-get install dnsmasq -q -y > /dev/null
+    apt-get install dnsmasq -qq -y || true
  else
   clear
   TERM=ansi whiptail --title "error can't install dnsmasq" --infobox "error can't install dnsmasq" 8 78
@@ -825,7 +825,7 @@ dnsmasq(){
    systemctl stop systemd-resolved || true
    systemctl disable systemd-resolved || true
  fi
- mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
+ mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak || true
  touch /etc/dnsmasq.conf
      cat > '/etc/dnsmasq.conf' << EOF
 port=53
@@ -842,8 +842,8 @@ log-queries
 log-facility=/var/log/dnsmasq.log 
 EOF
 echo "nameserver 127.0.0.1" > '/etc/resolv.conf'
-systemctl restart dnsmasq
-systemctl enable dnsmasq
+systemctl restart dnsmasq || true
+systemctl enable dnsmasq || true
 }
 ############Set UP V2ray############
 v2input(){
@@ -1479,8 +1479,8 @@ function advancedMenu() {
         ;;
     esac
 }
-export LANG=C.UTF-8
-export LANGUAGE=C.UTF-8
-osdist
+export LANG=C.UTF-8 || true
+export LANGUAGE=C.UTF-8 || true
+osdist || true
 advancedMenu
 echo "Program terminated."
