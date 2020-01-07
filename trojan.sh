@@ -196,10 +196,10 @@ EOF
     systemctl start iptables.service || true
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
-    apt-get install iptables-persistent -q -y > /dev/null
+    apt-get install iptables-persistent -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
-    apt-get install iptables-persistent -q -y > /dev/null
+    apt-get install iptables-persistent -qq -y
  else
   clear
     colorEcho ${ERROR} "error can't install iptables-persistent"
