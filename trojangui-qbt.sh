@@ -107,7 +107,7 @@ upgradesystem(){
  elif [[ $dist = ubuntu ]]; then
     export UBUNTU_FRONTEND=noninteractive 
     apt-get upgrade -q -y
-    apt-get autoremove -qq -y > /dev/null
+    apt-get autoremove -qq -y
  elif [[ $dist = debian ]]; then
           cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
@@ -171,10 +171,10 @@ EOF
     systemctl start iptables.service || true
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
-    apt-get install iptables-persistent -q -y > /dev/null
+    apt-get install iptables-persistent -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
-    apt-get install iptables-persistent -q -y > /dev/null
+    apt-get install iptables-persistent -qq -y
  else
   clear
   TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
@@ -313,8 +313,6 @@ installnginx(){
 installacme(){
   curl -s https://get.acme.sh | sh
   sudo ~/.acme.sh/acme.sh --upgrade --auto-upgrade > /dev/null
-  rm -rf /etc/trojan/
-  mkdir /etc/trojan/
 }
 ##################################################
 issuecert(){
@@ -1464,7 +1462,7 @@ function advancedMenu() {
         clear
         colorEcho ${INFO} "autoconfiging nginx"
         nginxtrojan
-  html
+        html
         clear
         colorEcho ${INFO} "certificate install complete!"
         colorEcho ${INFO} "giving private key read authority"
@@ -1475,7 +1473,7 @@ function advancedMenu() {
         clear
         colorEcho ${INFO} "starting trojan-gfw and nginx | setting up boot autostart"
         autostart
-  timesync
+        timesync
         clear
         trojanclient
         colorEcho ${INFO} "Your Trojan-Gfw client config profile 1"
@@ -1599,9 +1597,9 @@ function advancedMenu() {
         ;;
     esac
 }
-export LC_ALL=C.UTF-8
-export LANG=C.UTF-8
-export LANGUAGE=C.UTF-8
-osdist
+export LC_ALL=C.UTF-8 || true
+export LANG=C.UTF-8 || true
+export LANGUAGE=C.UTF-8 || true
+osdist || true
 advancedMenu
 echo "Program terminated."
