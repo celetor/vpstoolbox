@@ -108,11 +108,11 @@ upgradesystem(){
  elif [[ $dist = ubuntu ]]; then
     export UBUNTU_FRONTEND=noninteractive 
     apt-get upgrade -q -y
-    apt-get autoremove -qq -y > /dev/null
+    apt-get autoremove -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
     apt-get upgrade -q -y
-    apt-get autoremove -qq -y > /dev/null
+    apt-get autoremove -qq -y
  else
   clear
   TERM=ansi whiptail --title "error can't upgrade system" --infobox "error can't upgrade system" 8 78
@@ -153,10 +153,10 @@ EOF
     systemctl start iptables.service || true
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
-    apt-get install iptables-persistent -q -y > /dev/null
+    apt-get install iptables-persistent -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
-    apt-get install iptables-persistent -q -y > /dev/null
+    apt-get install iptables-persistent -qq -y
  else
   clear
   TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
@@ -242,7 +242,7 @@ http {
   access_log /var/log/nginx/access.log;
 
 
-  log_format  main  '\$remote_addr - \$remote_user [$time_local] "\$request" '
+  log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
     '\$status $body_bytes_sent "\$http_referer" '
     '"\$http_user_agent" "\$http_x_forwarded_for"';
 
@@ -300,8 +300,6 @@ installnginx(){
 installacme(){
   curl -s https://get.acme.sh | sh
   sudo ~/.acme.sh/acme.sh --upgrade --auto-upgrade > /dev/null
-  rm -rf /etc/trojan/
-  mkdir /etc/trojan/
 }
 ##################################################
 issuecert(){
@@ -503,9 +501,9 @@ http {
   access_log /var/log/nginx/access.log;
 
 
-  log_format  main  '@remote_addr - @remote_user [$time_local] "@request" '
-    '@status $body_bytes_sent "@http_referer" '
-    '"@http_user_agent" "@http_x_forwarded_for"';
+  log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
+    '\$status $body_bytes_sent "\$http_referer" '
+    '"\$http_user_agent" "\$http_x_forwarded_for"';
 
   sendfile on;
   gzip on;
@@ -514,7 +512,6 @@ http {
   include /etc/nginx/conf.d/*.conf; 
 }
 EOF
-sed  -i 's/@/$/g' /etc/nginx/nginx.conf
 }
 ##########Auto boot start###############
 autostart(){
@@ -815,10 +812,10 @@ dnsmasq(){
     yum install -y dnsmasq
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
-    apt-get install dnsmasq -q -y > /dev/null
+    apt-get install dnsmasq -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
-    apt-get install dnsmasq -q -y > /dev/null
+    apt-get install dnsmasq -qq -y
  else
   clear
   TERM=ansi whiptail --title "error can't install dnsmasq" --infobox "error can't install dnsmasq" 8 78
@@ -992,8 +989,8 @@ systemctl enable v2ray
 }
 
 nginxv2ray(){
-rm -rf /etc/nginx/sites-available/
-rm -rf /etc/nginx/sites-enabled/
+rm -rf /etc/nginx/sites-available/*
+rm -rf /etc/nginx/sites-enabled/*
 rm -rf /etc/nginx/conf.d/default.conf
 touch /etc/nginx/conf.d/trojan.conf
   if [[ $dist != centos ]]; then
@@ -1285,9 +1282,9 @@ removetrojan(){
 }
 ##########Remove V2ray###############
 removev2ray(){
-  systemctl stop v2ray
-  systemctl disable v2ray
-  systemctl daemon-reload
+  systemctl stop v2ray || true
+  systemctl disable v2ray || true
+  systemctl daemon-reload || true
   cd
   wget https://install.direct/go.sh -q
   sudo bash go.sh --remove
@@ -1295,13 +1292,13 @@ removev2ray(){
 }
 ###########Remove Nginx dnsmasq and acme###############
 removenginx(){
-  systemctl stop nginx
-  systemctl disable nginx
+  systemctl stop nginx || true
+  systemctl disable nginx || true
     if [[ $dist = centos ]]; then
-    yum remove nginx dnsmasq -y
+    yum remove nginx dnsmasq -y || true
     else
-    apt purge nginx dnsmasq -p -y
-    rm -rf /etc/apt/sources.list.d/nginx.list
+    apt purge nginx dnsmasq -p -y || true
+    rm -rf /etc/apt/sources.list.d/nginx.list || true
   fi
   sudo ~/.acme.sh/acme.sh --uninstall
 }
@@ -1561,8 +1558,8 @@ function advancedMenu() {
         ;;
     esac
 }
-export LANG=C.UTF-8
-export LANGUAGE=C.UTF-8
-osdist
+export LANG=C.UTF-8 || true
+export LANGUAGE=C.UTF-8 || true
+osdist || true
 advancedMenu
 echo "Program terminated."
