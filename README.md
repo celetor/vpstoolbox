@@ -81,7 +81,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 
 ### https://t.me/trojanscript
 
-Attachment: **If you need more functions, please open a Github issue.**
+Attachment: **If you need more functions, please open a Github issue.(No Centos concerned issues allowed except pull requests)**
 
 ## If you found it useful , please give a star ,thanks!
 
