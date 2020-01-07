@@ -294,7 +294,7 @@ systemctl enable dnsmasq || true
   fi
 fi
 #############################################
-if [[ $install_v2ray = 1 ]]; then
+if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
   installv2ray
 fi
 #############################################
