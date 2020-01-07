@@ -108,11 +108,11 @@ upgradesystem(){
  elif [[ $dist = ubuntu ]]; then
     export UBUNTU_FRONTEND=noninteractive 
     apt-get upgrade -q -y
-    apt-get autoremove -qq -y > /dev/null
+    apt-get autoremove -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
     apt-get upgrade -q -y
-    apt-get autoremove -qq -y > /dev/null
+    apt-get autoremove -qq -y
  else
   clear
   TERM=ansi whiptail --title "error can't upgrade system" --infobox "error can't upgrade system" 8 78
@@ -153,10 +153,10 @@ EOF
     systemctl start iptables.service || true
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
-    apt-get install iptables-persistent -q -y > /dev/null
+    apt-get install iptables-persistent -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
-    apt-get install iptables-persistent -q -y > /dev/null
+    apt-get install iptables-persistent -qq -y
  else
   clear
   TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
@@ -813,18 +813,18 @@ dnsmasq(){
     yum install -y dnsmasq
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
-    apt-get install dnsmasq -q -y > /dev/null
+    apt-get install dnsmasq -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
-    apt-get install dnsmasq -q -y > /dev/null
+    apt-get install dnsmasq -qq -y
  else
   clear
   TERM=ansi whiptail --title "error can't install dnsmasq" --infobox "error can't install dnsmasq" 8 78
     exit 1;
  fi
  if [[ $dist = ubuntu ]]; then
-   systemctl stop systemd-resolved
-   systemctl disable systemd-resolved
+   systemctl stop systemd-resolved || true
+   systemctl disable systemd-resolved || true
  fi
  mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
  touch /etc/dnsmasq.conf
@@ -1214,13 +1214,13 @@ removev2ray(){
 }
 ###########Remove Nginx dnsmasq and acme###############
 removenginx(){
-  systemctl stop nginx
-  systemctl disable nginx
+  systemctl stop nginx || true
+  systemctl disable nginx || true
     if [[ $dist = centos ]]; then
-    yum remove nginx dnsmasq -y
+    yum remove nginx dnsmasq -y || true
     else
-    apt purge nginx dnsmasq -p -y
-    rm -rf /etc/apt/sources.list.d/nginx.list
+    apt purge nginx dnsmasq -p -y || true
+    rm -rf /etc/apt/sources.list.d/nginx.list || true
   fi
   sudo ~/.acme.sh/acme.sh --uninstall
 }
@@ -1267,7 +1267,7 @@ v2raylink(){
   wget https://github.com/boypt/vmess2json/raw/master/json2vmess.py -q
   chmod +x json2vmess.py
   touch /etc/v2ray/$uuid.txt
-  v2link=$(./json2vmess.py --addr $domain --filter ws --amend port:443 --amend tls:tls /etc/v2ray/config.json)
+  v2link=$(./json2vmess.py --addr $domain --filter ws --amend port:443 --amend tls:tls /etc/v2ray/config.json) || true
     cat > "/etc/v2ray/$uuid.txt" << EOF
 $v2link
 EOF
@@ -1480,8 +1480,8 @@ function advancedMenu() {
         ;;
     esac
 }
-export LANG=C.UTF-8
-export LANGUAGE=C.UTF-8
-osdist
+export LANG=C.UTF-8 || true
+export LANGUAGE=C.UTF-8 || true
+osdist || true
 advancedMenu
 echo "Program terminated."
