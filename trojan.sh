@@ -285,7 +285,7 @@ http {
   access_log /var/log/nginx/access.log;
 
 
-  log_format  main  '\$remote_addr - \$remote_user [$time_local] "\$request" '
+  log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
     '\$status $body_bytes_sent "\$http_referer" '
     '"\$http_user_agent" "\$http_x_forwarded_for"';
 
@@ -546,9 +546,9 @@ http {
   access_log /var/log/nginx/access.log;
 
 
-  log_format  main  '@remote_addr - @remote_user [$time_local] "@request" '
-    '@status $body_bytes_sent "@http_referer" '
-    '"@http_user_agent" "@http_x_forwarded_for"';
+  log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
+    '\$status $body_bytes_sent "\$http_referer" '
+    '"\$http_user_agent" "\$http_x_forwarded_for"';
 
   sendfile on;
   gzip on;
@@ -557,7 +557,6 @@ http {
   include /etc/nginx/conf.d/*.conf; 
 }
 EOF
-sed  -i 's/@/$/g' /etc/nginx/nginx.conf
 }
 ##########Auto boot start###############
 autostart(){
