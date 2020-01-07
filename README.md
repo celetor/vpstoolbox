@@ -68,6 +68,10 @@ Attachment: **If you need more functions, please open a Github issue.(No Centos 
 
 #### https://www.kamatera.com/
 
+#### Related Link
+
+https://github.com/chiakge/Linux-NetSpeed
+
 ### Debug Guide
 
 ```
