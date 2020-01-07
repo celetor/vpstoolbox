@@ -28,7 +28,6 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 12. Auto [V2ray ***vmess://*** share link generate](https://github.com/boypt/vmess2json)
 13. Auto https 301 redirect without affecting certificate renew
 14. Auto enable [HSTS header](https://securityheaders.com/)
-15. Auto enable ***TLS1.3 ONLY***
 16. Auto ***Random Html Template Choose***
 17. Auto enable [***Full IPv6 Support***](https://en.wikipedia.org/wiki/IPv6)
 18. Auto enable ***time sync***
@@ -36,6 +35,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 20. Auto [uninstall Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
 21. Auto [shutdown and disable SElinux](https://support.plesk.com/hc/en-us/articles/213947705-How-to-disable-SELinux-on-a-server)
 19. Support auto [***vmess or ss + tls + websocket + nginx*** config](https://guide.v2fly.org/advanced/wss_and_web.html) [ss-V2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)
+15. Support ***TLS1.3 ONLY***
 20. Support custom websocket path and alterid
 21. Support manually check for update include both Trojan-gfw and v2ray
 22. Support manually force renew certificate
