@@ -78,7 +78,6 @@ https://www.johnrosen1.com/qbt/
 
 ```
 sudo systemctl status trojan
-sudo systemctl status trojan6
 sudo systemctl status nginx
 sudo systemctl status v2ray
 sudo systemctl status dnsmasq
