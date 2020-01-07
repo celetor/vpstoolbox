@@ -72,6 +72,8 @@ Attachment: **If you need more functions, please open a Github issue.(No Centos 
 
 https://github.com/chiakge/Linux-NetSpeed
 
+https://www.johnrosen1.com/qbt/
+
 ### Debug Guide
 
 ```
