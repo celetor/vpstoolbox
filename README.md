@@ -3,21 +3,15 @@
 ## This script will help you set up a [Trojan-GFW](https://github.com/trojan-gfw/trojan) server in an extremely fast way.
 ### Read The Fucking Manual: https://www.johnrosen1.com/trojan/ 
 
-#### via wget
-```
-apt-get update && apt-get install sudo wget -y | yum install sudo wget -y
-sudo bash -c "$(wget -O- https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
-```
-#### or via curl
-```
-apt-get update && apt-get install sudo curl -y | yum install sudo curl -y
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
-```
-
 ### 中文GUI版本(main repository)
 ```
 apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
+```
+#### English Version(old version)
+```
+apt-get update && apt-get install sudo curl -y | yum install sudo curl -y
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
 #### Bash Features:
 
