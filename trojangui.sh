@@ -66,17 +66,13 @@ isresolved(){
 }
 ###############User input################
 userinput(){
-domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可污也，快输入你的域名并按回车" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
-password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快输入你想要的密码一并按回车" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
-password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快输入想要的密码二并按回车" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
-
 whiptail --title "User choose" --checklist --separate-output "Choose:" 20 78 7 \
 "1" "系统升级(System Upgrade)" on \
 "2" "仅启用TLS1.3(TLS1.3 ONLY)" off \
-"3" "安装V2ray(Vmess+Websocket+tls+nginx)" off \
-"4" "安装Shadowsocks(Shadowsocks+Websocket+tls+nginx)" off \
+"3" "安装V2ray(Vmess+Websocket+TLS+Nginx)" off \
+"4" "安装Shadowsocks(Shadowsocks+Websocket+TLS+Nginx)" off \
 "5" "安装Dnsmasq(Dns cache)" off \
-"6" "安装Qbittorrent" off \
+"6" "安装Qbittorrent(Nginx Proxy)" off \
 "7" "安装BBRPLUS(not recommended)" off 2>results
 
 while read choice
@@ -107,9 +103,12 @@ do
     ;;
   esac
 done < results
+domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可污也，快输入你的域名并按回车" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快输入你想要的密码一并按回车" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快输入想要的密码二并按回车" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 
     if [[ $install_v2ray = 1 ]] && [[ $install_ss = 1 ]]; then
-      path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
+      path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
       alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
       sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
       sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的ss密码并按回车" 8 78  --title "ss-Websocket passwd" 3>&1 1>&2 2>&3)
@@ -131,8 +130,29 @@ done < results
     elif [[ $install_v2ray = 1 ]]; then
       path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
       alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
+    elif [[ $install_ss = 1 ]]; then
+      sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
+      sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的ss密码并按回车" 8 78  --title "ss-Websocket passwd" 3>&1 1>&2 2>&3)
+      ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
+      "1" "aes-128-gcm" \
+      "2" "aes-256-gcm" \
+      "3" "chacha20-poly1305" 3>&1 1>&2 2>&3)
+      case $ssen in
+      1)
+      ssmethod=aes-128-gcm
+      ;;
+      2)
+      ssmethod=aes-256-gcm
+      ;;
+      3)
+      ssmethod=chacha20-poly1305
+      ;;
+      esac
       else
       echo "Continuing"
+    fi
+    if [[ $install_qbt = 1 ]]; then
+      qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
     fi
 }
 ###############OS detect####################
@@ -500,7 +520,7 @@ server {
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
-    location /qbt/ {
+    location $qbtpath {
         proxy_pass              http://127.0.0.1:8080/;
         proxy_set_header        X-Forwarded-Host        \$server_name:\$server_port;
         proxy_hide_header       Referer;
@@ -606,7 +626,64 @@ server {
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
-    location /qbt/ {
+    location $qbtpath {
+        proxy_pass              http://127.0.0.1:8080/;
+        proxy_set_header        X-Forwarded-Host        \$server_name:\$server_port;
+        proxy_hide_header       Referer;
+        proxy_hide_header       Origin;
+        proxy_set_header        Referer                 '';
+        proxy_set_header        Origin                  '';
+        # add_header              X-Frame-Options         "SAMEORIGIN"; # not needed since 4.1.0
+        }
+    location /announce {
+        proxy_redirect off;
+        proxy_pass http://127.0.0.1:9000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host \$http_host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        }
+  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $domain;
+    return 301 https://$domain;
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+    return 444;
+}
+EOF
+elif [[ $install_ss = 1 ]] && [[ $install_qbt = 1 ]]; then
+        cat > '/etc/nginx/conf.d/trojan.conf' << EOF
+server {
+  listen 127.0.0.1:80;
+    server_name $domain;
+    if (\$http_user_agent = "") { return 444; }
+    location / {
+      root /usr/share/nginx/html/;
+        index index.html;
+        }
+    location $sspath {
+        access_log off;
+        proxy_redirect off;
+        proxy_pass http://127.0.0.1:20000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host \$http_host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        }
+    location $qbtpath {
         proxy_pass              http://127.0.0.1:8080/;
         proxy_set_header        X-Forwarded-Host        \$server_name:\$server_port;
         proxy_hide_header       Referer;
@@ -680,6 +757,44 @@ server {
     return 444;
 }
 EOF
+elif [[ $install_ss = 1 ]]; then
+  cat > '/etc/nginx/conf.d/trojan.conf' << EOF
+server {
+  listen 127.0.0.1:80;
+    server_name $domain;
+    if (\$http_user_agent = "") { return 444; }
+    location / {
+      root /usr/share/nginx/html/;
+        index index.html;
+        }
+    location $sspath {
+        access_log off;
+        proxy_redirect off;
+        proxy_pass http://127.0.0.1:20000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host \$http_host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        }
+  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $domain;
+    return 301 https://$domain;
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+    return 444;
+}
+EOF
 elif [[ $install_qbt = 1 ]]; then
         cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
@@ -690,7 +805,7 @@ server {
       root /usr/share/nginx/html/;
         index index.html;
         }
-    location /qbt/ {
+    location $qbtpath {
         proxy_pass              http://127.0.0.1:8080/;
         proxy_set_header        X-Forwarded-Host        \$server_name:\$server_port;
         proxy_hide_header       Referer;
