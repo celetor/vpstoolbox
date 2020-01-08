@@ -48,9 +48,9 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ```
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 ```
-5. Please do not use enter / in websocket option ,enter someting else like /secret !
-7. Trojan-GFW QR code generate will be skipped on os who do not support python3-qrcode!
-9. If "sudo command not found" , please manually install sudo from the command above !
+3. Please do not use enter / in websocket option ,enter someting else like /secret !
+4. Trojan-GFW QR code generate will be skipped on os who do not support python3-qrcode!
+5. If "sudo command not found" , please manually install sudo from the command above !
 
 #### [Telegram](https://telegram.org/) Channel And Group
 
