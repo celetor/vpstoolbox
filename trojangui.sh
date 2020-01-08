@@ -1397,9 +1397,11 @@ uninstall(){
 ##########Check for update############
 checkupdate(){
   cd
-  wget https://install.direct/go.sh -q
-  sudo bash go.sh
-  rm go.sh
+  if [[ -f /usr/bin/v2ray/v2ray ]]; then
+    wget https://install.direct/go.sh -q
+    sudo bash go.sh
+    rm go.sh
+  fi
   bash -c "$(wget -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
 }
 ###########Trojan share link########
