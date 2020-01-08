@@ -1402,7 +1402,9 @@ checkupdate(){
     sudo bash go.sh
     rm go.sh
   fi
-  bash -c "$(wget -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
+  if [[ -f /usr/local/bin/trojan ]]; then
+    bash -c "$(wget -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
+  fi
 }
 ###########Trojan share link########
 trojanlink(){
