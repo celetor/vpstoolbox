@@ -108,7 +108,7 @@ do
   esac
 done < results
 
-    if [[ $install_v2ray = 1 ]] && [[ $install_v2ray = 1 ]]; then
+    if [[ $install_v2ray = 1 ]] && [[ $install_ss = 1 ]]; then
       path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
       alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
       sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
