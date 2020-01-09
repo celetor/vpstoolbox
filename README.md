@@ -5,12 +5,12 @@
 
 ### 中文GUI版本(main repository)
 ```
-apt-get update && apt-get install sudo whiptail curl -y | yum install sudo newt curl -y
+apt-get update && apt-get install sudo whiptail curl -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
 #### English Version(old version)
 ```
-apt-get update && apt-get install sudo curl -y | yum install sudo curl -y
+apt-get update && apt-get install sudo curl -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojan.sh)"
 ```
 #### Bash Features:
