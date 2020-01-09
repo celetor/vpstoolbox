@@ -66,7 +66,7 @@ isresolved(){
 }
 ###############User input################
 userinput(){
-whiptail --title "User choose" --checklist --separate-output "Choose:" 20 78 7 \
+whiptail --title "User choose" --checklist --separate-output "Choose:(Trojan-GFW and Nginx has been included)" 20 78 7 \
 "1" "系统升级(System Upgrade)" on \
 "2" "仅启用TLS1.3(TLS1.3 ONLY)" off \
 "3" "安装V2ray(Vmess+Websocket+TLS+Nginx)" off \
