@@ -243,7 +243,7 @@ installdependency(){
     exit 1;
  fi
 ###########################################
-  colorEcho ${INFO} "安装所有必备软件"
+  colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
   if [[ $dist = centos ]]; then
     yum install -y sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
@@ -263,7 +263,8 @@ if isresolved $domain
   then
   :
   else 
-  colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙是否打开!!!"
+  colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!"
+  colorEcho ${ERROR} "Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!"
   exit -1
   clear
 fi
@@ -400,7 +401,7 @@ nginxconf
 }
 ##################################################
 issuecert(){
-  colorEcho ${INFO} "申请 let\'s encrypt certificate"
+  colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
   if [[ -f /etc/trojan/trojan.crt ]]; then
     TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
     else
@@ -428,7 +429,7 @@ renewcert(){
 }
 ##################################################
 changepasswd(){
-  colorEcho ${INFO} "配置 trojan-gfw"
+  colorEcho ${INFO} "配置(configing) trojan-gfw"
   if [[ -f /etc/trojan/trojan.pem ]]; then
     colorEcho ${INFO} "DH已有，跳过生成。。。"
     else
@@ -484,7 +485,7 @@ EOF
 }
 ########Nginx config for Trojan only##############
 nginxtrojan(){
-  colorEcho ${INFO} "配置 nginx"
+  colorEcho ${INFO} "配置(configing) nginx"
 rm -rf /etc/nginx/sites-available/* || true
 rm -rf /etc/nginx/sites-enabled/* || true
 rm -rf /etc/nginx/conf.d/* || true
@@ -916,14 +917,14 @@ EOF
 }
 ##########Auto boot start###############
 autostart(){
-  colorEcho ${INFO} "启动 trojan-gfw and nginx 并设置开机自启ing..."
+  colorEcho ${INFO} "启动(starting) trojan-gfw and nginx 并设置开机自启(auto boot start) ing..."
   systemctl restart trojan || true
   systemctl enable nginx || true
   systemctl enable trojan || true
 }
 ##########tcp-bbr#####################
 tcp-bbr(){
-  colorEcho ${INFO} "设置 TCP-BBR boost technology"
+  colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
   cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 net.ipv6.conf.all.accept_ra = 2
 fs.file-max = 51200
@@ -1333,9 +1334,9 @@ EOF
     }
 }
 EOF
-colorEcho ${INFO} "你的 Trojan-Gfw 客户端 config profile 1"
+colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 1"
 cat /etc/trojan/client1.json
-colorEcho ${INFO} "你的 Trojan-Gfw 客户端 config profile 2"
+colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 2"
 cat /etc/trojan/client2.json
 }
 ##########V2ray Client Config################
@@ -1525,9 +1526,9 @@ checkupdate(){
 ###########Trojan share link########
 trojanlink(){
   cd
-  colorEcho ${INFO} "你的 Trojan-Gfw 分享链接1 is"
+  colorEcho ${INFO} "你的 Trojan-Gfw 分享链接(Share Link)1 is"
   colorEcho ${LINK} "trojan://$password1@$domain:443"
-  colorEcho ${INFO} "你的 Trojan-Gfw 分享链接2 is"
+  colorEcho ${INFO} "你的 Trojan-Gfw 分享链接(Share Link)2 is"
   colorEcho ${LINK} "trojan://$password2@$domain:443"
 if [[ $dist = centos ]]
 then
@@ -1543,9 +1544,9 @@ else
   ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png || true
   cp $password1.png /usr/share/nginx/html/ || true
   cp $password2.png /usr/share/nginx/html/ || true
-  colorEcho ${INFO} "请访问下面的链接获取Trojan-GFW 二维码 1"
+  colorEcho ${INFO} "请访问下面的链接获取Trojan-GFW 二维码(QR code) 1"
   colorEcho ${LINK} "https://$domain/$password1.png"
-  colorEcho ${INFO} "请访问下面的链接获取Trojan-GFW 二维码 2"
+  colorEcho ${INFO} "请访问下面的链接获取Trojan-GFW 二维码(QR code) 2"
   colorEcho ${LINK} "https://$domain/$password2.png"
   rm -rf trojan-url.py
   rm -rf $password1.png || true
@@ -1568,9 +1569,9 @@ v2raylink(){
 $v2link
 EOF
   cp /etc/v2ray/$uuid.txt /usr/share/nginx/html/
-  colorEcho ${INFO} "你的V2ray分享链接"
+  colorEcho ${INFO} "你的V2ray分享链接(Your V2ray Share Link)"
   cat /etc/v2ray/$uuid.txt
-  colorEcho ${INFO} "请访问下面的链接获取你的V2ray分享链接"
+  colorEcho ${INFO} "请访问下面的链接(Link Below)获取你的V2ray分享链接"
   colorEcho ${LINK} "https://$domain/$uuid.txt"
   rm -rf json2vmess.py
   colorEcho ${INFO} "Please manually run cat /etc/v2ray/$uuid.txt to show share link again!"      
@@ -1580,7 +1581,7 @@ fi
 ##########SS Link###########
 sslink(){
     if [[ $install_ss = 1 ]]; then
-    colorEcho ${INFO} "你的SS信息"
+    colorEcho ${INFO} "你的SS信息(Your Shadowsocks Information)"
     colorEcho ${INFO} "$sspasswd@https://$domain/$sspath"
   fi
 }
@@ -1598,10 +1599,10 @@ timesync(){
 clear
 function advancedMenu() {
     ADVSEL=$(whiptail --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
-        "1" "安裝" \
-        "2" "更新" \
-        "3" "卸載" \
-        "4" "退出" 3>&1 1>&2 2>&3)
+        "1" "安裝(Install)" \
+        "2" "更新(Update)" \
+        "3" "卸載(Uninstall)" \
+        "4" "退出(Quit)" 3>&1 1>&2 2>&3)
     case $ADVSEL in
         1)
         clear
@@ -1637,7 +1638,7 @@ function advancedMenu() {
         ;;
         4)
         exit
-        whiptail --title "脚本已退出" --msgbox "脚本已退出 RTFM: https://www.johnrosen1.com/trojan/" 8 78
+        whiptail --title "脚本已退出" --msgbox "脚本已退出(Bash Exited) RTFM: https://www.johnrosen1.com/trojan/" 8 78
         ;;
     esac
 }
