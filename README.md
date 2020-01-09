@@ -39,7 +39,6 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 15. Support ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
 20. Support custom (V2ray or ss) websocket path and alterid
 21. Support manually check for update include both Trojan-gfw and v2ray
-22. Support manually force renew certificate
 23. Support Full Uninstall
 
 **If you need more functions, please open a Github issue.(No Centos related issues or bugs allowed except pull requests)**
