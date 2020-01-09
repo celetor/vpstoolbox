@@ -29,7 +29,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 14. Auto enable [HSTS header](https://securityheaders.com/)
 16. Auto ***Random Html Template Choose***
 17. Auto enable [***Full IPv6 Support***](https://en.wikipedia.org/wiki/IPv6)
-18. Auto enable ***time sync***
+18. Auto enable ***[time sync](https://www.freedesktop.org/software/systemd/man/timedatectl.html)***
 19. Auto enable ***Fail Restart*** 
 20. Auto [uninstall Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
 20. Support Auto install and config **[Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [V2ray](https://www.v2ray.com/index.html) [Shadowsocks](https://shadowsocks.org/en/index.html)([V2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)) and [Qbittorrent](https://www.qbittorrent.org/)**
