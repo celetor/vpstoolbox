@@ -379,6 +379,7 @@ fi
     else
   if [[ $dist = centos ]]; then
   yum install nginx -y
+  systemctl stop nginx || true
  elif [[ $dist = debian ]] || [[ $dist = ubuntu ]]; then
   wget https://nginx.org/keys/nginx_signing.key -q
   apt-key add nginx_signing.key
@@ -891,7 +892,7 @@ events {
 }
 
 http {
-  aio threads;
+  #aio threads; //Please enable it by yourself,disabled for compatibility.
   charset UTF-8;
   tcp_nodelay on;
   tcp_nopush on;
