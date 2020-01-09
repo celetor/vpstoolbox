@@ -1,5 +1,5 @@
 ![logo](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/logo.png)
-# Trojan-GFW Script (NO Centos Guarantee!!!)
+# Trojan-GFW Script (NO Centos Support!!!)
 ## This script will help you set up a [Trojan-GFW](https://github.com/trojan-gfw/trojan) server in an extremely fast way.
 ### Read The Fucking Manual: https://www.johnrosen1.com/trojan/ 
 
@@ -17,7 +17,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 
 1. Auto install and config [Trojan-GFW](https://github.com/trojan-gfw/trojan) [NGINX](https://www.nginx.com/) [Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [V2ray](https://www.v2ray.com/index.html) [Shadowsocks](https://shadowsocks.org/en/index.html) and [Qbittorrent](https://www.qbittorrent.org/)
 3. Auto issue renew [let's encrypt certificate](https://letsencrypt.org/) and **auto reload Trojan-GFW after renewal**
-4. Auto OS Detect **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)** (NO Centos Guarantee!!!)
+4. Auto OS Detect **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)** (NO Centos Support!!!)
 5. Auto domain resolve verification
 6. Auto [iptables](https://en.wikipedia.org/wiki/Iptables)(includes ipv6) firewall config and iptables-persistent
 7. Auto generate client config (includes both Trojan-GFW and V2ray )
@@ -33,7 +33,6 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 18. Auto enable ***time sync***
 19. Auto enable ***Fail Restart*** 
 20. Auto [uninstall Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
-21. Auto [shutdown and disable SElinux](https://support.plesk.com/hc/en-us/articles/213947705-How-to-disable-SELinux-on-a-server)
 19. Support auto [***vmess or ss + tls + websocket + nginx*** config](https://guide.v2fly.org/advanced/wss_and_web.html) [ss-V2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)
 20. Support ***[BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)***
 15. Support ***TLS1.3 ONLY***
