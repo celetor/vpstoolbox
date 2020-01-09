@@ -71,7 +71,7 @@ whiptail --title "User choose" --checklist --separate-output "Choose:(Trojan-GFW
 "2" "仅启用TLS1.3(TLS1.3 ONLY)" off \
 "3" "安装V2ray(Vmess+Websocket+TLS+Nginx)" off \
 "4" "安装Shadowsocks(Shadowsocks+Websocket+TLS+Nginx)" off \
-"5" "安装Dnsmasq(Dns cache)" off \
+"5" "安装Dnsmasq(Dns cache)" on \
 "6" "安装Qbittorrent(Nginx Proxy)" off \
 "7" "安装BBRPLUS(not recommended)" off 2>results
 
@@ -295,6 +295,10 @@ if [[ $dnsmasq_install = 1 ]]; then
    systemctl stop systemd-resolved || true
    systemctl disable systemd-resolved || true
  fi
+ touch /etc/dnsmasq.txt
+      cat > '/etc/dnsmasq.txt' << EOF
+0.0.0.0 360.cn
+EOF
      cat > '/etc/dnsmasq.conf' << EOF
 port=53
 domain-needed
@@ -302,6 +306,7 @@ bogus-priv
 no-resolv
 server=8.8.4.4#53
 server=1.1.1.1#53
+addn-hosts=/etc/dnsmasq.txt
 interface=lo
 bind-interfaces
 cache-size=10000
