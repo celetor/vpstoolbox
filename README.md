@@ -36,8 +36,8 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 20. Support auto ***random vmess uuid generate***
 19. Support auto [***vmess or ss + tls + websocket + nginx*** config](https://guide.v2fly.org/advanced/wss_and_web.html)
 20. Support ***[BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)***
-15. Support ***TLS1.3 ONLY***
-20. Support custom websocket path and alterid
+15. Support ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
+20. Support custom (V2ray or ss) websocket path and alterid
 21. Support manually check for update include both Trojan-gfw and v2ray
 22. Support manually force renew certificate
 23. Support Full Uninstall
