@@ -1616,11 +1616,11 @@ fi
 sslink(){
     if [[ $install_ss = 1 ]]; then
     colorEcho ${INFO} "你的SS信息(Your Shadowsocks Information)"
-    colorEcho ${INFO} "$sspasswd@https://$domain/$sspath"
+    colorEcho ${LINK} "$sspasswd@https://$domain/$sspath"
   fi
     if [[ $install_qbt = 1 ]]; then
     colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Information)"
-    colorEcho ${INFO} "https://$domain/$qbtpath username admin password adminadmin"
+    colorEcho ${LINK} "https://$domain/$qbtpath username admin password adminadmin"
   fi
 }
 ##################################
