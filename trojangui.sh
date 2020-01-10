@@ -66,7 +66,7 @@ isresolved(){
 }
 ###############User input################
 userinput(){
-whiptail --title "User choose" --checklist --separate-output "Choose:(Trojan-GFW and Nginx has been included)" 20 78 7 \
+whiptail --title "User choose" --checklist --separate-output --nocancel "Press Space to Choose:(Trojan-GFW and Nginx has been included)" 20 78 7 \
 "1" "系统升级(System Upgrade)" on \
 "2" "仅启用TLS1.3(TLS1.3 ONLY)" off \
 "3" "安装V2ray(Vmess+Websocket+TLS+Nginx)" off \
@@ -129,7 +129,7 @@ password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之
       esac
     elif [[ $install_v2ray = 1 ]]; then
       path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
-      alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
+      alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
     elif [[ $install_ss = 1 ]]; then
       sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
       sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的ss密码并按回车" 8 78  --title "ss-Websocket passwd" 3>&1 1>&2 2>&3)
@@ -243,6 +243,7 @@ installdependency(){
     exit 1;
  fi
 ###########################################
+  clear
   colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
   if [[ $dist = centos ]]; then
     yum install -y sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd
@@ -258,6 +259,7 @@ installdependency(){
   TERM=ansi whiptail --title "error can't install dependency" --infobox "error can't install dependency" 8 78
     exit 1;
  fi
+ clear
 #############################################
 if isresolved $domain
   then
@@ -272,6 +274,7 @@ fi
 if [[ $system_upgrade = 1 ]]; then
 upgradesystem
 fi
+clear
 #############################################
 if [[ $tls13only = 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
@@ -293,9 +296,9 @@ if [[ $dnsmasq_install = 1 ]]; then
  fi
  if [[ $dist = ubuntu ]]; then
    systemctl stop systemd-resolved || true
-   systemctl disable systemd-resolved || true
+   systemctl disable systemd-resolved || true > /dev/null
  fi
- touch /etc/dnsmasq.txt
+ touch /etc/dnsmasq.txt || true
       cat > '/etc/dnsmasq.txt' << EOF
 ####Block 360####
 0.0.0.0 360.cn
@@ -347,10 +350,12 @@ systemctl restart dnsmasq || true
 systemctl enable dnsmasq || true      
   fi
 fi
+clear
 #############################################
 if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
   installv2ray
 fi
+clear
 #############################################
 if [[ $install_qbt = 1 ]]; then
   if [[ -f /usr/bin/qbittorrent-nox ]]; then
@@ -391,21 +396,20 @@ RestartSec=3s
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl daemon-reload
-systemctl enable qbittorrent.service
-systemctl start qbittorrent.service
 fi      
 fi
-
+clear
 #############################################
   curl -s https://get.acme.sh | sh
   sudo ~/.acme.sh/acme.sh --upgrade --auto-upgrade
   if [[ -f /usr/local/bin/trojan ]]; then
     :
     else
+  clear
   bash -c "$(wget -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
   systemctl daemon-reload      
   fi
+  clear
 #####################################################
   if [[ -f /etc/apt/sources.list.d/nginx.list ]]; then
     :
@@ -432,6 +436,7 @@ EOF
  fi
 fi
 nginxconf
+clear
 }
 ##################################################
 issuecert(){
@@ -950,9 +955,27 @@ http {
 EOF
 }
 ##########Auto boot start###############
-autostart(){
-  colorEcho ${INFO} "启动(starting) trojan-gfw and nginx 并设置开机自启(auto boot start) ing..."
+start(){
+  colorEcho ${INFO} "启动(starting) trojan-gfw and nginx ing..."
+  systemctl daemon-reload || true
+  if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
+    systemctl start v2ray || true
+  fi
+  if [[ $install_qbt = 1 ]]; then
+    systemctl start qbittorrent.service || true
+  fi
   systemctl restart trojan || true
+  systemctl restart nginx || true
+}
+bootstart(){
+  colorEcho ${INFO} "设置开机自启(auto boot start) ing..."
+  systemctl daemon-reload || true
+  if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
+    systemctl enable v2ray || true
+  fi
+  if [[ $install_qbt = 1 ]]; then
+    systemctl enable qbittorrent.service || true
+  fi
   systemctl enable nginx || true
   systemctl enable trojan || true
 }
@@ -1291,8 +1314,6 @@ EOF
 }
 EOF
   fi
-systemctl start v2ray
-systemctl enable v2ray
 }
 ###########Trojan Client Config#############
 trojanclient(){
@@ -1595,6 +1616,7 @@ v2raylink(){
     if [[ $install_ss = 1 ]]; then
     :
     else
+  echo
   wget https://github.com/boypt/vmess2json/raw/master/json2vmess.py -q
   chmod +x json2vmess.py
   touch /etc/v2ray/$uuid.txt
@@ -1615,10 +1637,12 @@ fi
 ##########SS Link###########
 sslink(){
     if [[ $install_ss = 1 ]]; then
+    echo
     colorEcho ${INFO} "你的SS信息(Your Shadowsocks Information)"
     colorEcho ${LINK} "$sspasswd@https://$domain/$sspath"
   fi
     if [[ $install_qbt = 1 ]]; then
+    echo
     colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Information)"
     colorEcho ${LINK} "https://$domain/$qbtpath username admin password adminadmin"
   fi
@@ -1643,6 +1667,7 @@ function advancedMenu() {
         "4" "退出(Quit)" 3>&1 1>&2 2>&3)
     case $ADVSEL in
         1)
+        cd
         clear
         userinput
         clear
@@ -1655,8 +1680,8 @@ function advancedMenu() {
         nginxtrojan || true
         clear
         changepasswd || true
+        bootstart
         clear
-        autostart
         timesync || true
         clear
         trojanclient || true
@@ -1664,13 +1689,16 @@ function advancedMenu() {
         v2raylink || true
         sslink || true
         tcp-bbr || true
+        start
         whiptail --title "Install Success" --msgbox "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" 8 78
         ;;
         2)
+        cd
         checkupdate
         colorEcho ${SUCCESS} "RTFM: https://www.johnrosen1.com/trojan/"
         ;;
         3)
+        cd
         uninstall
         colorEcho ${SUCCESS} "Remove complete"
         ;;
