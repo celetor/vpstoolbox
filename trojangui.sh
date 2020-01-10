@@ -581,6 +581,9 @@ server {
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+  add_header X-Frame-Options SAMEORIGIN always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header Referrer-Policy "no-referrer";
 }
 
 server {
@@ -630,6 +633,9 @@ server {
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+  add_header X-Frame-Options SAMEORIGIN always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header Referrer-Policy "no-referrer";
 }
 
 server {
@@ -687,6 +693,9 @@ server {
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+  add_header X-Frame-Options SAMEORIGIN always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header Referrer-Policy "no-referrer";
 }
 
 server {
@@ -744,6 +753,9 @@ server {
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+  add_header X-Frame-Options SAMEORIGIN always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header Referrer-Policy "no-referrer";
 }
 
 server {
@@ -782,6 +794,9 @@ server {
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+  add_header X-Frame-Options SAMEORIGIN always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header Referrer-Policy "no-referrer";
 }
 
 server {
@@ -820,6 +835,9 @@ server {
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+  add_header X-Frame-Options SAMEORIGIN always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header Referrer-Policy "no-referrer";
 }
 
 server {
@@ -866,6 +884,9 @@ server {
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+  add_header X-Frame-Options SAMEORIGIN always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header Referrer-Policy "no-referrer";
 }
 
 server {
@@ -890,6 +911,9 @@ server {
     if (\$http_user_agent = "") { return 444; }
     root /usr/share/nginx/html/;
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+  add_header X-Frame-Options SAMEORIGIN always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header Referrer-Policy "no-referrer";
 }
 
 server {
