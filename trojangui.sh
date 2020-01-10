@@ -983,7 +983,7 @@ net.ipv4.tcp_max_syn_backlog = 12800
 net.core.default_qdisc=fq
 net.ipv4.tcp_congestion_control=bbr
 EOF
-  sysctl -p
+  sysctl -p > /dev/null
     cat > '/etc/systemd/system.conf' << EOF
 [Manager]
 #DefaultTimeoutStartSec=90s
