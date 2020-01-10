@@ -137,11 +137,23 @@ done
       ;;
       esac
     elif [[ $install_v2ray = 1 ]]; then
-      path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
+      path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
+      while [[ -z $path ]]; do
+      path=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的V2ray Websocket路径并按回车" 8 78 --title "Websocket path input" 3>&1 1>&2 2>&3)
+      done
       alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
+      while [[ -z $alterid ]]; do
+      alterid=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的alter id大小(只能是数字)二并按回车" 8 78 --title "alterid input" 3>&1 1>&2 2>&3)
+      done
     elif [[ $install_ss = 1 ]]; then
       sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
-      sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的ss密码并按回车" 8 78  --title "ss-Websocket passwd" 3>&1 1>&2 2>&3)
+      while [[ -z $sspath ]]; do
+      sspath=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的ss-Websocket路径并按回车" 8 78 --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
+      done
+      sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的ss密码并按回车" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
+      while [[ -z $sspasswd ]]; do
+      sspasswd=$(whiptail --passwordbox --nocancel "你是不是想找死，快输入想要的ss密码并按回车" 8 78 --title "ss passwd input" 3>&1 1>&2 2>&3)
+      done
       ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
       "1" "aes-128-gcm" \
       "2" "aes-256-gcm" \
@@ -162,6 +174,9 @@ done
     fi
     if [[ $install_qbt = 1 ]]; then
       qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+      while [[ -z $qbtpath ]]; do
+      qbtpath=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的Qbittorrent路径并按回车" 8 78 --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+      done
     fi
 }
 ###############OS detect####################
