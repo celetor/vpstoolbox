@@ -1637,8 +1637,8 @@ timesync(){
 clear
 function advancedMenu() {
     ADVSEL=$(whiptail --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
-        "1" "安裝(Install)" \
-        "2" "更新(Update includes Trojan-GFW V2ray and Shadowsocks)" \
+        "1" "安裝(Install Trojan-GFW NGINX and other optional software)" \
+        "2" "更新(Update  Trojan-GFW V2ray and Shadowsocks)" \
         "3" "卸載(Uninstall Everything)" \
         "4" "退出(Quit)" 3>&1 1>&2 2>&3)
     case $ADVSEL in
