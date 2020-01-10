@@ -104,8 +104,17 @@ do
   esac
 done < results
 domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可污也，快输入你的域名并按回车" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+while [[ -z $domain ]]; do
+domain=$(whiptail --inputbox --nocancel "看什么看，快输入你的域名并按回车" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+done
 password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快输入你想要的密码一并按回车" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+while [[ -z $password1 ]]; do
+password1=$(whiptail --passwordbox --nocancel "你到底想干啥，你把你媽揣兜了隨口就說，快输入你想要的密码一并按回车" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+done
 password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快输入想要的密码二并按回车" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
+while [[ -z $password2 ]]; do
+password2=$(whiptail --passwordbox --nocancel "你是不是想找死，快输入想要的密码二并按回车" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
+done
 
     if [[ $install_v2ray = 1 ]] && [[ $install_ss = 1 ]]; then
       path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
