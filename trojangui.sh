@@ -173,7 +173,7 @@ done
       echo "Continuing"
     fi
     if [[ $install_qbt = 1 ]]; then
-      qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+      qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
       while [[ -z $qbtpath ]]; do
       qbtpath=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的Qbittorrent路径并按回车" 8 78 --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
       done
