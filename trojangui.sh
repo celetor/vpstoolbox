@@ -115,6 +115,15 @@ password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之
 while [[ -z $password2 ]]; do
 password2=$(whiptail --passwordbox --nocancel "你是不是想找死，快输入想要的密码二并按回车" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 done
+if [[ $system_upgrade = 1 ]]; then
+  if [[ $(lsb_release -cs) == stretch ]]; then
+    if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 10?" 8 78); then
+      debian10_install=1
+    else
+      debian10_install=0
+    fi
+  fi
+fi
 
     if [[ $install_v2ray = 1 ]] && [[ $install_ss = 1 ]]; then
       path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
@@ -209,6 +218,28 @@ upgradesystem(){
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
     apt-get upgrade -q -y
+    if [[ $debian10_install = 1 ]]; then
+          cat > '/etc/apt/sources.list' << EOF
+#------------------------------------------------------------------------------#
+#                   OFFICIAL DEBIAN REPOS                    
+#------------------------------------------------------------------------------#
+
+###### Debian Main Repos
+deb http://deb.debian.org/debian/ stable main contrib non-free
+deb-src http://deb.debian.org/debian/ stable main contrib non-free
+
+deb http://deb.debian.org/debian/ stable-updates main contrib non-free
+deb-src http://deb.debian.org/debian/ stable-updates main contrib non-free
+
+deb http://deb.debian.org/debian-security stable/updates main
+deb-src http://deb.debian.org/debian-security stable/updates main
+
+deb http://ftp.debian.org/debian buster-backports main
+deb-src http://ftp.debian.org/debian buster-backports main
+EOF
+    apt-get update
+    sudo sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+    fi
     apt-get autoremove -qq -y
  else
   clear
