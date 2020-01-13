@@ -66,14 +66,14 @@ isresolved(){
 }
 ###############User input################
 userinput(){
-whiptail --title "User choose" --checklist --separate-output --nocancel "Press Space to Choose:(Trojan-GFW and Nginx has been included)" 20 78 7 \
+whiptail --title "User choose" --checklist --separate-output --nocancel "Press Space to Choose:(Trojan-GFW Nginx and BBR has been included)" 20 78 7 \
 "1" "系统升级(System Upgrade)" on \
 "2" "仅启用TLS1.3(TLS1.3 ONLY)" off \
 "3" "安装V2ray(Vmess+Websocket+TLS+Nginx)" off \
 "4" "安装Shadowsocks(Shadowsocks+Websocket+TLS+Nginx)" off \
 "5" "安装Dnsmasq(Dns cache)" on \
-"6" "安装Qbittorrent(Nginx Proxy)" off \
-"7" "安装BBRPLUS(not recommended)" off 2>results
+"6" "安装Qbittorrent(Nginx Https Proxy)" off \
+"7" "安装BBRPLUS(not recommended because BBR has been included)" off 2>results
 
 while read choice
 do
