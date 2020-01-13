@@ -79,6 +79,7 @@ sudo systemctl status dnsmasq
 sudo systemctl status qbittorrent
 journalctl -e -u trojan.service
 cat /var/log/v2ray/error.log
+cat /etc/v2ray/config.json
 crontab -l
 sudo ~/.acme.sh/acme.sh --cron
 timedatectl
