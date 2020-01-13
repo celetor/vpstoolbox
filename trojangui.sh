@@ -1708,7 +1708,7 @@ sslink(){
     if [[ $install_qbt = 1 ]]; then
     echo
     colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Information)"
-    colorEcho ${LINK} "https://$domain/$qbtpath username admin password adminadmin"
+    colorEcho ${LINK} "https://$domain$qbtpath username admin password adminadmin"
   fi
 }
 ##################################
