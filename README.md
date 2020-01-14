@@ -77,6 +77,7 @@ sudo systemctl status nginx
 sudo systemctl status v2ray
 sudo systemctl status dnsmasq
 sudo systemctl status qbittorrent
+sudo systemctl status aria2
 journalctl -e -u trojan.service
 cat /var/log/v2ray/error.log
 cat /etc/v2ray/config.json
