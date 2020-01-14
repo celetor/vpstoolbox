@@ -326,7 +326,8 @@ installdependency(){
 echo "zh_TW.UTF-8 UTF-8" > /etc/locale.gen
 dpkg-reconfigure --frontend=noninteractive locales
 echo 'LANG="zh_TW.UTF-8"'>/etc/default/locale
-export LANG=zh_TW.UTF-8
+export LANG="zh_TW.UTF-8"
+export LC_ALL="zh_TW.UTF-8"
  else
   clear
   TERM=ansi whiptail --title "error can't install dependency" --infobox "error can't install dependency" 8 78
