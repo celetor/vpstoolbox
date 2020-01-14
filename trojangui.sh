@@ -66,14 +66,15 @@ isresolved(){
 }
 ###############User input################
 userinput(){
-whiptail --title "User choose" --checklist --separate-output --nocancel "Press Space to Choose:(Trojan-GFW Nginx and BBR has been included)" 20 78 7 \
+whiptail --title "User choose" --checklist --separate-output --nocancel "Press Space to Choose:(Trojan-GFW Nginx and BBR has been included)" 20 78 8 \
 "1" "系统升级(System Upgrade)" on \
 "2" "仅启用TLS1.3(TLS1.3 ONLY)" off \
 "3" "安装V2ray(Vmess+Websocket+TLS+Nginx)" off \
 "4" "安装Shadowsocks(Shadowsocks+Websocket+TLS+Nginx)" off \
 "5" "安装Dnsmasq(Dns cache)" on \
 "6" "安装Qbittorrent(Nginx Https Proxy)" off \
-"7" "安装BBRPLUS(not recommended because BBR has been included)" off 2>results
+"7" "安装Aria2" off \
+"8" "安装BBRPLUS(not recommended because BBR has been included)" off 2>results
 
 while read choice
 do
@@ -97,6 +98,9 @@ do
     install_qbt=1
     ;;
     7)
+    install_aria=1
+    ;;
+    8)
     install_bbrplus=1
     ;;
     *)
@@ -185,6 +189,16 @@ fi
       qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
       while [[ -z $qbtpath ]]; do
       qbtpath=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的Qbittorrent路径并按回车" 8 78 --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+      done
+    fi
+    if [[ $install_aria = 1 ]]; then
+      ariaport=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc port并按回车" 8 78 6800 --title "Aria2 rpc port input" 3>&1 1>&2 2>&3)
+      ariapasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+      while [[ -z $ariapasswd ]]; do
+      ariapasswd=$(whiptail --passwordbox --nocancel "你是不是想找死，快输入想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+      done
+      while [[ -z $ariaport ]]; do
+      ariaport=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的Aria2 rpc port并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
       done
     fi
 }
@@ -333,6 +347,109 @@ clear
 #############################################
 if [[ $tls13only = 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
+fi
+#############################################
+if [[ $install_aria = 1 ]]; then
+  if [[ -f /usr/bin/aria2c ]]; then
+    :
+    else
+      apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev -y
+      wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz
+      tar -xvf aria2-1.35.0.tar.xz
+      rm aria2-1.35.0.tar.xz
+      cd aria2-1.35.0
+      ./configure --with-libuv --without-gnutls --with-openssl
+      make -j $(grep "^core id" /proc/cpuinfo | sort -u | wc -l)
+      make install
+      apt remove build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev -y
+      touch /usr/local/bin/aria2.session
+      cd ..
+      rm -rf aria2-1.35.0
+      cat > '/etc/systemd/system/aria2.service' << EOF
+[Unit]
+Description=Aria2c download manager
+Requires=network.target
+After=network.target
+    
+[Service]
+Type=forking
+User=root
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/aria2c --conf-path=/etc/aria2.conf --daemon
+ExecReload=/usr/bin/kill -HUP \$MAINPID
+ExecStop=/usr/bin/kill -s STOP \$MAINPID
+RestartSec=1min
+Restart=on-failure
+    
+[Install]
+WantedBy=multi-user.target
+EOF
+      cat > '/etc/aria2.conf' << EOF
+rpc-secure=true
+rpc-certificate=/etc/trojan/trojan.crt
+rpc-private-key=/etc/trojan/trojan.key
+## 下载设置 ##
+continue=true
+max-concurrent-downloads=50
+split=16
+min-split-size=10M
+max-connection-per-server=16
+lowest-speed-limit=0
+#max-overall-download-limit=0
+#max-download-limit=0
+#max-overall-upload-limit=0
+#max-upload-limit=0
+disable-ipv6=false
+max-tries=0
+#retry-wait=0
+
+## 进度保存相关 ##
+
+input-file=/usr/local/bin/aria2.session
+save-session=/usr/local/bin/aria2.session
+save-session-interval=60
+force-save=true
+
+## RPC相关设置 ##
+
+enable-rpc=true
+rpc-allow-origin-all=true
+rpc-listen-all=true
+event-poll=epoll
+# RPC监听端口, 端口被占用时可以修改, 默认:6800
+rpc-listen-port=$ariaport
+# 设置的RPC授权令牌, v1.18.4新增功能, 取代 --rpc-user 和 --rpc-passwd 选项
+rpc-secret=$ariapasswd
+
+## BT/PT下载相关 ##
+#follow-torrent=true
+listen-port=51413
+#bt-max-peers=55
+enable-dht=true
+enable-dht6=true
+#dht-listen-port=6881-6999
+bt-enable-lpd=true
+#enable-peer-exchange=true
+#bt-request-peer-speed-limit=50K
+# 客户端伪装, PT需要
+#peer-id-prefix=-TR2770-
+#user-agent=Transmission/2.77
+seed-ratio=0
+# BT校验相关, 默认:true
+#bt-hash-check-seed=true
+bt-seed-unverified=true
+bt-save-metadata=true
+bt-require-crypto=true
+
+## 磁盘相关 ##
+
+#文件保存路径, 默认为当前启动位置
+dir=/root/aria2/
+#enable-mmap=true
+file-allocation=none
+disk-cache=64M
+EOF
+  fi
 fi
 #############################################
 if [[ $dnsmasq_install = 1 ]]; then
@@ -1059,6 +1176,9 @@ start(){
   if [[ $install_qbt = 1 ]]; then
     systemctl start qbittorrent.service || true
   fi
+  if [[ $install_aria = 1 ]]; then
+    systemctl start aria2 || true
+  fi
   systemctl restart trojan || true
   systemctl restart nginx || true
 }
@@ -1070,6 +1190,9 @@ bootstart(){
   fi
   if [[ $install_qbt = 1 ]]; then
     systemctl enable qbittorrent.service || true
+  fi
+  if [[ $install_aria = 1 ]]; then
+    systemctl enable aria2 || true
   fi
   systemctl enable nginx || true
   systemctl enable trojan || true
