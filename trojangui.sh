@@ -198,7 +198,7 @@ fi
       ariapasswd=$(whiptail --passwordbox --nocancel "你是不是想找死，快输入想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
       done
       while [[ -z $ariaport ]]; do
-      ariaport=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的Aria2 rpc port并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+      ariaport=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的Aria2 rpc port并按回车" 8 78 --title "Aria2 rpc port input" 3>&1 1>&2 2>&3)
       done
     fi
 }
