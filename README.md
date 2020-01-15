@@ -10,7 +10,7 @@ apt-get update && apt-get install sudo whiptail curl locales -y
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
-![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu.png)
+![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/mainmenu.png)
 ![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/user.png)
 #### Bash Features:
 
