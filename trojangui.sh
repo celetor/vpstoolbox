@@ -1856,13 +1856,18 @@ fi
 sslink(){
     if [[ $install_ss = 1 ]]; then
     echo
-    colorEcho ${INFO} "你的SS信息(Your Shadowsocks Information)"
-    colorEcho ${LINK} "$sspasswd@https://$domain/$sspath"
+    colorEcho ${INFO} "你的SS信息，非分享链接，仅供参考(Your Shadowsocks Information)"
+    colorEcho ${LINK} "$sspasswd@https://$domain$sspath"
   fi
     if [[ $install_qbt = 1 ]]; then
     echo
     colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Information)"
     colorEcho ${LINK} "https://$domain$qbtpath username admin password adminadmin"
+  fi
+  if [[ $install_aria = 1 ]]; then
+    echo
+    colorEcho ${INFO} "你的Aria信息，非分享链接，仅供参考(Your Aria2 Information)"
+    colorEcho ${LINK} "$ariapasswd@https://$domain:$ariaport"
   fi
 }
 ##################################
