@@ -1934,6 +1934,7 @@ function advancedMenu() {
     esac
 }
 echo "zh_TW.UTF-8 UTF-8" > /etc/locale.gen
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 dpkg-reconfigure --frontend=noninteractive locales
 echo 'LANG="zh_TW.UTF-8"'>/etc/default/locale
 export LANG="zh_TW.UTF-8"
