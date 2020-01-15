@@ -1841,7 +1841,7 @@ v2raylink(){
   wget https://github.com/boypt/vmess2json/raw/master/json2vmess.py -q
   chmod +x json2vmess.py
   touch /etc/v2ray/$uuid.txt
-  v2link=$(./json2vmess.py --addr $domain --filter ws --amend port:443 --amend id:$uuid --amend aid:$alterid --amend tls:tls --amend host:$domain --amend path:$path /etc/v2ray/config.json)  || true
+  v2link=$(./json2vmess.py --addr $domain --filter ws --amend net:ws --amend port:443 --amend id:$uuid --amend aid:$alterid --amend tls:tls --amend host:$domain --amend path:$path /etc/v2ray/config.json)  || true
     cat > "/etc/v2ray/$uuid.txt" << EOF
 $v2link
 EOF
