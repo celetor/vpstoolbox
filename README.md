@@ -11,7 +11,7 @@ apt-get update && apt-get install sudo whiptail curl locales -y
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
 ![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/mainmenu.png)
-![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/user.png)
+![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/useroption.png)
 #### Bash Features:
 
 1. Auto install and config **[Trojan-GFW](https://github.com/trojan-gfw/trojan) and [NGINX](https://www.nginx.com/)**
