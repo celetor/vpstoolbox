@@ -1857,7 +1857,7 @@ sslink(){
     if [[ $install_ss = 1 ]]; then
     echo
     colorEcho ${INFO} "你的SS信息，非分享链接，仅供参考(Your Shadowsocks Information)"
-    colorEcho ${LINK} "$sspasswd@https://$domain$sspath"
+    colorEcho ${LINK} "$ssmethod:$sspasswd@https://$domain:443$sspath"
   fi
     if [[ $install_qbt = 1 ]]; then
     echo
