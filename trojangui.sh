@@ -264,12 +264,12 @@ EOF
 #########Open ports########################
 openfirewall(){
   colorEcho ${INFO} "设置 firewall"
-  iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-  iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
-  iptables -I OUTPUT -j ACCEPT
-  ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-  ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
-  ip6tables -I OUTPUT -j ACCEPT
+  iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT || true
+  iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT || true
+  iptables -I OUTPUT -j ACCEPT || true
+  ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT || true
+  ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT || true
+  ip6tables -I OUTPUT -j ACCEPT || true
   if [[ $dist = centos ]]; then
       setenforce 0  || true
           cat > '/etc/selinux/config' << EOF
