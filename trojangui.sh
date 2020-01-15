@@ -70,7 +70,7 @@ whiptail --title "User choose" --checklist --separate-output --nocancel "Press S
 "1" "系统升级(System Upgrade)" on \
 "2" "仅启用TLS1.3(TLS1.3 ONLY)" off \
 "3" "安装V2ray(Vmess+Websocket+TLS+Nginx)" off \
-"4" "安装Shadowsocks(Shadowsocks+Websocket+TLS+Nginx) Not recommended" off \
+"4" "安装Shadowsocks Not recommended(Shadowsocks+Websocket+TLS+Nginx) " off \
 "5" "安装Dnsmasq(Dns cache)" on \
 "6" "安装Qbittorrent(Nginx Https Proxy)" off \
 "7" "安装Aria2(Https mode)" off \
