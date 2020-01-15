@@ -70,7 +70,7 @@ whiptail --title "User choose" --checklist --separate-output --nocancel "Press S
 "1" "系统升级(System Upgrade)" on \
 "2" "仅启用TLS1.3(TLS1.3 ONLY)" off \
 "3" "安装V2ray(Vmess+Websocket+TLS+Nginx)" off \
-"4" "安装Shadowsocks Not recommended(Shadowsocks+Websocket+TLS+Nginx) " off \
+"4" "安装Shadowsocks Not recommended(Shadowsocks+Websocket+TLS+Nginx)" off \
 "5" "安装Dnsmasq(Dns cache)" on \
 "6" "安装Qbittorrent(Nginx Https Proxy)" off \
 "7" "安装Aria2(Https mode)" off \
@@ -317,7 +317,7 @@ installdependency(){
   if [[ $dist = centos ]]; then
     yum install -y sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
-    apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales -qq -y
+    apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates -qq -y
     if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]] || [[ $(lsb_release -cs) == jessie ]]; then
       TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "你的操作系统不支持 python3-qrcode,Skipping generating QR code!" 8 78
       else
@@ -1614,6 +1614,7 @@ cat /etc/trojan/client2.json
 }
 ##########V2ray Client Config################
 v2rayclient(){
+  if [[ $install_v2ray = 1 ]]; then
   touch /etc/v2ray/client.json
   cat > '/etc/v2ray/client.json' << EOF
 {
@@ -1758,6 +1759,7 @@ v2rayclient(){
   }
 }
 EOF
+  fi
 }
 ##########Remove Trojan-Gfw##########
 uninstall(){
@@ -1832,6 +1834,10 @@ colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"
 v2raylink(){
   if [[ $install_v2ray = 1 ]]; then
   echo
+  v2rayclient
+  colorEcho ${INFO} "你的(Your) V2ray 客户端(client) config profile"
+  cat /etc/v2ray/client.json
+  echo
   wget https://github.com/boypt/vmess2json/raw/master/json2vmess.py -q
   chmod +x json2vmess.py
   touch /etc/v2ray/$uuid.txt
@@ -1850,7 +1856,7 @@ fi
 }
 ##########SS Link###########
 sslink(){
-    if [[ $install_ss = 1 ]]; then
+  if [[ $install_ss = 1 ]]; then
     echo
     colorEcho ${INFO} "你的SS信息，非分享链接，仅供参考(Your Shadowsocks Information)"
     colorEcho ${LINK} "$ssmethod:$sspasswd@https://$domain:443$sspath"
