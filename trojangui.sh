@@ -578,8 +578,13 @@ fi
 fi
 clear
 #############################################
+if [[ -f /etc/trojan/trojan.crt ]]; then
+  :
+  else
   curl -s https://get.acme.sh | sh
-  sudo ~/.acme.sh/acme.sh --upgrade --auto-upgrade
+  sudo ~/.acme.sh/acme.sh --upgrade --auto-upgrade  
+fi
+#############################################
   if [[ -f /usr/local/bin/trojan ]]; then
     :
     else
