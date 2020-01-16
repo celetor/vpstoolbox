@@ -66,15 +66,16 @@ isresolved(){
 }
 ###############User input################
 userinput(){
-whiptail --title "User choose" --checklist --separate-output --nocancel "Press Space to Choose:(Trojan-GFW Nginx and BBR has been included)" 20 78 8 \
+whiptail --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:(Trojan-GFW Nginx and BBR 為強制選項,已經包含)
+若不確定，請保持默認配置並回車" 20 78 8 \
 "1" "系统升级(System Upgrade)" on \
 "2" "仅启用TLS1.3(TLS1.3 ONLY)" off \
-"3" "安装V2ray(Vmess+Websocket+TLS+Nginx)" off \
-"4" "安装Shadowsocks Not recommended(Shadowsocks+Websocket+TLS+Nginx)" off \
-"5" "安装Dnsmasq(Dns cache)" on \
-"6" "安装Qbittorrent(Nginx Https Proxy)" off \
-"7" "安装Aria2(Https mode)" off \
-"8" "安装BBRPLUS(not recommended because BBR has been included)" off 2>results
+"3" "安裝V2ray(Vmess+Websocket+TLS+Nginx)" off \
+"4" "安裝Shadowsocks+V2ray-plugin+Websocket+TLS+Nginx" off \
+"5" "安裝Dnsmasq(Dns cache and adblock)" on \
+"6" "安裝Qbittorrent(Nginx Https Proxy)" off \
+"7" "安裝Aria2(Https mode)" off \
+"8" "安裝BBRPLUS 不推薦因為BBR已經包含(because BBR has been included)" off 2>results
 
 while read choice
 do
@@ -206,15 +207,15 @@ fi
 osdist(){
 
 set -e
- if cat /etc/*release | grep ^NAME | grep CentOS; then
+ if cat /etc/*release | grep ^NAME | grep -q CentOS; then
     dist=centos
- elif cat /etc/*release | grep ^NAME | grep Red; then
+ elif cat /etc/*release | grep ^NAME | grep -q Red; then
     dist=centos
- elif cat /etc/*release | grep ^NAME | grep Fedora; then
+ elif cat /etc/*release | grep ^NAME | grep -q Fedora; then
     dist=centos
- elif cat /etc/*release | grep ^NAME | grep Ubuntu; then
+ elif cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
     dist=ubuntu
- elif cat /etc/*release | grep ^NAME | grep Debian; then
+ elif cat /etc/*release | grep ^NAME | grep -q Debian; then
     dist=debian
  else
   TERM=ansi whiptail --title "OS SUPPORT" --infobox "OS NOT SUPPORTED, couldn't install Trojan-gfw" 8 78
@@ -1917,10 +1918,20 @@ function advancedMenu() {
         ;;
     esac
 }
+if grep -q "# zh_TW.UTF-8 UTF-8" /etc/locale.gen ; then
 echo "zh_TW.UTF-8 UTF-8" > /etc/locale.gen
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 dpkg-reconfigure --frontend=noninteractive locales
-echo 'LANG="zh_TW.UTF-8"'>/etc/default/locale
+echo 'LANG="zh_TW.UTF-8"'>/etc/default/locale 
+fi
+if grep -q "zh_TW.UTF-8 UTF-8" /etc/locale.gen; then
+  :
+  else
+echo "zh_TW.UTF-8 UTF-8" > /etc/locale.gen
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+dpkg-reconfigure --frontend=noninteractive locales
+echo 'LANG="zh_TW.UTF-8"'>/etc/default/locale  
+fi
 export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
 #export LANG=C.UTF-8 || true
