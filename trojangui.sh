@@ -1785,7 +1785,7 @@ checkupdate(){
     rm go.sh
   fi
   if [[ -f /usr/local/bin/trojan ]]; then
-    bash -c "$(wget -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
   fi
 }
 ###########Trojan share link########
