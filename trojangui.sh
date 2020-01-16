@@ -705,438 +705,6 @@ changepasswd(){
 }
 EOF
 }
-########Nginx config for Trojan only##############
-nginxtrojan(){
-  colorEcho ${INFO} "配置(configing) nginx"
-rm -rf /etc/nginx/sites-available/* || true
-rm -rf /etc/nginx/sites-enabled/* || true
-rm -rf /etc/nginx/conf.d/* || true
-touch /etc/nginx/conf.d/trojan.conf
-  if [[ $install_v2ray = 1 ]] && [[ $install_ss = 1 ]] && [[ $install_qbt = 1 ]]; then
-      cat > '/etc/nginx/conf.d/trojan.conf' << EOF
-server {
-  listen 127.0.0.1:80;
-    server_name $domain;
-    if (\$http_user_agent = "") { return 444; }
-    location / {
-      root /usr/share/nginx/html/;
-        index index.html;
-        }
-    location $path {
-        access_log off;
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:10000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-    location $sspath {
-        access_log off;
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:20000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-    location $qbtpath {
-        proxy_pass              http://127.0.0.1:8080/;
-        proxy_set_header        X-Forwarded-Host        \$server_name:\$server_port;
-        proxy_hide_header       Referer;
-        proxy_hide_header       Origin;
-        proxy_set_header        Referer                 '';
-        proxy_set_header        Origin                  '';
-        # add_header              X-Frame-Options         "SAMEORIGIN"; # not needed since 4.1.0
-        }
-    location /announce {
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:9000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-  add_header X-Frame-Options SAMEORIGIN always;
-  add_header X-Content-Type-Options "nosniff" always;
-  add_header Referrer-Policy "no-referrer";
-  #add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
-  add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
-}
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name $domain;
-    return 301 https://$domain;
-}
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-    return 444;
-}
-EOF
-elif [[ $install_v2ray = 1 ]] && [[ $install_ss = 1 ]]; then
-  cat > '/etc/nginx/conf.d/trojan.conf' << EOF
-server {
-  listen 127.0.0.1:80;
-    server_name $domain;
-    if (\$http_user_agent = "") { return 444; }
-    location / {
-      root /usr/share/nginx/html/;
-        index index.html;
-        }
-    location $path {
-        access_log off;
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:10000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-    location $sspath {
-        access_log off;
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:20000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-  add_header X-Frame-Options SAMEORIGIN always;
-  add_header X-Content-Type-Options "nosniff" always;
-  add_header Referrer-Policy "no-referrer";
-  #add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
-  add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
-}
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name $domain;
-    return 301 https://$domain;
-}
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-    return 444;
-}
-EOF
-elif [[ $install_v2ray = 1 ]] && [[ $install_qbt = 1 ]]; then
-        cat > '/etc/nginx/conf.d/trojan.conf' << EOF
-server {
-  listen 127.0.0.1:80;
-    server_name $domain;
-    if (\$http_user_agent = "") { return 444; }
-    location / {
-      root /usr/share/nginx/html/;
-        index index.html;
-        }
-    location $path {
-        access_log off;
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:10000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-    location $qbtpath {
-        proxy_pass              http://127.0.0.1:8080/;
-        proxy_set_header        X-Forwarded-Host        \$server_name:\$server_port;
-        proxy_hide_header       Referer;
-        proxy_hide_header       Origin;
-        proxy_set_header        Referer                 '';
-        proxy_set_header        Origin                  '';
-        # add_header              X-Frame-Options         "SAMEORIGIN"; # not needed since 4.1.0
-        }
-    location /announce {
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:9000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-  add_header X-Frame-Options SAMEORIGIN always;
-  add_header X-Content-Type-Options "nosniff" always;
-  add_header Referrer-Policy "no-referrer";
-  #add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
-  add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
-}
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name $domain;
-    return 301 https://$domain;
-}
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-    return 444;
-}
-EOF
-elif [[ $install_ss = 1 ]] && [[ $install_qbt = 1 ]]; then
-        cat > '/etc/nginx/conf.d/trojan.conf' << EOF
-server {
-  listen 127.0.0.1:80;
-    server_name $domain;
-    if (\$http_user_agent = "") { return 444; }
-    location / {
-      root /usr/share/nginx/html/;
-        index index.html;
-        }
-    location $sspath {
-        access_log off;
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:20000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-    location $qbtpath {
-        proxy_pass              http://127.0.0.1:8080/;
-        proxy_set_header        X-Forwarded-Host        \$server_name:\$server_port;
-        proxy_hide_header       Referer;
-        proxy_hide_header       Origin;
-        proxy_set_header        Referer                 '';
-        proxy_set_header        Origin                  '';
-        # add_header              X-Frame-Options         "SAMEORIGIN"; # not needed since 4.1.0
-        }
-    location /announce {
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:9000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-  add_header X-Frame-Options SAMEORIGIN always;
-  add_header X-Content-Type-Options "nosniff" always;
-  add_header Referrer-Policy "no-referrer";
-  #add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
-  add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
-}
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name $domain;
-    return 301 https://$domain;
-}
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-    return 444;
-}
-EOF
-elif [[ $install_v2ray = 1 ]]; then
-  cat > '/etc/nginx/conf.d/trojan.conf' << EOF
-server {
-  listen 127.0.0.1:80;
-    server_name $domain;
-    if (\$http_user_agent = "") { return 444; }
-    location / {
-      root /usr/share/nginx/html/;
-        index index.html;
-        }
-    location $path {
-        access_log off;
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:10000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-  add_header X-Frame-Options SAMEORIGIN always;
-  add_header X-Content-Type-Options "nosniff" always;
-  add_header Referrer-Policy "no-referrer";
-  #add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
-  add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
-}
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name $domain;
-    return 301 https://$domain;
-}
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-    return 444;
-}
-EOF
-elif [[ $install_ss = 1 ]]; then
-  cat > '/etc/nginx/conf.d/trojan.conf' << EOF
-server {
-  listen 127.0.0.1:80;
-    server_name $domain;
-    if (\$http_user_agent = "") { return 444; }
-    location / {
-      root /usr/share/nginx/html/;
-        index index.html;
-        }
-    location $sspath {
-        access_log off;
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:20000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-  add_header X-Frame-Options SAMEORIGIN always;
-  add_header X-Content-Type-Options "nosniff" always;
-  add_header Referrer-Policy "no-referrer";
-  #add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
-  add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
-}
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name $domain;
-    return 301 https://$domain;
-}
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-    return 444;
-}
-EOF
-elif [[ $install_qbt = 1 ]]; then
-        cat > '/etc/nginx/conf.d/trojan.conf' << EOF
-server {
-  listen 127.0.0.1:80;
-    server_name $domain;
-    if (\$http_user_agent = "") { return 444; }
-    location / {
-      root /usr/share/nginx/html/;
-        index index.html;
-        }
-    location $qbtpath {
-        proxy_pass              http://127.0.0.1:8080/;
-        proxy_set_header        X-Forwarded-Host        \$server_name:\$server_port;
-        proxy_hide_header       Referer;
-        proxy_hide_header       Origin;
-        proxy_set_header        Referer                 '';
-        proxy_set_header        Origin                  '';
-        # add_header              X-Frame-Options         "SAMEORIGIN"; # not needed since 4.1.0
-        }
-    location /announce {
-        proxy_redirect off;
-        proxy_pass http://127.0.0.1:9000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        }
-  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-  add_header X-Frame-Options SAMEORIGIN always;
-  add_header X-Content-Type-Options "nosniff" always;
-  add_header Referrer-Policy "no-referrer";
-  #add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
-  add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
-}
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name $domain;
-    return 301 https://$domain;
-}
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-    return 444;
-}
-EOF
- else
-    cat > '/etc/nginx/conf.d/trojan.conf' << EOF
-server {
-  listen 127.0.0.1:80;
-    server_name $domain;
-    if (\$http_user_agent = "") { return 444; }
-    root /usr/share/nginx/html/;
-  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-  add_header X-Frame-Options SAMEORIGIN always;
-  add_header X-Content-Type-Options "nosniff" always;
-  add_header Referrer-Policy "no-referrer";
-  #add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
-  add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
-}
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name $domain;
-    return 301 https://$domain;
-}
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-    return 444;
-}
-EOF
- fi
-nginx -s reload
-systemctl restart nginx
-htmlcode=$(shuf -i 1-3 -n 1)
-wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/$htmlcode.zip -q
-unzip -o $htmlcode.zip -d /usr/share/nginx/html/
-rm -rf $htmlcode.zip
-}
 ##########Nginx conf####################
 nginxconf(){
     cat > '/etc/nginx/nginx.conf' << EOF
@@ -1176,6 +744,97 @@ http {
   include /etc/nginx/conf.d/*.conf; 
 }
 EOF
+}
+########Nginx config for Trojan only##############
+nginxtrojan(){
+  colorEcho ${INFO} "配置(configing) nginx"
+rm -rf /etc/nginx/sites-available/* || true
+rm -rf /etc/nginx/sites-enabled/* || true
+rm -rf /etc/nginx/conf.d/* || true
+touch /etc/nginx/conf.d/trojan.conf
+      cat > '/etc/nginx/conf.d/trojan.conf' << EOF
+server {
+  listen 127.0.0.1:80;
+    server_name $domain;
+    if (\$http_user_agent = "") { return 444; }
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+    add_header X-Frame-Options SAMEORIGIN always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer";
+    #add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
+    add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
+    location / {
+      root /usr/share/nginx/html/;
+        index index.html;
+        }
+EOF
+if [[ $install_v2ray = 1 ]]; then
+echo "    location $path {" >> /etc/nginx/conf.d/trojan.conf
+echo "        access_log off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass http://127.0.0.1:10000;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
+fi
+if [[ $install_ss = 1 ]]; then
+echo "    location $sspath {" >> /etc/nginx/conf.d/trojan.conf
+echo "        access_log off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass http://127.0.0.1:20000;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
+fi
+if [[ $install_qbt = 1 ]]; then
+echo "    location $qbtpath {" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass              http://127.0.0.1:8080/;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header        X-Forwarded-Host        \$server_name:\$server_port;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_hide_header       Referer;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_hide_header       Origin;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header        Referer                 '';" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header        Origin                  '';" >> /etc/nginx/conf.d/trojan.conf
+echo "        # add_header              X-Frame-Options         "SAMEORIGIN"; # not needed since 4.1.0" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "    location /announce {" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass http://127.0.0.1:9000;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
+fi
+echo "}" >> /etc/nginx/conf.d/trojan.conf
+echo "" >> /etc/nginx/conf.d/trojan.conf
+echo "server {" >> /etc/nginx/conf.d/trojan.conf
+echo "    listen 80;" >> /etc/nginx/conf.d/trojan.conf
+echo "    listen [::]:80;" >> /etc/nginx/conf.d/trojan.conf
+echo "    server_name $domain;" >> /etc/nginx/conf.d/trojan.conf
+echo "    return 301 https://$domain;" >> /etc/nginx/conf.d/trojan.conf
+echo "}" >> /etc/nginx/conf.d/trojan.conf
+echo "" >> /etc/nginx/conf.d/trojan.conf
+echo "server {" >> /etc/nginx/conf.d/trojan.conf
+echo "    listen 80 default_server;" >> /etc/nginx/conf.d/trojan.conf
+echo "    listen [::]:80 default_server;" >> /etc/nginx/conf.d/trojan.conf
+echo "    server_name _;" >> /etc/nginx/conf.d/trojan.conf
+echo "    return 444;" >> /etc/nginx/conf.d/trojan.conf
+echo "}" >> /etc/nginx/conf.d/trojan.conf
+nginx -t
+systemctl restart nginx
+htmlcode=$(shuf -i 1-3 -n 1)
+wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/$htmlcode.zip -q
+unzip -o $htmlcode.zip -d /usr/share/nginx/html/
+rm -rf $htmlcode.zip
 }
 ##########Auto boot start###############
 start(){
