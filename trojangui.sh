@@ -193,6 +193,10 @@ fi
       done
     fi
     if [[ $install_aria = 1 ]]; then
+      ariapath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2路径并按回车" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
+      while [[ -z $qbtpath ]]; do
+      ariapath=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的Aria2路径并按回车" 8 78 --title "Aria2 path input" 3>&1 1>&2 2>&3)
+      done
       ariaport=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc port并按回车" 8 78 6800 --title "Aria2 rpc port input" 3>&1 1>&2 2>&3)
       ariapasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
       while [[ -z $ariapasswd ]]; do
@@ -391,9 +395,9 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
       cat > '/etc/aria2.conf' << EOF
-rpc-secure=true
-rpc-certificate=/etc/trojan/trojan.crt
-rpc-private-key=/etc/trojan/trojan.key
+#rpc-secure=true
+#rpc-certificate=/etc/trojan/trojan.crt
+#rpc-private-key=/etc/trojan/trojan.key
 ## 下载设置 ##
 continue=true
 max-concurrent-downloads=50
@@ -420,7 +424,7 @@ force-save=true
 
 enable-rpc=true
 rpc-allow-origin-all=true
-rpc-listen-all=true
+rpc-listen-all=false
 event-poll=epoll
 # RPC监听端口, 端口被占用时可以修改, 默认:6800
 rpc-listen-port=$ariaport
@@ -609,6 +613,7 @@ fi
 deb https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
 deb-src https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
 EOF
+  apt-get autoremove -y || true
   apt-get remove nginx-common -qq -y
   apt-get update -qq
   apt-get install nginx -q -y
@@ -770,7 +775,7 @@ server {
 EOF
 if [[ $install_v2ray = 1 ]]; then
 echo "    location $path {" >> /etc/nginx/conf.d/trojan.conf
-echo "        access_log off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:10000;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
@@ -783,9 +788,22 @@ echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
 if [[ $install_ss = 1 ]]; then
 echo "    location $sspath {" >> /etc/nginx/conf.d/trojan.conf
-echo "        access_log off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:20000;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
+fi
+if [[ $install_aria = 1 ]]; then
+echo "    location $ariapath {" >> /etc/nginx/conf.d/trojan.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass http://127.0.0.1:$ariaport/jsonrpc;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
@@ -1518,7 +1536,7 @@ sslink(){
   if [[ $install_aria = 1 ]]; then
     echo
     colorEcho ${INFO} "你的Aria信息，非分享链接，仅供参考(Your Aria2 Information)"
-    colorEcho ${LINK} "$ariapasswd@https://$domain:$ariaport"
+    colorEcho ${LINK} "$ariapasswd@https://$domain:443$ariapath"
   fi
 }
 ##################################
