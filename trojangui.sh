@@ -264,6 +264,7 @@ EOF
 #########Open ports########################
 openfirewall(){
   colorEcho ${INFO} "设置 firewall"
+  sh -c 'echo "1\n" | DEBIAN_FRONTEND=noninteractive update-alternatives --config iptables'
   iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT || true
   iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT || true
   iptables -I OUTPUT -j ACCEPT || true
@@ -317,7 +318,7 @@ installdependency(){
   if [[ $dist = centos ]]; then
     yum install -y sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
-    apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales -qq -y
+    apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables -qq -y
     if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]] || [[ $(lsb_release -cs) == jessie ]]; then
       TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "你的操作系统不支持 python3-qrcode,Skipping generating QR code!" 8 78
       else
@@ -1238,33 +1239,12 @@ EOF
 * soft nofile 51200
 * hard nofile 51200
 EOF
-    cat > '/etc/profile' << EOF
-if [ "${PS1-}" ]; then
-  if [ "${BASH-}" ] && [ "$BASH" != "/bin/sh" ]; then
-    # The file bash.bashrc already sets the default PS1.
-    # PS1='\h:\w\$ '
-    if [ -f /etc/bash.bashrc ]; then
-      . /etc/bash.bashrc
-    fi
-  else
-    if [ "`id -u`" -eq 0 ]; then
-      PS1='# '
-    else
-      PS1='$ '
-    fi
-  fi
+if grep -q "ulimit" /etc/profile
+then
+  :
+else
+echo "ulimit -SHn 51200" >> /etc/profile
 fi
-
-if [ -d /etc/profile.d ]; then
-  for i in /etc/profile.d/*.sh; do
-    if [ -r $i ]; then
-      . $i
-    fi
-  done
-  unset i
-fi
-ulimit -SHn 51200
-EOF
 systemctl daemon-reload
 if [[ $install_bbrplus = 1 ]]; then
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
