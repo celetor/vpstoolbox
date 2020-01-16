@@ -331,7 +331,10 @@ installdependency(){
  fi
  clear
 #############################################
-if isresolved $domain
+if [[ -f /etc/trojan/trojan.crt ]]; then
+  :
+  else
+  if isresolved $domain
   then
   :
   else 
@@ -339,6 +342,7 @@ if isresolved $domain
   colorEcho ${ERROR} "Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!"
   exit -1
   clear
+  fi  
 fi
 #############################################
 if [[ $system_upgrade = 1 ]]; then
