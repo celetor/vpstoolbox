@@ -69,13 +69,13 @@ userinput(){
 whiptail --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:(Trojan-GFW Nginx and BBR 為強制選項,已經包含)
 若不確定，請保持默認配置並回車" 20 78 8 \
 "1" "系统升级(System Upgrade)" on \
-"2" "仅启用TLS1.3(TLS1.3 ONLY)" off \
-"3" "安裝V2ray(Vmess+Websocket+TLS+Nginx)" off \
-"4" "安裝Shadowsocks+V2ray-plugin+Websocket+TLS+Nginx" off \
-"5" "安裝Dnsmasq(Dns cache and adblock)" on \
-"6" "安裝Qbittorrent(Nginx Https Proxy)" off \
-"7" "安裝Aria2(Https mode)" off \
-"8" "安裝BBRPLUS 不推薦因為BBR已經包含(because BBR has been included)" off 2>results
+"2" "安裝Dnsmasq(Dns cache and adblock)" on \
+"3" "安裝Qbittorrent(Nginx Https Proxy)" off \
+"4" "安裝Aria2(Https mode)" off \
+"5" "安裝V2ray(Vmess+Websocket+TLS+Nginx)" off \
+"6" "安裝Shadowsocks+V2ray-plugin+Websocket+TLS+Nginx" off \
+"7" "安裝BBRPLUS 不推薦因為BBR已經包含(because BBR has been included)" off \
+"8" "仅启用TLS1.3(TLS1.3 ONLY)" off 2>results
 
 while read choice
 do
@@ -84,25 +84,25 @@ do
     system_upgrade=1
     ;;
     2) 
-    tls13only=1
-    ;;
-    3) 
-    install_v2ray=1
-    ;;
-    4) 
-    install_ss=1
-    ;;
-    5) 
     dnsmasq_install=1
     ;;
-    6)
+    3)
     install_qbt=1
     ;;
-    7)
+    4)
     install_aria=1
     ;;
-    8)
+    5) 
+    install_v2ray=1
+    ;;
+    6) 
+    install_ss=1
+    ;;
+    7)
     install_bbrplus=1
+    ;;
+    8) 
+    tls13only=1
     ;;
     *)
     ;;
