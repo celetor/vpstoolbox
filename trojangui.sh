@@ -639,6 +639,7 @@ fi
 issuecert(){
   colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
   if [[ -f /etc/trojan/trojan.crt ]]; then
+    myip=`curl --silent http://dynamicdns.park-your-domain.com/getip`
     TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
     else
   mkdir /etc/trojan/ &
