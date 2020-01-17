@@ -269,7 +269,7 @@ EOF
 #########Open ports########################
 openfirewall(){
   colorEcho ${INFO} "设置 firewall"
-  sh -c 'echo "1\n" | DEBIAN_FRONTEND=noninteractive update-alternatives --config iptables'
+  sh -c 'echo "1\n" | DEBIAN_FRONTEND=noninteractive update-alternatives --config iptables' || true
   iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT || true
   iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT || true
   iptables -I OUTPUT -j ACCEPT || true
