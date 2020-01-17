@@ -70,8 +70,8 @@ whiptail --title "User choose" --checklist --separate-output --nocancel "請按�
 若不確定，請保持默認配置並回車" 20 78 8 \
 "1" "系统升级(System Upgrade)" on \
 "2" "安裝Dnsmasq(Dns cache and adblock)" on \
-"3" "安裝Qbittorrent(Nginx Https Proxy)" off \
-"4" "安裝Aria2(Https mode)" off \
+"3" "安裝Qbittorrent(Nginx Https Proxy)" on \
+"4" "安裝Aria2(Https mode)" on \
 "5" "安裝V2ray(Vmess+Websocket+TLS+Nginx)" off \
 "6" "安裝Shadowsocks+V2ray-plugin+Websocket+TLS+Nginx" off \
 "7" "安裝BBRPLUS 不推薦因為BBR已經包含(because BBR has been included)" off \
@@ -1551,7 +1551,7 @@ sslink(){
     if [[ $install_qbt = 1 ]]; then
     echo
     colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Download Information)"
-    colorEcho ${LINK} "https://$domain$qbtpath username admin password adminadmin"
+    colorEcho ${LINK} "https://$domain$qbtpath 用户名(username): admin 密碼(password) adminadmin"
     colorEcho ${INFO} "你的Qbittorrent信息（拉回本地用），非分享链接，仅供参考(Your Qbittorrent Download Information)"
     colorEcho ${LINK} "https://$domain:443$qbtdownloadpath"
   fi
