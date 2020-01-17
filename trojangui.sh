@@ -50,7 +50,7 @@ isresolved(){
     then
         myip=$2
     else
-        myip=`curl --silent http://dynamicdns.park-your-domain.com/getip`
+        myip=`curl -s http://dynamicdns.park-your-domain.com/getip`
     fi
     ips=(`nslookup $1 1.1.1.1 | grep -v 1.1.1.1 | grep Address | cut -d " " -f 2`)
     for ip in "${ips[@]}"
@@ -639,7 +639,7 @@ fi
 issuecert(){
   colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
   if [[ -f /etc/trojan/trojan.crt ]]; then
-    myip=`curl --silent http://dynamicdns.park-your-domain.com/getip`
+    myip=`curl -s http://dynamicdns.park-your-domain.com/getip`
     TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
     else
   mkdir /etc/trojan/ &
