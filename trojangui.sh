@@ -1551,7 +1551,7 @@ sslink(){
     if [[ $install_qbt = 1 ]]; then
     echo
     colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Download Information)"
-    colorEcho ${LINK} "https://$domain$qbtpath 用户名(username): admin 密碼(password) adminadmin"
+    colorEcho ${LINK} "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin"
     colorEcho ${INFO} "你的Qbittorrent信息（拉回本地用），非分享链接，仅供参考(Your Qbittorrent Download Information)"
     colorEcho ${LINK} "https://$domain:443$qbtdownloadpath"
   fi
