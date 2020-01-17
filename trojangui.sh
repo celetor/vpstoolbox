@@ -108,17 +108,14 @@ do
     ;;
   esac
 done < results
-domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可污也，快输入你的域名并按回车" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
 while [[ -z $domain ]]; do
-domain=$(whiptail --inputbox --nocancel "看什么看，快输入你的域名并按回车" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可污也，快输入你的域名并按回车" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
 done
-password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快输入你想要的密码一并按回车" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 while [[ -z $password1 ]]; do
-password1=$(whiptail --passwordbox --nocancel "你到底想干啥，你把你媽揣兜了隨口就說，快输入你想要的密码一并按回车" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快输入你想要的密码一并按回车" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 done
-password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快输入想要的密码二并按回车" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 while [[ -z $password2 ]]; do
-password2=$(whiptail --passwordbox --nocancel "你是不是想找死，快输入想要的密码二并按回车" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
+password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快输入想要的密码二并按回车" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 done
 if [[ $system_upgrade = 1 ]]; then
   if [[ $(lsb_release -cs) == stretch ]]; then
@@ -128,45 +125,29 @@ if [[ $system_upgrade = 1 ]]; then
       debian10_install=0
     fi
   fi
+  if [[ $(lsb_release -cs) == jessie ]]; then
+    if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 9?" 8 78); then
+      debian9_install=1
+    else
+      debian9_install=0
+    fi
+  fi
 fi
 
-    if [[ $install_v2ray = 1 ]] && [[ $install_ss = 1 ]]; then
-      path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
-      alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
-      sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
-      sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的ss密码并按回车" 8 78  --title "ss-Websocket passwd" 3>&1 1>&2 2>&3)
-      ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
-      "1" "aes-128-gcm" \
-      "2" "aes-256-gcm" \
-      "3" "chacha20-poly1305" 3>&1 1>&2 2>&3)
-      case $ssen in
-      1)
-      ssmethod=aes-128-gcm
-      ;;
-      2)
-      ssmethod=aes-256-gcm
-      ;;
-      3)
-      ssmethod=chacha20-poly1305
-      ;;
-      esac
-    elif [[ $install_v2ray = 1 ]]; then
-      path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
+    if [[ $install_v2ray = 1 ]]; then
       while [[ -z $path ]]; do
-      path=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的V2ray Websocket路径并按回车" 8 78 --title "Websocket path input" 3>&1 1>&2 2>&3)
+      path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
       done
-      alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
       while [[ -z $alterid ]]; do
-      alterid=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的alter id大小(只能是数字)二并按回车" 8 78 --title "alterid input" 3>&1 1>&2 2>&3)
+      alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
       done
-    elif [[ $install_ss = 1 ]]; then
-      sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
+    fi
+    if [[ $install_ss = 1 ]]; then
       while [[ -z $sspath ]]; do
-      sspath=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的ss-Websocket路径并按回车" 8 78 --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
+      sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
       done
-      sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的ss密码并按回车" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
       while [[ -z $sspasswd ]]; do
-      sspasswd=$(whiptail --passwordbox --nocancel "你是不是想找死，快输入想要的ss密码并按回车" 8 78 --title "ss passwd input" 3>&1 1>&2 2>&3)
+      sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的ss密码并按回车" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
       done
       ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
       "1" "aes-128-gcm" \
@@ -187,23 +168,25 @@ fi
       echo "Continuing"
     fi
     if [[ $install_qbt = 1 ]]; then
-      qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
       while [[ -z $qbtpath ]]; do
-      qbtpath=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的Qbittorrent路径并按回车" 8 78 --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+      qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+      done
+      while [[ -z $qbtdownloadpath ]]; do
+      qbtdownloadpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Qbittorrent下载路径（拉回本地用）并按回车" 8 78 /qbtdownload --title "Qbittorrent download path input" 3>&1 1>&2 2>&3)
       done
     fi
     if [[ $install_aria = 1 ]]; then
-      ariapath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2路径并按回车" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
-      while [[ -z $qbtpath ]]; do
-      ariapath=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的Aria2路径并按回车" 8 78 --title "Aria2 path input" 3>&1 1>&2 2>&3)
+      while [[ -z $ariapath ]]; do
+      ariapath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 RPC路径并按回车" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
       done
-      ariaport=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc port并按回车" 8 78 6800 --title "Aria2 rpc port input" 3>&1 1>&2 2>&3)
-      ariapasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
       while [[ -z $ariapasswd ]]; do
-      ariapasswd=$(whiptail --passwordbox --nocancel "你是不是想找死，快输入想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+      ariapasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
       done
       while [[ -z $ariaport ]]; do
-      ariaport=$(whiptail --inputbox --nocancel "你是不是想找死，快输入想要的Aria2 rpc port并按回车" 8 78 --title "Aria2 rpc port input" 3>&1 1>&2 2>&3)
+      ariaport=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc port并按回车" 8 78 6800 --title "Aria2 rpc port input" 3>&1 1>&2 2>&3)
+      done
+      while [[ -z $ariadownloadpath ]]; do
+      ariadownloadpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2下载路径（拉回本地用）并按回车" 8 78 /aria2download --title "Qbittorrent download path input" 3>&1 1>&2 2>&3)
       done
     fi
 }
@@ -259,6 +242,28 @@ EOF
     apt-get update
     sudo sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
     fi
+    if [[ $debian9_install = 1 ]]; then
+          cat > '/etc/apt/sources.list' << EOF
+#------------------------------------------------------------------------------#
+#                   OFFICIAL DEBIAN REPOS                    
+#------------------------------------------------------------------------------#
+
+###### Debian Main Repos
+deb http://deb.debian.org/debian/ oldstable main contrib non-free
+deb-src http://deb.debian.org/debian/ oldstable main contrib non-free
+
+deb http://deb.debian.org/debian/ oldstable-updates main contrib non-free
+deb-src http://deb.debian.org/debian/ oldstable-updates main contrib non-free
+
+deb http://deb.debian.org/debian-security oldstable/updates main
+deb-src http://deb.debian.org/debian-security oldstable/updates main
+
+deb http://ftp.debian.org/debian stretch-backports main
+deb-src http://ftp.debian.org/debian stretch-backports main
+EOF
+    apt-get update
+    sudo sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+    fi
     apt-get autoremove -qq -y
  else
   clear
@@ -269,7 +274,7 @@ EOF
 #########Open ports########################
 openfirewall(){
   colorEcho ${INFO} "设置 firewall"
-  #sh -c 'echo "1\n" | DEBIAN_FRONTEND=noninteractive update-alternatives --config iptables' || true
+  #sh -c 'echo "1\n" | DEBIAN_FRONTEND=noninteractive update-alternatives --config iptables'
   iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT || true
   iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT || true
   iptables -I OUTPUT -j ACCEPT || true
@@ -358,12 +363,39 @@ clear
 if [[ $tls13only = 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
 fi
+#####################################################
+  if [[ -f /etc/apt/sources.list.d/nginx.list ]]; then
+    :
+    else
+  if [[ $dist = centos ]]; then
+  yum install nginx -y
+  systemctl stop nginx || true
+ elif [[ $dist = debian ]] || [[ $dist = ubuntu ]]; then
+  wget https://nginx.org/keys/nginx_signing.key -q
+  apt-key add nginx_signing.key
+  rm -rf nginx_signing.key
+  touch /etc/apt/sources.list.d/nginx.list
+  cat > '/etc/apt/sources.list.d/nginx.list' << EOF
+deb https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
+deb-src https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
+EOF
+  apt-get remove nginx-common -qq -y
+  apt-get update -qq
+  apt-get install nginx -q -y
+ else
+  clear
+  TERM=ansi whiptail --title "error can't install nginx" --infobox "error can't install nginx" 8 78
+    exit 1;
+ fi
+fi
+nginxconf
+clear
 #############################################
 if [[ $install_aria = 1 ]]; then
   if [[ -f /usr/bin/aria2c ]]; then
     :
     else
-      apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev -y
+      apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -y
       wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz
       tar -xvf aria2-1.35.0.tar.xz
       rm aria2-1.35.0.tar.xz
@@ -371,8 +403,11 @@ if [[ $install_aria = 1 ]]; then
       ./configure --with-libuv --without-gnutls --with-openssl
       make -j $(grep "^core id" /proc/cpuinfo | sort -u | wc -l)
       make install
-      apt remove build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev -y
+      apt remove build-essential autoconf automake autotools-dev autopoint libtool -y
+      apt-get autoremove -y
       touch /usr/local/bin/aria2.session
+      mkdir /usr/share/nginx/aria2/
+      chmod 755 /usr/share/nginx/aria2/
       cd ..
       rm -rf aria2-1.35.0
       cat > '/etc/systemd/system/aria2.service' << EOF
@@ -454,7 +489,7 @@ bt-require-crypto=true
 ## 磁盘相关 ##
 
 #文件保存路径, 默认为当前启动位置
-dir=/root/aria2/
+dir=/usr/share/nginx/aria2/
 #enable-mmap=true
 file-allocation=none
 disk-cache=64M
@@ -578,7 +613,9 @@ RestartSec=3s
 [Install]
 WantedBy=multi-user.target
 EOF
-fi      
+mkdir /usr/share/nginx/qbt/
+chmod 755 /usr/share/nginx/qbt/
+fi
 fi
 clear
 #############################################
@@ -597,34 +634,6 @@ fi
   systemctl daemon-reload      
   fi
   clear
-#####################################################
-  if [[ -f /etc/apt/sources.list.d/nginx.list ]]; then
-    :
-    else
-  if [[ $dist = centos ]]; then
-  yum install nginx -y
-  systemctl stop nginx || true
- elif [[ $dist = debian ]] || [[ $dist = ubuntu ]]; then
-  wget https://nginx.org/keys/nginx_signing.key -q
-  apt-key add nginx_signing.key
-  rm -rf nginx_signing.key
-  touch /etc/apt/sources.list.d/nginx.list
-  cat > '/etc/apt/sources.list.d/nginx.list' << EOF
-deb https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
-deb-src https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
-EOF
-  apt-get autoremove -y || true
-  apt-get remove nginx-common -qq -y
-  apt-get update -qq
-  apt-get install nginx -q -y
- else
-  clear
-  TERM=ansi whiptail --title "error can't install nginx" --infobox "error can't install nginx" 8 78
-    exit 1;
- fi
-fi
-nginxconf
-clear
 }
 ##################################################
 issuecert(){
@@ -660,7 +669,8 @@ changepasswd(){
   if [[ -f /etc/trojan/trojan.pem ]]; then
     colorEcho ${INFO} "DH已有，跳过生成。。。"
     else
-      openssl dhparam -out /etc/trojan/trojan.pem 2048
+      :
+      #openssl dhparam -out /etc/trojan/trojan.pem 2048
   fi
   cat > '/usr/local/etc/trojan/config.json' << EOF
 {
@@ -689,7 +699,7 @@ changepasswd(){
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/etc/trojan/trojan.pem"
+        "dhparam": ""
     },
     "tcp": {
         "prefer_ipv4": true,
@@ -811,6 +821,11 @@ echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.co
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "    location $ariadownloadpath {" >> /etc/nginx/conf.d/trojan.conf
+echo "        alias              /usr/share/nginx/aria2/;" >> /etc/nginx/conf.d/trojan.conf
+echo "        autoindex on;" >> /etc/nginx/conf.d/trojan.conf
+echo "        autoindex_exact_size off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
 if [[ $install_qbt = 1 ]]; then
 echo "    location $qbtpath {" >> /etc/nginx/conf.d/trojan.conf
@@ -821,6 +836,11 @@ echo "        proxy_hide_header       Origin;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header        Referer                 '';" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header        Origin                  '';" >> /etc/nginx/conf.d/trojan.conf
 echo "        # add_header              X-Frame-Options         "SAMEORIGIN"; # not needed since 4.1.0" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "    location $qbtdownloadpath {" >> /etc/nginx/conf.d/trojan.conf
+echo "        alias              /usr/share/nginx/qbt/;" >> /etc/nginx/conf.d/trojan.conf
+echo "        autoindex on;" >> /etc/nginx/conf.d/trojan.conf
+echo "        autoindex_exact_size off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 echo "    location /announce {" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:9000;" >> /etc/nginx/conf.d/trojan.conf
@@ -1530,13 +1550,17 @@ sslink(){
   fi
     if [[ $install_qbt = 1 ]]; then
     echo
-    colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Information)"
+    colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Download Information)"
     colorEcho ${LINK} "https://$domain$qbtpath username admin password adminadmin"
+    colorEcho ${INFO} "你的Qbittorrent信息（拉回本地用），非分享链接，仅供参考(Your Qbittorrent Download Information)"
+    colorEcho ${LINK} "https://$domain:443$qbtdownloadpath"
   fi
   if [[ $install_aria = 1 ]]; then
     echo
     colorEcho ${INFO} "你的Aria信息，非分享链接，仅供参考(Your Aria2 Information)"
     colorEcho ${LINK} "$ariapasswd@https://$domain:443$ariapath"
+    colorEcho ${INFO} "你的Aria信息（拉回本地用），非分享链接，仅供参考(Your Aria2 Download Information)"
+    colorEcho ${LINK} "https://$domain:443$ariadownloadpath"
   fi
 }
 ##################################
