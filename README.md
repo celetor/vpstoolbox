@@ -1,7 +1,7 @@
 ![logo](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/logo.png)
-# Trojan-GFW Script (NO Centos Support!!!)
+# Trojan-GFW Script
 ## This script will help you set up a [Trojan-GFW](https://github.com/trojan-gfw/trojan) server in an extremely fast way.
-### Read The Fucking Manual: https://www.johnrosen1.com/trojan/ 
+### Read The Fucking Manual: https://www.johnrosen1.com/trojan/
 
 ### GUI Version (Everything has been included)
 ```
@@ -49,7 +49,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ```
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 ```
-4. Please do not use enter / in websocket option ,enter someting else like /secret !
+4. Please **Change QBittorrent Download save path to /usr/share/nginx/qbt/ manually !**
 5. Trojan-GFW QR code generate will be skipped on os who do not support python3-qrcode!
 6. If "sudo command not found" , please manually install sudo from the command above !
 
