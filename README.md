@@ -43,15 +43,13 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 **If you need more functions, please open a Github issue.(No Centos related issues or bugs allowed except pull requests)**
 
 #### Friendly Reminder:
-1. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and finish a dns resolve before running this bash script!
+1. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this bash script!
 2. Please **Open Tcp port 80 and 443** in your vps firewall panel before running this bash script!
 3. Please manually change system dns to frequently updated dns like [1.1.1.1](https://1.1.1.1/) instead of those who update slowly like aliyun lan dns !
 ```
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 ```
 4. Please **Change QBittorrent Download save path to /usr/share/nginx/qbt/ manually !**
-5. Trojan-GFW QR code generate will be skipped on os who do not support python3-qrcode!
-6. If "sudo command not found" , please manually install sudo from the command above !
 
 #### [Telegram](https://telegram.org/) Channel And Group
 
