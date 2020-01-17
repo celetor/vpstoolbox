@@ -12,6 +12,23 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ```
 ![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/mainmenu.png)
 ![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/useroption.png)
+
+#### Friendly Reminder:
+1. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this bash script!
+2. Please **Open Tcp port 80 and 443** in your vps firewall panel before running this bash script!
+3. Please manually change system dns to frequently updated dns like [1.1.1.1](https://1.1.1.1/) instead of those who update slowly like aliyun lan dns !
+```
+echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
+```
+4. Please **Change QBittorrent Download save path to /usr/share/nginx/qbt/ manually !**
+
+#### [Telegram](https://telegram.org/) Channel And Group
+
+### https://t.me/johnrosen1
+
+### https://t.me/trojanscript
+
+## If you found it useful , please give a star ,thanks!
 #### Bash Features:
 
 1. Auto install and config **[Trojan-GFW](https://github.com/trojan-gfw/trojan) and [NGINX](https://www.nginx.com/)**
@@ -41,23 +58,6 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 23. Support Full Uninstall
 
 **If you need more functions, please open a Github issue.(No Centos related issues or bugs allowed except pull requests)**
-
-#### Friendly Reminder:
-1. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this bash script!
-2. Please **Open Tcp port 80 and 443** in your vps firewall panel before running this bash script!
-3. Please manually change system dns to frequently updated dns like [1.1.1.1](https://1.1.1.1/) instead of those who update slowly like aliyun lan dns !
-```
-echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
-```
-4. Please **Change QBittorrent Download save path to /usr/share/nginx/qbt/ manually !**
-
-#### [Telegram](https://telegram.org/) Channel And Group
-
-### https://t.me/johnrosen1
-
-### https://t.me/trojanscript
-
-## If you found it useful , please give a star ,thanks!
 
 ### VPS Recommendation (no personal aff included)
 
