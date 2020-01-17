@@ -1,6 +1,6 @@
 ![logo](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/logo.png)
 # Trojan-GFW Script
-## This script will help you set up a [Trojan-GFW](https://github.com/trojan-gfw/trojan) server in an extremely fast way.
+## This script will help you set up a [Trojan-GFW](https://github.com/trojan-gfw/trojan) and an Ultimate Offline download server in an extremely fast way.
 ### Read The Fucking Manual: https://www.johnrosen1.com/trojan/
 
 ### GUI Version (Everything has been included)
