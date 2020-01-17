@@ -81,6 +81,7 @@ sudo systemctl status aria2
 journalctl -e -u trojan.service
 cat /var/log/v2ray/error.log
 cat /usr/local/etc/trojan/config.json
+cat /etc/nginx/conf.d/trojan.conf
 cat /etc/v2ray/config.json
 cat /etc/aria.conf
 crontab -l
