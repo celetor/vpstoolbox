@@ -33,7 +33,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 
 1. Auto install and config **[Trojan-GFW](https://github.com/trojan-gfw/trojan) and [NGINX](https://www.nginx.com/)**
 3. Auto issue renew [let's encrypt certificate](https://letsencrypt.org/) and **auto reload Trojan-GFW after renewal**
-4. Auto OS Detect **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)** (NO Centos Support!!!)
+4. Auto OS Detect **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)** (NO Centos Support!!!) 
 5. Auto [domain resolve verification](https://en.wikipedia.org/wiki/Nslookup)
 6. Auto [iptables](https://en.wikipedia.org/wiki/Iptables)(includes ipv6) firewall config and [iptables-persistent](https://github.com/zertrin/iptables-persistent)
 7. Auto generate [client config](https://trojan-gfw.github.io/trojan/config) (includes both Trojan-GFW and V2ray )
@@ -49,11 +49,9 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 19. Auto enable ***Fail Restart*** 
 20. Auto [uninstall Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
 20. Support Auto install and config **[Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [V2ray](https://www.v2ray.com/index.html) [Shadowsocks](https://shadowsocks.org/en/index.html)([V2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)) [Qbittorrent](https://www.qbittorrent.org/) and [Aria2](https://github.com/aria2/aria2)**
-20. Support auto ***random vmess uuid generate***
 19. Support auto [***vmess or ss + tls + websocket + nginx*** config](https://guide.v2fly.org/advanced/wss_and_web.html)
 20. Support ***[BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)***
 15. Support ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
-20. Support custom (V2ray or ss) websocket path and alterid
 21. Support manually check for update include both Trojan-gfw and v2ray
 23. Support Full Uninstall
 
