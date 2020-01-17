@@ -1449,31 +1449,6 @@ v2rayclient(){
 EOF
   fi
 }
-##########Remove Trojan-Gfw##########
-uninstall(){
-  cd
-  systemctl stop trojan || true
-  systemctl disable trojan || true
-  rm -rf /usr/local/etc/trojan/* || true
-  rm -rf /etc/trojan/* || true
-  rm -rf /etc/systemd/system/trojan* || true
-  rm -rf ~/.acme.sh/$domain || true
-  systemctl stop v2ray  || true
-  systemctl disable v2ray || true
-  systemctl daemon-reload || true
-  wget https://install.direct/go.sh -q
-  sudo bash go.sh --remove
-  rm go.sh
-  systemctl stop nginx || true
-  systemctl disable nginx || true
-    if [[ $dist = centos ]]; then
-    yum remove nginx dnsmasq -y || true
-    else
-    apt purge nginx dnsmasq -p -y || true
-    rm -rf /etc/apt/sources.list.d/nginx.list
-  fi
-  sudo ~/.acme.sh/acme.sh --uninstall
-}
 ##########Check for update############
 checkupdate(){
   cd
@@ -1574,6 +1549,34 @@ timesync(){
       ntpdate -qu 1.hk.pool.ntp.org || true
   fi
 }
+##########Remove Trojan-Gfw##########
+uninstall(){
+  cd
+  systemctl stop trojan || true
+  systemctl disable trojan || true
+  rm -rf /usr/local/etc/trojan/* || true
+  rm -rf /etc/trojan/* || true
+  rm -rf /etc/systemd/system/trojan* || true
+  rm -rf ~/.acme.sh/$domain || true
+  systemctl stop v2ray  || true
+  systemctl disable v2ray || true
+  systemctl stop aria || true
+  systemctl disable aria || true
+  rm -rf /etc/aria.conf || true
+  systemctl daemon-reload || true
+  wget https://install.direct/go.sh -q
+  sudo bash go.sh --remove
+  rm go.sh
+  systemctl stop nginx || true
+  systemctl disable nginx || true
+    if [[ $dist = centos ]]; then
+    yum remove nginx dnsmasq -y || true
+    else
+    apt purge nginx dnsmasq -p -y || true
+    rm -rf /etc/apt/sources.list.d/nginx.list
+  fi
+  sudo ~/.acme.sh/acme.sh --uninstall
+}
 ##################################
 clear
 function advancedMenu() {
@@ -1641,8 +1644,6 @@ echo 'LANG="zh_TW.UTF-8"'>/etc/default/locale
 fi
 export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
-#export LANG=C.UTF-8 || true
-#export LANGUAGE=C.UTF-8 || true
 osdist || true
 advancedMenu
 echo "Program terminated."
