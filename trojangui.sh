@@ -67,7 +67,7 @@ isresolved(){
 ###############User input################
 userinput(){
 whiptail --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:(Trojan-GFW Nginx and BBR 為強制選項,已經包含)
-若不確定，請保持默認配置並回車" 15 78 8 \
+若不確定，請保持默認配置並回車" 16 78 8 \
 "1" "系统升级(System Upgrade)" on \
 "2" "安裝Dnsmasq(Dns cache and adblock)" on \
 "3" "安裝Qbittorrent(Nginx Https Proxy)" on \
