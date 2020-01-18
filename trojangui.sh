@@ -1580,7 +1580,7 @@ uninstall(){
 ##################################
 clear
 function advancedMenu() {
-    ADVSEL=$(whiptail --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
+    ADVSEL=$(whiptail --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 12 78 4 \
         "1" "安裝(Install Trojan-GFW NGINX and other optional software)" \
         "2" "更新(Update  Trojan-GFW V2ray and Shadowsocks)" \
         "3" "卸載(Uninstall Everything)" \
