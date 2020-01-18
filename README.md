@@ -10,8 +10,8 @@ apt-get update && apt-get install sudo whiptail curl locales -y
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
-![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/mainmenu.png)
-![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/choose.png)
+![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu.png)
+![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/option.png)
 
 #### Friendly Reminder:
 1. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this bash script!
