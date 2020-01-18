@@ -392,7 +392,7 @@ nginxconf
 clear
 #############################################
 if [[ $install_aria = 1 ]]; then
-  if [[ -f /usr/bin/aria2c ]]; then
+  if [[ -f /usr/local/bin/aria2c ]]; then
     :
     else
       apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -y
