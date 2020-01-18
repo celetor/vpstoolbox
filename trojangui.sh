@@ -215,11 +215,11 @@ upgradesystem(){
     yum upgrade -y
  elif [[ $dist = ubuntu ]]; then
     export UBUNTU_FRONTEND=noninteractive 
-    apt-get upgrade -q -y
+    apt-get upgrade -qq -y
     apt-get autoremove -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
-    apt-get upgrade -q -y
+    apt-get upgrade -qq -y
     if [[ $debian10_install = 1 ]]; then
           cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
@@ -298,10 +298,10 @@ EOF
     systemctl start iptables.service || true
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
-    apt-get install iptables-persistent -q -y > /dev/null
+    apt-get install iptables-persistent -qq -y > /dev/null
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
-    apt-get install iptables-persistent -q -y > /dev/null
+    apt-get install iptables-persistent -qq -y > /dev/null
  else
   clear
   TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
@@ -381,7 +381,7 @@ deb-src https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
 EOF
   apt-get remove nginx-common -qq -y
   apt-get update -qq
-  apt-get install nginx -q -y
+  apt-get install nginx -qq -y
  else
   clear
   TERM=ansi whiptail --title "error can't install nginx" --infobox "error can't install nginx" 8 78
@@ -395,16 +395,16 @@ if [[ $install_aria = 1 ]]; then
   if [[ -f /usr/local/bin/aria2c ]]; then
     :
     else
-      apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -y
-      wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz
+      apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -qq -y
+      wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q
       tar -xvf aria2-1.35.0.tar.xz
       rm aria2-1.35.0.tar.xz
       cd aria2-1.35.0
       ./configure --with-libuv --without-gnutls --with-openssl
       make -j $(grep "^core id" /proc/cpuinfo | sort -u | wc -l)
       make install
-      apt remove build-essential autoconf automake autotools-dev autopoint libtool -y
-      apt-get autoremove -y
+      apt remove build-essential autoconf automake autotools-dev autopoint libtool -qq -y
+      apt-get autoremove -qq -y
       touch /usr/local/bin/aria2.session
       mkdir /usr/share/nginx/aria2/
       chmod 755 /usr/share/nginx/aria2/
@@ -696,7 +696,7 @@ changepasswd(){
             "http/1.1"
         ],
         "reuse_session": true,
-        "session_ticket": true,
+        "session_ticket": false,
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
@@ -755,7 +755,7 @@ http {
 
   sendfile on;
   gzip on;
-  gzip_comp_level 5;
+  gzip_comp_level 8;
 
   include /etc/nginx/conf.d/*.conf; 
 }
