@@ -67,15 +67,16 @@ isresolved(){
 ###############User input################
 userinput(){
 whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:(Trojan-GFW Nginx and BBR 為強制選項,已經包含)
-若不確定，請保持默認配置並回車" 16 78 8 \
+若不確定，請保持默認配置並回車" 17 78 9 \
 "1" "系统升级(System Upgrade)" on \
 "2" "安裝Dnsmasq(Dns cache and adblock)" on \
 "3" "安裝Qbittorrent(Nginx Https Proxy)" on \
-"4" "安裝Aria2(Https mode)" on \
-"5" "安裝V2ray(Vmess+Websocket+TLS+Nginx)" off \
-"6" "安裝Shadowsocks+V2ray-plugin+Websocket+TLS+Nginx" off \
-"7" "安裝BBRPLUS 不推薦因為BBR已經包含(because BBR has been included)" off \
-"8" "仅启用TLS1.3(TLS1.3 ONLY)" off 2>results
+"4" "安裝Bittorrent-Tracker(Nginx Https Proxy)" on \
+"5" "安裝Aria2(Https mode)" on \
+"6" "安裝V2ray(Vmess+Websocket+TLS+Nginx)" off \
+"7" "安裝Shadowsocks+V2ray-plugin+Websocket+TLS+Nginx" off \
+"8" "安裝BBRPLUS 不推薦因為BBR已經包含(because BBR has been included)" off \
+"9" "仅启用TLS1.3(TLS1.3 ONLY)" off 2>results
 
 while read choice
 do
@@ -90,18 +91,21 @@ do
     install_qbt=1
     ;;
     4)
+    install_tracker=1
+    ;;
+    5)
     install_aria=1
     ;;
-    5) 
+    6) 
     install_v2ray=1
     ;;
-    6) 
+    7) 
     install_ss=1
     ;;
-    7)
+    8)
     install_bbrplus=1
     ;;
-    8) 
+    9) 
     tls13only=1
     ;;
     *)
@@ -136,7 +140,7 @@ fi
 
     if [[ $install_v2ray = 1 ]]; then
       while [[ -z $path ]]; do
-      path=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
+      path=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
       done
       while [[ -z $alterid ]]; do
       alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
@@ -144,10 +148,10 @@ fi
     fi
     if [[ $install_ss = 1 ]]; then
       while [[ -z $sspath ]]; do
-      sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
+      sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
       done
       while [[ -z $sspasswd ]]; do
-      sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的ss密码并按回车" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
+      sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on，快输入你的想要的ss密码并按回车" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
       done
       ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
       "1" "aes-128-gcm" \
@@ -169,10 +173,18 @@ fi
     fi
     if [[ $install_qbt = 1 ]]; then
       while [[ -z $qbtpath ]]; do
-      qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+      qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
       done
       while [[ -z $qbtdownloadpath ]]; do
-      qbtdownloadpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Qbittorrent下载路径（拉回本地用）并按回车" 8 78 /qbtdownload --title "Qbittorrent download path input" 3>&1 1>&2 2>&3)
+      qbtdownloadpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Qbittorrent下载路径（拉回本地用）并按回车" 8 78 /qbtdownload --title "Qbittorrent download path input" 3>&1 1>&2 2>&3)
+      done
+    fi
+    if [[ $install_tracker = 1 ]]; then
+      while [[ -z $trackerpath ]]; do
+      trackerpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Bittorrent-Tracker路径并按回车" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
+      done
+      while [[ -z $trackerstatuspath ]]; do
+      trackerstatuspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Bittorrent-Tracker状态路径并按回车" 8 78 /status --title "Bittorrent-Tracker download path input" 3>&1 1>&2 2>&3)
       done
     fi
     if [[ $install_aria = 1 ]]; then
@@ -182,9 +194,6 @@ fi
       while [[ -z $ariapasswd ]]; do
       ariapasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
       done
-      #while [[ -z $ariaport ]]; do
-      #ariaport=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc port并按回车" 8 78 6800 --title "Aria2 rpc port input" 3>&1 1>&2 2>&3)
-      #done
       while [[ -z $ariadownloadpath ]]; do
       ariadownloadpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2下载路径（拉回本地用）并按回车" 8 78 /aria2download --title "Qbittorrent download path input" 3>&1 1>&2 2>&3)
       done
@@ -391,6 +400,94 @@ fi
 nginxconf
 clear
 #############################################
+if [[ $install_qbt = 1 ]]; then
+  if [[ -f /usr/bin/qbittorrent-nox ]]; then
+    :
+    else
+  if [[ $dist = centos ]]; then
+  yum install -y epel-release
+  yum update -y
+  yum install qbittorrent-nox -y
+ elif [[ $dist = ubuntu ]]; then
+    export DEBIAN_FRONTEND=noninteractive
+    add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
+    apt-get install qbittorrent-nox -qq -y
+ elif [[ $dist = debian ]]; then
+    export DEBIAN_FRONTEND=noninteractive 
+    apt-get install qbittorrent-nox -qq -y
+ else
+  clear
+  TERM=ansi whiptail --title "error can't install qbittorrent-nox" --infobox "error can't install qbittorrent-nox" 8 78
+    exit 1;
+ fi
+      cat > '/etc/systemd/system/qbittorrent.service' << EOF
+[Unit]
+Description=qBittorrent Daemon Service
+Documentation=man:qbittorrent-nox(1)
+Wants=network-online.target
+After=network-online.target nss-lookup.target
+
+[Service]
+# if you have systemd >= 240, you probably want to use Type=exec instead
+Type=simple
+User=root
+ExecStart=/usr/bin/qbittorrent-nox
+TimeoutStopSec=infinity
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+mkdir /usr/share/nginx/qbt/
+chmod 755 /usr/share/nginx/qbt/
+fi
+fi
+clear
+#############################################
+if [[ $install_tracker = 1 ]]; then
+  if [[ -f /usr/bin/bittorrent-tracker ]]; then
+    :
+    else
+  if [[ $dist = centos ]]; then
+  curl -sL https://rpm.nodesource.com/setup_13.x | bash -
+ elif [[ $dist = ubuntu ]]; then
+    export DEBIAN_FRONTEND=noninteractive
+    curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+    apt-get install -qq -y nodejs
+ elif [[ $dist = debian ]]; then
+    export DEBIAN_FRONTEND=noninteractive 
+    curl -sL https://deb.nodesource.com/setup_13.x | bash -
+    apt-get install -qq -y nodejs
+ else
+  clear
+  TERM=ansi whiptail --title "error can't install qbittorrent-nox" --infobox "error can't install qbittorrent-nox" 8 78
+    exit 1;
+ fi
+ npm install -g bittorrent-tracker
+      cat > '/etc/systemd/system/tracker.service' << EOF
+[Unit]
+Description=Bittorrent-Tracker Daemon Service
+Wants=network-online.target
+After=network-online.target nss-lookup.target
+
+[Service]
+# if you have systemd >= 240, you probably want to use Type=exec instead
+Type=simple
+User=root
+RemainAfterExit=yes
+ExecStart=/usr/bin/bittorrent-tracker --http --ws --trust-proxy
+TimeoutStopSec=infinity
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+fi
+fi
+clear
+#############################################
 if [[ $install_aria = 1 ]]; then
   if [[ -f /usr/local/bin/aria2c ]]; then
     :
@@ -571,51 +668,6 @@ clear
 #############################################
 if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
   installv2ray
-fi
-clear
-#############################################
-if [[ $install_qbt = 1 ]]; then
-  if [[ -f /usr/bin/qbittorrent-nox ]]; then
-    :
-    else
-  if [[ $dist = centos ]]; then
-  yum install -y epel-release
-  yum update -y
-  yum install qbittorrent-nox -y
- elif [[ $dist = ubuntu ]]; then
-    export DEBIAN_FRONTEND=noninteractive
-    add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
-    apt-get install qbittorrent-nox -qq -y
- elif [[ $dist = debian ]]; then
-    export DEBIAN_FRONTEND=noninteractive 
-    apt-get install qbittorrent-nox -qq -y
- else
-  clear
-  TERM=ansi whiptail --title "error can't install qbittorrent-nox" --infobox "error can't install qbittorrent-nox" 8 78
-    exit 1;
- fi
-      cat > '/etc/systemd/system/qbittorrent.service' << EOF
-[Unit]
-Description=qBittorrent Daemon Service
-Documentation=man:qbittorrent-nox(1)
-Wants=network-online.target
-After=network-online.target nss-lookup.target
-
-[Service]
-# if you have systemd >= 240, you probably want to use Type=exec instead
-Type=simple
-User=root
-ExecStart=/usr/bin/qbittorrent-nox
-TimeoutStopSec=infinity
-Restart=on-failure
-RestartSec=3s
-
-[Install]
-WantedBy=multi-user.target
-EOF
-mkdir /usr/share/nginx/qbt/
-chmod 755 /usr/share/nginx/qbt/
-fi
 fi
 clear
 #############################################
@@ -850,8 +902,10 @@ echo "        alias              /usr/share/nginx/qbt/;" >> /etc/nginx/conf.d/tr
 echo "        autoindex on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        autoindex_exact_size off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
-echo "    location /announce {" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_pass http://127.0.0.1:9000;" >> /etc/nginx/conf.d/trojan.conf
+fi
+if [[ $install_tracker = 1 ]]; then
+echo "    location $trackerpath {" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass http://127.0.0.1:8000/announce;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
@@ -861,10 +915,21 @@ echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/tr
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
 echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "    location $trackerstatuspath {" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass http://127.0.0.1:8000/stats;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
+fi
 echo "        location @errpage {" >> /etc/nginx/conf.d/trojan.conf
 echo "        return 404;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
-fi
 echo "}" >> /etc/nginx/conf.d/trojan.conf
 echo "" >> /etc/nginx/conf.d/trojan.conf
 echo "server {" >> /etc/nginx/conf.d/trojan.conf
@@ -891,14 +956,17 @@ rm -rf $htmlcode.zip
 start(){
   colorEcho ${INFO} "启动(starting) trojan-gfw and nginx ing..."
   systemctl daemon-reload || true
-  if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
-    systemctl start v2ray || true
-  fi
   if [[ $install_qbt = 1 ]]; then
     systemctl start qbittorrent.service || true
   fi
+  if [[ $install_tracker = 1 ]]; then
+    systemctl start tracker || true
+  fi
   if [[ $install_aria = 1 ]]; then
     systemctl start aria2 || true
+  fi
+  if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
+    systemctl start v2ray || true
   fi
   systemctl restart trojan || true
   systemctl restart nginx || true
@@ -906,14 +974,17 @@ start(){
 bootstart(){
   colorEcho ${INFO} "设置开机自启(auto boot start) ing..."
   systemctl daemon-reload || true
-  if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
-    systemctl enable v2ray || true
-  fi
   if [[ $install_qbt = 1 ]]; then
     systemctl enable qbittorrent.service || true
   fi
+  if [[ $install_tracker = 1 ]]; then
+    systemctl enable tracker || true
+  fi
   if [[ $install_aria = 1 ]]; then
     systemctl enable aria2 || true
+  fi
+  if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
+    systemctl enable v2ray || true
   fi
   systemctl enable nginx || true
   systemctl enable trojan || true
@@ -1508,6 +1579,7 @@ else
   rm -rf trojan-url.py
   rm -rf $password1.png || true
   rm -rf $password2.png || true
+  apt-get remove python3-qrcode -qq -y > /dev/null
 fi
 colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
 colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"
@@ -1547,15 +1619,25 @@ sslink(){
     colorEcho ${LINK} "https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray"
     colorEcho ${LINK} "https://github.com/shadowsocks/v2ray-plugin"
   fi
-    if [[ $install_qbt = 1 ]]; then
+  if [[ $install_qbt = 1 ]]; then
     echo
-    colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Download Information)"
+    colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Information)"
     colorEcho ${LINK} "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin"
     colorEcho ${INFO} "你的Qbittorrent信息（拉回本地用），非分享链接，仅供参考(Your Qbittorrent Download Information)"
     colorEcho ${LINK} "https://$domain:443$qbtdownloadpath"
     colorEcho ${INFO} "请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！"
     colorEcho ${INFO} "请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密 ！！！否则會被迅雷吸血！！！"
     colorEcho ${LINK} "请手动在Qbittorrent中添加Trackers https://github.com/ngosang/trackerslist ！！！否则速度不會快的！！！"
+  fi
+  if [[ $install_tracker = 1 ]]; then
+    echo
+    colorEcho ${INFO} "你的Bittorrent-Tracker信息(Your Bittorrent-Tracker Information)"
+    colorEcho ${LINK} "https://$domain:443$trackerpath"
+    colorEcho ${LINK} "http://$domain:8000/announce"
+    colorEcho ${INFO} "你的Bittorrent-Tracker信息（查看状态用）(Your Bittorrent-Tracker Status Information)"
+    colorEcho ${LINK} "https://$domain:443$trackerstatuspath"
+    colorEcho ${INFO} "请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。"
+    colorEcho ${INFO} "请记得将此Tracker分享给你的朋友们。"
   fi
   if [[ $install_aria = 1 ]]; then
     echo
