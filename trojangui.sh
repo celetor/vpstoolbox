@@ -66,7 +66,7 @@ isresolved(){
 }
 ###############User input################
 userinput(){
-whiptail --ok-button "吾意已決 立即執行" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:(Trojan-GFW Nginx and BBR 為強制選項,已經包含)
+whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:(Trojan-GFW Nginx and BBR 為強制選項,已經包含)
 若不確定，請保持默認配置並回車" 16 78 8 \
 "1" "系统升级(System Upgrade)" on \
 "2" "安裝Dnsmasq(Dns cache and adblock)" on \
@@ -182,9 +182,9 @@ fi
       while [[ -z $ariapasswd ]]; do
       ariapasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
       done
-      while [[ -z $ariaport ]]; do
-      ariaport=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc port并按回车" 8 78 6800 --title "Aria2 rpc port input" 3>&1 1>&2 2>&3)
-      done
+      #while [[ -z $ariaport ]]; do
+      #ariaport=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc port并按回车" 8 78 6800 --title "Aria2 rpc port input" 3>&1 1>&2 2>&3)
+      #done
       while [[ -z $ariadownloadpath ]]; do
       ariadownloadpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2下载路径（拉回本地用）并按回车" 8 78 /aria2download --title "Qbittorrent download path input" 3>&1 1>&2 2>&3)
       done
@@ -462,7 +462,7 @@ rpc-allow-origin-all=true
 rpc-listen-all=false
 event-poll=epoll
 # RPC监听端口, 端口被占用时可以修改, 默认:6800
-rpc-listen-port=$ariaport
+rpc-listen-port=6800
 # 设置的RPC授权令牌, v1.18.4新增功能, 取代 --rpc-user 和 --rpc-passwd 选项
 rpc-secret=$ariapasswd
 
@@ -662,7 +662,7 @@ EOF
 }
 ##################################################
 renewcert(){
-  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl restart trojan"
+  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
 }
 ##################################################
 changepasswd(){
@@ -773,6 +773,9 @@ server {
   listen 127.0.0.1:80;
     server_name $domain;
     if (\$http_user_agent = "") { return 444; }
+    if (\$host != "$domain") {
+        return 404;
+    }
     add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
     add_header X-Frame-Options SAMEORIGIN always;
     add_header X-Content-Type-Options "nosniff" always;
@@ -788,6 +791,7 @@ if [[ $install_v2ray = 1 ]]; then
 echo "    location $path {" >> /etc/nginx/conf.d/trojan.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:10000;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
@@ -795,12 +799,14 @@ echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/troja
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
 if [[ $install_ss = 1 ]]; then
 echo "    location $sspath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:20000;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
@@ -808,19 +814,22 @@ echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/troja
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
 if [[ $install_aria = 1 ]]; then
 echo "    location $ariapath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_pass http://127.0.0.1:$ariaport/jsonrpc;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass http://127.0.0.1:6800/jsonrpc;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 echo "    location $ariadownloadpath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        alias              /usr/share/nginx/aria2/;" >> /etc/nginx/conf.d/trojan.conf
@@ -845,12 +854,17 @@ echo "        autoindex_exact_size off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 echo "    location /announce {" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:9000;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "        location @errpage {" >> /etc/nginx/conf.d/trojan.conf
+echo "        return 404;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
 echo "}" >> /etc/nginx/conf.d/trojan.conf
@@ -911,7 +925,7 @@ tcp-bbr(){
   colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
   cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 net.ipv6.conf.all.accept_ra = 2
-fs.file-max = 51200
+#fs.file-max = 51200
 net.core.rmem_max = 67108864
 net.core.wmem_max = 67108864
 net.core.rmem_default = 65536
@@ -952,6 +966,12 @@ then
   :
 else
 echo "ulimit -SHn 51200" >> /etc/profile
+fi
+if grep -q "pam_limits.so" /etc/pam.d/common-session
+then
+  :
+else
+echo "session required pam_limits.so" >> /etc/pam.d/common-session || true
 fi
 systemctl daemon-reload
 if [[ $install_bbrplus = 1 ]]; then
@@ -1475,6 +1495,7 @@ elif [[ $(lsb_release -cs) = xenial ]] || [[ $(lsb_release -cs) = trusty ]] || [
 then
 colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
 else
+  apt-get install python3-qrcode -qq -y > /dev/null
   wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
   chmod +x trojan-url.py
   #./trojan-url.py -i /etc/trojan/client.json
@@ -1514,7 +1535,9 @@ EOF
   colorEcho ${INFO} "请访问下面的链接(Link Below)获取你的V2ray分享链接"
   colorEcho ${LINK} "https://$domain/$uuid.txt"
   rm -rf json2vmess.py
-  colorEcho ${INFO} "Please manually run cat /etc/v2ray/$uuid.txt to show share link again!"      
+  colorEcho ${INFO} "Please manually run cat /etc/v2ray/$uuid.txt to show share link again!"
+  colorEcho ${LINK} "https://play.google.com/store/apps/details?id=fun.kitsunebi.kitsunebi4android"
+  colorEcho ${LINK} "https://github.com/v2ray/v2ray-core/releases/latest"
 fi
 }
 ##########SS Link###########
@@ -1523,6 +1546,8 @@ sslink(){
     echo
     colorEcho ${INFO} "你的SS信息，非分享链接，仅供参考(Your Shadowsocks Information)"
     colorEcho ${LINK} "$ssmethod:$sspasswd@https://$domain:443$sspath"
+    colorEcho ${LINK} "https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray"
+    colorEcho ${LINK} "https://github.com/shadowsocks/v2ray-plugin"
   fi
     if [[ $install_qbt = 1 ]]; then
     echo
@@ -1530,6 +1555,7 @@ sslink(){
     colorEcho ${LINK} "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin"
     colorEcho ${INFO} "你的Qbittorrent信息（拉回本地用），非分享链接，仅供参考(Your Qbittorrent Download Information)"
     colorEcho ${LINK} "https://$domain:443$qbtdownloadpath"
+    colorEcho ${INFO} "请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！"
   fi
   if [[ $install_aria = 1 ]]; then
     echo
@@ -1580,7 +1606,7 @@ uninstall(){
 ##################################
 clear
 function advancedMenu() {
-    ADVSEL=$(whiptail --ok-button "吾意已決 立即安排" --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 12 78 4 \
+    ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 12 78 4 \
         "1" "安裝(Install Trojan-GFW NGINX and other optional software)" \
         "2" "更新(Update  Trojan-GFW V2ray and Shadowsocks)" \
         "3" "卸載(Uninstall Everything)" \
@@ -1592,6 +1618,7 @@ function advancedMenu() {
         userinput
         clear
         installdependency
+        timesync || true
         clear
         openfirewall
         clear
@@ -1601,14 +1628,12 @@ function advancedMenu() {
         clear
         changepasswd || true
         bootstart
-        clear
-        timesync || true
+        tcp-bbr || true
         clear
         trojanclient || true
         trojanlink || true
         v2raylink || true
         sslink || true
-        tcp-bbr || true
         start
         whiptail --title "Install Success" --msgbox "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" 8 78
         ;;
