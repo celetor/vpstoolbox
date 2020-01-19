@@ -773,9 +773,7 @@ server {
   listen 127.0.0.1:80;
     server_name $domain;
     if (\$http_user_agent = "") { return 444; }
-    if (\$host != "$domain") {
-        return 404;
-    }
+    if (\$host != "$domain") { return 404; }
     add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
     add_header X-Frame-Options SAMEORIGIN always;
     add_header X-Content-Type-Options "nosniff" always;
