@@ -48,6 +48,7 @@ deb-src http://deb.debian.org/debian-security oldstable/updates main
 deb http://ftp.debian.org/debian stretch-backports main
 deb-src http://ftp.debian.org/debian stretch-backports main
 EOF
+fi
   if [[ $(lsb_release -cs) == bionic ]]; then
               cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
@@ -1795,7 +1796,6 @@ function advancedMenu() {
         trojanclient || true
         sharelink || true
         start
-        #whiptail --title "Install Success" --msgbox "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" 8 78
         whiptail --title "Install Success" --textbox --scrolltext result 39 100
         ;;
         2)
@@ -1832,4 +1832,3 @@ export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
 osdist || true
 advancedMenu
-echo "Program terminated."
