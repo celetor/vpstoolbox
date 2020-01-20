@@ -356,7 +356,7 @@ if [[ -f /etc/trojan/trojan.crt ]]; then
   if isresolved $domain
   then
   :
-  else 
+  else
   colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!"
   colorEcho ${ERROR} "Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!"
   exit -1
@@ -1384,10 +1384,16 @@ EOF
     }
 }
 EOF
+cd
+echo "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" > result
 colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 1"
 cat /etc/trojan/client1.json
 colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 2"
 cat /etc/trojan/client2.json
+echo "你的(Your) Trojan-Gfw 客户端(client) config profile 1" >> result
+echo "$(cat /etc/trojan/client1.json)" >> result
+echo "你的(Your) Trojan-Gfw 客户端(client) config profile 2" >> result
+echo "$(cat /etc/trojan/client2.json)" >> result
 }
 ##########V2ray Client Config################
 v2rayclient(){
@@ -1551,19 +1557,23 @@ checkupdate(){
   fi
 }
 ###########Trojan share link########
-trojanlink(){
+sharelink(){
   cd
   colorEcho ${INFO} "你的 Trojan-Gfw 分享链接(Share Link)1 is"
   colorEcho ${LINK} "trojan://$password1@$domain:443"
   colorEcho ${INFO} "你的 Trojan-Gfw 分享链接(Share Link)2 is"
   colorEcho ${LINK} "trojan://$password2@$domain:443"
-if [[ $dist = centos ]]
-then
-colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
-elif [[ $(lsb_release -cs) = xenial ]] || [[ $(lsb_release -cs) = trusty ]] || [[ $(lsb_release -cs) = jessie ]]
-then
-colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
-else
+  echo "你的 Trojan-Gfw 分享链接(Share Link)1 is" >> result
+  echo "trojan://$password1@$domain:443" >> result
+  echo "你的 Trojan-Gfw 分享链接(Share Link)2 is" >> result
+  echo "trojan://$password2@$domain:443" >> result
+  if [[ $dist = centos ]]
+  then
+  colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
+  elif [[ $(lsb_release -cs) = xenial ]] || [[ $(lsb_release -cs) = trusty ]] || [[ $(lsb_release -cs) = jessie ]]
+  then
+  colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
+  else
   apt-get install python3-qrcode -qq -y > /dev/null
   wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
   chmod +x trojan-url.py
@@ -1576,20 +1586,73 @@ else
   colorEcho ${LINK} "https://$domain/$password1.png"
   colorEcho ${INFO} "请访问下面的链接获取Trojan-GFW 二维码(QR code) 2"
   colorEcho ${LINK} "https://$domain/$password2.png"
+  echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 1" >> result
+  echo "https://$domain/$password1.png" >> result
+  echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 2" >> result
+  echo "https://$domain/$password2.png" >> result
   rm -rf trojan-url.py
   rm -rf $password1.png || true
   rm -rf $password2.png || true
   apt-get remove python3-qrcode -qq -y > /dev/null
-fi
-colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
-colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"
-}
-########V2ray share link############
-v2raylink(){
+  fi
+  colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
+  colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"
+  echo "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" >> result
+  echo "https://github.com/trojan-gfw/trojan/releases/latest" >> result
+  if [[ $install_qbt = 1 ]]; then
+    echo
+    colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Information)"
+    colorEcho ${LINK} "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin"
+    colorEcho ${INFO} "你的Qbittorrent信息（拉回本地用），非分享链接，仅供参考(Your Qbittorrent Download Information)"
+    colorEcho ${LINK} "https://$domain:443$qbtdownloadpath"
+    colorEcho ${INFO} "请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！"
+    colorEcho ${INFO} "请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密 ！！！否则會被迅雷吸血！！！"
+    colorEcho ${LINK} "请手动在Qbittorrent中添加Trackers https://github.com/ngosang/trackerslist ！！！否则速度不會快的！！！"
+    echo "" >> result
+    echo "你的Qbittorrent信息(Your Qbittorrent Information)" >> result
+    echo "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin" >> result
+    echo "你的Qbittorrent信息（拉回本地用），非分享链接，仅供参考(Your Qbittorrent Download Information)" >> result
+    echo "https://$domain:443$qbtdownloadpath" >> result
+    echo "请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！" >> result
+    echo "请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密 ！！！否则會被迅雷吸血！！！" >> result
+    echo "请手动在Qbittorrent中添加Trackers https://github.com/ngosang/trackerslist ！！！否则速度不會快的！！！" >> result
+  fi
+  if [[ $install_tracker = 1 ]]; then
+    echo
+    colorEcho ${INFO} "你的Bittorrent-Tracker信息(Your Bittorrent-Tracker Information)"
+    colorEcho ${LINK} "https://$domain:443$trackerpath"
+    colorEcho ${LINK} "http://$domain:8000/announce"
+    colorEcho ${INFO} "你的Bittorrent-Tracker信息（查看状态用）(Your Bittorrent-Tracker Status Information)"
+    colorEcho ${LINK} "https://$domain:443$trackerstatuspath"
+    colorEcho ${INFO} "请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。"
+    colorEcho ${INFO} "请记得将此Tracker分享给你的朋友们。"
+    echo "" >> result
+    echo "你的Bittorrent-Tracker信息(Your Bittorrent-Tracker Information)" >> result
+    echo "https://$domain:443$trackerpath" >> result
+    echo "http://$domain:8000/announce" >> result
+    echo "你的Bittorrent-Tracker信息（查看状态用）(Your Bittorrent-Tracker Status Information)" >> result
+    echo "https://$domain:443$trackerstatuspath" >> result
+    echo "请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。" >> result
+    echo "请记得将此Tracker分享给你的朋友们。" >> result
+  fi
+  if [[ $install_aria = 1 ]]; then
+    echo
+    colorEcho ${INFO} "你的Aria信息，非分享链接，仅供参考(Your Aria2 Information)"
+    colorEcho ${LINK} "$ariapasswd@https://$domain:443$ariapath"
+    colorEcho ${INFO} "你的Aria信息（拉回本地用），非分享链接，仅供参考(Your Aria2 Download Information)"
+    colorEcho ${LINK} "https://$domain:443$ariadownloadpath"
+    echo "" >> result
+    echo "你的Aria信息，非分享链接，仅供参考(Your Aria2 Information)" >> result
+    echo "$ariapasswd@https://$domain:443$ariapath" >> result
+    echo "你的Aria信息（拉回本地用），非分享链接，仅供参考(Your Aria2 Download Information)" >> result
+    echo "https://$domain:443$ariadownloadpath" >> result
+  fi
   if [[ $install_v2ray = 1 ]]; then
   echo
   v2rayclient
   colorEcho ${INFO} "你的(Your) V2ray 客户端(client) config profile"
+  echo "你的(Your) V2ray 客户端(client) config profile" >> result
+  echo "$(cat /etc/v2ray/client.json)" >> result
   cat /etc/v2ray/client.json
   echo
   wget https://github.com/boypt/vmess2json/raw/master/json2vmess.py -q
@@ -1602,50 +1665,34 @@ EOF
   cp /etc/v2ray/$uuid.txt /usr/share/nginx/html/
   colorEcho ${INFO} "你的V2ray分享链接(Your V2ray Share Link)"
   cat /etc/v2ray/$uuid.txt
+  echo "" >> result
+  echo "你的V2ray分享链接(Your V2ray Share Link)" >> result
+  echo "$(cat /etc/v2ray/$uuid.txt)" >> result
   colorEcho ${INFO} "请访问下面的链接(Link Below)获取你的V2ray分享链接"
   colorEcho ${LINK} "https://$domain/$uuid.txt"
+  echo "请访问下面的链接(Link Below)获取你的V2ray分享链接" >> result
+  echo "https://$domain/$uuid.txt" >> result
   rm -rf json2vmess.py
   colorEcho ${INFO} "Please manually run cat /etc/v2ray/$uuid.txt to show share link again!"
   colorEcho ${LINK} "https://play.google.com/store/apps/details?id=fun.kitsunebi.kitsunebi4android"
   colorEcho ${LINK} "https://github.com/v2ray/v2ray-core/releases/latest"
-fi
-}
-##########SS Link###########
-sslink(){
+  echo "Please manually run cat /etc/v2ray/$uuid.txt to show share link again!" >> result
+  echo "https://play.google.com/store/apps/details?id=fun.kitsunebi.kitsunebi4android" >> result
+  echo "https://github.com/v2ray/v2ray-core/releases/latest" >> result
+  fi
   if [[ $install_ss = 1 ]]; then
     echo
     colorEcho ${INFO} "你的SS信息，非分享链接，仅供参考(Your Shadowsocks Information)"
     colorEcho ${LINK} "$ssmethod:$sspasswd@https://$domain:443$sspath"
     colorEcho ${LINK} "https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray"
     colorEcho ${LINK} "https://github.com/shadowsocks/v2ray-plugin"
+    echo "" >> result
+    echo "你的SS信息，非分享链接，仅供参考(Your Shadowsocks Information)" >> result
+    echo "$ssmethod:$sspasswd@https://$domain:443$sspath" >> result
+    echo "https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray"
+    echo "https://github.com/shadowsocks/v2ray-plugin" >> result
   fi
-  if [[ $install_qbt = 1 ]]; then
-    echo
-    colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Information)"
-    colorEcho ${LINK} "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin"
-    colorEcho ${INFO} "你的Qbittorrent信息（拉回本地用），非分享链接，仅供参考(Your Qbittorrent Download Information)"
-    colorEcho ${LINK} "https://$domain:443$qbtdownloadpath"
-    colorEcho ${INFO} "请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！"
-    colorEcho ${INFO} "请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密 ！！！否则會被迅雷吸血！！！"
-    colorEcho ${LINK} "请手动在Qbittorrent中添加Trackers https://github.com/ngosang/trackerslist ！！！否则速度不會快的！！！"
-  fi
-  if [[ $install_tracker = 1 ]]; then
-    echo
-    colorEcho ${INFO} "你的Bittorrent-Tracker信息(Your Bittorrent-Tracker Information)"
-    colorEcho ${LINK} "https://$domain:443$trackerpath"
-    colorEcho ${LINK} "http://$domain:8000/announce"
-    colorEcho ${INFO} "你的Bittorrent-Tracker信息（查看状态用）(Your Bittorrent-Tracker Status Information)"
-    colorEcho ${LINK} "https://$domain:443$trackerstatuspath"
-    colorEcho ${INFO} "请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。"
-    colorEcho ${INFO} "请记得将此Tracker分享给你的朋友们。"
-  fi
-  if [[ $install_aria = 1 ]]; then
-    echo
-    colorEcho ${INFO} "你的Aria信息，非分享链接，仅供参考(Your Aria2 Information)"
-    colorEcho ${LINK} "$ariapasswd@https://$domain:443$ariapath"
-    colorEcho ${INFO} "你的Aria信息（拉回本地用），非分享链接，仅供参考(Your Aria2 Download Information)"
-    colorEcho ${LINK} "https://$domain:443$ariadownloadpath"
-  fi
+  echo "请手动运行 cat result 来重新显示结果" >> result
 }
 ##################################
 timesync(){
@@ -1713,11 +1760,10 @@ function advancedMenu() {
         tcp-bbr || true
         clear
         trojanclient || true
-        trojanlink || true
-        v2raylink || true
-        sslink || true
+        sharelink || true
         start
-        whiptail --title "Install Success" --msgbox "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" 8 78
+        #whiptail --title "Install Success" --msgbox "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" 8 78
+        whiptail --title "Install Success" --textbox --scrolltext result 39 100
         ;;
         2)
         cd
