@@ -29,6 +29,44 @@ rm -rf /lib/systemd/system/cloud-final.service || true
 rm -rf /lib/systemd/system/cloud-init-local.service || true
 rm -rf /lib/systemd/system/cloud-init.service || true
 systemctl daemon-reload || true
+  if [[ $(lsb_release -cs) == stretch ]]; then
+              cat > '/etc/apt/sources.list' << EOF
+#------------------------------------------------------------------------------#
+#                   OFFICIAL DEBIAN REPOS                    
+#------------------------------------------------------------------------------#
+
+###### Debian Main Repos
+deb http://deb.debian.org/debian/ oldstable main contrib non-free
+deb-src http://deb.debian.org/debian/ oldstable main contrib non-free
+
+deb http://deb.debian.org/debian/ oldstable-updates main contrib non-free
+deb-src http://deb.debian.org/debian/ oldstable-updates main contrib non-free
+
+deb http://deb.debian.org/debian-security oldstable/updates main
+deb-src http://deb.debian.org/debian-security oldstable/updates main
+
+deb http://ftp.debian.org/debian stretch-backports main
+deb-src http://ftp.debian.org/debian stretch-backports main
+EOF
+  if [[ $(lsb_release -cs) == bionic ]]; then
+              cat > '/etc/apt/sources.list' << EOF
+#------------------------------------------------------------------------------#
+#                            OFFICIAL UBUNTU REPOS                             #
+#------------------------------------------------------------------------------#
+
+
+###### Ubuntu Main Repos
+deb http://us.archive.ubuntu.com/ubuntu/ bionic main 
+deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main 
+
+###### Ubuntu Update Repos
+deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main 
+deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main 
+deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main 
+deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main
+EOF
+echo "nameserver 1.1.1.1" > '/etc/resolv.conf' || true
+  fi
 fi
 #######color code############
 ERROR="31m"      # Error message
