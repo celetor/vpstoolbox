@@ -262,11 +262,11 @@ upgradesystem(){
     yum upgrade -y
  elif [[ $dist = ubuntu ]]; then
     export UBUNTU_FRONTEND=noninteractive 
-    apt-get upgrade -qq -y
+    sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -qq -y' || true
     apt-get autoremove -qq -y
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
-    apt-get upgrade -qq -y
+    sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -qq -y' || true
     if [[ $debian10_install = 1 ]]; then
           cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
@@ -287,7 +287,8 @@ deb http://ftp.debian.org/debian buster-backports main
 deb-src http://ftp.debian.org/debian buster-backports main
 EOF
     apt-get update
-    sudo sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
+    sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
+    sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
     fi
     if [[ $debian9_install = 1 ]]; then
           cat > '/etc/apt/sources.list' << EOF
@@ -309,9 +310,10 @@ deb http://ftp.debian.org/debian stretch-backports main
 deb-src http://ftp.debian.org/debian stretch-backports main
 EOF
     apt-get update
-    sudo sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
+    sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
+    sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
     fi
-    apt-get autoremove -qq -y
+    sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y' || true
  else
   clear
   TERM=ansi whiptail --title "error can't upgrade system" --infobox "error can't upgrade system" 8 78
@@ -336,13 +338,6 @@ SELINUXTYPE=targeted
 EOF
     firewall-cmd --zone=public --add-port=80/tcp --permanent  || true
     firewall-cmd --zone=public --add-port=443/tcp --permanent  || true
-    systemctl stop firewalld  || true
-    systemctl disable firewalld || true
-    yum install -y iptables-services || true
-    systemctl enable iptables || true
-    systemctl enable ip6tables || true
-    sudo /usr/libexec/iptables/iptables.init save || true
-    systemctl start iptables.service || true
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     apt-get install iptables-persistent -qq -y > /dev/null
