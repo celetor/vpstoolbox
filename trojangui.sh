@@ -531,7 +531,7 @@ if [[ $install_aria = 1 ]]; then
       rm aria2-1.35.0.tar.xz
       cd aria2-1.35.0
       ./configure --with-libuv --without-gnutls --with-openssl
-      make -j $(grep "^core id" /proc/cpuinfo | sort -u | wc -l)
+      make -j $(nproc --all)
       make install
       apt remove build-essential autoconf automake autotools-dev autopoint libtool -qq -y
       apt-get autoremove -qq -y
