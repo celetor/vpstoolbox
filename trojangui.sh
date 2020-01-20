@@ -464,7 +464,7 @@ if [[ $install_tracker = 1 ]]; then
   TERM=ansi whiptail --title "error can't install qbittorrent-nox" --infobox "error can't install qbittorrent-nox" 8 78
     exit 1;
  fi
- npm install -g bittorrent-tracker
+ npm install -g bittorrent-tracker --silent
       cat > '/etc/systemd/system/tracker.service' << EOF
 [Unit]
 Description=Bittorrent-Tracker Daemon Service
