@@ -14,13 +14,14 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/option.png)
 
 #### Friendly Reminder:
-1. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this bash script!
-2. Please **Open Tcp port [80](https://www.speedguide.net/port.php?port=80) and [443](https://www.speedguide.net/port.php?port=443) and turn off Cloudflare CDN** in your control panel before running this bash script!
-3. Please manually change system dns to frequently updated dns like [1.1.1.1](https://1.1.1.1/) instead of those who update slowly like aliyun lan dns !
+1. Please **Run as root**(sudo -i)
+2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this bash script!
+3. Please **Open Tcp port [80](https://www.speedguide.net/port.php?port=80) and [443](https://www.speedguide.net/port.php?port=443) and turn off Cloudflare CDN** in your control panel before running this bash script!
+4. Please manually change system dns to frequently updated dns like [1.1.1.1](https://1.1.1.1/) instead of those who update slowly like aliyun lan dns !
 ```
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 ```
-4. Please **Change QBittorrent Download save path to /usr/share/nginx/qbt/ manually !**
+5. Please **Change QBittorrent Download save path to /usr/share/nginx/qbt/ manually !**
 
 #### [Telegram](https://telegram.org/) Channel And Group
 
