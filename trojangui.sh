@@ -1439,7 +1439,7 @@ trojanclient(){
         "no_delay": true,
         "keep_alive": true,
         "reuse_port": false,
-        "fast_open": true,
+        "fast_open": false,
         "fast_open_qlen": 20
     }
 }
@@ -1474,7 +1474,7 @@ EOF
         "no_delay": true,
         "keep_alive": true,
         "reuse_port": false,
-        "fast_open": true,
+        "fast_open": false,
         "fast_open_qlen": 20
     }
 }
