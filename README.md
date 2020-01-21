@@ -5,7 +5,7 @@
 
 ### GUI Version (Everything has been included)
 ```
-apt-get update && apt-get install sudo whiptail curl locales -y
+apt-get update && apt-get install sudo whiptail curl locales -y && sudo -i
 ```
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
