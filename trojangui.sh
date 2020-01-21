@@ -1582,7 +1582,7 @@ checkupdate(){
   cd
   if [[ -f /usr/bin/v2ray/v2ray ]]; then
     wget https://install.direct/go.sh -q
-    sudo bash go.sh
+    bash go.sh
     rm go.sh
   fi
   if [[ -f /usr/local/bin/trojan ]]; then
@@ -1753,7 +1753,7 @@ uninstall(){
   rm -rf /etc/aria.conf || true
   systemctl daemon-reload || true
   wget https://install.direct/go.sh -q
-  sudo bash go.sh --remove
+  bash go.sh --remove
   rm go.sh
   systemctl stop nginx || true
   systemctl disable nginx || true
