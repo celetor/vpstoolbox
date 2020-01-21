@@ -1740,7 +1740,7 @@ sharelink(){
     colorEcho ${LINK} "admin:admin@https://$domain:443$filepath 用户名(username): admin 密碼(password): admin"
     echo "" >> result
     echo "你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)" >> result
-    echo "admin:admin@https://$domain:443$filepath 用户名(username): admin 密碼(password): admin" >> result
+    echo "https://$domain:443$filepath 用户名(username): admin 密碼(password): admin" >> result
   fi
   if [[ $install_v2ray = 1 ]]; then
   echo
