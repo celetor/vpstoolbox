@@ -111,10 +111,11 @@ whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" -
 "3" "安裝Qbittorrent(Nginx Https Proxy)" on \
 "4" "安裝Bittorrent-Tracker(Nginx Https Proxy)" on \
 "5" "安裝Aria2(Https mode)" on \
-"6" "安裝V2ray(Vmess+Websocket+TLS+Nginx)" off \
-"7" "安裝Shadowsocks+V2ray-plugin+Websocket+TLS+Nginx" off \
-"8" "安裝BBRPLUS 不推薦因為BBR已經包含(because BBR has been included)" off \
-"9" "仅启用TLS1.3(TLS1.3 ONLY)" off 2>results
+"6" "安裝Filebrowser(Nginx Https Proxy)" on \
+"7" "安裝V2ray(Vmess+Websocket+TLS+Nginx)" off \
+"8" "安裝Shadowsocks+V2ray-plugin+Websocket+TLS+Nginx" off \
+"9" "安裝BBRPLUS 不推薦因為BBR已經包含(because BBR has been included)" off \
+"10" "仅启用TLS1.3(TLS1.3 ONLY)" off 2>results
 
 while read choice
 do
@@ -134,31 +135,26 @@ do
     5)
     install_aria=1
     ;;
-    6) 
-    install_v2ray=1
+    6)
+    install_file=1
     ;;
     7) 
+    install_v2ray=1
+    ;;
+    8) 
     install_ss=1
     ;;
-    8)
+    9)
     install_bbrplus=1
     ;;
-    9) 
+    10) 
     tls13only=1
     ;;
     *)
     ;;
   esac
 done < results
-while [[ -z $domain ]]; do
-domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可污也，快輸入你的域名並按回車" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
-done
-while [[ -z $password1 ]]; do
-password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快輸入你想要的密碼一併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
-done
-while [[ -z $password2 ]]; do
-password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快輸入想要的密碼二並按回車" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
-done
+####################################
 if [[ $system_upgrade = 1 ]]; then
   if [[ $(lsb_release -cs) == stretch ]]; then
     if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 10?" 8 78); then
@@ -175,7 +171,53 @@ if [[ $system_upgrade = 1 ]]; then
     fi
   fi
 fi
-
+#####################################
+while [[ -z $domain ]]; do
+domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可污也，快輸入你的域名並按回車" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+done
+while [[ -z $password1 ]]; do
+password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快輸入你想要的密碼一併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+done
+while [[ -z $password2 ]]; do
+password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快輸入想要的密碼二並按回車" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
+done
+###################################
+    if [[ $install_qbt = 1 ]]; then
+      while [[ -z $qbtpath ]]; do
+      qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+      done
+    fi
+#####################################
+    if [[ $install_tracker = 1 ]]; then
+      while [[ -z $trackerpath ]]; do
+      trackerpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Bittorrent-Tracker路径并按回车" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
+      done
+      while [[ -z $trackerstatuspath ]]; do
+      trackerstatuspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Bittorrent-Tracker状态路径并按回车" 8 78 /status --title "Bittorrent-Tracker download path input" 3>&1 1>&2 2>&3)
+      done
+    fi
+####################################
+    if [[ $install_aria = 1 ]]; then
+      while [[ -z $ariapath ]]; do
+      ariapath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 RPC路径并按回车" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
+      done
+      while [[ -z $ariapasswd ]]; do
+      ariapasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+      done
+    fi
+####################################
+    if [[ $install_file = 1 ]]; then
+      while [[ -z $filepath ]]; do
+      filepath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Filebrowser路径并按回车" 8 78 /files/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+      done
+      #while [[ -z $fileuser ]]; do
+      #fileuser=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Filebrowser路径并按回车" 8 78 admin --title "Filebrowser username input" 3>&1 1>&2 2>&3)
+      #done
+      #while [[ -z $filepasswd ]]; do
+      #filepasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on，快输入你的想要的Filebrowser路径并按回车" 8 78 --title "Filebrowser passwd input" 3>&1 1>&2 2>&3)
+      #done
+    fi
+####################################
     if [[ $install_v2ray = 1 ]]; then
       while [[ -z $path ]]; do
       path=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
@@ -184,6 +226,7 @@ fi
       alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
       done
     fi
+####################################
     if [[ $install_ss = 1 ]]; then
       while [[ -z $sspath ]]; do
       sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
@@ -208,33 +251,6 @@ fi
       esac
       else
       echo "Continuing"
-    fi
-    if [[ $install_qbt = 1 ]]; then
-      while [[ -z $qbtpath ]]; do
-      qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
-      done
-      while [[ -z $qbtdownloadpath ]]; do
-      qbtdownloadpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Qbittorrent下载路径（拉回本地用）并按回车" 8 78 /qbtdownload --title "Qbittorrent download path input" 3>&1 1>&2 2>&3)
-      done
-    fi
-    if [[ $install_tracker = 1 ]]; then
-      while [[ -z $trackerpath ]]; do
-      trackerpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Bittorrent-Tracker路径并按回车" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
-      done
-      while [[ -z $trackerstatuspath ]]; do
-      trackerstatuspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Bittorrent-Tracker状态路径并按回车" 8 78 /status --title "Bittorrent-Tracker download path input" 3>&1 1>&2 2>&3)
-      done
-    fi
-    if [[ $install_aria = 1 ]]; then
-      while [[ -z $ariapath ]]; do
-      ariapath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 RPC路径并按回车" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
-      done
-      while [[ -z $ariapasswd ]]; do
-      ariapasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
-      done
-      while [[ -z $ariadownloadpath ]]; do
-      ariadownloadpath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2下载路径（拉回本地用）并按回车" 8 78 /aria2download --title "Qbittorrent download path input" 3>&1 1>&2 2>&3)
-      done
     fi
 }
 ###############OS detect####################
@@ -517,6 +533,43 @@ RestartSec=3s
 [Install]
 WantedBy=multi-user.target
 EOF
+fi
+fi
+clear
+#############################################
+if [[ $install_file = 1 ]]; then
+  if [[ -f /usr/local/bin/filebrowser ]]; then
+    :
+    else
+  if [[ $dist = centos ]]; then
+  curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
+ elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
+    export DEBIAN_FRONTEND=noninteractive
+    curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
+ else
+  clear
+  TERM=ansi whiptail --title "error can't install filebrowser" --infobox "error can't install filebrowser" 8 78
+    exit 1;
+ fi
+       cat > '/etc/systemd/system/filebrowser.service' << EOF
+[Unit]
+Description=filebrowser browser
+After=network.target
+
+[Service]
+User=root
+Group=root
+ExecStart=/usr/local/bin/filebrowser -r /usr/share/nginx/ -d /etc/filebrowser/database.db -b $filepath -p 8081
+ExecReload=/usr/bin/kill -HUP \$MAINPID
+ExecStop=/usr/bin/kill -s STOP \$MAINPID
+RestartSec=3s
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+mkdir /etc/filebrowser/
+touch /etc/filebrowser/database.db
 fi
 fi
 clear
@@ -914,11 +967,6 @@ echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/tr
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
 echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
-echo "    location $ariadownloadpath {" >> /etc/nginx/conf.d/trojan.conf
-echo "        alias              /usr/share/nginx/aria2/;" >> /etc/nginx/conf.d/trojan.conf
-echo "        autoindex on;" >> /etc/nginx/conf.d/trojan.conf
-echo "        autoindex_exact_size off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
 if [[ $install_qbt = 1 ]]; then
 echo "    location $qbtpath {" >> /etc/nginx/conf.d/trojan.conf
@@ -930,10 +978,18 @@ echo "        proxy_set_header        Referer                 '';" >> /etc/nginx
 echo "        proxy_set_header        Origin                  '';" >> /etc/nginx/conf.d/trojan.conf
 echo "        # add_header              X-Frame-Options         "SAMEORIGIN"; # not needed since 4.1.0" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
-echo "    location $qbtdownloadpath {" >> /etc/nginx/conf.d/trojan.conf
-echo "        alias              /usr/share/nginx/qbt/;" >> /etc/nginx/conf.d/trojan.conf
-echo "        autoindex on;" >> /etc/nginx/conf.d/trojan.conf
-echo "        autoindex_exact_size off;" >> /etc/nginx/conf.d/trojan.conf
+fi
+if [[ $install_file = 1 ]]; then
+echo "    location $filepath {" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass http://127.0.0.1:8081/;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
 if [[ $install_tracker = 1 ]]; then
@@ -995,6 +1051,9 @@ start(){
   if [[ $install_tracker = 1 ]]; then
     systemctl start tracker || true
   fi
+  if [[ $install_file = 1 ]]; then
+    systemctl start filebrowser || true
+  fi
   if [[ $install_aria = 1 ]]; then
     systemctl start aria2 || true
   fi
@@ -1012,6 +1071,9 @@ bootstart(){
   fi
   if [[ $install_tracker = 1 ]]; then
     systemctl enable tracker || true
+  fi
+  if [[ $install_file = 1 ]]; then
+    systemctl enable filebrowser || true
   fi
   if [[ $install_aria = 1 ]]; then
     systemctl enable aria2 || true
@@ -1377,7 +1439,7 @@ trojanclient(){
         "no_delay": true,
         "keep_alive": true,
         "reuse_port": false,
-        "fast_open": false,
+        "fast_open": true,
         "fast_open_qlen": 20
     }
 }
@@ -1412,7 +1474,7 @@ EOF
         "no_delay": true,
         "keep_alive": true,
         "reuse_port": false,
-        "fast_open": false,
+        "fast_open": true,
         "fast_open_qlen": 20
     }
 }
@@ -1636,16 +1698,12 @@ sharelink(){
     echo
     colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Information)"
     colorEcho ${LINK} "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin"
-    colorEcho ${INFO} "你的Qbittorrent信息（拉回本地用），非分享链接，仅供参考(Your Qbittorrent Download Information)"
-    colorEcho ${LINK} "https://$domain:443$qbtdownloadpath"
     colorEcho ${INFO} "请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！"
     colorEcho ${INFO} "请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密 ！！！否则會被迅雷吸血！！！"
     colorEcho ${LINK} "请手动在Qbittorrent中添加Trackers https://github.com/ngosang/trackerslist ！！！否则速度不會快的！！！"
     echo "" >> result
     echo "你的Qbittorrent信息(Your Qbittorrent Information)" >> result
     echo "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin" >> result
-    echo "你的Qbittorrent信息（拉回本地用），非分享链接，仅供参考(Your Qbittorrent Download Information)" >> result
-    echo "https://$domain:443$qbtdownloadpath" >> result
     echo "请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！" >> result
     echo "请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密 ！！！否则會被迅雷吸血！！！" >> result
     echo "请手动在Qbittorrent中添加Trackers https://github.com/ngosang/trackerslist ！！！否则速度不會快的！！！" >> result
@@ -1672,13 +1730,17 @@ sharelink(){
     echo
     colorEcho ${INFO} "你的Aria信息，非分享链接，仅供参考(Your Aria2 Information)"
     colorEcho ${LINK} "$ariapasswd@https://$domain:443$ariapath"
-    colorEcho ${INFO} "你的Aria信息（拉回本地用），非分享链接，仅供参考(Your Aria2 Download Information)"
-    colorEcho ${LINK} "https://$domain:443$ariadownloadpath"
     echo "" >> result
     echo "你的Aria信息，非分享链接，仅供参考(Your Aria2 Information)" >> result
     echo "$ariapasswd@https://$domain:443$ariapath" >> result
-    echo "你的Aria信息（拉回本地用），非分享链接，仅供参考(Your Aria2 Download Information)" >> result
-    echo "https://$domain:443$ariadownloadpath" >> result
+  fi
+  if [[ $install_file = 1 ]]; then
+    echo
+    colorEcho ${INFO} "你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)"
+    colorEcho ${LINK} "admin:admin@https://$domain:443$filepath 用户名(username): admin 密碼(password): admin"
+    echo "" >> result
+    echo "你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)" >> result
+    echo "admin:admin@https://$domain:443$filepath 用户名(username): admin 密碼(password): admin" >> result
   fi
   if [[ $install_v2ray = 1 ]]; then
   echo
