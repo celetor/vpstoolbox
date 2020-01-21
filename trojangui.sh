@@ -1737,7 +1737,7 @@ sharelink(){
   if [[ $install_file = 1 ]]; then
     echo
     colorEcho ${INFO} "你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)"
-    colorEcho ${LINK} "admin:admin@https://$domain:443$filepath 用户名(username): admin 密碼(password): admin"
+    colorEcho ${LINK} "https://$domain:443$filepath 用户名(username): admin 密碼(password): admin"
     echo "" >> result
     echo "你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)" >> result
     echo "https://$domain:443$filepath 用户名(username): admin 密碼(password): admin" >> result
