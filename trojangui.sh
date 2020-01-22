@@ -765,6 +765,7 @@ no-resolv
 server=8.8.4.4#53
 server=1.1.1.1#53
 addn-hosts=/etc/dnsmasq.txt
+address=/cn/0.0.0.0
 interface=lo
 bind-interfaces
 cache-size=10000
