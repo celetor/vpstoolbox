@@ -56,14 +56,14 @@ fi
 #------------------------------------------------------------------------------#
 
 ###### Ubuntu Main Repos
-deb http://us.archive.ubuntu.com/ubuntu/ bionic main 
-deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main 
+deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
+deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
 
 ###### Ubuntu Update Repos
-deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main 
-deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main 
-deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main 
-deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main
+deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
 EOF
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf' || true
   fi
@@ -168,6 +168,13 @@ if [[ $system_upgrade = 1 ]]; then
       debian9_install=1
     else
       debian9_install=0
+    fi
+  fi
+  if [[ $(lsb_release -cs) == xenial ]]; then
+    if (whiptail --title "System Upgrade" --yesno "Upgrade to Ubuntu 18.04?" 8 78); then
+      ubuntu18_install=1
+    else
+      ubuntu18_install=0
     fi
   fi
 fi
@@ -277,7 +284,27 @@ upgradesystem(){
   if [[ $dist = centos ]]; then
     yum upgrade -y
  elif [[ $dist = ubuntu ]]; then
-    export UBUNTU_FRONTEND=noninteractive 
+    export UBUNTU_FRONTEND=noninteractive
+    if [[ $ubuntu18_install = 1 ]]; then
+          cat > '/etc/apt/sources.list' << EOF
+#------------------------------------------------------------------------------#
+#                            OFFICIAL UBUNTU REPOS                             #
+#------------------------------------------------------------------------------#
+
+###### Ubuntu Main Repos
+deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
+deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
+
+###### Ubuntu Update Repos
+deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+EOF
+    apt-get update
+    sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
+    sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
+    fi
     sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -qq -y' || true
     apt-get autoremove -qq -y
  elif [[ $dist = debian ]]; then
@@ -356,10 +383,10 @@ EOF
     firewall-cmd --zone=public --add-port=443/tcp --permanent  || true
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
-    apt-get install iptables-persistent -qq -y > /dev/null
+    apt-get install iptables-persistent -qq -y > /dev/null || true
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
-    apt-get install iptables-persistent -qq -y > /dev/null
+    apt-get install iptables-persistent -qq -y > /dev/null || true
  else
   clear
   TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
@@ -1737,7 +1764,7 @@ sharelink(){
   if [[ $install_file = 1 ]]; then
     echo
     colorEcho ${INFO} "你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)"
-    colorEcho ${LINK} "https://$domain:443$filepath 用户名(username): admin 密碼(password): admin"
+    colorEcho ${LINK} "admin:admin@https://$domain:443$filepath 用户名(username): admin 密碼(password): admin"
     echo "" >> result
     echo "你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)" >> result
     echo "https://$domain:443$filepath 用户名(username): admin 密碼(password): admin" >> result
