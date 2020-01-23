@@ -41,7 +41,6 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 9. Auto [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks) enable ( **[TCP-BBR](https://github.com/google/bbr)** included)
 10. Auto [Nginx Performance Optimization](https://www.johnrosen1.com/nginx1/)
 11. Auto [Trojan-GFW ***trojan://*** share link and QR code generate](https://github.com/trojan-gfw/trojan-url)
-12. Auto [V2ray ***vmess://*** share link generate](https://github.com/boypt/vmess2json)
 13. Auto [https 301 redirect](https://en.wikipedia.org/wiki/HTTP_301) without affecting certificate renew
 14. Auto enable [HSTS header](https://securityheaders.com/)
 16. Auto ***Random Html Template Choose***
@@ -50,6 +49,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 19. Auto enable ***Fail Restart*** 
 20. Auto [uninstall Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
 20. Support Auto install and config **[Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [V2ray](https://www.v2ray.com/index.html) and [Shadowsocks](https://shadowsocks.org/en/index.html)([V2ray-plugin](https://github.com/shadowsocks/v2ray-plugin))**
+12. Support auto [V2ray ***vmess://*** share link generate](https://github.com/boypt/vmess2json) and Shadowsocks share link generate
 19. Support auto [***vmess or ss + tls + websocket + nginx*** config](https://guide.v2fly.org/advanced/wss_and_web.html)
 20. Support ***[BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)***
 15. Support ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
