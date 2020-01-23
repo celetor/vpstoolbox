@@ -241,7 +241,7 @@ done
       while [[ -z $sspasswd ]]; do
       sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on，快输入你的想要的ss密码并按回车" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
       done
-      ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 25 78 16 \
+      ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 12 78 3 \
       "1" "aes-128-gcm" \
       "2" "aes-256-gcm" \
       "3" "chacha20-poly1305" 3>&1 1>&2 2>&3)
@@ -1509,6 +1509,7 @@ EOF
 EOF
 cd
 echo "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" > result
+echo "请按方向键往下拉(Please press Arrow keys to scroll down)" >> result
 colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 1"
 cat /etc/trojan/client1.json
 colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 2"
@@ -1682,10 +1683,6 @@ checkupdate(){
 ###########Trojan share link########
 sharelink(){
   cd
-  colorEcho ${INFO} "你的 Trojan-Gfw 分享链接(Share Link)1 is"
-  colorEcho ${LINK} "trojan://$password1@$domain:443"
-  colorEcho ${INFO} "你的 Trojan-Gfw 分享链接(Share Link)2 is"
-  colorEcho ${LINK} "trojan://$password2@$domain:443"
   echo "你的 Trojan-Gfw 分享链接(Share Link)1 is" >> result
   echo "trojan://$password1@$domain:443" >> result
   echo "你的 Trojan-Gfw 分享链接(Share Link)2 is" >> result
@@ -1705,10 +1702,6 @@ sharelink(){
   ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png || true
   cp $password1.png /usr/share/nginx/html/ || true
   cp $password2.png /usr/share/nginx/html/ || true
-  colorEcho ${INFO} "请访问下面的链接获取Trojan-GFW 二维码(QR code) 1"
-  colorEcho ${LINK} "https://$domain/$password1.png"
-  colorEcho ${INFO} "请访问下面的链接获取Trojan-GFW 二维码(QR code) 2"
-  colorEcho ${LINK} "https://$domain/$password2.png"
   echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 1" >> result
   echo "https://$domain/$password1.png" >> result
   echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 2" >> result
@@ -1718,17 +1711,11 @@ sharelink(){
   rm -rf $password2.png || true
   apt-get remove python3-qrcode -qq -y > /dev/null
   fi
-  colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms"
-  colorEcho ${INFO} "https://github.com/trojan-gfw/trojan/releases/latest"
+  echo "相关链接（Related Links）" >> result
   echo "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" >> result
   echo "https://github.com/trojan-gfw/trojan/releases/latest" >> result
   if [[ $install_qbt = 1 ]]; then
     echo
-    colorEcho ${INFO} "你的Qbittorrent信息(Your Qbittorrent Information)"
-    colorEcho ${LINK} "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin"
-    colorEcho ${INFO} "请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！"
-    colorEcho ${INFO} "请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密 ！！！否则會被迅雷吸血！！！"
-    colorEcho ${LINK} "请手动在Qbittorrent中添加Trackers https://github.com/ngosang/trackerslist ！！！否则速度不會快的！！！"
     echo "" >> result
     echo "你的Qbittorrent信息(Your Qbittorrent Information)" >> result
     echo "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin" >> result
@@ -1738,13 +1725,6 @@ sharelink(){
   fi
   if [[ $install_tracker = 1 ]]; then
     echo
-    colorEcho ${INFO} "你的Bittorrent-Tracker信息(Your Bittorrent-Tracker Information)"
-    colorEcho ${LINK} "https://$domain:443$trackerpath"
-    colorEcho ${LINK} "http://$domain:8000/announce"
-    colorEcho ${INFO} "你的Bittorrent-Tracker信息（查看状态用）(Your Bittorrent-Tracker Status Information)"
-    colorEcho ${LINK} "https://$domain:443$trackerstatuspath"
-    colorEcho ${INFO} "请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。"
-    colorEcho ${INFO} "请记得将此Tracker分享给你的朋友们。"
     echo "" >> result
     echo "你的Bittorrent-Tracker信息(Your Bittorrent-Tracker Information)" >> result
     echo "https://$domain:443$trackerpath" >> result
@@ -1756,8 +1736,6 @@ sharelink(){
   fi
   if [[ $install_aria = 1 ]]; then
     echo
-    colorEcho ${INFO} "你的Aria信息，非分享链接，仅供参考(Your Aria2 Information)"
-    colorEcho ${LINK} "$ariapasswd@https://$domain:443$ariapath"
     echo "" >> result
     echo "你的Aria信息，非分享链接，仅供参考(Your Aria2 Information)" >> result
     echo "$ariapasswd@https://$domain:443$ariapath" >> result
@@ -1791,28 +1769,25 @@ EOF
   echo "" >> result
   echo "你的V2ray分享链接(Your V2ray Share Link)" >> result
   echo "$(cat /etc/v2ray/$uuid.txt)" >> result
-  colorEcho ${INFO} "请访问下面的链接(Link Below)获取你的V2ray分享链接"
-  colorEcho ${LINK} "https://$domain/$uuid.txt"
   echo "请访问下面的链接(Link Below)获取你的V2ray分享链接" >> result
   echo "https://$domain/$uuid.txt" >> result
   rm -rf json2vmess.py
-  colorEcho ${INFO} "Please manually run cat /etc/v2ray/$uuid.txt to show share link again!"
-  colorEcho ${LINK} "https://play.google.com/store/apps/details?id=fun.kitsunebi.kitsunebi4android"
-  colorEcho ${LINK} "https://github.com/v2ray/v2ray-core/releases/latest"
   echo "Please manually run cat /etc/v2ray/$uuid.txt to show share link again!" >> result
+  echo "相关链接（Related Links）" >> result
   echo "https://play.google.com/store/apps/details?id=fun.kitsunebi.kitsunebi4android" >> result
   echo "https://github.com/v2ray/v2ray-core/releases/latest" >> result
   fi
   if [[ $install_ss = 1 ]]; then
     echo
-    colorEcho ${INFO} "你的SS信息，非分享链接，仅供参考(Your Shadowsocks Information)"
-    colorEcho ${LINK} "$ssmethod:$sspasswd@https://$domain:443$sspath"
-    colorEcho ${LINK} "https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray"
-    colorEcho ${LINK} "https://github.com/shadowsocks/v2ray-plugin"
     echo "" >> result
     echo "你的SS信息，非分享链接，仅供参考(Your Shadowsocks Information)" >> result
     echo "$ssmethod:$sspasswd@https://$domain:443$sspath" >> result
-    echo "https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray"
+    echo "" >> result
+    echo "你的SS分享链接，仅供参考(Your Shadowsocks Share link)" >> result
+    sspath2="$(echo "$sspath" | cut -c2-999)"
+    echo -n "ss://" >> result; echo -n "$ssmethod:$sspasswd@$domain:443" | base64 >> result; echo "?plugin=v2ray%3Bpath%3D%2F$sspath2%3Bhost%3D$domain%3Btls#ss+v2ray-plugin" >> result
+    echo "相关链接（Related Links）" >> result
+    echo "https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray" >> result
     echo "https://github.com/shadowsocks/v2ray-plugin" >> result
   fi
   echo "请手动运行 cat result 来重新显示结果" >> result
@@ -1858,7 +1833,8 @@ uninstall(){
 ##################################
 clear
 function advancedMenu() {
-    ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 12 78 4 \
+    ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/
+运行此脚本前请在控制面板中开启80 443端口并关闭Cloudflare CDN!" 13 78 4 \
         "1" "安裝(Install Trojan-GFW NGINX and other optional software)" \
         "2" "更新(Update  Trojan-GFW V2ray and Shadowsocks)" \
         "3" "卸載(Uninstall Everything)" \
