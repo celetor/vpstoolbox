@@ -235,7 +235,7 @@ done
 ####################################
     if [[ $install_netdata = 1 ]]; then
       while [[ -z $netdatapath ]]; do
-      netdatapath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Filebrowser路径并按回车" 8 78 /netdata/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+      netdatapath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Netdata路径并按回车" 8 78 /netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
       done
     fi
 ####################################
