@@ -1942,7 +1942,7 @@ function advancedMenu() {
         trojanclient || true
         sharelink || true
         start
-        whiptail --title "Install Success" --textbox --scrolltext result 39 100
+        whiptail --title "Install Success" --textbox --scrolltext result 32 120
         ;;
         2)
         cd
