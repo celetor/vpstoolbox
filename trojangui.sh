@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 if [[ $(id -u) != 0 ]]; then
     echo Please run this script as root.
     exit 1
@@ -105,17 +106,18 @@ isresolved(){
 ###############User input################
 userinput(){
 whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:(Trojan-GFW Nginx and BBR 為強制選項,已經包含)
-若不確定，請保持默認配置並回車" 17 78 9 \
+若不確定，請保持默認配置並回車" 18 78 10 \
 "1" "系统升级(System Upgrade)" on \
 "2" "安裝Dnsmasq(Dns cache and adblock)" on \
-"3" "安裝Qbittorrent(Nginx Https Proxy)" on \
+"3" "安裝Qbittorrent(Powerful Bittorrent Client)" on \
 "4" "安裝Bittorrent-Tracker(Nginx Https Proxy)" on \
-"5" "安裝Aria2(Https mode)" on \
-"6" "安裝Filebrowser(Nginx Https Proxy)" on \
-"7" "安裝V2ray(Vmess+Websocket+TLS+Nginx)" off \
-"8" "安裝Shadowsocks+V2ray-plugin+Websocket+TLS+Nginx" off \
-"9" "安裝BBRPLUS 不推薦因為BBR已經包含(because BBR has been included)" off \
-"10" "仅启用TLS1.3(TLS1.3 ONLY)" off 2>results
+"5" "安裝Aria2(Powerful non-Bittorrent Client)" on \
+"6" "安裝Filebrowser(qbt and aria2 download tool)" on \
+"7" "安裝Netdata(Server status monitor tool)" on \
+"8" "安裝V2ray(Vmess+Websocket+TLS+Nginx)" off \
+"9" "安裝Shadowsocks+V2ray-plugin+Websocket+TLS+Nginx" off \
+"10" "安裝BBRPLUS 不推薦因為BBR已經包含(because BBR has been included)" off \
+"11" "仅启用TLS1.3(TLS1.3 ONLY)" off 2>results
 
 while read choice
 do
@@ -138,16 +140,19 @@ do
     6)
     install_file=1
     ;;
-    7) 
-    install_v2ray=1
+    7)
+    install_netdata=1
     ;;
     8) 
+    install_v2ray=1
+    ;;
+    9) 
     install_ss=1
     ;;
-    9)
+    10)
     install_bbrplus=1
     ;;
-    10) 
+    11) 
     tls13only=1
     ;;
     *)
@@ -184,16 +189,22 @@ domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可
 done
 while [[ -z $password1 ]]; do
 password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快輸入你想要的密碼一併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+if [[ $password1 == "" ]]; then
+  password1="12345678"
+  fi
 done
 while [[ -z $password2 ]]; do
 password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快輸入想要的密碼二並按回車" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
+if [[ $password2 == "" ]]; then
+  password2="123456789"
+  fi
 done
 ###################################
-    if [[ $install_qbt = 1 ]]; then
-      while [[ -z $qbtpath ]]; do
-      qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
-      done
-    fi
+  if [[ $install_qbt = 1 ]]; then
+    while [[ -z $qbtpath ]]; do
+    qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+    done
+  fi
 #####################################
     if [[ $install_tracker = 1 ]]; then
       while [[ -z $trackerpath ]]; do
@@ -210,6 +221,9 @@ done
       done
       while [[ -z $ariapasswd ]]; do
       ariapasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+      if [[ $ariapasswd == "" ]]; then
+      ariapasswd="123456789"
+      fi
       done
     fi
 ####################################
@@ -217,12 +231,12 @@ done
       while [[ -z $filepath ]]; do
       filepath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Filebrowser路径并按回车" 8 78 /files/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
       done
-      #while [[ -z $fileuser ]]; do
-      #fileuser=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Filebrowser路径并按回车" 8 78 admin --title "Filebrowser username input" 3>&1 1>&2 2>&3)
-      #done
-      #while [[ -z $filepasswd ]]; do
-      #filepasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on，快输入你的想要的Filebrowser路径并按回车" 8 78 --title "Filebrowser passwd input" 3>&1 1>&2 2>&3)
-      #done
+    fi
+####################################
+    if [[ $install_netdata = 1 ]]; then
+      while [[ -z $netdatapath ]]; do
+      netdatapath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Filebrowser路径并按回车" 8 78 /netdata/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+      done
     fi
 ####################################
     if [[ $install_v2ray = 1 ]]; then
@@ -307,6 +321,7 @@ EOF
     fi
     sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -qq -y' || true
     apt-get autoremove -qq -y
+    clear
  elif [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive 
     sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -qq -y' || true
@@ -332,6 +347,7 @@ EOF
     apt-get update
     sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
     sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
+    clear
     fi
     if [[ $debian9_install = 1 ]]; then
           cat > '/etc/apt/sources.list' << EOF
@@ -357,6 +373,7 @@ EOF
     sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
     fi
     sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y' || true
+    clear
  else
   clear
   TERM=ansi whiptail --title "error can't upgrade system" --infobox "error can't upgrade system" 8 78
@@ -433,6 +450,8 @@ if [[ -f /etc/trojan/trojan.crt ]]; then
   then
   :
   else
+  clear
+  whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
   colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!"
   colorEcho ${ERROR} "Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!"
   exit -1
@@ -452,6 +471,8 @@ fi
   if [[ -f /etc/apt/sources.list.d/nginx.list ]]; then
     :
     else
+      clear
+      colorEcho ${INFO} "安装Nginx(Install Nginx ing)"
   if [[ $dist = centos ]]; then
   yum install nginx -y
   systemctl stop nginx || true
@@ -480,6 +501,8 @@ if [[ $install_qbt = 1 ]]; then
   if [[ -f /usr/bin/qbittorrent-nox ]]; then
     :
     else
+    clear
+    colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
   if [[ $dist = centos ]]; then
   yum install -y epel-release
   yum update -y
@@ -525,6 +548,8 @@ if [[ $install_tracker = 1 ]]; then
   if [[ -f /usr/bin/bittorrent-tracker ]]; then
     :
     else
+      clear
+      colorEcho ${INFO} "安装Bittorrent-tracker(Install bittorrent-tracker ing)"
   if [[ $dist = centos ]]; then
   curl -sL https://rpm.nodesource.com/setup_13.x | bash -
  elif [[ $dist = ubuntu ]]; then
@@ -568,6 +593,8 @@ if [[ $install_file = 1 ]]; then
   if [[ -f /usr/local/bin/filebrowser ]]; then
     :
     else
+      clear
+      colorEcho ${INFO} "安装Filebrowser(Install Filebrowser ing)"
   if [[ $dist = centos ]]; then
   curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
@@ -605,15 +632,22 @@ if [[ $install_aria = 1 ]]; then
   if [[ -f /usr/local/bin/aria2c ]]; then
     :
     else
-      apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -qq -y
-      wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q
-      tar -xvf aria2-1.35.0.tar.xz
-      rm aria2-1.35.0.tar.xz
-      cd aria2-1.35.0
-      ./configure --with-libuv --without-gnutls --with-openssl
-      make -j $(nproc --all)
-      make install
-      apt remove build-essential autoconf automake autotools-dev autopoint libtool -qq -y
+      clear
+      colorEcho ${INFO} "安装aria2(Install aria2 ing)"
+      #apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -qq -y
+      apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev libtool libuv1-dev libcppunit-dev -qq -y
+      #wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q
+      wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz -q 
+      xz --decompress aria2c.xz
+      #rm aria2c.xz
+      cp aria2c /usr/local/bin/aria2c
+      chmod +x /usr/local/bin/aria2c
+      rm aria2c
+      #cd aria2-1.35.0
+      #./configure --without-gnutls --with-openssl
+      #make -j $(nproc --all)
+      #make install
+      #apt remove build-essential autoconf automake autotools-dev autopoint libtool -qq -y
       apt-get autoremove -qq -y
       touch /usr/local/bin/aria2.session
       mkdir /usr/share/nginx/aria2/
@@ -711,6 +745,8 @@ if [[ $dnsmasq_install = 1 ]]; then
   if [[ -f /usr/sbin/dnsmasq ]]; then
     :
     else
+      clear
+      colorEcho ${INFO} "安装dnsmasq(Install dnsmasq ing)"
     if [[ $dist = centos ]]; then
     yum install -y dnsmasq  || true
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
@@ -781,7 +817,21 @@ fi
 clear
 #############################################
 if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
+  clear
   installv2ray
+fi
+#############################################
+if [[ $install_netdata = 1 ]]; then
+  if [[ -f /usr/sbin/netdata ]]; then
+    :
+    else
+      clear
+      colorEcho ${INFO} "安装Netdata(Install netdata ing)"
+      bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait --disable-telemetry
+      sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /etc/netdata/netdata.conf
+      #sed -i 's/SEARCH_REGEX/REPLACEMENT/g' INPUTFILE
+      systemctl restart netdata
+  fi
 fi
 clear
 #############################################
@@ -796,6 +846,7 @@ fi
     :
     else
   clear
+  colorEcho ${INFO} "安装Trojan-GFW(Install Trojan-GFW ing)"
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
   systemctl daemon-reload      
   fi
@@ -803,6 +854,7 @@ fi
 }
 ##################################################
 issuecert(){
+  clear
   colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
   if [[ -f /etc/trojan/trojan.crt ]]; then
     myip=`curl -s http://dynamicdns.park-your-domain.com/getip`
@@ -832,6 +884,7 @@ renewcert(){
 }
 ##################################################
 changepasswd(){
+  clear
   colorEcho ${INFO} "配置(configing) trojan-gfw"
   if [[ -f /etc/trojan/trojan.pem ]]; then
     colorEcho ${INFO} "DH已有，跳过生成。。。"
@@ -929,6 +982,7 @@ EOF
 }
 ########Nginx config for Trojan only##############
 nginxtrojan(){
+  clear
   colorEcho ${INFO} "配置(configing) nginx"
 rm -rf /etc/nginx/sites-available/* || true
 rm -rf /etc/nginx/sites-enabled/* || true
@@ -1044,6 +1098,23 @@ echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> 
 echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
+if [[ $install_netdata = 1 ]]; then
+echo "    location ~ $netdatapath(?<ndpath>.*) {" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Forwarded-Host \$host;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Forwarded-Server \$host;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/trojan.conf
+echo '        proxy_set_header Connection "keep-alive";' >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_store off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass http://netdata/\$ndpath\$is_args\$args;" >> /etc/nginx/conf.d/trojan.conf
+echo "        gzip on;" >> /etc/nginx/conf.d/trojan.conf
+echo "        gzip_proxied any;" >> /etc/nginx/conf.d/trojan.conf
+echo "        gzip_types *;" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
+fi
 echo "        location @errpage {" >> /etc/nginx/conf.d/trojan.conf
 echo "        return 404;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
@@ -1062,6 +1133,12 @@ echo "    listen [::]:80 default_server;" >> /etc/nginx/conf.d/trojan.conf
 echo "    server_name _;" >> /etc/nginx/conf.d/trojan.conf
 echo "    return 444;" >> /etc/nginx/conf.d/trojan.conf
 echo "}" >> /etc/nginx/conf.d/trojan.conf
+if [[ $install_netdata = 1 ]]; then
+  echo "upstream netdata {" >> /etc/nginx/conf.d/trojan.conf
+  echo "    server 127.0.0.1:19999;" >> /etc/nginx/conf.d/trojan.conf
+  echo "    keepalive 64;" >> /etc/nginx/conf.d/trojan.conf
+  echo "}" >> /etc/nginx/conf.d/trojan.conf
+fi
 nginx -t
 systemctl restart nginx
 htmlcode=$(shuf -i 1-3 -n 1)
@@ -1114,6 +1191,7 @@ bootstart(){
 }
 ##########tcp-bbr#####################
 tcp-bbr(){
+  clear
   colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
   cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 net.ipv6.conf.all.accept_ra = 2
@@ -1508,6 +1586,7 @@ EOF
 }
 EOF
 cd
+clear
 echo "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" > result
 echo "请按方向键往下拉(Please press Arrow keys to scroll down)" >> result
 colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 1"
@@ -1748,6 +1827,14 @@ sharelink(){
     echo "你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)" >> result
     echo "https://$domain:443$filepath 用户名(username): admin 密碼(password): admin" >> result
   fi
+  if [[ $install_netdata = 1 ]]; then
+    echo
+    colorEcho ${INFO} "你的netdata信息，非分享链接，仅供参考(Your Netdata Information)"
+    colorEcho ${LINK} "https://$domain:443$netdatapath"
+    echo "" >> result
+    echo "你的netdata信息，非分享链接，仅供参考(Your Netdata Information)" >> result
+    echo "https://$domain:443$netdatapath" >> result
+  fi
   if [[ $install_v2ray = 1 ]]; then
   echo
   v2rayclient
@@ -1844,20 +1931,14 @@ function advancedMenu() {
         cd
         clear
         userinput
-        clear
         installdependency
         timesync || true
-        clear
         openfirewall
-        clear
         issuecert
-        clear
         nginxtrojan || true
-        clear
         changepasswd || true
         bootstart
         tcp-bbr || true
-        clear
         trojanclient || true
         sharelink || true
         start
