@@ -912,6 +912,7 @@ changepasswd(){
         "cipher_tls13":"TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
         "prefer_server_cipher": true,
         "alpn": [
+            "h2",
             "http/1.1"
         ],
         "reuse_session": true,
@@ -990,7 +991,7 @@ rm -rf /etc/nginx/conf.d/* || true
 touch /etc/nginx/conf.d/trojan.conf
       cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
-  listen 127.0.0.1:80;
+  listen 127.0.0.1:80 http2;
     server_name $domain;
     if (\$http_user_agent = "") { return 444; }
     if (\$host != "$domain") { return 404; }
