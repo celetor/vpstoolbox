@@ -398,6 +398,8 @@ SELINUXTYPE=targeted
 EOF
     firewall-cmd --zone=public --add-port=80/tcp --permanent  || true
     firewall-cmd --zone=public --add-port=443/tcp --permanent  || true
+    systemctl stop firewalld || true
+    systemctl disable firewalld || true
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     apt-get install iptables-persistent -qq -y > /dev/null || true
@@ -428,7 +430,7 @@ installdependency(){
   clear
   colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
   if [[ $dist = centos ]]; then
-    yum install -y sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd
+    yum install -y sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd socat
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
     apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common -qq -y
     if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]] || [[ $(lsb_release -cs) == jessie ]]; then
@@ -872,9 +874,14 @@ server {
     root   /usr/share/nginx/html;
 }
 EOF
-  systemctl start nginx
-  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
-  sudo ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
+  systemctl start nginx || true
+  if [[ $dist = centos ]]; then
+  systemctl stop nginx || true
+  ~/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 --force --reloadcmd "systemctl reload trojan || true"
+    else
+  ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
+  fi
+  ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
   chmod +r /etc/trojan/trojan.key
   fi
 }
