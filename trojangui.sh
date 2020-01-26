@@ -919,7 +919,6 @@ changepasswd(){
         "cipher_tls13":"TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
         "prefer_server_cipher": true,
         "alpn": [
-            "h2",
             "http/1.1"
         ],
         "reuse_session": true,
@@ -998,7 +997,7 @@ rm -rf /etc/nginx/conf.d/* || true
 touch /etc/nginx/conf.d/trojan.conf
       cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
-  listen 127.0.0.1:80 http2;
+  listen 127.0.0.1:80;
     server_name $domain;
     if (\$http_user_agent = "") { return 444; }
     if (\$host != "$domain") { return 404; }
@@ -1845,6 +1844,7 @@ sharelink(){
   fi
   if [[ $install_v2ray = 1 ]]; then
   echo
+  apt-get install qrencode -y > /dev/null
   v2rayclient
   colorEcho ${INFO} "你的(Your) V2ray 客户端(client) config profile"
   echo "你的(Your) V2ray 客户端(client) config profile" >> result
@@ -1859,18 +1859,24 @@ sharelink(){
 $v2link
 EOF
   cp /etc/v2ray/$uuid.txt /usr/share/nginx/html/
+  qrencode -l L -v 1 -o /usr/share/nginx/html/$uuid.png "$v2link"
   colorEcho ${INFO} "你的V2ray分享链接(Your V2ray Share Link)"
   cat /etc/v2ray/$uuid.txt
+  colorEcho ${INFO} "你的V2ray二维码(Your V2ray Share Link)"
+  colorEcho ${INFO} "https://$domain/$uuid.png"
   echo "" >> result
   echo "你的V2ray分享链接(Your V2ray Share Link)" >> result
   echo "$(cat /etc/v2ray/$uuid.txt)" >> result
   echo "请访问下面的链接(Link Below)获取你的V2ray分享链接" >> result
   echo "https://$domain/$uuid.txt" >> result
+  echo "请访问下面的链接(Link Below)获取你的V2ray二维码" >> result
+  echo "https://$domain/$uuid.png" >> result
   rm -rf json2vmess.py
   echo "Please manually run cat /etc/v2ray/$uuid.txt to show share link again!" >> result
   echo "相关链接（Related Links）" >> result
   echo "https://play.google.com/store/apps/details?id=fun.kitsunebi.kitsunebi4android" >> result
   echo "https://github.com/v2ray/v2ray-core/releases/latest" >> result
+  apt-get remove qrencode -y > /dev/null
   fi
   if [[ $install_ss = 1 ]]; then
     echo
