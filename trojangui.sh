@@ -254,6 +254,9 @@ done
       done
       while [[ -z $sspasswd ]]; do
       sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on，快输入你的想要的ss密码并按回车" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
+      if [[ $sspasswd == "" ]]; then
+      sspasswd="123456789"
+      fi
       done
       ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 12 78 3 \
       "1" "aes-128-gcm" \
@@ -1880,16 +1883,28 @@ EOF
   fi
   if [[ $install_ss = 1 ]]; then
     echo
+    apt-get install qrencode -y > /dev/null
+    sspath2="$(echo "$sspath" | cut -c2-999)"
+    ssinfo="$(echo $ssmethod:$sspasswd@$domain:443 | base64)"
+    sslink1="ss://$ssinfo?plugin=v2ray%3Bpath%3D%2F$sspath2%3Bhost%3D$domain%3Btls#ss+v2ray-plugin"
+    sslink2="ss://$(echo $ssmethod:$sspasswd | base64)@$domain:443#$domain"
+    qrencode -l L -v 1 -o /usr/share/nginx/html/qr1-$sspasswd.png "$sslink1"
+    qrencode -l L -v 1 -o /usr/share/nginx/html/qr2-$sspasswd.png "$sslink2"
     echo "" >> result
     echo "你的SS信息，非分享链接，仅供参考(Your Shadowsocks Information)" >> result
     echo "$ssmethod:$sspasswd@https://$domain:443$sspath" >> result
     echo "" >> result
     echo "你的SS分享链接，仅供参考(Your Shadowsocks Share link)" >> result
-    sspath2="$(echo "$sspath" | cut -c2-999)"
-    echo -n "ss://" >> result; echo -n "$ssmethod:$sspasswd@$domain:443" | base64 >> result; echo "?plugin=v2ray%3Bpath%3D%2F$sspath2%3Bhost%3D$domain%3Btls#ss+v2ray-plugin" >> result
+    echo "$sslink1" >> result
+    echo "$sslink2" >> result
+    echo "请访问下面的链接(Link Below)获取你的SS二维码" >> result
+    echo "https://$domain/qr1-$sspasswd.png" >> result
+    echo "https://$domain/qr2-$sspasswd.png" >> result
     echo "相关链接（Related Links）" >> result
+    echo "https://play.google.com/store/apps/details?id=fun.kitsunebi.kitsunebi4android" >> result
     echo "https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray" >> result
     echo "https://github.com/shadowsocks/v2ray-plugin" >> result
+    apt-get remove qrencode -y > /dev/null
   fi
   echo "请手动运行 cat result 来重新显示结果" >> result
 }
