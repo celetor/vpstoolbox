@@ -551,7 +551,7 @@ if [[ $dist = centos ]]; then
   elif [[ $dist = ubuntu ]]; then
     echo ""
   else
-wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx
+wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx -q
 cp -f nginx /usr/sbin/nginx
 rm nginx
 fi
