@@ -186,6 +186,30 @@ fi
 #####################################
 while [[ -z $domain ]]; do
 domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可污也，快輸入你的域名並按回車" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+if [[ $domain == "" ]]; then
+  ip=$(curl -s https://api.ipify.org)
+  if [[ $dist = centos ]]; then
+    yum install -y bind-utils
+    else
+    apt-get install dnsutils -y -qq
+  fi
+  domain=$(host $ip)
+  if [[ -f /etc/trojan/trojan.crt ]]; then
+  :
+  else
+  if isresolved $domain
+  then
+  :
+  else
+  clear
+  whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
+  colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!"
+  colorEcho ${ERROR} "Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!"
+  exit -1
+  clear
+  fi  
+fi
+fi
 done
 while [[ -z $password1 ]]; do
 password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快輸入你想要的密碼一併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
