@@ -105,6 +105,36 @@ isresolved(){
 }
 ###############User input################
 userinput(){
+if (whiptail --title "api" --defaultno --yesno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
+  dns_api=1
+  APIOPTION=$(whiptail --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "請按空格來選擇" 18 78 10 \
+"1" "Cloudflare Using the global api key " \
+"2" "Use Namesilo.com API"  3>&1 1>&2 2>&3)
+
+  case $APIOPTION in
+    1)
+    cf_api=1
+    while [[ -z $CF_Key ]]; do
+    CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF_Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+    done
+    while [[ -z $CF_Email ]]; do
+    CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+    done
+    export CF_Key="$CF_Key"
+    export CF_Email="$CF_Email"
+    ;;
+    2)
+    namesilo_api=1
+    while [[ -z $Namesilo_Key ]]; do
+    Namesilo_Key=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快輸入你的Namesilo_Key併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+    done
+    export Namesilo_Key="$Namesilo_Key"
+    ;;
+    *)
+    ;;
+  esac
+  fi
+################################################
 whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:(Trojan-GFW Nginx and BBR 為強制選項,已經包含)
 若不確定，請保持默認配置並回車" 18 78 10 \
 "1" "系统升级(System Upgrade)" on \
@@ -194,7 +224,7 @@ if [[ $domain == "" ]]; then
     apt-get install dnsutils -y -qq
   fi
   domain=$(host $ip)
-  if [[ -f /etc/trojan/trojan.crt ]]; then
+  if [[ -f /etc/trojan/trojan.crt ]] || [[ $dns_api == 1 ]]; then
   :
   else
   if isresolved $domain
@@ -440,7 +470,7 @@ installdependency(){
  fi
  clear
 #############################################
-if [[ -f /etc/trojan/trojan.crt ]]; then
+if [[ -f /etc/trojan/trojan.crt ]] || [[ $dns_api == 1 ]]; then
   :
   else
   if isresolved $domain
@@ -525,7 +555,6 @@ wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx
 cp -f nginx /usr/sbin/nginx
 rm nginx
 fi
-
 chmod +x /usr/sbin/nginx
     cat > '/etc/nginx/nginx.conf' << EOF
 user nginx;
@@ -983,7 +1012,15 @@ server {
 }
 EOF
   systemctl start nginx || true
-  ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
+  if [[ $dns_api == 1 ]]; then
+    if [[ $cf_api == 1 ]]; then
+    ~/.acme.sh/acme.sh --issue --dns dns_cf --dnssleep 30 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
+    elif [[ $namesilo_api == 1 ]]; then
+    ~/.acme.sh/acme.sh --issue --dns dns_namesilo --dnssleep 300 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
+    fi
+    else
+    ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"  
+  fi
   ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
   chmod +r /etc/trojan/trojan.key
   fi
