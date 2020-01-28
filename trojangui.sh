@@ -383,38 +383,6 @@ EOF
     exit 1;
  fi
 }
-#########Open ports########################
-openfirewall(){
-  colorEcho ${INFO} "设置 firewall"
-  #sh -c 'echo "1\n" | DEBIAN_FRONTEND=noninteractive update-alternatives --config iptables'
-  iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT || true
-  iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT || true
-  iptables -I OUTPUT -j ACCEPT || true
-  ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT || true
-  ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT || true
-  ip6tables -I OUTPUT -j ACCEPT || true
-  if [[ $dist = centos ]]; then
-      setenforce 0  || true
-          cat > '/etc/selinux/config' << EOF
-SELINUX=disabled
-SELINUXTYPE=targeted
-EOF
-    firewall-cmd --zone=public --add-port=80/tcp --permanent  || true
-    firewall-cmd --zone=public --add-port=443/tcp --permanent  || true
-    systemctl stop firewalld || true
-    systemctl disable firewalld || true
- elif [[ $dist = ubuntu ]]; then
-    export DEBIAN_FRONTEND=noninteractive
-    apt-get install iptables-persistent -qq -y > /dev/null || true
- elif [[ $dist = debian ]]; then
-    export DEBIAN_FRONTEND=noninteractive 
-    apt-get install iptables-persistent -qq -y > /dev/null || true
- else
-  clear
-  TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
-    exit 1;
- fi
-}
 ##########install dependencies#############
 installdependency(){
     colorEcho ${INFO} "Updating system"
@@ -473,7 +441,7 @@ if [[ $tls13only = 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
 fi
 #####################################################
-  if [[ -f /etc/apt/sources.list.d/nginx.list ]]; then
+  if [[ -f /etc/apt/sources.list.d/nginx.list ]] || [[ -f /usr/sbin/nginx ]]; then
     :
     else
       clear
@@ -493,13 +461,81 @@ EOF
   apt-get remove nginx-common -qq -y
   apt-get update -qq
   apt-get install nginx -qq -y
+  rm -rf /etc/apt/sources.list.d/nginx.list
+  apt-get update -qq
  else
   clear
   TERM=ansi whiptail --title "error can't install nginx" --infobox "error can't install nginx" 8 78
     exit 1;
  fi
 fi
-nginxconf
+  cat > '/lib/systemd/system/nginx.service' << EOF
+[Unit]
+Description=The NGINX HTTP and reverse proxy server
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/run/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t
+ExecStart=/usr/sbin/nginx
+ExecReload=/usr/sbin/nginx -s reload
+ExecStop=/bin/kill -s QUIT $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+if [[ $dist = centos ]]; then
+  wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx_centos
+  cp -f nginx_centos /usr/sbin/nginx
+  rm nginx_centos
+  mkdir /var/cache/nginx/
+  else
+wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx
+cp -f nginx /usr/sbin/nginx
+rm nginx
+fi
+
+chmod +x /usr/sbin/nginx
+    cat > '/etc/nginx/nginx.conf' << EOF
+user nginx;
+worker_processes auto;
+
+error_log /var/log/nginx/error.log warn;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+events {
+  worker_connections 3000;
+  use epoll;
+  multi_accept on;
+}
+
+http {
+  aio threads;
+  charset UTF-8;
+  tcp_nodelay on;
+  tcp_nopush on;
+  server_tokens off;
+
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+
+  access_log /var/log/nginx/access.log;
+
+
+  log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
+    '\$status $body_bytes_sent "\$http_referer" '
+    '"\$http_user_agent" "\$http_x_forwarded_for"';
+
+  sendfile on;
+  gzip on;
+  gzip_comp_level 8;
+
+  include /etc/nginx/conf.d/*.conf; 
+}
+EOF
 clear
 #############################################
 if [[ $install_qbt = 1 ]]; then
@@ -834,7 +870,6 @@ if [[ $install_netdata = 1 ]]; then
       colorEcho ${INFO} "安装Netdata(Install netdata ing)"
       bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait --disable-telemetry
       sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /etc/netdata/netdata.conf
-      #sed -i 's/SEARCH_REGEX/REPLACEMENT/g' INPUTFILE
       systemctl restart netdata
   fi
 fi
@@ -857,6 +892,38 @@ fi
   fi
   clear
 }
+#########Open ports########################
+openfirewall(){
+  colorEcho ${INFO} "设置 firewall"
+  #sh -c 'echo "1\n" | DEBIAN_FRONTEND=noninteractive update-alternatives --config iptables'
+  iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT || true
+  iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT || true
+  iptables -I OUTPUT -j ACCEPT || true
+  ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT || true
+  ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT || true
+  ip6tables -I OUTPUT -j ACCEPT || true
+  if [[ $dist = centos ]]; then
+      setenforce 0  || true
+          cat > '/etc/selinux/config' << EOF
+SELINUX=disabled
+SELINUXTYPE=targeted
+EOF
+    firewall-cmd --zone=public --add-port=80/tcp --permanent  || true
+    firewall-cmd --zone=public --add-port=443/tcp --permanent  || true
+    systemctl stop firewalld || true
+    systemctl disable firewalld || true
+ elif [[ $dist = ubuntu ]]; then
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get install iptables-persistent -qq -y > /dev/null || true
+ elif [[ $dist = debian ]]; then
+    export DEBIAN_FRONTEND=noninteractive 
+    apt-get install iptables-persistent -qq -y > /dev/null || true
+ else
+  clear
+  TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
+    exit 1;
+ fi
+}
 ##################################################
 issuecert(){
   clear
@@ -878,12 +945,7 @@ server {
 }
 EOF
   systemctl start nginx || true
-  if [[ $dist = centos ]]; then
-  systemctl stop nginx || true
-  ~/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256 --force --reloadcmd "systemctl reload trojan || true"
-    else
   ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
-  fi
   ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
   chmod +r /etc/trojan/trojan.key
   fi
@@ -947,46 +1009,6 @@ changepasswd(){
         "username": "trojan",
         "password": ""
     }
-}
-EOF
-}
-##########Nginx conf####################
-nginxconf(){
-    cat > '/etc/nginx/nginx.conf' << EOF
-user nginx;
-worker_processes auto;
-
-error_log /var/log/nginx/error.log warn;
-#pid /var/run/nginx.pid;
-include /etc/nginx/modules-enabled/*.conf;
-events {
-  worker_connections 3000;
-  use epoll;
-  multi_accept on;
-}
-
-http {
-  #aio threads; //Please enable it by yourself,disabled for compatibility.
-  charset UTF-8;
-  tcp_nodelay on;
-  tcp_nopush on;
-  server_tokens off;
-
-  include /etc/nginx/mime.types;
-  default_type application/octet-stream;
-
-  access_log /var/log/nginx/access.log;
-
-
-  log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
-    '\$status $body_bytes_sent "\$http_referer" '
-    '"\$http_user_agent" "\$http_x_forwarded_for"';
-
-  sendfile on;
-  gzip on;
-  gzip_comp_level 8;
-
-  include /etc/nginx/conf.d/*.conf; 
 }
 EOF
 }
