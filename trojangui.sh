@@ -2014,6 +2014,7 @@ timesync(){
     else
       ntpdate -qu 1.hk.pool.ntp.org || true
   fi
+  rm results || true
 }
 ##########Remove Trojan-Gfw##########
 uninstall(){
