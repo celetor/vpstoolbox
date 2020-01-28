@@ -189,7 +189,7 @@ domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可
 if [[ $domain == "" ]]; then
   ip=$(curl -s https://api.ipify.org)
   if [[ $dist = centos ]]; then
-    yum install -y bind-utils
+    yum install -y -q bind-utils
     else
     apt-get install dnsutils -y -qq
   fi
@@ -411,7 +411,7 @@ EOF
 installdependency(){
     colorEcho ${INFO} "Updating system"
   if [[ $dist = centos ]]; then
-    yum update -y
+    yum update -y -q
  elif [[ $dist = ubuntu ]]; then
     apt-get update -qq
  elif [[ $dist = debian ]]; then
@@ -425,7 +425,7 @@ installdependency(){
   clear
   colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
   if [[ $dist = centos ]]; then
-    yum install -y sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd socat
+    yum install -y -q sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd socat
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
     apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common -qq -y
     if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]] || [[ $(lsb_release -cs) == jessie ]]; then
@@ -471,7 +471,7 @@ fi
       clear
       colorEcho ${INFO} "安装Nginx(Install Nginx ing)"
   if [[ $dist = centos ]]; then
-  yum install nginx -y
+  yum install nginx -y -q
   systemctl stop nginx || true
  elif [[ $dist = debian ]] || [[ $dist = ubuntu ]]; then
   wget https://nginx.org/keys/nginx_signing.key -q
@@ -570,9 +570,9 @@ if [[ $install_qbt = 1 ]]; then
     clear
     colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
   if [[ $dist = centos ]]; then
-  yum install -y epel-release
-  yum update -y
-  yum install qbittorrent-nox -y
+  yum install -y -q epel-release
+  yum update -y -q
+  yum install qbittorrent-nox -y -q
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
@@ -618,7 +618,7 @@ if [[ $install_tracker = 1 ]]; then
       colorEcho ${INFO} "安装Bittorrent-tracker(Install bittorrent-tracker ing)"
   if [[ $dist = centos ]]; then
   curl -sL https://rpm.nodesource.com/setup_13.x | bash -
-  sudo yum install -y nodejs
+  sudo yum install -y -q nodejs
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
@@ -702,7 +702,7 @@ if [[ $install_aria = 1 ]]; then
       clear
       colorEcho ${INFO} "安装aria2(Install aria2 ing)"
       if [[ $dist = centos ]]; then
-      yum install -y nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev libtool libuv1-dev libcppunit-dev || true
+      yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev libtool libuv1-dev libcppunit-dev || true
       wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz -q 
       xz --decompress aria2c_centos.xz
       cp aria2c_centos /usr/local/bin/aria2c
@@ -823,7 +823,7 @@ if [[ $dnsmasq_install = 1 ]]; then
       clear
       colorEcho ${INFO} "安装dnsmasq(Install dnsmasq ing)"
     if [[ $dist = centos ]]; then
-    yum install -y dnsmasq  || true
+    yum install -y -q dnsmasq  || true
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive
     apt-get install dnsmasq -qq -y || true
@@ -1995,7 +1995,7 @@ uninstall(){
   systemctl stop nginx || true
   systemctl disable nginx || true
     if [[ $dist = centos ]]; then
-    yum remove nginx dnsmasq -y || true
+    yum remove nginx dnsmasq -y -q || true
     else
     apt purge nginx dnsmasq -p -y || true
     rm -rf /etc/apt/sources.list.d/nginx.list
