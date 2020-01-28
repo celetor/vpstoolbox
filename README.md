@@ -5,11 +5,11 @@
 
 ### GUI Version (Everything has been included)
 ```
-apt-get update && apt-get install sudo whiptail curl locales -y && sudo -i | 
+apt-get update && apt-get install sudo whiptail curl locales -y && sudo -i
 ```
 
 ```
-yum install sudo newt curl -y
+yum install sudo newt curl -y && sudo -i
 ```
 
 ```
