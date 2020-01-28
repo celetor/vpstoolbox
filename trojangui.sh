@@ -593,6 +593,7 @@ if [[ $install_tracker = 1 ]]; then
       colorEcho ${INFO} "安装Bittorrent-tracker(Install bittorrent-tracker ing)"
   if [[ $dist = centos ]]; then
   curl -sL https://rpm.nodesource.com/setup_13.x | bash -
+  sudo yum install -y nodejs
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
@@ -675,21 +676,29 @@ if [[ $install_aria = 1 ]]; then
     else
       clear
       colorEcho ${INFO} "安装aria2(Install aria2 ing)"
-      #apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -qq -y
+      if [[ $dist = centos ]]; then
+      yum install -y nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev libtool libuv1-dev libcppunit-dev || true
+      wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz -q 
+      xz --decompress aria2c_centos.xz
+      cp aria2c_centos /usr/local/bin/aria2c
+      chmod +x /usr/local/bin/aria2c
+      rm aria2c_centos
+        else
       apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev libtool libuv1-dev libcppunit-dev -qq -y
-      #wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q
       wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz -q 
       xz --decompress aria2c.xz
-      #rm aria2c.xz
       cp aria2c /usr/local/bin/aria2c
       chmod +x /usr/local/bin/aria2c
       rm aria2c
+      #apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -qq -y
+      #wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q
       #cd aria2-1.35.0
       #./configure --without-gnutls --with-openssl
       #make -j $(nproc --all)
       #make install
       #apt remove build-essential autoconf automake autotools-dev autopoint libtool -qq -y
       apt-get autoremove -qq -y
+      fi
       touch /usr/local/bin/aria2.session
       mkdir /usr/share/nginx/aria2/
       chmod 755 /usr/share/nginx/aria2/
