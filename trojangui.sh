@@ -533,7 +533,8 @@ http {
   gzip on;
   gzip_comp_level 8;
 
-  include /etc/nginx/conf.d/*.conf; 
+  include /etc/nginx/conf.d/*.conf;
+  client_max_body_size 10G;
 }
 EOF
 clear
