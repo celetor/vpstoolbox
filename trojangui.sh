@@ -1015,7 +1015,7 @@ changepasswd(){
         "key": "/etc/trojan/trojan.key",
         "key_password": "",
         "cipher": "$cipher_server",
-        "cipher_tls13":"TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
         "prefer_server_cipher": true,
         "alpn": [
             "http/1.1"
