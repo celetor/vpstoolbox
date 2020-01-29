@@ -618,7 +618,7 @@ if [[ $install_qbt = 1 ]]; then
   if [[ $dist = centos ]]; then
   yum install -y -q epel-release
   yum update -y -q
-  yum install qbittorrent-nox -y -q
+  yum install qbittorrent-nox -y -q || true
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
@@ -959,7 +959,7 @@ if [[ -f /etc/trojan/trojan.crt ]]; then
   :
   else
   curl -s https://get.acme.sh | sh
-  sudo ~/.acme.sh/acme.sh --upgrade --auto-upgrade  
+  ~/.acme.sh/acme.sh --upgrade --auto-upgrade  
 fi
 #############################################
   if [[ -f /usr/local/bin/trojan ]]; then
@@ -1024,6 +1024,7 @@ server {
     root   /usr/share/nginx/html;
 }
 EOF
+  nginx -t
   systemctl start nginx || true
   if [[ $dns_api == 1 ]]; then
     if [[ $cf_api == 1 ]]; then
@@ -1262,7 +1263,7 @@ if [[ $install_netdata = 1 ]]; then
   echo "}" >> /etc/nginx/conf.d/trojan.conf
 fi
 nginx -t
-systemctl restart nginx
+systemctl restart nginx || true
 htmlcode=$(shuf -i 1-3 -n 1)
 wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/$htmlcode.zip -q
 unzip -o $htmlcode.zip -d /usr/share/nginx/html/
