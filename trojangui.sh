@@ -132,17 +132,17 @@ if (whiptail --title "api" --yesno "使用 (use) api?推荐，可用于申请wil
     2)
     namesilo_api=1
     while [[ -z $Namesilo_Key ]]; do
-    Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+    Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
     done
     export Namesilo_Key="$Namesilo_Key"
     ;;
     3)
     ali_api=1
     while [[ -z $Ali_Key ]]; do
-    Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+    Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 78 --title "Ali_Key input" 3>&1 1>&2 2>&3)
     done
     while [[ -z $Ali_Secret ]]; do
-    Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+    Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 78 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
     done
     export Ali_Key="$Ali_Key"
     export Ali_Secret="$Ali_Secret"
