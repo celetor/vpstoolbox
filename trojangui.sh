@@ -5,6 +5,11 @@ if [[ $(id -u) != 0 ]]; then
     exit 1
 fi
 
+if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
+    echo Please run this script on x86_64 machine.
+    exit 1
+fi
+
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
 systemctl stop aegis || true
 systemctl disable aegis || true
@@ -337,14 +342,19 @@ osdist(){
 set -e
  if cat /etc/*release | grep ^NAME | grep -q CentOS; then
     dist=centos
+    pack="yum -y -q"
  elif cat /etc/*release | grep ^NAME | grep -q Red; then
     dist=centos
+    pack="yum -y -q"
  elif cat /etc/*release | grep ^NAME | grep -q Fedora; then
     dist=centos
+    pack="yum -y -q"
  elif cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
     dist=ubuntu
+    pack="apt-get -y -qq"
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
     dist=debian
+    pack="apt-get -y -qq"
  else
   TERM=ansi whiptail --title "OS SUPPORT" --infobox "OS NOT SUPPORTED, couldn't install Trojan-gfw" 8 78
     exit 1;
@@ -440,17 +450,7 @@ EOF
 ##########install dependencies#############
 installdependency(){
     colorEcho ${INFO} "Updating system"
-  if [[ $dist = centos ]]; then
-    yum update -y -q
- elif [[ $dist = ubuntu ]]; then
-    apt-get update -qq
- elif [[ $dist = debian ]]; then
-    apt-get update -qq
- else
-  clear
-  TERM=ansi whiptail --title "error can't update system" --infobox "error can't update system" 8 78
-    exit 1;
- fi
+    $pack update
 ###########################################
   clear
   colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
@@ -1944,7 +1944,7 @@ sharelink(){
   fi
   if [[ $install_v2ray = 1 ]]; then
   echo
-  apt-get install qrencode -y > /dev/null
+  $pack install qrencode > /dev/null || true
   v2rayclient
   colorEcho ${INFO} "你的(Your) V2ray 客户端(client) config profile"
   echo "你的(Your) V2ray 客户端(client) config profile" >> result
@@ -1976,11 +1976,11 @@ EOF
   echo "相关链接（Related Links）" >> result
   echo "https://play.google.com/store/apps/details?id=fun.kitsunebi.kitsunebi4android" >> result
   echo "https://github.com/v2ray/v2ray-core/releases/latest" >> result
-  apt-get remove qrencode -y > /dev/null
+  $pack remove qrencode > /dev/null || true
   fi
   if [[ $install_ss = 1 ]]; then
     echo
-    apt-get install qrencode -y > /dev/null
+    $pack install qrencode > /dev/null || true
     sspath2="$(echo "$sspath" | cut -c2-999)"
     ssinfo="$(echo $ssmethod:$sspasswd@$domain:443 | base64)"
     sslink1="ss://$ssinfo?plugin=v2ray%3Bpath%3D%2F$sspath2%3Bhost%3D$domain%3Btls#ss+v2ray-plugin"
@@ -2001,7 +2001,7 @@ EOF
     echo "https://play.google.com/store/apps/details?id=fun.kitsunebi.kitsunebi4android" >> result
     echo "https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray" >> result
     echo "https://github.com/shadowsocks/v2ray-plugin" >> result
-    apt-get remove qrencode -y > /dev/null
+    $pack remove qrencode > /dev/null || true
   fi
   echo "请手动运行 cat result 来重新显示结果" >> result
 }
@@ -2029,6 +2029,12 @@ uninstall(){
   systemctl disable v2ray || true
   systemctl stop aria || true
   systemctl disable aria || true
+  systemctl stop tracker || true
+  systemctl disable tracker || true
+  systemctl stop filebrowser || true
+  systemctl disable filebrowser || true
+  systemctl stop netdata || true
+  systemctl disable netdata || true
   rm -rf /etc/aria.conf || true
   systemctl daemon-reload || true
   wget https://install.direct/go.sh -q
