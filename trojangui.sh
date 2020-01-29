@@ -110,11 +110,12 @@ isresolved(){
 }
 ###############User input################
 userinput(){
-if (whiptail --title "api" --defaultno --yesno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
+if (whiptail --title "api" --yesno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
   dns_api=1
   APIOPTION=$(whiptail --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "請按空格來選擇" 18 78 10 \
 "1" "Cloudflare Using the global api key " \
-"2" "Use Namesilo.com API"  3>&1 1>&2 2>&3)
+"2" "Use Namesilo.com API" \
+"3" "Use Aliyun domain API"  3>&1 1>&2 2>&3)
 
   case $APIOPTION in
     1)
@@ -131,9 +132,20 @@ if (whiptail --title "api" --defaultno --yesno "使用 (use) api?推荐，可用
     2)
     namesilo_api=1
     while [[ -z $Namesilo_Key ]]; do
-    Namesilo_Key=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快輸入你的Namesilo_Key併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+    Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
     done
     export Namesilo_Key="$Namesilo_Key"
+    ;;
+    3)
+    ali_api=1
+    while [[ -z $Ali_Key ]]; do
+    Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+    done
+    while [[ -z $Ali_Secret ]]; do
+    Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+    done
+    export Ali_Key="$Ali_Key"
+    export Ali_Secret="$Ali_Secret"
     ;;
     *)
     ;;
@@ -1014,9 +1026,11 @@ EOF
   systemctl start nginx || true
   if [[ $dns_api == 1 ]]; then
     if [[ $cf_api == 1 ]]; then
-    ~/.acme.sh/acme.sh --issue --dns dns_cf --dnssleep 30 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
+    ~/.acme.sh/acme.sh --issue --dns dns_cf -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
     elif [[ $namesilo_api == 1 ]]; then
     ~/.acme.sh/acme.sh --issue --dns dns_namesilo --dnssleep 300 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
+    elif [[ $ali_api == 1 ]]; then
+    ~/.acme.sh/acme.sh --issue --dns dns_ali -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
     fi
     else
     ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"  
