@@ -46,7 +46,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 6. 全自動 生成 [客戶端配置文件](https://trojan-gfw.github.io/trojan/config) (包括 Trojan-GFW 和 V2ray )
 7. 全自動 启用 [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks) ( **[TCP-BBR](https://github.com/google/bbr)** 已包含)
 8. 全自動 [Nginx 效能優化](https://www.johnrosen1.com/nginx1/)
-9. 全自動 [Trojan-GFW ***trojan://***  分享链接 and 二维码 生成](https://github.com/trojan-gfw/trojan-url)
+9. 全自動 [Trojan-GFW ***trojan://***  分享链接 以及 二维码 生成](https://github.com/trojan-gfw/trojan-url)
 10. 全自動 [https 301 redirect](https://en.wikipedia.org/wiki/HTTP_301) 不會影響證書的續簽
 11. 全自動 启用 [HSTS header](https://securityheaders.com/)
 12. 全自動 ***隨機html偽裝模板選擇***
