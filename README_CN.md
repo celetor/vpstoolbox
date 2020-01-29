@@ -76,6 +76,7 @@ https://www.johnrosen1.com/qbt/
 
 ```
 https://github.com/trojan-gfw/trojan-quickstart
+sudo nginx -t
 sudo systemctl status trojan
 sudo systemctl status nginx
 sudo systemctl status v2ray
