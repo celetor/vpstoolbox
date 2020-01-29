@@ -568,7 +568,7 @@ echo ""
 #cp -f nginx /usr/sbin/nginx
 #rm nginx
 fi
-chmod +x /usr/sbin/nginx
+chmod +x /usr/sbin/nginx || true
     cat > '/etc/nginx/nginx.conf' << EOF
 user nginx;
 worker_processes auto;
