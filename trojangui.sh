@@ -1340,7 +1340,9 @@ net.ipv4.tcp_max_syn_backlog = 12800
 net.core.default_qdisc=fq
 net.ipv4.tcp_congestion_control=bbr
 EOF
-  sysctl -p > /dev/null
+  sysctl -p > /dev/null || true
+
+
     cat > '/etc/systemd/system.conf' << EOF
 [Manager]
 #DefaultTimeoutStartSec=90s
@@ -2028,7 +2030,7 @@ timesync(){
   if [[ $dist = centos ]]; then
     :
     else
-      ntpdate -qu 1.hk.pool.ntp.org || true
+      ntpdate -qu 1.hk.pool.ntp.org > /dev/null || true
   fi
   rm results || true
 }
