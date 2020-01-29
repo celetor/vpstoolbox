@@ -559,7 +559,7 @@ if [[ $dist = centos ]]; then
   wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx_centos
   cp -f nginx_centos /usr/sbin/nginx
   rm nginx_centos
-  mkdir /var/cache/nginx/
+  mkdir /var/cache/nginx/ || true
   elif [[ $dist = ubuntu ]]; then
     echo ""
   else
