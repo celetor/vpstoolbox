@@ -527,10 +527,10 @@ EOF
   apt-get remove nginx-common -qq -y
   apt-get update -qq
   apt-get install nginx -qq -y
-  if [[ $dist != ubuntu ]]; then
-    rm -rf /etc/apt/sources.list.d/nginx.list
-    apt-get update -qq
-  fi 
+  #if [[ $dist != ubuntu ]]; then
+    #rm -rf /etc/apt/sources.list.d/nginx.list
+    #apt-get update -qq
+  #fi 
  else
   clear
   TERM=ansi whiptail --title "error can't install nginx" --infobox "error can't install nginx" 8 78
@@ -563,9 +563,10 @@ if [[ $dist = centos ]]; then
   elif [[ $dist = ubuntu ]]; then
     echo ""
   else
-wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx -q
-cp -f nginx /usr/sbin/nginx
-rm nginx
+echo ""
+#wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx -q
+#cp -f nginx /usr/sbin/nginx
+#rm nginx
 fi
 chmod +x /usr/sbin/nginx
     cat > '/etc/nginx/nginx.conf' << EOF
