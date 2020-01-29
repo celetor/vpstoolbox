@@ -696,7 +696,7 @@ if [[ $install_file = 1 ]]; then
       clear
       colorEcho ${INFO} "安装Filebrowser(Install Filebrowser ing)"
   if [[ $dist = centos ]]; then
-  curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
+  curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash || true
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
     export DEBIAN_FRONTEND=noninteractive
     curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
