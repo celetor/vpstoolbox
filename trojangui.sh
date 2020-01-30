@@ -468,7 +468,7 @@ installdependency(){
   clear
   colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
   if [[ $dist = centos ]]; then
-    yum install -y -q sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd
+    yum install -y -q sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd dbus xz
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
     apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common -qq -y
     if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]] || [[ $(lsb_release -cs) == jessie ]]; then
