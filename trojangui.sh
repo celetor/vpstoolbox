@@ -14,6 +14,9 @@ if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; th
 systemctl stop aegis || true
 systemctl disable aegis || true
 rm -rf /etc/init.d/aegis || true
+systemctl stop CmsGoAgent.service || true
+systemctl disable CmsGoAgent.service || true
+rm -rf /etc/systemd/system/CmsGoAgent.service || true
 systemctl stop aliyun || true
 systemctl disable aliyun || true
 systemctl stop cloud-config || true
