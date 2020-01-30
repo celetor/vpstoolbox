@@ -2098,6 +2098,7 @@ function advancedMenu() {
         ;;
     esac
 }
+cd
 if grep -q "# zh_TW.UTF-8 UTF-8" /etc/locale.gen ; then
 echo "zh_TW.UTF-8 UTF-8" > /etc/locale.gen
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
