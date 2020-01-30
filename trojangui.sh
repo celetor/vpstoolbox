@@ -657,8 +657,8 @@ if [[ $install_tracker = 1 ]]; then
       clear
       colorEcho ${INFO} "安装Bittorrent-tracker(Install bittorrent-tracker ing)"
   if [[ $dist = centos ]]; then
-  curl -sL https://rpm.nodesource.com/setup_13.x | bash -
-  sudo yum install -y -q nodejs
+    curl -sL https://rpm.nodesource.com/setup_13.x | bash -
+    yum install -y -q nodejs
  elif [[ $dist = ubuntu ]]; then
     export DEBIAN_FRONTEND=noninteractive
     curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
@@ -2056,7 +2056,7 @@ uninstall(){
     apt purge nginx dnsmasq -p -y || true
     rm -rf /etc/apt/sources.list.d/nginx.list
   fi
-  sudo ~/.acme.sh/acme.sh --uninstall
+   ~/.acme.sh/acme.sh --uninstall
 }
 ##################################
 clear
