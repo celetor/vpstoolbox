@@ -110,48 +110,6 @@ isresolved(){
 }
 ###############User input################
 userinput(){
-if (whiptail --title "api" --yesno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
-  dns_api=1
-  APIOPTION=$(whiptail --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "請按空格來選擇" 18 78 10 \
-"1" "Cloudflare Using the global api key " \
-"2" "Use Namesilo.com API" \
-"3" "Use Aliyun domain API"  3>&1 1>&2 2>&3)
-
-  case $APIOPTION in
-    1)
-    cf_api=1
-    while [[ -z $CF_Key ]]; do
-    CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF_Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
-    done
-    while [[ -z $CF_Email ]]; do
-    CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
-    done
-    export CF_Key="$CF_Key"
-    export CF_Email="$CF_Email"
-    ;;
-    2)
-    namesilo_api=1
-    while [[ -z $Namesilo_Key ]]; do
-    Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
-    done
-    export Namesilo_Key="$Namesilo_Key"
-    ;;
-    3)
-    ali_api=1
-    while [[ -z $Ali_Key ]]; do
-    Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 78 --title "Ali_Key input" 3>&1 1>&2 2>&3)
-    done
-    while [[ -z $Ali_Secret ]]; do
-    Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 78 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
-    done
-    export Ali_Key="$Ali_Key"
-    export Ali_Secret="$Ali_Secret"
-    ;;
-    *)
-    ;;
-  esac
-  fi
-################################################
 whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:(Trojan-GFW Nginx and BBR 為強制選項,已經包含)
 若不確定，請保持默認配置並回車" 18 78 10 \
 "1" "系统升级(System Upgrade)" on \
@@ -207,6 +165,48 @@ do
   esac
 done < results
 ####################################
+if (whiptail --title "api" --yesno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
+  dns_api=1
+  APIOPTION=$(whiptail --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "請按空格來選擇" 18 78 10 \
+"1" "Cloudflare Using the global api key " \
+"2" "Use Namesilo.com API" \
+"3" "Use Aliyun domain API"  3>&1 1>&2 2>&3)
+
+  case $APIOPTION in
+    1)
+    cf_api=1
+    while [[ -z $CF_Key ]]; do
+    CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF_Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+    done
+    while [[ -z $CF_Email ]]; do
+    CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+    done
+    export CF_Key="$CF_Key"
+    export CF_Email="$CF_Email"
+    ;;
+    2)
+    namesilo_api=1
+    while [[ -z $Namesilo_Key ]]; do
+    Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
+    done
+    export Namesilo_Key="$Namesilo_Key"
+    ;;
+    3)
+    ali_api=1
+    while [[ -z $Ali_Key ]]; do
+    Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 78 --title "Ali_Key input" 3>&1 1>&2 2>&3)
+    done
+    while [[ -z $Ali_Secret ]]; do
+    Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 78 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
+    done
+    export Ali_Key="$Ali_Key"
+    export Ali_Secret="$Ali_Secret"
+    ;;
+    *)
+    ;;
+  esac
+  fi
+####################################
 if [[ $system_upgrade = 1 ]]; then
   if [[ $(lsb_release -cs) == stretch ]]; then
     if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 10?" 8 78); then
@@ -261,13 +261,13 @@ done
 while [[ -z $password1 ]]; do
 password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快輸入你想要的密碼一併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ $password1 == "" ]]; then
-  password1="12345678"
+  password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 40 ; echo '' )
   fi
 done
 while [[ -z $password2 ]]; do
 password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快輸入想要的密碼二並按回車" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ $password2 == "" ]]; then
-  password2="123456789"
+  password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 40 ; echo '' )
   fi
 done
 ###################################
@@ -326,7 +326,7 @@ done
       while [[ -z $sspasswd ]]; do
       sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on，快输入你的想要的ss密码并按回车" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
       if [[ $sspasswd == "" ]]; then
-      sspasswd="123456789"
+      sspasswd=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 40 ; echo '' )
       fi
       done
       ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 12 78 3 \
@@ -344,8 +344,6 @@ done
       ssmethod=chacha20-poly1305
       ;;
       esac
-      else
-      echo "Continuing"
     fi
 }
 ###############OS detect####################
@@ -556,19 +554,12 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 if [[ $dist = centos ]]; then
-  wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx_centos
+  wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx_centos -q
   cp -f nginx_centos /usr/sbin/nginx
   rm nginx_centos
   mkdir /var/cache/nginx/ || true
-  elif [[ $dist = ubuntu ]]; then
-    echo ""
-  else
-echo ""
-#wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx -q
-#cp -f nginx /usr/sbin/nginx
-#rm nginx
+  chmod +x /usr/sbin/nginx || true
 fi
-chmod +x /usr/sbin/nginx || true
     cat > '/etc/nginx/nginx.conf' << EOF
 user nginx;
 worker_processes auto;
@@ -1012,7 +1003,7 @@ issuecert(){
     myip=`curl -s http://dynamicdns.park-your-domain.com/getip`
     TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
     else
-  mkdir /etc/trojan/ &
+  mkdir /etc/trojan/ || true &
   rm -rf /etc/nginx/sites-available/* &
   rm -rf /etc/nginx/sites-enabled/* &
   rm -rf /etc/nginx/conf.d/*
@@ -1040,10 +1031,6 @@ EOF
   ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
   chmod +r /etc/trojan/trojan.key
   fi
-}
-##################################################
-renewcert(){
-  sudo ~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
 }
 ##################################################
 changepasswd(){
@@ -2090,9 +2077,9 @@ function advancedMenu() {
         changepasswd || true
         bootstart
         tcp-bbr || true
+        start
         trojanclient || true
         sharelink || true
-        start
         whiptail --title "Install Success" --textbox --scrolltext result 32 120
         ;;
         2)
