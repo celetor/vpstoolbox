@@ -2022,7 +2022,6 @@ timesync(){
     else
       ntpdate -qu 1.hk.pool.ntp.org > /dev/null || true
   fi
-  rm results || true
 }
 ##########Remove Trojan-Gfw##########
 uninstall(){
@@ -2083,6 +2082,7 @@ function advancedMenu() {
         start
         trojanclient || true
         sharelink || true
+        rm results || true
         whiptail --title "Install Success" --textbox --scrolltext result 32 120
         ;;
         2)
