@@ -1034,6 +1034,7 @@ if [[ $install_trojan = 1 ]]; then
     }
 }
 EOF
+  mkdir /etc/trojan || true
   touch /etc/trojan/client1.json
   touch /etc/trojan/client2.json
     cat > '/etc/trojan/client1.json' << EOF
