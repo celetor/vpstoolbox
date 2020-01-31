@@ -113,19 +113,26 @@ isresolved(){
 }
 ###############User input################
 userinput(){
-whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:(Trojan-GFW Nginx and BBR 為強制選項,已經包含)
-若不確定，請保持默認配置並回車" 18 78 10 \
+whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:
+若不確定，請保持默認配置並回車" 25 78 17 \
+"系统相关" "" on  \
 "1" "系统升级(System Upgrade)" on \
-"2" "安裝Dnsmasq(Dns cache and adblock)" on \
-"3" "安裝Qbittorrent(Powerful Bittorrent Client)" on \
-"4" "安裝Bittorrent-Tracker(Nginx Https Proxy)" on \
-"5" "安裝Aria2(Powerful non-Bittorrent Client)" on \
-"6" "安裝Filebrowser(qbt and aria2 download tool)" on \
-"7" "安裝Netdata(Server status monitor tool)" on \
-"8" "安裝V2ray(Vmess+Websocket+TLS+Nginx)" off \
-"9" "安裝Shadowsocks+V2ray-plugin+Websocket+TLS+Nginx" off \
-"10" "安裝BBRPLUS 不推薦因為BBR已經包含(because BBR has been included)" off \
-"11" "仅启用TLS1.3(TLS1.3 ONLY)" off 2>results
+"2" "安裝BBR" on \
+"3" "安裝BBRPLUS" off \
+"代理相关" "" on  \
+"4" "安裝Trojan-GFW" on \
+"5" "安裝Dnsmasq" on \
+"6" "安裝V2ray" off \
+"7" "安裝Shadowsocks" off \
+"下载软件" "" on  \
+"8" "安裝Qbittorrent" on \
+"9" "安裝Bittorrent-Tracker" on \
+"10" "安裝Aria2" on \
+"11" "安裝Filebrowser" on \
+"状态监控" "" on  \
+"12" "安裝Netdata" on \
+"其他" "" on  \
+"13" "仅启用TLS1.3" off 2>results
 
 while read choice
 do
@@ -134,33 +141,39 @@ do
     system_upgrade=1
     ;;
     2) 
-    dnsmasq_install=1
+    install_bbr=1
     ;;
     3)
-    install_qbt=1
-    ;;
-    4)
-    install_tracker=1
-    ;;
-    5)
-    install_aria=1
-    ;;
-    6)
-    install_file=1
-    ;;
-    7)
-    install_netdata=1
-    ;;
-    8) 
-    install_v2ray=1
-    ;;
-    9) 
-    install_ss=1
-    ;;
-    10)
     install_bbrplus=1
     ;;
-    11) 
+    4)
+    install_trojan=1
+    ;;
+    5) 
+    dnsmasq_install=1
+    ;;
+    6) 
+    install_v2ray=1
+    ;;
+    7) 
+    install_ss=1
+    ;;
+    8)
+    install_qbt=1
+    ;;
+    9)
+    install_tracker=1
+    ;;
+    10)
+    install_aria=1
+    ;;
+    11)
+    install_file=1
+    ;;
+    12)
+    install_netdata=1
+    ;;
+    13) 
     tls13only=1
     ;;
     *)
@@ -261,18 +274,20 @@ if [[ $domain == "" ]]; then
 fi
 fi
 done
-while [[ -z $password1 ]]; do
+if [[ $install_trojan = 1 ]]; then
+  while [[ -z $password1 ]]; do
 password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快輸入你想要的密碼一併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ $password1 == "" ]]; then
-  password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 40 ; echo '' )
+  password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 30 ; echo '' )
   fi
 done
 while [[ -z $password2 ]]; do
 password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快輸入想要的密碼二並按回車" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ $password2 == "" ]]; then
-  password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 40 ; echo '' )
+  password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 30 ; echo '' )
   fi
 done
+fi
 ###################################
   if [[ $install_qbt = 1 ]]; then
     while [[ -z $qbtpath ]]; do
@@ -956,15 +971,209 @@ if [[ -f /etc/trojan/trojan.crt ]]; then
   ~/.acme.sh/acme.sh --upgrade --auto-upgrade  
 fi
 #############################################
+if [[ $install_trojan = 1 ]]; then
   if [[ -f /usr/local/bin/trojan ]]; then
     :
     else
   clear
   colorEcho ${INFO} "安装Trojan-GFW(Install Trojan-GFW ing)"
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
-  systemctl daemon-reload      
-  fi
+  systemctl daemon-reload
   clear
+  colorEcho ${INFO} "配置(configing) trojan-gfw"
+  if [[ -f /etc/trojan/trojan.pem ]]; then
+    colorEcho ${INFO} "DH已有，跳过生成。。。"
+    else
+      :
+      #openssl dhparam -out /etc/trojan/trojan.pem 2048
+  fi
+  cat > '/usr/local/etc/trojan/config.json' << EOF
+{
+    "run_type": "server",
+    "local_addr": "::",
+    "local_port": 443,
+    "remote_addr": "127.0.0.1",
+    "remote_port": 80,
+    "password": [
+        "$password1",
+        "$password2"
+    ],
+    "log_level": 1,
+    "ssl": {
+        "cert": "/etc/trojan/trojan.crt",
+        "key": "/etc/trojan/trojan.key",
+        "key_password": "",
+        "cipher": "$cipher_server",
+        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+        "prefer_server_cipher": true,
+        "alpn": [
+            "http/1.1"
+        ],
+        "reuse_session": true,
+        "session_ticket": false,
+        "session_timeout": 600,
+        "plain_http_response": "",
+        "curves": "",
+        "dhparam": ""
+    },
+    "tcp": {
+        "prefer_ipv4": true,
+        "no_delay": true,
+        "keep_alive": true,
+        "reuse_port": true,
+        "fast_open": true,
+        "fast_open_qlen": 20
+    },
+    "mysql": {
+        "enabled": false,
+        "server_addr": "127.0.0.1",
+        "server_port": 3306,
+        "database": "trojan",
+        "username": "trojan",
+        "password": ""
+    }
+}
+EOF
+  touch /etc/trojan/client1.json
+  touch /etc/trojan/client2.json
+    cat > '/etc/trojan/client1.json' << EOF
+{
+    "run_type": "client",
+    "local_addr": "127.0.0.1",
+    "local_port": 1080,
+    "remote_addr": "$myip",
+    "remote_port": 443,
+    "password": [
+        "$password1"
+    ],
+    "log_level": 1,
+    "ssl": {
+        "verify": true,
+        "verify_hostname": true,
+        "cert": "",
+        "cipher": "$cipher_client",
+        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+        "sni": "$domain",
+        "alpn": [
+            "h2",
+            "http/1.1"
+        ],
+        "reuse_session": true,
+        "session_ticket": false,
+        "curves": ""
+    },
+    "tcp": {
+        "no_delay": true,
+        "keep_alive": true,
+        "reuse_port": false,
+        "fast_open": false,
+        "fast_open_qlen": 20
+    }
+}
+EOF
+    cat > '/etc/trojan/client2.json' << EOF
+{
+    "run_type": "client",
+    "local_addr": "127.0.0.1",
+    "local_port": 1080,
+    "remote_addr": "$myip",
+    "remote_port": 443,
+    "password": [
+        "$password2"
+    ],
+    "log_level": 1,
+    "ssl": {
+        "verify": true,
+        "verify_hostname": true,
+        "cert": "",
+        "cipher": "$cipher_client",
+        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+        "sni": "$domain",
+        "alpn": [
+            "h2",
+            "http/1.1"
+        ],
+        "reuse_session": true,
+        "session_ticket": false,
+        "curves": ""
+    },
+    "tcp": {
+        "no_delay": true,
+        "keep_alive": true,
+        "reuse_port": false,
+        "fast_open": false,
+        "fast_open_qlen": 20
+    }
+}
+EOF
+  fi
+fi
+  clear
+  if [[ $install_bbr = 1 ]]; then
+      colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
+  cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
+net.ipv6.conf.all.accept_ra = 2
+#fs.file-max = 51200
+net.core.rmem_max = 67108864
+net.core.wmem_max = 67108864
+net.core.rmem_default = 65536
+net.core.wmem_default = 65536
+net.core.netdev_max_backlog = 4096
+net.core.somaxconn = 4096
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_fin_timeout = 30
+net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.ip_local_port_range = 10000 65000
+net.ipv4.tcp_max_tw_buckets = 5000
+net.ipv4.tcp_fastopen = 3
+net.ipv4.tcp_rmem = 4096 87380 67108864
+net.ipv4.tcp_wmem = 4096 65536 67108864
+net.ipv4.tcp_mtu_probing = 1
+net.ipv4.tcp_slow_start_after_idle = 0
+net.ipv4.tcp_max_syn_backlog = 12800
+net.core.default_qdisc=fq
+net.ipv4.tcp_congestion_control=bbr
+EOF
+  sysctl -p > /dev/null || true
+
+    cat > '/etc/systemd/system.conf' << EOF
+[Manager]
+#DefaultTimeoutStartSec=90s
+DefaultTimeoutStopSec=30s
+#DefaultRestartSec=100ms
+DefaultLimitCORE=infinity
+DefaultLimitNOFILE=51200
+DefaultLimitNPROC=51200
+EOF
+    cat > '/etc/security/limits.conf' << EOF
+* soft nofile 51200
+* hard nofile 51200
+EOF
+if grep -q "ulimit" /etc/profile
+then
+  :
+else
+echo "ulimit -SHn 51200" >> /etc/profile
+fi
+if grep -q "pam_limits.so" /etc/pam.d/common-session
+then
+  :
+else
+echo "session required pam_limits.so" >> /etc/pam.d/common-session || true
+fi
+systemctl daemon-reload
+  fi
+  if [[ $install_bbrplus = 1 ]]; then
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
+  fi
+  timedatectl set-timezone Asia/Hong_Kong || true
+  timedatectl set-ntp on || true
+  if [[ $dist = centos ]]; then
+    :
+    else
+      ntpdate -qu 1.hk.pool.ntp.org > /dev/null || true
+  fi
 }
 #########Open ports########################
 openfirewall(){
@@ -1035,64 +1244,6 @@ EOF
   chmod +r /etc/trojan/trojan.key
   fi
 }
-##################################################
-changepasswd(){
-  clear
-  colorEcho ${INFO} "配置(configing) trojan-gfw"
-  if [[ -f /etc/trojan/trojan.pem ]]; then
-    colorEcho ${INFO} "DH已有，跳过生成。。。"
-    else
-      :
-      #openssl dhparam -out /etc/trojan/trojan.pem 2048
-  fi
-  cat > '/usr/local/etc/trojan/config.json' << EOF
-{
-    "run_type": "server",
-    "local_addr": "::",
-    "local_port": 443,
-    "remote_addr": "127.0.0.1",
-    "remote_port": 80,
-    "password": [
-        "$password1",
-        "$password2"
-    ],
-    "log_level": 1,
-    "ssl": {
-        "cert": "/etc/trojan/trojan.crt",
-        "key": "/etc/trojan/trojan.key",
-        "key_password": "",
-        "cipher": "$cipher_server",
-        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-        "prefer_server_cipher": true,
-        "alpn": [
-            "http/1.1"
-        ],
-        "reuse_session": true,
-        "session_ticket": false,
-        "session_timeout": 600,
-        "plain_http_response": "",
-        "curves": "",
-        "dhparam": ""
-    },
-    "tcp": {
-        "prefer_ipv4": true,
-        "no_delay": true,
-        "keep_alive": true,
-        "reuse_port": true,
-        "fast_open": true,
-        "fast_open_qlen": 20
-    },
-    "mysql": {
-        "enabled": false,
-        "server_addr": "127.0.0.1",
-        "server_port": 3306,
-        "database": "trojan",
-        "username": "trojan",
-        "password": ""
-    }
-}
-EOF
-}
 ########Nginx config for Trojan only##############
 nginxtrojan(){
   clear
@@ -1101,7 +1252,8 @@ rm -rf /etc/nginx/sites-available/* || true
 rm -rf /etc/nginx/sites-enabled/* || true
 rm -rf /etc/nginx/conf.d/* || true
 touch /etc/nginx/conf.d/trojan.conf
-      cat > '/etc/nginx/conf.d/trojan.conf' << EOF
+if [[ $install_trojan = 1 ]]; then
+  cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
   listen 127.0.0.1:80;
     server_name $domain;
@@ -1118,6 +1270,44 @@ server {
         index index.html;
         }
 EOF
+  else
+  cat > '/etc/nginx/conf.d/trojan.conf' << EOF
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+
+    ssl_certificate       /etc/trojan/trojan.crt;
+    ssl_certificate_key   /etc/trojan/trojan.key;
+    ssl_protocols         TLSv1.3 TLSv1.2;
+    ssl_ciphers $cipher_server;
+    ssl_prefer_server_ciphers off;
+    ssl_early_data on;
+    ssl_session_cache   shared:SSL:40m;
+    ssl_session_timeout 1d;
+    ssl_session_tickets off;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    #ssl_dhparam /etc/nginx/nginx.pem;
+
+    resolver 1.1.1.1;
+    resolver_timeout 10s;
+    server_name           $domain;
+    #add_header alt-svc 'quic=":443"; ma=2592000; v="46"';
+    add_header X-Frame-Options SAMEORIGIN always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "no-referrer";
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+    #add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
+    add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
+    if (\$http_user_agent = "") { return 444; }
+    if (\$host != "$domain") { return 404; }
+        location / {
+            root /usr/share/nginx/html;
+            index index.html;
+        }
+EOF
+fi
 if [[ $install_v2ray = 1 ]]; then
 echo "    location $path {" >> /etc/nginx/conf.d/trojan.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
@@ -1278,7 +1468,9 @@ start(){
   if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
     systemctl start v2ray || true
   fi
-  systemctl restart trojan || true
+  if [[ $install_trojan = 1 ]]; then
+    systemctl start trojan || true
+  fi
   systemctl restart nginx || true
 }
 bootstart(){
@@ -1299,69 +1491,10 @@ bootstart(){
   if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
     systemctl enable v2ray || true
   fi
+  if [[ $install_trojan = 1 ]]; then
+    systemctl enable trojan || true
+  fi
   systemctl enable nginx || true
-  systemctl enable trojan || true
-}
-##########tcp-bbr#####################
-tcp-bbr(){
-  clear
-  colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
-  cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
-net.ipv6.conf.all.accept_ra = 2
-#fs.file-max = 51200
-net.core.rmem_max = 67108864
-net.core.wmem_max = 67108864
-net.core.rmem_default = 65536
-net.core.wmem_default = 65536
-net.core.netdev_max_backlog = 4096
-net.core.somaxconn = 4096
-net.ipv4.tcp_syncookies = 1
-net.ipv4.tcp_tw_reuse = 1
-net.ipv4.tcp_fin_timeout = 30
-net.ipv4.tcp_keepalive_time = 1200
-net.ipv4.ip_local_port_range = 10000 65000
-net.ipv4.tcp_max_tw_buckets = 5000
-net.ipv4.tcp_fastopen = 3
-net.ipv4.tcp_rmem = 4096 87380 67108864
-net.ipv4.tcp_wmem = 4096 65536 67108864
-net.ipv4.tcp_mtu_probing = 1
-net.ipv4.tcp_slow_start_after_idle = 0
-net.ipv4.tcp_max_syn_backlog = 12800
-net.core.default_qdisc=fq
-net.ipv4.tcp_congestion_control=bbr
-EOF
-  sysctl -p > /dev/null || true
-
-
-    cat > '/etc/systemd/system.conf' << EOF
-[Manager]
-#DefaultTimeoutStartSec=90s
-DefaultTimeoutStopSec=30s
-#DefaultRestartSec=100ms
-DefaultLimitCORE=infinity
-DefaultLimitNOFILE=51200
-DefaultLimitNPROC=51200
-EOF
-    cat > '/etc/security/limits.conf' << EOF
-* soft nofile 51200
-* hard nofile 51200
-EOF
-if grep -q "ulimit" /etc/profile
-then
-  :
-else
-echo "ulimit -SHn 51200" >> /etc/profile
-fi
-if grep -q "pam_limits.so" /etc/pam.d/common-session
-then
-  :
-else
-echo "session required pam_limits.so" >> /etc/pam.d/common-session || true
-fi
-systemctl daemon-reload
-if [[ $install_bbrplus = 1 ]]; then
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
-fi
 }
 ############Set UP V2ray############
 installv2ray(){
@@ -1626,93 +1759,6 @@ EOF
 EOF
   fi
 }
-###########Trojan Client Config#############
-trojanclient(){
-  touch /etc/trojan/client1.json
-  touch /etc/trojan/client2.json
-    cat > '/etc/trojan/client1.json' << EOF
-{
-    "run_type": "client",
-    "local_addr": "127.0.0.1",
-    "local_port": 1080,
-    "remote_addr": "$myip",
-    "remote_port": 443,
-    "password": [
-        "$password1"
-    ],
-    "log_level": 1,
-    "ssl": {
-        "verify": true,
-        "verify_hostname": true,
-        "cert": "",
-        "cipher": "$cipher_client",
-        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-        "sni": "$domain",
-        "alpn": [
-            "h2",
-            "http/1.1"
-        ],
-        "reuse_session": true,
-        "session_ticket": false,
-        "curves": ""
-    },
-    "tcp": {
-        "no_delay": true,
-        "keep_alive": true,
-        "reuse_port": false,
-        "fast_open": false,
-        "fast_open_qlen": 20
-    }
-}
-EOF
-    cat > '/etc/trojan/client2.json' << EOF
-{
-    "run_type": "client",
-    "local_addr": "127.0.0.1",
-    "local_port": 1080,
-    "remote_addr": "$myip",
-    "remote_port": 443,
-    "password": [
-        "$password2"
-    ],
-    "log_level": 1,
-    "ssl": {
-        "verify": true,
-        "verify_hostname": true,
-        "cert": "",
-        "cipher": "$cipher_client",
-        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-        "sni": "$domain",
-        "alpn": [
-            "h2",
-            "http/1.1"
-        ],
-        "reuse_session": true,
-        "session_ticket": false,
-        "curves": ""
-    },
-    "tcp": {
-        "no_delay": true,
-        "keep_alive": true,
-        "reuse_port": false,
-        "fast_open": false,
-        "fast_open_qlen": 20
-    }
-}
-EOF
-cd
-clear
-echo "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。RTFM: https://www.johnrosen1.com/trojan/" > result
-echo "请按方向键往下拉(Please press Arrow keys to scroll down)" >> result
-colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 1"
-cat /etc/trojan/client1.json
-colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 2"
-cat /etc/trojan/client2.json
-echo "你的(Your) Trojan-Gfw 客户端(client) config profile 1" >> result
-echo "$(cat /etc/trojan/client1.json)" >> result
-echo "你的(Your) Trojan-Gfw 客户端(client) config profile 2" >> result
-echo "$(cat /etc/trojan/client2.json)" >> result
-}
 ##########V2ray Client Config################
 v2rayclient(){
   if [[ $install_v2ray = 1 ]]; then
@@ -1865,6 +1911,8 @@ EOF
 ##########Check for update############
 checkupdate(){
   cd
+  apt-get update
+  apt-get upgrade -y
   if [[ -f /usr/bin/v2ray/v2ray ]]; then
     wget https://install.direct/go.sh -q
     bash go.sh
@@ -1877,37 +1925,50 @@ checkupdate(){
 ###########Trojan share link########
 sharelink(){
   cd
-  echo "你的 Trojan-Gfw 分享链接(Share Link)1 is" >> result
-  echo "trojan://$password1@$domain:443" >> result
-  echo "你的 Trojan-Gfw 分享链接(Share Link)2 is" >> result
-  echo "trojan://$password2@$domain:443" >> result
-  if [[ $dist = centos ]]
-  then
-  colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
-  elif [[ $(lsb_release -cs) = xenial ]] || [[ $(lsb_release -cs) = trusty ]] || [[ $(lsb_release -cs) = jessie ]]
-  then
-  colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
-  else
-  apt-get install python3-qrcode -qq -y > /dev/null
-  wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
-  chmod +x trojan-url.py
-  #./trojan-url.py -i /etc/trojan/client.json
-  ./trojan-url.py -q -i /etc/trojan/client1.json -o $password1.png || true
-  ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png || true
-  cp $password1.png /usr/share/nginx/html/ || true
-  cp $password2.png /usr/share/nginx/html/ || true
-  echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 1" >> result
-  echo "https://$domain/$password1.png" >> result
-  echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 2" >> result
-  echo "https://$domain/$password2.png" >> result
-  rm -rf trojan-url.py
-  rm -rf $password1.png || true
-  rm -rf $password2.png || true
-  apt-get remove python3-qrcode -qq -y > /dev/null
+  clear
+  echo "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。" > result
+  echo "请按方向键往下拉(Please press Arrow keys to scroll down)" >> result
+  if [[ $install_trojan = 1 ]]; then
+    colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 1"
+    cat /etc/trojan/client1.json
+    colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 2"
+    cat /etc/trojan/client2.json
+    echo "你的(Your) Trojan-Gfw 客户端(client) config profile 1" >> result
+    echo "$(cat /etc/trojan/client1.json)" >> result
+    echo "你的(Your) Trojan-Gfw 客户端(client) config profile 2" >> result
+    echo "$(cat /etc/trojan/client2.json)" >> result
+    cd
+    echo "你的 Trojan-Gfw 分享链接(Share Link)1 is" >> result
+    echo "trojan://$password1@$domain:443" >> result
+    echo "你的 Trojan-Gfw 分享链接(Share Link)2 is" >> result
+    echo "trojan://$password2@$domain:443" >> result
+    if [[ $dist = centos ]]; then
+    colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
+    elif [[ $(lsb_release -cs) = xenial ]] || [[ $(lsb_release -cs) = trusty ]] || [[ $(lsb_release -cs) = jessie ]]
+    then
+    colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
+    else
+    apt-get install python3-qrcode -qq -y > /dev/null
+    wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
+    chmod +x trojan-url.py
+    #./trojan-url.py -i /etc/trojan/client.json
+    ./trojan-url.py -q -i /etc/trojan/client1.json -o $password1.png || true
+    ./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png || true
+    cp $password1.png /usr/share/nginx/html/ || true
+    cp $password2.png /usr/share/nginx/html/ || true
+    echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 1" >> result
+    echo "https://$domain/$password1.png" >> result
+    echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 2" >> result
+    echo "https://$domain/$password2.png" >> result
+    rm -rf trojan-url.py
+    rm -rf $password1.png || true
+    rm -rf $password2.png || true
+    apt-get remove python3-qrcode -qq -y > /dev/null
   fi
-  echo "相关链接（Related Links）" >> result
-  echo "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" >> result
-  echo "https://github.com/trojan-gfw/trojan/releases/latest" >> result
+    echo "相关链接（Related Links）" >> result
+    echo "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" >> result
+    echo "https://github.com/trojan-gfw/trojan/releases/latest" >> result
+  fi
   if [[ $install_qbt = 1 ]]; then
     echo
     echo "" >> result
@@ -2013,16 +2074,6 @@ EOF
   fi
   echo "请手动运行 cat result 来重新显示结果" >> result
 }
-##################################
-timesync(){
-  timedatectl set-timezone Asia/Hong_Kong || true
-  timedatectl set-ntp on || true
-  if [[ $dist = centos ]]; then
-    :
-    else
-      ntpdate -qu 1.hk.pool.ntp.org > /dev/null || true
-  fi
-}
 ##########Remove Trojan-Gfw##########
 uninstall(){
   cd
@@ -2062,9 +2113,9 @@ clear
 function advancedMenu() {
     ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/
 运行此脚本前请在控制面板中开启80 443端口并关闭Cloudflare CDN!" 13 78 4 \
-        "1" "安裝(Install Trojan-GFW NGINX and other optional software)" \
-        "2" "更新(Update  Trojan-GFW V2ray and Shadowsocks)" \
-        "3" "卸載(Uninstall Everything)" \
+        "1" "安裝(Install)" \
+        "2" "更新(Update)" \
+        "3" "卸載(Uninstall)" \
         "4" "退出(Quit)" 3>&1 1>&2 2>&3)
     case $ADVSEL in
         1)
@@ -2072,15 +2123,11 @@ function advancedMenu() {
         clear
         userinput
         installdependency
-        timesync || true
         openfirewall
         issuecert
         nginxtrojan || true
-        changepasswd || true
         bootstart
-        tcp-bbr || true
         start
-        trojanclient || true
         sharelink || true
         rm results || true
         whiptail --title "Install Success" --textbox --scrolltext result 32 120
