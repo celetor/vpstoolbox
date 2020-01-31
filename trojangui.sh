@@ -1,5 +1,8 @@
 #!/bin/bash
 clear
+
+myip=$(curl -s https://api.ipify.org)
+
 if [[ $(id -u) != 0 ]]; then
     echo Please run this script as root.
     exit 1
