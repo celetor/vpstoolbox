@@ -38,7 +38,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 ## 如果你覺得有用 , 請給star ★, 謝謝!
 #### 脚本特性:
 
-1. 全自動安裝並配置 **[Trojan-GFW](https://github.com/trojan-gfw/trojan) 以及 [NGINX](https://www.nginx.com/)**
+1. 全自動安裝並配置 **[NGINX](https://www.nginx.com/)**
 2. 全自動申请并续签 [let's encrypt 证书](https://letsencrypt.org/) and **全自动在证书续签完成后reload Trojan-GFW**
 3. 全自動 OS 探測 **支援 [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/) Centos**
 4. 全自動 [domain resolve verification](https://en.wikipedia.org/wiki/Nslookup)
@@ -54,7 +54,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 14. 全自動 启用 ***[時間校準](https://www.freedesktop.org/software/systemd/man/timedatectl.html)***
 15. 全自動 启用 ***Fail Restart*** 
 16. 全自動 [卸載 Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
-17. 支援 全自动 安裝並配置 **[Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [V2ray](https://www.v2ray.com/index.html) and [Shadowsocks](https://shadowsocks.org/en/index.html)([V2ray-plugin](https://github.com/shadowsocks/v2ray-plugin))**
+17. 支援 全自动 安裝並配置 **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [V2ray](https://www.v2ray.com/index.html) and [Shadowsocks](https://shadowsocks.org/en/index.html)([V2ray-plugin](https://github.com/shadowsocks/v2ray-plugin))**
 18. 支援 全自動 [V2ray ***vmess://*** 分享链接 生成](https://github.com/boypt/vmess2json) + Shadowsocks ss:// 分享链接 和 二维码 生成
 19. 支援 全自動 [***vmess or ss + tls + websocket + nginx*** 配置](https://guide.v2fly.org/advanced/wss_and_web.html)
 20. 支援 ***[BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)***
