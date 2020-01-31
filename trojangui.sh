@@ -124,7 +124,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" -
 "5" "安裝Dnsmasq" on \
 "6" "安裝V2ray" off \
 "7" "安裝Shadowsocks" off \
-"下载软件" "" on  \
+"下载相关" "" on  \
 "8" "安裝Qbittorrent" on \
 "9" "安裝Bittorrent-Tracker" on \
 "10" "安裝Aria2" on \
