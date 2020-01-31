@@ -1013,10 +1013,10 @@ if [[ $install_trojan = 1 ]]; then
         "dhparam": ""
     },
     "tcp": {
-        "prefer_ipv4": true,
+        "prefer_ipv4": false,
         "no_delay": true,
         "keep_alive": true,
-        "reuse_port": true,
+        "reuse_port": false,
         "fast_open": true,
         "fast_open_qlen": 20
     },
