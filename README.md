@@ -80,6 +80,8 @@ sudo nginx -t
 sudo systemctl status trojan
 sudo systemctl status nginx
 sudo systemctl status v2ray
+sudo systemctl status tor
+sudo systemctl status tor@default
 sudo systemctl status dnsmasq
 sudo systemctl status qbittorrent
 sudo systemctl status tracker
