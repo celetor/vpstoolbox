@@ -395,12 +395,12 @@ set -e
     dist=ubuntu
     pack="apt-get -y -qq"
     apt-get update
-    apt-get install lsb_release -y -qq > /dev/null || true
+    apt-get install lsb-release -y -qq > /dev/null || true
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
     dist=debian
     pack="apt-get -y -qq"
     apt-get update
-    apt-get install lsb_release -y -qq > /dev/null || true
+    apt-get install lsb-release -y -qq > /dev/null || true
  else
   TERM=ansi whiptail --title "OS SUPPORT" --infobox "OS NOT SUPPORTED, couldn't install Trojan-gfw" 8 78
     exit 1;
