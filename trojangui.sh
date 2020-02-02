@@ -1,8 +1,6 @@
 #!/bin/bash
 clear
 
-myip=$(curl -s https://api.ipify.org)
-
 if [[ $(id -u) != 0 ]]; then
     echo Please run this script as root.
     exit 1
@@ -105,7 +103,7 @@ isresolved(){
     ips=(`nslookup $1 1.1.1.1 | grep -v 1.1.1.1 | grep Address | cut -d " " -f 2`)
     for ip in "${ips[@]}"
     do
-        if [ $ip == $myip ]
+        if [ $ip == $myip ] || [ $ip == $myipv6 ]
         then
             return 0
         else
@@ -127,15 +125,16 @@ whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" -
 "5" "安裝Dnsmasq | DNS缓存与广告屏蔽(dns cache and ad block)" on \
 "6" "安裝V2ray | Websocket+tls+Nginx模式(wss mode)" off \
 "7" "安裝Shadowsocks | Websocket+tls+Nginx模式(wss mode)" off \
+"8" "安裝Tor-Relay | Relay模式(not exit relay)" off \
 "下载相关" "" on  \
-"8" "安裝Qbittorrent | 强大的BT客户端(Powerful Bittorrent Client)" on \
-"9" "安裝Bittorrent-Tracker" on \
-"10" "安裝Aria2" on \
-"11" "安裝Filebrowser | 文件下载与共享(File download and share)" on \
+"9" "安裝Qbittorrent | 强大的BT客户端(Powerful Bittorrent Client)" on \
+"10" "安裝Bittorrent-Tracker" on \
+"11" "安裝Aria2" on \
+"12" "安裝Filebrowser | 文件下载与共享(File download and share)" on \
 "状态监控" "" on  \
-"12" "安裝Netdata | 服务器状态监控(Server status monitor)" on \
+"13" "安裝Netdata | 服务器状态监控(Server status monitor)" on \
 "其他" "" on  \
-"13" "仅启用TLS1.3(Enable TLS1.3 only)" off 2>results
+"14" "仅启用TLS1.3(Enable TLS1.3 only)" off 2>results
 
 while read choice
 do
@@ -162,21 +161,24 @@ do
     install_ss=1
     ;;
     8)
-    install_qbt=1
+    install_tor=1
     ;;
     9)
-    install_tracker=1
+    install_qbt=1
     ;;
     10)
-    install_aria=1
+    install_tracker=1
     ;;
     11)
-    install_file=1
+    install_aria=1
     ;;
     12)
+    install_file=1
+    ;;
+    13)
     install_netdata=1
     ;;
-    13) 
+    14) 
     tls13only=1
     ;;
     *)
@@ -338,6 +340,15 @@ fi
       while [[ -z $alterid ]]; do
       alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
       done
+    fi
+####################################
+    if [[ $install_tor = 1 ]]; then
+      while [[ -z $tor_name ]]; do
+      tor_name=$(whiptail --inputbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快輸入想要的tor nickname並按回車" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
+      if [[ $tor_name == "" ]]; then
+      tor_name="myrelay"
+    fi
+done
     fi
 ####################################
     if [[ $install_ss = 1 ]]; then
@@ -950,6 +961,48 @@ if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
   installv2ray
 fi
 #############################################
+if [[ $install_tor = 1 ]]; then
+  clear
+  if [[ -f /usr/bin/tor ]]; then
+    :
+    else
+      colorEcho ${INFO} "安装Tor(Install Tor Relay ing)"
+  if [[ $dist = centos ]]; then
+    yum install -y -q epel-release || true
+    yum install -y -q tor  || true
+ elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
+    export DEBIAN_FRONTEND=noninteractive
+    touch /etc/apt/sources.list.d/tor.list
+    cat > '/etc/apt/sources.list.d/tor.list' << EOF
+deb https://deb.torproject.org/torproject.org $(lsb_release -cs) main
+deb-src https://deb.torproject.org/torproject.org $(lsb_release -cs) main
+EOF
+    curl https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
+    gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
+    apt-get update
+    apt-get install deb.torproject.org-keyring tor tor-arm tor-geoipdb -qq -y || true
+    service tor stop
+ else
+  clear
+  TERM=ansi whiptail --title "error can't install tor" --infobox "error can't install tor" 8 78
+    exit 1;
+ fi
+       cat > '/etc/tor/torrc' << EOF
+SocksPort 0
+RunAsDaemon 1
+ORPort 9001
+#ORPort [$myipv6]:9001
+Nickname $tor_name
+ContactInfo $domain [tor-relay.co]
+Log notice file /var/log/tor/notices.log
+DirPort 9030
+ExitPolicy reject6 *:*, reject *:*
+EOF
+service tor start
+systemctl restart tor@default
+  fi
+fi
+#############################################
 if [[ $install_netdata = 1 ]]; then
   if [[ -f /usr/sbin/netdata ]]; then
     :
@@ -1223,6 +1276,7 @@ issuecert(){
     cat > '/etc/nginx/conf.d/default.conf' << EOF
 server {
     listen       80;
+    listen       [::]:80;
     server_name  $domain;
     root   /usr/share/nginx/html;
 }
@@ -2082,9 +2136,13 @@ uninstall(){
   rm -rf /usr/local/etc/trojan/* || true
   rm -rf /etc/trojan/* || true
   rm -rf /etc/systemd/system/trojan* || true
-  rm -rf ~/.acme.sh/$domain || true
   systemctl stop v2ray  || true
   systemctl disable v2ray || true
+  systemctl stop tor  || true
+  systemctl disable tor || true
+  systemctl stop tor@default || true
+  systemctl stop qbittorrent || true
+  systemctl disable qbittorrent || true
   systemctl stop aria || true
   systemctl disable aria || true
   systemctl stop tracker || true
@@ -2104,7 +2162,8 @@ uninstall(){
     yum remove nginx dnsmasq -y -q || true
     else
     apt purge nginx dnsmasq -p -y || true
-    rm -rf /etc/apt/sources.list.d/nginx.list
+    rm -rf /etc/apt/sources.list.d/nginx.list || true
+    rm -rf /etc/apt/sources.list.d/tor.list || true
   fi
    ~/.acme.sh/acme.sh --uninstall
 }
@@ -2166,4 +2225,6 @@ fi
 export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
 osdist || true
+myip=$(curl -s https://api.ipify.org)
+myipv6=$(ip -6 addr | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 advancedMenu
