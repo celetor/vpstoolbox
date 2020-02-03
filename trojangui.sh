@@ -385,22 +385,26 @@ set -e
  if cat /etc/*release | grep ^NAME | grep -q CentOS; then
     dist=centos
     pack="yum -y -q"
+    yum update -y
+    yum install sudo newt curl -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Red; then
     dist=centos
     pack="yum -y -q"
+    yum install sudo newt curl -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Fedora; then
     dist=centos
     pack="yum -y -q"
+    yum install sudo newt curl -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
     dist=ubuntu
     pack="apt-get -y -qq"
     apt-get update
-    apt-get install lsb-release -y -qq > /dev/null || true
+    apt-get install sudo whiptail curl locales lsb-release -y -qq > /dev/null || true
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
     dist=debian
     pack="apt-get -y -qq"
     apt-get update
-    apt-get install lsb-release -y -qq > /dev/null || true
+    apt-get install sudo whiptail curl locales lsb-release -y -qq > /dev/null || true
  else
   TERM=ansi whiptail --title "OS SUPPORT" --infobox "OS NOT SUPPORTED, couldn't install Trojan-gfw" 8 78
     exit 1;
