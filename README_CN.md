@@ -60,7 +60,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 20. 支援 ***[BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)***
 21. 支援 ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
 22. 支援 手动 检查更新 包括 Trojan-gfw v2ray ss
-23. 支援 完全卸載
+23. 支援 完全/部分 卸載
 
 **如果你需要更多功能, 请 open a Github issue / 提交pull request.(Centos相关issue将被列为低优先级)**
 
