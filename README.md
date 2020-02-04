@@ -44,7 +44,6 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 5. Auto [domain resolve verification](https://en.wikipedia.org/wiki/Nslookup)
 6. Auto [iptables](https://en.wikipedia.org/wiki/Iptables)(includes ipv6) firewall config and [iptables-persistent](https://github.com/zertrin/iptables-persistent)
 7. Auto generate [client config](https://trojan-gfw.github.io/trojan/config) (includes both Trojan-GFW and V2ray )
-9. Auto [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks) enable ( **[TCP-BBR](https://github.com/google/bbr)** included)
 10. Auto [Nginx Performance Optimization](https://www.johnrosen1.com/nginx1/)
 11. Auto [Trojan-GFW ***trojan://*** share link and QR code generate](https://github.com/trojan-gfw/trojan-url)
 13. Auto [https 301 redirect](https://en.wikipedia.org/wiki/HTTP_301) without affecting certificate renew
@@ -57,6 +56,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 20. Support Auto install and config **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [V2ray](https://www.v2ray.com/index.html) and [Shadowsocks](https://shadowsocks.org/en/index.html)([V2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)) [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/)**
 12. Support auto [V2ray ***vmess://*** share link generate](https://github.com/boypt/vmess2json) and Shadowsocks ss:// share link and qrcode generate
 19. Support auto [***vmess or ss + tls + websocket + nginx*** config](https://guide.v2fly.org/advanced/wss_and_web.html)
+9.  Support Auto [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks) enable ( **[TCP-BBR](https://github.com/google/bbr)** included)
 20. Support ***[BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)***
 15. Support ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
 21. Support manually check for update include both Trojan-gfw and v2ray(ss included)
