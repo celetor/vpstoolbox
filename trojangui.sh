@@ -1134,7 +1134,7 @@ EOF
 	}
 }
 EOF
-	cat > '/etc/trojan/client2.json' << EOF
+		cat > '/etc/trojan/client2.json' << EOF
 {
 	"run_type": "client",
 	"local_addr": "127.0.0.1",
@@ -2378,6 +2378,7 @@ function advancedMenu() {
 		esac
 }
 cd
+osdist || true
 if grep -q "# zh_TW.UTF-8 UTF-8" /etc/locale.gen ; then
 echo "zh_TW.UTF-8 UTF-8" > /etc/locale.gen
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
@@ -2394,7 +2395,6 @@ echo 'LANG="zh_TW.UTF-8"'>/etc/default/locale
 fi
 export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
-osdist || true
 clear
 myip=$(curl -s https://api.ipify.org)
 localip=$(ip a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
