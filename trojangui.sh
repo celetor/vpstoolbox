@@ -1297,7 +1297,7 @@ EOF
 		if [[ $cf_api == 1 ]]; then
 		~/.acme.sh/acme.sh --issue --dns dns_cf -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
 		elif [[ $namesilo_api == 1 ]]; then
-		~/.acme.sh/acme.sh --issue --dns dns_namesilo --dnssleep 300 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
+		~/.acme.sh/acme.sh --issue --dns dns_namesilo --dnssleep 900 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
 		elif [[ $ali_api == 1 ]]; then
 		~/.acme.sh/acme.sh --issue --dns dns_ali -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
 		fi
