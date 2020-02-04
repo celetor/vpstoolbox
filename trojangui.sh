@@ -1232,9 +1232,6 @@ echo "session required pam_limits.so" >> /etc/pam.d/common-session || true
 fi
 systemctl daemon-reload
 	fi
-	if [[ $install_bbrplus = 1 ]]; then
-		bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
-	fi
 	timedatectl set-timezone Asia/Hong_Kong || true
 	timedatectl set-ntp on || true
 	if [[ $dist = centos ]]; then
@@ -2360,6 +2357,9 @@ function advancedMenu() {
 				start
 				sharelink || true
 				rm results || true
+                                if [[ $install_bbrplus = 1 ]]; then
+		                  bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
+	                        fi
 				whiptail --title "Install Success" --textbox --scrolltext result 32 120
 				;;
 				2)
