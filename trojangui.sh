@@ -117,6 +117,7 @@ userinput(){
 whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:
 若不確定，請保持默認配置並回車" 25 90 17 \
 "系统相关" "" on  \
+"back" "返回上级菜单(Back to main menu)" off \
 "1" "系统升级(System Upgrade)" on \
 "2" "安裝BBR | TCP效能优化(TCP-Turbo)" on \
 "3" "安裝BBRPLUS" off \
@@ -139,6 +140,10 @@ whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" -
 while read choice
 do
 	case $choice in
+		back) 
+		advancedMenu
+		break
+		;;
 		1) 
 		system_upgrade=1
 		;;
