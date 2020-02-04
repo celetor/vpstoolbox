@@ -2398,6 +2398,8 @@ echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 dpkg-reconfigure --frontend=noninteractive locales
 echo 'LANG="zh_TW.UTF-8"'>/etc/default/locale  
 fi
+locale-gen zh_tw.UTF-8
+update-locale
 export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
 clear
