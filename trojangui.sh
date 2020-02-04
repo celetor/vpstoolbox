@@ -103,7 +103,7 @@ isresolved(){
 		ips=(`nslookup $1 1.1.1.1 | grep -v 1.1.1.1 | grep Address | cut -d " " -f 2`)
 		for ip in "${ips[@]}"
 		do
-				if [ $ip == $myip ] || [ $ip == $myipv6 ]
+				if [ $ip == $myip ] || [ $ip == $myipv6 ] || [[ $ip == $localip ]]
 				then
 						return 0
 				else
@@ -186,7 +186,7 @@ do
 	esac
 done < results
 ####################################
-if (whiptail --title "api" --yesno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
+if (whiptail --title "api" --yesno --defaultno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
 	dns_api=1
 	APIOPTION=$(whiptail --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "請按空格來選擇" 18 78 10 \
 "1" "Cloudflare Using the global api key " \
@@ -2141,41 +2141,91 @@ EOF
 ##########Remove Trojan-Gfw##########
 uninstall(){
 	cd
-	systemctl stop trojan || true
-	systemctl disable trojan || true
-	rm -rf /usr/local/etc/trojan/* || true
-	rm -rf /etc/trojan/* || true
-	rm -rf /etc/systemd/system/trojan* || true
-	systemctl stop v2ray  || true
-	systemctl disable v2ray || true
-	systemctl stop tor  || true
-	systemctl disable tor || true
-	systemctl stop tor@default || true
-	systemctl stop qbittorrent || true
-	systemctl disable qbittorrent || true
-	systemctl stop aria || true
-	systemctl disable aria || true
-	systemctl stop tracker || true
-	systemctl disable tracker || true
-	systemctl stop filebrowser || true
-	systemctl disable filebrowser || true
-	systemctl stop netdata || true
-	systemctl disable netdata || true
-	rm -rf /etc/aria.conf || true
-	systemctl daemon-reload || true
-	wget https://install.direct/go.sh -q
-	bash go.sh --remove
-	rm go.sh
-	systemctl stop nginx || true
-	systemctl disable nginx || true
-		if [[ $dist = centos ]]; then
-		yum remove nginx dnsmasq -y -q || true
-		else
-		apt purge nginx dnsmasq -p -y || true
-		rm -rf /etc/apt/sources.list.d/nginx.list || true
-		rm -rf /etc/apt/sources.list.d/tor.list || true
+	if [[ -f /usr/local/bin/trojan ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) trojan?" 8 78); then
+		systemctl stop trojan || true
+		systemctl disable trojan || true
+		rm -rf /etc/systemd/system/trojan* || true
+		rm -rf /usr/local/etc/trojan/* || true
+		fi
 	fi
-	 ~/.acme.sh/acme.sh --uninstall
+	if [[ -f /usr/sbin/nginx ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) nginx?" 8 78); then
+		systemctl stop nginx || true
+		systemctl disable nginx || true
+		$pack remove nginx
+		rm -rf /etc/apt/sources.list.d/nginx.list || true
+		fi
+	fi
+	if [[ -f /usr/sbin/dnsmasq ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) dnsmasq?" 8 78); then
+			if [[ $dist = centos ]]; then
+			yum remove dnsmasq -y -q || true
+			else
+			apt purge dnsmasq -p -y || true
+			fi
+		fi
+	fi
+	if [[ -f /usr/bin/qbittorrent-nox ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) qbittorrent?" 8 78); then
+		systemctl stop qbittorrent || true
+		systemctl disable qbittorrent || true
+		$pack remove qbittorrent-nox
+		fi
+	fi
+	if [[ -f /usr/bin/bittorrent-tracker ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) bittorrent-tracker?" 8 78); then
+		systemctl stop tracker || true
+		systemctl disable tracker || true
+		rm -rf /usr/bin/bittorrent-tracker || true
+		fi
+	fi
+	if [[ -f /usr/local/bin/aria2c ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) aria2?" 8 78); then
+		systemctl stop aria || true
+		systemctl disable aria || true
+		rm -rf /etc/aria.conf || true
+		rm -rf /usr/local/bin/aria2c || true
+		fi
+	fi
+	if [[ -f /usr/local/bin/filebrowser ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) filebrowser?" 8 78); then
+		systemctl stop filebrowser || true
+		systemctl disable filebrowser || true
+		rm /usr/local/bin/filebrowser
+		fi
+	fi
+	if [[ -f /usr/sbin/netdata ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) netdata?" 8 78); then
+		systemctl stop netdata || true
+		systemctl disable netdata || true
+		rm -rf /usr/sbin/netdata
+		fi
+	fi
+	if [[ -f /usr/bin/v2ray/v2ray ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) v2ray/ss?" 8 78); then
+		systemctl stop v2ray  || true
+		systemctl disable v2ray || true
+		wget https://install.direct/go.sh -q
+		bash go.sh --remove
+		rm go.sh
+		fi
+	fi
+	if [[ -f /usr/bin/tor ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) tor?" 8 78); then
+		systemctl stop tor  || true
+		systemctl disable tor || true
+		systemctl stop tor@default || true
+		$pack remove tor
+		rm -rf /etc/apt/sources.list.d/tor.list || true
+		fi
+	fi
+	if (whiptail --title "api" --yesno "卸载 (uninstall) acme.sh?" 8 78); then
+		~/.acme.sh/acme.sh --uninstall
+	fi
+	apt-get update
+	systemctl daemon-reload || true
+	colorEcho ${INFO} "卸载完成"
 }
 ###########Status#################
 statuscheck(){
@@ -2347,5 +2397,6 @@ export LC_ALL="zh_TW.UTF-8"
 osdist || true
 clear
 myip=$(curl -s https://api.ipify.org)
-myipv6=$(ip -6 addr | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+localip=$(ip a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 advancedMenu
