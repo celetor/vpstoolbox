@@ -44,7 +44,6 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 4. 全自動 [domain resolve verification](https://en.wikipedia.org/wiki/Nslookup)
 5. 全自動 [iptables](https://en.wikipedia.org/wiki/Iptables)(包括 ipv6) 防火墙配置以及 [iptables-persistent](https://github.com/zertrin/iptables-persistent)
 6. 全自動 生成 [客戶端配置文件](https://trojan-gfw.github.io/trojan/config) (包括 Trojan-GFW 和 V2ray )
-7. 全自動 启用 [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks) ( **[TCP-BBR](https://github.com/google/bbr)** 已包含)
 8. 全自動 [Nginx 效能優化](https://www.johnrosen1.com/nginx1/)
 9. 全自動 [Trojan-GFW ***trojan://***  分享链接 以及 二维码 生成](https://github.com/trojan-gfw/trojan-url)
 10. 全自動 [https 301 redirect](https://en.wikipedia.org/wiki/HTTP_301) 不會影響證書的續簽
@@ -57,6 +56,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 17. 支援 全自动 安裝並配置 **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [V2ray](https://www.v2ray.com/index.html) and [Shadowsocks](https://shadowsocks.org/en/index.html)([V2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)) [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/)**
 18. 支援 全自動 [V2ray ***vmess://*** 分享链接 生成](https://github.com/boypt/vmess2json) + Shadowsocks ss:// 分享链接 和 二维码 生成
 19. 支援 全自動 [***vmess or ss + tls + websocket + nginx*** 配置](https://guide.v2fly.org/advanced/wss_and_web.html)
+7.  支援 全自動 启用 [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks) ( **[TCP-BBR](https://github.com/google/bbr)** 已包含)
 20. 支援 ***[BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)***
 21. 支援 ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
 22. 支援 手动 检查更新 包括 Trojan-gfw v2ray ss
