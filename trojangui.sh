@@ -2,13 +2,13 @@
 clear
 
 if [[ $(id -u) != 0 ]]; then
-		echo Please run this script as root.
-		exit 1
+	echo Please run this script as root.
+	exit 1
 fi
 
 if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
-		echo Please run this script on x86_64 machine.
-		exit 1
+	echo Please run this script on x86_64 machine.
+	exit 1
 fi
 
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
@@ -94,12 +94,12 @@ colorEcho(){
 }
 #########Domain resolve verification###################
 isresolved(){
-		if [ $# = 2 ]
-		then
-				myip=$2
-		else
-				myip=`curl -s http://dynamicdns.park-your-domain.com/getip`
-		fi
+	if [ $# = 2 ]
+	then
+		myip=$2
+	else
+		myip=`curl -s http://dynamicdns.park-your-domain.com/getip`
+	fi
 		ips=(`nslookup $1 1.1.1.1 | grep -v 1.1.1.1 | grep Address | cut -d " " -f 2`)
 		for ip in "${ips[@]}"
 		do
@@ -1051,49 +1051,49 @@ if [[ $install_trojan = 1 ]]; then
 	fi
 	cat > '/usr/local/etc/trojan/config.json' << EOF
 {
-		"run_type": "server",
-		"local_addr": "::",
-		"local_port": 443,
-		"remote_addr": "127.0.0.1",
-		"remote_port": 80,
-		"password": [
-				"$password1",
-				"$password2"
+	"run_type": "server",
+	"local_addr": "::",
+	"local_port": 443,
+	"remote_addr": "127.0.0.1",
+	"remote_port": 80,
+	"password": [
+		"$password1",
+		"$password2"
+	],
+	"log_level": 1,
+	"ssl": {
+		"cert": "/etc/trojan/trojan.crt",
+		"key": "/etc/trojan/trojan.key",
+		"key_password": "",
+		"cipher": "$cipher_server",
+		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+		"prefer_server_cipher": true,
+		"alpn": [
+			"http/1.1"
 		],
-		"log_level": 1,
-		"ssl": {
-				"cert": "/etc/trojan/trojan.crt",
-				"key": "/etc/trojan/trojan.key",
-				"key_password": "",
-				"cipher": "$cipher_server",
-				"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-				"prefer_server_cipher": true,
-				"alpn": [
-						"http/1.1"
-				],
-				"reuse_session": true,
-				"session_ticket": false,
-				"session_timeout": 600,
-				"plain_http_response": "",
-				"curves": "",
-				"dhparam": ""
+		"reuse_session": true,
+		"session_ticket": false,
+		"session_timeout": 600,
+		"plain_http_response": "",
+		"curves": "",
+		"dhparam": ""
 		},
 		"tcp": {
-				"prefer_ipv4": false,
-				"no_delay": true,
-				"keep_alive": true,
-				"reuse_port": false,
-				"fast_open": true,
-				"fast_open_qlen": 20
+		"prefer_ipv4": false,
+		"no_delay": true,
+		"keep_alive": true,
+		"reuse_port": false,
+		"fast_open": true,
+		"fast_open_qlen": 20
 		},
-		"mysql": {
-				"enabled": false,
-				"server_addr": "127.0.0.1",
-				"server_port": 3306,
-				"database": "trojan",
-				"username": "trojan",
-				"password": ""
-		}
+	"mysql": {
+		"enabled": false,
+		"server_addr": "127.0.0.1",
+		"server_port": 3306,
+		"database": "trojan",
+		"username": "trojan",
+		"password": ""
+	}
 }
 EOF
 	mkdir /etc/trojan || true
@@ -1101,72 +1101,72 @@ EOF
 	touch /etc/trojan/client2.json
 		cat > '/etc/trojan/client1.json' << EOF
 {
-		"run_type": "client",
-		"local_addr": "127.0.0.1",
-		"local_port": 1080,
-		"remote_addr": "$myip",
-		"remote_port": 443,
-		"password": [
-				"$password1"
+	"run_type": "client",
+	"local_addr": "127.0.0.1",
+	"local_port": 1080,
+	"remote_addr": "$myip",
+	"remote_port": 443,
+	"password": [
+		"$password1"
+	],
+	"log_level": 1,
+	"ssl": {
+		"verify": true,
+		"verify_hostname": true,
+		"cert": "",
+		"cipher": "$cipher_client",
+		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+		"sni": "$domain",
+		"alpn": [
+			"h2",
+			"http/1.1"
 		],
-		"log_level": 1,
-		"ssl": {
-				"verify": true,
-				"verify_hostname": true,
-				"cert": "",
-				"cipher": "$cipher_client",
-				"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-				"sni": "$domain",
-				"alpn": [
-						"h2",
-						"http/1.1"
-				],
-				"reuse_session": true,
-				"session_ticket": false,
-				"curves": ""
-		},
-		"tcp": {
-				"no_delay": true,
-				"keep_alive": true,
-				"reuse_port": false,
-				"fast_open": false,
-				"fast_open_qlen": 20
-		}
+		"reuse_session": true,
+		"session_ticket": false,
+		"curves": ""
+	},
+	"tcp": {
+		"no_delay": true,
+		"keep_alive": true,
+		"reuse_port": false,
+		"fast_open": false,
+		"fast_open_qlen": 20
+	}
 }
 EOF
-		cat > '/etc/trojan/client2.json' << EOF
+	cat > '/etc/trojan/client2.json' << EOF
 {
-		"run_type": "client",
-		"local_addr": "127.0.0.1",
-		"local_port": 1080,
-		"remote_addr": "$myip",
-		"remote_port": 443,
-		"password": [
-				"$password2"
+	"run_type": "client",
+	"local_addr": "127.0.0.1",
+	"local_port": 1080,
+	"remote_addr": "$myip",
+	"remote_port": 443,
+	"password": [
+		"$password2"
+	],
+	"log_level": 1,
+	"ssl": {
+		"verify": true,
+		"verify_hostname": true,
+		"cert": "",
+		"cipher": "$cipher_client",
+		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+		"sni": "$domain",
+		"alpn": [
+			"h2",
+			"http/1.1"
 		],
-		"log_level": 1,
-		"ssl": {
-				"verify": true,
-				"verify_hostname": true,
-				"cert": "",
-				"cipher": "$cipher_client",
-				"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-				"sni": "$domain",
-				"alpn": [
-						"h2",
-						"http/1.1"
-				],
-				"reuse_session": true,
-				"session_ticket": false,
-				"curves": ""
-		},
-		"tcp": {
-				"no_delay": true,
-				"keep_alive": true,
-				"reuse_port": false,
-				"fast_open": false,
-				"fast_open_qlen": 20
-		}
+		"reuse_session": true,
+		"session_ticket": false,
+		"curves": ""
+	},
+	"tcp": {
+		"no_delay": true,
+		"keep_alive": true,
+		"reuse_port": false,
+		"fast_open": false,
+		"fast_open_qlen": 20
+	}
 }
 EOF
 	fi
