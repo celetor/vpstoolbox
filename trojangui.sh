@@ -391,27 +391,27 @@ set -e
 		dist=centos
 		pack="yum -y -q"
 		yum update -y
-		yum install sudo newt curl -y -q
+		yum install sudo newt curl e2fsprogs -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Red; then
 		dist=centos
 		pack="yum -y -q"
 		yum update -y
-		yum install sudo newt curl -y -q
+		yum install sudo newt curl e2fsprogs -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Fedora; then
 		dist=centos
 		pack="yum -y -q"
 		yum update -y
-		yum install sudo newt curl -y -q
+		yum install sudo newt curl e2fsprogs -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 		dist=ubuntu
 		pack="apt-get -y -qq"
 		apt-get update -q
-		apt-get install sudo whiptail curl locales lsb-release -y -qq > /dev/null || true
+		apt-get install sudo whiptail curl locales lsb-release e2fsprogs -y -qq > /dev/null || true
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 		dist=debian
 		pack="apt-get -y -qq"
 		apt-get update -q
-		apt-get install sudo whiptail curl locales lsb-release -y -qq > /dev/null || true
+		apt-get install sudo whiptail curl locales lsb-release e2fsprogs -y -qq > /dev/null || true
  else
 	TERM=ansi whiptail --title "OS SUPPORT" --infobox "OS NOT SUPPORTED, couldn't install Trojan-gfw" 8 78
 		exit 1;
@@ -2391,14 +2391,18 @@ osdist || true
 if grep -q "zh_TW.UTF-8" /etc/default/locale; then
 	:
 	else
+chattr -i /etc/locale.gen || true
 	cat > '/etc/locale.gen' << EOF
 zh_TW.UTF-8 UTF-8
 en_US.UTF-8 UTF-8
 EOF
+chattr +i /etc/locale.gen
 #dpkg-reconfigure --frontend=noninteractive locales
 locale-gen zh_TW.UTF-8 || true
 update-locale || true
-echo 'LC_ALL="zh_TW.UTF-8"'> /etc/default/locale || true		
+chattr -i /etc/default/locale || true
+echo 'LC_ALL="zh_TW.UTF-8"'> /etc/default/locale || true
+chattr +i /etc/default/locale || true	
 fi
 #export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
