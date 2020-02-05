@@ -1057,8 +1057,9 @@ if [[ $install_trojan = 1 ]]; then
 		else
 			:
 			#openssl dhparam -out /etc/trojan/trojan.pem 2048
+		fi
 	fi
-	cat > '/usr/local/etc/trojan/config.json' << EOF
+			cat > '/usr/local/etc/trojan/config.json' << EOF
 {
 	"run_type": "server",
 	"local_addr": "::",
@@ -1106,8 +1107,8 @@ if [[ $install_trojan = 1 ]]; then
 }
 EOF
 	mkdir /etc/trojan || true
-	touch /etc/trojan/client1.json
-	touch /etc/trojan/client2.json
+	touch /etc/trojan/client1.json || true
+	touch /etc/trojan/client2.json || true
 		cat > '/etc/trojan/client1.json' << EOF
 {
 	"run_type": "client",
@@ -1178,7 +1179,6 @@ EOF
 	}
 }
 EOF
-	fi
 fi
 	clear
 	if [[ $install_bbr = 1 ]]; then
