@@ -2388,6 +2388,9 @@ function advancedMenu() {
 }
 cd
 osdist || true
+if grep -q "zh_TW.UTF-8" /etc/default/locale; then
+	:
+	else
 	cat > '/etc/locale.gen' << EOF
 zh_TW.UTF-8 UTF-8
 en_US.UTF-8 UTF-8
@@ -2395,7 +2398,8 @@ EOF
 #dpkg-reconfigure --frontend=noninteractive locales
 locale-gen zh_TW.UTF-8 || true
 update-locale || true
-echo 'LC_ALL="zh_TW.UTF-8"'>/etc/default/locale || true
+echo 'LC_ALL="zh_TW.UTF-8"'> /etc/default/locale || true		
+fi
 #export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
 clear
