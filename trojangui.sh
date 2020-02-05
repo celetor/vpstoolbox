@@ -2396,7 +2396,7 @@ chattr -i /etc/locale.gen || true
 zh_TW.UTF-8 UTF-8
 en_US.UTF-8 UTF-8
 EOF
-chattr +i /etc/locale.gen
+chattr +i /etc/locale.gen || true
 #dpkg-reconfigure --frontend=noninteractive locales
 locale-gen zh_TW.UTF-8 || true
 update-locale || true
