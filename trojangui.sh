@@ -96,14 +96,14 @@ colorEcho(){
 isresolved(){
 	if [ $# = 2 ]
 	then
-		myip=$2
+		myip2=$2
 	else
-		myip=`curl -s http://dynamicdns.park-your-domain.com/getip`
+		myip2=`curl -s http://dynamicdns.park-your-domain.com/getip`
 	fi
 		ips=(`nslookup $1 1.1.1.1 | grep -v 1.1.1.1 | grep Address | cut -d " " -f 2`)
 		for ip in "${ips[@]}"
 		do
-				if [ $ip == $myip ] || [ $ip == $myipv6 ] || [[ $ip == $localip ]]
+				if [ $ip == $myip ] || [ $ip == $myipv6 ] || [[ $ip == $localip ]] || [ $ip == $myip2 ]
 				then
 						return 0
 				else
