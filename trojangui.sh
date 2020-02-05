@@ -769,8 +769,8 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
-mkdir /etc/filebrowser/
-touch /etc/filebrowser/database.db
+mkdir /etc/filebrowser/ || true
+touch /etc/filebrowser/database.db || true
 fi
 fi
 clear
