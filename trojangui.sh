@@ -964,11 +964,11 @@ no-negcache
 log-queries 
 log-facility=/var/log/dnsmasq.log 
 EOF
-sudo chattr -i /etc/resolv.conf || true
-sudo rm /etc/resolv.conf || true
-sudo touch /etc/resolv.conf || true
+chattr -i /etc/resolv.conf || true
+rm /etc/resolv.conf || true
+touch /etc/resolv.conf || true
 echo "nameserver 127.0.0.1" > '/etc/resolv.conf' || true
-sudo chattr +i /etc/resolv.conf || true
+chattr +i /etc/resolv.conf || true
 systemctl restart dnsmasq || true
 systemctl enable dnsmasq || true      
 	fi
@@ -2396,7 +2396,7 @@ EOF
 locale-gen zh_TW.UTF-8 || true
 update-locale || true
 echo 'LC_ALL="zh_TW.UTF-8"'>/etc/default/locale || true
-export LANG="zh_TW.UTF-8"
+#export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
 clear
 myip=$(curl -s https://api.ipify.org)
