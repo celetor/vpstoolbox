@@ -16,8 +16,8 @@ yum update -y && yum install sudo curl -y && sudo -i
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
-![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu1.png)
-![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu_option.png)
+![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu.png)
+![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu2.png)
 
 #### Friendly Reminder:
 1. Please **Run as root**(sudo -i)
