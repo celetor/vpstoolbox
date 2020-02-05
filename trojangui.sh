@@ -635,7 +635,7 @@ http {
 
 	sendfile on;
 	gzip on;
-	gzip_comp_level 8;
+	gzip_comp_level 9;
 
 	include /etc/nginx/conf.d/*.conf;
 	client_max_body_size 10G;
@@ -679,13 +679,13 @@ User=root
 ExecStart=/usr/bin/qbittorrent-nox
 TimeoutStopSec=infinity
 Restart=on-failure
-RestartSec=3s
+RestartSec=1s
 
 [Install]
 WantedBy=multi-user.target
 EOF
-mkdir /usr/share/nginx/qbt/
-chmod 755 /usr/share/nginx/qbt/
+mkdir /usr/share/nginx/qbt/ || true
+chmod 755 /usr/share/nginx/qbt/ || true
 fi
 fi
 clear
@@ -727,7 +727,7 @@ RemainAfterExit=yes
 ExecStart=/usr/bin/bittorrent-tracker --http --ws --trust-proxy
 TimeoutStopSec=infinity
 Restart=on-failure
-RestartSec=3s
+RestartSec=1s
 
 [Install]
 WantedBy=multi-user.target
@@ -763,7 +763,7 @@ Group=root
 ExecStart=/usr/local/bin/filebrowser -r /usr/share/nginx/ -d /etc/filebrowser/database.db -b $filepath -p 8081
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
-RestartSec=3s
+RestartSec=1s
 Restart=on-failure
 
 [Install]
@@ -1061,49 +1061,49 @@ if [[ $install_trojan = 1 ]]; then
 	fi
 			cat > '/usr/local/etc/trojan/config.json' << EOF
 {
-	"run_type": "server",
-	"local_addr": "::",
-	"local_port": 443,
-	"remote_addr": "127.0.0.1",
-	"remote_port": 80,
-	"password": [
-		"$password1",
-		"$password2"
+"run_type": "server",
+"local_addr": "::",
+"local_port": 443,
+"remote_addr": "127.0.0.1",
+"remote_port": 80,
+"password": [
+	"$password1",
+	"$password2"
+],
+"log_level": 1,
+"ssl": {
+	"cert": "/etc/trojan/trojan.crt",
+	"key": "/etc/trojan/trojan.key",
+	"key_password": "",
+	"cipher": "$cipher_server",
+	"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+	"prefer_server_cipher": true,
+	"alpn": [
+		"http/1.1"
 	],
-	"log_level": 1,
-	"ssl": {
-		"cert": "/etc/trojan/trojan.crt",
-		"key": "/etc/trojan/trojan.key",
-		"key_password": "",
-		"cipher": "$cipher_server",
-		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-		"prefer_server_cipher": true,
-		"alpn": [
-			"http/1.1"
-		],
-		"reuse_session": true,
-		"session_ticket": false,
-		"session_timeout": 600,
-		"plain_http_response": "",
-		"curves": "",
-		"dhparam": ""
-		},
-		"tcp": {
-		"prefer_ipv4": false,
-		"no_delay": true,
-		"keep_alive": true,
-		"reuse_port": false,
-		"fast_open": true,
-		"fast_open_qlen": 20
-		},
-	"mysql": {
-		"enabled": false,
-		"server_addr": "127.0.0.1",
-		"server_port": 3306,
-		"database": "trojan",
-		"username": "trojan",
-		"password": ""
-	}
+	"reuse_session": true,
+	"session_ticket": false,
+	"session_timeout": 600,
+	"plain_http_response": "",
+	"curves": "",
+	"dhparam": ""
+	},
+	"tcp": {
+	"prefer_ipv4": false,
+	"no_delay": true,
+	"keep_alive": true,
+	"reuse_port": false,
+	"fast_open": true,
+	"fast_open_qlen": 20
+	},
+"mysql": {
+	"enabled": false,
+	"server_addr": "127.0.0.1",
+	"server_port": 3306,
+	"database": "trojan",
+	"username": "trojan",
+	"password": ""
+}
 }
 EOF
 	mkdir /etc/trojan || true
