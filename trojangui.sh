@@ -964,7 +964,11 @@ no-negcache
 log-queries 
 log-facility=/var/log/dnsmasq.log 
 EOF
-echo "nameserver 127.0.0.1" > '/etc/resolv.conf'
+sudo chattr -i /etc/resolv.conf || true
+sudo rm /etc/resolv.conf || true
+sudo touch /etc/resolv.conf || true
+echo "nameserver 127.0.0.1" > '/etc/resolv.conf' || true
+sudo chattr +i /etc/resolv.conf || true
 systemctl restart dnsmasq || true
 systemctl enable dnsmasq || true      
 	fi
@@ -1231,6 +1235,9 @@ else
 echo "session required pam_limits.so" >> /etc/pam.d/common-session || true
 fi
 systemctl daemon-reload
+	fi
+	if [[ $install_bbrplus = 1 ]]; then
+		bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
 	fi
 	timedatectl set-timezone Asia/Hong_Kong || true
 	timedatectl set-ntp on || true
@@ -2357,9 +2364,6 @@ function advancedMenu() {
 				start
 				sharelink || true
 				rm results || true
-                                if [[ $install_bbrplus = 1 ]]; then
-		                  bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
-	                        fi
 				whiptail --title "Install Success" --textbox --scrolltext result 32 120
 				;;
 				2)
@@ -2389,8 +2393,9 @@ zh_TW.UTF-8 UTF-8
 en_US.UTF-8 UTF-8
 EOF
 #dpkg-reconfigure --frontend=noninteractive locales
-locale-gen zh_TW.UTF-8
-update-locale
+locale-gen zh_TW.UTF-8 || true
+update-locale || true
+echo 'LC_ALL="zh_TW.UTF-8"'>/etc/default/locale || true
 export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
 clear
