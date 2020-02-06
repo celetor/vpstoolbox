@@ -1236,9 +1236,6 @@ echo "session required pam_limits.so" >> /etc/pam.d/common-session || true
 fi
 systemctl daemon-reload
 	fi
-	if [[ $install_bbrplus = 1 ]]; then
-		bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
-	fi
 	timedatectl set-timezone Asia/Hong_Kong || true
 	timedatectl set-ntp on || true
 	if [[ $dist = centos ]]; then
@@ -1304,14 +1301,14 @@ EOF
 	systemctl start nginx || true
 	if [[ $dns_api == 1 ]]; then
 		if [[ $cf_api == 1 ]]; then
-		~/.acme.sh/acme.sh --issue --dns dns_cf -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
+		~/.acme.sh/acme.sh --issue --dns dns_cf -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"
 		elif [[ $namesilo_api == 1 ]]; then
-		~/.acme.sh/acme.sh --issue --dns dns_namesilo --dnssleep 900 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
+		~/.acme.sh/acme.sh --issue --dns dns_namesilo --dnssleep 900 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"
 		elif [[ $ali_api == 1 ]]; then
-		~/.acme.sh/acme.sh --issue --dns dns_ali -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"
+		~/.acme.sh/acme.sh --issue --dns dns_ali -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"
 		fi
 		else
-		~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true"  
+		~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"  
 	fi
 	~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
 	chmod +r /etc/trojan/trojan.key
@@ -2347,10 +2344,11 @@ function advancedMenu() {
 		ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/
 运行此脚本前请在控制面板中开启80 443端口并关闭Cloudflare CDN!" 13 78 4 \
 				"1" "安裝(Install)" \
-				"2" "状态查看(Status)" \
-				"3" "更新(Update)" \
-				"4" "卸載(Uninstall)" \
-				"5" "退出(Quit)" 3>&1 1>&2 2>&3)
+				"2" "结果(Result)" \
+				"3" "状态(Status)" \
+				"4" "更新(Update)" \
+				"5" "卸載(Uninstall)" \
+				"6" "退出(Quit)" 3>&1 1>&2 2>&3)
 		case $ADVSEL in
 				1)
 				cd
@@ -2365,22 +2363,32 @@ function advancedMenu() {
 				sharelink || true
 				rm results || true
 				whiptail --title "Install Success" --textbox --scrolltext result 32 120
+				if [[ $install_bbrplus = 1 ]]; then
+				bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
+				fi
+				if (whiptail --title "Reboot" --yesno "重启 (reboot) 使配置生效 (to make the configuration effective )?" 8 78); then
+				reboot
+				fi
 				;;
 				2)
 				cd
-				statuscheck
+				cat result
 				;;
 				3)
+				cd
+				statuscheck
+				;;
+				4)
 				cd
 				checkupdate
 				colorEcho ${SUCCESS} "RTFM: https://www.johnrosen1.com/trojan/"
 				;;
-				4)
+				5)
 				cd
 				uninstall
 				colorEcho ${SUCCESS} "Remove complete"
 				;;
-				5)
+				6)
 				exit
 				whiptail --title "脚本已退出" --msgbox "脚本已退出(Bash Exited) RTFM: https://www.johnrosen1.com/trojan/" 8 78
 				;;
