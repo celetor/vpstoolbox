@@ -88,6 +88,12 @@ LINK="92m"     # Share Link Message
 cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
 cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
 #############################
+installacme(){
+	mkdir /etc/trojan/ || true
+	curl -s https://get.acme.sh | sh
+	~/.acme.sh/acme.sh --upgrade --auto-upgrade
+}
+#############################
 colorEcho(){
 		COLOR=$1
 		echo -e "\033[${COLOR}${@:2}\033[0m"
@@ -111,6 +117,33 @@ isresolved(){
 				fi
 		done
 		return 1
+}
+########################################################
+issuecert(){
+	clear
+	colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
+	if [[ -f /etc/trojan/trojan.crt ]]; then
+		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
+		else
+	mkdir /etc/trojan/ || true &
+	rm -rf /etc/nginx/sites-available/* &
+	rm -rf /etc/nginx/sites-enabled/* &
+	rm -rf /etc/nginx/conf.d/*
+	touch /etc/nginx/conf.d/default.conf
+		cat > '/etc/nginx/conf.d/default.conf' << EOF
+server {
+		listen       80;
+		listen       [::]:80;
+		server_name  $domain;
+		root   /usr/share/nginx/html;
+}
+EOF
+	nginx -t
+	systemctl start nginx || true
+	~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"  
+	~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
+	chmod +r /etc/trojan/trojan.key
+	fi
 }
 ###############User input################
 userinput(){
@@ -191,48 +224,6 @@ do
 	esac
 done < results
 ####################################
-if (whiptail --title "api" --yesno --defaultno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
-	dns_api=1
-	APIOPTION=$(whiptail --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "請按空格來選擇" 18 78 10 \
-"1" "Cloudflare Using the global api key " \
-"2" "Use Namesilo.com API" \
-"3" "Use Aliyun domain API"  3>&1 1>&2 2>&3)
-
-	case $APIOPTION in
-		1)
-		cf_api=1
-		while [[ -z $CF_Key ]]; do
-		CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF_Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
-		done
-		while [[ -z $CF_Email ]]; do
-		CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
-		done
-		export CF_Key="$CF_Key"
-		export CF_Email="$CF_Email"
-		;;
-		2)
-		namesilo_api=1
-		while [[ -z $Namesilo_Key ]]; do
-		Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
-		done
-		export Namesilo_Key="$Namesilo_Key"
-		;;
-		3)
-		ali_api=1
-		while [[ -z $Ali_Key ]]; do
-		Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 78 --title "Ali_Key input" 3>&1 1>&2 2>&3)
-		done
-		while [[ -z $Ali_Secret ]]; do
-		Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 78 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
-		done
-		export Ali_Key="$Ali_Key"
-		export Ali_Secret="$Ali_Secret"
-		;;
-		*)
-		;;
-	esac
-	fi
-####################################
 if [[ $system_upgrade = 1 ]]; then
 	if [[ $(lsb_release -cs) == stretch ]]; then
 		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 10?" 8 78); then
@@ -259,30 +250,6 @@ fi
 #####################################
 while [[ -z $domain ]]; do
 domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可污也，快輸入你的域名並按回車" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
-if [[ $domain == "" ]]; then
-	ip=$(curl -s https://api.ipify.org)
-	if [[ $dist = centos ]]; then
-		yum install -y -q bind-utils
-		else
-		apt-get install dnsutils -y -qq
-	fi
-	domain=$(host $ip)
-	if [[ -f /etc/trojan/trojan.crt ]] || [[ $dns_api == 1 ]]; then
-	:
-	else
-	if isresolved $domain
-	then
-	:
-	else
-	clear
-	whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
-	colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!"
-	colorEcho ${ERROR} "Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!"
-	exit -1
-	clear
-	fi  
-fi
-fi
 done
 if [[ $install_trojan = 1 ]]; then
 	while [[ -z $password1 ]]; do
@@ -382,6 +349,75 @@ done
 			;;
 			esac
 		fi
+if (whiptail --title "api" --yesno --defaultno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
+    dns_api=1
+    APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按空格來選擇" 15 78 6 \
+"1" "Cloudflare" \
+"2" "Namesilo" \
+"3" "Aliyun" \
+"4" "DNSPod.cn" \
+"5" "CloudXNS.com" \
+"back" "返回"  3>&1 1>&2 2>&3)
+
+    case $APIOPTION in
+        1)
+        while [[ -z $CF_Key ]] || [[ -z $CF_Email ]]; do
+        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF_Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        done
+        export CF_Key="$CF_Key"
+        export CF_Email="$CF_Email"
+        installacme
+        ~/.acme.sh/acme.sh --issue --dns dns_cf -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ;;
+        2)
+        while [[ -z $Namesilo_Key ]]; do
+        Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
+        done
+        export Namesilo_Key="$Namesilo_Key"
+        installacme
+        ~/.acme.sh/acme.sh --issue --dns dns_namesilo --dnssleep 900 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ;;
+        3)
+        while [[ -z $Ali_Key ]] || [[ -z $Ali_Secret ]]; do
+        Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 78 --title "Ali_Key input" 3>&1 1>&2 2>&3)
+        Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 78 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
+        done
+        export Ali_Key="$Ali_Key"
+        export Ali_Secret="$Ali_Secret"
+        installacme
+        ~/.acme.sh/acme.sh --issue --dns dns_ali -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ;;
+        4)
+        while [[ -z $DP_Id ]] || [[ -z $DP_Key ]]; do
+        DP_Id=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Id併按回車" 8 78 --title "DP_Id input" 3>&1 1>&2 2>&3)
+        DP_Key=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Key併按回車" 8 78 --title "DP_Key input" 3>&1 1>&2 2>&3)
+        done
+        export DP_Id="$DP_Id"
+        export DP_Key="$DP_Key"
+        installacme
+        ~/.acme.sh/acme.sh --issue --dns dns_dp -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ;;
+        5)
+        while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
+        CX_Key=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Key併按回車" 8 78 --title "CX_Key input" 3>&1 1>&2 2>&3)
+        CX_Secret=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Secret併按回車" 8 78 --title "CX_Secret input" 3>&1 1>&2 2>&3)
+        done
+        export CX_Key="$CX_Key"
+        export CX_Secret="$CX_Secret"
+        installacme
+        ~/.acme.sh/acme.sh --issue --dns dns_cx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ;;
+        back) 
+		advancedMenu
+		break
+		;;
+        *)
+        ;;
+    esac
+    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
+    chmod +r /etc/trojan/trojan.key
+    fi
 }
 ###############OS detect####################
 osdist(){
@@ -1275,44 +1311,6 @@ EOF
 	TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
 		exit 1;
  fi
-}
-##################################################
-issuecert(){
-	clear
-	colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
-	if [[ -f /etc/trojan/trojan.crt ]]; then
-		myip=`curl -s http://dynamicdns.park-your-domain.com/getip`
-		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
-		else
-	mkdir /etc/trojan/ || true &
-	rm -rf /etc/nginx/sites-available/* &
-	rm -rf /etc/nginx/sites-enabled/* &
-	rm -rf /etc/nginx/conf.d/*
-	touch /etc/nginx/conf.d/default.conf
-		cat > '/etc/nginx/conf.d/default.conf' << EOF
-server {
-		listen       80;
-		listen       [::]:80;
-		server_name  $domain;
-		root   /usr/share/nginx/html;
-}
-EOF
-	nginx -t
-	systemctl start nginx || true
-	if [[ $dns_api == 1 ]]; then
-		if [[ $cf_api == 1 ]]; then
-		~/.acme.sh/acme.sh --issue --dns dns_cf -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"
-		elif [[ $namesilo_api == 1 ]]; then
-		~/.acme.sh/acme.sh --issue --dns dns_namesilo --dnssleep 900 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"
-		elif [[ $ali_api == 1 ]]; then
-		~/.acme.sh/acme.sh --issue --dns dns_ali -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"
-		fi
-		else
-		~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"  
-	fi
-	~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
-	chmod +r /etc/trojan/trojan.key
-	fi
 }
 ########Nginx config for Trojan only##############
 nginxtrojan(){
