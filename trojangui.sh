@@ -1422,9 +1422,6 @@ echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/tr
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
 echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
-echo "    location $ariang_path {" >> /etc/nginx/conf.d/trojan.conf
-echo "        alias /usr/share/nginx/ariang/;" >> /etc/nginx/conf.d/trojan.conf
-echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
 if [[ $install_qbt = 1 ]]; then
 echo "    location $qbtpath {" >> /etc/nginx/conf.d/trojan.conf
