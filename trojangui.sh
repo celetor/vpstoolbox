@@ -845,6 +845,7 @@ if [[ $install_aria = 1 ]]; then
 			chmod 755 /usr/share/nginx/aria2/
 			cd ..
 			rm -rf aria2-1.35.0
+			trackers_list=$(wget -qO- https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
 			cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
 Description=Aria2c download manager
@@ -902,6 +903,7 @@ rpc-listen-port=6800
 rpc-secret=$ariapasswd
 
 ## BT/PT下载相关 ##
+bt-tracker=$trackers_list
 #follow-torrent=true
 listen-port=51413
 #bt-max-peers=55
