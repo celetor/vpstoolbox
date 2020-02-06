@@ -866,7 +866,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 			cat > '/etc/aria2.conf' << EOF
-#rpc-secure=true
+rpc-secure=false
 #rpc-certificate=/etc/trojan/trojan.crt
 #rpc-private-key=/etc/trojan/trojan.key
 ## 下载设置 ##
@@ -1421,6 +1421,9 @@ echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.co
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
 echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "    location $ariang_path {" >> /etc/nginx/conf.d/trojan.conf
+echo "        alias /usr/share/nginx/ariang/;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
 if [[ $install_qbt = 1 ]]; then
@@ -2062,8 +2065,10 @@ sharelink(){
 	if [[ $install_aria = 1 ]]; then
 		echo
 		echo "" >> result
-		echo "你的Aria信息，非分享链接，仅供参考(Your Aria2 Information)" >> result
+		echo "你的Aria2信息，非分享链接，仅供参考(Your Aria2 Information)" >> result
 		echo "$ariapasswd@https://$domain:443$ariapath" >> result
+		echo "相关链接（Related Links）" >> result
+		echo "https://github.com/mayswind/AriaNg/releases" >> result
 	fi
 	if [[ $install_file = 1 ]]; then
 		echo
