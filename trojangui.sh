@@ -121,7 +121,7 @@ isresolved(){
 issuecert(){
 	clear
 	colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
-	if [[ ! -z $cert ]] && [[ ! -z $cert_key ]]; then
+	if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else
 	rm -rf /etc/nginx/sites-available/* &
@@ -141,13 +141,91 @@ EOF
 	~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"  
 	~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
 	chmod +r /etc/trojan/trojan.key
-	cert="trojan.crt"
-	cert_key="trojan.key"
 	fi
 }
 ###############User input################
+prasejson(){
+		cat > '/root/.trojan/config.json' << EOF
+{
+  "installed": "1",
+  "domain": "$domain",
+  "password1": "$password1",
+  "password2": "$password2",
+  "qbtpath": "$qbtpath",
+  "trackerpath": "$trackerpath",
+  "trackerstatuspath": "$trackerstatuspath",
+  "ariapath": "$ariapath",
+  "ariapasswd": "$ariapasswd",
+  "filepath": "$filepath",
+  "netdatapath": "$netdatapath",
+  "path": "$path",
+  "alterid": "$alterid",
+  "tor_name": "$tor_name",
+  "sspath": "$sspath",
+  "sspasswd": "$sspasswd",
+  "ssmethod": "$ssmethod",
+  "install_trojan": "$install_trojan",
+  "install_qbt": "$install_qbt",
+  "install_tracker": "$install_tracker",
+  "install_aria": "$install_aria",
+  "install_file": "$install_file",
+  "install_netdata": "$install_netdata",
+  "install_v2ray": "$install_v2ray",
+  "install_tor": "$install_tor",
+  "install_ss": "$install_ss"
+}
+EOF
+}
+################################################
+readconfig(){
+	    domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
+        install_trojan="$( jq -r '.domain' "/root/.trojan/config.json" )"
+        install_qbt="$( jq -r '.domain' "/root/.trojan/config.json" )"
+        install_tracker="$( jq -r '.domain' "/root/.trojan/config.json" )"
+        install_aria="$( jq -r '.domain' "/root/.trojan/config.json" )"
+        install_file="$( jq -r '.domain' "/root/.trojan/config.json" )"
+        install_netdata="$( jq -r '.domain' "/root/.trojan/config.json" )"
+        install_v2ray="$( jq -r '.domain' "/root/.trojan/config.json" )"
+        install_tor="$( jq -r '.domain' "/root/.trojan/config.json" )"
+        install_ss="$( jq -r '.domain' "/root/.trojan/config.json" )"
+        password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
+        password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
+        qbtpath="$( jq -r '.qbtpath' "/root/.trojan/config.json" )"
+        trackerpath="$( jq -r '.trackerpath' "/root/.trojan/config.json" )"
+        trackerstatuspath="$( jq -r '.username' "/root/.trojan/config.json" )"
+        ariapath="$( jq -r '.ariapath' "/root/.trojan/config.json" )"
+        ariapasswd="$( jq -r '.ariapasswd' "/root/.trojan/config.json" )"
+        filepath="$( jq -r '.filepath' "/root/.trojan/config.json" )"
+        netdatapath="$( jq -r '.netdatapath' "/root/.trojan/config.json" )"
+        path="$( jq -r '.path' "/root/.trojan/config.json" )"
+        alterid="$( jq -r '.alterid' "/root/.trojan/config.json" )"
+        tor_name="$( jq -r '.tor_name' "/root/.trojan/config.json" )"
+        sspasswd="$( jq -r '.sspasswd' "/root/.trojan/config.json" )"
+        ssmethod="$( jq -r '.ssmethod' "/root/.trojan/config.json" )"   
+}
+####################################
 userinput(){
 	set +e
+	mkdir /root/.trojan/
+if [ ! -f /root/.trojan/config.json ]; then
+		cat > '/root/.trojan/config.json' << EOF
+{
+  "installed": "0"
+}
+EOF
+fi
+install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
+if [[ $install_status == 1 ]]; then
+if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安装，是否继续?" 8 78); then
+    if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安装，是否重新设置具体参数?" 8 78); then
+    :
+    else
+    readconfig
+    fi
+    else
+    advancedMenu
+    fi
+fi
 whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:
 若不確定，請保持默認配置並回車" 25 90 17 \
 "back" "返回上级菜单(Back to main menu)" off \
@@ -350,7 +428,7 @@ done
 			;;
 			esac
 		fi
-if [[ ! -z $cert ]] && [[ ! -z $cert_key ]]; then
+if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else		
 	if (whiptail --title "api" --yesno --defaultno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
@@ -432,27 +510,27 @@ set -e
 		dist=centos
 		pack="yum -y -q"
 		yum update -y
-		yum install sudo newt curl e2fsprogs -y -q
+		yum install sudo newt curl e2fsprogs jq -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Red; then
 		dist=centos
 		pack="yum -y -q"
 		yum update -y
-		yum install sudo newt curl e2fsprogs -y -q
+		yum install sudo newt curl e2fsprogs jq -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Fedora; then
 		dist=centos
 		pack="yum -y -q"
 		yum update -y
-		yum install sudo newt curl e2fsprogs -y -q
+		yum install sudo newt curl e2fsprogs jq -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 		dist=ubuntu
 		pack="apt-get -y -qq"
 		apt-get update -q
-		apt-get install sudo whiptail curl locales lsb-release e2fsprogs -y -qq > /dev/null || true
+		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq -y -qq > /dev/null || true
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 		dist=debian
 		pack="apt-get -y -qq"
 		apt-get update -q
-		apt-get install sudo whiptail curl locales lsb-release e2fsprogs -y -qq > /dev/null || true
+		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq -y -qq > /dev/null || true
  else
 	TERM=ansi whiptail --title "OS SUPPORT" --infobox "OS NOT SUPPORTED, couldn't install Trojan-gfw" 8 78
 		exit 1;
@@ -1085,7 +1163,7 @@ if [[ $install_netdata = 1 ]]; then
 fi
 clear
 #############################################
-if [[ ! -z $cert ]] && [[ ! -z $cert_key ]]; then
+if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]]; then
 	:
 	else
 	curl -s https://get.acme.sh | sh
@@ -2386,6 +2464,7 @@ function advancedMenu() {
 				start
 				sharelink
 				rm results || true
+				prasejson
 				whiptail --title "Install Success" --textbox --scrolltext result 32 120
 				if [[ $install_bbrplus = 1 ]]; then
 				bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
@@ -2419,6 +2498,20 @@ function advancedMenu() {
 		esac
 }
 cd
+system_upgrade=0
+install_bbr=0
+install_bbrplus=0
+install_trojan=0
+dnsmasq_install=0
+install_v2ray=0
+install_ss=0
+install_tor=0
+install_qbt=0
+install_tracker=0
+install_aria=0
+install_file=0
+install_netdata=0
+tls13only=0
 osdist || true
 if grep -q "zh_TW.UTF-8" /etc/default/locale; then
 	:
