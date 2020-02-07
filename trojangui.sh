@@ -2426,7 +2426,7 @@ ipinfo=$(curl -s https://ipinfo.io?token=56c375418c62c9)
 myip=$(curl -s https://ipinfo.io/ip?token=56c375418c62c9)
 localip=$(ip a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
-mkdir /etc/trojan || true
+mkdir /etc/trojan/ || true
 cert=$(ls /etc/trojan | grep crt)
 cert_key=$(ls /etc/trojan | grep key)
 advancedMenu
