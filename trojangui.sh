@@ -1612,6 +1612,7 @@ htmlcode=$(shuf -i 1-3 -n 1)
 wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/$htmlcode.zip -q
 unzip -o $htmlcode.zip -d /usr/share/nginx/html/ > /dev/null
 rm -rf $htmlcode.zip
+rm -rf /usr/share/nginx/html/readme.txt
 }
 ##########Auto boot start###############
 start(){
