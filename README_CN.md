@@ -46,7 +46,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 6. 生成 [客戶端配置文件](https://trojan-gfw.github.io/trojan/config) (包括 Trojan-GFW 和 V2ray )
 8. [Nginx 效能優化](https://www.johnrosen1.com/nginx1/)
 9. [Trojan-GFW ***trojan://***  分享链接 以及 二维码 生成](https://github.com/trojan-gfw/trojan-url)
-10 [https 301 redirect](https://en.wikipedia.org/wiki/HTTP_301) 不會影響證書的續簽
+10  [https 301 redirect](https://en.wikipedia.org/wiki/HTTP_301) 不會影響證書的續簽
 11. [HSTS header](https://securityheaders.com/)
 12. ***隨機html偽裝模板選擇***
 13. [***完整的 IPv6 支持***](https://en.wikipedia.org/wiki/IPv6)
