@@ -2406,15 +2406,16 @@ chattr -i /etc/locale.gen || true
 zh_TW.UTF-8 UTF-8
 en_US.UTF-8 UTF-8
 EOF
-chattr +i /etc/locale.gen || true
+#chattr +i /etc/locale.gen || true
 #dpkg-reconfigure --frontend=noninteractive locales
 locale-gen zh_TW.UTF-8 || true
 update-locale || true
 chattr -i /etc/default/locale || true
 echo 'LC_ALL="zh_TW.UTF-8"'> /etc/default/locale || true
-chattr +i /etc/default/locale || true	
+#chattr +i /etc/default/locale || true	
 fi
-#export LANG="zh_TW.UTF-8"
+export LANGUAGE="zh_TW.UTF-8"
+export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
 clear
 ipinfo=$(curl -s https://ipinfo.io?token=56c375418c62c9)
