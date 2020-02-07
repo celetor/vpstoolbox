@@ -95,7 +95,7 @@ cat /etc/nginx/conf.d/trojan.conf
 cat /etc/v2ray/config.json
 cat /etc/aria.conf
 crontab -l
-sudo ~/.acme.sh/acme.sh --cron
+sudo ~/.acme.sh/acme.sh --cron //only if you use let's encrypt certificate
 timedatectl
 iptables -L -v
 ```
