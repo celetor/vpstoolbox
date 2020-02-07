@@ -4,11 +4,12 @@
 ## This script will help you set up a [Trojan-GFW](https://github.com/trojan-gfw/trojan) and an Ultimate Offline download server in an extremely fast way.
 ### Read The Fucking Manual: https://www.johnrosen1.com/trojan/
 
-### GUI Version (Everything has been included)
+### How to use
+For Debian/Ubuntu
 ```
 apt-get update && apt-get install sudo curl -y && sudo -i
 ```
-
+For Centos
 ```
 yum update -y && yum install sudo curl -y && sudo -i
 ```
