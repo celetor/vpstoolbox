@@ -2466,7 +2466,7 @@ function advancedMenu() {
 				prasejson
 				whiptail --title "Install Success" --textbox --scrolltext result 32 120
 				if [[ $install_bbrplus = 1 ]]; then
-				bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
+				bash -c "$(curl -fsSL https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh)"
 				fi
 				if (whiptail --title "Reboot" --yesno "重启 (reboot) 使配置生效 (to make the configuration effective )?" 8 78); then
 				reboot
