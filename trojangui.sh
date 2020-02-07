@@ -85,7 +85,7 @@ WARNING="33m"   # Warning message
 INFO="36m"     # Info message
 LINK="92m"     # Share Link Message
 #############################
-cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
+cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA256"
 cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
 #############################
 installacme(){
@@ -1079,9 +1079,7 @@ if [[ $install_netdata = 1 ]]; then
 fi
 clear
 #############################################
-if [[ ! -z $cert ]] && [[ ! -z $cert_key ]]; then
-	:
-	else
+if [[ -z $cert ]] && [[ -z $cert_key ]]; then
 	curl -s https://get.acme.sh | sh
 	~/.acme.sh/acme.sh --upgrade --auto-upgrade  
 fi
@@ -2428,6 +2426,7 @@ ipinfo=$(curl -s https://ipinfo.io?token=56c375418c62c9)
 myip=$(curl -s https://ipinfo.io/ip?token=56c375418c62c9)
 localip=$(ip a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+mkdir /etc/trojan || true
 cert=$(ls /etc/trojan | grep crt)
 cert_key=$(ls /etc/trojan | grep key)
 advancedMenu
