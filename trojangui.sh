@@ -85,7 +85,7 @@ WARNING="33m"   # Warning message
 INFO="36m"     # Info message
 LINK="92m"     # Share Link Message
 #############################
-cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
+cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
 cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
 #############################
 installacme(){
@@ -141,12 +141,13 @@ EOF
 	~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"  
 	~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
 	chmod +r /etc/trojan/trojan.key
-	cert=$(ls /etc/trojan | grep crt)
-	cert_key=$(ls /etc/trojan | grep key)
+	cert="trojan.crt"
+	cert_key="trojan.key"
 	fi
 }
 ###############User input################
 userinput(){
+	set +e
 whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇:
 若不確定，請保持默認配置並回車" 25 90 17 \
 "back" "返回上级菜单(Back to main menu)" off \
@@ -1290,13 +1291,14 @@ systemctl daemon-reload
 }
 #########Open ports########################
 openfirewall(){
+	set +e
 	colorEcho ${INFO} "设置 firewall"
 	#sh -c 'echo "1\n" | DEBIAN_FRONTEND=noninteractive update-alternatives --config iptables'
-	iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT || true
-	iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT || true
+	iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+	iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 	iptables -I OUTPUT -j ACCEPT || true
-	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT || true
-	ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT || true
+	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+	ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 	ip6tables -I OUTPUT -j ACCEPT || true
 	if [[ $dist = centos ]]; then
 			setenforce 0  || true
@@ -1304,16 +1306,16 @@ openfirewall(){
 SELINUX=disabled
 SELINUXTYPE=targeted
 EOF
-		firewall-cmd --zone=public --add-port=80/tcp --permanent  || true
-		firewall-cmd --zone=public --add-port=443/tcp --permanent  || true
-		systemctl stop firewalld || true
-		systemctl disable firewalld || true
+		firewall-cmd --zone=public --add-port=80/tcp --permanent
+		firewall-cmd --zone=public --add-port=443/tcp --permanent
+		systemctl stop firewalld
+		systemctl disable firewalld
  elif [[ $dist = ubuntu ]]; then
 		export DEBIAN_FRONTEND=noninteractive
-		apt-get install iptables-persistent -qq -y > /dev/null || true
+		apt-get install iptables-persistent -qq -y > /dev/null
  elif [[ $dist = debian ]]; then
 		export DEBIAN_FRONTEND=noninteractive 
-		apt-get install iptables-persistent -qq -y > /dev/null || true
+		apt-get install iptables-persistent -qq -y > /dev/null
  else
 	clear
 	TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
@@ -1322,12 +1324,13 @@ EOF
 }
 ########Nginx config for Trojan only##############
 nginxtrojan(){
+	set +e
 	clear
 	colorEcho ${INFO} "配置(configing) nginx"
-rm -rf /etc/nginx/sites-available/* || true
-rm -rf /etc/nginx/sites-enabled/* || true
-rm -rf /etc/nginx/conf.d/* || true
-touch /etc/nginx/conf.d/trojan.conf
+rm -rf /etc/nginx/sites-available/* &
+rm -rf /etc/nginx/sites-enabled/* &
+rm -rf /etc/nginx/conf.d/* &
+touch /etc/nginx/conf.d/trojan.conf &
 if [[ $install_trojan = 1 ]]; then
 	cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
@@ -1375,7 +1378,7 @@ server {
 		add_header Referrer-Policy "no-referrer";
 		add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
 		#add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
-		add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
+		#add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
 		if (\$http_user_agent = "") { return 444; }
 		if (\$host != "$domain") { return 404; }
 				location / {
@@ -1527,55 +1530,59 @@ rm -rf $htmlcode.zip
 }
 ##########Auto boot start###############
 start(){
+	set +e
 	colorEcho ${INFO} "启动(starting) trojan-gfw and nginx ing..."
-	systemctl daemon-reload || true
+	systemctl daemon-reload
 	if [[ $install_qbt = 1 ]]; then
-		systemctl start qbittorrent.service || true
+		systemctl start qbittorrent.service
 	fi
 	if [[ $install_tracker = 1 ]]; then
-		systemctl start tracker || true
+		systemctl start tracker
 	fi
 	if [[ $install_file = 1 ]]; then
-		systemctl start filebrowser || true
+		systemctl start filebrowser
 	fi
 	if [[ $install_aria = 1 ]]; then
-		systemctl start aria2 || true
+		systemctl start aria2
 	fi
 	if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
-		systemctl start v2ray || true
+		systemctl start v2ray
 	fi
 	if [[ $install_trojan = 1 ]]; then
-		systemctl start trojan || true
+		systemctl start trojan
 	fi
-	systemctl restart nginx || true
+	systemctl restart nginx
 }
 bootstart(){
+	set +e
 	colorEcho ${INFO} "设置开机自启(auto boot start) ing..."
-	systemctl daemon-reload || true
+	systemctl daemon-reload
 	if [[ $install_qbt = 1 ]]; then
-		systemctl enable qbittorrent.service || true
+		systemctl enable qbittorrent.service
 	fi
 	if [[ $install_tracker = 1 ]]; then
-		systemctl enable tracker || true
+		systemctl enable tracker
 	fi
 	if [[ $install_file = 1 ]]; then
-		systemctl enable filebrowser || true
+		systemctl enable filebrowser
 	fi
 	if [[ $install_aria = 1 ]]; then
-		systemctl enable aria2 || true
+		systemctl enable aria2
 	fi
 	if [[ $install_v2ray = 1 ]] || [[ $install_ss = 1 ]]; then
-		systemctl enable v2ray || true
+		systemctl enable v2ray
 	fi
 	if [[ $install_trojan = 1 ]]; then
-		systemctl enable trojan || true
+		systemctl enable trojan
 	fi
-	systemctl enable nginx || true
+	systemctl enable nginx
 }
 ############Set UP V2ray############
 installv2ray(){
+	set +e
 	bash <(curl -L -s https://install.direct/go.sh) > /dev/null
 	rm -rf /etc/v2ray/config.json
+	touch /etc/v2ray/config.json
 	uuid=$(/usr/bin/v2ray/v2ctl uuid)
 	if [[ $install_v2ray = 1 ]] && [[ $install_ss = 1 ]]; then
 	cat > "/etc/v2ray/config.json" << EOF
@@ -1837,6 +1844,7 @@ EOF
 }
 ##########V2ray Client Config################
 v2rayclient(){
+	set +e
 	if [[ $install_v2ray = 1 ]]; then
 	touch /etc/v2ray/client.json
 	cat > '/etc/v2ray/client.json' << EOF
@@ -1986,6 +1994,7 @@ EOF
 }
 ##########Check for update############
 checkupdate(){
+	set +e
 	cd
 	apt-get update
 	apt-get upgrade -y
@@ -2000,6 +2009,7 @@ checkupdate(){
 }
 ###########Trojan share link########
 sharelink(){
+	set +e
 	cd
 	clear
 	echo "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。" > result
@@ -2028,17 +2038,17 @@ sharelink(){
 		wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
 		chmod +x trojan-url.py
 		#./trojan-url.py -i /etc/trojan/client.json
-		./trojan-url.py -q -i /etc/trojan/client1.json -o $password1.png || true
-		./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png || true
-		cp $password1.png /usr/share/nginx/html/ || true
-		cp $password2.png /usr/share/nginx/html/ || true
+		./trojan-url.py -q -i /etc/trojan/client1.json -o $password1.png
+		./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png
+		cp $password1.png /usr/share/nginx/html/
+		cp $password2.png /usr/share/nginx/html/
 		echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 1" >> result
 		echo "https://$domain/$password1.png" >> result
 		echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 2" >> result
 		echo "https://$domain/$password2.png" >> result
 		rm -rf trojan-url.py
-		rm -rf $password1.png || true
-		rm -rf $password2.png || true
+		rm -rf $password1.png
+		rm -rf $password2.png
 		apt-get remove python3-qrcode -qq -y > /dev/null
 	fi
 		echo "相关链接（Related Links）" >> result
@@ -2091,7 +2101,7 @@ sharelink(){
 	fi
 	if [[ $install_v2ray = 1 ]]; then
 	echo
-	$pack install qrencode > /dev/null || true
+	$pack install qrencode > /dev/null
 	v2rayclient
 	colorEcho ${INFO} "你的(Your) V2ray 客户端(client) config profile"
 	echo "你的(Your) V2ray 客户端(client) config profile" >> result
@@ -2127,7 +2137,7 @@ EOF
 	fi
 	if [[ $install_ss = 1 ]]; then
 		echo
-		$pack install qrencode > /dev/null || true
+		$pack install qrencode > /dev/null
 		sspath2="$(echo "$sspath" | cut -c2-999)"
 		ssinfo="$(echo $ssmethod:$sspasswd@$domain:443 | base64)"
 		sslink1="ss://$ssinfo?plugin=v2ray%3Bpath%3D%2F$sspath2%3Bhost%3D$domain%3Btls#ss+v2ray-plugin"
@@ -2148,78 +2158,79 @@ EOF
 		echo "https://play.google.com/store/apps/details?id=fun.kitsunebi.kitsunebi4android" >> result
 		echo "https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray" >> result
 		echo "https://github.com/shadowsocks/v2ray-plugin" >> result
-		$pack remove qrencode > /dev/null || true
+		$pack remove qrencode > /dev/null
 	fi
 	echo "请手动运行 cat result 来重新显示结果" >> result
 }
 ##########Remove Trojan-Gfw##########
 uninstall(){
+	set +e
 	cd
 	if [[ -f /usr/local/bin/trojan ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) trojan?" 8 78); then
-		systemctl stop trojan || true
-		systemctl disable trojan || true
-		rm -rf /etc/systemd/system/trojan* || true
-		rm -rf /usr/local/etc/trojan/* || true
+		systemctl stop trojan
+		systemctl disable trojan
+		rm -rf /etc/systemd/system/trojan*
+		rm -rf /usr/local/etc/trojan/*
 		fi
 	fi
 	if [[ -f /usr/sbin/nginx ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) nginx?" 8 78); then
-		systemctl stop nginx || true
-		systemctl disable nginx || true
+		systemctl stop nginx
+		systemctl disable nginx
 		$pack remove nginx
-		rm -rf /etc/apt/sources.list.d/nginx.list || true
+		rm -rf /etc/apt/sources.list.d/nginx.list
 		fi
 	fi
 	if [[ -f /usr/sbin/dnsmasq ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) dnsmasq?" 8 78); then
 			if [[ $dist = centos ]]; then
-			yum remove dnsmasq -y -q || true
+			yum remove dnsmasq -y -q
 			else
-			apt purge dnsmasq -p -y || true
+			apt purge dnsmasq -p -y
 			fi
 		fi
 	fi
 	if [[ -f /usr/bin/qbittorrent-nox ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) qbittorrent?" 8 78); then
-		systemctl stop qbittorrent || true
-		systemctl disable qbittorrent || true
+		systemctl stop qbittorrent
+		systemctl disable qbittorrent
 		$pack remove qbittorrent-nox
 		fi
 	fi
 	if [[ -f /usr/bin/bittorrent-tracker ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) bittorrent-tracker?" 8 78); then
-		systemctl stop tracker || true
-		systemctl disable tracker || true
-		rm -rf /usr/bin/bittorrent-tracker || true
+		systemctl stop tracker
+		systemctl disable tracker
+		rm -rf /usr/bin/bittorrent-tracker
 		fi
 	fi
 	if [[ -f /usr/local/bin/aria2c ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) aria2?" 8 78); then
-		systemctl stop aria || true
-		systemctl disable aria || true
-		rm -rf /etc/aria.conf || true
-		rm -rf /usr/local/bin/aria2c || true
+		systemctl stop aria
+		systemctl disable aria
+		rm -rf /etc/aria.conf
+		rm -rf /usr/local/bin/aria2c
 		fi
 	fi
 	if [[ -f /usr/local/bin/filebrowser ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) filebrowser?" 8 78); then
-		systemctl stop filebrowser || true
-		systemctl disable filebrowser || true
+		systemctl stop filebrowser
+		systemctl disable filebrowser
 		rm /usr/local/bin/filebrowser
 		fi
 	fi
 	if [[ -f /usr/sbin/netdata ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) netdata?" 8 78); then
-		systemctl stop netdata || true
-		systemctl disable netdata || true
+		systemctl stop netdata
+		systemctl disable netdata
 		rm -rf /usr/sbin/netdata
 		fi
 	fi
 	if [[ -f /usr/bin/v2ray/v2ray ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) v2ray/ss?" 8 78); then
-		systemctl stop v2ray  || true
-		systemctl disable v2ray || true
+		systemctl stop v2ray
+		systemctl disable v2ray
 		wget https://install.direct/go.sh -q
 		bash go.sh --remove
 		rm go.sh
@@ -2227,11 +2238,11 @@ uninstall(){
 	fi
 	if [[ -f /usr/bin/tor ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) tor?" 8 78); then
-		systemctl stop tor  || true
-		systemctl disable tor || true
-		systemctl stop tor@default || true
+		systemctl stop tor
+		systemctl disable tor
+		systemctl stop tor@default
 		$pack remove tor
-		rm -rf /etc/apt/sources.list.d/tor.list || true
+		rm -rf /etc/apt/sources.list.d/tor.list
 		fi
 	fi
 	if (whiptail --title "api" --yesno "卸载 (uninstall) acme.sh?" 8 78); then
@@ -2243,6 +2254,7 @@ uninstall(){
 }
 ###########Status#################
 statuscheck(){
+	set +e
 	if [[ -f /usr/local/bin/trojan ]]; then
 		trojanstatus=$(systemctl is-active trojan)
 		if [[ $trojanstatus == active ]]; then
