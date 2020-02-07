@@ -122,7 +122,7 @@ isresolved(){
 issuecert(){
 	clear
 	colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
-	if [[ -f /etc/trojan/trojan.crt ]]; then
+	if [[ ! -z $cert ]] && [[ ! -z $cert_key ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else
 	mkdir /etc/trojan/ || true &
@@ -143,6 +143,8 @@ EOF
 	~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"  
 	~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
 	chmod +r /etc/trojan/trojan.key
+	cert=$(ls /etc/trojan | grep crt)
+	cert_key=$(ls /etc/trojan | grep key)
 	fi
 }
 ###############User input################
@@ -349,7 +351,10 @@ done
 			;;
 			esac
 		fi
-if (whiptail --title "api" --yesno --defaultno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
+if [[ ! -z $cert ]] && [[ ! -z $cert_key ]]; then
+		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
+		else		
+	if (whiptail --title "api" --yesno --defaultno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
     dns_api=1
     APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按空格來選擇" 15 78 6 \
 "1" "Cloudflare" \
@@ -418,6 +423,7 @@ if (whiptail --title "api" --yesno --defaultno "使用 (use) api?推荐，可用
     ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
     chmod +r /etc/trojan/trojan.key
     fi
+fi
 }
 ###############OS detect####################
 osdist(){
@@ -563,7 +569,7 @@ installdependency(){
  fi
  clear
 #############################################
-if [[ -f /etc/trojan/trojan.crt ]] || [[ $dns_api == 1 ]]; then
+if [[ $cert != "" ]] || [[ $dns_api == 1 ]]; then
 	:
 	else
 	if isresolved $domain
@@ -1073,7 +1079,7 @@ if [[ $install_netdata = 1 ]]; then
 fi
 clear
 #############################################
-if [[ -f /etc/trojan/trojan.crt ]]; then
+if [[ ! -z $cert ]] && [[ ! -z $cert_key ]]; then
 	:
 	else
 	curl -s https://get.acme.sh | sh
@@ -1110,8 +1116,8 @@ if [[ $install_trojan = 1 ]]; then
     ],
     "log_level": 0,
     "ssl": {
-        "cert": "/etc/trojan/trojan.crt",
-        "key": "/etc/trojan/trojan.key",
+        "cert": "/etc/trojan/$cert",
+        "key": "/etc/trojan/$cert_key",
         "key_password": "",
         "cipher": "$cipher_server",
         "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
@@ -1346,8 +1352,8 @@ server {
 		listen 443 ssl http2;
 		listen [::]:443 ssl http2;
 
-		ssl_certificate       /etc/trojan/trojan.crt;
-		ssl_certificate_key   /etc/trojan/trojan.key;
+		ssl_certificate       /etc/trojan/$cert;
+		ssl_certificate_key   /etc/trojan/$cert_key;
 		ssl_protocols         TLSv1.3 TLSv1.2;
 		ssl_ciphers $cipher_server;
 		ssl_prefer_server_ciphers off;
@@ -2422,4 +2428,6 @@ ipinfo=$(curl -s https://ipinfo.io?token=56c375418c62c9)
 myip=$(curl -s https://ipinfo.io/ip?token=56c375418c62c9)
 localip=$(ip a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+cert=$(ls /etc/trojan | grep crt)
+cert_key=$(ls /etc/trojan | grep key)
 advancedMenu
