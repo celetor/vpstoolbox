@@ -1327,10 +1327,10 @@ nginxtrojan(){
 	set +e
 	clear
 	colorEcho ${INFO} "配置(configing) nginx"
-rm -rf /etc/nginx/sites-available/* &
-rm -rf /etc/nginx/sites-enabled/* &
-rm -rf /etc/nginx/conf.d/* &
-touch /etc/nginx/conf.d/trojan.conf &
+rm -rf /etc/nginx/sites-available/*
+rm -rf /etc/nginx/sites-enabled/*
+rm -rf /etc/nginx/conf.d/*
+touch /etc/nginx/conf.d/trojan.conf
 if [[ $install_trojan = 1 ]]; then
 	cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
@@ -2377,11 +2377,11 @@ function advancedMenu() {
 				installdependency
 				openfirewall
 				issuecert
-				nginxtrojan || true
+				nginxtrojan
 				bootstart
 				start
-				sharelink || true
-				rm results || true
+				sharelink
+				rm results
 				whiptail --title "Install Success" --textbox --scrolltext result 32 120
 				if [[ $install_bbrplus = 1 ]]; then
 				bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
