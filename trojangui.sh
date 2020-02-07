@@ -2224,21 +2224,17 @@ EOF
 		echo
 		$pack install qrencode > /dev/null
 		sspath2="$(echo "$sspath" | cut -c2-999)"
-		ssinfo="$(echo $ssmethod:$sspasswd@$domain:443 | base64)"
-		sslink1="ss://$ssinfo?plugin=v2ray%3Bpath%3D%2F$sspath2%3Bhost%3D$domain%3Btls#ss+v2ray-plugin"
-		sslink2="ss://$(echo $ssmethod:$sspasswd | base64)@$domain:443#$domain"
+		ssinfo="$(echo $ssmethod:$sspasswd | base64)"
+		sslink1="ss://$ssinfo@$domain:443?plugin=v2ray%3Bpath%3D%2F$sspath2%3Bmux%3D1%3Bhost%3D$domain%3Btls#ss+v2ray-plugin"
 		qrencode -l L -v 1 -o /usr/share/nginx/html/qr1-$sspasswd.png "$sslink1"
-		qrencode -l L -v 1 -o /usr/share/nginx/html/qr2-$sspasswd.png "$sslink2"
 		echo "" >> result
 		echo "你的SS信息，非分享链接，仅供参考(Your Shadowsocks Information)" >> result
 		echo "$ssmethod:$sspasswd@https://$domain:443$sspath" >> result
 		echo "" >> result
 		echo "你的SS分享链接，仅供参考(Your Shadowsocks Share link)" >> result
 		echo "$sslink1" >> result
-		echo "$sslink2" >> result
 		echo "请访问下面的链接(Link Below)获取你的SS二维码" >> result
 		echo "https://$domain/qr1-$sspasswd.png" >> result
-		echo "https://$domain/qr2-$sspasswd.png" >> result
 		echo "相关链接（Related Links）" >> result
 		echo "https://play.google.com/store/apps/details?id=fun.kitsunebi.kitsunebi4android" >> result
 		echo "https://play.google.com/store/apps/details?id=com.github.shadowsocks.plugin.v2ray" >> result
