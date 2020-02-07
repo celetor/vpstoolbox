@@ -510,16 +510,19 @@ set -e
 		dist=centos
 		pack="yum -y -q"
 		yum update -y
+		yum install -y epel-release
 		yum install sudo newt curl e2fsprogs jq -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Red; then
 		dist=centos
 		pack="yum -y -q"
 		yum update -y
+		yum install -y epel-release
 		yum install sudo newt curl e2fsprogs jq -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Fedora; then
 		dist=centos
 		pack="yum -y -q"
 		yum update -y
+		yum install -y epel-release
 		yum install sudo newt curl e2fsprogs jq -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 		dist=ubuntu
