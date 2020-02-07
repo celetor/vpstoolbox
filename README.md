@@ -13,7 +13,7 @@ For Centos
 ```
 yum update -y && yum install sudo curl -y && sudo -i
 ```
-
+Then
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
