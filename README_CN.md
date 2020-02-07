@@ -29,6 +29,8 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 ```
 5. 請 **手动将Qbittorrent下载路径改为 /usr/share/nginx/qbt/ !**
 
+6. 若使用自定义证书只需与密钥一起放置于/etc/trojan文件夹中即可，无需修改名称 。
+
 #### [Telegram](https://telegram.org/) 頻道 以及 群組
 
 ### https://t.me/johnrosen1
