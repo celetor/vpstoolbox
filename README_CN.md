@@ -3,7 +3,7 @@
 ## 此Bash Script将帮助你以极快的速度从零开始打造一台全能的代理+下載+監控一体化的伺服器.
 ### 代理教程: https://www.johnrosen1.com/trojan/
 
-### GUI 版本 (所有前期代码皆已包含)
+### 使用方法
 安裝依賴(Debian/Ubuntu)
 ```
 apt-get update && apt-get install sudo whiptail curl locales -y && sudo -i
