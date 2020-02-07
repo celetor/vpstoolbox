@@ -550,8 +550,12 @@ installdependency(){
 		colorEcho ${INFO} "Updating system"
 		$pack update
 		mkdir /etc/trojan || true
-		cert=$(ls /etc/trojan | grep crt) || true
-		cert_key=$(ls /etc/trojan | grep key) || true
+		if [ -f /etc/trojan/*.crt ]; then
+			mv /etc/trojan/*.crt /etc/trojan/trojan.crt || true
+		fi
+		if [ -f /etc/trojan/*.key ]; then
+			mv /etc/trojan/*.key /etc/trojan/trojan.key || true
+		fi
 ###########################################
 	clear
 	colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
