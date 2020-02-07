@@ -2381,7 +2381,7 @@ function advancedMenu() {
 				bootstart
 				start
 				sharelink
-				rm results
+				rm results || true
 				whiptail --title "Install Success" --textbox --scrolltext result 32 120
 				if [[ $install_bbrplus = 1 ]]; then
 				bash -c "$(curl -fsSL https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh)"
