@@ -1,6 +1,4 @@
 #!/bin/bash
-set -e
-
 clear
 
 if [[ $(id -u) != 0 ]]; then
