@@ -2351,6 +2351,11 @@ uninstall(){
 	if (whiptail --title "api" --yesno "卸载 (uninstall) acme.sh?" 8 78); then
 		~/.acme.sh/acme.sh --uninstall
 	fi
+	cat > '/root/.trojan/config.json' << EOF
+{
+  "installed": "0"
+}
+EOF
 	apt-get update
 	systemctl daemon-reload || true
 	colorEcho ${INFO} "卸载完成"
