@@ -2495,6 +2495,7 @@ crontab -l | grep -q '0 * * * * bash /root/.trojan/autoupdate.sh'  && echo 'cron
 }
 ###################################
 logcheck(){
+	set +e
 	readconfig
 	clear
 	if [[ $install_trojan == 1 ]]; then
