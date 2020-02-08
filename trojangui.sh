@@ -2513,6 +2513,11 @@ logcheck(){
 	cat /var/log/nginx/access.log
 }
 ##################################
+bandwithusage(){
+	set +e
+	tail -n +3 /proc/net/dev | awk '{print $1 " " $2 " " $10}' | numfmt --to=iec --field=2,3
+}
+##################################
 clear
 function advancedMenu() {
 		ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/
@@ -2520,10 +2525,11 @@ function advancedMenu() {
 				"1" "安裝(Install)" \
 				"2" "结果(Result)" \
 				"3" "日志(Log)" \
-				"4" "状态(Status)" \
-				"5" "更新(Update)" \
-				"6" "卸載(Uninstall)" \
-				"7" "退出(Quit)" 3>&1 1>&2 2>&3)
+				"4" "流量(Bandwith)" \
+				"5" "状态(Status)" \
+				"6" "更新(Update)" \
+				"7" "卸載(Uninstall)" \
+				"8" "退出(Quit)" 3>&1 1>&2 2>&3)
 		case $ADVSEL in
 				1)
 				cd
@@ -2557,19 +2563,23 @@ function advancedMenu() {
 				;;
 				4)
 				cd
-				statuscheck
+				bandwithusage
 				;;
 				5)
+				cd
+				statuscheck
+				;;
+				6)
 				cd
 				checkupdate
 				colorEcho ${SUCCESS} "RTFM: https://www.johnrosen1.com/trojan/"
 				;;
-				6)
+				7)
 				cd
 				uninstall
 				colorEcho ${SUCCESS} "Remove complete"
 				;;
-				7)
+				8)
 				exit
 				whiptail --title "脚本已退出" --msgbox "脚本已退出(Bash Exited) RTFM: https://www.johnrosen1.com/trojan/" 8 78
 				;;
