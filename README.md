@@ -2,7 +2,6 @@
 # Trojan-GFW Script
 # [中文文檔](https://github.com/johnrosen1/trojan-gfw-script/blob/master/README_CN.md)
 ## This script will help you set up a [Trojan-GFW](https://github.com/trojan-gfw/trojan) and an Ultimate Offline download server in an extremely fast way.
-### Read The Fucking Manual: https://www.johnrosen1.com/trojan/
 
 ### How to use
 For Debian/Ubuntu
