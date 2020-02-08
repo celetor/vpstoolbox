@@ -2498,13 +2498,18 @@ logcheck(){
 	readconfig
 	clear
 	if [[ $install_trojan == 1 ]]; then
+		colorEcho ${INFO} "Trojan Log"
 		journalctl -a -u trojan.service
 		cat /root/.trojan/update.log
 	fi
 	if [[ $install_v2ray == 1 ]] || [[ $install_ss == 1 ]]; then
+		colorEcho ${INFO} "V2ray/ss Log"
 		cat /var/log/v2ray/error.log
 		cat /var/log/v2ray/access.log
 	fi
+	colorEcho ${INFO} "Nginx Log"
+	cat /var/log/nginx/error.log
+	cat /var/log/nginx/access.log
 }
 ##################################
 clear
