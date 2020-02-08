@@ -511,29 +511,29 @@ set -e
 		pack="yum -y -q"
 		yum update -y
 		yum install -y epel-release
-		yum install sudo newt curl e2fsprogs jq redhat-lsb-core -y -q || true
+		yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Red; then
 		dist=centos
 		pack="yum -y -q"
 		yum update -y
 		yum install -y epel-release
-		yum install sudo newt curl e2fsprogs jq redhat-lsb-core -y -q || true
+		yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Fedora; then
 		dist=centos
 		pack="yum -y -q"
 		yum update -y
 		yum install -y epel-release
-		yum install sudo newt curl e2fsprogs jq redhat-lsb-core -y -q || true
+		yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 		dist=ubuntu
 		pack="apt-get -y -qq"
 		apt-get update -q
-		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq -y -qq > /dev/null || true
+		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq > /dev/null || true
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 		dist=debian
 		pack="apt-get -y -qq"
 		apt-get update -q
-		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq -y -qq > /dev/null || true
+		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq > /dev/null || true
  else
 	TERM=ansi whiptail --title "OS SUPPORT" --infobox "OS NOT SUPPORTED, couldn't install Trojan-gfw" 8 78
 		exit 1;
@@ -637,6 +637,25 @@ installdependency(){
 		if [ -f /etc/trojan/*.key ]; then
 			mv /etc/trojan/*.key /etc/trojan/trojan.key || true
 		fi
+	if [[ $install_status == 0 ]]; then
+		caddystatus=$(systemctl is-active caddy)
+		if [[ $caddystatus == active ]]; then
+			systemctl stop caddy
+			systemctl disable caddy
+		fi
+		apache2status=$(systemctl is-active apache2)
+		if [[ $caddystatus == active ]]; then
+			systemctl stop apache2
+			systemctl disable apache2
+		fi
+		httpdstatus=$(systemctl is-active httpd)
+		if [[ $httpdstatus == active ]]; then
+			systemctl stop httpd
+			systemctl disable httpd
+		fi
+		(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 80 open" && kill $(lsof -t -i:80) || echo "Moving on"
+		(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 443 open" && kill $(lsof -t -i:443) || echo "Moving on"
+	fi
 ###########################################
 	clear
 	colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
@@ -656,7 +675,7 @@ installdependency(){
  fi
  clear
 #############################################
-if [[ $cert != "" ]] || [[ $dns_api == 1 ]]; then
+if [[ -f /etc/trojan/trojan.crt ]] || [[ $dns_api == 1 ]]; then
 	:
 	else
 	if isresolved $domain
@@ -720,6 +739,8 @@ ExecStart=/usr/sbin/nginx
 ExecReload=/usr/sbin/nginx -s reload
 ExecStop=/bin/kill -s QUIT $MAINPID
 PrivateTmp=true
+Restart=on-failure
+RestartSec=3s
 
 [Install]
 WantedBy=multi-user.target
@@ -911,14 +932,14 @@ if [[ $install_aria = 1 ]]; then
 			clear
 			colorEcho ${INFO} "安装aria2(Install aria2 ing)"
 			if [[ $dist = centos ]]; then
-			yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev libtool libuv1-dev libcppunit-dev || true
+			yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev || true
 			wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz -q 
 			xz --decompress aria2c_centos.xz
 			cp aria2c_centos /usr/local/bin/aria2c
 			chmod +x /usr/local/bin/aria2c
 			rm aria2c_centos
 				else
-			apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev libtool libuv1-dev libcppunit-dev -qq -y
+			apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -qq -y
 			wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz -q 
 			xz --decompress aria2c.xz
 			cp aria2c /usr/local/bin/aria2c
