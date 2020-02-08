@@ -179,15 +179,15 @@ EOF
 ################################################
 readconfig(){
 	    domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
-        install_trojan="$( jq -r '.domain' "/root/.trojan/config.json" )"
-        install_qbt="$( jq -r '.domain' "/root/.trojan/config.json" )"
-        install_tracker="$( jq -r '.domain' "/root/.trojan/config.json" )"
-        install_aria="$( jq -r '.domain' "/root/.trojan/config.json" )"
-        install_file="$( jq -r '.domain' "/root/.trojan/config.json" )"
-        install_netdata="$( jq -r '.domain' "/root/.trojan/config.json" )"
-        install_v2ray="$( jq -r '.domain' "/root/.trojan/config.json" )"
-        install_tor="$( jq -r '.domain' "/root/.trojan/config.json" )"
-        install_ss="$( jq -r '.domain' "/root/.trojan/config.json" )"
+        install_trojan="$( jq -r '.install_trojan' "/root/.trojan/config.json" )"
+        install_qbt="$( jq -r '.install_qbt' "/root/.trojan/config.json" )"
+        install_tracker="$( jq -r '.install_tracker' "/root/.trojan/config.json" )"
+        install_aria="$( jq -r '.install_aria' "/root/.trojan/config.json" )"
+        install_file="$( jq -r '.install_file' "/root/.trojan/config.json" )"
+        install_netdata="$( jq -r '.install_netdata' "/root/.trojan/config.json" )"
+        install_v2ray="$( jq -r '.install_v2ray' "/root/.trojan/config.json" )"
+        install_tor="$( jq -r '.install_tor' "/root/.trojan/config.json" )"
+        install_ss="$( jq -r '.install_ss' "/root/.trojan/config.json" )"
         password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
         password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
         qbtpath="$( jq -r '.qbtpath' "/root/.trojan/config.json" )"
@@ -660,9 +660,9 @@ installdependency(){
 	clear
 	colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
 	if [[ $dist = centos ]]; then
-		yum install -y -q sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd dbus xz
+		yum install -y -q sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd dbus xz cron || true
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
-		apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common -qq -y
+		apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron -qq -y
 		if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]] || [[ $(lsb_release -cs) == jessie ]]; then
 			TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "你的操作系统不支持 python3-qrcode,Skipping generating QR code!" 8 78
 			else
@@ -2467,16 +2467,57 @@ statuscheck(){
 	colorEcho ${INFO} "状态检查完成(Status Check complete)"
 }
 ##################################
+autoupdate(){
+	if [[ $install_trojan == 1 ]]; then
+cat > '/root/.trojan/autoupdate.sh' << EOF
+#!/bin/bash
+trojanversion=$(curl -s "https://api.github.com/repos/trojan-gfw/trojan/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-999)
+/usr/local/bin/trojan -v &> /root/.trojan/trojan_version.txt
+if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
+        echo "no update required" >> /root/.trojan/update.log
+        else
+        echo "update required" >> /root/.trojan/update.log
+        wget -q https://github.com/trojan-gfw/trojan/releases/download/v\$trojanversion/trojan-\$trojanversion-linux-amd64.tar.xz
+        tar -xf trojan-\$trojanversion-linux-amd64.tar.xz
+        rm -rf trojan-\$trojanversion-linux-amd64.tar.xz
+        cd trojan
+        chmod +x trojan
+        cp -f trojan /usr/local/bin/trojan
+        systemctl restart trojan
+        cd
+        rm -rf trojan
+        echo "Update complete" >> /root/.trojan/update.log
+fi
+EOF
+crontab -l | grep -q '0 * * * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
+#echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
+	fi
+}
+###################################
+logcheck(){
+	readconfig
+	clear
+	if [[ $install_trojan == 1 ]]; then
+		journalctl -a -u trojan.service
+		cat /root/.trojan/update.log
+	fi
+	if [[ $install_v2ray == 1 ]] || [[ $install_ss == 1 ]]; then
+		cat /var/log/v2ray/error.log
+		cat /var/log/v2ray/access.log
+	fi
+}
+##################################
 clear
 function advancedMenu() {
 		ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --title "Trojan-Gfw Script Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/
 运行此脚本前请在控制面板中开启80 443端口并关闭Cloudflare CDN!" 13 78 4 \
 				"1" "安裝(Install)" \
 				"2" "结果(Result)" \
-				"3" "状态(Status)" \
-				"4" "更新(Update)" \
-				"5" "卸載(Uninstall)" \
-				"6" "退出(Quit)" 3>&1 1>&2 2>&3)
+				"3" "日志(Log)" \
+				"4" "状态(Status)" \
+				"5" "更新(Update)" \
+				"6" "卸載(Uninstall)" \
+				"7" "退出(Quit)" 3>&1 1>&2 2>&3)
 		case $ADVSEL in
 				1)
 				cd
@@ -2491,6 +2532,7 @@ function advancedMenu() {
 				sharelink
 				rm results || true
 				prasejson
+				autoupdate
 				whiptail --title "Install Success" --textbox --scrolltext result 32 120
 				if [[ $install_bbrplus = 1 ]]; then
 				bash -c "$(curl -fsSL https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh)"
@@ -2505,19 +2547,23 @@ function advancedMenu() {
 				;;
 				3)
 				cd
-				statuscheck
+				logcheck
 				;;
 				4)
+				cd
+				statuscheck
+				;;
+				5)
 				cd
 				checkupdate
 				colorEcho ${SUCCESS} "RTFM: https://www.johnrosen1.com/trojan/"
 				;;
-				5)
+				6)
 				cd
 				uninstall
 				colorEcho ${SUCCESS} "Remove complete"
 				;;
-				6)
+				7)
 				exit
 				whiptail --title "脚本已退出" --msgbox "脚本已退出(Bash Exited) RTFM: https://www.johnrosen1.com/trojan/" 8 78
 				;;
