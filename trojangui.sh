@@ -2515,7 +2515,9 @@ logcheck(){
 ##################################
 bandwithusage(){
 	set +e
+	colorEcho ${INFO} "流量使用情况(bandwithusage) 接收(Receive) 发送(Transmit)"
 	tail -n +3 /proc/net/dev | awk '{print $1 " " $2 " " $10}' | numfmt --to=iec --field=2,3
+	colorEcho ${INFO} "Done !"
 }
 ##################################
 clear
