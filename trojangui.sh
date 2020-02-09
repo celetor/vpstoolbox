@@ -110,12 +110,72 @@ LINK="92m"     # Share Link Message
 cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-AES256-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
 cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
 #############################
+setlanguage(){
+	set +e
+	if [[ ! -d /root/.trojan/ ]]; then
+		mkdir /root/.trojan/
+	fi
+	language="$( jq -r '.language' "/root/.trojan/language.json" )"
+	while [[ -z $language ]]; do
+	export LANGUAGE="C.UTF-8"
+	export LANG="C.UTF-8"
+	export LC_ALL="C.UTF-8"
+	if (whiptail --title "使用中文 or English?" --yes-button "中文" --no-button "English" --yesno "使用中文或英文(Use Chinese or English)?" 8 78); then
+	chattr -i /etc/locale.gen
+	cat > '/etc/locale.gen' << EOF
+zh_TW.UTF-8 UTF-8
+en_US.UTF-8 UTF-8
+EOF
+language="cn"
+locale-gen
+update-locale
+chattr -i /etc/default/locale
+echo 'LC_ALL="zh_TW.UTF-8"'> /etc/default/locale
+	cat > '/root/.trojan/language.json' << EOF
+{
+  "language": "$language"
+}
+EOF
+	else
+	chattr -i /etc/locale.gen
+	cat > '/etc/locale.gen' << EOF
+zh_TW.UTF-8 UTF-8
+en_US.UTF-8 UTF-8
+EOF
+language="en"
+locale-gen
+update-locale
+chattr -i /etc/default/locale
+echo 'LC_ALL="en_US.UTF-8"'> /etc/default/locale
+	cat > '/root/.trojan/language.json' << EOF
+{
+  "language": "$language"
+}
+EOF
+fi
+done
+if [[ $language == "cn" ]]; then
+export LANGUAGE="zh_TW.UTF-8"
+export LANG="zh_TW.UTF-8"
+export LC_ALL="zh_TW.UTF-8"
+	else
+export LANGUAGE="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+fi
+#chattr +i /etc/locale.gen || true
+#dpkg-reconfigure --frontend=noninteractive locales
+#chattr +i /etc/default/locale || true
+}
+#############################
 installacme(){
+	set +e
 	curl -s https://get.acme.sh | sh
 	~/.acme.sh/acme.sh --upgrade --auto-upgrade
 }
 #############################
 colorEcho(){
+	set +e
 		COLOR=$1
 		echo -e "\033[${COLOR}${@:2}\033[0m"
 }
@@ -228,7 +288,6 @@ readconfig(){
 ####################################
 userinput(){
 	set +e
-	mkdir /root/.trojan/
 if [ ! -f /root/.trojan/config.json ]; then
 		cat > '/root/.trojan/config.json' << EOF
 {
@@ -378,7 +437,7 @@ fi
 			trackerpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Bittorrent-Tracker路径并按回车" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
 			done
 			while [[ -z $trackerstatuspath ]]; do
-			trackerstatuspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Bittorrent-Tracker状态路径并按回车" 8 78 /status --title "Bittorrent-Tracker download path input" 3>&1 1>&2 2>&3)
+			trackerstatuspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Bittorrent-Tracker状态路径并按回车" 8 78 /status --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
 			done
 		fi
 ####################################
@@ -408,10 +467,10 @@ fi
 ####################################
 		if [[ $install_v2ray = 1 ]]; then
 			while [[ -z $path ]]; do
-			path=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "Websocket path input" 3>&1 1>&2 2>&3)
+			path=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "v2ray Websocket path input" 3>&1 1>&2 2>&3)
 			done
 			while [[ -z $alterid ]]; do
-			alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "alterid input" 3>&1 1>&2 2>&3)
+			alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "v2ray alterid input" 3>&1 1>&2 2>&3)
 			done
 		fi
 ####################################
@@ -434,7 +493,7 @@ done
 			sspasswd=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 40 ; echo '' )
 			fi
 			done
-			ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option RTFM: https://www.johnrosen1.com/trojan/" 12 78 3 \
+			ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option" 12 78 3 \
 			"1" "aes-128-gcm" \
 			"2" "aes-256-gcm" \
 			"3" "chacha20-poly1305" 3>&1 1>&2 2>&3)
@@ -453,9 +512,9 @@ done
 if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else		
-	if (whiptail --title "api" --yesno --defaultno "使用 (use) api?推荐，可用于申请wildcard证书" 8 78); then
+	if (whiptail --title "api" --yesno --defaultno "使用 (use) api申请证书(to issue certificate)?推荐，可用于申请wildcard证书" 8 78); then
     dns_api=1
-    APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按空格來選擇" 15 78 6 \
+    APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
 "1" "Cloudflare" \
 "2" "Namesilo" \
 "3" "Aliyun" \
@@ -528,6 +587,7 @@ fi
 osdist(){
 
 set -e
+colorEcho ${INFO} "初始化中(initializing)"
  if cat /etc/*release | grep ^NAME | grep -q CentOS; then
 		dist=centos
 		pack="yum -y -q"
@@ -550,14 +610,14 @@ set -e
 		dist=ubuntu
 		pack="apt-get -y -qq"
 		apt-get update -q
-		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq > /dev/null || true
+		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq || true
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 		dist=debian
 		pack="apt-get -y -qq"
 		apt-get update -q
-		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq > /dev/null || true
+		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq || true
  else
-	TERM=ansi whiptail --title "OS SUPPORT" --infobox "OS NOT SUPPORTED, couldn't install Trojan-gfw" 8 78
+	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
 		exit 1;
  fi
 }
@@ -731,7 +791,7 @@ fi
 	yum install nginx -y -q
 	systemctl stop nginx || true
  elif [[ $dist = debian ]] || [[ $dist = ubuntu ]]; then
-	wget https://nginx.org/keys/nginx_signing.key -q
+ 	curl -LO --progress-bar https://nginx.org/keys/nginx_signing.key
 	apt-key add nginx_signing.key
 	rm -rf nginx_signing.key
 	touch /etc/apt/sources.list.d/nginx.list
@@ -769,7 +829,7 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 if [[ $dist = centos ]]; then
-	wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx_centos -q
+	curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx_centos
 	cp -f nginx_centos /usr/sbin/nginx
 	rm nginx_centos
 	mkdir /var/cache/nginx/ || true
@@ -799,7 +859,6 @@ http {
 	default_type application/octet-stream;
 
 	access_log /var/log/nginx/access.log;
-
 
 	log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
 		'\$status $body_bytes_sent "\$http_referer" '
@@ -955,14 +1014,14 @@ if [[ $install_aria = 1 ]]; then
 			colorEcho ${INFO} "安装aria2(Install aria2 ing)"
 			if [[ $dist = centos ]]; then
 			yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev || true
-			wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz -q 
+			curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz
 			xz --decompress aria2c_centos.xz
 			cp aria2c_centos /usr/local/bin/aria2c
 			chmod +x /usr/local/bin/aria2c
 			rm aria2c_centos
 				else
 			apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -qq -y
-			wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz -q 
+			curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz
 			xz --decompress aria2c.xz
 			cp aria2c /usr/local/bin/aria2c
 			chmod +x /usr/local/bin/aria2c
@@ -1424,12 +1483,12 @@ openfirewall(){
 	#sh -c 'echo "1\n" | DEBIAN_FRONTEND=noninteractive update-alternatives --config iptables'
 	iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 	iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
-	iptables -I OUTPUT -j ACCEPT || true
+	iptables -I OUTPUT -j ACCEPT
 	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 	ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
-	ip6tables -I OUTPUT -j ACCEPT || true
+	ip6tables -I OUTPUT -j ACCEPT
 	if [[ $dist = centos ]]; then
-			setenforce 0  || true
+			setenforce 0
 					cat > '/etc/selinux/config' << EOF
 SELINUX=disabled
 SELINUXTYPE=targeted
@@ -1652,8 +1711,8 @@ fi
 nginx -t
 systemctl restart nginx || true
 htmlcode=$(shuf -i 1-3 -n 1)
-wget https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/$htmlcode.zip -q
-unzip -o $htmlcode.zip -d /usr/share/nginx/html/ > /dev/null
+curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/$htmlcode.zip
+unzip -o $htmlcode.zip -d /usr/share/nginx/html/
 rm -rf $htmlcode.zip
 rm -rf /usr/share/nginx/html/readme.txt
 }
@@ -2128,7 +2187,7 @@ checkupdate(){
 	apt-get update
 	apt-get upgrade -y
 	if [[ -f /usr/bin/v2ray/v2ray ]]; then
-		wget https://install.direct/go.sh -q
+		curl -LO --progress-bar https://install.direct/go.sh
 		bash go.sh
 		rm go.sh
 	fi
@@ -2190,7 +2249,7 @@ sharelink(){
 		echo "你的Qbittorrent信息(Your Qbittorrent Information)" >> result
 		echo "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin" >> result
 		echo "请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！" >> result
-		echo "请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密 ！！！否则會被迅雷吸血！！！" >> result
+		echo "请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！" >> result
 		echo "请手动在Qbittorrent中添加Trackers https://github.com/ngosang/trackerslist ！！！否则速度不會快的！！！" >> result
 	fi
 	if [[ $install_tracker = 1 ]]; then
@@ -2285,7 +2344,6 @@ EOF
 		echo "https://github.com/shadowsocks/v2ray-plugin" >> result
 		$pack remove qrencode > /dev/null
 	fi
-	echo "请手动运行 cat result 来重新显示结果" >> result
 }
 ##########Remove Trojan-Gfw##########
 uninstall(){
@@ -2356,7 +2414,7 @@ uninstall(){
 		if (whiptail --title "api" --yesno "卸载 (uninstall) v2ray/ss?" 8 78); then
 		systemctl stop v2ray
 		systemctl disable v2ray
-		wget https://install.direct/go.sh -q
+		wget https://install.direct/go.sh -q --show-progress
 		bash go.sh --remove
 		rm go.sh
 		fi
@@ -2376,6 +2434,11 @@ uninstall(){
 	cat > '/root/.trojan/config.json' << EOF
 {
   "installed": "0"
+}
+EOF
+	cat > '/root/.trojan/license.json' << EOF
+{
+  "license": "0"
 }
 EOF
 	apt-get update
@@ -2544,7 +2607,7 @@ bandwithusage(){
 ##################################
 clear
 function advancedMenu() {
-		ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --title "VPS ToolBox Menu" --menu --nocancel "Choose an option:
+		ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --title "VPS ToolBox Menu" --menu --nocancel "Choose an option: https://github.com/johnrosen1/trojan-gfw-script
 运行此脚本前请在控制面板中开启80 443端口并关闭Cloudflare CDN!" 13 78 4 \
 				"1" "安裝(Install)" \
 				"2" "结果(Result)" \
@@ -2596,7 +2659,7 @@ function advancedMenu() {
 				6)
 				cd
 				checkupdate
-				colorEcho ${SUCCESS} "RTFM: https://www.johnrosen1.com/trojan/"
+				colorEcho ${SUCCESS} "RTFM: https://github.com/johnrosen1/trojan-gfw-script"
 				;;
 				7)
 				cd
@@ -2605,7 +2668,7 @@ function advancedMenu() {
 				;;
 				8)
 				exit
-				whiptail --title "脚本已退出" --msgbox "脚本已退出(Bash Exited) RTFM: https://www.johnrosen1.com/trojan/" 8 78
+				whiptail --title "脚本已退出" --msgbox "脚本已退出(Bash Exited) RTFM: https://github.com/johnrosen1/trojan-gfw-script" 8 78
 				;;
 		esac
 }
@@ -2624,26 +2687,21 @@ install_aria=0
 install_file=0
 install_netdata=0
 tls13only=0
-osdist || true
-if grep -q "zh_TW.UTF-8" /etc/default/locale; then
-	:
-	else
-chattr -i /etc/locale.gen || true
-	cat > '/etc/locale.gen' << EOF
-zh_TW.UTF-8 UTF-8
-en_US.UTF-8 UTF-8
+osdist
+setlanguage
+license="$( jq -r '.license' "/root/.trojan/license.json" )"
+if [[ $license != 1 ]]; then
+if (whiptail --title "Accept LICENSE?" --yesno "已阅读并接受MIT License(Please read and accept the MIT License)? https://github.com/johnrosen1/trojan-gfw-script/blob/master/LICENSE" 8 78); then
+	cat > '/root/.trojan/license.json' << EOF
+{
+  "license": "1"
+}
 EOF
-#chattr +i /etc/locale.gen || true
-#dpkg-reconfigure --frontend=noninteractive locales
-locale-gen zh_TW.UTF-8 || true
-update-locale || true
-chattr -i /etc/default/locale || true
-echo 'LC_ALL="zh_TW.UTF-8"'> /etc/default/locale || true
-#chattr +i /etc/default/locale || true	
+	else
+		whiptail --title "Accept LICENSE required" --msgbox "你必须阅读并接受MIT License才能继续(You must read and accept the MIT License to continue !!!)" 8 78
+		exit 1
+	fi
 fi
-export LANGUAGE="zh_TW.UTF-8"
-export LANG="zh_TW.UTF-8"
-export LC_ALL="zh_TW.UTF-8"
 clear
 ipinfo=$(curl -s https://ipinfo.io?token=56c375418c62c9)
 myip=$(curl -s https://ipinfo.io/ip?token=56c375418c62c9)
