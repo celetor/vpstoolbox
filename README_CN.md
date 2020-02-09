@@ -16,7 +16,7 @@ yum update -y && yum install sudo newt curl -y && sudo -i
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
-![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu_1.png)
+![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/mainmenu.png)
 ![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu_2.png)
 
 #### 運行前的要求:
