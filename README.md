@@ -16,7 +16,7 @@ Then
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
-![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu_1.png)
+![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu.png)
 ![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu_2.png)
 
 #### Friendly Reminder:
