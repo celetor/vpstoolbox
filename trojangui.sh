@@ -2544,7 +2544,7 @@ bandwithusage(){
 ##################################
 clear
 function advancedMenu() {
-		ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --title "VPS ToolBox Script Menu" --menu --nocancel "Choose an option:
+		ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --title "VPS ToolBox Menu" --menu --nocancel "Choose an option:
 运行此脚本前请在控制面板中开启80 443端口并关闭Cloudflare CDN!" 13 78 4 \
 				"1" "安裝(Install)" \
 				"2" "结果(Result)" \
