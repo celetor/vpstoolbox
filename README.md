@@ -1,7 +1,7 @@
 ![logo](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/logo.png)
 # VPS Toolbox
 # [中文文檔](https://github.com/johnrosen1/trojan-gfw-script/blob/master/README_CN.md)
-## This script will help you set up a [Trojan-GFW](https://github.com/trojan-gfw/trojan) and an Ultimate Offline download server in an extremely fast way.
+## This script will help you set up many kind of useful tools on your VPS including website proxy download monitor and more.
 
 ### How to use
 For Debian/Ubuntu
