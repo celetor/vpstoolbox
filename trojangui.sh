@@ -62,7 +62,7 @@ rm -rf /lib/systemd/system/cloud-init-local.service || true
 rm -rf /lib/systemd/system/cloud-init.service || true
 systemctl daemon-reload || true
 	if [[ $(lsb_release -cs) == stretch ]]; then
-							cat > '/etc/apt/sources.list' << EOF
+		cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
 #                   OFFICIAL DEBIAN REPOS                    
 #------------------------------------------------------------------------------#
@@ -82,7 +82,7 @@ deb-src http://ftp.debian.org/debian stretch-backports main
 EOF
 fi
 	if [[ $(lsb_release -cs) == bionic ]]; then
-							cat > '/etc/apt/sources.list' << EOF
+		cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
 #                            OFFICIAL UBUNTU REPOS                             #
 #------------------------------------------------------------------------------#
@@ -790,7 +790,7 @@ if [[ $tls13only = 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
 fi
 #####################################################
-	if [[ -f /etc/apt/sources.list.d/nginx.list ]] || [[ -f /usr/sbin/nginx ]]; then
+	if [[ -f /etc/apt/sources.list.d/nginx.list ]]; then
 		:
 		else
 			clear
@@ -827,7 +827,7 @@ PIDFile=/run/nginx.pid
 ExecStartPre=/usr/sbin/nginx -t
 ExecStart=/usr/sbin/nginx
 ExecReload=/usr/sbin/nginx -s reload
-ExecStop=/bin/kill -s QUIT $MAINPID
+ExecStop=/bin/kill -s QUIT \$MAINPID
 PrivateTmp=true
 Restart=on-failure
 RestartSec=3s
@@ -904,7 +904,7 @@ if [[ $install_qbt = 1 ]]; then
 	TERM=ansi whiptail --title "error can't install qbittorrent-nox" --infobox "error can't install qbittorrent-nox" 8 78
 		exit 1;
  fi
-			cat > '/etc/systemd/system/qbittorrent.service' << EOF
+	cat > '/etc/systemd/system/qbittorrent.service' << EOF
 [Unit]
 Description=qBittorrent Daemon Service
 Documentation=man:qbittorrent-nox(1)
@@ -1049,7 +1049,7 @@ if [[ $install_aria = 1 ]]; then
 			cd ..
 			rm -rf aria2-1.35.0
 			trackers_list=$(wget -qO- https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
-			cat > '/etc/systemd/system/aria2.service' << EOF
+	cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
 Description=Aria2c download manager
 Requires=network.target
@@ -1272,6 +1272,10 @@ if [[ $install_netdata = 1 ]]; then
 			bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait --disable-telemetry
 			sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /etc/netdata/netdata.conf
 			systemctl restart netdata
+			if [[ $dist != "centos" ]]; then
+				apt-get remove build-essential -y -q
+				apt-get autoremove -y -q
+			fi
 	fi
 fi
 clear
@@ -1280,7 +1284,7 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]]; then
 	:
 	else
 	curl -s https://get.acme.sh | sh
-	~/.acme.sh/acme.sh --upgrade --auto-upgrade  
+	~/.acme.sh/acme.sh --upgrade --auto-upgrade
 fi
 #############################################
 if [[ $install_trojan = 1 ]]; then
@@ -1424,26 +1428,48 @@ fi
 	if [[ $install_bbr = 1 ]]; then
 			colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
 	cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
+net.ipv6.conf.all.disable_ipv6 = 0
+net.ipv6.conf.default.disable_ipv6 = 0
 net.ipv6.conf.all.accept_ra = 2
+net.core.netdev_max_backlog = 100000
+net.core.netdev_budget = 50000
+net.core.netdev_budget_usecs = 5000
 #fs.file-max = 51200
 net.core.rmem_max = 67108864
 net.core.wmem_max = 67108864
 net.core.rmem_default = 65536
 net.core.wmem_default = 65536
-net.core.netdev_max_backlog = 4096
 net.core.somaxconn = 4096
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv4.icmp_ignore_bogus_error_responses = 1
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+net.ipv4.conf.all.secure_redirects = 0
+net.ipv4.conf.default.secure_redirects = 0
+net.ipv6.conf.all.accept_redirects = 0
+net.ipv6.conf.default.accept_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.tcp_rfc1337 = 1
+net.ipv4.tcp_timestamps = 1
 net.ipv4.tcp_syncookies = 1
 net.ipv4.tcp_tw_reuse = 1
-net.ipv4.tcp_fin_timeout = 30
+net.ipv4.tcp_fin_timeout = 10
 net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.tcp_keepalive_intvl = 10
+net.ipv4.tcp_keepalive_probes = 6
 net.ipv4.ip_local_port_range = 10000 65000
-net.ipv4.tcp_max_tw_buckets = 5000
+net.ipv4.tcp_max_tw_buckets = 2000000
 net.ipv4.tcp_fastopen = 3
 net.ipv4.tcp_rmem = 4096 87380 67108864
 net.ipv4.tcp_wmem = 4096 65536 67108864
+net.ipv4.udp_rmem_min = 8192
+net.ipv4.udp_wmem_min = 8192
 net.ipv4.tcp_mtu_probing = 1
 net.ipv4.tcp_slow_start_after_idle = 0
-net.ipv4.tcp_max_syn_backlog = 12800
+net.ipv4.tcp_max_syn_backlog = 30000
 net.core.default_qdisc=fq
 net.ipv4.tcp_congestion_control=bbr
 EOF
@@ -2363,6 +2389,7 @@ uninstall(){
 		systemctl disable trojan
 		rm -rf /etc/systemd/system/trojan*
 		rm -rf /usr/local/etc/trojan/*
+		rm -rf /root/.trojan/autoupdate.sh
 		fi
 	fi
 	if [[ -f /usr/sbin/nginx ]]; then
