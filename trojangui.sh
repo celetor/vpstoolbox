@@ -425,13 +425,13 @@ domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可
 done
 if [[ $install_trojan = 1 ]]; then
 	while [[ -z $password1 ]]; do
-password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快輸入你想要的密碼一併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快輸入你想要的Trojan-GFW密碼一併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ $password1 == "" ]]; then
 	password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 	fi
 done
 while [[ -z $password2 ]]; do
-password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快輸入想要的密碼二並按回車" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
+password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快輸入想要的Trojan-GFW密碼二並按回車" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ $password2 == "" ]]; then
 	password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 	fi
@@ -622,11 +622,13 @@ colorEcho ${INFO} "初始化中(initializing)"
 		dist=ubuntu
 		pack="apt-get -y -qq"
 		apt-get update -q
+		export DEBIAN_FRONTEND=noninteractive
 		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq || true
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 		dist=debian
 		pack="apt-get -y -qq"
 		apt-get update -q
+		export DEBIAN_FRONTEND=noninteractive
 		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq || true
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
