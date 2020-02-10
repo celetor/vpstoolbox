@@ -1274,7 +1274,7 @@ if [[ $install_netdata = 1 ]]; then
 			#sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /etc/netdata/netdata.conf
 			wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
 			sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
-			colorEcho ${INFO} "重启Netdata(Reboot netdata ing)"
+			colorEcho ${INFO} "重启Netdata(Restart netdata ing)"
 			systemctl restart netdata || true
 			cd
 	fi
