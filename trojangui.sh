@@ -1269,13 +1269,14 @@ if [[ $install_netdata = 1 ]]; then
 		else
 			clear
 			colorEcho ${INFO} "安装Netdata(Install netdata ing)"
-			bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait --disable-telemetry
-			sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /etc/netdata/netdata.conf
-			systemctl restart netdata
-			if [[ $dist != "centos" ]]; then
-				apt-get remove build-essential -y -q
-				apt-get autoremove -y -q
-			fi
+			bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --disable-telemetry
+			#bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait --disable-telemetry
+			#sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /etc/netdata/netdata.conf
+			wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
+			sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
+			colorEcho ${INFO} "重启Netdata(Reboot netdata ing)"
+			systemctl restart netdata || true
+			cd
 	fi
 fi
 clear
@@ -1470,8 +1471,8 @@ net.ipv4.udp_wmem_min = 8192
 net.ipv4.tcp_mtu_probing = 1
 net.ipv4.tcp_slow_start_after_idle = 0
 net.ipv4.tcp_max_syn_backlog = 30000
-net.core.default_qdisc=fq
-net.ipv4.tcp_congestion_control=bbr
+net.core.default_qdisc = fq
+net.ipv4.tcp_congestion_control = bbr
 EOF
 	sysctl -p > /dev/null || true
 
