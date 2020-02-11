@@ -1540,6 +1540,8 @@ EOF
 		systemctl disable firewalld
  elif [[ $dist = ubuntu ]]; then
 		export DEBIAN_FRONTEND=noninteractive
+		ufw allow http
+		ufw allow https
 		apt-get install iptables-persistent -qq -y > /dev/null
  elif [[ $dist = debian ]]; then
 		export DEBIAN_FRONTEND=noninteractive 
