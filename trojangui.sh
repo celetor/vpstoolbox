@@ -1221,7 +1221,53 @@ fi
 #############################################
 if [[ $dnsmasq_install = 1 ]]; then
 	if [[ -f /usr/sbin/dnsmasq ]]; then
-		:
+		cat > '/etc/dnsmasq.txt' << EOF
+####Block 360####
+0.0.0.0 360.cn
+0.0.0.0 360.com
+0.0.0.0 360jie.com
+0.0.0.0 360kan.com
+0.0.0.0 360taojin.com
+0.0.0.0 i360mall.com
+0.0.0.0 qhimg.com
+0.0.0.0 qhmsg.com
+0.0.0.0 qhres.com
+0.0.0.0 qihoo.com
+0.0.0.0 nicaifu.com
+0.0.0.0 so.com
+####Block Xunlei###
+0.0.0.0 xunlei.com
+####Block Baidu###
+0.0.0.0 baidu.cn
+0.0.0.0 baidu.com
+0.0.0.0 baiducontent.com
+0.0.0.0 baidupcs.com
+0.0.0.0 baidustatic.com
+0.0.0.0 baifubao.com
+0.0.0.0 bdimg.com
+0.0.0.0 bdstatic.com
+0.0.0.0 duapps.com
+0.0.0.0 quyaoya.com
+0.0.0.0 tiebaimg.com
+0.0.0.0 xiaodutv.com
+0.0.0.0 sina.com
+EOF
+		 cat > '/etc/dnsmasq.conf' << EOF
+port=53
+domain-needed
+bogus-priv
+no-resolv
+server=8.8.4.4#53
+server=1.1.1.1#53
+addn-hosts=/etc/dnsmasq.txt
+address=/cn/0.0.0.0
+interface=lo
+bind-interfaces
+cache-size=10000
+no-negcache
+log-queries 
+log-facility=/var/log/dnsmasq.log 
+EOF
 		else
 			clear
 			colorEcho ${INFO} "安装dnsmasq(Install dnsmasq ing)"
