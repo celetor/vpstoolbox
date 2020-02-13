@@ -67,7 +67,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 
 ### VPS 推薦 (无个人aff)
 
-#### https://www.kamatera.com/
+#### https://www.kamatera.com/ 1MONTH300 优惠码首月免费
 
 #### 相關鏈接
 
