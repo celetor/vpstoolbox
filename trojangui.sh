@@ -421,17 +421,17 @@ if [[ $system_upgrade = 1 ]]; then
 fi
 #####################################
 while [[ -z $domain ]]; do
-domain=$(whiptail --inputbox --nocancel "朽木不可雕也，糞土之牆不可污也，快輸入你的域名並按回車" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+domain=$(whiptail --inputbox --nocancel "快輸入你的域名並按回車" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
 done
 if [[ $install_trojan = 1 ]]; then
 	while [[ -z $password1 ]]; do
-password1=$(whiptail --passwordbox --nocancel "別動不動就爆粗口，你把你媽揣兜了隨口就說，快輸入你想要的Trojan-GFW密碼一併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "快輸入你想要的Trojan-GFW密碼一併按回車" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ $password1 == "" ]]; then
 	password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 	fi
 done
 while [[ -z $password2 ]]; do
-password2=$(whiptail --passwordbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快輸入想要的Trojan-GFW密碼二並按回車" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
+password2=$(whiptail --passwordbox --nocancel "快輸入想要的Trojan-GFW密碼二並按回車" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ $password2 == "" ]]; then
 	password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 	fi
@@ -440,25 +440,25 @@ fi
 ###################################
 	if [[ $install_qbt = 1 ]]; then
 		while [[ -z $qbtpath ]]; do
-		qbtpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+		qbtpath=$(whiptail --inputbox --nocancel "快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 #####################################
 		if [[ $install_tracker = 1 ]]; then
 			while [[ -z $trackerpath ]]; do
-			trackerpath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Bittorrent-Tracker路径并按回车" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
+			trackerpath=$(whiptail --inputbox --nocancel "快输入你的想要的Bittorrent-Tracker路径并按回车" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
 			done
 			while [[ -z $trackerstatuspath ]]; do
-			trackerstatuspath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Bittorrent-Tracker状态路径并按回车" 8 78 /status --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
+			trackerstatuspath=$(whiptail --inputbox --nocancel "快输入你的想要的Bittorrent-Tracker状态路径并按回车" 8 78 /status --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
 			done
 		fi
 ####################################
 		if [[ $install_aria = 1 ]]; then
 			while [[ -z $ariapath ]]; do
-			ariapath=$(whiptail --inputbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 RPC路径并按回车" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
+			ariapath=$(whiptail --inputbox --nocancel "快输入你的想要的Aria2 RPC路径并按回车" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
 			done
 			while [[ -z $ariapasswd ]]; do
-			ariapasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on.，快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+			ariapasswd=$(whiptail --passwordbox --nocancel "快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
 			if [[ $ariapasswd == "" ]]; then
 			ariapasswd="123456789"
 			fi
@@ -467,19 +467,19 @@ fi
 ####################################
 		if [[ $install_file = 1 ]]; then
 			while [[ -z $filepath ]]; do
-			filepath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Filebrowser路径并按回车" 8 78 /files/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+			filepath=$(whiptail --inputbox --nocancel "快输入你的想要的Filebrowser路径并按回车" 8 78 /files/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
 			done
 		fi
 ####################################
 		if [[ $install_netdata = 1 ]]; then
 			while [[ -z $netdatapath ]]; do
-			netdatapath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的Netdata路径并按回车" 8 78 /netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
+			netdatapath=$(whiptail --inputbox --nocancel "快输入你的想要的Netdata路径并按回车" 8 78 /netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
 			done
 		fi
 ####################################
 		if [[ $install_v2ray = 1 ]]; then
 			while [[ -z $path ]]; do
-			path=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "v2ray Websocket path input" 3>&1 1>&2 2>&3)
+			path=$(whiptail --inputbox --nocancel "快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "v2ray Websocket path input" 3>&1 1>&2 2>&3)
 			done
 			while [[ -z $alterid ]]; do
 			alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "v2ray alterid input" 3>&1 1>&2 2>&3)
@@ -488,7 +488,7 @@ fi
 ####################################
 		if [[ $install_tor = 1 ]]; then
 			while [[ -z $tor_name ]]; do
-			tor_name=$(whiptail --inputbox --nocancel "你別逼我在我和你全家之間加動詞或者是名詞啊，快輸入想要的tor nickname並按回車" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
+			tor_name=$(whiptail --inputbox --nocancel "快輸入想要的tor nickname並按回車" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
 			if [[ $tor_name == "" ]]; then
 			tor_name="myrelay"
 		fi
@@ -497,10 +497,10 @@ done
 ####################################
 		if [[ $install_ss = 1 ]]; then
 			while [[ -z $sspath ]]; do
-			sspath=$(whiptail --inputbox --nocancel "Put your thinking cap on，快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
+			sspath=$(whiptail --inputbox --nocancel "快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
 			done
 			while [[ -z $sspasswd ]]; do
-			sspasswd=$(whiptail --passwordbox --nocancel "Put your thinking cap on，快输入你的想要的ss密码并按回车" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
+			sspasswd=$(whiptail --passwordbox --nocancel "快输入你的想要的ss密码并按回车" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
 			if [[ $sspasswd == "" ]]; then
 			sspasswd=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 40 ; echo '' )
 			fi
@@ -584,7 +584,7 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]]; then
         ~/.acme.sh/acme.sh --issue --dns dns_cx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
         ;;
         back) 
-		advancedMenu
+		userinput
 		break
 		;;
         *)
@@ -780,9 +780,85 @@ if [[ -f /etc/trojan/trojan.crt ]] || [[ $dns_api == 1 ]]; then
 	else
 	clear
 	whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
-	colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!"
+	if (whiptail --title "api" --yesno "使用 (use) api申请证书(to issue certificate)替代?" 8 78); then
+	domain=$(whiptail --inputbox --nocancel "快輸入你的域名並按回車" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+	while [[ -z $domain ]]; do
+domain=$(whiptail --inputbox --nocancel "快輸入你的域名並按回車" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+done
+    dns_api=1
+    APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
+"1" "Cloudflare" \
+"2" "Namesilo" \
+"3" "Aliyun" \
+"4" "DNSPod.cn" \
+"5" "CloudXNS.com" \
+"back" "返回"  3>&1 1>&2 2>&3)
+
+    case $APIOPTION in
+        1)
+        while [[ -z $CF_Key ]] || [[ -z $CF_Email ]]; do
+        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens ，快輸入你CF_Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        done
+        export CF_Key="$CF_Key"
+        export CF_Email="$CF_Email"
+        installacme
+        ~/.acme.sh/acme.sh --issue --dns dns_cf -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ;;
+        2)
+        while [[ -z $Namesilo_Key ]]; do
+        Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
+        done
+        export Namesilo_Key="$Namesilo_Key"
+        installacme
+        ~/.acme.sh/acme.sh --issue --dns dns_namesilo --dnssleep 900 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ;;
+        3)
+        while [[ -z $Ali_Key ]] || [[ -z $Ali_Secret ]]; do
+        Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 78 --title "Ali_Key input" 3>&1 1>&2 2>&3)
+        Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 78 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
+        done
+        export Ali_Key="$Ali_Key"
+        export Ali_Secret="$Ali_Secret"
+        installacme
+        ~/.acme.sh/acme.sh --issue --dns dns_ali -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ;;
+        4)
+        while [[ -z $DP_Id ]] || [[ -z $DP_Key ]]; do
+        DP_Id=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Id併按回車" 8 78 --title "DP_Id input" 3>&1 1>&2 2>&3)
+        DP_Key=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Key併按回車" 8 78 --title "DP_Key input" 3>&1 1>&2 2>&3)
+        done
+        export DP_Id="$DP_Id"
+        export DP_Key="$DP_Key"
+        installacme
+        ~/.acme.sh/acme.sh --issue --dns dns_dp -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ;;
+        5)
+        while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
+        CX_Key=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Key併按回車" 8 78 --title "CX_Key input" 3>&1 1>&2 2>&3)
+        CX_Secret=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Secret併按回車" 8 78 --title "CX_Secret input" 3>&1 1>&2 2>&3)
+        done
+        export CX_Key="$CX_Key"
+        export CX_Secret="$CX_Secret"
+        installacme
+        ~/.acme.sh/acme.sh --issue --dns dns_cx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ;;
+        back) 
+		colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!"
+		colorEcho ${ERROR} "Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!"
+    	exit 1
+		break
+		;;
+        *)
+        ;;
+    esac
+    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
+    chmod +r /etc/trojan/trojan.key
+    else
+    colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!"
 	colorEcho ${ERROR} "Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!"
-	exit -1
+    exit 1
+    fi
 	clear
 	fi  
 fi
