@@ -68,7 +68,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 
 ### VPS Recommendation (no personal aff included)
 
-#### https://www.kamatera.com/
+#### https://www.kamatera.com/ 1MONTH300
 
 #### Related Links
 Qbittorrent Related: https://www.johnrosen1.com/qbt/
