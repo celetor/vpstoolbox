@@ -72,6 +72,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 
 #### Related Links
 Qbittorrent Related: https://www.johnrosen1.com/qbt/
+
 Trojan-GFW Related: https://www.johnrosen1.com/trojan/
 
 ### Debug Guide
