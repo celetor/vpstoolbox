@@ -71,7 +71,9 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 
 #### 相關鏈接
 
-https://www.johnrosen1.com/qbt/
+Qbittorrent 相关: https://www.johnrosen1.com/qbt/
+
+Trojan-GFW 相关: https://www.johnrosen1.com/trojan/
 
 ### 查錯指南
 
