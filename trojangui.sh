@@ -188,8 +188,8 @@ installacme(){
 #############################
 colorEcho(){
 	set +e
-		COLOR=$1
-		echo -e "\033[${COLOR}${@:2}\033[0m"
+	COLOR=$1
+	echo -e "\033[${COLOR}${@:2}\033[0m"
 }
 #########Domain resolve verification###################
 isresolved(){
@@ -224,10 +224,10 @@ issuecert(){
 	touch /etc/nginx/conf.d/default.conf
 		cat > '/etc/nginx/conf.d/default.conf' << EOF
 server {
-		listen       80;
-		listen       [::]:80;
-		server_name  $domain;
-		root   /usr/share/nginx/html;
+	listen       80;
+	listen       [::]:80;
+	server_name  $domain;
+	root   /usr/share/nginx/html;
 }
 EOF
 	nginx -t
@@ -247,7 +247,7 @@ EOF
 }
 ###############User input################
 prasejson(){
-		cat > '/root/.trojan/config.json' << EOF
+	cat > '/root/.trojan/config.json' << EOF
 {
   "installed": "1",
   "domain": "$domain",
@@ -280,36 +280,36 @@ EOF
 }
 ################################################
 readconfig(){
-	    domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
-        install_trojan="$( jq -r '.install_trojan' "/root/.trojan/config.json" )"
-        install_qbt="$( jq -r '.install_qbt' "/root/.trojan/config.json" )"
-        install_tracker="$( jq -r '.install_tracker' "/root/.trojan/config.json" )"
-        install_aria="$( jq -r '.install_aria' "/root/.trojan/config.json" )"
-        install_file="$( jq -r '.install_file' "/root/.trojan/config.json" )"
-        install_netdata="$( jq -r '.install_netdata' "/root/.trojan/config.json" )"
-        install_v2ray="$( jq -r '.install_v2ray' "/root/.trojan/config.json" )"
-        install_tor="$( jq -r '.install_tor' "/root/.trojan/config.json" )"
-        install_ss="$( jq -r '.install_ss' "/root/.trojan/config.json" )"
-        password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
-        password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
-        qbtpath="$( jq -r '.qbtpath' "/root/.trojan/config.json" )"
-        trackerpath="$( jq -r '.trackerpath' "/root/.trojan/config.json" )"
-        trackerstatuspath="$( jq -r '.username' "/root/.trojan/config.json" )"
-        ariapath="$( jq -r '.ariapath' "/root/.trojan/config.json" )"
-        ariapasswd="$( jq -r '.ariapasswd' "/root/.trojan/config.json" )"
-        filepath="$( jq -r '.filepath' "/root/.trojan/config.json" )"
-        netdatapath="$( jq -r '.netdatapath' "/root/.trojan/config.json" )"
-        path="$( jq -r '.path' "/root/.trojan/config.json" )"
-        alterid="$( jq -r '.alterid' "/root/.trojan/config.json" )"
-        tor_name="$( jq -r '.tor_name' "/root/.trojan/config.json" )"
-        sspasswd="$( jq -r '.sspasswd' "/root/.trojan/config.json" )"
-        ssmethod="$( jq -r '.ssmethod' "/root/.trojan/config.json" )"   
+	domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
+    install_trojan="$( jq -r '.install_trojan' "/root/.trojan/config.json" )"
+    install_qbt="$( jq -r '.install_qbt' "/root/.trojan/config.json" )"
+    install_tracker="$( jq -r '.install_tracker' "/root/.trojan/config.json" )"
+    install_aria="$( jq -r '.install_aria' "/root/.trojan/config.json" )"
+    install_file="$( jq -r '.install_file' "/root/.trojan/config.json" )"
+    install_netdata="$( jq -r '.install_netdata' "/root/.trojan/config.json" )"
+    install_v2ray="$( jq -r '.install_v2ray' "/root/.trojan/config.json" )"
+    install_tor="$( jq -r '.install_tor' "/root/.trojan/config.json" )"
+    install_ss="$( jq -r '.install_ss' "/root/.trojan/config.json" )"
+    password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
+    password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
+    qbtpath="$( jq -r '.qbtpath' "/root/.trojan/config.json" )"
+    trackerpath="$( jq -r '.trackerpath' "/root/.trojan/config.json" )"
+    trackerstatuspath="$( jq -r '.username' "/root/.trojan/config.json" )"
+    ariapath="$( jq -r '.ariapath' "/root/.trojan/config.json" )"
+    ariapasswd="$( jq -r '.ariapasswd' "/root/.trojan/config.json" )"
+    filepath="$( jq -r '.filepath' "/root/.trojan/config.json" )"
+    netdatapath="$( jq -r '.netdatapath' "/root/.trojan/config.json" )"
+    path="$( jq -r '.path' "/root/.trojan/config.json" )"
+    alterid="$( jq -r '.alterid' "/root/.trojan/config.json" )"
+    tor_name="$( jq -r '.tor_name' "/root/.trojan/config.json" )"
+    sspasswd="$( jq -r '.sspasswd' "/root/.trojan/config.json" )"
+    ssmethod="$( jq -r '.ssmethod' "/root/.trojan/config.json" )"   
 }
 ####################################
 userinput(){
 	set +e
 if [ ! -f /root/.trojan/config.json ]; then
-		cat > '/root/.trojan/config.json' << EOF
+	cat > '/root/.trojan/config.json' << EOF
 {
   "installed": "0"
 }
@@ -452,68 +452,68 @@ fi
 		done
 	fi
 #####################################
-		if [[ $install_tracker = 1 ]]; then
-			while [[ -z $trackerpath ]]; do
-			trackerpath=$(whiptail --inputbox --nocancel "快输入你的想要的Bittorrent-Tracker路径并按回车" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
-			done
-			while [[ -z $trackerstatuspath ]]; do
-			trackerstatuspath=$(whiptail --inputbox --nocancel "快输入你的想要的Bittorrent-Tracker状态路径并按回车" 8 78 /status --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
-			done
-		fi
+	if [[ $install_tracker = 1 ]]; then
+		while [[ -z $trackerpath ]]; do
+		trackerpath=$(whiptail --inputbox --nocancel "快输入你的想要的Bittorrent-Tracker路径并按回车" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
+		done
+		while [[ -z $trackerstatuspath ]]; do
+		trackerstatuspath=$(whiptail --inputbox --nocancel "快输入你的想要的Bittorrent-Tracker状态路径并按回车" 8 78 /status --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
+		done
+	fi
 ####################################
-		if [[ $install_aria = 1 ]]; then
-			while [[ -z $ariapath ]]; do
-			ariapath=$(whiptail --inputbox --nocancel "快输入你的想要的Aria2 RPC路径并按回车" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
-			done
-			while [[ -z $ariapasswd ]]; do
-			ariapasswd=$(whiptail --passwordbox --nocancel "快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
-			if [[ $ariapasswd == "" ]]; then
-			ariapasswd="123456789"
-			fi
-			done
+	if [[ $install_aria = 1 ]]; then
+		while [[ -z $ariapath ]]; do
+		ariapath=$(whiptail --inputbox --nocancel "快输入你的想要的Aria2 RPC路径并按回车" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
+		done
+		while [[ -z $ariapasswd ]]; do
+		ariapasswd=$(whiptail --passwordbox --nocancel "快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+		if [[ $ariapasswd == "" ]]; then
+		ariapasswd="123456789"
 		fi
+		done
+	fi
 ####################################
-		if [[ $install_file = 1 ]]; then
-			while [[ -z $filepath ]]; do
-			filepath=$(whiptail --inputbox --nocancel "快输入你的想要的Filebrowser路径并按回车" 8 78 /files/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
-			done
-		fi
+	if [[ $install_file = 1 ]]; then
+		while [[ -z $filepath ]]; do
+		filepath=$(whiptail --inputbox --nocancel "快输入你的想要的Filebrowser路径并按回车" 8 78 /files/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+		done
+	fi
 ####################################
-		if [[ $install_netdata = 1 ]]; then
-			while [[ -z $netdatapath ]]; do
-			netdatapath=$(whiptail --inputbox --nocancel "快输入你的想要的Netdata路径并按回车" 8 78 /netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
-			done
-		fi
+	if [[ $install_netdata = 1 ]]; then
+		while [[ -z $netdatapath ]]; do
+		netdatapath=$(whiptail --inputbox --nocancel "快输入你的想要的Netdata路径并按回车" 8 78 /netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
+		done
+	fi
 ####################################
-		if [[ $install_v2ray = 1 ]]; then
-			while [[ -z $path ]]; do
-			path=$(whiptail --inputbox --nocancel "快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "v2ray Websocket path input" 3>&1 1>&2 2>&3)
-			done
-			while [[ -z $alterid ]]; do
-			alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "v2ray alterid input" 3>&1 1>&2 2>&3)
-			done
-		fi
+	if [[ $install_v2ray = 1 ]]; then
+		while [[ -z $path ]]; do
+		path=$(whiptail --inputbox --nocancel "快输入你的想要的V2ray Websocket路径并按回车" 8 78 /secret --title "v2ray Websocket path input" 3>&1 1>&2 2>&3)
+		done
+		while [[ -z $alterid ]]; do
+		alterid=$(whiptail --inputbox --nocancel "快输入你的想要的alter id大小(只能是数字)并按回车" 8 78 64 --title "v2ray alterid input" 3>&1 1>&2 2>&3)
+		done
+	fi
 ####################################
-		if [[ $install_tor = 1 ]]; then
-			while [[ -z $tor_name ]]; do
-			tor_name=$(whiptail --inputbox --nocancel "快輸入想要的tor nickname並按回車" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
-			if [[ $tor_name == "" ]]; then
-			tor_name="myrelay"
-		fi
-done
-		fi
+	if [[ $install_tor = 1 ]]; then
+		while [[ -z $tor_name ]]; do
+		tor_name=$(whiptail --inputbox --nocancel "快輸入想要的tor nickname並按回車" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
+		if [[ $tor_name == "" ]]; then
+		tor_name="myrelay"
+	fi
+	done
+	fi
 ####################################
-		if [[ $install_ss = 1 ]]; then
-			while [[ -z $sspath ]]; do
-			sspath=$(whiptail --inputbox --nocancel "快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
-			done
-			while [[ -z $sspasswd ]]; do
-			sspasswd=$(whiptail --passwordbox --nocancel "快输入你的想要的ss密码并按回车(若不確定，請直接回車，会随机生成)" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
-			if [[ $sspasswd == "" ]]; then
-			sspasswd=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 40 ; echo '' )
-			fi
-			done
-			ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option" 12 78 3 \
+	if [[ $install_ss = 1 ]]; then
+		while [[ -z $sspath ]]; do
+		sspath=$(whiptail --inputbox --nocancel "快输入你的想要的ss-Websocket路径并按回车" 8 78 /ss --title "ss-Websocket path input" 3>&1 1>&2 2>&3)
+		done
+		while [[ -z $sspasswd ]]; do
+		sspasswd=$(whiptail --passwordbox --nocancel "快输入你的想要的ss密码并按回车(若不確定，請直接回車，会随机生成)" 8 78  --title "ss passwd input" 3>&1 1>&2 2>&3)
+		if [[ $sspasswd == "" ]]; then
+		sspasswd=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 40 ; echo '' )
+		fi
+		done
+		ssen=$(whiptail --title "SS encrypt method Menu" --menu --nocancel "Choose an option" 12 78 3 \
 			"1" "aes-128-gcm" \
 			"2" "aes-256-gcm" \
 			"3" "chacha20-poly1305" 3>&1 1>&2 2>&3)
@@ -609,35 +609,35 @@ osdist(){
 set -e
 colorEcho ${INFO} "初始化中(initializing)"
  if cat /etc/*release | grep ^NAME | grep -q CentOS; then
-		dist=centos
-		pack="yum -y -q"
-		yum update -y
-		yum install -y epel-release
-		yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q || true
+	dist=centos
+	pack="yum -y -q"
+	yum update -y
+	yum install -y epel-release
+	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Red; then
-		dist=centos
-		pack="yum -y -q"
-		yum update -y
-		yum install -y epel-release
-		yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q || true
+	dist=centos
+	pack="yum -y -q"
+	yum update -y
+	yum install -y epel-release
+	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Fedora; then
-		dist=centos
-		pack="yum -y -q"
-		yum update -y
-		yum install -y epel-release
-		yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q || true
+	dist=centos
+	pack="yum -y -q"
+	yum update -y
+	yum install -y epel-release
+	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q || true
  elif cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
-		dist=ubuntu
-		pack="apt-get -y -qq"
-		apt-get update -q
-		export DEBIAN_FRONTEND=noninteractive
-		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq || true
+	dist=ubuntu
+	pack="apt-get -y -qq"
+	apt-get update -q
+	export DEBIAN_FRONTEND=noninteractive
+	apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq || true
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
-		dist=debian
-		pack="apt-get -y -qq"
-		apt-get update -q
-		export DEBIAN_FRONTEND=noninteractive
-		apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq || true
+	dist=debian
+	pack="apt-get -y -qq"
+	apt-get update -q
+	export DEBIAN_FRONTEND=noninteractive
+	apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq || true
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
 		exit 1;
@@ -645,12 +645,13 @@ colorEcho ${INFO} "初始化中(initializing)"
 }
 ##############Upgrade system optional########
 upgradesystem(){
+	set +e
 	if [[ $dist = centos ]]; then
 		yum upgrade -y
  elif [[ $dist = ubuntu ]]; then
-		export UBUNTU_FRONTEND=noninteractive
-		if [[ $ubuntu18_install = 1 ]]; then
-					cat > '/etc/apt/sources.list' << EOF
+	export UBUNTU_FRONTEND=noninteractive
+	if [[ $ubuntu18_install = 1 ]]; then
+		cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
 #                            OFFICIAL UBUNTU REPOS                             #
 #------------------------------------------------------------------------------#
@@ -665,18 +666,18 @@ deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe
 deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
 deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
 EOF
-		apt-get update
-		sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
-		sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
-		fi
-		sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -qq -y' || true
-		apt-get autoremove -qq -y
-		clear
+	apt-get update
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+	fi
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -qq -y'
+	apt-get autoremove -qq -y
+	clear
  elif [[ $dist = debian ]]; then
-		export DEBIAN_FRONTEND=noninteractive 
-		sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -qq -y' || true
-		if [[ $debian10_install = 1 ]]; then
-					cat > '/etc/apt/sources.list' << EOF
+	export DEBIAN_FRONTEND=noninteractive 
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -qq -y'
+	if [[ $debian10_install = 1 ]]; then
+		cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
 #                   OFFICIAL DEBIAN REPOS                    
 #------------------------------------------------------------------------------#
@@ -694,13 +695,13 @@ deb-src http://deb.debian.org/debian-security stable/updates main
 deb http://ftp.debian.org/debian buster-backports main
 deb-src http://ftp.debian.org/debian buster-backports main
 EOF
-		apt-get update
-		sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
-		sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
-		clear
-		fi
-		if [[ $debian9_install = 1 ]]; then
-					cat > '/etc/apt/sources.list' << EOF
+	apt-get update
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+	clear
+	fi
+	if [[ $debian9_install = 1 ]]; then
+		cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
 #                   OFFICIAL DEBIAN REPOS                    
 #------------------------------------------------------------------------------#
@@ -718,29 +719,29 @@ deb-src http://deb.debian.org/debian-security oldstable/updates main
 deb http://ftp.debian.org/debian stretch-backports main
 deb-src http://ftp.debian.org/debian stretch-backports main
 EOF
-		apt-get update
-		sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
-		sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y' || true
-		fi
-		sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y' || true
-		clear
+	apt-get update
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+	fi
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
+	clear
  else
 	clear
 	TERM=ansi whiptail --title "error can't upgrade system" --infobox "error can't upgrade system" 8 78
-		exit 1;
+	exit 1;
  fi
 }
 ##########install dependencies#############
 installdependency(){
-		colorEcho ${INFO} "Updating system"
-		$pack update
-		mkdir /etc/trojan || true
-		if [ -f /etc/trojan/*.crt ]; then
-			mv /etc/trojan/*.crt /etc/trojan/trojan.crt || true
-		fi
-		if [ -f /etc/trojan/*.key ]; then
-			mv /etc/trojan/*.key /etc/trojan/trojan.key || true
-		fi
+	colorEcho ${INFO} "Updating system"
+	$pack update
+	mkdir /etc/trojan || true
+	if [ -f /etc/trojan/*.crt ]; then
+		mv /etc/trojan/*.crt /etc/trojan/trojan.crt || true
+	fi
+	if [ -f /etc/trojan/*.key ]; then
+		mv /etc/trojan/*.key /etc/trojan/trojan.key || true
+	fi
 	if [[ $install_status == 0 ]]; then
 		caddystatus=$(systemctl is-active caddy)
 		if [[ $caddystatus == active ]]; then
@@ -766,16 +767,16 @@ installdependency(){
 	if [[ $dist = centos ]]; then
 		yum install -y -q sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd dbus xz cron || true
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
-		apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron -qq -y
-		if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]] || [[ $(lsb_release -cs) == jessie ]]; then
-			TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "你的操作系统不支持 python3-qrcode,Skipping generating QR code!" 8 78
-			else
-				apt-get install python3-qrcode -qq -y
-		fi
+	apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron -qq -y
+	if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]] || [[ $(lsb_release -cs) == jessie ]]; then
+		TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "你的操作系统不支持 python3-qrcode,Skipping generating QR code!" 8 78
+		else
+		apt-get install python3-qrcode -qq -y
+	fi
  else
 	clear
 	TERM=ansi whiptail --title "error can't install dependency" --infobox "error can't install dependency" 8 78
-		exit 1;
+	exit 1;
  fi
  clear
 #############################################
@@ -883,8 +884,8 @@ fi
 	if [[ -f /etc/apt/sources.list.d/nginx.list ]]; then
 		:
 		else
-			clear
-			colorEcho ${INFO} "安装Nginx(Install Nginx ing)"
+		clear
+		colorEcho ${INFO} "安装Nginx(Install Nginx ing)"
 	if [[ $dist = centos ]]; then
 	yum install nginx -y -q
 	systemctl stop nginx || true
@@ -993,20 +994,20 @@ RestartSec=1s
 [Install]
 WantedBy=multi-user.target
 EOF
-		else
-		clear
-		colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
+	else
+	clear
+	colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
 	if [[ $dist = centos ]]; then
 	yum install -y -q epel-release
 	yum update -y -q
 	yum install qbittorrent-nox -y -q || true
  elif [[ $dist = ubuntu ]]; then
-		export DEBIAN_FRONTEND=noninteractive
-		add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
-		apt-get install qbittorrent-nox -qq -y
+	export DEBIAN_FRONTEND=noninteractive
+	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
+	apt-get install qbittorrent-nox -qq -y
  elif [[ $dist = debian ]]; then
-		export DEBIAN_FRONTEND=noninteractive 
-		apt-get install qbittorrent-nox -qq -y
+	export DEBIAN_FRONTEND=noninteractive 
+	apt-get install qbittorrent-nox -qq -y
  else
 	clear
 	TERM=ansi whiptail --title "error can't install qbittorrent-nox" --infobox "error can't install qbittorrent-nox" 8 78
@@ -1041,19 +1042,19 @@ if [[ $install_tracker = 1 ]]; then
 	if [[ -f /usr/bin/bittorrent-tracker ]]; then
 		:
 		else
-			clear
-			colorEcho ${INFO} "安装Bittorrent-tracker(Install bittorrent-tracker ing)"
+		clear
+		colorEcho ${INFO} "安装Bittorrent-tracker(Install bittorrent-tracker ing)"
 	if [[ $dist = centos ]]; then
 		curl -sL https://rpm.nodesource.com/setup_13.x | bash -
 		yum install -y -q nodejs
  elif [[ $dist = ubuntu ]]; then
-		export DEBIAN_FRONTEND=noninteractive
-		curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-		apt-get install -qq -y nodejs
+	export DEBIAN_FRONTEND=noninteractive
+	curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+	apt-get install -qq -y nodejs
  elif [[ $dist = debian ]]; then
-		export DEBIAN_FRONTEND=noninteractive 
-		curl -sL https://deb.nodesource.com/setup_13.x | bash -
-		apt-get install -qq -y nodejs
+	export DEBIAN_FRONTEND=noninteractive 
+	curl -sL https://deb.nodesource.com/setup_13.x | bash -
+	apt-get install -qq -y nodejs
  else
 	clear
 	TERM=ansi whiptail --title "error can't install qbittorrent-nox" --infobox "error can't install qbittorrent-nox" 8 78
@@ -1087,19 +1088,19 @@ if [[ $install_file = 1 ]]; then
 	if [[ -f /usr/local/bin/filebrowser ]]; then
 		:
 		else
-			clear
-			colorEcho ${INFO} "安装Filebrowser(Install Filebrowser ing)"
+		clear
+		colorEcho ${INFO} "安装Filebrowser(Install Filebrowser ing)"
 	if [[ $dist = centos ]]; then
 	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash || true
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
-		export DEBIAN_FRONTEND=noninteractive
-		curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
+	export DEBIAN_FRONTEND=noninteractive
+	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
  else
 	clear
 	TERM=ansi whiptail --title "error can't install filebrowser" --infobox "error can't install filebrowser" 8 78
 		exit 1;
  fi
-			 cat > '/etc/systemd/system/filebrowser.service' << EOF
+	cat > '/etc/systemd/system/filebrowser.service' << EOF
 [Unit]
 Description=filebrowser browser
 After=network.target
@@ -1124,7 +1125,7 @@ clear
 #############################################
 if [[ $install_aria = 1 ]]; then
 	if [[ -f /usr/local/bin/aria2c ]]; then
-			cat > '/etc/systemd/system/aria2.service' << EOF
+		cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
 Description=Aria2c download manager
 Requires=network.target
@@ -1143,7 +1144,7 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
-			cat > '/etc/aria2.conf' << EOF
+	cat > '/etc/aria2.conf' << EOF
 rpc-secure=false
 #rpc-certificate=/etc/trojan/trojan.crt
 #rpc-private-key=/etc/trojan/trojan.key
@@ -1209,38 +1210,38 @@ dir=/usr/share/nginx/aria2/
 file-allocation=none
 disk-cache=64M
 EOF
-		else
-			clear
-			colorEcho ${INFO} "安装aria2(Install aria2 ing)"
-			if [[ $dist = centos ]]; then
-			yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev || true
-			curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz
-			xz --decompress aria2c_centos.xz
-			cp aria2c_centos /usr/local/bin/aria2c
-			chmod +x /usr/local/bin/aria2c
-			rm aria2c_centos
-				else
-			apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -qq -y
-			curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz
-			xz --decompress aria2c.xz
-			cp aria2c /usr/local/bin/aria2c
-			chmod +x /usr/local/bin/aria2c
-			rm aria2c
-			#apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -qq -y
-			#wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q
-			#cd aria2-1.35.0
-			#./configure --without-gnutls --with-openssl
-			#make -j $(nproc --all)
-			#make install
-			#apt remove build-essential autoconf automake autotools-dev autopoint libtool -qq -y
-			apt-get autoremove -qq -y
-			fi
-			touch /usr/local/bin/aria2.session
-			mkdir /usr/share/nginx/aria2/
-			chmod 755 /usr/share/nginx/aria2/
-			cd ..
-			rm -rf aria2-1.35.0
-			trackers_list=$(wget -qO- https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
+	else
+	clear
+	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
+	if [[ $dist = centos ]]; then
+		yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev || true
+		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz
+		xz --decompress aria2c_centos.xz
+		cp aria2c_centos /usr/local/bin/aria2c
+		chmod +x /usr/local/bin/aria2c
+		rm aria2c_centos
+	else
+		apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -qq -y
+		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz
+		xz --decompress aria2c.xz
+		cp aria2c /usr/local/bin/aria2c
+		chmod +x /usr/local/bin/aria2c
+		rm aria2c
+		#apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -qq -y
+		#wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q
+		#cd aria2-1.35.0
+		#./configure --without-gnutls --with-openssl
+		#make -j $(nproc --all)
+		#make install
+		#apt remove build-essential autoconf automake autotools-dev autopoint libtool -qq -y
+		apt-get autoremove -qq -y
+	fi
+	touch /usr/local/bin/aria2.session
+	mkdir /usr/share/nginx/aria2/
+	chmod 755 /usr/share/nginx/aria2/
+	cd ..
+	rm -rf aria2-1.35.0
+	trackers_list=$(wget -qO- https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
 	cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
 Description=Aria2c download manager
@@ -1260,7 +1261,7 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
-			cat > '/etc/aria2.conf' << EOF
+	cat > '/etc/aria2.conf' << EOF
 rpc-secure=false
 #rpc-certificate=/etc/trojan/trojan.crt
 #rpc-private-key=/etc/trojan/trojan.key
@@ -1362,7 +1363,7 @@ if [[ $dnsmasq_install = 1 ]]; then
 0.0.0.0 xiaodutv.com
 0.0.0.0 sina.com
 EOF
-		 cat > '/etc/dnsmasq.conf' << EOF
+	cat > '/etc/dnsmasq.conf' << EOF
 port=53
 domain-needed
 bogus-priv
@@ -1378,14 +1379,14 @@ no-negcache
 log-queries 
 log-facility=/var/log/dnsmasq.log
 EOF
-		else
-			clear
-			colorEcho ${INFO} "安装dnsmasq(Install dnsmasq ing)"
-		if [[ $dist = centos ]]; then
+	else
+		clear
+		colorEcho ${INFO} "安装dnsmasq(Install dnsmasq ing)"
+	if [[ $dist = centos ]]; then
 		yum install -y -q dnsmasq  || true
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
-		export DEBIAN_FRONTEND=noninteractive
-		apt-get install dnsmasq -qq -y || true
+	export DEBIAN_FRONTEND=noninteractive
+	apt-get install dnsmasq -qq -y || true
  else
 	clear
 	TERM=ansi whiptail --title "error can't install dnsmasq" --infobox "error can't install dnsmasq" 8 78
@@ -1427,7 +1428,7 @@ EOF
 0.0.0.0 xiaodutv.com
 0.0.0.0 sina.com
 EOF
-		 cat > '/etc/dnsmasq.conf' << EOF
+	cat > '/etc/dnsmasq.conf' << EOF
 port=53
 domain-needed
 bogus-priv
@@ -1464,28 +1465,28 @@ if [[ $install_tor = 1 ]]; then
 	if [[ -f /usr/bin/tor ]]; then
 		:
 		else
-			colorEcho ${INFO} "安装Tor(Install Tor Relay ing)"
+		colorEcho ${INFO} "安装Tor(Install Tor Relay ing)"
 	if [[ $dist = centos ]]; then
 		yum install -y -q epel-release || true
 		yum install -y -q tor  || true
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
-		export DEBIAN_FRONTEND=noninteractive
-		touch /etc/apt/sources.list.d/tor.list
-		cat > '/etc/apt/sources.list.d/tor.list' << EOF
+	export DEBIAN_FRONTEND=noninteractive
+	touch /etc/apt/sources.list.d/tor.list
+	cat > '/etc/apt/sources.list.d/tor.list' << EOF
 deb https://deb.torproject.org/torproject.org $(lsb_release -cs) main
 deb-src https://deb.torproject.org/torproject.org $(lsb_release -cs) main
 EOF
-		curl https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
-		gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
-		apt-get update
-		apt-get install deb.torproject.org-keyring tor tor-arm tor-geoipdb -qq -y || true
-		service tor stop
+	curl https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
+	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
+	apt-get update
+	apt-get install deb.torproject.org-keyring tor tor-arm tor-geoipdb -qq -y || true
+	service tor stop
  else
 	clear
 	TERM=ansi whiptail --title "error can't install tor" --infobox "error can't install tor" 8 78
 		exit 1;
  fi
-			 cat > '/etc/tor/torrc' << EOF
+	cat > '/etc/tor/torrc' << EOF
 SocksPort 0
 RunAsDaemon 1
 ORPort 9001
@@ -1505,16 +1506,16 @@ if [[ $install_netdata = 1 ]]; then
 	if [[ -f /usr/sbin/netdata ]]; then
 		:
 		else
-			clear
-			colorEcho ${INFO} "安装Netdata(Install netdata ing)"
-			bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --disable-telemetry
-			#bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait --disable-telemetry
-			#sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /etc/netdata/netdata.conf
-			wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
-			sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
-			colorEcho ${INFO} "重启Netdata(Restart netdata ing)"
-			systemctl restart netdata || true
-			cd
+		clear
+		colorEcho ${INFO} "安装Netdata(Install netdata ing)"
+		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --disable-telemetry
+		#bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait --disable-telemetry
+		#sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /etc/netdata/netdata.conf
+		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
+		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
+		colorEcho ${INFO} "重启Netdata(Restart netdata ing)"
+		systemctl restart netdata || true
+		cd
 	fi
 fi
 clear
@@ -1539,11 +1540,11 @@ if [[ $install_trojan = 1 ]]; then
 	if [[ -f /etc/trojan/trojan.pem ]]; then
 		colorEcho ${INFO} "DH已有，跳过生成。。。"
 		else
-			:
-			#openssl dhparam -out /etc/trojan/trojan.pem 2048
+		:
+		#openssl dhparam -out /etc/trojan/trojan.pem 2048
 		fi
 	fi
-			cat > '/usr/local/etc/trojan/config.json' << EOF
+	cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
     "local_addr": "::",
@@ -1592,7 +1593,7 @@ if [[ $install_trojan = 1 ]]; then
 EOF
 	touch /etc/trojan/client1.json || true
 	touch /etc/trojan/client2.json || true
-		cat > '/etc/trojan/client1.json' << EOF
+	cat > '/etc/trojan/client1.json' << EOF
 {
 	"run_type": "client",
 	"local_addr": "127.0.0.1",
@@ -1627,7 +1628,7 @@ EOF
 	}
 }
 EOF
-		cat > '/etc/trojan/client2.json' << EOF
+	cat > '/etc/trojan/client2.json' << EOF
 {
 	"run_type": "client",
 	"local_addr": "127.0.0.1",
@@ -1665,7 +1666,7 @@ EOF
 fi
 	clear
 	if [[ $install_bbr = 1 ]]; then
-			colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
+	colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
 	cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 net.ipv6.conf.all.disable_ipv6 = 0
 net.ipv6.conf.default.disable_ipv6 = 0
@@ -1713,8 +1714,7 @@ net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
 EOF
 	sysctl -p > /dev/null || true
-
-		cat > '/etc/systemd/system.conf' << EOF
+	cat > '/etc/systemd/system.conf' << EOF
 [Manager]
 #DefaultTimeoutStartSec=90s
 DefaultTimeoutStopSec=30s
@@ -1743,10 +1743,8 @@ systemctl daemon-reload
 	fi
 	timedatectl set-timezone Asia/Hong_Kong || true
 	timedatectl set-ntp on || true
-	if [[ $dist = centos ]]; then
-		:
-		else
-			ntpdate -qu 1.hk.pool.ntp.org > /dev/null || true
+	if [[ $dist != centos ]]; then
+		ntpdate -qu 1.hk.pool.ntp.org > /dev/null || true
 	fi
 }
 #########Open ports########################
@@ -1761,27 +1759,27 @@ openfirewall(){
 	ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 	ip6tables -I OUTPUT -j ACCEPT
 	if [[ $dist = centos ]]; then
-			setenforce 0
-					cat > '/etc/selinux/config' << EOF
+	setenforce 0
+	cat > '/etc/selinux/config' << EOF
 SELINUX=disabled
 SELINUXTYPE=targeted
 EOF
-		firewall-cmd --zone=public --add-port=80/tcp --permanent
-		firewall-cmd --zone=public --add-port=443/tcp --permanent
-		systemctl stop firewalld
-		systemctl disable firewalld
+	firewall-cmd --zone=public --add-port=80/tcp --permanent
+	firewall-cmd --zone=public --add-port=443/tcp --permanent
+	systemctl stop firewalld
+	systemctl disable firewalld
  elif [[ $dist = ubuntu ]]; then
-		export DEBIAN_FRONTEND=noninteractive
-		ufw allow http
-		ufw allow https
-		apt-get install iptables-persistent -qq -y > /dev/null
+	export DEBIAN_FRONTEND=noninteractive
+	ufw allow http
+	ufw allow https
+	apt-get install iptables-persistent -qq -y > /dev/null
  elif [[ $dist = debian ]]; then
-		export DEBIAN_FRONTEND=noninteractive 
-		apt-get install iptables-persistent -qq -y > /dev/null
+	export DEBIAN_FRONTEND=noninteractive 
+	apt-get install iptables-persistent -qq -y > /dev/null
  else
 	clear
 	TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
-		exit 1;
+	exit 1;
  fi
 }
 ########Nginx config for Trojan only##############
@@ -2243,7 +2241,7 @@ elif [[ $install_ss = 1 ]]; then
 }
 EOF
 	else
-			cat > "/etc/v2ray/config.json" << EOF
+	cat > "/etc/v2ray/config.json" << EOF
 {
 	"log": {
 		"loglevel": "warning",
@@ -2453,7 +2451,7 @@ v2rayclient(){
 	}
 }
 EOF
-	fi
+fi
 }
 ##########Check for update############
 checkupdate(){
@@ -2730,7 +2728,7 @@ statuscheck(){
 			echo ""
 			colorEcho ${INFO} "Trojan-GFW状态：正常运行中(Normal)"
 			else
-				echo ""
+			echo ""
 			colorEcho ${INFO} "Trojan-GFW状态：服务状态异常(Not Running)" 
 		fi
 	fi
@@ -2740,7 +2738,7 @@ statuscheck(){
 			echo ""
 			colorEcho ${INFO} "Nginx状态：正常运行中(Normal)"
 			else
-				echo ""
+			echo ""
 			colorEcho ${INFO} "Nginx状态：服务状态异常(Not Running)" 
 		fi
 	fi
@@ -2750,7 +2748,7 @@ statuscheck(){
 			echo ""
 			colorEcho ${INFO} "Dnsmasq状态：正常运行中(Normal)"
 			else
-				echo ""
+			echo ""
 			colorEcho ${INFO} "Dnsmasq状态：服务状态异常(Not Running)" 
 		fi
 	fi
@@ -2760,7 +2758,7 @@ statuscheck(){
 			echo ""
 			colorEcho ${INFO} "Qbittorrent状态：正常运行中(Normal)"
 			else
-				echo ""
+			echo ""
 			colorEcho ${INFO} "Qbittorrent状态：服务状态异常(Not Running)" 
 		fi
 	fi
@@ -2770,7 +2768,7 @@ statuscheck(){
 			echo ""
 			colorEcho ${INFO} "Bittorrent-Tracker状态：正常运行中(Normal)"
 			else
-				echo ""
+			echo ""
 			colorEcho ${INFO} "Bittorrent-Tracker状态：服务状态异常(Not Running)" 
 		fi
 	fi
@@ -2780,7 +2778,7 @@ statuscheck(){
 			echo ""
 			colorEcho ${INFO} "Aria2状态：正常运行中(Normal)"
 			else
-				echo ""
+			echo ""
 			colorEcho ${INFO} "Aria2状态：服务状态异常(Not Running)" 
 		fi
 	fi
@@ -2790,7 +2788,7 @@ statuscheck(){
 			echo ""
 			colorEcho ${INFO} "Filebrowser状态：正常运行中(Normal)"
 			else
-				echo ""
+			echo ""
 			colorEcho ${INFO} "Filebrowser状态：服务状态异常(Not Running)" 
 		fi
 	fi
@@ -2800,7 +2798,7 @@ statuscheck(){
 			echo ""
 			colorEcho ${INFO} "Netdata状态：正常运行中(Normal)"
 			else
-				echo ""
+			echo ""
 			colorEcho ${INFO} "Netdata状态：服务状态异常(Not Running)" 
 		fi
 	fi
