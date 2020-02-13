@@ -71,8 +71,8 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 #### https://www.kamatera.com/
 
 #### Related Links
-
-https://www.johnrosen1.com/qbt/
+Qbittorrent Related: https://www.johnrosen1.com/qbt/
+Trojan-GFW Related: https://www.johnrosen1.com/trojan/
 
 ### Debug Guide
 
