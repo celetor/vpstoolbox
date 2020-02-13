@@ -966,7 +966,25 @@ clear
 #############################################
 if [[ $install_qbt = 1 ]]; then
 	if [[ -f /usr/bin/qbittorrent-nox ]]; then
-		:
+		cat > '/etc/systemd/system/qbittorrent.service' << EOF
+[Unit]
+Description=qBittorrent Daemon Service
+Documentation=man:qbittorrent-nox(1)
+Wants=network-online.target
+After=network-online.target nss-lookup.target
+
+[Service]
+# if you have systemd >= 240, you probably want to use Type=exec instead
+Type=simple
+User=root
+ExecStart=/usr/bin/qbittorrent-nox
+TimeoutStopSec=infinity
+Restart=on-failure
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target
+EOF
 		else
 		clear
 		colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
@@ -1098,7 +1116,91 @@ clear
 #############################################
 if [[ $install_aria = 1 ]]; then
 	if [[ -f /usr/local/bin/aria2c ]]; then
-		:
+			cat > '/etc/systemd/system/aria2.service' << EOF
+[Unit]
+Description=Aria2c download manager
+Requires=network.target
+After=network.target
+		
+[Service]
+Type=forking
+User=root
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/aria2c --conf-path=/etc/aria2.conf --daemon
+ExecReload=/usr/bin/kill -HUP \$MAINPID
+ExecStop=/usr/bin/kill -s STOP \$MAINPID
+RestartSec=1min
+Restart=on-failure
+		
+[Install]
+WantedBy=multi-user.target
+EOF
+			cat > '/etc/aria2.conf' << EOF
+rpc-secure=false
+#rpc-certificate=/etc/trojan/trojan.crt
+#rpc-private-key=/etc/trojan/trojan.key
+## 下载设置 ##
+continue=true
+max-concurrent-downloads=50
+split=16
+min-split-size=10M
+max-connection-per-server=16
+lowest-speed-limit=0
+#max-overall-download-limit=0
+#max-download-limit=0
+#max-overall-upload-limit=0
+#max-upload-limit=0
+disable-ipv6=false
+max-tries=0
+#retry-wait=0
+
+## 进度保存相关 ##
+
+input-file=/usr/local/bin/aria2.session
+save-session=/usr/local/bin/aria2.session
+save-session-interval=60
+force-save=true
+
+## RPC相关设置 ##
+
+enable-rpc=true
+rpc-allow-origin-all=true
+rpc-listen-all=false
+event-poll=epoll
+# RPC监听端口, 端口被占用时可以修改, 默认:6800
+rpc-listen-port=6800
+# 设置的RPC授权令牌, v1.18.4新增功能, 取代 --rpc-user 和 --rpc-passwd 选项
+rpc-secret=$ariapasswd
+
+## BT/PT下载相关 ##
+bt-tracker=$trackers_list
+#follow-torrent=true
+listen-port=51413
+#bt-max-peers=55
+enable-dht=true
+enable-dht6=true
+#dht-listen-port=6881-6999
+bt-enable-lpd=true
+#enable-peer-exchange=true
+#bt-request-peer-speed-limit=50K
+# 客户端伪装, PT需要
+#peer-id-prefix=-TR2770-
+#user-agent=Transmission/2.77
+seed-ratio=0
+# BT校验相关, 默认:true
+#bt-hash-check-seed=true
+bt-seed-unverified=true
+bt-save-metadata=true
+bt-require-crypto=true
+
+## 磁盘相关 ##
+
+#文件保存路径, 默认为当前启动位置
+dir=/usr/share/nginx/aria2/
+#enable-mmap=true
+file-allocation=none
+disk-cache=64M
+EOF
 		else
 			clear
 			colorEcho ${INFO} "安装aria2(Install aria2 ing)"
@@ -1266,7 +1368,7 @@ bind-interfaces
 cache-size=10000
 no-negcache
 log-queries 
-log-facility=/var/log/dnsmasq.log 
+log-facility=/var/log/dnsmasq.log
 EOF
 		else
 			clear
