@@ -336,7 +336,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --title "User choose" -
 "3" "安裝BBRPLUS" off \
 "代理相关" "Proxy concerned" on  \
 "4" "安裝Trojan-GFW" on \
-"5" "安裝Dnsmasq | DNS缓存与广告屏蔽(dns cache and ad block)" on \
+"5" "安裝Dnscrypt-proxy | DNS缓存与广告屏蔽(dns cache and ad block)" on \
 "6" "安裝V2ray | Websocket+tls+Nginx模式(wss mode)" off \
 "7" "安裝Shadowsocks | Websocket+tls+Nginx模式(wss mode)" off \
 "8" "安裝Tor-Relay | Relay模式(not exit relay)" off \
@@ -1331,126 +1331,176 @@ EOF
 fi
 #############################################
 if [[ $dnsmasq_install = 1 ]]; then
-	if [[ -f /usr/sbin/dnsmasq ]]; then
-		cat > '/etc/dnsmasq.txt' << EOF
-####Block 360####
-0.0.0.0 360.cn
-0.0.0.0 360.com
-0.0.0.0 360jie.com
-0.0.0.0 360kan.com
-0.0.0.0 360taojin.com
-0.0.0.0 i360mall.com
-0.0.0.0 qhimg.com
-0.0.0.0 qhmsg.com
-0.0.0.0 qhres.com
-0.0.0.0 qihoo.com
-0.0.0.0 nicaifu.com
-0.0.0.0 so.com
-####Block Xunlei###
-0.0.0.0 xunlei.com
-####Block Baidu###
-0.0.0.0 baidu.cn
-0.0.0.0 baidu.com
-0.0.0.0 baiducontent.com
-0.0.0.0 baidupcs.com
-0.0.0.0 baidustatic.com
-0.0.0.0 baifubao.com
-0.0.0.0 bdimg.com
-0.0.0.0 bdstatic.com
-0.0.0.0 duapps.com
-0.0.0.0 quyaoya.com
-0.0.0.0 tiebaimg.com
-0.0.0.0 xiaodutv.com
-0.0.0.0 sina.com
-EOF
-	cat > '/etc/dnsmasq.conf' << EOF
-port=53
-domain-needed
-bogus-priv
-no-resolv
-server=8.8.4.4#53
-server=1.1.1.1#53
-addn-hosts=/etc/dnsmasq.txt
-address=/cn/0.0.0.0
-interface=lo
-bind-interfaces
-cache-size=10000
-no-negcache
-log-queries 
-log-facility=/var/log/dnsmasq.log
-EOF
+	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
+		:
 	else
-		clear
-		colorEcho ${INFO} "安装dnsmasq(Install dnsmasq ing)"
-	if [[ $dist = centos ]]; then
-		yum install -y -q dnsmasq  || true
- elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
-	export DEBIAN_FRONTEND=noninteractive
-	apt-get install dnsmasq -qq -y || true
- else
 	clear
-	TERM=ansi whiptail --title "error can't install dnsmasq" --infobox "error can't install dnsmasq" 8 78
-		exit 1;
- fi
+	colorEcho ${INFO} "安装dnscrypt-proxy(Install dnscrypt-proxy ing)"
+	dnsmasqstatus=$(systemctl is-active dnsmasq)
+		if [[ $dnsmasqdstatus == active ]]; then
+			systemctl disable dnsmasq
+		fi
+	(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 53 open" && kill $(lsof -t -i:53) || echo "Moving on"
+	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.39/dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
+	#wget https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.39/dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
+	tar -xvf dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
+	rm dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
+	cd linux-x86_64
+	cp -f dnscrypt-proxy /usr/sbin/dnscrypt-proxy
+	chmod +x /usr/sbin/dnscrypt-proxy
+	cd ..
+	rm -rf linux-x86_64
  if [[ $dist = ubuntu ]]; then
 	 systemctl stop systemd-resolved || true
 	 systemctl disable systemd-resolved || true > /dev/null
  fi
- touch /etc/dnsmasq.txt || true
-			cat > '/etc/dnsmasq.txt' << EOF
+	cat > '/etc/blacklist.txt' << EOF
+
+###########################
+#        Blacklist        #
+###########################
+
+## Rules for name-based query blocking, one per line
+##
+## Example of valid patterns:
+##
+## ads.*         | matches anything with an "ads." prefix
+## *.example.com | matches example.com and all names within that zone such as www.example.com
+## example.com   | identical to the above
+## =example.com  | block example.com but not *.example.com
+## *sex*         | matches any name containing that substring
+## ads[0-9]*     | matches "ads" followed by one or more digits
+## ads*.example* | *, ? and [] can be used anywhere, but prefixes/suffixes are faster
+
+ad.*
+ads.*
+
 ####Block 360####
-0.0.0.0 360.cn
-0.0.0.0 360.com
-0.0.0.0 360jie.com
-0.0.0.0 360kan.com
-0.0.0.0 360taojin.com
-0.0.0.0 i360mall.com
-0.0.0.0 qhimg.com
-0.0.0.0 qhmsg.com
-0.0.0.0 qhres.com
-0.0.0.0 qihoo.com
-0.0.0.0 nicaifu.com
-0.0.0.0 so.com
+*.cn
+*.360.com
+*.360jie.com
+*.360kan.com
+*.360taojin.com
+*.i360mall.com
+*.qhimg.com
+*.qhmsg.com
+*.qhres.com
+*.qihoo.com
+*.nicaifu.com
+*.so.com
 ####Block Xunlei###
-0.0.0.0 xunlei.com
+*.xunlei.com
 ####Block Baidu###
-0.0.0.0 baidu.cn
-0.0.0.0 baidu.com
-0.0.0.0 baiducontent.com
-0.0.0.0 baidupcs.com
-0.0.0.0 baidustatic.com
-0.0.0.0 baifubao.com
-0.0.0.0 bdimg.com
-0.0.0.0 bdstatic.com
-0.0.0.0 duapps.com
-0.0.0.0 quyaoya.com
-0.0.0.0 tiebaimg.com
-0.0.0.0 xiaodutv.com
-0.0.0.0 sina.com
+*baidu.*
+*.bdimg.com
+*.bdstatic.com
+*.duapps.com
+*.quyaoya.com
+*.tiebaimg.com
+*.xiaodutv.com
+*.sina.com
 EOF
-	cat > '/etc/dnsmasq.conf' << EOF
-port=53
-domain-needed
-bogus-priv
-no-resolv
-server=8.8.4.4#53
-server=1.1.1.1#53
-addn-hosts=/etc/dnsmasq.txt
-address=/cn/0.0.0.0
-interface=lo
-bind-interfaces
-cache-size=10000
-no-negcache
-log-queries 
-log-facility=/var/log/dnsmasq.log 
+if [[ -n $myipv6 ]]; then
+	ipv6_true="true"
+	else
+	ipv6_true="false"
+fi
+    cat > '/etc/dnscrypt-proxy.toml' << EOF
+listen_addresses = ['127.0.0.1:53']
+max_clients = 250
+ipv4_servers = true
+ipv6_servers = $ipv6_true
+dnscrypt_servers = true
+doh_servers = true
+require_dnssec = false
+require_nolog = true
+require_nofilter = true
+disabled_server_names = ['cisco', 'cisco-ipv6', 'cisco-familyshield']
+force_tcp = false
+timeout = 5000
+keepalive = 30
+lb_estimator = true
+log_level = 0
+log_file = '/var/log/dnscrypt-proxy.log'
+cert_refresh_delay = 240
+tls_disable_session_tickets = true
+#tls_cipher_suite = [4865]
+fallback_resolvers = ['1.1.1.1:53', '8.8.8.8:53']
+ignore_system_dns = true
+netprobe_timeout = 60
+netprobe_address = '1.1.1.1:53'
+# Maximum log files size in MB - Set to 0 for unlimited.
+log_files_max_size = 0
+# How long to keep backup files, in days
+log_files_max_age = 7
+# Maximum log files backups to keep (or 0 to keep all backups)
+log_files_max_backups = 0
+block_ipv6 = false
+## Immediately respond to A and AAAA queries for host names without a domain name
+block_unqualified = true
+## Immediately respond to queries for local zones instead of leaking them to
+## upstream resolvers (always causing errors or timeouts).
+block_undelegated = true
+## TTL for synthetic responses sent when a request has been blocked (due to
+## IPv6 or blacklists).
+reject_ttl = 600
+cache = true
+cache_size = 4096
+cache_min_ttl = 2400
+cache_max_ttl = 86400
+cache_neg_min_ttl = 60
+cache_neg_max_ttl = 600
+
+[query_log]
+
+  file = '/var/log/query.log'
+  format = 'tsv'
+
+[blacklist]
+
+  blacklist_file = '/etc/blacklist.txt'
+
+[sources]
+
+  ## An example of a remote source from https://github.com/DNSCrypt/dnscrypt-resolvers
+
+  [sources.'public-resolvers']
+  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v2/public-resolvers.md']
+  cache_file = 'public-resolvers.md'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  prefix = ''
+
+  [sources.'opennic']
+  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/opennic.md', 'https://download.dnscrypt.info/dnscrypt-resolvers/v2/opennic.md']
+  cache_file = 'opennic.md'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  prefix = ''
+
+  ## Anonymized DNS relays
+
+  [sources.'relays']
+  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/relays.md', 'https://download.dnscrypt.info/resolvers-list/v2/relays.md']
+  cache_file = 'relays.md'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 72
+  prefix = ''
 EOF
-chattr -i /etc/resolv.conf || true
-rm /etc/resolv.conf || true
-touch /etc/resolv.conf || true
-echo "nameserver 127.0.0.1" > '/etc/resolv.conf' || true
-chattr +i /etc/resolv.conf || true
-systemctl restart dnsmasq || true
-systemctl enable dnsmasq || true      
+	cat > '/lib/systemd/system/dnscrypt-proxy.service' << EOF
+[Unit]
+Description=DNSCrypt client proxy
+Documentation=https://github.com/DNSCrypt/dnscrypt-proxy/wiki
+After=network.target
+
+[Service]
+NonBlocking=true
+ExecStart=/usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy.toml
+User=root
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
+EOF
 	fi
 fi
 clear
@@ -1513,6 +1563,7 @@ if [[ $install_netdata = 1 ]]; then
 		#sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /etc/netdata/netdata.conf
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
+		sleep 1
 		colorEcho ${INFO} "重启Netdata(Restart netdata ing)"
 		systemctl restart netdata || true
 		cd
@@ -2019,7 +2070,7 @@ bootstart(){
 	colorEcho ${INFO} "设置开机自启(auto boot start) ing..."
 	systemctl daemon-reload
 	if [[ $install_qbt = 1 ]]; then
-		systemctl enable qbittorrent.service
+		systemctl enable qbittorrent
 	fi
 	if [[ $install_tracker = 1 ]]; then
 		systemctl enable tracker
@@ -2259,10 +2310,10 @@ EOF
 				"protocol": "vmess",
 				"settings": {
 						"clients": [
-								{
-										"id": "$uuid",
-										"alterId": $alterid
-								}
+						{
+							"id": "$uuid",
+							"alterId": $alterid
+							}
 						]
 				},
 				"streamSettings": {
@@ -2356,9 +2407,7 @@ v2rayclient(){
 			"security": "tls",
 			"wsSettings": {
 				"path": "$path",
-				"headers": {
-					"Host": "$domain"
-				}
+				"headers": {"Host": "$domain"}
 			},
 			"tlsSetting": {
 				"allowInsecure": false,
@@ -2367,22 +2416,16 @@ v2rayclient(){
 				"allowInsecureCiphers": false,
 				"disableSystemRoot": false
 			},
-				"sockopt": {
-					"mark": 255
-				}
+				"sockopt": {"mark": 255}
 			},
-			"mux": {
-				"enabled": false
-			}
+			"mux": {"enabled": false}
 		},
 		{
 			"tag": "direct",
 			"protocol": "freedom",
 			"settings": {},
 			"streamSettings": {
-				"sockopt": {
-					"mark": 255
-				}
+				"sockopt": {"mark": 255}
 			}
 		},
 		{
@@ -2390,9 +2433,7 @@ v2rayclient(){
 			"protocol" : "blackhole",
 			"settings": {},
 			"streamSettings": {
-				"sockopt": {
-					"mark": 255
-				}
+				"sockopt": {"mark": 255}
 			}
 		},
 		{
@@ -2639,13 +2680,11 @@ uninstall(){
 		rm -rf /etc/apt/sources.list.d/nginx.list
 		fi
 	fi
-	if [[ -f /usr/sbin/dnsmasq ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) dnsmasq?" 8 78); then
-			if [[ $dist = centos ]]; then
-			yum remove dnsmasq -y -q
-			else
-			apt purge dnsmasq -p -y
-			fi
+	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) dnscrypt-proxy?" 8 78); then
+			systemctl stop dnscrypt-proxy
+			systemctl disable dnscrypt-proxy
+			rm -rf /usr/sbin/dnscrypt-proxy
 		fi
 	fi
 	if [[ -f /usr/bin/qbittorrent-nox ]]; then
@@ -2742,14 +2781,14 @@ statuscheck(){
 			colorEcho ${INFO} "Nginx状态：服务状态异常(Not Running)" 
 		fi
 	fi
-	if [[ -f /usr/sbin/dnsmasq ]]; then
-		dnsmasqstatus=$(systemctl is-active dnsmasq)
+	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
+		dnsmasqstatus=$(systemctl is-active dnscrypt-proxy)
 		if [[ $dnsmasqstatus == active ]]; then
 			echo ""
-			colorEcho ${INFO} "Dnsmasq状态：正常运行中(Normal)"
+			colorEcho ${INFO} "dnscrypt-proxy状态：正常运行中(Normal)"
 			else
 			echo ""
-			colorEcho ${INFO} "Dnsmasq状态：服务状态异常(Not Running)" 
+			colorEcho ${INFO} "dnscrypt-proxy状态：服务状态异常(Not Running)" 
 		fi
 	fi
 	if [[ -f /usr/bin/qbittorrent-nox ]]; then
@@ -2862,6 +2901,11 @@ logcheck(){
 		journalctl -a -u trojan.service
 		cat /root/.trojan/update.log
 	fi
+	if [[ $dnsmasq_install == 1 ]]; then
+		colorEcho ${INFO} "dnscrypt-proxy Log"
+		cat /var/log/dnscrypt-proxy.log
+		cat /var/log/query.log
+	fi
 	if [[ $install_v2ray == 1 ]] || [[ $install_ss == 1 ]]; then
 		colorEcho ${INFO} "V2ray/ss Log"
 		cat /var/log/v2ray/error.log
@@ -2906,6 +2950,15 @@ function advancedMenu() {
 				rm results || true
 				prasejson
 				autoupdate
+				if [[ $dnsmasq_install == 1 ]]; then
+					if [[ $dnsmasqdstatus == active ]]; then
+					systemctl stop dnsmasq
+					fi
+				rm /etc/resolv.conf || true
+				touch /etc/resolv.conf || true
+				echo "nameserver 127.0.0.1" > '/etc/resolv.conf' || true
+				systemctl start dnscrypt-proxy || true
+				fi
 				whiptail --title "Install Success" --textbox --scrolltext result 32 120
 				if [[ $install_bbrplus = 1 ]]; then
 				bash -c "$(curl -fsSL https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh)"
