@@ -1350,10 +1350,6 @@ if [[ $dnsmasq_install = 1 ]]; then
 	chmod +x /usr/sbin/dnscrypt-proxy
 	cd ..
 	rm -rf linux-x86_64
- if [[ $dist = ubuntu ]]; then
-	 systemctl stop systemd-resolved || true
-	 systemctl disable systemd-resolved || true
- fi
 	cat > '/etc/blacklist.txt' << EOF
 
 ###########################
@@ -2951,6 +2947,10 @@ function advancedMenu() {
 				prasejson
 				autoupdate
 				if [[ $dnsmasq_install == 1 ]]; then
+                                   if [[ $dist = ubuntu ]]; then
+	                              systemctl stop systemd-resolved || true
+	                              systemctl disable systemd-resolved || true
+                                   fi
 					if [[ $(systemctl is-active dnsmasq) == active ]]; then
 						systemctl disable dnsmasq
 						systemctl stop dnsmasq
