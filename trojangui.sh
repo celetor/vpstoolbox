@@ -2959,6 +2959,7 @@ function advancedMenu() {
 				touch /etc/resolv.conf || true
 				echo "nameserver 127.0.0.1" > '/etc/resolv.conf' || true
 				systemctl start dnscrypt-proxy || true
+				systemctl enable dnscrypt-proxy || true
 				fi
 				whiptail --title "Install Success" --textbox --scrolltext result 32 120
 				if [[ $install_bbrplus = 1 ]]; then
