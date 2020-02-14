@@ -77,6 +77,12 @@ Trojan-GFW Related: https://www.johnrosen1.com/trojan/
 
 ### Debug Guide
 
+For Network issues:
+
+https://tools.ipip.net/ping.php
+
+For Server issues
+
 ```
 https://github.com/trojan-gfw/trojan-quickstart
 sudo nginx -t
