@@ -1340,7 +1340,7 @@ if [[ $dnsmasq_install = 1 ]]; then
 		if [[ $dnsmasqdstatus == active ]]; then
 			systemctl disable dnsmasq
 		fi
-	(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 53 open" && kill $(lsof -t -i:53) || echo "Moving on"
+	#(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 53 open" && kill $(lsof -t -i:53) || echo "Moving on"
 	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.39/dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
 	#wget https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.39/dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
 	tar -xvf dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
