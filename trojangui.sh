@@ -2954,8 +2954,6 @@ function advancedMenu() {
 					if [[ $(systemctl is-active dnsmasq) == active ]]; then
 						systemctl disable dnsmasq
 						systemctl stop dnsmasq
-					else
-						echo ""
 					fi
 				rm /etc/resolv.conf || true
 				touch /etc/resolv.conf || true
