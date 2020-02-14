@@ -1352,7 +1352,7 @@ if [[ $dnsmasq_install = 1 ]]; then
 	rm -rf linux-x86_64
  if [[ $dist = ubuntu ]]; then
 	 systemctl stop systemd-resolved || true
-	 systemctl disable systemd-resolved || true > /dev/null
+	 systemctl disable systemd-resolved || true
  fi
 	cat > '/etc/blacklist.txt' << EOF
 
@@ -2951,10 +2951,11 @@ function advancedMenu() {
 				prasejson
 				autoupdate
 				if [[ $dnsmasq_install == 1 ]]; then
-					dnsmasqstatus=$(systemctl is-active dnsmasq)
-					if [[ $dnsmasqdstatus == active ]]; then
-					systemctl disable dnsmasq
-					systemctl stop dnsmasq
+					if [[ $(systemctl is-active dnsmasq) == active ]]; then
+						systemctl disable dnsmasq
+						systemctl stop dnsmasq
+					else
+						echo ""
 					fi
 				rm /etc/resolv.conf || true
 				touch /etc/resolv.conf || true
