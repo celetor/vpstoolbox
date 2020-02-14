@@ -17,7 +17,7 @@ Then
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 ```
 ![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/mainmenu.png)
-![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/menu_2.png)
+![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/1.png)
 
 #### Friendly Reminder:
 1. Please **Run as root**(sudo -i)
