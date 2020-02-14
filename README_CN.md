@@ -77,6 +77,12 @@ Trojan-GFW 相关: https://www.johnrosen1.com/trojan/
 
 ### 查錯指南
 
+网络相关：
+
+https://tools.ipip.net/ping.php
+
+伺服器相关：
+
 ```
 https://github.com/trojan-gfw/trojan-quickstart
 sudo nginx -t
