@@ -2951,7 +2951,9 @@ function advancedMenu() {
 				prasejson
 				autoupdate
 				if [[ $dnsmasq_install == 1 ]]; then
+					dnsmasqstatus=$(systemctl is-active dnsmasq)
 					if [[ $dnsmasqdstatus == active ]]; then
+					systemctl disable dnsmasq
 					systemctl stop dnsmasq
 					fi
 				rm /etc/resolv.conf || true
