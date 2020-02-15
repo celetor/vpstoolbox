@@ -45,7 +45,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 4. Auto OS Detect **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/) Centos**
 5. Auto [domain resolve verification](https://en.wikipedia.org/wiki/Nslookup)
 6. Auto [iptables](https://en.wikipedia.org/wiki/Iptables)(includes ipv6) firewall config and [iptables-persistent](https://github.com/zertrin/iptables-persistent)
-7. Auto generate [client config](https://trojan-gfw.github.io/trojan/config) (includes both Trojan-GFW and V2ray )
+7. Auto generate Trojan-GFW [client config](https://trojan-gfw.github.io/trojan/config) 
 10. Auto [Nginx Performance Optimization](https://www.johnrosen1.com/nginx1/)
 11. Auto [Trojan-GFW ***trojan://*** share link and QR code generate](https://github.com/trojan-gfw/trojan-url)
 13. Auto [https 301 redirect](https://en.wikipedia.org/wiki/HTTP_301) without affecting certificate renew
