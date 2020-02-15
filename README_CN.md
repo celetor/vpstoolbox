@@ -58,7 +58,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 7.  [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks) ( **[TCP-BBR](https://github.com/google/bbr)** 已包含)
 20. ***[BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)***
 21. ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
-22. 手动 检查更新 包括 Trojan-gfw
+22. 手动 检查更新
 23. 完全/部分 卸載
 
 **如果你需要更多功能, 请 open a Github issue / 提交pull request.(Centos相关issue将被列为低优先级)**
