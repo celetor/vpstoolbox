@@ -600,8 +600,8 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]]; then
         ;;
     esac
     if [[ $? != 0 ]]; then
-	colorEcho ${ERROR} "证书申请失败，请检查域名是否正确以及VPS控制面板防火墙(80 443)是否打开!!!"
-	colorEcho ${ERROR} "certificate issue fail,Pleae enter correct domain and Open port 80 443 on VPS panel !!!"
+	colorEcho ${ERROR} "证书申请失败，请检查域名是否正确"
+	colorEcho ${ERROR} "certificate issue fail,Pleae enter correct domain"
 	exit 1
 	fi 
     ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
