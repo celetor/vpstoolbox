@@ -19,11 +19,6 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/mainmenu.png)
 ![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/3.png)
 
-Old Version(include V2ray and ss）
-```
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
-```
-
 #### Friendly Reminder:
 1. Please **Run as root**(sudo -i)
 2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this bash script!
@@ -87,24 +82,20 @@ https://tools.ipip.net/ping.php
 For Server issues
 
 ```
-https://github.com/trojan-gfw/trojan-quickstart
 sudo nginx -t
 sudo systemctl status trojan
 sudo systemctl status nginx
-sudo systemctl status v2ray
 sudo systemctl status tor
 sudo systemctl status tor@default
-sudo systemctl status dnsmasq
+sudo systemctl status dnscrypt-proxy
 sudo systemctl status qbittorrent
 sudo systemctl status tracker
 sudo systemctl status aria2
 sudo systemctl status filebrowser
 sudo systemctl status netdata
 journalctl -e -u trojan.service
-cat /var/log/v2ray/error.log
 cat /usr/local/etc/trojan/config.json
 cat /etc/nginx/conf.d/trojan.conf
-cat /etc/v2ray/config.json
 cat /etc/aria.conf
 crontab -l
 sudo ~/.acme.sh/acme.sh --cron //only if you use let's encrypt certificate
