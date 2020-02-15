@@ -237,6 +237,7 @@ EOF
 	if [[ $? != 0 ]]; then
 	colorEcho ${ERROR} "证书申请测试失败，请检查VPS控制面板防火墙(80 443)是否打开!!!"
 	colorEcho ${ERROR} "Domain verification fail,Pleae Open port 80 443 on VPS panel !!!"
+	exit 1
 	fi 
 	clear
 	colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
@@ -598,6 +599,11 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]]; then
         *)
         ;;
     esac
+    if [[ $? != 0 ]]; then
+	colorEcho ${ERROR} "证书申请失败，请检查域名是否正确以及VPS控制面板防火墙(80 443)是否打开!!!"
+	colorEcho ${ERROR} "certificate issue fail,Pleae enter correct domain and Open port 80 443 on VPS panel !!!"
+	exit 1
+	fi 
     ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
     chmod +r /etc/trojan/trojan.key
     fi
@@ -1396,10 +1402,14 @@ ads.*
 *.xiaodutv.com
 *.sina.com
 EOF
+ipv6_true="false"
+block_ipv6="true"
 if [[ -n $myipv6 ]]; then
-	ipv6_true="true"
-	else
-	ipv6_true="false"
+	ping -6 ipv6.google.com -c 2
+	if [[ $? -eq 0 ]]; then
+		ipv6_true="true"
+		block_ipv6="false"
+	fi
 fi
     cat > '/etc/dnscrypt-proxy.toml' << EOF
 listen_addresses = ['127.0.0.1:53']
@@ -1431,7 +1441,7 @@ log_files_max_size = 0
 log_files_max_age = 7
 # Maximum log files backups to keep (or 0 to keep all backups)
 log_files_max_backups = 0
-block_ipv6 = false
+block_ipv6 = $block_ipv6
 ## Immediately respond to A and AAAA queries for host names without a domain name
 block_unqualified = true
 ## Immediately respond to queries for local zones instead of leaking them to
@@ -1591,6 +1601,13 @@ if [[ $install_trojan = 1 ]]; then
 		#openssl dhparam -out /etc/trojan/trojan.pem 2048
 		fi
 	fi
+	ipv4_prefer="true"
+	if [[ -n $myipv6 ]]; then
+		ping -6 ipv6.google.com -c 2
+		if [[ $? -eq 0 ]]; then
+			ipv4_prefer="false"
+		fi
+	fi
 	cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
@@ -1621,7 +1638,7 @@ if [[ $install_trojan = 1 ]]; then
         "dhparam": ""
     },
     "tcp": {
-        "prefer_ipv4": false,
+        "prefer_ipv4": $ipv4_prefer,
         "no_delay": true,
         "keep_alive": true,
         "reuse_port": false,
@@ -2596,6 +2613,8 @@ sharelink(){
 		echo "" >> result
 		echo "你的netdata信息，非分享链接，仅供参考(Your Netdata Information)" >> result
 		echo "https://$domain:443$netdatapath" >> result
+		echo "相关链接（Related Links）" >> result
+		echo "https://play.google.com/store/apps/details?id=com.kpots.netdata" >> result
 	fi
 	if [[ $install_v2ray = 1 ]]; then
 	echo
@@ -2947,10 +2966,10 @@ function advancedMenu() {
 				prasejson
 				autoupdate
 				if [[ $dnsmasq_install == 1 ]]; then
-                                   if [[ $dist = ubuntu ]]; then
-	                              systemctl stop systemd-resolved || true
-	                              systemctl disable systemd-resolved || true
-                                   fi
+					if [[ $dist = ubuntu ]]; then
+	 					systemctl stop systemd-resolved || true
+	 					systemctl disable systemd-resolved || true
+ 					fi
 					if [[ $(systemctl is-active dnsmasq) == active ]]; then
 						systemctl disable dnsmasq
 						systemctl stop dnsmasq
