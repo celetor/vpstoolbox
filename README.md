@@ -102,13 +102,6 @@ sudo ~/.acme.sh/acme.sh --cron //only if you use let's encrypt certificate
 timedatectl
 iptables -L -v
 ```
-### Result Example
-```
-trojan://vpstoolbox@johnrosen.top:443
-trojan://trojanscript@www.johnrosen.top:443
-```
-![QR code](https://johnrosen.top/vpstoolbox.png)
-![Trojan-GFW QR code](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojanscript.png)
 
 
 
