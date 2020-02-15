@@ -59,7 +59,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 9.  Support Auto [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks) enable ( **[TCP-BBR](https://github.com/google/bbr)** included)
 20. Support ***[BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)***
 15. Support ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
-21. Support manually check for update include both Trojan-gfw and v2ray(ss included)
+21. Support manually check for Trojan-gfw update
 23. Support Full/Part Uninstall
 
 **If you need more functions, please open a Github issue.(No Centos related issues or bugs allowed except pull requests)**
