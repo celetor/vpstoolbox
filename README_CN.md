@@ -82,7 +82,6 @@ https://tools.ipip.net/ping.php
 伺服器相关：
 
 ```
-https://github.com/trojan-gfw/trojan-quickstart
 sudo nginx -t
 sudo systemctl status trojan
 sudo systemctl status nginx
