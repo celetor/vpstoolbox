@@ -18,11 +18,6 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/mainmenu.png)
 ![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/3.png)
 
-旧版本（包含V2ray和ss,此版本不再提供任何支援）
-```
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
-```
-
 #### 運行前的要求:
 1. 請 **使用root用戶運行**(sudo -i)
 2. 請在运行本脚本前先 **[购买一个域名](https://www.namesilo.com/?rid=685fb47qi)** 并 **[完成A记录 dns解析](https://dnschecker.org/)**!
@@ -63,7 +58,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 7.  [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks) ( **[TCP-BBR](https://github.com/google/bbr)** 已包含)
 20. ***[BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)***
 21. ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
-22. 手动 检查更新 包括 Trojan-gfw v2ray ss
+22. 手动 检查更新 包括 Trojan-gfw
 23. 完全/部分 卸載
 
 **如果你需要更多功能, 请 open a Github issue / 提交pull request.(Centos相关issue将被列为低优先级)**
@@ -91,20 +86,17 @@ https://github.com/trojan-gfw/trojan-quickstart
 sudo nginx -t
 sudo systemctl status trojan
 sudo systemctl status nginx
-sudo systemctl status v2ray
 sudo systemctl status tor
 sudo systemctl status tor@default
-sudo systemctl status dnsmasq
+sudo systemctl status dnscrypt-proxy
 sudo systemctl status qbittorrent
 sudo systemctl status tracker
 sudo systemctl status aria2
 sudo systemctl status filebrowser
 sudo systemctl status netdata
 journalctl -e -u trojan.service
-cat /var/log/v2ray/error.log
 cat /usr/local/etc/trojan/config.json
 cat /etc/nginx/conf.d/trojan.conf
-cat /etc/v2ray/config.json
 cat /etc/aria.conf
 crontab -l
 sudo ~/.acme.sh/acme.sh --cron //仅当使用let's encrypt证书是有效
