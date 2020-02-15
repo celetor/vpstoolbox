@@ -25,6 +25,7 @@
 
 #sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
 
+cd
 clear
 
 if [[ $(id -u) != 0 ]]; then
