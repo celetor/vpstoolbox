@@ -44,7 +44,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 3. OS 探測 **支援 [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/) Centos**
 4. [domain resolve verification](https://en.wikipedia.org/wiki/Nslookup)
 5. [iptables](https://en.wikipedia.org/wiki/Iptables)(包括 ipv6) 防火墙配置以及 [iptables-persistent](https://github.com/zertrin/iptables-persistent)
-6. 生成 [客戶端配置文件](https://trojan-gfw.github.io/trojan/config) (包括 Trojan-GFW 和 V2ray )
+6. 全自动生成 Trojan-GFW [客戶端配置文件](https://trojan-gfw.github.io/trojan/config) 
 8. [Nginx 效能優化](https://www.johnrosen1.com/nginx1/)
 9. [Trojan-GFW ***trojan://***  分享链接 以及 二维码 生成](https://github.com/trojan-gfw/trojan-url)
 10.  [https 301 redirect](https://en.wikipedia.org/wiki/HTTP_301) 不會影響證書的續簽
