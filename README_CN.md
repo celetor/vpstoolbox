@@ -16,7 +16,7 @@ yum update -y && yum install sudo newt curl -y && sudo -i
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vps.sh)"
 ```
 ![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/mainmenu.png)
-![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/1.png)
+![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/3.png)
 
 旧版本（包含V2ray和ss,此版本不再提供任何支援）
 ```
