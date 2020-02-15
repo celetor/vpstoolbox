@@ -1567,7 +1567,7 @@ if [[ $install_trojan = 1 ]]; then
         "$password1",
         "$password2"
     ],
-    "log_level": 0,
+    "log_level": 1,
     "ssl": {
         "cert": "/etc/trojan/trojan.crt",
         "key": "/etc/trojan/trojan.key",
