@@ -2219,7 +2219,8 @@ statuscheck(){
 			colorEcho ${INFO} "Trojan-GFW状态：正常运行中(Normal)"
 			else
 			echo ""
-			colorEcho ${INFO} "Trojan-GFW状态：服务状态异常(Not Running)" 
+			colorEcho ${INFO} "Trojan-GFW状态：服务状态异常,尝试重启服务(Not Running)"
+			systemctl restart trojan
 		fi
 	fi
 	if [[ -f /usr/sbin/nginx ]]; then
@@ -2229,7 +2230,8 @@ statuscheck(){
 			colorEcho ${INFO} "Nginx状态：正常运行中(Normal)"
 			else
 			echo ""
-			colorEcho ${INFO} "Nginx状态：服务状态异常(Not Running)" 
+			colorEcho ${INFO} "Nginx状态：服务状态异常,尝试重启服务(Not Running)"
+			systemctl restart nginx
 		fi
 	fi
 	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
@@ -2239,7 +2241,8 @@ statuscheck(){
 			colorEcho ${INFO} "dnscrypt-proxy状态：正常运行中(Normal)"
 			else
 			echo ""
-			colorEcho ${INFO} "dnscrypt-proxy状态：服务状态异常(Not Running)" 
+			colorEcho ${INFO} "dnscrypt-proxy状态：服务状态异常,尝试重启服务(Not Running)"
+			systemctl restart dnscrypt-proxy
 		fi
 	fi
 	if [[ -f /usr/bin/qbittorrent-nox ]]; then
@@ -2249,7 +2252,8 @@ statuscheck(){
 			colorEcho ${INFO} "Qbittorrent状态：正常运行中(Normal)"
 			else
 			echo ""
-			colorEcho ${INFO} "Qbittorrent状态：服务状态异常(Not Running)" 
+			colorEcho ${INFO} "Qbittorrent状态：服务状态异常,尝试重启服务(Not Running)"
+			systemctl restart qbittorrent
 		fi
 	fi
 	if [[ -f /usr/bin/bittorrent-tracker ]]; then
@@ -2259,7 +2263,8 @@ statuscheck(){
 			colorEcho ${INFO} "Bittorrent-Tracker状态：正常运行中(Normal)"
 			else
 			echo ""
-			colorEcho ${INFO} "Bittorrent-Tracker状态：服务状态异常(Not Running)" 
+			colorEcho ${INFO} "Bittorrent-Tracker状态：服务状态异常,尝试重启服务(Not Running)"
+			systemctl restart tracker
 		fi
 	fi
 	if [[ -f /usr/local/bin/aria2c ]]; then
@@ -2269,7 +2274,8 @@ statuscheck(){
 			colorEcho ${INFO} "Aria2状态：正常运行中(Normal)"
 			else
 			echo ""
-			colorEcho ${INFO} "Aria2状态：服务状态异常(Not Running)" 
+			colorEcho ${INFO} "Aria2状态：服务状态异常,尝试重启服务(Not Running)"
+			systemctl restart aria2
 		fi
 	fi
 	if [[ -f /usr/local/bin/filebrowser ]]; then
@@ -2279,7 +2285,8 @@ statuscheck(){
 			colorEcho ${INFO} "Filebrowser状态：正常运行中(Normal)"
 			else
 			echo ""
-			colorEcho ${INFO} "Filebrowser状态：服务状态异常(Not Running)" 
+			colorEcho ${INFO} "Filebrowser状态：服务状态异常,尝试重启服务(Not Running)"
+			systemctl restart filebrowser
 		fi
 	fi
 	if [[ -f /usr/sbin/netdata ]]; then
@@ -2289,7 +2296,8 @@ statuscheck(){
 			colorEcho ${INFO} "Netdata状态：正常运行中(Normal)"
 			else
 			echo ""
-			colorEcho ${INFO} "Netdata状态：服务状态异常(Not Running)" 
+			colorEcho ${INFO} "Netdata状态：服务状态异常,尝试重启服务(Not Running)"
+			systemctl restart netdata
 		fi
 	fi
 	if [[ -f /usr/bin/tor ]]; then
@@ -2299,7 +2307,8 @@ statuscheck(){
 			colorEcho ${INFO} "Tor状态：正常运行中(Normal)"
 			else
 			echo ""
-			colorEcho ${INFO} "Tor状态：服务状态异常(Not Running)" 
+			colorEcho ${INFO} "Tor状态：服务状态异常,尝试重启服务(Not Running)"
+			systemctl restart tor
 		fi
 	fi
 	echo ""
@@ -2313,19 +2322,19 @@ cat > '/root/.trojan/autoupdate.sh' << EOF
 trojanversion=$(curl -s "https://api.github.com/repos/trojan-gfw/trojan/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-999)
 /usr/local/bin/trojan -v &> /root/.trojan/trojan_version.txt
 if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
-        echo "no update required" >> /root/.trojan/update.log
-        else
-        echo "update required" >> /root/.trojan/update.log
-        wget -q https://github.com/trojan-gfw/trojan/releases/download/v\$trojanversion/trojan-\$trojanversion-linux-amd64.tar.xz
-        tar -xf trojan-\$trojanversion-linux-amd64.tar.xz
-        rm -rf trojan-\$trojanversion-linux-amd64.tar.xz
-        cd trojan
-        chmod +x trojan
-        cp -f trojan /usr/local/bin/trojan
-        systemctl restart trojan
-        cd
-        rm -rf trojan
-        echo "Update complete" >> /root/.trojan/update.log
+   	echo "no update required" >> /root/.trojan/update.log
+    else
+    echo "update required" >> /root/.trojan/update.log
+    wget -q https://github.com/trojan-gfw/trojan/releases/download/v\$trojanversion/trojan-\$trojanversion-linux-amd64.tar.xz
+    tar -xf trojan-\$trojanversion-linux-amd64.tar.xz
+    rm -rf trojan-\$trojanversion-linux-amd64.tar.xz
+    cd trojan
+    chmod +x trojan
+    cp -f trojan /usr/local/bin/trojan
+    systemctl restart trojan
+    cd
+    rm -rf trojan
+    echo "Update complete" >> /root/.trojan/update.log
 fi
 EOF
 crontab -l | grep -q '0 * * * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
@@ -2359,86 +2368,85 @@ bandwithusage(){
 	colorEcho ${INFO} "Done !"
 }
 ##################################
-clear
-function advancedMenu() {
-		ADVSEL=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "hi" --title "VPS ToolBox Menu" --menu --nocancel "Choose an option: https://github.com/johnrosen1/trojan-gfw-script
+advancedMenu() {
+	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "hi" --title "VPS ToolBox Menu" --menu --nocancel "Choose an option: https://github.com/johnrosen1/trojan-gfw-script
 运行此脚本前请在控制面板中开启80 443端口并关闭Cloudflare CDN!" 13 78 4 \
-				"1" "安裝(Install)" \
-				"2" "结果(Result)" \
-				"3" "日志(Log)" \
-				"4" "流量(Bandwith)" \
-				"5" "状态(Status)" \
-				"6" "更新(Update)" \
-				"7" "卸載(Uninstall)" \
-				"8" "退出(Quit)" 3>&1 1>&2 2>&3)
-		case $ADVSEL in
-				1)
-				cd
-				clear
-				userinput
-				installdependency
-				openfirewall
-				issuecert
-				nginxtrojan
-				bootstart
-				start
-				sharelink
-				rm results || true
-				prasejson
-				autoupdate
-				if [[ $dnsmasq_install == 1 ]]; then
-					if [[ $dist = ubuntu ]]; then
-	 					systemctl stop systemd-resolved || true
-	 					systemctl disable systemd-resolved || true
- 					fi
-					if [[ $(systemctl is-active dnsmasq) == active ]]; then
-						systemctl disable dnsmasq
-						systemctl stop dnsmasq
-					fi
-				rm /etc/resolv.conf || true
-				touch /etc/resolv.conf || true
-				echo "nameserver 127.0.0.1" > '/etc/resolv.conf' || true
-				systemctl start dnscrypt-proxy || true
-				systemctl enable dnscrypt-proxy || true
-				fi
-				whiptail --title "Install Success" --textbox --scrolltext result 32 120
-				if [[ $install_bbrplus = 1 ]]; then
-				bash -c "$(curl -fsSL https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh)"
-				fi
-				if (whiptail --title "Reboot" --yesno "重启 (reboot) 使配置生效 (to make the configuration effective )?" 8 78); then
-				reboot
-				fi
-				;;
-				2)
-				cd
-				cat result
-				;;
-				3)
-				cd
-				logcheck
-				;;
-				4)
-				cd
-				bandwithusage
-				;;
-				5)
-				cd
-				statuscheck
-				;;
-				6)
-				cd
-				checkupdate
-				colorEcho ${SUCCESS} "RTFM: https://github.com/johnrosen1/trojan-gfw-script"
-				;;
-				7)
-				cd
-				uninstall
-				colorEcho ${SUCCESS} "Remove complete"
-				;;
-				8)
-				exit
-				whiptail --title "脚本已退出" --msgbox "脚本已退出(Bash Exited) RTFM: https://github.com/johnrosen1/trojan-gfw-script" 8 78
-				;;
+	"1" "安裝(Install)" \
+	"2" "结果(Result)" \
+	"3" "日志(Log)" \
+	"4" "流量(Bandwith)" \
+	"5" "状态(Status)" \
+	"6" "更新(Update)" \
+	"7" "卸載(Uninstall)" \
+	"8" "退出(Quit)" 3>&1 1>&2 2>&3)
+	case $Mainmenu in
+		1)
+		cd
+		clear
+		userinput
+		installdependency
+		openfirewall
+		issuecert
+		nginxtrojan
+		bootstart
+		start
+		sharelink
+		rm results || true
+		prasejson
+		autoupdate
+		if [[ $dnsmasq_install == 1 ]]; then
+			if [[ $dist = ubuntu ]]; then
+	 			systemctl stop systemd-resolved || true
+	 			systemctl disable systemd-resolved || true
+ 			fi
+			if [[ $(systemctl is-active dnsmasq) == active ]]; then
+				systemctl disable dnsmasq
+				systemctl stop dnsmasq
+			fi
+		rm /etc/resolv.conf || true
+		touch /etc/resolv.conf || true
+		echo "nameserver 127.0.0.1" > '/etc/resolv.conf' || true
+		systemctl start dnscrypt-proxy || true
+		systemctl enable dnscrypt-proxy || true
+		fi
+		whiptail --title "Install Success" --textbox --scrolltext result 32 120
+		if [[ $install_bbrplus = 1 ]]; then
+		bash -c "$(curl -fsSL https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh)"
+		fi
+		if (whiptail --title "Reboot" --yesno "重启 (reboot) 使配置生效 (to make the configuration effective )?" 8 78); then
+		reboot
+		fi
+		;;
+		2)
+		cd
+		cat result
+		;;
+		3)
+		cd
+		logcheck
+		;;
+		4)
+		cd
+		bandwithusage
+		;;
+		5)
+		cd
+		statuscheck
+		;;
+		6)
+		cd
+		checkupdate
+		colorEcho ${SUCCESS} "RTFM: https://github.com/johnrosen1/trojan-gfw-script"
+		;;
+		7)
+		cd
+		uninstall
+		colorEcho ${SUCCESS} "Remove complete"
+		;;
+		8)
+		exit
+		whiptail --title "脚本已退出" --msgbox "脚本已退出(Bash Exited) RTFM: https://github.com/johnrosen1/trojan-gfw-script" 8 78
+		;;
 		esac
 }
 cd
