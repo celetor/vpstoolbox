@@ -102,10 +102,5 @@ sudo ~/.acme.sh/acme.sh --cron //仅当使用let's encrypt证书是有效
 timedatectl
 iptables -L -v
 ```
-### 結果例子
-```
-trojan://trojanscript@www.johnrosen.top:443
-```
-![Trojan-GFW QR code](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojanscript.png)
 
 
