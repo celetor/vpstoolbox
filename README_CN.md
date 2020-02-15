@@ -13,7 +13,7 @@ yum update -y && yum install sudo newt curl -y && sudo -i
 ```
 運行腳本
 ```
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vpstoolbox.sh)"
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vps.sh)"
 ```
 ![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/mainmenu.png)
 ![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/1.png)
