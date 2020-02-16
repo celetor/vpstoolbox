@@ -23,7 +23,7 @@
 
 #Run me with:
 
-#sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/trojangui.sh)"
+#sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vps.sh)"
 
 clear
 
@@ -324,6 +324,20 @@ if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安�
     advancedMenu
     fi
 fi
+colorEcho ${INFO} "被墙检测ing"
+(echo >/dev/tcp/www.baidu.com/443) &>/dev/null
+if [[ $? -ne 0 ]]; then
+	colorEcho ${ERROR} "你的ip被墙了，快滚！"
+	colorEcho ${ERROR} "请自己去换ip!"
+    exit 1
+fi
+ping 114.114.114.114 -c 2 -q
+if [[ $? -ne 0 ]]; then
+	colorEcho ${ERROR} "你的ip被墙了，快滚！"
+	colorEcho ${ERROR} "请自己去换ip!"
+    exit 1
+fi
+clear
 whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨慎选择(Please choose carefully)" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇: !!! 默認沒選中的都是不推薦的 !!!
 若不確定，請保持默認配置並回車" 25 90 17 \
 "back" "返回上级菜单(Back to main menu)" off \
@@ -333,7 +347,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨�
 "3" "安裝BBRPLUS" off \
 "代理相关" "Proxy concerned" on  \
 "4" "安裝Trojan-GFW" on \
-"5" "安裝Dnscrypt-proxy | DNS缓存与广告屏蔽(dns cache and ad block)" on \
+"5" "安裝Dnscrypt-proxy | DNS加密与广告屏蔽(dns encryption and ad block)" on \
 "6" "安裝Tor-Relay | Relay模式(not exit relay)" off \
 "下载相关" "Download concerned" on  \
 "7" "安裝Qbittorrent | 强大的BT客户端(Powerful Bittorrent Client)" on \
@@ -499,7 +513,7 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]]; then
     case $APIOPTION in
         1)
         while [[ -z $CF_Key ]] || [[ -z $CF_Email ]]; do
-        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF_Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF Global Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
         CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
         done
         export CF_Key="$CF_Key"
@@ -765,7 +779,7 @@ done
     case $APIOPTION in
         1)
         while [[ -z $CF_Key ]] || [[ -z $CF_Email ]]; do
-        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens ，快輸入你CF_Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens ，快輸入你CF Global Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
         CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
         done
         export CF_Key="$CF_Key"
@@ -1603,9 +1617,9 @@ if [[ $install_trojan = 1 ]]; then
     }
 }
 EOF
-	touch /etc/trojan/client1.json || true
-	touch /etc/trojan/client2.json || true
-	cat > '/etc/trojan/client1.json' << EOF
+	touch /usr/share/nginx/html/client1-$password1.json || true
+	touch /usr/share/nginx/html/client2-$password2.json || true
+	cat > "/usr/share/nginx/html/client1-$password1.json" << EOF
 {
 	"run_type": "client",
 	"local_addr": "127.0.0.1",
@@ -1640,7 +1654,7 @@ EOF
 	}
 }
 EOF
-	cat > '/etc/trojan/client2.json' << EOF
+	cat > "/usr/share/nginx/html/client2-$password2.json" << EOF
 {
 	"run_type": "client",
 	"local_addr": "127.0.0.1",
@@ -1725,7 +1739,7 @@ net.ipv4.tcp_max_syn_backlog = 30000
 net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
 EOF
-	sysctl -p > /dev/null || true
+	sysctl -p || true
 	cat > '/etc/systemd/system.conf' << EOF
 [Manager]
 #DefaultTimeoutStartSec=90s
@@ -2029,23 +2043,8 @@ sharelink(){
 	set +e
 	cd
 	clear
-	echo "安装成功，享受吧！(Install Success! Enjoy it ! )多行不義必自斃，子姑待之。" > result
-	echo "请按方向键往下拉(Please press Arrow keys to scroll down)" >> result
-	if [[ $install_trojan = 1 ]]; then
-		colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 1"
-		cat /etc/trojan/client1.json
-		colorEcho ${INFO} "你的(Your) Trojan-Gfw 客户端(client) config profile 2"
-		cat /etc/trojan/client2.json
-		echo "你的(Your) Trojan-Gfw 客户端(client) config profile 1" >> result
-		echo "$(cat /etc/trojan/client1.json)" >> result
-		echo "你的(Your) Trojan-Gfw 客户端(client) config profile 2" >> result
-		echo "$(cat /etc/trojan/client2.json)" >> result
-		cd
-		echo "你的 Trojan-Gfw 分享链接(Share Link)1 is" >> result
-		echo "trojan://$password1@$domain:443" >> result
-		echo "你的 Trojan-Gfw 分享链接(Share Link)2 is" >> result
-		echo "trojan://$password2@$domain:443" >> result
-		if [[ $dist = centos ]]; then
+		if [[ $install_trojan = 1 ]]; then
+			if [[ $dist = centos ]]; then
 		colorEcho ${ERROR} "QR generate Fail ! Because your os does not support python3-qrcode,Please consider change your os!"
 		elif [[ $(lsb_release -cs) = xenial ]] || [[ $(lsb_release -cs) = trusty ]] || [[ $(lsb_release -cs) = jessie ]]
 		then
@@ -2055,69 +2054,241 @@ sharelink(){
 		wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
 		chmod +x trojan-url.py
 		#./trojan-url.py -i /etc/trojan/client.json
-		./trojan-url.py -q -i /etc/trojan/client1.json -o $password1.png
-		./trojan-url.py -q -i /etc/trojan/client2.json -o $password2.png
+		./trojan-url.py -q -i /usr/share/nginx/html/client1-$password1.json -o $password1.png
+		./trojan-url.py -q -i /usr/share/nginx/html/client2-$password2.json -o $password2.png
 		cp $password1.png /usr/share/nginx/html/
 		cp $password2.png /usr/share/nginx/html/
-		echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 1" >> result
-		echo "https://$domain/$password1.png" >> result
-		echo "请访问下面的链接获取Trojan-GFW 二维码(QR code) 2" >> result
-		echo "https://$domain/$password2.png" >> result
 		rm -rf trojan-url.py
 		rm -rf $password1.png
 		rm -rf $password2.png
 		apt-get remove python3-qrcode -qq -y > /dev/null
+		fi
 	fi
-		echo "相关链接（Related Links）" >> result
-		echo "https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" >> result
-		echo "https://github.com/trojan-gfw/trojan/releases/latest" >> result
-	fi
-	if [[ $install_qbt = 1 ]]; then
-		echo
-		echo "" >> result
-		echo "你的Qbittorrent信息(Your Qbittorrent Information)" >> result
-		echo "https://$domain$qbtpath 用户名(username): admin 密碼(password): adminadmin" >> result
-		echo "请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！" >> result
-		echo "请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！" >> result
-		echo "请手动在Qbittorrent中添加Trackers https://github.com/ngosang/trackerslist ！！！否则速度不會快的！！！" >> result
-	fi
-	if [[ $install_tracker = 1 ]]; then
-		echo
-		echo "" >> result
-		echo "你的Bittorrent-Tracker信息(Your Bittorrent-Tracker Information)" >> result
-		echo "https://$domain:443$trackerpath" >> result
-		echo "http://$domain:8000/announce" >> result
-		echo "你的Bittorrent-Tracker信息（查看状态用）(Your Bittorrent-Tracker Status Information)" >> result
-		echo "https://$domain:443$trackerstatuspath" >> result
-		echo "请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。" >> result
-		echo "请记得将此Tracker分享给你的朋友们。" >> result
-	fi
-	if [[ $install_aria = 1 ]]; then
-		echo
-		echo "" >> result
-		echo "你的Aria2信息，非分享链接，仅供参考(Your Aria2 Information)" >> result
-		echo "$ariapasswd@https://$domain:443$ariapath" >> result
-		echo "相关链接（Related Links）" >> result
-		echo "https://github.com/mayswind/AriaNg/releases" >> result
-	fi
-	if [[ $install_file = 1 ]]; then
-		echo
-		colorEcho ${INFO} "你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)"
-		colorEcho ${LINK} "https://$domain:443$filepath 用户名(username): admin 密碼(password): admin"
-		echo "" >> result
-		echo "你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)" >> result
-		echo "https://$domain:443$filepath 用户名(username): admin 密碼(password): admin" >> result
-	fi
-	if [[ $install_netdata = 1 ]]; then
-		echo
-		colorEcho ${INFO} "你的netdata信息，非分享链接，仅供参考(Your Netdata Information)"
-		colorEcho ${LINK} "https://$domain:443$netdatapath"
-		echo "" >> result
-		echo "你的netdata信息，非分享链接，仅供参考(Your Netdata Information)" >> result
-		echo "https://$domain:443$netdatapath" >> result
-		echo "相关链接（Related Links）" >> result
-		echo "https://play.google.com/store/apps/details?id=com.kpots.netdata" >> result
-	fi
+	cat > "/usr/share/nginx/html/result.html" << EOF
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="John Rosen">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Vps Toolbox Result</title>
+</head>
+<style>
+body {
+  background-color: #cccccc;
+}
+
+.menu{
+    position: relative;
+    background-color: #B2BEB5;  
+    font-family: sans-serif;
+    font-size: 2em;
+    margin-top: -10px;
+    padding-top: 0px;
+    text-align: center;
+    width: 100%;
+    height: 8%;
+}
+
+.menu ul{
+    list-style-type: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li{
+    float: left;
+}
+.menu a{
+    display: inline;
+    color: white;
+    text-align: center;
+    padding-left: 100px;
+    padding-right: 100px;
+    text-decoration: none;
+}
+
+.menu li:hover {
+    background-color: #CC99FF;
+}
+
+.tt{
+    position: absolute;
+    border:1px #00f none;
+    border-radius: 5px;
+    width: 75%;
+    margin-left: 150px;
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-family: sans-serif;
+    font-weight: bold;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 10px;
+    background-color: #E6FFFB;
+    overflow: visible;
+}
+.tt a {
+    text-decoration: none;
+    color: #8095ff;
+    font-size: 1.3em;
+}
+
+.tt img{
+    width: 550px;
+    height: 40%;
+}
+
+.tt li {
+    padding-top: 10px;
+}
+.subtt{
+    text-align: center;
+    margin: auto;
+    font-size: 2em;
+    padding-top: 10px;
+}
+
+.t1{
+    font-size: 1.2em;
+}
+
+footer{
+    padding-top: 0;
+    position: fixed;
+    margin: 0;
+    background-color: #B2BEB5;
+    width: 100%;
+    height: 50px;
+    bottom: 0;
+}
+
+footer p{
+    color: #fff;
+    text-align: center;
+    font-size: 1em;
+    font-family: sans-serif;
+}
+
+footer a{
+    color: #fff;
+}
+
+footer a:link {
+    text-decoration: none;
+}
+
+@media (max-width: 560px){
+    .menu{
+        font-size: 1.2em;
+    }
+    .sidebar {
+        display: none;
+    }
+
+    .cate {
+        display: none;
+    }
+    .tt{
+        position: absolute;
+        width: 80%;
+        margin-left: 0;
+    }
+    .menu{
+        padding-top: 0px;
+    }
+}
+
+@media (max-width: 750px){
+    .sidebar {
+        display: none;
+    }
+    .cate{
+        display: none;
+    }
+}
+::-webkit-scrollbar {
+    width: 11px;
+}
+
+::-webkit-scrollbar-track {
+    background: #CCFFEE;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #B3E5FF;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #156; 
+}
+</style>
+<body>
+    <div>
+        <div>
+            <article>
+                <div class="tt">
+                    <h4 class="subtt">Vps Toolbox Result</h3>
+                    <p>If you did not choose any of the softwares during the installation below, just ignore them.</p>
+                    <p>如果你安装的时候没有选择相应的软件，请自动忽略相关内容！</p>
+                    <h2>Trojan</h2>
+                    <p>你的(Your) Trojan-GFW 客户端(client) config profiles</p>
+                    <p>1. <a href="client1-$password1.json" target="_blank">Profile 1</a></p>
+                    <p>2. <a href="client2-$password2.json" target="_blank">Profile 2</a></p>
+                    <p>你的 Trojan-GFW 分享链接(Share Link)1 is</p>
+                    <p>trojan://$password1@$domain:443</p>
+                    <p>你的 Trojan-GFW 分享链接(Share Link)2 is</p>
+                    <p>trojan://$password2@$domain:443</p>
+                    <p>请访问下面的链接获取Trojan-GFW 二维码(QR codes Centos等不支援python3-prcode的系统会404!)</p>
+                    <p>1.<a href="$password1.png" target="_blank">QR code 1</a></p>
+                    <p>2.<a href="$password2.png" target="_blank">QR code 2</a></p>
+                    <p>相关链接(Related Links)</p>
+                    <p><a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a></p>
+                    <p><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">https://github.com/trojan-gfw/trojan/releases/latest</a></p>
+                    <h2>Qbittorrent</h2>
+                    <p>你的Qbittorrent信息(Your Qbittorrent Information)</p>
+                    <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p>
+                    <p>Tips:</p>
+                    <p>1. 请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！</p>
+                    <p>2. 请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！</p>
+                    <p>3. 请手动在Qbittorrent中添加Trackers <a href="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt" target="_blank">https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt</a> ！！！否则速度不會快的！！！</p>
+                    <h2>Bittorrent-trackers</h2>
+                    <p>你的Bittorrent-Tracker信息(Your Bittorrent-Tracker Information)</p>
+                    <p>https://$domain:443$trackerpath</p>
+                    <p>http://$domain:8000/announce</p>
+                    <p>你的Bittorrent-Tracker信息（查看状态用）(Your Bittorrent-Tracker Status Information)</p>
+                    <p><a href="https://$domain:443$trackerstatuspath" target="_blank">https://$domain:443$trackerstatuspath</a></p>
+                    <p>Tips:</p>
+                    <p>1. 请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。</p>
+                    <p>2. 请记得将此Tracker分享给你的朋友们。</p>
+                    <h2>Aria2</h2>
+                    <p>你的Aria2信息，非分享链接，仅供参考(Your Aria2 Information)</p>
+                    <p>$ariapasswd@https://$domain:443$ariapath</p>
+                    <p>相关链接（Related Links)</p>
+                    <p><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">https://github.com/mayswind/AriaNg/releases</a></p>
+                    <p><a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a></p>
+                    <p><a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank">https://play.google.com/store/apps/details?id=com.gianlu.aria2app</a></p>
+                    <h2>Filebrowser</h2>
+                    <p>你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)</p>
+                    <p><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a> 用户名(username): admin 密碼(password): admin</p>
+                    <h2>Netdata</h2>
+                    <p>你的netdata信息，非分享链接，仅供参考(Your Netdata Information)</p>
+                    <p><a href="https://$domain:443$netdatapath" target="_blank">https://$domain:443$netdatapath</a></p>
+                    <p>相关链接（Related Links)</p>
+                    <p><a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank">https://play.google.com/store/apps/details?id=com.kpots.netdata</a></p>
+                    <br>
+                </div>
+            </article>
+        </div>
+    </div>
+</body>
+</html>
+EOF
 }
 ##########Remove Trojan-Gfw##########
 uninstall(){
@@ -2409,17 +2580,34 @@ advancedMenu() {
 		systemctl start dnscrypt-proxy || true
 		systemctl enable dnscrypt-proxy || true
 		fi
-		whiptail --title "Install Success" --textbox --scrolltext result 32 120
+		if [[ $password1 == "" ]]; then
+		password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
+		fi
+		mv /usr/share/nginx/html/result.html /usr/share/nginx/html/$password1.html
+		clear
+		if grep -q "attention" /etc/motd
+		then
+		:
+		else
+		echo "***************************************************************************************" >> /etc/motd
+		echo "*                                   Pay attention!                                    *" >> /etc/motd
+		echo "*     请访问下面的链接获取结果(Please visit the following link to get the result)     *" >> /etc/motd
+		echo "*                       https://$domain/$password1.html         *" >> /etc/motd
+		echo "***************************************************************************************" >> /etc/motd
+		fi
+		echo "请访问下面的链接获取结果(Please visit the following link to get the result)" > /root/.trojan/result.txt
+		echo "https://$domain/$password1.html" >> /root/.trojan/result.txt
+		#whiptail --title "Install Success" --textbox --scrolltext /root/.trojan/result.txt 8 120
 		if [[ $install_bbrplus = 1 ]]; then
 		bash -c "$(curl -fsSL https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh)"
 		fi
-		if (whiptail --title "Reboot" --yesno "重启 (reboot) 使配置生效 (to make the configuration effective )?" 8 78); then
+		if (whiptail --title "Reboot" --yesno "安装成功(success)！ 重启 (reboot) 使配置生效,重新SSH连接后将自动出现结果 (to make the configuration effective)?" 8 78); then
 		reboot
 		fi
 		;;
 		2)
 		cd
-		cat result
+		whiptail --title "Install Success" --textbox --scrolltext /root/.trojan/result.txt 8 120
 		;;
 		3)
 		cd
@@ -2478,7 +2666,7 @@ EOF
 	fi
 fi
 clear
-ipinfo=$(curl -s https://ipinfo.io?token=56c375418c62c9)
+ip1=$(curl -s https://ipinfo.io?token=56c375418c62c9)
 myip=$(curl -s https://ipinfo.io/ip?token=56c375418c62c9)
 localip=$(ip a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
