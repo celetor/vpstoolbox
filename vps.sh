@@ -313,6 +313,16 @@ if [ ! -f /root/.trojan/config.json ]; then
 EOF
 fi
 install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
+colorEcho ${INFO} "被墙检测ing"
+
+ping 114.114.114.114 -c 2 -q && curl -s http://tencent.com/ --connect-timeout 60 &> /dev/null
+
+if [[ $? -ne 0 ]]; then
+	colorEcho ${ERROR} "你的ip被墙了，快滚！"
+	colorEcho ${ERROR} "请自己去换ip!"
+    exit 1
+fi
+clear
 if [[ $install_status == 1 ]]; then
 if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安装，是否继续?" 8 78); then
     if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安装，是否重新设置具体参数?" 8 78); then
@@ -324,37 +334,24 @@ if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安�
     advancedMenu
     fi
 fi
-colorEcho ${INFO} "被墙检测ing"
-#(echo >/dev/tcp/www.baidu.com/443) &>/dev/null
-#if [[ $? -ne 0 ]]; then
-	#colorEcho ${ERROR} "你的ip被墙了，快滚！"
-	#colorEcho ${ERROR} "请自己去换ip!"
-    #exit 1
-#fi
-ping 114.114.114.114 -c 2 -q
-if [[ $? -ne 0 ]]; then
-	colorEcho ${ERROR} "你的ip被墙了，快滚！"
-	colorEcho ${ERROR} "请自己去换ip!"
-    exit 1
-fi
-clear
+
 whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨慎选择(Please choose carefully)" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇: !!! 默認沒選中的都是不推薦的 !!!
-若不確定，請保持默認配置並回車" 25 90 17 \
+若不確定，請保持默認配置並回車" 25 75 17 \
 "back" "返回上级菜单(Back to main menu)" off \
-"系统相关" "System concerned" on  \
+"系统" "System" on  \
 "1" "系统升级(System Upgrade)" on \
-"2" "安裝BBR | TCP效能优化(TCP-Turbo)" on \
+"2" "启用BBR | TCP效能优化(TCP-Turbo)" on \
 "3" "安裝BBRPLUS" off \
-"代理相关" "Proxy concerned" on  \
+"代理" "Proxy" on  \
 "4" "安裝Trojan-GFW" on \
-"5" "安裝Dnscrypt-proxy | DNS加密与广告屏蔽(dns encryption and ad block)" on \
-"6" "安裝Tor-Relay | Relay模式(not exit relay)" off \
-"下载相关" "Download concerned" on  \
-"7" "安裝Qbittorrent | 强大的BT客户端(Powerful Bittorrent Client)" on \
+"5" "安裝Dnscrypt-proxy | DNS加密(dns encryption)" on \
+"6" "安裝Tor-Relay" off \
+"下载" "Download" on  \
+"7" "安裝Qbittorrent | BT客户端(Bittorrent Client)" on \
 "8" "安裝Bittorrent-Tracker" on \
 "9" "安裝Aria2" on \
-"10" "安裝Filebrowser | 文件下载与共享(File download and share)" on \
-"状态监控" "Status concerned" on  \
+"10" "安裝Filebrowser | 网盘(File manager)" on \
+"状态" "Status" on  \
 "11" "安裝Netdata | 服务器状态监控(Server status monitor)" on \
 "其他" "Others" on  \
 "12" "仅启用TLS1.3(Enable TLS1.3 only)" off 2>results
@@ -915,7 +912,7 @@ error_log /var/log/nginx/error.log warn;
 pid /run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 events {
-	worker_connections 3000;
+	worker_connections 51200;
 	use epoll;
 	multi_accept on;
 }
@@ -1341,8 +1338,8 @@ if [[ $dnsmasq_install = 1 ]]; then
 ## ads[0-9]*     | matches "ads" followed by one or more digits
 ## ads*.example* | *, ? and [] can be used anywhere, but prefixes/suffixes are faster
 
-ad.*
-ads.*
+#ad.*
+#ads.*
 
 ####Block 360####
 *.cn
@@ -2264,6 +2261,10 @@ footer a:link {
                     <p>1. 请将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！</p>
                     <p>2. 请将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！</p>
                     <p>3. 请在Qbittorrent中添加Trackers <a href="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt" target="_blank">https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt</a> ！！！否则速度不會快的！！！</p>
+                    <p>附：优秀的BT站点推荐(Related Links)</p>
+                    <p><a href="https://thepiratebay.org/" target="_blank">https://thepiratebay.org/</a></p>
+                    <p><a href="https://sukebei.nyaa.si/" target="_blank">https://sukebei.nyaa.si/</a></p>
+                    <p><a href="https://rarbgprx.org/torrents.php" target="_blank">https://rarbgprx.org/torrents.php</a></p>
                     <p>相关链接(Related Links)</p>
                     <p><a href="https://www.qbittorrent.org/download.php" target="_blank">win等平台下载页面</a></p>
                     <p><a href="https://github.com/qbittorrent/qBittorrent" target="_blank">Github页面</a></p>
@@ -2306,14 +2307,24 @@ footer a:link {
                     <p><a href="https://github.com/netdata/netdata" target="_blank">https://github.com/netdata/netdata</a></p>
                     <h2>自定义配置方法</h2>
                     <p>Nginx: sudo nano /etc/nginx/conf.d/trojan.conf</p>
+                    <p>sudo systemctl start/restart/status nginx</p>
                     <p>Trojan-GFW: sudo nano /usr/local/etc/trojan/config.json</p>
+                    <p>sudo systemctl start/restart/status trojan</p>
                     <p>Dnscrypt-proxy: sudo nano /etc/dnscrypt-proxy.toml</p>
+                    <p>sudo systemctl start/restart/status dnscrypt-proxy</p>
                     <p>Aria2: sudo nano /etc/aria2.conf</p>
+                    <p>sudo systemctl start/restart/status aria2</p>
                     <p>Netdata: sudo nano /opt/netdata/etc/netdata/netdata.conf</p>
+                    <p>sudo systemctl start/restart/status netdata</p>
                     <p>Tor: sudo nano /etc/tor/torrc</p>
+                    <p>sudo systemctl start/restart/status tor@default</p>
+                    <br>
                     <br>
                 </div>
             </article>
+            <footer>
+                <p><a href="https://github.com/johnrosen1/trojan-gfw-script">VPS Toolbox</a> Copyright &copy; 2020, Johnrosen</p>
+            </footer>
         </div>
     </div>
 </body>
