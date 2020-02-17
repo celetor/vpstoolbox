@@ -1465,7 +1465,7 @@ Documentation=https://github.com/DNSCrypt/dnscrypt-proxy/wiki
 After=network.target
 
 [Service]
-NonBlocking=true
+Type=simple
 ExecStart=/usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy.toml
 User=root
 Restart=on-failure
@@ -1474,6 +1474,7 @@ RestartSec=3s
 [Install]
 WantedBy=multi-user.target
 EOF
+systemctl enable dnscrypt-proxy
 	fi
 fi
 clear
@@ -2593,7 +2594,7 @@ advancedMenu() {
 		rm results || true
 		prasejson
 		autoupdate
-		if [[ $dnsmasq_install == 1 ]]; then
+		if [[ $dnsmasq_install -eq 1 ]]; then
 			if [[ $dist = ubuntu ]]; then
 	 			systemctl stop systemd-resolved || true
 	 			systemctl disable systemd-resolved || true
