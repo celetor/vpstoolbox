@@ -494,6 +494,14 @@ fi
 	done
 	fi
 ####################################
+mkdir /etc/trojan || true
+	if [ -f /etc/trojan/*.crt ]; then
+		mv /etc/trojan/*.crt /etc/trojan/trojan.crt || true
+	fi
+	if [ -f /etc/trojan/*.key ]; then
+		mv /etc/trojan/*.key /etc/trojan/trojan.key || true
+	fi
+####################################
 if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else		
@@ -705,13 +713,6 @@ EOF
 installdependency(){
 	colorEcho ${INFO} "Updating system"
 	$pack update
-	mkdir /etc/trojan || true
-	if [ -f /etc/trojan/*.crt ]; then
-		mv /etc/trojan/*.crt /etc/trojan/trojan.crt || true
-	fi
-	if [ -f /etc/trojan/*.key ]; then
-		mv /etc/trojan/*.key /etc/trojan/trojan.key || true
-	fi
 	if [[ $install_status == 0 ]]; then
 		caddystatus=$(systemctl is-active caddy)
 		if [[ $caddystatus == active ]]; then
