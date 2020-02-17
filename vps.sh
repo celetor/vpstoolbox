@@ -325,12 +325,12 @@ if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安�
     fi
 fi
 colorEcho ${INFO} "被墙检测ing"
-(echo >/dev/tcp/www.baidu.com/443) &>/dev/null
-if [[ $? -ne 0 ]]; then
-	colorEcho ${ERROR} "你的ip被墙了，快滚！"
-	colorEcho ${ERROR} "请自己去换ip!"
-    exit 1
-fi
+#(echo >/dev/tcp/www.baidu.com/443) &>/dev/null
+#if [[ $? -ne 0 ]]; then
+	#colorEcho ${ERROR} "你的ip被墙了，快滚！"
+	#colorEcho ${ERROR} "请自己去换ip!"
+    #exit 1
+#fi
 ping 114.114.114.114 -c 2 -q
 if [[ $? -ne 0 ]]; then
 	colorEcho ${ERROR} "你的ip被墙了，快滚！"
@@ -1773,6 +1773,7 @@ systemctl daemon-reload
 	if [[ $dist != centos ]]; then
 		ntpdate -qu 1.hk.pool.ntp.org > /dev/null || true
 	fi
+	clear
 }
 #########Open ports########################
 openfirewall(){
