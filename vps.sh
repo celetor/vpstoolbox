@@ -738,9 +738,9 @@ installdependency(){
 	clear
 	colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
 	if [[ $dist = centos ]]; then
-		yum install -y -q sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd dbus xz cron || true
+		yum install -y -q sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd dbus xz cron socat || true
  elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
-	apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron -qq -y
+	apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron socat -qq -y
 	if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]] || [[ $(lsb_release -cs) == jessie ]]; then
 		TERM=ansi whiptail --title "Skipping generating QR code!" --infobox "你的操作系统不支持 python3-qrcode,Skipping generating QR code!" 8 78
 		else
@@ -1393,9 +1393,9 @@ force_tcp = false
 timeout = 5000
 keepalive = 30
 lb_estimator = true
-log_level = 0
+log_level = 1
 log_file = '/var/log/dnscrypt-proxy.log'
-cert_refresh_delay = 240
+cert_refresh_delay = 720
 tls_disable_session_tickets = true
 #tls_cipher_suite = [4865]
 fallback_resolvers = ['1.1.1.1:53', '8.8.8.8:53']
@@ -2236,27 +2236,38 @@ footer a:link {
                     <h4 class="subtt">Vps Toolbox Result</h3>
                     <p>If you did not choose any of the softwares during the installation below, just ignore them.</p>
                     <p>如果你安装的时候没有选择相应的软件，请自动忽略相关内容！</p>
-                    <h2>Trojan</h2>
-                    <p>你的(Your) Trojan-GFW 客户端(client) config profiles</p>
+                    <p>以下所有链接以及信息都是有用的，请在提任何问题或者issue前仔细阅读相关内容！</p>
+                    <p><a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md" target="_blank">提问的智慧</a></p>
+                    <h2>Trojan-GFW</h2>
+                    <p>一。 Trojan-GFW 客户端(client) 配置文件(config profiles)</p>
                     <p>1. <a href="client1-$password1.json" target="_blank">Profile 1</a></p>
                     <p>2. <a href="client2-$password2.json" target="_blank">Profile 2</a></p>
-                    <p>你的 Trojan-GFW 分享链接(Share Link)1 is</p>
-                    <p>trojan://$password1@$domain:443</p>
-                    <p>你的 Trojan-GFW 分享链接(Share Link)2 is</p>
-                    <p>trojan://$password2@$domain:443</p>
-                    <p>请访问下面的链接获取Trojan-GFW 二维码(QR codes Centos等不支援python3-prcode的系统会404!)</p>
+                    <p>二。 Trojan-GFW 分享链接(Share Links) are</p>
+                    <p>1. trojan://$password1@$domain:443</p>
+                    <p>2. trojan://$password2@$domain:443</p>
+                    <p>三。 Trojan-GFW 二维码(QR codes Centos等不支援python3-prcode的系统会404!)</p>
                     <p>1.<a href="$password1.png" target="_blank">QR code 1</a></p>
                     <p>2.<a href="$password2.png" target="_blank">QR code 2</a></p>
-                    <p>相关链接(Related Links)</p>
+                    <p>四。 相关链接(Related Links)</p>
+                    <p><a href="https://github.com/trojan-gfw/igniter/releases" target="_blank">安卓客户端(android client)</a></p>
+                    <p><a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank">苹果客户端(ios client)</a></p>
+                    <p><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">Windows客户端(win client)</a></p>
                     <p><a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a></p>
                     <p><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">https://github.com/trojan-gfw/trojan/releases/latest</a></p>
+                    <p><a href="https://www.johnrosen1.com/trojan/" target="_blank">Trojan-GFW --一把通往自由互联网世界的万能钥匙</a></p>
                     <h2>Qbittorrent</h2>
                     <p>你的Qbittorrent信息(Your Qbittorrent Information)</p>
                     <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p>
                     <p>Tips:</p>
-                    <p>1. 请手动将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！</p>
-                    <p>2. 请手动将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！</p>
-                    <p>3. 请手动在Qbittorrent中添加Trackers <a href="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt" target="_blank">https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt</a> ！！！否则速度不會快的！！！</p>
+                    <p>1. 请将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！</p>
+                    <p>2. 请将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！</p>
+                    <p>3. 请在Qbittorrent中添加Trackers <a href="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt" target="_blank">https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt</a> ！！！否则速度不會快的！！！</p>
+                    <p>相关链接(Related Links)</p>
+                    <p><a href="https://www.qbittorrent.org/download.php" target="_blank">win等平台下载页面</a></p>
+                    <p><a href="https://github.com/qbittorrent/qBittorrent" target="_blank">Github页面</a></p>
+                    <p><a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank">Android远程操控客户端</a></p>
+                    <p><a href="https://www.qbittorrent.org/" target="_blank">https://www.qbittorrent.org/</a></p>
+                    <p><a href="https://www.johnrosen1.com/qbt/" target="_blank">https://www.johnrosen1.com/qbt/</a></p>
                     <h2>Bittorrent-trackers</h2>
                     <p>你的Bittorrent-Tracker信息(Your Bittorrent-Tracker Information)</p>
                     <p>https://$domain:443$trackerpath</p>
@@ -2266,21 +2277,38 @@ footer a:link {
                     <p>Tips:</p>
                     <p>1. 请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。</p>
                     <p>2. 请记得将此Tracker分享给你的朋友们。</p>
+                    <p>相关链接(Related Links)</p>
+                    <p><a href="https://github.com/webtorrent/bittorrent-tracker" target="_blank">https://github.com/webtorrent/bittorrent-tracker</a></p>
+                    <p><a href="https://lifehacker.com/whats-a-private-bittorrent-tracker-and-why-should-i-us-5897095" target="_blank">What's a Private BitTorrent Tracker, and Why Should I Use One?</a></p>
+                    <p><a href="https://www.howtogeek.com/141257/htg-explains-how-does-bittorrent-work/" target="_blank">How Does BitTorrent Work?</a></p>
                     <h2>Aria2</h2>
                     <p>你的Aria2信息，非分享链接，仅供参考(Your Aria2 Information)</p>
                     <p>$ariapasswd@https://$domain:443$ariapath</p>
                     <p>相关链接（Related Links)</p>
-                    <p><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">https://github.com/mayswind/AriaNg/releases</a></p>
+                    <p><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">Aria客户端(远程操控)</a></p>
                     <p><a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a></p>
                     <p><a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank">https://play.google.com/store/apps/details?id=com.gianlu.aria2app</a></p>
                     <h2>Filebrowser</h2>
                     <p>你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)</p>
                     <p><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a> 用户名(username): admin 密碼(password): admin</p>
+                    <p>Tips:</p>
+                    <p>1. 请修改默认用户名和密码！。</p>
+                    <p>相关链接(Related Links)</p>
+                    <p><a href="https://github.com/filebrowser/filebrowser" target="_blank">https://github.com/filebrowser/filebrowser</a></p>
+                    <p><a href="https://filebrowser.xyz/" target="_blank">https://filebrowser.xyz/</a></p>
                     <h2>Netdata</h2>
                     <p>你的netdata信息，非分享链接，仅供参考(Your Netdata Information)</p>
                     <p><a href="https://$domain:443$netdatapath" target="_blank">https://$domain:443$netdatapath</a></p>
                     <p>相关链接（Related Links)</p>
                     <p><a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank">https://play.google.com/store/apps/details?id=com.kpots.netdata</a></p>
+                    <p><a href="https://github.com/netdata/netdata" target="_blank">https://github.com/netdata/netdata</a></p>
+                    <h2>自定义配置方法</h2>
+                    <p>Nginx: sudo nano /etc/nginx/conf.d/trojan.conf</p>
+                    <p>Trojan-GFW: sudo nano /usr/local/etc/trojan/config.json</p>
+                    <p>Dnscrypt-proxy: sudo nano /etc/dnscrypt-proxy.toml</p>
+                    <p>Aria2: sudo nano /etc/aria2.conf</p>
+                    <p>Netdata: sudo nano /opt/netdata/etc/netdata/netdata.conf</p>
+                    <p>Tor: sudo nano /etc/tor/torrc</p>
                     <br>
                 </div>
             </article>
@@ -2591,8 +2619,11 @@ advancedMenu() {
 		else
 		echo "***************************************************************************************" >> /etc/motd
 		echo "*                                   Pay attention!                                    *" >> /etc/motd
-		echo "*     请访问下面的链接获取结果(Please visit the following link to get the result)     *" >> /etc/motd
+		echo "*     请访问下面的链接获取结果(Please visit the following link to get the result)       *" >> /etc/motd
 		echo "*                       https://$domain/$password1.html         *" >> /etc/motd
+		echo "*           若访问失败，请运行以下两行命令自行检测服务是否正常:active(running)为正常  *" >> /etc/motd
+		echo "*                       sudo systemctl status trojan                                  *" >> /etc/motd
+		echo "*                       sudo systemctl status nginx                                   *" >> /etc/motd
 		echo "***************************************************************************************" >> /etc/motd
 		fi
 		echo "请访问下面的链接获取结果(Please visit the following link to get the result)" > /root/.trojan/result.txt
