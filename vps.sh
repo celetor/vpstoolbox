@@ -1118,9 +1118,8 @@ EOF
 	cat > '/etc/aria2.conf' << EOF
 log-level=debug
 log=/var/log/aria2.log
-rpc-secure=false
 rlimit-nofile=51200
-
+rpc-secure=false
 continue=true
 max-concurrent-downloads=50
 #split=16
@@ -1130,22 +1129,16 @@ lowest-speed-limit=0
 disable-ipv6=false
 max-tries=0
 #retry-wait=0
-check-certificate=true
-http-auth-challenge=true
-enable-http-keep-alive=true
-
 input-file=/usr/local/bin/aria2.session
 save-session=/usr/local/bin/aria2.session
 save-session-interval=60
 force-save=true
-
 enable-rpc=true
 rpc-allow-origin-all=true
 rpc-listen-all=false
 event-poll=epoll
 rpc-listen-port=6800
 rpc-secret=$ariapasswd
-
 bt-tracker=$trackers_list
 follow-torrent=true
 listen-port=51413
@@ -1155,11 +1148,10 @@ bt-enable-lpd=true
 enable-peer-exchange=true
 seed-ratio=0
 bt-hash-check-seed=true
-bt-seed-unverified=false
+bt-seed-unverified=true
 bt-save-metadata=true
 bt-require-crypto=true
 bt-force-encryption=true
-
 dir=/usr/share/nginx/aria2/
 file-allocation=none
 disk-cache=64M
@@ -1216,8 +1208,9 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
-log-level=info
+log-level=debug
 log=/var/log/aria2.log
+rlimit-nofile=51200
 rpc-secure=false
 continue=true
 max-concurrent-downloads=50
