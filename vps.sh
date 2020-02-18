@@ -315,13 +315,27 @@ fi
 install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
 colorEcho ${INFO} "被墙检测ing"
 
-ping 114.114.114.114 -c 2 -q && curl -s http://tencent.com/ --connect-timeout 60 &> /dev/null
+ping 114.114.114.114 -c 2 -q
 
 if [[ $? -ne 0 ]]; then
-	colorEcho ${ERROR} "你的ip被墙了，快滚！"
-	colorEcho ${ERROR} "请自己去换ip!"
-    exit 1
+	114status="0"
 fi
+ping 223.5.5.5 -c 2 -q
+if [[ $? -ne 0 ]]; then
+	alistatus="0"
+fi
+
+curl -s https://tencent.com/ --connect-timeout 10 &> /dev/null
+
+if [[ $? -ne 0 ]]; then
+	tencentstatus="0"
+fi
+
+if [[ $114status -eq 0 ]] && [[ $alistatus -eq 0 ]] && [[ $tencentstatus -eq 0 ]]; then
+	colorEcho ${ERROR} "你的ip被墙了，滚蛋！"
+	exit 1
+fi
+
 clear
 if [[ $install_status == 1 ]]; then
 if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安装，是否继续?" 8 78); then
@@ -1095,6 +1109,7 @@ fi
 clear
 #############################################
 if [[ $install_aria = 1 ]]; then
+	ariaport=$(shuf -i 20000-60000 -n 1)
 	trackers_list=$(wget -qO- https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
 	if [[ -f /usr/local/bin/aria2c ]]; then
 		cat > '/etc/systemd/system/aria2.service' << EOF
@@ -1102,7 +1117,7 @@ if [[ $install_aria = 1 ]]; then
 Description=Aria2c download manager
 Requires=network.target
 After=network.target
-		
+
 [Service]
 Type=forking
 User=root
@@ -1142,7 +1157,7 @@ rpc-listen-port=6800
 rpc-secret=$ariapasswd
 bt-tracker=$trackers_list
 follow-torrent=true
-listen-port=51413
+listen-port=$ariaport
 enable-dht=true
 enable-dht6=true
 bt-enable-lpd=true
@@ -1233,7 +1248,7 @@ rpc-listen-port=6800
 rpc-secret=$ariapasswd
 bt-tracker=$trackers_list
 follow-torrent=true
-listen-port=51413
+listen-port=$ariaport
 enable-dht=true
 enable-dht6=true
 bt-enable-lpd=true
