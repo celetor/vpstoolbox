@@ -1031,7 +1031,7 @@ if [[ $install_tracker = 1 ]]; then
 	TERM=ansi whiptail --title "error can't install qbittorrent-nox" --infobox "error can't install qbittorrent-nox" 8 78
 		exit 1;
  fi
- npm install -g bittorrent-tracker --silent
+ npm install -g bittorrent-tracker --quiet
 			cat > '/etc/systemd/system/tracker.service' << EOF
 [Unit]
 Description=Bittorrent-Tracker Daemon Service
@@ -1043,7 +1043,7 @@ After=network-online.target nss-lookup.target
 Type=simple
 User=root
 RemainAfterExit=yes
-ExecStart=/usr/bin/bittorrent-tracker --http --ws --trust-proxy
+ExecStart=/usr/bin/bittorrent-tracker --trust-proxy
 TimeoutStopSec=infinity
 Restart=on-failure
 RestartSec=1s
@@ -1109,75 +1109,58 @@ RemainAfterExit=yes
 ExecStart=/usr/local/bin/aria2c --conf-path=/etc/aria2.conf --daemon
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
-RestartSec=1min
+RestartSec=3s
 Restart=on-failure
 		
 [Install]
 WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
+log-level=debug
+log=/var/log/aria2.log
 rpc-secure=false
-#rpc-certificate=/etc/trojan/trojan.crt
-#rpc-private-key=/etc/trojan/trojan.key
-## 下载设置 ##
+rlimit-nofile=51200
+
 continue=true
 max-concurrent-downloads=50
-split=16
+#split=16
 min-split-size=10M
 max-connection-per-server=16
 lowest-speed-limit=0
-#max-overall-download-limit=0
-#max-download-limit=0
-#max-overall-upload-limit=0
-#max-upload-limit=0
 disable-ipv6=false
 max-tries=0
 #retry-wait=0
-
-## 进度保存相关 ##
+check-certificate=true
+http-auth-challenge=true
+enable-http-keep-alive=true
 
 input-file=/usr/local/bin/aria2.session
 save-session=/usr/local/bin/aria2.session
 save-session-interval=60
 force-save=true
 
-## RPC相关设置 ##
-
 enable-rpc=true
 rpc-allow-origin-all=true
 rpc-listen-all=false
 event-poll=epoll
-# RPC监听端口, 端口被占用时可以修改, 默认:6800
 rpc-listen-port=6800
-# 设置的RPC授权令牌, v1.18.4新增功能, 取代 --rpc-user 和 --rpc-passwd 选项
 rpc-secret=$ariapasswd
 
-## BT/PT下载相关 ##
 bt-tracker=$trackers_list
-#follow-torrent=true
+follow-torrent=true
 listen-port=51413
-#bt-max-peers=55
 enable-dht=true
 enable-dht6=true
-#dht-listen-port=6881-6999
 bt-enable-lpd=true
-#enable-peer-exchange=true
-#bt-request-peer-speed-limit=50K
-# 客户端伪装, PT需要
-#peer-id-prefix=-TR2770-
-#user-agent=Transmission/2.77
+enable-peer-exchange=true
 seed-ratio=0
-# BT校验相关, 默认:true
-#bt-hash-check-seed=true
-bt-seed-unverified=true
+bt-hash-check-seed=true
+bt-seed-unverified=false
 bt-save-metadata=true
 bt-require-crypto=true
+bt-force-encryption=true
 
-## 磁盘相关 ##
-
-#文件保存路径, 默认为当前启动位置
 dir=/usr/share/nginx/aria2/
-#enable-mmap=true
 file-allocation=none
 disk-cache=64M
 EOF
@@ -1226,75 +1209,49 @@ RemainAfterExit=yes
 ExecStart=/usr/local/bin/aria2c --conf-path=/etc/aria2.conf --daemon
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
-RestartSec=1min
+RestartSec=3s
 Restart=on-failure
 		
 [Install]
 WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
+log-level=info
+log=/var/log/aria2.log
 rpc-secure=false
-#rpc-certificate=/etc/trojan/trojan.crt
-#rpc-private-key=/etc/trojan/trojan.key
-## 下载设置 ##
 continue=true
 max-concurrent-downloads=50
-split=16
+#split=16
 min-split-size=10M
 max-connection-per-server=16
 lowest-speed-limit=0
-#max-overall-download-limit=0
-#max-download-limit=0
-#max-overall-upload-limit=0
-#max-upload-limit=0
 disable-ipv6=false
 max-tries=0
 #retry-wait=0
-
-## 进度保存相关 ##
-
 input-file=/usr/local/bin/aria2.session
 save-session=/usr/local/bin/aria2.session
 save-session-interval=60
 force-save=true
-
-## RPC相关设置 ##
-
 enable-rpc=true
 rpc-allow-origin-all=true
 rpc-listen-all=false
 event-poll=epoll
-# RPC监听端口, 端口被占用时可以修改, 默认:6800
 rpc-listen-port=6800
-# 设置的RPC授权令牌, v1.18.4新增功能, 取代 --rpc-user 和 --rpc-passwd 选项
 rpc-secret=$ariapasswd
-
-## BT/PT下载相关 ##
 bt-tracker=$trackers_list
-#follow-torrent=true
+follow-torrent=true
 listen-port=51413
-#bt-max-peers=55
 enable-dht=true
 enable-dht6=true
-#dht-listen-port=6881-6999
 bt-enable-lpd=true
-#enable-peer-exchange=true
-#bt-request-peer-speed-limit=50K
-# 客户端伪装, PT需要
-#peer-id-prefix=-TR2770-
-#user-agent=Transmission/2.77
+enable-peer-exchange=true
 seed-ratio=0
-# BT校验相关, 默认:true
-#bt-hash-check-seed=true
+bt-hash-check-seed=true
 bt-seed-unverified=true
 bt-save-metadata=true
 bt-require-crypto=true
-
-## 磁盘相关 ##
-
-#文件保存路径, 默认为当前启动位置
+bt-force-encryption=true
 dir=/usr/share/nginx/aria2/
-#enable-mmap=true
 file-allocation=none
 disk-cache=64M
 EOF
@@ -1688,6 +1645,44 @@ EOF
 	}
 }
 EOF
+if [[ -n $myipv6 ]]; then
+	touch /usr/share/nginx/html/clientv6-$password1.json || true
+	cat > "/usr/share/nginx/html/clientv6-$password1.json" << EOF
+{
+	"run_type": "client",
+	"local_addr": "127.0.0.1",
+	"local_port": 1080,
+	"remote_addr": "$myipv6",
+	"remote_port": 443,
+	"password": [
+		"$password1"
+	],
+	"log_level": 1,
+	"ssl": {
+		"verify": true,
+		"verify_hostname": true,
+		"cert": "",
+		"cipher": "$cipher_client",
+		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+		"sni": "$domain",
+		"alpn": [
+			"h2",
+			"http/1.1"
+		],
+		"reuse_session": true,
+		"session_ticket": false,
+		"curves": ""
+	},
+	"tcp": {
+		"no_delay": true,
+		"keep_alive": true,
+		"reuse_port": false,
+		"fast_open": false,
+		"fast_open_qlen": 20
+	}
+}
+EOF
+fi
 fi
 	clear
 	if [[ $install_bbr = 1 ]]; then
@@ -2242,6 +2237,7 @@ footer a:link {
                     <p>一。 Trojan-GFW 客户端(client) 配置文件(config profiles)</p>
                     <p>1. <a href="client1-$password1.json" target="_blank">Profile 1</a></p>
                     <p>2. <a href="client2-$password2.json" target="_blank">Profile 2</a></p>
+                    <p>3. <a href="clientv6-$password1.json" target="_blank">IPV6 Profile</a>(only click this when your server has a ipv6 address,or 404 will occur!)</p>
                     <p>二。 Trojan-GFW 分享链接(Share Links) are</p>
                     <p>1. trojan://$password1@$domain:443</p>
                     <p>2. trojan://$password2@$domain:443</p>
@@ -2291,6 +2287,7 @@ footer a:link {
                     <p>相关链接（Related Links)</p>
                     <p><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">Aria客户端(远程操控)</a></p>
                     <p><a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a></p>
+                    <p><a href="https://aria2.github.io/manual/en/html/index.html" target="_blank">https://aria2.github.io/manual/en/html/index.html</a>官方文档</p>
                     <p><a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank">https://play.google.com/store/apps/details?id=com.gianlu.aria2app</a></p>
                     <h2>Filebrowser</h2>
                     <p>你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)</p>
@@ -2324,7 +2321,7 @@ footer a:link {
                 </div>
             </article>
             <footer>
-                <p><a href="https://github.com/johnrosen1/trojan-gfw-script">VPS Toolbox</a> Copyright &copy; 2020, Johnrosen</p>
+                <p><a href="https://github.com/johnrosen1/trojan-gfw-script">VPS Toolbox</a> Copyright &copy; 2020 Johnrosen</p>
             </footer>
         </div>
     </div>
@@ -2559,7 +2556,7 @@ logcheck(){
 	set +e
 	readconfig
 	clear
-	if [[ $install_trojan == 1 ]]; then
+	if [[ -f /usr/local/bin/trojan ]]; then
 		colorEcho ${INFO} "Trojan Log"
 		journalctl -a -u trojan.service
 		less /root/.trojan/update.log
@@ -2568,6 +2565,10 @@ logcheck(){
 		colorEcho ${INFO} "dnscrypt-proxy Log"
 		less /var/log/dnscrypt-proxy.log
 		less /var/log/query.log
+	fi
+	if [[ -f /usr/local/bin/aria2c ]]; then
+		colorEcho ${INFO} "Aria2 Log"
+		less /var/log/aria2.log
 	fi
 	colorEcho ${INFO} "Nginx Log"
 	less /var/log/nginx/error.log
@@ -2653,10 +2654,12 @@ advancedMenu() {
 		2)
 		cd
 		whiptail --title "Install Success" --textbox --scrolltext /root/.trojan/result.txt 8 120
+		advancedMenu
 		;;
 		3)
 		cd
 		logcheck
+		advancedMenu
 		;;
 		4)
 		cd
