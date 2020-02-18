@@ -2562,16 +2562,16 @@ logcheck(){
 	if [[ $install_trojan == 1 ]]; then
 		colorEcho ${INFO} "Trojan Log"
 		journalctl -a -u trojan.service
-		cat /root/.trojan/update.log
+		less /root/.trojan/update.log
 	fi
-	if [[ $dnsmasq_install == 1 ]]; then
+	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
 		colorEcho ${INFO} "dnscrypt-proxy Log"
-		cat /var/log/dnscrypt-proxy.log
-		cat /var/log/query.log
+		less /var/log/dnscrypt-proxy.log
+		less /var/log/query.log
 	fi
 	colorEcho ${INFO} "Nginx Log"
-	cat /var/log/nginx/error.log
-	cat /var/log/nginx/access.log
+	less /var/log/nginx/error.log
+	less /var/log/nginx/access.log
 }
 ##################################
 bandwithusage(){
