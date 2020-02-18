@@ -1132,7 +1132,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
-log-level=debug
+log-level=info
 log=/var/log/aria2.log
 rlimit-nofile=51200
 rpc-secure=false
@@ -1223,7 +1223,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
-log-level=debug
+log-level=info
 log=/var/log/aria2.log
 rlimit-nofile=51200
 rpc-secure=false
