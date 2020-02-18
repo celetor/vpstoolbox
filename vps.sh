@@ -1187,7 +1187,6 @@ EOF
 	chmod 755 /usr/share/nginx/aria2/
 	cd ..
 	rm -rf aria2-1.35.0
-	trackers_list=$(wget -qO- https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
 	cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
 Description=Aria2c download manager
@@ -2707,6 +2706,7 @@ EOF
 	fi
 fi
 clear
+trackers_list=$(wget -qO- https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
 ip1=$(curl -s https://ipinfo.io?token=56c375418c62c9)
 myip=$(curl -s https://ipinfo.io/ip?token=56c375418c62c9)
 localip=$(ip a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
