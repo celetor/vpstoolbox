@@ -675,7 +675,7 @@ EOF
 	clear
  elif [[ $dist == debian ]]; then
 	export DEBIAN_FRONTEND=noninteractive 
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -qq -y'
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
 	if [[ $debian10_install == 1 ]]; then
 		cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
@@ -755,6 +755,10 @@ installdependency(){
 		(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 80 open" && kill $(lsof -t -i:80) || echo "Moving on"
 		(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 443 open" && kill $(lsof -t -i:443) || echo "Moving on"
 	fi
+###########################################
+if [[ $system_upgrade = 1 ]]; then
+upgradesystem
+fi
 ###########################################
 	clear
 	colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
@@ -858,11 +862,6 @@ done
 	clear
 	fi  
 fi
-#############################################
-if [[ $system_upgrade = 1 ]]; then
-upgradesystem
-fi
-clear
 #############################################
 if [[ $tls13only = 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
