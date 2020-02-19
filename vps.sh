@@ -325,7 +325,7 @@ if [[ $? -ne 0 ]]; then
 	alistatus="0"
 fi
 
-curl -s https://tencent.com/ --connect-timeout 10 &> /dev/null
+curl -s https://tencent.com/ --connect-timeout 3 &> /dev/null
 
 if [[ $? -ne 0 ]]; then
 	tencentstatus="0"
@@ -1009,7 +1009,8 @@ After=network-online.target nss-lookup.target
 # if you have systemd >= 240, you probably want to use Type=exec instead
 Type=simple
 User=root
-ExecStart=/usr/bin/qbittorrent-nox
+RemainAfterExit=yes
+ExecStart=/usr/bin/qbittorrent-nox --profile=/usr/share/nginx/
 TimeoutStopSec=infinity
 Restart=on-failure
 RestartSec=1s
@@ -1017,8 +1018,9 @@ RestartSec=1s
 [Install]
 WantedBy=multi-user.target
 EOF
-mkdir /usr/share/nginx/qbt/ || true
-chmod 755 /usr/share/nginx/qbt/ || true
+mkdir /usr/share/nginx/qBittorrent/ || true
+mkdir /usr/share/nginx/qBittorrent/downloads/ || true
+chmod 755 /usr/share/nginx/ || true
 fi
 fi
 clear
@@ -1093,6 +1095,7 @@ After=network.target
 [Service]
 User=root
 Group=root
+RemainAfterExit=yes
 ExecStart=/usr/local/bin/filebrowser -r /usr/share/nginx/ -d /etc/filebrowser/database.db -b $filepath -p 8081
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
@@ -1282,9 +1285,7 @@ if [[ $dnsmasq_install = 1 ]]; then
 		if [[ $dnsmasqdstatus == active ]]; then
 			systemctl disable dnsmasq
 		fi
-	#(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 53 open" && kill $(lsof -t -i:53) || echo "Moving on"
 	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.39/dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
-	#wget https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.39/dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
 	tar -xvf dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
 	rm dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
 	cd linux-x86_64
@@ -1435,6 +1436,7 @@ After=network.target
 
 [Service]
 Type=simple
+RemainAfterExit=yes
 ExecStart=/usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy.toml
 User=root
 Restart=on-failure
@@ -2091,13 +2093,9 @@ sharelink(){
 		wget https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py -q
 		chmod +x trojan-url.py
 		#./trojan-url.py -i /etc/trojan/client.json
-		./trojan-url.py -q -i /usr/share/nginx/html/client1-$password1.json -o $password1.png
-		./trojan-url.py -q -i /usr/share/nginx/html/client2-$password2.json -o $password2.png
-		cp $password1.png /usr/share/nginx/html/
-		cp $password2.png /usr/share/nginx/html/
+		./trojan-url.py -q -i /usr/share/nginx/html/client1-$password1.json -o /usr/share/nginx/html/$password1.png
+		./trojan-url.py -q -i /usr/share/nginx/html/client2-$password2.json -o /usr/share/nginx/html/$password2.png
 		rm -rf trojan-url.py
-		rm -rf $password1.png
-		rm -rf $password2.png
 		apt-get remove python3-qrcode -qq -y > /dev/null
 		fi
 	fi
@@ -2297,9 +2295,8 @@ footer a:link {
                     <p>你的Qbittorrent信息(Your Qbittorrent Information)</p>
                     <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p>
                     <p>Tips:</p>
-                    <p>1. 请将Qbittorrent下载目录改为 /usr/share/nginx/qbt/ ！！！否则拉回本地将不起作用！！！</p>
-                    <p>2. 请将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！</p>
-                    <p>3. 请在Qbittorrent中添加Trackers <a href="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt" target="_blank">https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt</a> ！！！否则速度不會快的！！！</p>
+                    <p>1. 请将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！</p>
+                    <p>2. 请在Qbittorrent中添加Trackers <a href="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt" target="_blank">https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt</a> ！！！否则速度不會快的！！！</p>
                     <p>附：优秀的BT站点推荐(Related Links)</p>
                     <p><a href="https://thepiratebay.org/" target="_blank">https://thepiratebay.org/</a></p>
                     <p><a href="https://sukebei.nyaa.si/" target="_blank">https://sukebei.nyaa.si/</a></p>
