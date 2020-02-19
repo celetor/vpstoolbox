@@ -2655,6 +2655,7 @@ advancedMenu() {
 		clear
 		cat /root/.trojan/result.txt
 		if (whiptail --title "Reboot" --yesno "安装成功(success)！ 重启 (reboot) 使配置生效,重新SSH连接后将自动出现结果 (to make the configuration effective)?" 8 78); then
+		clear
 		reboot
 		fi
 		;;
