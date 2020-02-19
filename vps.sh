@@ -1132,6 +1132,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
+async-dns=true
 log-level=info
 log=/var/log/aria2.log
 rlimit-nofile=51200
@@ -1168,6 +1169,8 @@ bt-seed-unverified=true
 bt-save-metadata=true
 bt-require-crypto=true
 bt-force-encryption=true
+bt-min-crypto-level=arc4
+bt-max-peers=0
 dir=/usr/share/nginx/aria2/
 file-allocation=none
 disk-cache=64M
@@ -1223,6 +1226,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
+async-dns=true
 log-level=info
 log=/var/log/aria2.log
 rlimit-nofile=51200
@@ -1259,6 +1263,8 @@ bt-seed-unverified=true
 bt-save-metadata=true
 bt-require-crypto=true
 bt-force-encryption=true
+bt-min-crypto-level=arc4
+bt-max-peers=0
 dir=/usr/share/nginx/aria2/
 file-allocation=none
 disk-cache=64M
@@ -1781,12 +1787,38 @@ openfirewall(){
 	set +e
 	colorEcho ${INFO} "设置 firewall"
 	#sh -c 'echo "1\n" | DEBIAN_FRONTEND=noninteractive update-alternatives --config iptables'
+	#tcp
 	iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 	iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	#udp
+	iptables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
+	iptables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
 	iptables -I OUTPUT -j ACCEPT
+	#tcp6
 	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 	ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	#udp6
+	ip6tables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
+	ip6tables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
 	ip6tables -I OUTPUT -j ACCEPT
+	if [[ $install_qbt = 1 ]]; then
+		iptables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
+		ip6tables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
+		iptables -I INPUT -p udp -m udp --dport 8999 -j ACCEPT
+		ip6tables -I INPUT -p udp -m udp --dport 8999 -j ACCEPT
+	fi
+	if [[ $install_tracker = 1 ]]; then
+		iptables -I INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
+		ip6tables -I INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
+		iptables -I INPUT -p udp -m udp --dport 8000 -j ACCEPT
+		ip6tables -I INPUT -p udp -m udp --dport 8000 -j ACCEPT
+	fi
+	if [[ $install_aria = 1 ]]; then
+		iptables -I INPUT -p tcp -m tcp --dport $ariaport -j ACCEPT
+		ip6tables -I INPUT -p tcp -m tcp --dport $ariaport -j ACCEPT
+		iptables -I INPUT -p udp -m udp --dport $ariaport -j ACCEPT
+		ip6tables -I INPUT -p udp -m udp --dport $ariaport -j ACCEPT
+	fi
 	if [[ $dist = centos ]]; then
 	setenforce 0
 	cat > '/etc/selinux/config' << EOF
@@ -1795,6 +1827,8 @@ SELINUXTYPE=targeted
 EOF
 	firewall-cmd --zone=public --add-port=80/tcp --permanent
 	firewall-cmd --zone=public --add-port=443/tcp --permanent
+	firewall-cmd --zone=public --add-port=80/udp --permanent
+	firewall-cmd --zone=public --add-port=443/udp --permanent
 	systemctl stop firewalld
 	systemctl disable firewalld
  elif [[ $dist = ubuntu ]]; then
