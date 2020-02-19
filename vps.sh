@@ -519,7 +519,7 @@ mkdir /etc/trojan || true
 if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else		
-	if (whiptail --title "api" --yesno --defaultno "使用 (use) api申请证书(to issue certificate)?推荐，可用于申请wildcard证书" 8 78); then
+	if (whiptail --title "api" --yesno --defaultno "使用 (use) api申请证书(to issue certificate)?" 8 78); then
     dns_api=1
     APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
 "1" "Cloudflare" \
