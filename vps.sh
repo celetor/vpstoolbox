@@ -119,7 +119,9 @@ setlanguage(){
 	if [[ ! -d /root/.trojan/ ]]; then
 		mkdir /root/.trojan/
 	fi
-	language="$( jq -r '.language' "/root/.trojan/language.json" )"
+	if [[ -f /root/.trojan/language.json ]]; then
+		language="$( jq -r '.language' "/root/.trojan/language.json" )"
+	fi
 	while [[ -z $language ]]; do
 	export LANGUAGE="C.UTF-8"
 	export LANG="C.UTF-8"
@@ -838,8 +840,8 @@ done
         ~/.acme.sh/acme.sh --issue --dns dns_cx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
         ;;
         back) 
-		colorEcho ${ERROR} "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!"
-		colorEcho ${ERROR} "Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!"
+		colorEcho ${ERROR} "证书申请失败，请验证域名是否正确！"
+		colorEcho ${ERROR} "certificate issue fail,please enter correct domain!"
     	exit 1
 		break
 		;;
@@ -960,7 +962,7 @@ clear
 #############################################
 if [[ $install_qbt = 1 ]]; then
 	if [[ -f /usr/bin/qbittorrent-nox ]]; then
-		cat > '/etc/systemd/system/qbittorrent.service' << EOF
+	cat > '/etc/systemd/system/qbittorrent.service' << EOF
 [Unit]
 Description=qBittorrent Daemon Service
 Documentation=man:qbittorrent-nox(1)
@@ -971,7 +973,8 @@ After=network-online.target nss-lookup.target
 # if you have systemd >= 240, you probably want to use Type=exec instead
 Type=simple
 User=root
-ExecStart=/usr/bin/qbittorrent-nox
+RemainAfterExit=yes
+ExecStart=/usr/bin/qbittorrent-nox --profile=/usr/share/nginx/
 TimeoutStopSec=infinity
 Restart=on-failure
 RestartSec=1s
@@ -1275,7 +1278,7 @@ EOF
 	fi
 fi
 #############################################
-if [[ $dnsmasq_install = 1 ]]; then
+if [[ $dnsmasq_install == 1 ]]; then
 	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
 		:
 	else
