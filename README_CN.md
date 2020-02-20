@@ -7,7 +7,7 @@
 ```
 apt-get update && apt-get install sudo whiptail curl locales -y && sudo -i
 ```
-安裝依賴(Centos)
+安裝依賴(Centos,不推荐)
 ```
 yum update -y && yum install sudo newt curl -y && sudo -i
 ```
