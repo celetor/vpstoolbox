@@ -943,6 +943,7 @@ http {
 
 	sendfile on;
 	gzip on;
+	gzip_proxied any;
 	gzip_comp_level 9;
 
 	include /etc/nginx/conf.d/*.conf;
@@ -2708,7 +2709,10 @@ install_netdata=0
 tls13only=0
 osdist
 setlanguage
-license="$( jq -r '.license' "/root/.trojan/license.json" )"
+if [[ -f /root/.trojan/license.json ]]; then
+	license="$( jq -r '.license' "/root/.trojan/license.json" )"
+fi
+
 if [[ $license != 1 ]]; then
 if (whiptail --title "Accept LICENSE?" --yesno "已阅读并接受MIT License(Please read and accept the MIT License)? https://github.com/johnrosen1/trojan-gfw-script/blob/master/LICENSE" 8 78); then
 	cat > '/root/.trojan/license.json' << EOF
