@@ -8,7 +8,7 @@ For Debian/Ubuntu
 ```
 apt-get update && apt-get install sudo curl -y && sudo -i
 ```
-For Centos
+For Centos(not recommended)
 ```
 yum update -y && yum install sudo curl -y && sudo -i
 ```
