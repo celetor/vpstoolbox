@@ -66,6 +66,11 @@ rm -rf /lib/systemd/system/cloud-config.target
 rm -rf /lib/systemd/system/cloud-final.service
 rm -rf /lib/systemd/system/cloud-init-local.service
 rm -rf /lib/systemd/system/cloud-init.service
+rm -rf /usr/local/aegis
+rm -rf /usr/local/cloudmonitor
+rm -rf /usr/sbin/aliyun_installer
+rm -rf /usr/sbin/aliyun-service
+rm -rf /usr/sbin/aliyun-service.backup
 systemctl daemon-reload
 	if [[ $(lsb_release -cs) == stretch ]]; then
 		cat > '/etc/apt/sources.list' << EOF
