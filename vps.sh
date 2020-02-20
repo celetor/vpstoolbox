@@ -875,16 +875,8 @@ fi
 if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
 	clear
 	colorEcho ${INFO} "安装Nginx(Install Nginx ing)"
-	if [[ $dist == centos ]]; then
-		yum install nginx -y -q
-		systemctl stop nginx
-		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx_centos
-		cp -f nginx_centos /usr/sbin/nginx
-		rm nginx_centos
-		mkdir /var/cache/nginx/
-		chmod +x /usr/sbin/nginx
- 	else
- 	curl -LO --progress-bar https://nginx.org/keys/nginx_signing.key
+	if [[ $dist != centos ]]; then
+	curl -LO --progress-bar https://nginx.org/keys/nginx_signing.key
 	apt-key add nginx_signing.key
 	rm -rf nginx_signing.key
 	touch /etc/apt/sources.list.d/nginx.list
@@ -893,8 +885,16 @@ deb https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
 deb-src https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
 EOF
 	apt-get purge nginx -qq -y
-	apt-get update -qq
+	apt-get update -q
 	apt-get install nginx -q -y
+ 	else
+ 	yum install nginx -y -q
+	systemctl stop nginx
+	curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx_centos
+	cp -f nginx_centos /usr/sbin/nginx
+	rm nginx_centos
+	mkdir /var/cache/nginx/
+	chmod +x /usr/sbin/nginx
  	fi
 fi
 	cat > '/lib/systemd/system/nginx.service' << EOF
