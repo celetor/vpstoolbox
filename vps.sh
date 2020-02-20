@@ -41,25 +41,25 @@ fi
 
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
 systemctl stop aegis
-systemctl disable aegis
-rm -rf /etc/init.d/aegis
 systemctl stop CmsGoAgent.service
-systemctl disable CmsGoAgent.service
-rm -rf /etc/systemd/system/CmsGoAgent.service
 systemctl stop aliyun
-systemctl disable aliyun
 systemctl stop cloud-config
-systemctl disable cloud-config
 systemctl stop cloud-final
-systemctl disable cloud-final
 systemctl stop cloud-init-local.service
-systemctl disable cloud-init-local.service
 systemctl stop cloud-init
-systemctl disable cloud-init
 systemctl stop exim4
-systemctl disable exim4
 systemctl stop apparmor
+systemctl disable aegis
+systemctl disable CmsGoAgent.service
+systemctl disable aliyun
+systemctl disable cloud-config
+systemctl disable cloud-final
+systemctl disable cloud-init-local.service
+systemctl disable cloud-init
+systemctl disable exim4
 systemctl disable apparmor
+rm -rf /etc/init.d/aegis
+rm -rf /etc/systemd/system/CmsGoAgent.service
 rm -rf /etc/systemd/system/aliyun.service
 rm -rf /lib/systemd/system/cloud-config.service
 rm -rf /lib/systemd/system/cloud-config.target
@@ -949,6 +949,7 @@ http {
 	sendfile on;
 	gzip on;
 	gzip_proxied any;
+	gzip_types *;
 	gzip_comp_level 9;
 
 	include /etc/nginx/conf.d/*.conf;
@@ -982,17 +983,17 @@ EOF
 	else
 	clear
 	colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
-	if [[ $dist == centos ]]; then
-	yum install -y -q epel-release
-	yum update -y -q
-	yum install qbittorrent-nox -y -q
+	if [[ $dist == debian ]]; then
+	export DEBIAN_FRONTEND=noninteractive 
+	apt-get install qbittorrent-nox -q -y
  elif [[ $dist == ubuntu ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 	apt-get install qbittorrent-nox -q -y
  else
-	export DEBIAN_FRONTEND=noninteractive 
-	apt-get install qbittorrent-nox -q -y
+	yum install -y -q epel-release
+	yum update -y -q
+	yum install qbittorrent-nox -y -q
  fi
 	cat > '/etc/systemd/system/qbittorrent.service' << EOF
 [Unit]
@@ -1025,21 +1026,17 @@ if [[ $install_tracker = 1 ]]; then
 	if [[ ! -f /usr/bin/bittorrent-tracker ]]; then
 		clear
 		colorEcho ${INFO} "安装Bittorrent-tracker(Install bittorrent-tracker ing)"
-	if [[ $dist = centos ]]; then
-		curl -sL https://rpm.nodesource.com/setup_13.x | bash -
-		yum install -y -q nodejs
+	if [[ $dist = debian ]]; then
+		export DEBIAN_FRONTEND=noninteractive 
+		curl -sL https://deb.nodesource.com/setup_13.x | bash -
+		apt-get install -q -y nodejs
  elif [[ $dist = ubuntu ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
 	apt-get install -q -y nodejs
- elif [[ $dist = debian ]]; then
-	export DEBIAN_FRONTEND=noninteractive 
-	curl -sL https://deb.nodesource.com/setup_13.x | bash -
-	apt-get install -q -y nodejs
  else
-	clear
-	TERM=ansi whiptail --title "error can't install qbittorrent-nox" --infobox "error can't install qbittorrent-nox" 8 78
-		exit 1;
+	curl -sL https://rpm.nodesource.com/setup_13.x | bash -
+	yum install -y -q nodejs
  fi
  npm install -g bittorrent-tracker --quiet
 			cat > '/etc/systemd/system/tracker.service' << EOF
@@ -1069,15 +1066,11 @@ if [[ $install_file = 1 ]]; then
 	if [[ ! -f /usr/local/bin/filebrowser ]]; then
 		clear
 		colorEcho ${INFO} "安装Filebrowser(Install Filebrowser ing)"
-	if [[ $dist = centos ]]; then
-	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
- elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
+	if [[ $dist != centos ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
  else
-	clear
-	TERM=ansi whiptail --title "error can't install filebrowser" --infobox "error can't install filebrowser" 8 78
-		exit 1;
+	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
  fi
 	cat > '/etc/systemd/system/filebrowser.service' << EOF
 [Unit]
@@ -1173,20 +1166,21 @@ EOF
 	else
 	clear
 	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
-	if [[ $dist = centos ]]; then
-		yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev
-		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz
-		xz --decompress aria2c_centos.xz
-		cp aria2c_centos /usr/local/bin/aria2c
-		chmod +x /usr/local/bin/aria2c
-		rm aria2c_centos
-	else
+	if [[ $dist != centos ]]; then
 		apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
 		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz
 		xz --decompress aria2c.xz
 		cp aria2c /usr/local/bin/aria2c
 		chmod +x /usr/local/bin/aria2c
 		rm aria2c
+		apt-get autoremove -q -y
+	else
+		yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev
+		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz
+		xz --decompress aria2c_centos.xz
+		cp aria2c_centos /usr/local/bin/aria2c
+		chmod +x /usr/local/bin/aria2c
+		rm aria2c_centos
 		#apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -qq -y
 		#wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q
 		#cd aria2-1.35.0
@@ -1194,7 +1188,6 @@ EOF
 		#make -j $(nproc --all)
 		#make install
 		#apt remove build-essential autoconf automake autotools-dev autopoint libtool -qq -y
-		apt-get autoremove -q -y
 	fi
 	touch /usr/local/bin/aria2.session
 	mkdir /usr/share/nginx/aria2/
@@ -1444,10 +1437,7 @@ if [[ $install_tor = 1 ]]; then
 	clear
 	if [[ ! -f /usr/bin/tor ]]; then
 		colorEcho ${INFO} "安装Tor(Install Tor Relay ing)"
-	if [[ $dist = centos ]]; then
-		yum install -y -q epel-release
-		yum install -y -q tor 
- elif [[ $dist = ubuntu ]] || [[ $dist = debian ]]; then
+	if [[ $dist != centos ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	touch /etc/apt/sources.list.d/tor.list
 	cat > '/etc/apt/sources.list.d/tor.list' << EOF
@@ -1460,9 +1450,8 @@ EOF
 	apt-get install deb.torproject.org-keyring tor tor-arm tor-geoipdb -q -y
 	service tor stop
  else
-	clear
-	TERM=ansi whiptail --title "error can't install tor" --infobox "error can't install tor" 8 78
-		exit 1;
+	yum install -y -q epel-release
+	yum install -y -q tor 
  fi
 	cat > '/etc/tor/torrc' << EOF
 SocksPort 0
@@ -1485,8 +1474,6 @@ if [[ $install_netdata = 1 ]]; then
 		clear
 		colorEcho ${INFO} "安装Netdata(Install netdata ing)"
 		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --disable-telemetry
-		#bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait --disable-telemetry
-		#sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /etc/netdata/netdata.conf
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		sleep 1
@@ -1498,9 +1485,7 @@ fi
 clear
 #############################################
 if [[ $install_trojan = 1 ]]; then
-	if [[ -f /usr/local/bin/trojan ]]; then
-		:
-		else
+	if [[ ! -f /usr/local/bin/trojan ]]; then
 	clear
 	colorEcho ${INFO} "安装Trojan-GFW(Install Trojan-GFW ing)"
 	bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
@@ -1782,25 +1767,33 @@ openfirewall(){
 	ip6tables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
 	ip6tables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
 	ip6tables -I OUTPUT -j ACCEPT
-	if [[ $install_qbt = 1 ]]; then
+	if [[ $install_qbt == 1 ]]; then
 		iptables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
 		ip6tables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
 		iptables -I INPUT -p udp -m udp --dport 8999 -j ACCEPT
 		ip6tables -I INPUT -p udp -m udp --dport 8999 -j ACCEPT
 	fi
-	if [[ $install_tracker = 1 ]]; then
+	if [[ $install_tracker == 1 ]]; then
 		iptables -I INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
 		ip6tables -I INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
 		iptables -I INPUT -p udp -m udp --dport 8000 -j ACCEPT
 		ip6tables -I INPUT -p udp -m udp --dport 8000 -j ACCEPT
 	fi
-	if [[ $install_aria = 1 ]]; then
+	if [[ $install_aria == 1 ]]; then
 		iptables -I INPUT -p tcp -m tcp --dport $ariaport -j ACCEPT
 		ip6tables -I INPUT -p tcp -m tcp --dport $ariaport -j ACCEPT
 		iptables -I INPUT -p udp -m udp --dport $ariaport -j ACCEPT
 		ip6tables -I INPUT -p udp -m udp --dport $ariaport -j ACCEPT
 	fi
-	if [[ $dist = centos ]]; then
+	if [[ $dist == debian ]]; then
+	export DEBIAN_FRONTEND=noninteractive 
+	apt-get install iptables-persistent -qq -y > /dev/null
+ elif [[ $dist == ubuntu ]]; then
+	export DEBIAN_FRONTEND=noninteractive
+	ufw allow http
+	ufw allow https
+	apt-get install iptables-persistent -qq -y > /dev/null
+ elif [[ $dist == centos ]]; then
 	setenforce 0
 	cat > '/etc/selinux/config' << EOF
 SELINUX=disabled
@@ -1812,14 +1805,6 @@ EOF
 	firewall-cmd --zone=public --add-port=443/udp --permanent
 	systemctl stop firewalld
 	systemctl disable firewalld
- elif [[ $dist = ubuntu ]]; then
-	export DEBIAN_FRONTEND=noninteractive
-	ufw allow http
-	ufw allow https
-	apt-get install iptables-persistent -qq -y > /dev/null
- elif [[ $dist = debian ]]; then
-	export DEBIAN_FRONTEND=noninteractive 
-	apt-get install iptables-persistent -qq -y > /dev/null
  else
 	clear
 	TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
@@ -1835,7 +1820,7 @@ rm -rf /etc/nginx/sites-available/*
 rm -rf /etc/nginx/sites-enabled/*
 rm -rf /etc/nginx/conf.d/*
 touch /etc/nginx/conf.d/trojan.conf
-if [[ $install_trojan = 1 ]]; then
+if [[ $install_trojan == 1 ]]; then
 	cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
 	listen 127.0.0.1:80;
@@ -2645,8 +2630,8 @@ advancedMenu() {
 		else
 		echo "***************************************************************************************" >> /etc/motd
 		echo "*                                   Pay attention!                                    *" >> /etc/motd
-		echo "*     请访问下面的链接获取结果(Please visit the following link to get the result)       *" >> /etc/motd
-		echo "*                       https://$domain/$password1.html         *" >> /etc/motd
+		echo "*     请访问下面的链接获取结果(Please visit the following link to get the result)     *" >> /etc/motd
+		echo "*                       https://$domain/$password1.html            *" >> /etc/motd
 		echo "*           若访问失败，请运行以下两行命令自行检测服务是否正常:active(running)为正常  *" >> /etc/motd
 		echo "*                       sudo systemctl status trojan                                  *" >> /etc/motd
 		echo "*                       sudo systemctl status nginx                                   *" >> /etc/motd
