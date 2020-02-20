@@ -27,9 +27,8 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ```
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 ```
-5. Please **Change QBittorrent Download save path to /usr/share/nginx/qbt/ manually !**
 
-6. For customized certificate , please put it in /etc/trojan/ , no name change required !
+5. For customized certificate , please put it in /etc/trojan/ , no name change required !
 
 #### [Telegram](https://telegram.org/) Channel And Group
 
