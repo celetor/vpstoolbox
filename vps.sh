@@ -47,8 +47,10 @@ systemctl stop cloud-config
 systemctl stop cloud-final
 systemctl stop cloud-init-local.service
 systemctl stop cloud-init
+systemctl stop ecs_mq
 systemctl stop exim4
 systemctl stop apparmor
+systemctl stop sysstat
 systemctl disable aegis
 systemctl disable CmsGoAgent.service
 systemctl disable aliyun
@@ -56,8 +58,10 @@ systemctl disable cloud-config
 systemctl disable cloud-final
 systemctl disable cloud-init-local.service
 systemctl disable cloud-init
+systemctl disable ecs_mq
 systemctl disable exim4
 systemctl disable apparmor
+systemctl disable sysstat
 rm -rf /etc/init.d/aegis
 rm -rf /etc/systemd/system/CmsGoAgent.service
 rm -rf /etc/systemd/system/aliyun.service
@@ -66,11 +70,14 @@ rm -rf /lib/systemd/system/cloud-config.target
 rm -rf /lib/systemd/system/cloud-final.service
 rm -rf /lib/systemd/system/cloud-init-local.service
 rm -rf /lib/systemd/system/cloud-init.service
+rm -rf /lib/systemd/system/ecs_mq.service
 rm -rf /usr/local/aegis
 rm -rf /usr/local/cloudmonitor
 rm -rf /usr/sbin/aliyun_installer
 rm -rf /usr/sbin/aliyun-service
 rm -rf /usr/sbin/aliyun-service.backup
+rm -rf /sbin/ecs_mq_rps_rfs
+apt-get purge sysstat -y
 systemctl daemon-reload
 	if [[ $(lsb_release -cs) == stretch ]]; then
 		cat > '/etc/apt/sources.list' << EOF
