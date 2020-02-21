@@ -1181,13 +1181,6 @@ EOF
 		cp aria2c_centos /usr/local/bin/aria2c
 		chmod +x /usr/local/bin/aria2c
 		rm aria2c_centos
-		#apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libuv1-dev libcppunit-dev -qq -y
-		#wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q
-		#cd aria2-1.35.0
-		#./configure --without-gnutls --with-openssl
-		#make -j $(nproc --all)
-		#make install
-		#apt remove build-essential autoconf automake autotools-dev autopoint libtool -qq -y
 	fi
 	touch /usr/local/bin/aria2.session
 	mkdir /usr/share/nginx/aria2/
@@ -1492,12 +1485,6 @@ if [[ $install_trojan = 1 ]]; then
 	systemctl daemon-reload
 	clear
 	colorEcho ${INFO} "配置(configing) trojan-gfw"
-	if [[ -f /etc/trojan/trojan.pem ]]; then
-		colorEcho ${INFO} "DH已有，跳过生成。。。"
-		else
-		:
-		#openssl dhparam -out /etc/trojan/trojan.pem 2048
-		fi
 	fi
 	ipv4_prefer="true"
 	if [[ -n $myipv6 ]]; then
@@ -1752,7 +1739,6 @@ systemctl daemon-reload
 openfirewall(){
 	set +e
 	colorEcho ${INFO} "设置 firewall"
-	#sh -c 'echo "1\n" | DEBIAN_FRONTEND=noninteractive update-alternatives --config iptables'
 	#tcp
 	iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 	iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
@@ -2049,7 +2035,6 @@ sharelink(){
 	if [[ $install_trojan = 1 ]]; then
 		curl -LO --progress-bar https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py
 		chmod +x trojan-url.py
-		#./trojan-url.py -i /etc/trojan/client.json
 		./trojan-url.py -q -i /usr/share/nginx/html/client1-$password1.json -o /usr/share/nginx/html/$password1.png
 		./trojan-url.py -q -i /usr/share/nginx/html/client2-$password2.json -o /usr/share/nginx/html/$password2.png
 		rm -rf trojan-url.py
@@ -2639,7 +2624,6 @@ advancedMenu() {
 		fi
 		echo "请访问下面的链接获取结果(Please visit the following link to get the result)" > /root/.trojan/result.txt
 		echo "https://$domain/$password1.html" >> /root/.trojan/result.txt
-		#whiptail --title "Install Success" --textbox --scrolltext /root/.trojan/result.txt 8 120
 		if [[ $install_bbrplus = 1 ]]; then
 		bash -c "$(curl -fsSL https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh)"
 		fi
