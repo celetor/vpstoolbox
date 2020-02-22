@@ -77,7 +77,7 @@ rm -rf /usr/sbin/aliyun_installer
 rm -rf /usr/sbin/aliyun-service
 rm -rf /usr/sbin/aliyun-service.backup
 rm -rf /sbin/ecs_mq_rps_rfs
-apt-get purge sysstat -y
+apt-get purge sysstat apparmor exim4 -y
 systemctl daemon-reload
 	if [[ $(lsb_release -cs) == stretch ]]; then
 		cat > '/etc/apt/sources.list' << EOF
@@ -529,7 +529,9 @@ fi
 	done
 	fi
 ####################################
-mkdir /etc/trojan
+	if [[ ! -d /etc/trojan ]]; then
+		mkdir /etc/trojan
+	fi
 	if [ -f /etc/trojan/*.crt ]; then
 		mv /etc/trojan/*.crt /etc/trojan/trojan.crt
 	fi
@@ -662,7 +664,7 @@ upgradesystem(){
 		yum upgrade -y
  elif [[ $dist == ubuntu ]]; then
 	export UBUNTU_FRONTEND=noninteractive
-	if [[ $ubuntu18_install = 1 ]]; then
+	if [[ $ubuntu18_install == 1 ]]; then
 		cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
 #                            OFFICIAL UBUNTU REPOS                             #
@@ -678,15 +680,17 @@ deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe
 deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
 deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
 EOF
-	apt-get update
+	apt-get update --fix-missing
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y'
 	fi
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -qq -y'
-	apt-get autoremove -qq -y
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
 	clear
  elif [[ $dist == debian ]]; then
-	export DEBIAN_FRONTEND=noninteractive 
+	export DEBIAN_FRONTEND=noninteractive
+	apt-get update --fix-missing
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
 	if [[ $debian10_install == 1 ]]; then
 		cat > '/etc/apt/sources.list' << EOF
@@ -707,9 +711,11 @@ deb-src http://deb.debian.org/debian-security stable/updates main
 deb http://ftp.debian.org/debian buster-backports main
 deb-src http://ftp.debian.org/debian buster-backports main
 EOF
-	apt-get update
+	apt-get update --fix-missing
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y'
 	clear
 	fi
 	if [[ $debian9_install == 1 ]]; then
@@ -731,9 +737,11 @@ deb-src http://deb.debian.org/debian-security oldstable/updates main
 deb http://ftp.debian.org/debian stretch-backports main
 deb-src http://ftp.debian.org/debian stretch-backports main
 EOF
-	apt-get update
+	apt-get update --fix-missing
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y'
 	fi
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
 	clear
@@ -746,28 +754,24 @@ EOF
 ##########install dependencies#############
 installdependency(){
 	set +e
-	if [[ $install_bbr = 1 ]]; then
+	if [[ $install_bbr == 1 ]]; then
 	colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
-	iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
+	#iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
 	cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 net.ipv4.ip_forward = 1
 net.ipv4.conf.all.forwarding = 1
 net.ipv4.conf.default.forwarding = 1
-net.ipv4.conf.${iii}.forwarding = 1
 ################################
 net.ipv6.conf.all.forwarding = 1
 net.ipv6.conf.default.forwarding = 1
 net.ipv6.conf.lo.forwarding = 1
-net.ipv6.conf.${iii}.forwarding = 1
 ################################
 net.ipv6.conf.all.disable_ipv6 = 0
 net.ipv6.conf.default.disable_ipv6 = 0
 net.ipv6.conf.lo.disable_ipv6 = 0
-net.ipv6.conf.${iii}.disable_ipv6 = 0
 ################################
 net.ipv6.conf.all.accept_ra = 2
 net.ipv6.conf.default.accept_ra = 2
-net.ipv6.conf.${iii}.accept_ra = 2
 ################################
 net.core.netdev_max_backlog = 100000
 net.core.netdev_budget = 50000
@@ -817,7 +821,7 @@ net.ipv6.conf.all.accept_redirects = 0
 net.ipv6.conf.default.accept_redirects = 0
 vm.swappiness = 5
 EOF
-	sysctl -p
+	sysctl --system
 	cat > '/etc/systemd/system.conf' << EOF
 [Manager]
 #DefaultTimeoutStartSec=90s
@@ -1381,8 +1385,7 @@ if [[ $dnsmasq_install == 1 ]]; then
 	if [[ ! -f /usr/sbin/dnscrypt-proxy ]]; then
 	clear
 	colorEcho ${INFO} "安装dnscrypt-proxy(Install dnscrypt-proxy ing)"
-	dnsmasqstatus=$(systemctl is-active dnsmasq)
-		if [[ $dnsmasqdstatus == active ]]; then
+		if [[ $(systemctl is-active dnsmasq) == active ]]; then
 			systemctl disable dnsmasq
 		fi
 	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.39/dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
@@ -1393,6 +1396,8 @@ if [[ $dnsmasq_install == 1 ]]; then
 	chmod +x /usr/sbin/dnscrypt-proxy
 	cd ..
 	rm -rf linux-x86_64
+	adduser --system --no-create-home --disabled-login --group dnscrypt-proxy
+	setcap cap_net_bind_service=+pe /usr/sbin/dnscrypt-proxy
 	cat > '/etc/blacklist.txt' << EOF
 
 ###########################
@@ -1448,7 +1453,10 @@ if [[ -n $myipv6 ]]; then
 		block_ipv6="false"
 	fi
 fi
-    cat > '/etc/dnscrypt-proxy.toml' << EOF
+if [[ ! -d /etc/dnscrypt-proxy ]]; then
+	mkdir /etc/dnscrypt-proxy
+fi
+    cat > '/etc/dnscrypt-proxy/dnscrypt-proxy.toml' << EOF
 listen_addresses = ['127.0.0.1:53']
 max_clients = 250
 ipv4_servers = true
@@ -1464,7 +1472,7 @@ timeout = 5000
 keepalive = 30
 lb_estimator = true
 log_level = 2
-log_file = '/var/log/dnscrypt-proxy.log'
+log_file = '/var/log/dnscrypt-proxy/dnscrypt-proxy.log'
 cert_refresh_delay = 720
 tls_disable_session_tickets = true
 #tls_cipher_suite = [4865]
@@ -1496,7 +1504,7 @@ cache_neg_max_ttl = 600
 
 [query_log]
 
-  file = '/var/log/query.log'
+  file = '/var/log/dnscrypt-proxy/query.log'
   format = 'tsv'
 
 [blacklist]
@@ -1538,13 +1546,14 @@ Wants=nss-lookup.target
 
 [Service]
 NonBlocking=true
-Type=simple
-RemainAfterExit=yes
-ExecStart=/usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy.toml
+ExecStart=/usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 ProtectHome=yes
 ProtectControlGroups=yes
 ProtectKernelModules=yes
 User=root
+CacheDirectory=dnscrypt-proxy
+LogsDirectory=dnscrypt-proxy
+RuntimeDirectory=dnscrypt-proxy
 LimitNOFILE=51200
 LimitNPROC=51200
 Restart=on-failure
@@ -1553,7 +1562,7 @@ RestartSec=3s
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable dnscrypt-proxy
+systemctl enable dnscrypt-proxy.service
 	fi
 fi
 clear
@@ -2623,8 +2632,8 @@ logcheck(){
 	fi
 	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
 		colorEcho ${INFO} "dnscrypt-proxy Log"
-		less /var/log/dnscrypt-proxy.log
-		less /var/log/query.log
+		less /var/log/dnscrypt-proxy/dnscrypt-proxy.log
+		less /var/log/dnscrypt-proxy/query.log
 	fi
 	if [[ -f /usr/local/bin/aria2c ]]; then
 		colorEcho ${INFO} "Aria2 Log"
@@ -2674,14 +2683,12 @@ advancedMenu() {
 	 			systemctl disable systemd-resolved
  			fi
 			if [[ $(systemctl is-active dnsmasq) == active ]]; then
-				systemctl disable dnsmasq
 				systemctl stop dnsmasq
 			fi
 		rm /etc/resolv.conf
 		touch /etc/resolv.conf
 		echo "nameserver 127.0.0.1" > '/etc/resolv.conf'
 		systemctl start dnscrypt-proxy
-		systemctl enable dnscrypt-proxy
 		fi
 		if [[ $password1 == "" ]]; then
 		password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
