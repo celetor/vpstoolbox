@@ -748,12 +748,27 @@ installdependency(){
 	set +e
 	if [[ $install_bbr = 1 ]]; then
 	colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
+	iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
 	cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
-net.ipv4.ip_forward=1
-net.ipv6.conf.all.forwarding=1
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.forwarding = 1
+net.ipv4.conf.default.forwarding = 1
+net.ipv4.conf.${iii}.forwarding = 1
+################################
+net.ipv6.conf.all.forwarding = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.lo.forwarding = 1
+net.ipv6.conf.${iii}.forwarding = 1
+################################
 net.ipv6.conf.all.disable_ipv6 = 0
 net.ipv6.conf.default.disable_ipv6 = 0
+net.ipv6.conf.lo.disable_ipv6 = 0
+net.ipv6.conf.${iii}.disable_ipv6 = 0
+################################
 net.ipv6.conf.all.accept_ra = 2
+net.ipv6.conf.default.accept_ra = 2
+net.ipv6.conf.${iii}.accept_ra = 2
+################################
 net.core.netdev_max_backlog = 100000
 net.core.netdev_budget = 50000
 net.core.netdev_budget_usecs = 5000
@@ -763,14 +778,13 @@ net.core.wmem_max = 67108864
 net.core.rmem_default = 65536
 net.core.wmem_default = 65536
 net.core.somaxconn = 4096
+################################
 net.ipv4.icmp_echo_ignore_broadcasts = 1
 net.ipv4.icmp_ignore_bogus_error_responses = 1
 net.ipv4.conf.all.accept_redirects = 0
 net.ipv4.conf.default.accept_redirects = 0
 net.ipv4.conf.all.secure_redirects = 0
 net.ipv4.conf.default.secure_redirects = 0
-net.ipv6.conf.all.accept_redirects = 0
-net.ipv6.conf.default.accept_redirects = 0
 net.ipv4.conf.all.send_redirects = 0
 net.ipv4.conf.default.send_redirects = 0
 net.ipv4.conf.default.rp_filter = 1
@@ -791,11 +805,17 @@ net.ipv4.tcp_wmem = 4096 65536 67108864
 net.ipv4.udp_rmem_min = 8192
 net.ipv4.udp_wmem_min = 8192
 net.ipv4.tcp_mtu_probing = 1
+##############################
 net.ipv4.tcp_slow_start_after_idle = 0
 net.ipv4.tcp_max_syn_backlog = 30000
 net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
-vm.swappiness = 10
+net.ipv4.tcp_ecn = 1
+net.ipv4.tcp_frto = 0
+##############################
+net.ipv6.conf.all.accept_redirects = 0
+net.ipv6.conf.default.accept_redirects = 0
+vm.swappiness = 5
 EOF
 	sysctl -p
 	cat > '/etc/systemd/system.conf' << EOF
@@ -1513,11 +1533,17 @@ EOF
 Description=DNSCrypt client proxy
 Documentation=https://github.com/DNSCrypt/dnscrypt-proxy/wiki
 After=network.target
+Before=nss-lookup.target
+Wants=nss-lookup.target
 
 [Service]
+NonBlocking=true
 Type=simple
 RemainAfterExit=yes
 ExecStart=/usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy.toml
+ProtectHome=yes
+ProtectControlGroups=yes
+ProtectKernelModules=yes
 User=root
 LimitNOFILE=51200
 LimitNPROC=51200
