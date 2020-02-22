@@ -749,6 +749,8 @@ installdependency(){
 	if [[ $install_bbr = 1 ]]; then
 	colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
 	cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
+net.ipv4.ip_forward=0
+net.ipv6.conf.all.forwarding=0
 net.ipv6.conf.all.disable_ipv6 = 0
 net.ipv6.conf.default.disable_ipv6 = 0
 net.ipv6.conf.all.accept_ra = 2
