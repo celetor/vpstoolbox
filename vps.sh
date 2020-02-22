@@ -749,8 +749,8 @@ installdependency(){
 	if [[ $install_bbr = 1 ]]; then
 	colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
 	cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
-net.ipv4.ip_forward=0
-net.ipv6.conf.all.forwarding=0
+net.ipv4.ip_forward=1
+net.ipv6.conf.all.forwarding=1
 net.ipv6.conf.all.disable_ipv6 = 0
 net.ipv6.conf.default.disable_ipv6 = 0
 net.ipv6.conf.all.accept_ra = 2
@@ -795,6 +795,7 @@ net.ipv4.tcp_slow_start_after_idle = 0
 net.ipv4.tcp_max_syn_backlog = 30000
 net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
+vm.swappiness = 10
 EOF
 	sysctl -p
 	cat > '/etc/systemd/system.conf' << EOF
@@ -1795,6 +1796,7 @@ openfirewall(){
 	iptables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
 	iptables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
 	iptables -I OUTPUT -j ACCEPT
+	iptables -I FORWARD -j DROP
 	#tcp6
 	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 	ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
@@ -1802,6 +1804,7 @@ openfirewall(){
 	ip6tables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
 	ip6tables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
 	ip6tables -I OUTPUT -j ACCEPT
+	ip6tables -I FORWARD -j DROP
 	if [[ $install_qbt == 1 ]]; then
 		iptables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
 		ip6tables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
