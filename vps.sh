@@ -77,7 +77,7 @@ rm -rf /usr/sbin/aliyun_installer
 rm -rf /usr/sbin/aliyun-service
 rm -rf /usr/sbin/aliyun-service.backup
 rm -rf /sbin/ecs_mq_rps_rfs
-apt-get purge sysstat exim4 -y
+apt-get purge sysstat apparmor exim4 -y
 systemctl daemon-reload
 	if [[ $(lsb_release -cs) == stretch ]]; then
 		cat > '/etc/apt/sources.list' << EOF
@@ -754,6 +754,32 @@ EOF
 ##########install dependencies#############
 installdependency(){
 	set +e
+colorEcho ${INFO} "Updating system"
+	$pack update
+	if [[ $install_status == 0 ]]; then
+		caddystatus=$(systemctl is-active caddy)
+		if [[ $caddystatus == active ]]; then
+			systemctl stop caddy
+			systemctl disable caddy
+		fi
+		apache2status=$(systemctl is-active apache2)
+		if [[ $caddystatus == active ]]; then
+			systemctl stop apache2
+			systemctl disable apache2
+		fi
+		httpdstatus=$(systemctl is-active httpd)
+		if [[ $httpdstatus == active ]]; then
+			systemctl stop httpd
+			systemctl disable httpd
+		fi
+		(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 80 open" && kill $(lsof -t -i:80) || echo "Moving on"
+		(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 443 open" && kill $(lsof -t -i:443) || echo "Moving on"
+	fi
+###########################################
+if [[ $system_upgrade = 1 ]]; then
+upgradesystem
+fi
+###########################################
 	if [[ $install_bbr == 1 ]]; then
 	colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
 	#iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
@@ -852,32 +878,6 @@ echo "session required pam_limits.so" >> /etc/pam.d/common-session
 fi
 systemctl daemon-reload
 	fi
-#######################################
-colorEcho ${INFO} "Updating system"
-	$pack update
-	if [[ $install_status == 0 ]]; then
-		caddystatus=$(systemctl is-active caddy)
-		if [[ $caddystatus == active ]]; then
-			systemctl stop caddy
-			systemctl disable caddy
-		fi
-		apache2status=$(systemctl is-active apache2)
-		if [[ $caddystatus == active ]]; then
-			systemctl stop apache2
-			systemctl disable apache2
-		fi
-		httpdstatus=$(systemctl is-active httpd)
-		if [[ $httpdstatus == active ]]; then
-			systemctl stop httpd
-			systemctl disable httpd
-		fi
-		(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 80 open" && kill $(lsof -t -i:80) || echo "Moving on"
-		(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 443 open" && kill $(lsof -t -i:443) || echo "Moving on"
-	fi
-###########################################
-if [[ $system_upgrade = 1 ]]; then
-upgradesystem
-fi
 ###########################################
 	clear
 	colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
