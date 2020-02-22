@@ -815,7 +815,7 @@ then
 	:
 else
 echo "ulimit -SHn 51200" >> /etc/profile
-echo "ulimit -u 51200" >> /etc/profile
+echo "ulimit -SHu 51200" >> /etc/profile
 fi
 if grep -q "pam_limits.so" /etc/pam.d/common-session
 then
