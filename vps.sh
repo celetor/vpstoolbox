@@ -77,7 +77,7 @@ rm -rf /usr/sbin/aliyun_installer
 rm -rf /usr/sbin/aliyun-service
 rm -rf /usr/sbin/aliyun-service.backup
 rm -rf /sbin/ecs_mq_rps_rfs
-apt-get purge sysstat exim4 -y
+apt-get purge sysstat exim4 chrony aliyun-assist -y
 systemctl daemon-reload
 	if [[ $(lsb_release -cs) == stretch ]]; then
 		cat > '/etc/apt/sources.list' << EOF
@@ -2677,6 +2677,9 @@ advancedMenu() {
 		rm results
 		prasejson
 		autoupdate
+		if [[ $dist != centos ]]; then
+			apt-get autoremove -y
+		fi
 		if [[ $dnsmasq_install -eq 1 ]]; then
 			if [[ $dist = ubuntu ]]; then
 	 			systemctl stop systemd-resolved
