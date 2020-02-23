@@ -77,7 +77,7 @@ rm -rf /usr/sbin/aliyun_installer
 rm -rf /usr/sbin/aliyun-service
 rm -rf /usr/sbin/aliyun-service.backup
 rm -rf /sbin/ecs_mq_rps_rfs
-apt-get purge sysstat exim4 chrony aliyun-assist -y
+apt-get purge sysstat exim4 chrony aliyun-assist telnet -y
 systemctl daemon-reload
 	if [[ $(lsb_release -cs) == stretch ]]; then
 		cat > '/etc/apt/sources.list' << EOF
@@ -2125,7 +2125,6 @@ sharelink(){
 		./trojan-url.py -q -i /usr/share/nginx/html/client1-$password1.json -o /usr/share/nginx/html/$password1.png
 		./trojan-url.py -q -i /usr/share/nginx/html/client2-$password2.json -o /usr/share/nginx/html/$password2.png
 		rm -rf trojan-url.py
-		$pack remove python3-qrcode
 	fi
 	cat > "/usr/share/nginx/html/result.html" << EOF
 <!DOCTYPE html>
@@ -2678,6 +2677,7 @@ advancedMenu() {
 		prasejson
 		autoupdate
 		if [[ $dist != centos ]]; then
+			apt-get purge dnsutils python-pil socat python3-qrcode -q -y
 			apt-get autoremove -y
 		fi
 		if [[ $dnsmasq_install -eq 1 ]]; then
