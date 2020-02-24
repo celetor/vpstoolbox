@@ -1586,6 +1586,18 @@ if [[ $install_netdata = 1 ]]; then
 		colorEcho ${INFO} "安装Netdata(Install netdata ing)"
 		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --disable-telemetry
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
+		cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
+localhost:
+
+localipv4:
+  name : 'local'
+  url  : 'http://127.0.0.1:81/stub_status'
+EOF
+		cat > '/opt/netdata/etc/netdata/python.d/web_log.conf' << EOF
+nginx_log:
+  name  : 'nginx_log'
+  path  : '/var/log/nginx/access.log'
+EOF
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		sleep 1
 		colorEcho ${INFO} "重启Netdata(Restart netdata ing)"
@@ -2025,6 +2037,12 @@ echo "    server_name _;" >> /etc/nginx/conf.d/trojan.conf
 echo "    return 444;" >> /etc/nginx/conf.d/trojan.conf
 echo "}" >> /etc/nginx/conf.d/trojan.conf
 if [[ $install_netdata = 1 ]]; then
+	echo "server {" >> /etc/nginx/conf.d/trojan.conf
+	echo "    listen 127.0.0.1:81;" >> /etc/nginx/conf.d/trojan.conf
+	echo "    location /stub_status {" >> /etc/nginx/conf.d/trojan.conf
+	echo "    stub_status;" >> /etc/nginx/conf.d/trojan.conf
+	echo "    }" >> /etc/nginx/conf.d/trojan.conf
+	echo "}" >> /etc/nginx/conf.d/trojan.conf
 	echo "upstream netdata {" >> /etc/nginx/conf.d/trojan.conf
 	echo "    server 127.0.0.1:19999;" >> /etc/nginx/conf.d/trojan.conf
 	echo "    keepalive 64;" >> /etc/nginx/conf.d/trojan.conf
