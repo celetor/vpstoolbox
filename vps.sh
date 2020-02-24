@@ -1585,6 +1585,7 @@ if [[ $install_netdata = 1 ]]; then
 		clear
 		colorEcho ${INFO} "安装Netdata(Install netdata ing)"
 		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --disable-telemetry
+		sleep 1
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
 		cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
 localhost:
@@ -2040,7 +2041,7 @@ if [[ $install_netdata = 1 ]]; then
 	echo "server {" >> /etc/nginx/conf.d/trojan.conf
 	echo "    listen 127.0.0.1:81;" >> /etc/nginx/conf.d/trojan.conf
 	echo "    location /stub_status {" >> /etc/nginx/conf.d/trojan.conf
-	echo "    stub_status;" >> /etc/nginx/conf.d/trojan.conf
+	echo "    stub_status; #For Netdata only !" >> /etc/nginx/conf.d/trojan.conf
 	echo "    }" >> /etc/nginx/conf.d/trojan.conf
 	echo "}" >> /etc/nginx/conf.d/trojan.conf
 	echo "upstream netdata {" >> /etc/nginx/conf.d/trojan.conf
