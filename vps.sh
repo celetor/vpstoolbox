@@ -1599,6 +1599,7 @@ nginx_log:
   name  : 'nginx_log'
   path  : '/var/log/nginx/access.log'
 EOF
+		touch /opt/netdata/etc/netdata/python.d/logind.conf
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		sleep 1
 		colorEcho ${INFO} "重启Netdata(Restart netdata ing)"
