@@ -282,32 +282,13 @@ prasejson(){
   "ariapasswd": "$ariapasswd",
   "filepath": "$filepath",
   "netdatapath": "$netdatapath",
-  "path": "$path",
-  "alterid": "$alterid",
-  "tor_name": "$tor_name",
-  "sspath": "$sspath",
-  "sspasswd": "$sspasswd",
-  "ssmethod": "$ssmethod",
-  "install_trojan": "$install_trojan",
-  "install_qbt": "$install_qbt",
-  "install_tracker": "$install_tracker",
-  "install_aria": "$install_aria",
-  "install_file": "$install_file",
-  "install_netdata": "$install_netdata",
-  "install_tor": "$install_tor"
+  "tor_name": "$tor_name"
 }
 EOF
 }
 ################################################
 readconfig(){
 	domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
-    install_trojan="$( jq -r '.install_trojan' "/root/.trojan/config.json" )"
-    install_qbt="$( jq -r '.install_qbt' "/root/.trojan/config.json" )"
-    install_tracker="$( jq -r '.install_tracker' "/root/.trojan/config.json" )"
-    install_aria="$( jq -r '.install_aria' "/root/.trojan/config.json" )"
-    install_file="$( jq -r '.install_file' "/root/.trojan/config.json" )"
-    install_netdata="$( jq -r '.install_netdata' "/root/.trojan/config.json" )"
-    install_tor="$( jq -r '.install_tor' "/root/.trojan/config.json" )"
     password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
     password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
     qbtpath="$( jq -r '.qbtpath' "/root/.trojan/config.json" )"
@@ -317,11 +298,7 @@ readconfig(){
     ariapasswd="$( jq -r '.ariapasswd' "/root/.trojan/config.json" )"
     filepath="$( jq -r '.filepath' "/root/.trojan/config.json" )"
     netdatapath="$( jq -r '.netdatapath' "/root/.trojan/config.json" )"
-    path="$( jq -r '.path' "/root/.trojan/config.json" )"
-    alterid="$( jq -r '.alterid' "/root/.trojan/config.json" )"
-    tor_name="$( jq -r '.tor_name' "/root/.trojan/config.json" )"
-    sspasswd="$( jq -r '.sspasswd' "/root/.trojan/config.json" )"
-    ssmethod="$( jq -r '.ssmethod' "/root/.trojan/config.json" )"   
+    tor_name="$( jq -r '.tor_name' "/root/.trojan/config.json" )"  
 }
 ####################################
 userinput(){
@@ -2758,18 +2735,6 @@ advancedMenu() {
 		esac
 }
 cd
-system_upgrade=0
-install_bbr=0
-install_bbrplus=0
-install_trojan=0
-dnsmasq_install=0
-install_tor=0
-install_qbt=0
-install_tracker=0
-install_aria=0
-install_file=0
-install_netdata=0
-tls13only=0
 osdist
 setlanguage
 if [[ -f /root/.trojan/license.json ]]; then
