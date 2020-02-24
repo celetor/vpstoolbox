@@ -1584,7 +1584,7 @@ if [[ $install_netdata = 1 ]]; then
 	if [[ ! -f /usr/sbin/netdata ]]; then
 		clear
 		colorEcho ${INFO} "安装Netdata(Install netdata ing)"
-		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --disable-telemetry
+		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
 		sleep 1
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
 		cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
