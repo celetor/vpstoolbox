@@ -1055,30 +1055,7 @@ EOF
 clear
 #############################################
 if [[ $install_qbt == 1 ]]; then
-	if [[ -f /usr/bin/qbittorrent-nox ]]; then
-	cat > '/etc/systemd/system/qbittorrent.service' << EOF
-[Unit]
-Description=qBittorrent Daemon Service
-Documentation=man:qbittorrent-nox(1)
-Wants=network-online.target
-After=network-online.target nss-lookup.target
-
-[Service]
-# if you have systemd >= 240, you probably want to use Type=exec instead
-Type=simple
-User=root
-RemainAfterExit=yes
-ExecStart=/usr/bin/qbittorrent-nox --profile=/usr/share/nginx/
-TimeoutStopSec=infinity
-LimitNOFILE=51200
-LimitNPROC=51200
-Restart=on-failure
-RestartSec=1s
-
-[Install]
-WantedBy=multi-user.target
-EOF
-	else
+	if [[ ! -f /usr/bin/qbittorrent-nox ]]; then
 	clear
 	colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
 	if [[ $dist == debian ]]; then
@@ -1093,6 +1070,7 @@ EOF
 	yum update -y -q
 	yum install qbittorrent-nox -y -q
  fi
+ adduser --system --no-create-home --disabled-login --group qbittorrent
 	cat > '/etc/systemd/system/qbittorrent.service' << EOF
 [Unit]
 Description=qBittorrent Daemon Service
@@ -1138,8 +1116,9 @@ if [[ $install_tracker = 1 ]]; then
 	curl -sL https://rpm.nodesource.com/setup_13.x | bash -
 	yum install -y -q nodejs
  fi
+ adduser --system --no-create-home --disabled-login --group bt_tracker
  npm install -g bittorrent-tracker --quiet
-			cat > '/etc/systemd/system/tracker.service' << EOF
+	cat > '/etc/systemd/system/tracker.service' << EOF
 [Unit]
 Description=Bittorrent-Tracker Daemon Service
 Wants=network-online.target
@@ -1148,7 +1127,8 @@ After=network-online.target nss-lookup.target
 [Service]
 # if you have systemd >= 240, you probably want to use Type=exec instead
 Type=simple
-User=root
+User=bt_tracker
+Group=bt_tracker
 RemainAfterExit=yes
 ExecStart=/usr/bin/bittorrent-tracker --trust-proxy
 TimeoutStopSec=infinity
@@ -1203,75 +1183,11 @@ clear
 if [[ $install_aria = 1 ]]; then
 	ariaport=$(shuf -i 20000-60000 -n 1)
 	trackers_list=$(wget -qO- https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
-	if [[ -f /usr/local/bin/aria2c ]]; then
-		cat > '/etc/systemd/system/aria2.service' << EOF
-[Unit]
-Description=Aria2c download manager
-Requires=network.target
-After=network.target
-
-[Service]
-Type=forking
-User=root
-RemainAfterExit=yes
-ExecStart=/usr/local/bin/aria2c --conf-path=/etc/aria2.conf --daemon
-ExecReload=/usr/bin/kill -HUP \$MAINPID
-ExecStop=/usr/bin/kill -s STOP \$MAINPID
-LimitNOFILE=51200
-LimitNPROC=51200
-RestartSec=3s
-Restart=on-failure
-		
-[Install]
-WantedBy=multi-user.target
-EOF
-	cat > '/etc/aria2.conf' << EOF
-async-dns=true
-log-level=info
-log=/var/log/aria2.log
-rlimit-nofile=51200
-rpc-secure=false
-continue=true
-max-concurrent-downloads=50
-#split=16
-min-split-size=10M
-max-connection-per-server=16
-lowest-speed-limit=0
-disable-ipv6=false
-max-tries=0
-#retry-wait=0
-input-file=/usr/local/bin/aria2.session
-save-session=/usr/local/bin/aria2.session
-save-session-interval=60
-force-save=true
-enable-rpc=true
-rpc-allow-origin-all=true
-rpc-listen-all=false
-event-poll=epoll
-rpc-listen-port=6800
-rpc-secret=$ariapasswd
-bt-tracker=$trackers_list
-follow-torrent=true
-listen-port=$ariaport
-enable-dht=true
-enable-dht6=true
-bt-enable-lpd=true
-enable-peer-exchange=true
-seed-ratio=0
-bt-hash-check-seed=true
-bt-seed-unverified=true
-bt-save-metadata=true
-bt-require-crypto=true
-bt-force-encryption=true
-bt-min-crypto-level=arc4
-bt-max-peers=0
-dir=/usr/share/nginx/aria2/
-file-allocation=none
-disk-cache=64M
-EOF
-	else
+	if [[ ! -f /usr/local/bin/aria2c ]]; then
 	clear
 	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
+	adduser --system --no-create-home --disabled-login --group aria2
+	#usermod -a -G aria2 nginx
 	if [[ $dist != centos ]]; then
 		apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
 		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz
@@ -1377,7 +1293,7 @@ if [[ $dnsmasq_install == 1 ]]; then
 	cd ..
 	rm -rf linux-x86_64
 	adduser --system --no-create-home --disabled-login --group dnscrypt-proxy
-	setcap cap_net_bind_service=+eip /usr/sbin/dnscrypt-proxy
+	setcap CAP_NET_BIND_SERVICE=+eip /usr/sbin/dnscrypt-proxy
 	if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
 		mkdir /etc/dnscrypt-proxy/
 	fi
@@ -1541,7 +1457,6 @@ ExecStart=/usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy/dnscrypt-proxy.to
 ProtectHome=yes
 ProtectControlGroups=yes
 ProtectKernelModules=yes
-#User=root
 CacheDirectory=dnscrypt-proxy
 LogsDirectory=dnscrypt-proxy
 RuntimeDirectory=dnscrypt-proxy
@@ -1627,10 +1542,12 @@ if [[ $install_trojan = 1 ]]; then
 	if [[ ! -f /usr/local/bin/trojan ]]; then
 	clear
 	colorEcho ${INFO} "安装Trojan-GFW(Install Trojan-GFW ing)"
+	adduser --system --no-create-home --disabled-login --group trojan
 	bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
 	systemctl daemon-reload
 	clear
 	colorEcho ${INFO} "配置(configing) trojan-gfw"
+	setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/trojan
 	fi
 	ipv4_prefer="true"
 	if [[ -n $myipv6 ]]; then
@@ -1648,12 +1565,14 @@ After=network.target network-online.target nss-lookup.target mysql.service maria
 [Service]
 Type=simple
 StandardError=journal
-ExecStart=/usr/local/bin/trojan -c /usr/local/etc/trojan/config.json -l /var/log/trojan.log
+User=trojan
+Group=trojan
+ExecStart=/usr/local/bin/trojan -c /usr/local/etc/trojan/config.json
 ExecReload=/bin/kill -HUP $MAINPID
 LimitNOFILE=51200
 LimitNPROC=51200
 Restart=on-failure
-RestartSec=1s
+RestartSec=3s
 
 [Install]
 WantedBy=multi-user.target
@@ -1829,6 +1748,12 @@ fi
 openfirewall(){
 	set +e
 	colorEcho ${INFO} "设置 firewall"
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 -j REJECT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 192.168.0.0/16 -j REJECT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 10.0.0.0/8 -j REJECT
+	#iptables -m owner --uid-owner trojan -A OUTPUT --dport 53 -j ACCEPT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 --dport 80 -j ACCEPT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 	#tcp
 	iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 	iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
@@ -2087,6 +2012,7 @@ curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-
 unzip -o $htmlcode.zip -d /usr/share/nginx/html/
 rm -rf $htmlcode.zip
 rm -rf /usr/share/nginx/html/readme.txt
+chown -R nginx:nginx /usr/share/nginx/
 }
 ##########Auto boot start###############
 start(){
@@ -2652,8 +2578,8 @@ logcheck(){
 	clear
 	if [[ -f /usr/local/bin/trojan ]]; then
 		colorEcho ${INFO} "Trojan Log"
-		#journalctl -a -u trojan.service
-		less /var/log/trojan.log
+		journalctl -a -u trojan.service
+		#less /var/log/trojan.log
 		less /root/.trojan/update.log
 	fi
 	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
