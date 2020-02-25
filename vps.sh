@@ -1375,6 +1375,9 @@ if [[ $dnsmasq_install == 1 ]]; then
 	rm -rf linux-x86_64
 	adduser --system --no-create-home --disabled-login --group dnscrypt-proxy
 	setcap cap_net_bind_service=+eip /usr/sbin/dnscrypt-proxy
+	if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
+		mkdir /etc/dnscrypt-proxy/
+	fi
 	cat > '/etc/dnscrypt-proxy/blacklist.txt' << EOF
 
 ###########################
