@@ -442,6 +442,9 @@ fi
 #####################################
 while [[ -z $domain ]]; do
 domain=$(whiptail --inputbox --nocancel "快輸入你的域名並按回車(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+if (whiptail --title "hostname" --yesno "修改hostname为域名(change hostname to your domain)?" 8 78); then
+	hostnamectl set-hostname $domain
+fi
 done
 if [[ $install_trojan = 1 ]]; then
 	while [[ -z $password1 ]]; do
