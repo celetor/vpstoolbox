@@ -1378,6 +1378,9 @@ if [[ $dnsmasq_install == 1 ]]; then
 	if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
 		mkdir /etc/dnscrypt-proxy/
 	fi
+	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md -q --show-progress
+	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/opennic.md -q --show-progress
+	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/relays.md -q --show-progress
 	cat > '/etc/dnscrypt-proxy/blacklist.txt' << EOF
 
 ###########################
