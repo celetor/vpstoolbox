@@ -1374,8 +1374,8 @@ if [[ $dnsmasq_install == 1 ]]; then
 	cd ..
 	rm -rf linux-x86_64
 	adduser --system --no-create-home --disabled-login --group dnscrypt-proxy
-	setcap cap_net_bind_service=+pe /usr/sbin/dnscrypt-proxy
-	cat > '/etc/blacklist.txt' << EOF
+	setcap cap_net_bind_service=+eip /usr/sbin/dnscrypt-proxy
+	cat > '/etc/dnscrypt-proxy/blacklist.txt' << EOF
 
 ###########################
 #        Blacklist        #
@@ -1435,6 +1435,7 @@ if [[ ! -d /etc/dnscrypt-proxy ]]; then
 fi
     cat > '/etc/dnscrypt-proxy/dnscrypt-proxy.toml' << EOF
 listen_addresses = ['127.0.0.1:53']
+user_name = 'dnscrypt-proxy'
 max_clients = 250
 ipv4_servers = true
 ipv6_servers = $ipv6_true
@@ -1486,7 +1487,7 @@ cache_neg_max_ttl = 600
 
 [blacklist]
 
-  blacklist_file = '/etc/blacklist.txt'
+  blacklist_file = '/etc/dnscrypt-proxy/blacklist.txt'
 
 [sources]
 
@@ -1513,7 +1514,7 @@ cache_neg_max_ttl = 600
   refresh_delay = 72
   prefix = ''
 EOF
-	cat > '/lib/systemd/system/dnscrypt-proxy.service' << EOF
+	cat > '/etc/systemd/system/dnscrypt-proxy.service' << EOF
 [Unit]
 Description=DNSCrypt client proxy
 Documentation=https://github.com/DNSCrypt/dnscrypt-proxy/wiki
@@ -1527,7 +1528,7 @@ ExecStart=/usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy/dnscrypt-proxy.to
 ProtectHome=yes
 ProtectControlGroups=yes
 ProtectKernelModules=yes
-User=root
+#User=root
 CacheDirectory=dnscrypt-proxy
 LogsDirectory=dnscrypt-proxy
 RuntimeDirectory=dnscrypt-proxy
