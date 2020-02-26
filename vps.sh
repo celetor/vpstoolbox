@@ -420,22 +420,16 @@ if [[ $system_upgrade = 1 ]]; then
 	if [[ $(lsb_release -cs) == stretch ]]; then
 		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 10?" 8 78); then
 			debian10_install=1
-		else
-			debian10_install=0
 		fi
 	fi
 	if [[ $(lsb_release -cs) == jessie ]]; then
 		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 9?" 8 78); then
 			debian9_install=1
-		else
-			debian9_install=0
 		fi
 	fi
 	if [[ $(lsb_release -cs) == xenial ]]; then
 		if (whiptail --title "System Upgrade" --yesno "Upgrade to Ubuntu 18.04?" 8 78); then
 			ubuntu18_install=1
-		else
-			ubuntu18_install=0
 		fi
 	fi
 fi
@@ -444,6 +438,7 @@ while [[ -z $domain ]]; do
 domain=$(whiptail --inputbox --nocancel "快輸入你的域名並按回車(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
 if (whiptail --title "hostname" --yesno "修改hostname为域名(change hostname to your domain)?" 8 78); then
 	hostnamectl set-hostname $domain
+	echo "127.0.0.1 $domain" >> /etc/hosts
 fi
 done
 if [[ $install_trojan = 1 ]]; then
@@ -1013,6 +1008,7 @@ RestartSec=3s
 WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
+systemctl enable nginx
 	cat > '/etc/nginx/nginx.conf' << EOF
 user nginx;
 worker_processes auto;
@@ -1070,7 +1066,8 @@ if [[ $install_qbt == 1 ]]; then
 	yum update -y -q
 	yum install qbittorrent-nox -y -q
  fi
- adduser --system --no-create-home --disabled-login --group qbittorrent
+ #adduser --system --no-create-home --disabled-login --group qbittorrent
+ #useradd -r qbittorrent --shell=/usr/sbin/nologin
 	cat > '/etc/systemd/system/qbittorrent.service' << EOF
 [Unit]
 Description=qBittorrent Daemon Service
@@ -1093,6 +1090,8 @@ RestartSec=1s
 [Install]
 WantedBy=multi-user.target
 EOF
+systemctl daemon-reload
+systemctl enable qbittorrent.service
 mkdir /usr/share/nginx/qBittorrent/
 mkdir /usr/share/nginx/qBittorrent/downloads/
 chmod 755 /usr/share/nginx/
@@ -1116,7 +1115,8 @@ if [[ $install_tracker = 1 ]]; then
 	curl -sL https://rpm.nodesource.com/setup_13.x | bash -
 	yum install -y -q nodejs
  fi
- adduser --system --no-create-home --disabled-login --group bt_tracker
+ #adduser --system --no-create-home --disabled-login --group bt_tracker
+ useradd -r bt_tracker --shell=/usr/sbin/nologin
  npm install -g bittorrent-tracker --quiet
 	cat > '/etc/systemd/system/tracker.service' << EOF
 [Unit]
@@ -1140,6 +1140,9 @@ RestartSec=1s
 [Install]
 WantedBy=multi-user.target
 EOF
+systemctl daemon-reload
+systemctl enable tracker
+systemctl start tracker
 fi
 fi
 clear
@@ -1174,6 +1177,8 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
+systemctl daemon-reload
+systemctl enable filebrowser
 mkdir /etc/filebrowser/
 touch /etc/filebrowser/database.db
 fi
@@ -1186,8 +1191,9 @@ if [[ $install_aria = 1 ]]; then
 	if [[ ! -f /usr/local/bin/aria2c ]]; then
 	clear
 	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
-	adduser --system --no-create-home --disabled-login --group aria2
+	#adduser --system --no-create-home --disabled-login --group aria2
 	#usermod -a -G aria2 nginx
+	useradd -r aria2 --shell=/usr/sbin/nologin
 	if [[ $dist != centos ]]; then
 		apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
 		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz
@@ -1274,6 +1280,9 @@ dir=/usr/share/nginx/aria2/
 file-allocation=none
 disk-cache=64M
 EOF
+systemctl daemon-reload
+systemctl enable aria2
+systemctl start aria2
 	fi
 fi
 #############################################
@@ -1292,7 +1301,8 @@ if [[ $dnsmasq_install == 1 ]]; then
 	chmod +x /usr/sbin/dnscrypt-proxy
 	cd ..
 	rm -rf linux-x86_64
-	adduser --system --no-create-home --disabled-login --group dnscrypt-proxy
+	#adduser --system --no-create-home --disabled-login --group dnscrypt-proxy
+	useradd -r dnscrypt-proxy --shell=/usr/sbin/nologin
 	setcap CAP_NET_BIND_SERVICE=+eip /usr/sbin/dnscrypt-proxy
 	if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
 		mkdir /etc/dnscrypt-proxy/
@@ -1468,6 +1478,7 @@ RestartSec=3s
 [Install]
 WantedBy=multi-user.target
 EOF
+systemctl daemon-reload
 systemctl enable dnscrypt-proxy.service
 	fi
 fi
@@ -1542,7 +1553,7 @@ if [[ $install_trojan = 1 ]]; then
 	if [[ ! -f /usr/local/bin/trojan ]]; then
 	clear
 	colorEcho ${INFO} "安装Trojan-GFW(Install Trojan-GFW ing)"
-	adduser --system --no-create-home --disabled-login --group trojan
+	useradd -r trojan --shell=/usr/sbin/nologin
 	bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
 	systemctl daemon-reload
 	clear
@@ -1577,7 +1588,8 @@ RestartSec=3s
 [Install]
 WantedBy=multi-user.target
 EOF
-
+systemctl daemon-reload
+systemctl enable trojan
 	cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
@@ -1993,26 +2005,26 @@ echo "    server_name _;" >> /etc/nginx/conf.d/trojan.conf
 echo "    return 444;" >> /etc/nginx/conf.d/trojan.conf
 echo "}" >> /etc/nginx/conf.d/trojan.conf
 if [[ $install_netdata == 1 ]]; then
-	echo "server {" >> /etc/nginx/conf.d/trojan.conf
-	echo "    listen 127.0.0.1:81;" >> /etc/nginx/conf.d/trojan.conf
-	echo "    location /stub_status {" >> /etc/nginx/conf.d/trojan.conf
-	echo "    access_log off;" >> /etc/nginx/conf.d/trojan.conf
-	echo "    stub_status; #For Netdata only !" >> /etc/nginx/conf.d/trojan.conf
-	echo "    }" >> /etc/nginx/conf.d/trojan.conf
-	echo "}" >> /etc/nginx/conf.d/trojan.conf
-	echo "upstream netdata {" >> /etc/nginx/conf.d/trojan.conf
-	echo "    server 127.0.0.1:19999;" >> /etc/nginx/conf.d/trojan.conf
-	echo "    keepalive 64;" >> /etc/nginx/conf.d/trojan.conf
-	echo "}" >> /etc/nginx/conf.d/trojan.conf
+echo "server {" >> /etc/nginx/conf.d/trojan.conf
+echo "    listen 127.0.0.1:81;" >> /etc/nginx/conf.d/trojan.conf
+echo "    location /stub_status {" >> /etc/nginx/conf.d/trojan.conf
+echo "    access_log off;" >> /etc/nginx/conf.d/trojan.conf
+echo "    stub_status; #For Netdata only !" >> /etc/nginx/conf.d/trojan.conf
+echo "    }" >> /etc/nginx/conf.d/trojan.conf
+echo "}" >> /etc/nginx/conf.d/trojan.conf
+echo "upstream netdata {" >> /etc/nginx/conf.d/trojan.conf
+echo "    server 127.0.0.1:19999;" >> /etc/nginx/conf.d/trojan.conf
+echo "    keepalive 64;" >> /etc/nginx/conf.d/trojan.conf
+echo "}" >> /etc/nginx/conf.d/trojan.conf
 fi
 nginx -t
-systemctl restart nginx
 htmlcode=$(shuf -i 1-3 -n 1)
 curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/$htmlcode.zip
 unzip -o $htmlcode.zip -d /usr/share/nginx/html/
 rm -rf $htmlcode.zip
 rm -rf /usr/share/nginx/html/readme.txt
 chown -R nginx:nginx /usr/share/nginx/
+systemctl restart nginx
 }
 ##########Auto boot start###############
 start(){
@@ -2022,40 +2034,12 @@ start(){
 	if [[ $install_qbt = 1 ]]; then
 		systemctl start qbittorrent.service
 	fi
-	if [[ $install_tracker = 1 ]]; then
-		systemctl start tracker
-	fi
 	if [[ $install_file = 1 ]]; then
 		systemctl start filebrowser
-	fi
-	if [[ $install_aria = 1 ]]; then
-		systemctl start aria2
 	fi
 	if [[ $install_trojan = 1 ]]; then
 		systemctl start trojan
 	fi
-	systemctl restart nginx
-}
-bootstart(){
-	set +e
-	colorEcho ${INFO} "设置开机自启(auto boot start) ing..."
-	systemctl daemon-reload
-	if [[ $install_qbt = 1 ]]; then
-		systemctl enable qbittorrent
-	fi
-	if [[ $install_tracker = 1 ]]; then
-		systemctl enable tracker
-	fi
-	if [[ $install_file = 1 ]]; then
-		systemctl enable filebrowser
-	fi
-	if [[ $install_aria = 1 ]]; then
-		systemctl enable aria2
-	fi
-	if [[ $install_trojan = 1 ]]; then
-		systemctl enable trojan
-	fi
-	systemctl enable nginx
 }
 ##########Check for update############
 checkupdate(){
@@ -2518,7 +2502,7 @@ statuscheck(){
 			systemctl restart filebrowser
 		fi
 	fi
-	if [[ -f /usr/sbin/netdata ]]; then
+	if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
 		netdatastatus=$(systemctl is-active netdata)
 		if [[ $netdatastatus == active ]]; then
 			echo ""
@@ -2623,7 +2607,6 @@ advancedMenu() {
 		openfirewall
 		issuecert
 		nginxtrojan
-		bootstart
 		start
 		sharelink
 		rm results
