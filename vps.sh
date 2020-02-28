@@ -314,7 +314,6 @@ install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
 colorEcho ${INFO} "被墙检测ing"
 colorEcho ${INFO} "test1"
 curl -s 36.110.213.10 --connect-timeout 10
-
 if [[ $? -ne 0 ]]; then
 	test1="0"
 	colorEcho ${WARNING} "test1 fail !"
@@ -327,7 +326,6 @@ if [[ $? -ne 0 ]]; then
 fi
 colorEcho ${INFO} "test3"
 curl -s 120.92.174.135 --connect-timeout 10
-
 if [[ $? -ne 0 ]]; then
 	test3="0"
 	colorEcho ${WARNING} "test3 fail !"
@@ -825,6 +823,7 @@ net.ipv4.tcp_frto = 0
 net.ipv6.conf.all.accept_redirects = 0
 net.ipv6.conf.default.accept_redirects = 0
 vm.swappiness = 5
+net.ipv4.ip_unprivileged_port_start = 0
 EOF
 	sysctl --system
 	cat > '/etc/systemd/system.conf' << EOF
@@ -1386,7 +1385,8 @@ timeout = 5000
 keepalive = 30
 lb_estimator = true
 log_level = 2
-log_file = '/var/log/dnscrypt-proxy/dnscrypt-proxy.log'
+use_syslog = true
+#log_file = '/var/log/dnscrypt-proxy/dnscrypt-proxy.log'
 cert_refresh_delay = 720
 tls_disable_session_tickets = true
 #tls_cipher_suite = [4865]
@@ -1425,7 +1425,7 @@ cert_key_file = "/etc/trojan/trojan.key"
 
 [query_log]
 
-  file = '/var/log/dnscrypt-proxy/query.log'
+  #file = '/var/log/dnscrypt-proxy/query.log'
   format = 'tsv'
 
 [blacklist]
@@ -1466,6 +1466,7 @@ Before=nss-lookup.target
 Wants=nss-lookup.target
 
 [Service]
+#User=nobody
 NonBlocking=true
 ExecStart=/usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 ProtectHome=yes
@@ -1582,7 +1583,7 @@ Type=simple
 StandardError=journal
 User=trojan
 Group=trojan
-ExecStart=/usr/local/bin/trojan -c /usr/local/etc/trojan/config.json
+ExecStart=/usr/local/bin/trojan /usr/local/etc/trojan/config.json
 ExecReload=/bin/kill -HUP $MAINPID
 LimitNOFILE=51200
 LimitNPROC=51200
@@ -2572,8 +2573,9 @@ logcheck(){
 	fi
 	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
 		colorEcho ${INFO} "dnscrypt-proxy Log"
-		less /var/log/dnscrypt-proxy/dnscrypt-proxy.log
-		less /var/log/dnscrypt-proxy/query.log
+		journalctl -a -u dnscrypt-proxy.service
+		#less /var/log/dnscrypt-proxy/dnscrypt-proxy.log
+		#less /var/log/dnscrypt-proxy/query.log
 	fi
 	if [[ -f /usr/local/bin/aria2c ]]; then
 		colorEcho ${INFO} "Aria2 Log"
