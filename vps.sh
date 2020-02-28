@@ -312,24 +312,28 @@ EOF
 fi
 install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
 colorEcho ${INFO} "被墙检测ing"
-
-ping 114.114.114.114 -c 2 -q
-
-if [[ $? -ne 0 ]]; then
-	114status="0"
-fi
-ping 223.5.5.5 -c 2 -q
-if [[ $? -ne 0 ]]; then
-	alistatus="0"
-fi
-
-curl -s https://tencent.com/ --connect-timeout 3 &> /dev/null
+colorEcho ${INFO} "test1"
+curl -s 36.110.213.10 --connect-timeout 10
 
 if [[ $? -ne 0 ]]; then
-	tencentstatus="0"
+	test1="0"
+	colorEcho ${WARNING} "test1 fail !"
+fi
+colorEcho ${INFO} "test2"
+curl -s 112.19.7.64 --connect-timeout 10
+if [[ $? -ne 0 ]]; then
+	test2="0"
+	colorEcho ${WARNING} "test2 fail !"
+fi
+colorEcho ${INFO} "test3"
+curl -s 120.92.174.135 --connect-timeout 10
+
+if [[ $? -ne 0 ]]; then
+	test3="0"
+	colorEcho ${WARNING} "test3 fail !"
 fi
 
-if [[ $114status -eq 0 ]] && [[ $alistatus -eq 0 ]] && [[ $tencentstatus -eq 0 ]]; then
+if [[ ${test1} == 0 ]] && [[ ${test2} == 0 ]] && [[ ${test3} == 0 ]]; then
 	colorEcho ${ERROR} "你的ip被墙了，滚蛋！"
 	exit 1
 fi
@@ -1302,7 +1306,7 @@ if [[ $dnsmasq_install == 1 ]]; then
 	cd ..
 	rm -rf linux-x86_64
 	#adduser --system --no-create-home --disabled-login --group dnscrypt-proxy
-	useradd -r dnscrypt-proxy --shell=/usr/sbin/nologin
+	#useradd -r dnscrypt-proxy --shell=/usr/sbin/nologin
 	setcap CAP_NET_BIND_SERVICE=+eip /usr/sbin/dnscrypt-proxy
 	if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
 		mkdir /etc/dnscrypt-proxy/
@@ -1367,7 +1371,7 @@ if [[ -n $myipv6 ]]; then
 fi
     cat > '/etc/dnscrypt-proxy/dnscrypt-proxy.toml' << EOF
 listen_addresses = ['127.0.0.1:53']
-user_name = 'dnscrypt-proxy'
+user_name = 'nobody'
 max_clients = 250
 ipv4_servers = true
 ipv6_servers = $ipv6_true
