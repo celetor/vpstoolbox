@@ -40,7 +40,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 
 1. 安裝並配置 **[NGINX](https://www.nginx.com/)**
 2. 申请并续签 [let's encrypt 证书](https://letsencrypt.org/) and **全自动在证书续签完成后reload Trojan-GFW**
-3. OS 探測 **支援 [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/) Centos**
+3. OS 探測 **支援 [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/) Centos(不推荐)**
 4. [domain resolve verification](https://en.wikipedia.org/wiki/Nslookup)
 5. [iptables](https://en.wikipedia.org/wiki/Iptables)(包括 ipv6) 防火墙配置以及 [iptables-persistent](https://github.com/zertrin/iptables-persistent)
 6. 全自动生成 Trojan-GFW [客戶端配置文件](https://trojan-gfw.github.io/trojan/config) 
