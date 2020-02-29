@@ -1275,6 +1275,7 @@ bt-enable-lpd=true
 bt-hash-check-seed=true
 bt-seed-unverified=true
 bt-save-metadata=true
+bt-load-saved-metadata=true
 bt-require-crypto=true
 bt-force-encryption=true
 bt-min-crypto-level=arc4
