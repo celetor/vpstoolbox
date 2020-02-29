@@ -1257,6 +1257,7 @@ input-file=/usr/local/bin/aria2.session
 save-session=/usr/local/bin/aria2.session
 save-session-interval=60
 force-save=true
+metalink-preferred-protocol=https
 ##Rpc Settings############
 enable-rpc=true
 rpc-allow-origin-all=true
