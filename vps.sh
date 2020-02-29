@@ -1230,7 +1230,7 @@ if [[ $install_aria = 1 ]]; then
 Description=Aria2c download manager
 Requires=network.target
 After=network.target
-		
+
 [Service]
 Type=forking
 User=root
@@ -1242,18 +1242,29 @@ LimitNOFILE=51200
 LimitNPROC=51200
 RestartSec=3s
 Restart=on-failure
-		
+
 [Install]
 WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
 daemon=true
 async-dns=true
-log-level=info
+#enable-async-dns6=true
+log-level=notice
+console-log-level=info
+human-readable=true
 log=/var/log/aria2.log
 rlimit-nofile=51200
-rpc-secure=false
+event-poll=epoll
+min-tls-version=TLSv1.1
+dir=/usr/share/nginx/aria2/
+file-allocation=falloc
+conditional-get=false
+disk-cache=64M #Larger is better,but should be smaller than available RAM !
+enable-http-keep-alive=true
+enable-color=true
 continue=true
+always-resume=true
 max-concurrent-downloads=50
 #split=16
 min-split-size=10M
@@ -1269,17 +1280,16 @@ force-save=true
 enable-rpc=true
 rpc-allow-origin-all=true
 rpc-listen-all=false
-event-poll=epoll
+rpc-secure=false
 rpc-listen-port=6800
 rpc-secret=$ariapasswd
-bt-tracker=$trackers_list
 follow-torrent=true
 listen-port=$ariaport
 enable-dht=true
 enable-dht6=true
-bt-enable-lpd=true
 enable-peer-exchange=true
 seed-ratio=0
+bt-enable-lpd=true
 bt-hash-check-seed=true
 bt-seed-unverified=true
 bt-save-metadata=true
@@ -1287,9 +1297,7 @@ bt-require-crypto=true
 bt-force-encryption=true
 bt-min-crypto-level=arc4
 bt-max-peers=0
-dir=/usr/share/nginx/aria2/
-file-allocation=none
-disk-cache=64M
+bt-tracker=$trackers_list
 EOF
 systemctl daemon-reload
 systemctl enable aria2
