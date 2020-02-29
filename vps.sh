@@ -1247,6 +1247,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
+#Do not change these settings unless you know what you are doing !
 daemon=true
 async-dns=true
 #enable-async-dns6=true
@@ -1385,6 +1386,7 @@ if [[ -n $myipv6 ]]; then
 	fi
 fi
     cat > '/etc/dnscrypt-proxy/dnscrypt-proxy.toml' << EOF
+#Do not change these settings unless you know what you are doing !
 listen_addresses = ['127.0.0.1:53']
 user_name = 'nobody'
 max_clients = 250
@@ -1858,6 +1860,7 @@ rm -rf /etc/nginx/conf.d/*
 touch /etc/nginx/conf.d/trojan.conf
 if [[ $install_trojan == 1 ]]; then
 	cat > '/etc/nginx/conf.d/trojan.conf' << EOF
+#Do not change these settings unless you know what you are doing !
 server {
 	listen 127.0.0.1:80;
 	server_name $domain;
@@ -1876,6 +1879,7 @@ server {
 EOF
 	else
 	cat > '/etc/nginx/conf.d/trojan.conf' << EOF
+#Do not change these settings unless you know what you are doing !
 server {
 	listen 443 ssl http2;
 	listen [::]:443 ssl http2;
