@@ -629,13 +629,13 @@ colorEcho ${INFO} "初始化中(initializing)"
 	pack="apt-get -y -qq"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq
+	apt-get install sudo whiptail curl locales lsb-release jq lsof -y -qq
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
 	pack="apt-get -y -qq"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install sudo whiptail curl locales lsb-release e2fsprogs jq lsof -y -qq
+	apt-get install sudo whiptail curl locales lsb-release jq lsof -y -qq
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
 	exit 1;
@@ -867,7 +867,7 @@ systemctl daemon-reload
 	clear
 	colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
 if [[ $dist != centos ]]; then
-	apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron socat -q -y
+	apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron socat e2fsprogs -q -y
 	apt-get install python3-qrcode -q -y
 else
 	$pack install sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd dbus xz cron socat
@@ -1199,33 +1199,6 @@ if [[ $install_aria = 1 ]]; then
 	ariaport=$(shuf -i 20000-30000 -n 1)
 	#trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
 	trackers_list=$(wget -qO- https://trackerslist.com/all_aria2.txt)
-	if [[ ! -f /usr/local/bin/aria2c ]]; then
-	clear
-	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
-	#adduser --system --no-create-home --disabled-login --group aria2
-	#usermod -a -G aria2 nginx
-	useradd -r aria2 --shell=/usr/sbin/nologin
-	if [[ $dist != centos ]]; then
-		apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
-		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz
-		xz --decompress aria2c.xz
-		cp aria2c /usr/local/bin/aria2c
-		chmod +x /usr/local/bin/aria2c
-		rm aria2c
-		apt-get autoremove -q -y
-	else
-		yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev
-		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz
-		xz --decompress aria2c_centos.xz
-		cp aria2c_centos /usr/local/bin/aria2c
-		chmod +x /usr/local/bin/aria2c
-		rm aria2c_centos
-	fi
-	touch /usr/local/bin/aria2.session
-	mkdir /usr/share/nginx/aria2/
-	chmod 755 /usr/share/nginx/aria2/
-	cd ..
-	rm -rf aria2-1.35.0
 	cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
 Description=Aria2c download manager
@@ -1308,36 +1281,43 @@ bt-min-crypto-level=arc4
 bt-max-peers=0
 bt-tracker=$trackers_list
 EOF
+	if [[ ! -f /usr/local/bin/aria2c ]]; then
+	clear
+	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
+	#adduser --system --no-create-home --disabled-login --group aria2
+	#usermod -a -G aria2 nginx
+	useradd -r aria2 --shell=/usr/sbin/nologin
+	if [[ $dist != centos ]]; then
+		apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
+		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz
+		xz --decompress aria2c.xz
+		cp aria2c /usr/local/bin/aria2c
+		chmod +x /usr/local/bin/aria2c
+		rm aria2c
+		apt-get autoremove -q -y
+	else
+		yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev
+		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz
+		xz --decompress aria2c_centos.xz
+		cp aria2c_centos /usr/local/bin/aria2c
+		chmod +x /usr/local/bin/aria2c
+		rm aria2c_centos
+	fi
+	touch /usr/local/bin/aria2.session
+	mkdir /usr/share/nginx/aria2/
+	chmod 755 /usr/share/nginx/aria2/
+	cd ..
+	rm -rf aria2-1.35.0
+	fi
 systemctl daemon-reload
 systemctl enable aria2
 systemctl start aria2
-	fi
 fi
 #############################################
 if [[ $dnsmasq_install == 1 ]]; then
-	if [[ ! -f /usr/sbin/dnscrypt-proxy ]]; then
-	clear
-	colorEcho ${INFO} "安装dnscrypt-proxy(Install dnscrypt-proxy ing)"
-		if [[ $(systemctl is-active dnsmasq) == active ]]; then
-			systemctl disable dnsmasq
-		fi
-	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.39/dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
-	tar -xvf dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
-	rm dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
-	cd linux-x86_64
-	cp -f dnscrypt-proxy /usr/sbin/dnscrypt-proxy
-	chmod +x /usr/sbin/dnscrypt-proxy
-	cd ..
-	rm -rf linux-x86_64
-	#adduser --system --no-create-home --disabled-login --group dnscrypt-proxy
-	#useradd -r dnscrypt-proxy --shell=/usr/sbin/nologin
-	setcap CAP_NET_BIND_SERVICE=+eip /usr/sbin/dnscrypt-proxy
 	if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
 		mkdir /etc/dnscrypt-proxy/
 	fi
-	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md -q --show-progress
-	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/opennic.md -q --show-progress
-	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/relays.md -q --show-progress
 	cat > '/etc/dnscrypt-proxy/blacklist.txt' << EOF
 
 ###########################
@@ -1426,7 +1406,7 @@ log_files_max_size = 0
 log_files_max_age = 7
 # Maximum log files backups to keep (or 0 to keep all backups)
 log_files_max_backups = 0
-block_ipv6 = $block_ipv6
+block_ipv6 = false
 ## Immediately respond to A and AAAA queries for host names without a domain name
 block_unqualified = true
 ## Immediately respond to queries for local zones instead of leaking them to
@@ -1511,6 +1491,26 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 systemctl enable dnscrypt-proxy.service
+	if [[ ! -f /usr/sbin/dnscrypt-proxy ]]; then
+	clear
+	colorEcho ${INFO} "安装dnscrypt-proxy(Install dnscrypt-proxy ing)"
+		if [[ $(systemctl is-active dnsmasq) == active ]]; then
+			systemctl disable dnsmasq
+		fi
+	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.39/dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
+	tar -xvf dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
+	rm dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
+	cd linux-x86_64
+	cp -f dnscrypt-proxy /usr/sbin/dnscrypt-proxy
+	chmod +x /usr/sbin/dnscrypt-proxy
+	cd ..
+	rm -rf linux-x86_64
+	#adduser --system --no-create-home --disabled-login --group dnscrypt-proxy
+	#useradd -r dnscrypt-proxy --shell=/usr/sbin/nologin
+	setcap CAP_NET_BIND_SERVICE=+eip /usr/sbin/dnscrypt-proxy
+	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md -q --show-progress
+	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/opennic.md -q --show-progress
+	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/relays.md -q --show-progress
 	fi
 fi
 clear
