@@ -1228,7 +1228,7 @@ After=network.target
 Type=forking
 User=root
 RemainAfterExit=yes
-ExecStart=/usr/local/bin/aria2c --conf-path=/etc/aria2.conf --daemon
+ExecStart=/usr/local/bin/aria2c --conf-path=/etc/aria2.conf
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
 LimitNOFILE=51200
@@ -1240,6 +1240,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
+daemon=true
 async-dns=true
 log-level=info
 log=/var/log/aria2.log
