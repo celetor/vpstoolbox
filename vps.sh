@@ -1196,8 +1196,9 @@ fi
 clear
 #############################################
 if [[ $install_aria = 1 ]]; then
-	ariaport=$(shuf -i 20000-60000 -n 1)
-	trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
+	ariaport=$(shuf -i 20000-30000 -n 1)
+	#trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
+	trackers_list=$(wget -qO- https://trackerslist.com/all_aria2.txt)
 	if [[ ! -f /usr/local/bin/aria2c ]]; then
 	clear
 	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
@@ -1248,6 +1249,7 @@ WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
 #Do not change these settings unless you know what you are doing !
+#Global Settings###
 daemon=true
 async-dns=true
 #enable-async-dns6=true
@@ -1260,14 +1262,18 @@ event-poll=epoll
 min-tls-version=TLSv1.1
 dir=/usr/share/nginx/aria2/
 file-allocation=falloc
+check-integrity=true
 conditional-get=false
 disk-cache=64M #Larger is better,but should be smaller than available RAM !
-enable-http-keep-alive=true
 enable-color=true
 continue=true
 always-resume=true
 max-concurrent-downloads=50
+content-disposition-default-utf8=true
 #split=16
+##Http(s) Settings#######
+enable-http-keep-alive=true
+http-accept-gzip=true
 min-split-size=10M
 max-connection-per-server=16
 lowest-speed-limit=0
@@ -1278,12 +1284,14 @@ input-file=/usr/local/bin/aria2.session
 save-session=/usr/local/bin/aria2.session
 save-session-interval=60
 force-save=true
+##Rpc Settings############
 enable-rpc=true
 rpc-allow-origin-all=true
 rpc-listen-all=false
 rpc-secure=false
 rpc-listen-port=6800
 rpc-secret=$ariapasswd
+#Bittorrent Settings######
 follow-torrent=true
 listen-port=$ariaport
 enable-dht=true
