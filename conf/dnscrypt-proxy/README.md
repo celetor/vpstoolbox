@@ -1,0 +1,1 @@
+Dnscrypt-proxy config.
