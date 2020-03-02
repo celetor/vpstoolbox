@@ -1,0 +1,24 @@
+[Unit]
+Description=DNSCrypt client proxy
+Documentation=https://github.com/DNSCrypt/dnscrypt-proxy/wiki
+After=network.target
+Before=nss-lookup.target
+Wants=nss-lookup.target
+
+[Service]
+#User=nobody
+NonBlocking=true
+ExecStart=/usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+ProtectHome=yes
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+CacheDirectory=dnscrypt-proxy
+LogsDirectory=dnscrypt-proxy
+RuntimeDirectory=dnscrypt-proxy
+LimitNOFILE=51200
+LimitNPROC=51200
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
