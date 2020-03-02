@@ -1,0 +1,65 @@
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 -j REJECT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 192.168.0.0/16 -j REJECT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 10.0.0.0/8 -j REJECT
+	#iptables -m owner --uid-owner trojan -A OUTPUT --dport 53 -j ACCEPT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 --dport 80 -j ACCEPT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+	#tcp
+	iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+	iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	#udp
+	iptables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
+	iptables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
+	iptables -I OUTPUT -j ACCEPT
+	iptables -I FORWARD -j DROP
+	#tcp6
+	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+	ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	#udp6
+	ip6tables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
+	ip6tables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
+	ip6tables -I OUTPUT -j ACCEPT
+	ip6tables -I FORWARD -j DROP
+	if [[ $install_qbt == 1 ]]; then
+		iptables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
+		ip6tables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
+		iptables -I INPUT -p udp -m udp --dport 8999 -j ACCEPT
+		ip6tables -I INPUT -p udp -m udp --dport 8999 -j ACCEPT
+	fi
+	if [[ $install_tracker == 1 ]]; then
+		iptables -I INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
+		ip6tables -I INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
+		iptables -I INPUT -p udp -m udp --dport 8000 -j ACCEPT
+		ip6tables -I INPUT -p udp -m udp --dport 8000 -j ACCEPT
+	fi
+	if [[ $install_aria == 1 ]]; then
+		iptables -I INPUT -p tcp -m tcp --dport $ariaport -j ACCEPT
+		ip6tables -I INPUT -p tcp -m tcp --dport $ariaport -j ACCEPT
+		iptables -I INPUT -p udp -m udp --dport $ariaport -j ACCEPT
+		ip6tables -I INPUT -p udp -m udp --dport $ariaport -j ACCEPT
+	fi
+	if [[ $dist == debian ]]; then
+	export DEBIAN_FRONTEND=noninteractive 
+	apt-get install iptables-persistent -qq -y > /dev/null
+ elif [[ $dist == ubuntu ]]; then
+	export DEBIAN_FRONTEND=noninteractive
+	ufw allow http
+	ufw allow https
+	apt-get install iptables-persistent -qq -y > /dev/null
+ elif [[ $dist == centos ]]; then
+	setenforce 0
+	cat > '/etc/selinux/config' << EOF
+SELINUX=disabled
+SELINUXTYPE=targeted
+EOF
+	firewall-cmd --zone=public --add-port=80/tcp --permanent
+	firewall-cmd --zone=public --add-port=443/tcp --permanent
+	firewall-cmd --zone=public --add-port=80/udp --permanent
+	firewall-cmd --zone=public --add-port=443/udp --permanent
+	systemctl stop firewalld
+	systemctl disable firewalld
+ else
+	clear
+	TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
+	exit 1;
+ fi
