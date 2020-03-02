@@ -199,6 +199,10 @@ fi
 installacme(){
 	set +e
 	curl -s https://get.acme.sh | sh
+	if [[ $? != 0 ]]; then
+		colorEcho ${ERROR} "Install acme.sh fail,please check your internet availability!!!"
+		exit 1
+	fi
 	~/.acme.sh/acme.sh --upgrade --auto-upgrade
 }
 #############################
