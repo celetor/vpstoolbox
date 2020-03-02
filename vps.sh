@@ -338,8 +338,8 @@ if [[ $? -ne 0 ]]; then
 	colorEcho ${WARNING} "test3 fail !"
 fi
 
-if [[ ${test1} == 0 ]] && [[ ${test2} == 0 ]] && [[ ${test3} == 0 ]]; then
-	colorEcho ${ERROR} "你的ip被墙了，滚蛋！"
+if [[ ${test1} == 0 ]] && [[ ${test2} == 0 ]] && [[ ${test3} == 0 ]] && [[ -z ${myipv6} ]]; then
+	colorEcho ${ERROR} "你的ip(v4)被墙了，滚蛋！"
 	exit 1
 fi
 
