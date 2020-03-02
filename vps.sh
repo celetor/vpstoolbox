@@ -989,7 +989,7 @@ EOF
  	else
  	yum install nginx -y -q
 	systemctl stop nginx
-	curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/nginx_centos
+	curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/binary/nginx_centos
 	cp -f nginx_centos /usr/sbin/nginx
 	rm nginx_centos
 	mkdir /var/cache/nginx/
