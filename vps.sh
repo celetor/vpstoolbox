@@ -2115,6 +2115,11 @@ sharelink(){
 <style>
 body {
   background-color: #cccccc;
+  font-size: 1.2em;
+}
+
+ul.ttlist{
+    list-style: cjk-ideographic;
 }
 
 .menu{
@@ -2153,25 +2158,30 @@ body {
 }
 
 .tt{
-    position: absolute;
+    /* position: absolute; */
     border:1px #00f none;
     border-radius: 5px;
     width: 75%;
-    margin-left: 150px;
-    margin-top: 20px;
-    font-size: 1.2em;
-    font-family: sans-serif;
-    font-weight: bold;
-    padding-left: 50px;
+    width: calc(100% - 120px);
+    box-sizing: border-box;
+    margin: 20px auto 70px;
+    padding: 0 50px 10px 50px;
+    /* margin-left: 150px; */
+    /* margin-top: 20px; */
+    /* font-size: 1.2em; */
+    font-family: PingFangSC, 'Noto Sans CJK SC', sans-serif;
+    /* font-weight: bold; */
+    /* padding-left: 50px;
     padding-right: 50px;
-    padding-bottom: 10px;
+    padding-bottom: 10px; */
+    /* margin-bottom: 60px; */
     background-color: #E6FFFB;
     overflow: visible;
 }
 .tt a {
     text-decoration: none;
     color: #8095ff;
-    font-size: 1.3em;
+    /* font-size: 1.3em; */
 }
 
 .tt img{
@@ -2182,11 +2192,16 @@ body {
 .tt li {
     padding-top: 10px;
 }
+
 .subtt{
     text-align: center;
     margin: auto;
     font-size: 2em;
-    padding-top: 10px;
+    padding-top: 30px;
+}
+.desc {
+    font-size: 0.8em;
+    text-align: right;
 }
 
 .t1{
@@ -2270,95 +2285,172 @@ footer a:link {
         <div>
             <article>
                 <div class="tt">
-                    <h4 class="subtt">Vps Toolbox Result</h3>
-                    <p>If you did not choose any of the softwares during the installation below, just ignore them.</p>
-                    <p>如果你安装的时候没有选择相应的软件，请自动忽略相关内容！</p>
-                    <p>以下所有链接以及信息都是有用的，请在提任何问题或者issue前仔细阅读相关内容！</p>
-                    <p><a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md" target="_blank">提问的智慧</a></p>
+                    <h1 class="subtt">Vps Toolbox Result</h1>
+                    <p class="desc">If you did not choose any of the softwares during the installation below, just ignore them.</p>
+                    <p class="desc">！如果你安装的时候没有选择相应的软件，请自动忽略相关内容！</p>
+                    <p class="desc">！以下所有链接以及信息都是有用的，请在提任何问题或者issue前仔细阅读相关内容！</p>
+                    <p class="desc"><a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md" target="_blank">提问的智慧</a></p>
+                    <br>
+                    
                     <h2>Trojan-GFW</h2>
-                    <p>一。 Trojan-GFW 客户端(client) 配置文件(config profiles)</p>
-                    <p>1. <a href="client1-$password1.json" target="_blank">Profile 1</a></p>
-                    <p>2. <a href="client2-$password2.json" target="_blank">Profile 2</a></p>
-                    <p>3. <a href="clientv6-$password1.json" target="_blank">IPV6 Profile</a>(only click this when your server has a ipv6 address,or 404 will occur!)</p>
-                    <p>二。 Trojan-GFW 分享链接(Share Links) are</p>
-                    <p>1. trojan://$password1@$domain:443</p>
-                    <p>2. trojan://$password2@$domain:443</p>
-                    <p>三。 Trojan-GFW 二维码(QR codes Centos等不支援python3-prcode的系统会404!)</p>
-                    <p>1.<a href="$password1.png" target="_blank">QR code 1</a></p>
-                    <p>2.<a href="$password2.png" target="_blank">QR code 2</a></p>
-                    <p>四。 相关链接(Related Links)</p>
-                    <p><a href="https://github.com/trojan-gfw/igniter/releases" target="_blank">安卓客户端(android client)</a></p>
-                    <p><a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank">苹果客户端(ios client)</a></p>
-                    <p><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">Windows客户端(win client)</a></p>
-                    <p><a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a></p>
-                    <p><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">https://github.com/trojan-gfw/trojan/releases/latest</a></p>
-                    <p><a href="https://www.johnrosen1.com/trojan/" target="_blank">Trojan-GFW --一把通往自由互联网世界的万能钥匙</a></p>
+                    <ul class="ttlist">
+                        <li>
+                            <h3>Trojan-GFW 客户端(client) 配置文件(config profiles)</h3>
+                            <ol>
+                                <li><a href="client1-$password1.json" target="_blank">Profile 1</a></li>
+                                <li><a href="client2-$password2.json" target="_blank">Profile 2</a></li>
+                                <li><a href="clientv6-$password1.json" target="_blank">IPV6 Profile</a>(only click this when your server has a ipv6 address,or 404 will occur!)</li>
+                            </ol>
+                        </li>
+                        <li>
+                            <h3>Trojan-GFW 分享链接(Share Links) are</h3>
+                            <ol>
+                                <li><code>trojan://$password1@$domain:443</code></li>
+                                <li><code>trojan://$password2@$domain:443</code></li>
+                            </ol>
+                        </li>
+                        <li>
+                            <h3>Trojan-GFW 二维码(QR codes Centos等不支援python3-prcode的系统会404!)</h3>
+                            <ol>
+                                <li><a href="$password1.png" target="_blank">QR code 1</a></li>
+                                <li><a href="$password2.png" target="_blank">QR code 2</a></li>
+                            </ol>
+                        </li>
+                        <li>
+                            <h3>相关链接(Related Links)</h3>
+                            <ol>
+                                <li><a href="https://github.com/trojan-gfw/igniter/releases" target="_blank">安卓客户端(android client)</a></li>
+                                <li><a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank">苹果客户端(ios client)</a></li>
+                                <li><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">Windows客户端(win client)</a></li>
+                                <li><a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a></li>
+                                <li><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">https://github.com/trojan-gfw/trojan/releases/latest</a></li>
+                                <li><a href="https://www.johnrosen1.com/trojan/" target="_blank">Trojan-GFW --一把通往自由互联网世界的万能钥匙</a></li>
+                            </ol>
+                        </li>
+                    </ul>
+                    <br>
+                    
                     <h2>Qbittorrent</h2>
                     <p>你的Qbittorrent信息(Your Qbittorrent Information)</p>
-                    <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p>
+                    <!-- <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p> -->
+                    <ul>
+                        <li><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a></li>
+                        <li>用户名(username): admin</li>
+                        <li>密碼(password): adminadmin</li>
+                    </ul>
                     <p>Tips:</p>
-                    <p>1. 请将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！</p>
-                    <p>2. 请在Qbittorrent中添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a> ！！！否则速度不會快的！！！</p>
+                    <ol>
+                        <li>请将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！</li>
+                        <li>请在Qbittorrent中添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a> ！！！否则速度不會快的！！！</li>
+                    </ol>
+                    
                     <p>附：优秀的BT站点推荐(Related Links)</p>
-                    <p><a href="https://thepiratebay.org/" target="_blank">https://thepiratebay.org/</a></p>
-                    <p><a href="https://sukebei.nyaa.si/" target="_blank">https://sukebei.nyaa.si/</a></p>
-                    <p><a href="https://rarbgprx.org/torrents.php" target="_blank">https://rarbgprx.org/torrents.php</a></p>
+                    <ol>
+                        <li><a href="https://thepiratebay.org/" target="_blank">https://thepiratebay.org/</a></li>
+                        <li><a href="https://sukebei.nyaa.si/" target="_blank">https://sukebei.nyaa.si/</a></li>
+                        <li><a href="https://rarbgprx.org/torrents.php" target="_blank">https://rarbgprx.org/torrents.php</a></li>
+                    </ol>
                     <p>相关链接(Related Links)</p>
-                    <p><a href="https://www.qbittorrent.org/download.php" target="_blank">win等平台下载页面</a></p>
-                    <p><a href="https://github.com/qbittorrent/qBittorrent" target="_blank">Github页面</a></p>
-                    <p><a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank">Android远程操控客户端</a></p>
-                    <p><a href="https://www.qbittorrent.org/" target="_blank">https://www.qbittorrent.org/</a></p>
-                    <p><a href="https://www.johnrosen1.com/qbt/" target="_blank">https://www.johnrosen1.com/qbt/</a></p>
+                    <ol>
+                        <li><a href="https://www.qbittorrent.org/download.php" target="_blank">win等平台下载页面</a></li>
+                        <li><a href="https://github.com/qbittorrent/qBittorrent" target="_blank">Github页面</a></li>
+                        <li><a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank">Android远程操控客户端</a></li>
+                        <li><a href="https://www.qbittorrent.org/" target="_blank">https://www.qbittorrent.org/</a></li>
+                        <li><a href="https://www.johnrosen1.com/qbt/" target="_blank">https://www.johnrosen1.com/qbt/</a></li>
+                    </ol>
+                    <br>
+                    
                     <h2>Bittorrent-trackers</h2>
                     <p>你的Bittorrent-Tracker信息(Your Bittorrent-Tracker Information)</p>
-                    <p>https://$domain:443$trackerpath</p>
-                    <p>http://$domain:8000/announce</p>
+                    <p><code>https://$domain:443$trackerpath</code></p>
+                    <p><code>http://$domain:8000/announce</code></p>
                     <p>你的Bittorrent-Tracker信息（查看状态用）(Your Bittorrent-Tracker Status Information)</p>
                     <p><a href="https://$domain:443$trackerstatuspath" target="_blank">https://$domain:443$trackerstatuspath</a></p>
                     <p>Tips:</p>
-                    <p>1. 请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。</p>
-                    <p>2. 请记得将此Tracker分享给你的朋友们。</p>
+                    <ol>
+                        <li>请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。</li>
+                        <li>请记得将此Tracker分享给你的朋友们。</li>
+                    </ol>
                     <p>相关链接(Related Links)</p>
-                    <p><a href="https://github.com/webtorrent/bittorrent-tracker" target="_blank">https://github.com/webtorrent/bittorrent-tracker</a></p>
-                    <p><a href="https://lifehacker.com/whats-a-private-bittorrent-tracker-and-why-should-i-us-5897095" target="_blank">What's a Private BitTorrent Tracker, and Why Should I Use One?</a></p>
-                    <p><a href="https://www.howtogeek.com/141257/htg-explains-how-does-bittorrent-work/" target="_blank">How Does BitTorrent Work?</a></p>
+                    <ol>
+                        <li><a href="https://github.com/webtorrent/bittorrent-tracker" target="_blank">https://github.com/webtorrent/bittorrent-tracker</a></li>
+                        <li><a href="https://lifehacker.com/whats-a-private-bittorrent-tracker-and-why-should-i-us-5897095" target="_blank">What's a Private BitTorrent Tracker, and Why Should I Use One?</a></li>
+                        <li><a href="https://www.howtogeek.com/141257/htg-explains-how-does-bittorrent-work/" target="_blank">How Does BitTorrent Work?</a></li>
+                    </ol>
+                    <br>
+                    
                     <h2>Aria2</h2>
                     <p>你的Aria2信息，非分享链接，仅供参考(Your Aria2 Information)</p>
-                    <p>$ariapasswd@https://$domain:443$ariapath</p>
+                    <p><code>$ariapasswd@https://$domain:443$ariapath</code></p>
                     <p>相关链接（Related Links)</p>
-                    <p><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">Aria客户端(远程操控)</a></p>
-                    <p><a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a></p>
-                    <p><a href="https://aria2.github.io/manual/en/html/index.html" target="_blank">https://aria2.github.io/manual/en/html/index.html</a>官方文档</p>
-                    <p><a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank">https://play.google.com/store/apps/details?id=com.gianlu.aria2app</a></p>
+                    <ol>
+                        <li><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">Aria客户端(远程操控)</a></li>
+                        <li><a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a></li>
+                        <li><a href="https://aria2.github.io/manual/en/html/index.html" target="_blank">https://aria2.github.io/manual/en/html/index.html</a> 官方文档</li>
+                        <li><a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank">https://play.google.com/store/apps/details?id=com.gianlu.aria2app</a></li>
+                    </ol>
+                    <br>
+                    
                     <h2>Filebrowser</h2>
                     <p>你的Filebrowser信息，非分享链接，仅供参考(Your Filebrowser Information)</p>
-                    <p><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a> 用户名(username): admin 密碼(password): admin</p>
+                    <!-- <p><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a> 用户名(username): admin 密碼(password): admin</p> -->
+                    <ul>
+                        <li><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a></li>
+                        <li>用户名(username): admin</li>
+                        <li>密碼(password): admin</li>
+                    </ul>
                     <p>Tips:</p>
-                    <p>1. 请修改默认用户名和密码！。</p>
+                    <p>！请修改默认用户名和密码！。</p>
                     <p>相关链接(Related Links)</p>
-                    <p><a href="https://github.com/filebrowser/filebrowser" target="_blank">https://github.com/filebrowser/filebrowser</a></p>
-                    <p><a href="https://filebrowser.xyz/" target="_blank">https://filebrowser.xyz/</a></p>
+                    <ul>
+                        <li><a href="https://github.com/filebrowser/filebrowser" target="_blank">https://github.com/filebrowser/filebrowser</a></li>
+                        <li><a href="https://filebrowser.xyz/" target="_blank">https://filebrowser.xyz/</a></li>
+                    </ul>
+                    <br>
+
                     <h2>Netdata</h2>
                     <p>你的netdata信息，非分享链接，仅供参考(Your Netdata Information)</p>
                     <p><a href="https://$domain:443$netdatapath" target="_blank">https://$domain:443$netdatapath</a></p>
                     <p>相关链接（Related Links)</p>
-                    <p><a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank">https://play.google.com/store/apps/details?id=com.kpots.netdata</a></p>
-                    <p><a href="https://github.com/netdata/netdata" target="_blank">https://github.com/netdata/netdata</a></p>
+                    <ol>
+                        <li><a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank">https://play.google.com/store/apps/details?id=com.kpots.netdata</a></li>
+                        <li><a href="https://github.com/netdata/netdata" target="_blank">https://github.com/netdata/netdata</a></li>
+                    </ol>
+                    <br>
+                    
                     <h2>自定义配置方法</h2>
-                    <p>Nginx: sudo nano /etc/nginx/conf.d/trojan.conf</p>
-                    <p>sudo systemctl start/restart/status nginx</p>
-                    <p>Trojan-GFW: sudo nano /usr/local/etc/trojan/config.json</p>
-                    <p>sudo systemctl start/restart/status trojan</p>
-                    <p>Dnscrypt-proxy: sudo nano /etc/dnscrypt-proxy.toml</p>
-                    <p>sudo systemctl start/restart/status dnscrypt-proxy</p>
-                    <p>Aria2: sudo nano /etc/aria2.conf</p>
-                    <p>sudo systemctl start/restart/status aria2</p>
-                    <p>Netdata: sudo nano /opt/netdata/etc/netdata/netdata.conf</p>
-                    <p>sudo systemctl start/restart/status netdata</p>
-                    <p>Tor: sudo nano /etc/tor/torrc</p>
-                    <p>sudo systemctl start/restart/status tor@default</p>
+                    <p>Nginx</p>
+                    <ul>
+                        <li><code>sudo nano /etc/nginx/conf.d/trojan.conf</code></li>
+                        <li><code>sudo systemctl start/restart/status nginx</code></li>
+                    </ul>
+                    <p>Trojan-GFW</p>
+                    <ul>
+                        <li><code>sudo nano /usr/local/etc/trojan/config.json</code></li>
+                        <li><code>sudo systemctl start/restart/status trojan</code></li>
+                    </ul>
+                    <p>Dnscrypt-proxy</p>
+                    <ul>
+                        <li><code>sudo nano /etc/dnscrypt-proxy.toml</code></li>
+                        <li><code>sudo nano /etc/dnscrypt-proxy.toml</code></li>
+                    </ul>
+                    <p>Aria2</p>
+                    <ul>
+                        <li><code>sudo nano /etc/aria2.conf</code></li>
+                        <li><code>sudo systemctl start/restart/status aria2</code></li>
+                    </ul>
+                    <p>Netdata</p>
+                    <ul>
+                        <li><code>sudo nano /opt/netdata/etc/netdata/netdata.conf</code></li>
+                        <li><code>sudo systemctl start/restart/status netdata</code></li>
+                    </ul>
+                    <p>Tor</p>
+                    <ul>
+                        <li><code>sudo nano /etc/tor/torrc</code></li>
+                        <li><code>sudo systemctl start/restart/status tor@default</code></li>
+                    </ul>
                     <br>
-                    <br>
+
                 </div>
             </article>
             <footer>
