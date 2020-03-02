@@ -253,8 +253,7 @@ server {
 EOF
 	nginx -t
 	systemctl start nginx
-	curl -s https://get.acme.sh | sh
-	~/.acme.sh/acme.sh --upgrade --auto-upgrade
+	installacme
 	clear
 	colorEcho ${INFO} "测试证书申请ing(test issuing) let\'s encrypt certificate"
 	~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --test --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"
