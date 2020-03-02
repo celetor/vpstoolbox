@@ -1095,7 +1095,7 @@ TimeoutStopSec=infinity
 LimitNOFILE=51200
 LimitNPROC=51200
 Restart=on-failure
-RestartSec=1s
+RestartSec=3s
 
 [Install]
 WantedBy=multi-user.target
@@ -1145,7 +1145,7 @@ TimeoutStopSec=infinity
 LimitNOFILE=51200
 LimitNPROC=51200
 Restart=on-failure
-RestartSec=1s
+RestartSec=3s
 
 [Install]
 WantedBy=multi-user.target
@@ -1181,7 +1181,7 @@ ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
 LimitNOFILE=51200
 LimitNPROC=51200
-RestartSec=1s
+RestartSec=3s
 Restart=on-failure
 
 [Install]
@@ -1196,7 +1196,7 @@ fi
 clear
 #############################################
 if [[ $install_aria = 1 ]]; then
-	ariaport=$(shuf -i 20000-30000 -n 1)
+	ariaport=$(shuf -i 10000-19000 -n 1)
 	#trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
 	trackers_list=$(wget -qO- https://trackerslist.com/all_aria2.txt)
 	cat > '/etc/systemd/system/aria2.service' << EOF
