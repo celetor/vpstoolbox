@@ -59,6 +59,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 21. ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
 22. 手动 检查更新
 23. 完全/部分 卸載
+24. 更多懒得写了...
 
 **如果你需要更多功能, 请 open a Github issue / 提交pull request.(Centos相关issue将被列为低优先级)**
 
