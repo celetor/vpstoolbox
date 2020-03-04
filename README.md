@@ -6,11 +6,11 @@
 ### How to use
 For apt based system like Debian/Ubuntu
 ```
-apt-get update && apt-get install sudo curl -y && sudo -i
+apt-get update && apt-get install sudo curl -y
 ```
 For yum based system like Centos(not recommended)
 ```
-yum update -y && yum install sudo curl -y && sudo -i
+yum update -y && yum install sudo curl -y
 ```
 Then
 ```
