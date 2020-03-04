@@ -191,9 +191,6 @@ export LANGUAGE="en_US.UTF-8"
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 fi
-#chattr +i /etc/locale.gen
-#dpkg-reconfigure --frontend=noninteractive locales
-#chattr +i /etc/default/locale
 }
 #############################
 installacme(){
@@ -1079,7 +1076,6 @@ if [[ $install_qbt == 1 ]]; then
 	yum update -y -q
 	yum install qbittorrent-nox -y -q
  fi
- #adduser --system --no-create-home --disabled-login --group qbittorrent
  #useradd -r qbittorrent --shell=/usr/sbin/nologin
 	cat > '/etc/systemd/system/qbittorrent.service' << EOF
 [Unit]
@@ -1128,7 +1124,6 @@ if [[ $install_tracker = 1 ]]; then
 	curl -sL https://rpm.nodesource.com/setup_13.x | bash -
 	yum install -y -q nodejs
  fi
- #adduser --system --no-create-home --disabled-login --group bt_tracker
  useradd -r bt_tracker --shell=/usr/sbin/nologin
  npm install -g bittorrent-tracker --quiet
 	cat > '/etc/systemd/system/tracker.service' << EOF
@@ -1289,7 +1284,6 @@ EOF
 	if [[ ! -f /usr/local/bin/aria2c ]]; then
 	clear
 	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
-	#adduser --system --no-create-home --disabled-login --group aria2
 	#usermod -a -G aria2 nginx
 	useradd -r aria2 --shell=/usr/sbin/nologin
 	if [[ $dist != centos ]]; then
@@ -1510,8 +1504,6 @@ systemctl enable dnscrypt-proxy.service
 	chmod +x /usr/sbin/dnscrypt-proxy
 	cd ..
 	rm -rf linux-x86_64
-	#adduser --system --no-create-home --disabled-login --group dnscrypt-proxy
-	#useradd -r dnscrypt-proxy --shell=/usr/sbin/nologin
 	setcap CAP_NET_BIND_SERVICE=+eip /usr/sbin/dnscrypt-proxy
 	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md -q --show-progress
 	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/opennic.md -q --show-progress
