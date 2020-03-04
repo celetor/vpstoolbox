@@ -24,12 +24,6 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 3. 請在你的控制面板上 **開放 Tcp 端口 [80](https://www.speedguide.net/port.php?port=80) 以及 [443](https://www.speedguide.net/port.php?port=443) 并关闭 Cloudflare CDN**
 4. 若使用自定义证书只需与密钥一起放置于/etc/trojan文件夹中即可，无需修改名称 。
 
-#### [Telegram](https://telegram.org/) 頻道 以及 群組
-
-### https://t.me/johnrosen1
-
-### https://t.me/trojanscript
-
 ## 如果你覺得有用 , 請給star ★, 謝謝!
 #### 脚本特性支援:
 
@@ -97,5 +91,9 @@ sudo ~/.acme.sh/acme.sh --cron //仅当使用let's encrypt证书是有效
 timedatectl
 iptables -L -v
 ```
+#### [Telegram](https://telegram.org/) 頻道 以及 群組
 
+### https://t.me/johnrosen1
+
+### https://t.me/trojanscript
 
