@@ -4,11 +4,11 @@
 ## This script will help you set up many kind of useful tools on your VPS including website proxy download monitor and more.
 
 ### How to use
-For Debian/Ubuntu
+For apt based system like Debian/Ubuntu
 ```
 apt-get update && apt-get install sudo curl -y && sudo -i
 ```
-For Centos(not recommended)
+For yum based system like Centos(not recommended)
 ```
 yum update -y && yum install sudo curl -y && sudo -i
 ```
@@ -61,6 +61,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 15. Support ***[TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)***
 21. Support manually check for update
 23. Support Full/Part Uninstall
+24. And so on...
 
 **If you need more functions, please open a Github issue.(No Centos related issues or bugs allowed except pull requests)**
 
