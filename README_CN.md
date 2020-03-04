@@ -5,11 +5,11 @@
 ### 使用方法
 安裝依賴(Debian/Ubuntu)
 ```
-apt-get update && apt-get install sudo whiptail curl locales -y && sudo -i
+apt-get update && apt-get install sudo whiptail curl locales -y
 ```
 安裝依賴(Centos,不推荐)
 ```
-yum update -y && yum install sudo newt curl -y && sudo -i
+yum update -y && yum install sudo newt curl -y
 ```
 運行腳本
 ```
