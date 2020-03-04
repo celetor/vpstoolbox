@@ -870,7 +870,7 @@ systemctl daemon-reload
 	clear
 	colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
 if [[ $dist != centos ]]; then
-	apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron socat e2fsprogs -q -y
+	apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron socat e2fsprogs less -q -y
 	apt-get install python3-qrcode -q -y
 else
 	$pack install sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd dbus xz cron socat
