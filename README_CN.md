@@ -22,12 +22,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 1. 請 **使用root用戶運行**(sudo -i)
 2. 請在运行本脚本前先 **[购买一个域名](https://www.namesilo.com/?rid=685fb47qi)** 并 **[完成A记录 dns解析](https://dnschecker.org/)**!
 3. 請在你的控制面板上 **開放 Tcp 端口 [80](https://www.speedguide.net/port.php?port=80) 以及 [443](https://www.speedguide.net/port.php?port=443) 并关闭 Cloudflare CDN**
-4. 請不要使用阿里內網DNS(更新極其緩慢) 推薦[1.1.1.1](https://1.1.1.1/) !
-```
-echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
-```
-
-5. 若使用自定义证书只需与密钥一起放置于/etc/trojan文件夹中即可，无需修改名称 。
+4. 若使用自定义证书只需与密钥一起放置于/etc/trojan文件夹中即可，无需修改名称 。
 
 #### [Telegram](https://telegram.org/) 頻道 以及 群組
 
