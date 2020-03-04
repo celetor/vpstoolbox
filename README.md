@@ -26,12 +26,6 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 3. Please **Open Tcp port [80](https://www.speedguide.net/port.php?port=80) and [443](https://www.speedguide.net/port.php?port=443) and turn off Cloudflare CDN** in your control panel before running this bash script!
 4. For customized certificate , please put it in /etc/trojan/ , no name change required !
 
-#### [Telegram](https://telegram.org/) Channel And Group
-
-### https://t.me/johnrosen1
-
-### https://t.me/trojanscript
-
 ## If you found it useful , please give a star ,thanks!
 #### Bash Features:
 
@@ -98,6 +92,10 @@ sudo ~/.acme.sh/acme.sh --cron //only if you use let's encrypt certificate
 timedatectl
 iptables -L -v
 ```
+#### [Telegram](https://telegram.org/) Channel And Group
 
+### https://t.me/johnrosen1
+
+### https://t.me/trojanscript
 
 
