@@ -1085,7 +1085,6 @@ Wants=network-online.target
 After=network-online.target nss-lookup.target
 
 [Service]
-# if you have systemd >= 240, you probably want to use Type=exec instead
 Type=simple
 User=root
 RemainAfterExit=yes
@@ -1133,7 +1132,6 @@ Wants=network-online.target
 After=network-online.target nss-lookup.target
 
 [Service]
-# if you have systemd >= 240, you probably want to use Type=exec instead
 Type=simple
 User=bt_tracker
 Group=bt_tracker
@@ -2674,7 +2672,6 @@ if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
 fi
 EOF
 crontab -l | grep -q '0 * * * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
-#echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
 	fi
 }
 ###################################
