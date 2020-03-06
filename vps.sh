@@ -23,7 +23,15 @@
 
 #Run me with:
 
-#apt-get update && apt-get install sudo curl -y && sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vps.sh)"
+#apt-get update && apt-get install sudo curl -y
+
+#or
+
+#yum update -y && yum install sudo curl -y
+
+#then
+
+#sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vps.sh)"
 
 clear
 
