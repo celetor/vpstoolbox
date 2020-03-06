@@ -1871,9 +1871,9 @@ server {
 	if (\$http_user_agent = "") { return 444; }
 	if (\$host != "$domain") { return 404; }
 	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-	add_header X-Frame-Options SAMEORIGIN always;
-	add_header X-Content-Type-Options "nosniff" always;
-	add_header Referrer-Policy "no-referrer";
+	#add_header X-Frame-Options SAMEORIGIN always;
+	#add_header X-Content-Type-Options "nosniff" always;
+	#add_header Referrer-Policy "no-referrer";
 	#add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
 	#add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
 	location / {
@@ -1905,10 +1905,10 @@ server {
 	resolver_timeout 10s;
 	server_name           $domain;
 	#add_header alt-svc 'quic=":443"; ma=2592000; v="46"';
-	add_header X-Frame-Options SAMEORIGIN always;
-	add_header X-Content-Type-Options "nosniff" always;
-	add_header X-XSS-Protection "1; mode=block" always;
-	add_header Referrer-Policy "no-referrer";
+	#add_header X-Frame-Options SAMEORIGIN always;
+	#add_header X-Content-Type-Options "nosniff" always;
+	#add_header X-XSS-Protection "1; mode=block" always;
+	#add_header Referrer-Policy "no-referrer";
 	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
 	#add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
 	#add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
