@@ -48,6 +48,7 @@ if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
 fi
 
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
+colorEcho ${INFO} "Uninstall Aliyun aegis ing"
 systemctl stop aegis
 systemctl stop CmsGoAgent.service
 systemctl stop aliyun
