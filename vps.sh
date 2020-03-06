@@ -2025,7 +2025,7 @@ echo "server {" >> /etc/nginx/conf.d/trojan.conf
 echo "    listen 80;" >> /etc/nginx/conf.d/trojan.conf
 echo "    listen [::]:80;" >> /etc/nginx/conf.d/trojan.conf
 echo "    server_name $domain;" >> /etc/nginx/conf.d/trojan.conf
-echo "    return 301 https://$domain;" >> /etc/nginx/conf.d/trojan.conf
+echo "    return 301 https://$domain\$request_uri;" >> /etc/nginx/conf.d/trojan.conf
 echo "}" >> /etc/nginx/conf.d/trojan.conf
 echo "" >> /etc/nginx/conf.d/trojan.conf
 echo "server {" >> /etc/nginx/conf.d/trojan.conf
