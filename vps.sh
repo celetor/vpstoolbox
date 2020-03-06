@@ -2830,8 +2830,8 @@ EOF
 	fi
 fi
 clear
-ip1=$(curl -s https://ipinfo.io?token=56c375418c62c9)
-myip=$(curl -s https://ipinfo.io/ip?token=56c375418c62c9)
+ip1=$(curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 10)
+myip=$(curl -s https://ipinfo.io/ip?token=56c375418c62c9 --connect-timeout 10)
 localip=$(ip a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 advancedMenu
