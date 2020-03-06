@@ -629,13 +629,13 @@ colorEcho ${INFO} "初始化中(initializing)"
 	pack="apt-get -y -qq"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install sudo whiptail curl locales lsb-release jq lsof -y -qq
+	apt-get install whiptail curl locales lsb-release jq lsof -y -qq
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
 	pack="apt-get -y -qq"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install sudo whiptail curl locales lsb-release jq lsof -y -qq
+	apt-get install whiptail curl locales lsb-release jq lsof -y -qq
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
 	exit 1;
