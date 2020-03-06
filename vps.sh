@@ -2682,14 +2682,11 @@ logcheck(){
 	if [[ -f /usr/local/bin/trojan ]]; then
 		colorEcho ${INFO} "Trojan Log"
 		journalctl -a -u trojan.service
-		#less /var/log/trojan.log
 		less /root/.trojan/update.log
 	fi
 	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
 		colorEcho ${INFO} "dnscrypt-proxy Log"
 		journalctl -a -u dnscrypt-proxy.service
-		#less /var/log/dnscrypt-proxy/dnscrypt-proxy.log
-		#less /var/log/dnscrypt-proxy/query.log
 	fi
 	if [[ -f /usr/local/bin/aria2c ]]; then
 		colorEcho ${INFO} "Aria2 Log"
