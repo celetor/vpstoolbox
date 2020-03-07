@@ -378,7 +378,7 @@ if [[ ${test1} == 0 ]] && [[ ${test2} == 0 ]] && [[ ${test3} == 0 ]] && [[ -z ${
 fi
 
 clear
-if [[ $install_status == 1 ]]; then
+if [[ ${install_status} == 1 ]]; then
 if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安装，是否继续?" 8 78); then
     if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安装，是否重新设置具体参数?" 8 78); then
     :
@@ -459,7 +459,7 @@ do
 	esac
 done < results
 ####################################
-if [[ $system_upgrade = 1 ]]; then
+if [[ ${system_upgrade} == 1 ]]; then
 	if [[ $(lsb_release -cs) == stretch ]]; then
 		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 10?" 8 78); then
 			debian10_install=1
@@ -477,23 +477,23 @@ if [[ $system_upgrade = 1 ]]; then
 	fi
 fi
 #####################################
-while [[ -z $domain ]]; do
+while [[ -z ${domain} ]]; do
 domain=$(whiptail --inputbox --nocancel "快輸入你的域名並按回車(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
 if (whiptail --title "hostname" --yesno "修改hostname为域名(change hostname to your domain)?" 8 78); then
 	hostnamectl set-hostname $domain
 	echo "127.0.0.1 $domain" >> /etc/hosts
 fi
 done
-if [[ $install_trojan = 1 ]]; then
-	while [[ -z $password1 ]]; do
+if [[ ${install_trojan} = 1 ]]; then
+	while [[ -z ${password1} ]]; do
 password1=$(whiptail --passwordbox --nocancel "快輸入你想要的Trojan-GFW密碼一併按回車(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
-if [[ $password1 == "" ]]; then
+if [[ -z ${password1} ]]; then
 	password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 	fi
 done
-while [[ -z $password2 ]]; do
+while [[ -z ${password2} ]]; do
 password2=$(whiptail --passwordbox --nocancel "快輸入想要的Trojan-GFW密碼二並按回車(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
-if [[ $password2 == "" ]]; then
+if [[ -z ${password2} ]]; then
 	password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 	fi
 done
@@ -505,43 +505,43 @@ fi
 		done
 	fi
 #####################################
-	if [[ $install_tracker = 1 ]]; then
-		while [[ -z $trackerpath ]]; do
+	if [[ $install_tracker == 1 ]]; then
+		while [[ -z ${trackerpath} ]]; do
 		trackerpath=$(whiptail --inputbox --nocancel "快输入你的想要的Bittorrent-Tracker路径并按回车" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
 		done
-		while [[ -z $trackerstatuspath ]]; do
+		while [[ -z ${trackerstatuspath} ]]; do
 		trackerstatuspath=$(whiptail --inputbox --nocancel "快输入你的想要的Bittorrent-Tracker状态路径并按回车" 8 78 /status --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
-	if [[ $install_aria = 1 ]]; then
-		while [[ -z $ariapath ]]; do
+	if [[ ${install_aria} == 1 ]]; then
+		while [[ -z ${ariapath} ]]; do
 		ariapath=$(whiptail --inputbox --nocancel "快输入你的想要的Aria2 RPC路径并按回车" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
 		done
 		while [[ -z $ariapasswd ]]; do
 		ariapasswd=$(whiptail --passwordbox --nocancel "快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
-		if [[ $ariapasswd == "" ]]; then
+		if [[ -z ${ariapasswd} ]]; then
 		ariapasswd="123456789"
 		fi
 		done
 	fi
 ####################################
-	if [[ $install_file = 1 ]]; then
-		while [[ -z $filepath ]]; do
+	if [[ ${install_file} = 1 ]]; then
+		while [[ -z ${filepath} ]]; do
 		filepath=$(whiptail --inputbox --nocancel "快输入你的想要的Filebrowser路径并按回车" 8 78 /files/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
-	if [[ $install_netdata = 1 ]]; then
-		while [[ -z $netdatapath ]]; do
+	if [[ ${install_netdata} = 1 ]]; then
+		while [[ -z ${netdatapath} ]]; do
 		netdatapath=$(whiptail --inputbox --nocancel "快输入你的想要的Netdata路径并按回车" 8 78 /netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
-	if [[ $install_tor = 1 ]]; then
-		while [[ -z $tor_name ]]; do
+	if [[ ${install_tor} = 1 ]]; then
+		while [[ -z ${tor_name} ]]; do
 		tor_name=$(whiptail --inputbox --nocancel "快輸入想要的tor nickname並按回車" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
-		if [[ $tor_name == "" ]]; then
+		if [[ -z ${tor_name} ]]; then
 		tor_name="myrelay"
 	fi
 	done
@@ -559,7 +559,7 @@ fi
 ####################################
 if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
-		else		
+		else
 	if (whiptail --title "api" --yesno --defaultno "使用 (use) api申请证书(to issue certificate)?" 8 78); then
     dns_api=1
     APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
@@ -572,7 +572,7 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
 
     case $APIOPTION in
         1)
-        while [[ -z $CF_Key ]] || [[ -z $CF_Email ]]; do
+        while [[ -z ${CF_Key} ]] || [[ -z ${CF_Email} ]]; do
         CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF Global Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
         CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
         done
@@ -1855,10 +1855,10 @@ openfirewall(){
 		ip6tables -I INPUT -p udp -m udp --dport 8000 -j ACCEPT
 	fi
 	if [[ $install_aria == 1 ]]; then
-		iptables -I INPUT -p tcp -m tcp --dport $ariaport -j ACCEPT
-		ip6tables -I INPUT -p tcp -m tcp --dport $ariaport -j ACCEPT
-		iptables -I INPUT -p udp -m udp --dport $ariaport -j ACCEPT
-		ip6tables -I INPUT -p udp -m udp --dport $ariaport -j ACCEPT
+		iptables -I INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
+		ip6tables -I INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
+		iptables -I INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
+		ip6tables -I INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
 	fi
 	if [[ $dist == debian ]]; then
 	export DEBIAN_FRONTEND=noninteractive 
