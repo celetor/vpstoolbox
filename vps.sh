@@ -2457,8 +2457,8 @@ footer a:link {
                     </ul>
                     <p>Dnscrypt-proxy</p>
                     <ul>
-                        <li><code>sudo nano /etc/dnscrypt-proxy.toml</code></li>
-                        <li><code>sudo nano /etc/dnscrypt-proxy.toml</code></li>
+                        <li><code>sudo nano /etc/dnscrypt-proxy/dnscrypt-proxy.toml</code></li>
+                        <li><code>sudo nano /etc/dnscrypt-proxy/dnscrypt-proxy.toml</code></li>
                     </ul>
                     <p>Aria2</p>
                     <ul>
@@ -2743,16 +2743,17 @@ bandwithusage(){
 advancedMenu() {
 	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "hi" --title "VPS ToolBox Menu" --menu --nocancel "Choose an option: https://github.com/johnrosen1/trojan-gfw-script
 运行此脚本前请在控制面板中开启80 443端口并关闭Cloudflare CDN!" 13 78 4 \
-	"1" "安裝(Install)" \
-	"2" "结果(Result)" \
-	"3" "日志(Log)" \
-	"4" "流量(Bandwith)" \
-	"5" "状态(Status)" \
-	"6" "更新(Update)" \
-	"7" "卸載(Uninstall)" \
-	"8" "退出(Quit)" 3>&1 1>&2 2>&3)
+	"Install" "安裝" \
+	"Result" "结果" \
+	"Benchmark" "效能"\
+	"Log" "日志" \
+	"Bandwith" "流量" \
+	"Status" "状态" \
+	"Update" "更新" \
+	"Uninstall" "卸載" \
+	"Exit" "退出" 3>&1 1>&2 2>&3)
 	case $Mainmenu in
-		1)
+		Install)
 		cd
 		clear
 		userinput
@@ -2812,35 +2813,73 @@ advancedMenu() {
 		reboot
 		fi
 		;;
-		2)
+		Result)
 		cd
 		whiptail --title "Install Success" --textbox --scrolltext /root/.trojan/result.txt 8 120
 		advancedMenu
 		;;
-		3)
+		Benchmark)
+		clear
+		colorEcho ${INFO} "Hardware Benchmark"
+		curl -LO --progress-bar http://cdn.geekbench.com/Geekbench-5.1.0-Linux.tar.gz
+		tar -xvf Geekbench-5.1.0-Linux.tar.gz
+		rm -rf Geekbench-5.1.0-Linux.tar.gz
+		cd Geekbench-5.1.0-Linux
+		./geekbench_x86_64
+		cd ..
+		rm -rf Geekbench-5.1.0-Linux
+		colorEcho ${INFO} "Please the result then hit enter to proceed"
+		read var
+		colorEcho ${INFO} "Network Benchmark"
+		if [[ ${dist} != centos ]]; then
+			apt-get install gnupg apt-transport-https dirmngr -y -qq
+		INSTALL_KEY="379CE192D401AB61"
+		# Ubuntu versions supported: xenial, bionic
+		# Debian versions supported: jessie, stretch, buster
+		DEB_DISTRO=$(lsb_release -sc)
+		apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
+		echo "deb https://ookla.bintray.com/debian ${DEB_DISTRO} main" | sudo tee  /etc/apt/sources.list.d/speedtest.list
+		apt-get update -q
+		# Other non-official binaries will conflict with Speedtest CLI
+		# Example how to remove using apt-get
+		apt-get purge speedtest-cli -y
+		apt-get install speedtest -y -qq
+			else
+			yum install wget -y
+			wget https://bintray.com/ookla/rhel/rpm -O bintray-ookla-rhel.repo
+			sudo mv bintray-ookla-rhel.repo /etc/yum.repos.d/
+			# Other non-official binaries will conflict with Speedtest CLI
+			# Example how to remove using yum
+			rpm -qa | grep speedtest | xargs -I {} sudo yum -y remove {}
+			yum install speedtest -y
+		fi
+		speedtest
+		colorEcho ${INFO} "Benchmark complete"
+		;;
+		Log)
 		cd
 		logcheck
 		advancedMenu
 		;;
-		4)
+		Bandwith)
 		cd
 		bandwithusage
 		;;
-		5)
+		Status)
 		cd
 		statuscheck
 		;;
-		6)
+		Update)
 		cd
 		checkupdate
 		colorEcho ${SUCCESS} "RTFM: https://github.com/johnrosen1/trojan-gfw-script"
 		;;
-		7)
+		Uninstall)
 		cd
 		uninstall
 		colorEcho ${SUCCESS} "Remove complete"
 		;;
-		8)
+		Exit)
 		exit
 		whiptail --title "脚本已退出" --msgbox "脚本已退出(Bash Exited) RTFM: https://github.com/johnrosen1/trojan-gfw-script" 8 78
 		;;
