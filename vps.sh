@@ -2829,7 +2829,7 @@ advancedMenu() {
 		#./geekbench_x86_64
 		cd ..
 		rm -rf Geekbench-5.1.0-Linux
-		colorEcho ${INFO} "Please the result then hit enter to proceed"
+		colorEcho ${INFO} "Please read the result then hit enter to proceed"
 		read var
 		colorEcho ${INFO} "Network Benchmark"
 		if [[ ${dist} != centos ]]; then
