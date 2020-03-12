@@ -2843,7 +2843,7 @@ advancedMenu() {
 		apt-get update -q
 		# Other non-official binaries will conflict with Speedtest CLI
 		# Example how to remove using apt-get
-		apt-get purge speedtest-cli -y
+		apt-get purge speedtest-cli -y -qq
 		apt-get install speedtest -y -qq
 			else
 			yum install wget -y
