@@ -2825,7 +2825,8 @@ advancedMenu() {
 		tar -xvf Geekbench-5.1.0-Linux.tar.gz
 		rm -rf Geekbench-5.1.0-Linux.tar.gz
 		cd Geekbench-5.1.0-Linux
-		./geekbench_x86_64
+		./geekbench5
+		#./geekbench_x86_64
 		cd ..
 		rm -rf Geekbench-5.1.0-Linux
 		colorEcho ${INFO} "Please the result then hit enter to proceed"
