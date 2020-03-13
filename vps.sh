@@ -2854,7 +2854,8 @@ advancedMenu() {
 			rpm -qa | grep speedtest | xargs -I {} sudo yum -y remove {}
 			yum install speedtest -y
 		fi
-		speedtest
+		#speedtest
+		sh -c 'echo "YES\n" | speedtest'
 		colorEcho ${INFO} "Benchmark complete"
 		;;
 		Log)
