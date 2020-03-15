@@ -18,6 +18,8 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/mainmenu.png)
 ![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/3.png)
 
+![other](https://github.com/kenzok8/Trojan/blob/master/sshot/sshot-4.png)
+
 #### 運行前的要求:
 1. 請 **使用root用戶運行**(sudo -i)
 2. 請在运行本脚本前先 **[购买一个域名](https://www.namesilo.com/?rid=685fb47qi)** 并 **[完成A记录 dns解析](https://dnschecker.org/)**!
