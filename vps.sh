@@ -162,6 +162,20 @@ LINK="92m"     # Share Link Message
 cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
 cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
 #############################
+systeminfo(){
+	colorEcho ${INFO} "System Info"
+	colorEcho ${INFO} "1. CPU INFO"
+	colorEcho ${INFO} "model name: $( awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//' )"
+	colorEcho ${INFO} "cpu cores: $( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo ) core(s)"
+	colorEcho ${INFO} "cpu freqency: $( awk -F'[ :]' '/cpu MHz/ {print $4;exit}' /proc/cpuinfo ) MHz"
+	colorEcho ${INFO} "2. RAM INFO"
+	colorEcho ${INFO} "Total ram: $( free -m | awk '/Mem/ {print $2}' ) MB"
+	colorEcho ${INFO} "3. DISK INFO"
+	colorEcho ${INFO} "Total disk space: $( df -hPl | grep -wvE '\-|none|tmpfs|devtmpfs|by-uuid|chroot|Filesystem|udev|docker' | awk '{print $2}' )"
+	colorEcho ${INFO} "4. OS INFO"
+	colorEcho ${INFO} "${dist}"
+}
+#############################
 setlanguage(){
 	set +e
 	if [[ ! -d /root/.trojan/ ]]; then
@@ -2758,6 +2772,7 @@ advancedMenu() {
 		cd
 		clear
 		userinput
+		systeminfo
 		installdependency
 		openfirewall
 		issuecert
@@ -2821,6 +2836,7 @@ advancedMenu() {
 		;;
 		Benchmark)
 		clear
+		systeminfo
 		colorEcho ${INFO} "Hardware Benchmark"
 		curl -LO --progress-bar http://cdn.geekbench.com/Geekbench-5.1.0-Linux.tar.gz
 		tar -xvf Geekbench-5.1.0-Linux.tar.gz
