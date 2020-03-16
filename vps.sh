@@ -49,7 +49,6 @@ fi
 
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
 colorEcho ${INFO} "Uninstall Aliyun aegis ing"
-iptables -I INPUT -s 36.110.236.68/16 -j DROP
 iptables -I INPUT -s 140.205.201.0/28 -j DROP
 iptables -I INPUT -s 140.205.201.16/29 -j DROP
 iptables -I INPUT -s 140.205.201.32/28 -j DROP
@@ -1830,6 +1829,7 @@ openfirewall(){
 	#tcp
 	iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 	iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	iptables -I INPUT -s 36.110.236.68/16 -j DROP
 	#udp
 	iptables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
 	iptables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
