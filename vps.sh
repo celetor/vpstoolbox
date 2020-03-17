@@ -163,17 +163,32 @@ cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-E
 cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
 #############################
 systeminfo(){
-	colorEcho ${INFO} "System Info"
-	colorEcho ${INFO} "1. CPU INFO"
-	colorEcho ${INFO} "model name: $( awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//' )"
-	colorEcho ${INFO} "cpu cores: $( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo ) core(s)"
-	colorEcho ${INFO} "cpu freqency: $( awk -F'[ :]' '/cpu MHz/ {print $4;exit}' /proc/cpuinfo ) MHz"
-	colorEcho ${INFO} "2. RAM INFO"
-	colorEcho ${INFO} "Total ram: $( free -m | awk '/Mem/ {print $2}' ) MB"
-	colorEcho ${INFO} "3. DISK INFO"
-	colorEcho ${INFO} "Total disk space: $( df -hPl | grep -wvE '\-|none|tmpfs|devtmpfs|by-uuid|chroot|Filesystem|udev|docker' | awk '{print $2}' )"
-	colorEcho ${INFO} "4. OS INFO"
-	colorEcho ${INFO} "${dist}"
+	#colorEcho ${INFO} "System Info"
+	#olorEcho ${INFO} "1. CPU INFO"
+	#colorEcho ${INFO} "model name: $( awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//' )"
+	#colorEcho ${INFO} "cpu cores: $( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo ) core(s)"
+	#colorEcho ${INFO} "cpu freqency: $( awk -F'[ :]' '/cpu MHz/ {print $4;exit}' /proc/cpuinfo ) MHz"
+	#colorEcho ${INFO} "2. RAM INFO"
+	#colorEcho ${INFO} "Total ram: $( free -m | awk '/Mem/ {print $2}' ) MB"
+	#colorEcho ${INFO} "3. DISK INFO"
+	#colorEcho ${INFO} "Total disk space: $( df -hPl | grep -wvE '\-|none|tmpfs|devtmpfs|by-uuid|chroot|Filesystem|udev|docker' | awk '{print $2}' )"
+	#colorEcho ${INFO} "4. OS INFO"
+	#colorEcho ${INFO} "${dist}"
+echo -e "-------------------------------System Information----------------------------"
+echo -e "Hostname:\t\t"`hostname`
+echo -e "uptime:\t\t\t"`uptime | awk '{print $3,$4}' | sed 's/,//'`
+echo -e "Manufacturer:\t\t"`cat /sys/class/dmi/id/chassis_vendor`
+echo -e "Product Name:\t\t"`cat /sys/class/dmi/id/product_name`
+echo -e "Version:\t\t"`cat /sys/class/dmi/id/product_version`
+echo -e "Serial Number:\t\t"`cat /sys/class/dmi/id/product_serial`
+echo -e "Machine Type:\t\t"`vserver=$(lscpu | grep Hypervisor | wc -l); if [ $vserver -gt 0 ]; then echo "VM"; else echo "Physical"; fi`
+echo -e "Operating System:\t"`hostnamectl | grep "Operating System" | cut -d ' ' -f5-`
+echo -e "Kernel:\t\t\t"`uname -r`
+echo -e "Architecture:\t\t"`arch`
+echo -e "Processor Name:\t\t"`awk -F':' '/^model name/ {print $2}' /proc/cpuinfo | uniq | sed -e 's/^[ \t]*//'`
+echo -e "Active User:\t\t"`w | cut -d ' ' -f1 | grep -v USER | xargs -n1`
+echo -e "System Main IP:\t\t"`hostname -I`
+echo -e "-----------------------------------------------------------------------------"
 }
 #############################
 setlanguage(){
@@ -410,19 +425,19 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨�
 "系统" "System" on  \
 "1" "系统升级(System Upgrade)" on \
 "2" "启用BBR | TCP效能优化(TCP-Turbo)" on \
-"3" "安裝BBRPLUS" off \
 "代理" "Proxy" on  \
-"4" "安裝Trojan-GFW" on \
-"5" "安裝Dnscrypt-proxy | DNS加密(dns encryption)" on \
-"6" "安裝Tor-Relay" off \
+"3" "安裝Trojan-GFW" on \
+"4" "安裝Dnscrypt-proxy | DNS加密(dns encryption)" on \
 "下载" "Download" on  \
-"7" "安裝Qbittorrent | BT客户端(Bittorrent Client)" on \
-"8" "安裝Bittorrent-Tracker" on \
-"9" "安裝Aria2" on \
-"10" "安裝Filebrowser | 网盘(File manager)" on \
+"5" "安裝Qbittorrent | BT客户端(Bittorrent Client)" on \
+"6" "安裝Bittorrent-Tracker" on \
+"7" "安裝Aria2" on \
+"8" "安裝Filebrowser | 网盘(File manager)" on \
 "状态" "Status" on  \
-"11" "安裝Netdata | 服务器状态监控(Server status monitor)" on \
+"9" "安裝Netdata | 服务器状态监控(Server status monitor)" on \
 "其他" "Others" on  \
+"10" "安裝Tor-Relay" off \
+"11" "安裝BBRPLUS" off \
 "12" "仅启用TLS1.3(Enable TLS1.3 only)" off 2>results
 
 while read choice
@@ -439,31 +454,31 @@ do
 		install_bbr=1
 		;;
 		3)
-		install_bbrplus=1
-		;;
-		4)
 		install_trojan=1
 		;;
-		5) 
+		4) 
 		dnsmasq_install=1
 		;;
-		6)
-		install_tor=1
-		;;
-		7)
+		5)
 		install_qbt=1
 		;;
-		8)
+		6)
 		install_tracker=1
 		;;
-		9)
+		7)
 		install_aria=1
 		;;
-		10)
+		8)
 		install_file=1
 		;;
-		11)
+		9)
 		install_netdata=1
+		;;
+		10)
+		install_tor=1
+		;;
+		11)
+		install_bbrplus=1
 		;;
 		12) 
 		tls13only=1
@@ -2899,8 +2914,8 @@ advancedMenu() {
 		colorEcho ${SUCCESS} "Remove complete"
 		;;
 		Exit)
-		exit
 		whiptail --title "脚本已退出" --msgbox "脚本已退出(Bash Exited) RTFM: https://github.com/johnrosen1/trojan-gfw-script" 8 78
+		exit
 		;;
 		esac
 }
