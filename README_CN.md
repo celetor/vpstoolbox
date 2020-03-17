@@ -93,9 +93,4 @@ sudo ~/.acme.sh/acme.sh --cron //仅当使用let's encrypt证书是有效
 timedatectl
 iptables -L -v
 ```
-#### [Telegram](https://telegram.org/) 頻道 以及 群組
-
-### https://t.me/johnrosen1
-
-### https://t.me/trojanscript
 
