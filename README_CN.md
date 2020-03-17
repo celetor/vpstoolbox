@@ -52,7 +52,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 23. 完全/部分 卸載
 24. 更多懒得写了...
 
-**如果你需要更多功能, 请 open a Github issue / 提交pull request.(Centos相关issue将被列为低优先级)**
+**如果你需要更多功能, 请 open a Github issue / 提交pull request.(严禁Centos相关issue/request)**
 
 ### VPS 推薦 (无个人aff)
 
