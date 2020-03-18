@@ -29,6 +29,11 @@ Flowchart:
 4. For customized certificate , please put it in /etc/trojan/ , no name change required !
 
 ## If you found it useful , please give a star ,thanks!
+
+### Live Demo
+
+[https://www.trojan-gfw.xyz/vpstoolbox.html](https://www.trojan-gfw.xyz/vpstoolbox.html)
+
 #### Bash Features:
 
 1. Auto install and config **[NGINX](https://www.nginx.com/)**
