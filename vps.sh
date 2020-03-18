@@ -419,7 +419,7 @@ if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安�
     fi
 fi
 
-whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨慎选择(Please choose carefully)" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇: !!! 默認沒選中的都是不推薦的 !!!
+whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨慎选择(Please choose carefully)" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇: !!! 请谨慎选择 !!!
 若不確定，請保持默認配置並回車" 25 75 17 \
 "back" "返回上级菜单(Back to main menu)" off \
 "系统" "System" on  \
