@@ -1118,7 +1118,6 @@ http {
 	gzip_comp_level 9;
 
 	include /etc/nginx/conf.d/*.conf;
-	client_max_body_size 10G;
 }
 EOF
 clear
@@ -1250,6 +1249,7 @@ systemctl daemon-reload
 systemctl enable filebrowser
 mkdir /etc/filebrowser/
 touch /etc/filebrowser/database.db
+chmod -R 755 /etc/filebrowser/
 fi
 fi
 clear
@@ -2038,6 +2038,7 @@ echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/troja
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/trojan.conf
 echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
