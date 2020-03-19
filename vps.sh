@@ -831,13 +831,13 @@ fi
 	colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
 	#iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
 	cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
-net.ipv4.ip_forward = 1
-net.ipv4.conf.all.forwarding = 1
-net.ipv4.conf.default.forwarding = 1
+#net.ipv4.ip_forward = 1
+#net.ipv4.conf.all.forwarding = 1
+#net.ipv4.conf.default.forwarding = 1
 ################################
-net.ipv6.conf.all.forwarding = 1
-net.ipv6.conf.default.forwarding = 1
-net.ipv6.conf.lo.forwarding = 1
+#net.ipv6.conf.all.forwarding = 1
+#net.ipv6.conf.default.forwarding = 1
+#net.ipv6.conf.lo.forwarding = 1
 ################################
 net.ipv6.conf.all.disable_ipv6 = 0
 net.ipv6.conf.default.disable_ipv6 = 0
@@ -1865,7 +1865,7 @@ openfirewall(){
 	iptables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
 	iptables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
 	iptables -I OUTPUT -j ACCEPT
-	iptables -I FORWARD -j DROP
+	#iptables -I FORWARD -j DROP
 	#tcp6
 	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 	ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
@@ -1873,7 +1873,7 @@ openfirewall(){
 	ip6tables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
 	ip6tables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
 	ip6tables -I OUTPUT -j ACCEPT
-	ip6tables -I FORWARD -j DROP
+	#ip6tables -I FORWARD -j DROP
 	if [[ $install_qbt == 1 ]]; then
 		iptables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
 		ip6tables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
