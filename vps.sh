@@ -1571,6 +1571,7 @@ systemctl enable dnscrypt-proxy.service
 	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/relays.md -q --show-progress
 	fi
 fi
+chmod -R 755 /etc/dnscrypt-proxy/
 clear
 #############################################
 if [[ $install_tor = 1 ]]; then
@@ -1679,6 +1680,7 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 systemctl enable trojan
+chmod -R 755 /usr/local/etc/trojan/
 	cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
