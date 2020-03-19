@@ -1933,8 +1933,8 @@ if [[ $install_trojan == 1 ]]; then
 server {
 	listen 127.0.0.1:80;
 	server_name $domain;
-	if (\$http_user_agent ~* (wget|curl) ) { return 444; }
-	if (\$http_user_agent = "") { return 444; }
+	if (\$http_user_agent ~* (wget|curl) ) { return 403; }
+	if (\$http_user_agent = "") { return 403; }
 	if (\$host != "$domain") { return 404; }
 	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
 	#add_header X-Frame-Options SAMEORIGIN always;
@@ -1978,8 +1978,8 @@ server {
 	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
 	#add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
 	#add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
-	if (\$http_user_agent ~* (wget|curl) ) { return 444; }
-	if (\$http_user_agent = "") { return 444; }
+	if (\$http_user_agent ~* (wget|curl) ) { return 403; }
+	if (\$http_user_agent = "") { return 403; }
 	if (\$host != "$domain") { return 404; }
 	location / {
 		root /usr/share/nginx/html;
