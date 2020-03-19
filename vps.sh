@@ -1680,7 +1680,6 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 systemctl enable trojan
-chmod -R 755 /usr/local/etc/trojan/
 	cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
@@ -1728,6 +1727,7 @@ chmod -R 755 /usr/local/etc/trojan/
     }
 }
 EOF
+	chmod -R 755 /usr/local/etc/trojan/
 	touch /usr/share/nginx/html/client1-$password1.json
 	touch /usr/share/nginx/html/client2-$password2.json
 	cat > "/usr/share/nginx/html/client1-$password1.json" << EOF
