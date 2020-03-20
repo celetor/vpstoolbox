@@ -2540,6 +2540,7 @@ uninstall(){
 		systemctl disable nginx
 		$pack remove nginx
 		rm -rf /etc/apt/sources.list.d/nginx.list
+		rm -rf /usr/share/nginx/html/
 		fi
 	fi
 	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
@@ -2547,6 +2548,7 @@ uninstall(){
 			systemctl stop dnscrypt-proxy
 			systemctl disable dnscrypt-proxy
 			rm -rf /usr/sbin/dnscrypt-proxy
+			rm /etc/systemd/system/dnscrypt-proxy.service
 		fi
 	fi
 	if [[ -f /usr/bin/qbittorrent-nox ]]; then
@@ -2554,6 +2556,7 @@ uninstall(){
 		systemctl stop qbittorrent
 		systemctl disable qbittorrent
 		$pack remove qbittorrent-nox
+		rm /etc/systemd/system/qbittorrent.service
 		fi
 	fi
 	if [[ -f /usr/bin/bittorrent-tracker ]]; then
@@ -2561,6 +2564,7 @@ uninstall(){
 		systemctl stop tracker
 		systemctl disable tracker
 		rm -rf /usr/bin/bittorrent-tracker
+		rm /etc/systemd/system/tracker.service
 		fi
 	fi
 	if [[ -f /usr/local/bin/aria2c ]]; then
@@ -2569,6 +2573,7 @@ uninstall(){
 		systemctl disable aria
 		rm -rf /etc/aria.conf
 		rm -rf /usr/local/bin/aria2c
+		rm /etc/systemd/system/aria2.service
 		fi
 	fi
 	if [[ -f /usr/local/bin/filebrowser ]]; then
@@ -2576,6 +2581,7 @@ uninstall(){
 		systemctl stop filebrowser
 		systemctl disable filebrowser
 		rm /usr/local/bin/filebrowser
+		rm /etc/systemd/system/filebrowser.service
 		fi
 	fi
 	if [[ -f /usr/sbin/netdata ]]; then
