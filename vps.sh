@@ -867,7 +867,7 @@ net.ipv4.conf.default.send_redirects = 0
 net.ipv4.conf.default.rp_filter = 1
 net.ipv4.conf.all.rp_filter = 1
 net.ipv4.tcp_rfc1337 = 1
-net.ipv4.tcp_timestamps = 1
+net.ipv4.tcp_timestamps = 0
 net.ipv4.tcp_syncookies = 1
 net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_fin_timeout = 10
@@ -881,7 +881,7 @@ net.ipv4.tcp_rmem = 4096 87380 67108864
 net.ipv4.tcp_wmem = 4096 65536 67108864
 net.ipv4.udp_rmem_min = 8192
 net.ipv4.udp_wmem_min = 8192
-net.ipv4.tcp_mtu_probing = 1
+net.ipv4.tcp_mtu_probing = 0
 ##############################
 net.ipv4.tcp_slow_start_after_idle = 0
 net.ipv4.tcp_max_syn_backlog = 30000
