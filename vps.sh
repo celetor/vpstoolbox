@@ -51,6 +51,7 @@ if grep -q "DebianBanner" /etc/ssh/sshd_config
 	then
 	:
 	else
+	ssh-keygen -A
 	echo "Protocol 2" >> /etc/ssh/sshd_config
 	echo "DebianBanner no" >> /etc/ssh/sshd_config
 	echo "AllowTcpForwarding no" >> /etc/ssh/sshd_config
