@@ -47,6 +47,14 @@ if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
 	exit 1
 fi
 
+if grep -q "DebianBanner" /etc/ssh/sshd_config
+	then
+	:
+	else
+	echo "DebianBanner no" >> /etc/ssh/sshd_config
+	systemctl reload sshd
+fi
+
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
 colorEcho ${INFO} "Uninstall Aliyun aegis ing"
 iptables -I INPUT -s 140.205.201.0/28 -j DROP
