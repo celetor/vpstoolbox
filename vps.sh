@@ -52,6 +52,10 @@ if grep -q "DebianBanner" /etc/ssh/sshd_config
 	:
 	else
 	echo "DebianBanner no" >> /etc/ssh/sshd_config
+	echo "AllowTcpForwarding no" >> /etc/ssh/sshd_config
+	echo "AllowStreamLocalForwarding no" >> /etc/ssh/sshd_config
+	echo "GatewayPorts no" >> /etc/ssh/sshd_config
+	echo "PermitTunnel no" >> /etc/ssh/sshd_config
 	systemctl reload sshd
 fi
 
