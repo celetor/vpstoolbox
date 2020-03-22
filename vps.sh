@@ -1550,9 +1550,9 @@ systemctl enable dnscrypt-proxy.service
 		if [[ $(systemctl is-active dnsmasq) == active ]]; then
 			systemctl disable dnsmasq
 		fi
-	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.39/dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
-	tar -xvf dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
-	rm dnscrypt-proxy-linux_x86_64-2.0.39.tar.gz
+	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.40/dnscrypt-proxy-linux_x86_64-2.0.40.tar.gz
+	tar -xvf dnscrypt-proxy-linux_x86_64-2.0.40.tar.gz
+	rm dnscrypt-proxy-linux_x86_64-2.0.40.tar.gz
 	cd linux-x86_64
 	cp -f dnscrypt-proxy /usr/sbin/dnscrypt-proxy
 	chmod +x /usr/sbin/dnscrypt-proxy
