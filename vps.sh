@@ -2504,8 +2504,8 @@ footer a:link {
                     </ul>
                     <p>Dnscrypt-proxy</p>
                     <ul>
-                        <li><code>sudo nano /etc/dnscrypt-proxy.toml</code></li>
-                        <li><code>sudo nano /etc/dnscrypt-proxy.toml</code></li>
+                        <li><code>sudo nano /etc/dnscrypt-proxy/dnscrypt-proxy.toml</code></li>
+                        <li><code>sudo systemctl start/restart/status dnscrypt-proxy</code></li>
                     </ul>
                     <p>Aria2</p>
                     <ul>
