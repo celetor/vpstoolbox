@@ -1630,7 +1630,6 @@ if [[ $install_netdata = 1 ]]; then
 		colorEcho ${INFO} "安装Netdata(Install netdata ing)"
 		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
 		sleep 1
-		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
 		cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
 localhost:
 
@@ -1643,9 +1642,9 @@ nginx_log:
   name  : 'nginx_log'
   path  : '/var/log/nginx/access.log'
 EOF
+		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
 		touch /opt/netdata/etc/netdata/python.d/logind.conf
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
-		sleep 1
 		colorEcho ${INFO} "重启Netdata(Restart netdata ing)"
 		systemctl restart netdata
 		cd
