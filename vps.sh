@@ -47,20 +47,6 @@ if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
 	exit 1
 fi
 
-if grep -q "DebianBanner" /etc/ssh/sshd_config
-	then
-	:
-	else
-	ssh-keygen -A
-	echo "Protocol 2" >> /etc/ssh/sshd_config
-	echo "DebianBanner no" >> /etc/ssh/sshd_config
-	echo "AllowTcpForwarding no" >> /etc/ssh/sshd_config
-	echo "AllowStreamLocalForwarding no" >> /etc/ssh/sshd_config
-	echo "GatewayPorts no" >> /etc/ssh/sshd_config
-	echo "PermitTunnel no" >> /etc/ssh/sshd_config
-	systemctl reload sshd
-fi
-
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
 colorEcho ${INFO} "Uninstall Aliyun aegis ing"
 iptables -I INPUT -s 140.205.201.0/28 -j DROP
@@ -2939,6 +2925,21 @@ advancedMenu() {
 }
 cd
 osdist
+if [[ ${dist} != centos ]]; then
+	if grep -q "DebianBanner" /etc/ssh/sshd_config
+	then
+	:
+	else
+	ssh-keygen -A
+	echo "Protocol 2" >> /etc/ssh/sshd_config
+	echo "DebianBanner no" >> /etc/ssh/sshd_config
+	echo "AllowTcpForwarding no" >> /etc/ssh/sshd_config
+	echo "AllowStreamLocalForwarding no" >> /etc/ssh/sshd_config
+	echo "GatewayPorts no" >> /etc/ssh/sshd_config
+	echo "PermitTunnel no" >> /etc/ssh/sshd_config
+	systemctl reload sshd
+	fi
+fi
 setlanguage
 if [[ -f /root/.trojan/license.json ]]; then
 	license="$( jq -r '.license' "/root/.trojan/license.json" )"
