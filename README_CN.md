@@ -15,8 +15,6 @@ yum update -y && yum install sudo newt curl -y
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vps.sh)"
 ```
-![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/screenshot/1.png)
-![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/screenshot/2.png)
 
 ![other](https://github.com/kenzok8/Trojan/blob/master/sshot/sshot-4.png)
 
