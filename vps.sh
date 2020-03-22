@@ -217,7 +217,7 @@ setlanguage(){
 	export LANGUAGE="C.UTF-8"
 	export LANG="C.UTF-8"
 	export LC_ALL="C.UTF-8"
-	if (whiptail --title "使用中文 or English?" --yes-button "中文" --no-button "English" --yesno "使用中文或英文(Use Chinese or English)?" 8 78); then
+	if (whiptail --title "System Language Setting" --yes-button "中文" --no-button "English" --yesno "使用中文或英文(Use Chinese or English)?" 8 78); then
 	chattr -i /etc/locale.gen
 	cat > '/etc/locale.gen' << EOF
 zh_TW.UTF-8 UTF-8
@@ -528,13 +528,13 @@ fi
 done
 if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
-password1=$(whiptail --passwordbox --nocancel "快輸入你想要的Trojan-GFW密碼一併按回車(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "Trojan-GFW密碼一(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password1} ]]; then
 	password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 	fi
 done
 while [[ -z ${password2} ]]; do
-password2=$(whiptail --passwordbox --nocancel "快輸入想要的Trojan-GFW密碼二並按回車(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
+password2=$(whiptail --passwordbox --nocancel "Trojan-GFW密碼二(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password2} ]]; then
 	password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 	fi
@@ -543,25 +543,25 @@ fi
 ###################################
 	if [[ $install_qbt = 1 ]]; then
 		while [[ -z $qbtpath ]]; do
-		qbtpath=$(whiptail --inputbox --nocancel "快输入你的想要的Qbittorrent路径并按回车" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent路径" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 #####################################
 	if [[ $install_tracker == 1 ]]; then
 		while [[ -z ${trackerpath} ]]; do
-		trackerpath=$(whiptail --inputbox --nocancel "快输入你的想要的Bittorrent-Tracker路径并按回车" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
+		trackerpath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker路径" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
 		done
 		while [[ -z ${trackerstatuspath} ]]; do
-		trackerstatuspath=$(whiptail --inputbox --nocancel "快输入你的想要的Bittorrent-Tracker状态路径并按回车" 8 78 /status --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
+		trackerstatuspath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker状态路径" 8 78 /status --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
 	if [[ ${install_aria} == 1 ]]; then
 		while [[ -z ${ariapath} ]]; do
-		ariapath=$(whiptail --inputbox --nocancel "快输入你的想要的Aria2 RPC路径并按回车" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
+		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC路径" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
 		done
 		while [[ -z $ariapasswd ]]; do
-		ariapasswd=$(whiptail --passwordbox --nocancel "快输入你的想要的Aria2 rpc token并按回车" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+		ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
 		if [[ -z ${ariapasswd} ]]; then
 		ariapasswd="123456789"
 		fi
@@ -570,13 +570,13 @@ fi
 ####################################
 	if [[ ${install_file} = 1 ]]; then
 		while [[ -z ${filepath} ]]; do
-		filepath=$(whiptail --inputbox --nocancel "快输入你的想要的Filebrowser路径并按回车" 8 78 /files/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+		filepath=$(whiptail --inputbox --nocancel "Filebrowser路径" 8 78 /files/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
 	if [[ ${install_netdata} = 1 ]]; then
 		while [[ -z ${netdatapath} ]]; do
-		netdatapath=$(whiptail --inputbox --nocancel "快输入你的想要的Netdata路径并按回车" 8 78 /netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
+		netdatapath=$(whiptail --inputbox --nocancel "Netdata路径" 8 78 /netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
@@ -740,19 +740,19 @@ deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe
 deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
 deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
 EOF
+fi
 	apt-get update --fix-missing
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y'
-	fi
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
 	clear
  elif [[ $dist == debian ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get update --fix-missing
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
-	if [[ $debian10_install == 1 ]]; then
+	if [[ ${debian10_install} == 1 ]]; then
 		cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
 #                   OFFICIAL DEBIAN REPOS                    
@@ -771,14 +771,8 @@ deb-src http://deb.debian.org/debian-security stable/updates main
 deb http://ftp.debian.org/debian buster-backports main
 deb-src http://ftp.debian.org/debian buster-backports main
 EOF
-	apt-get update --fix-missing
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y'
-	clear
-	fi
-	if [[ $debian9_install == 1 ]]; then
+fi
+	if [[ ${debian9_install} == 1 ]]; then
 		cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
 #                   OFFICIAL DEBIAN REPOS                    
@@ -797,12 +791,12 @@ deb-src http://deb.debian.org/debian-security oldstable/updates main
 deb http://ftp.debian.org/debian stretch-backports main
 deb-src http://ftp.debian.org/debian stretch-backports main
 EOF
+fi
 	apt-get update --fix-missing
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y'
-	fi
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
 	clear
  else
@@ -841,7 +835,7 @@ upgradesystem
 fi
 ###########################################
 	if [[ $install_bbr == 1 ]]; then
-	colorEcho ${INFO} "设置(setting up) TCP-BBR boost technology"
+	colorEcho ${INFO} "Enabling TCP-BBR boost"
 	#iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
 	cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 #net.ipv4.ip_forward = 1
@@ -1049,7 +1043,7 @@ fi
 #####################################################
 if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
 	clear
-	colorEcho ${INFO} "安装Nginx(Install Nginx ing)"
+	colorEcho ${INFO} "Install Nginx ing"
 	if [[ $dist != centos ]]; then
 	curl -LO --progress-bar https://nginx.org/keys/nginx_signing.key
 	apt-key add nginx_signing.key
@@ -1185,7 +1179,7 @@ clear
 if [[ $install_tracker = 1 ]]; then
 	if [[ ! -f /usr/bin/bittorrent-tracker ]]; then
 		clear
-		colorEcho ${INFO} "安装Bittorrent-tracker(Install bittorrent-tracker ing)"
+		colorEcho ${INFO} "Install Bittorrent-tracker ing"
 	if [[ $dist = debian ]]; then
 		export DEBIAN_FRONTEND=noninteractive 
 		curl -sL https://deb.nodesource.com/setup_13.x | bash -
@@ -1231,7 +1225,7 @@ clear
 if [[ $install_file = 1 ]]; then
 	if [[ ! -f /usr/local/bin/filebrowser ]]; then
 		clear
-		colorEcho ${INFO} "安装Filebrowser(Install Filebrowser ing)"
+		colorEcho ${INFO} "Install Filebrowser ing"
 	if [[ $dist != centos ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
@@ -1359,7 +1353,7 @@ EOF
 	clear
 	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
 	#usermod -a -G aria2 nginx
-	useradd -r aria2 --shell=/usr/sbin/nologin
+	#useradd -r aria2 --shell=/usr/sbin/nologin
 	if [[ $dist != centos ]]; then
 		apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
 		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c.xz
@@ -1387,7 +1381,7 @@ systemctl enable aria2
 systemctl start aria2
 fi
 #############################################
-if [[ $dnsmasq_install == 1 ]]; then
+if [[ ${dnsmasq_install} == 1 ]]; then
 	if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
 		mkdir /etc/dnscrypt-proxy/
 	fi
@@ -1439,7 +1433,7 @@ if [[ $dnsmasq_install == 1 ]]; then
 EOF
 ipv6_true="false"
 block_ipv6="true"
-if [[ -n $myipv6 ]]; then
+if [[ -n ${myipv6} ]]; then
 	ping -6 ipv6.google.com -c 2
 	if [[ $? -eq 0 ]]; then
 		ipv6_true="true"
@@ -1566,7 +1560,7 @@ systemctl daemon-reload
 systemctl enable dnscrypt-proxy.service
 	if [[ ! -f /usr/sbin/dnscrypt-proxy ]]; then
 	clear
-	colorEcho ${INFO} "安装dnscrypt-proxy(Install dnscrypt-proxy ing)"
+	colorEcho ${INFO} "Install dnscrypt-proxy ing"
 		if [[ $(systemctl is-active dnsmasq) == active ]]; then
 			systemctl disable dnsmasq
 		fi
@@ -1590,7 +1584,7 @@ clear
 if [[ $install_tor = 1 ]]; then
 	clear
 	if [[ ! -f /usr/bin/tor ]]; then
-		colorEcho ${INFO} "安装Tor(Install Tor Relay ing)"
+		colorEcho ${INFO} "Install Tor Relay ing"
 	if [[ $dist != centos ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	touch /etc/apt/sources.list.d/tor.list
@@ -1626,7 +1620,7 @@ fi
 if [[ $install_netdata = 1 ]]; then
 	if [[ ! -f /usr/sbin/netdata ]]; then
 		clear
-		colorEcho ${INFO} "安装Netdata(Install netdata ing)"
+		colorEcho ${INFO} "Install netdata ing"
 		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
 		sleep 1
 		cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
@@ -1644,7 +1638,7 @@ EOF
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
 		touch /opt/netdata/etc/netdata/python.d/logind.conf
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
-		colorEcho ${INFO} "重启Netdata(Restart netdata ing)"
+		colorEcho ${INFO} "Restart netdata ing"
 		systemctl restart netdata
 		cd
 	fi
@@ -1654,12 +1648,12 @@ clear
 if [[ $install_trojan = 1 ]]; then
 	if [[ ! -f /usr/local/bin/trojan ]]; then
 	clear
-	colorEcho ${INFO} "安装Trojan-GFW(Install Trojan-GFW ing)"
+	colorEcho ${INFO} "Install Trojan-GFW ing"
 	useradd -r trojan --shell=/usr/sbin/nologin
 	bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
 	systemctl daemon-reload
 	clear
-	colorEcho ${INFO} "配置(configing) trojan-gfw"
+	colorEcho ${INFO} "configuring trojan-gfw"
 	setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/trojan
 	fi
 	ipv4_prefer="true"
@@ -2938,7 +2932,7 @@ advancedMenu() {
 		colorEcho ${SUCCESS} "Remove complete"
 		;;
 		Exit)
-		whiptail --title "脚本已退出" --msgbox "脚本已退出(Bash Exited) RTFM: https://github.com/johnrosen1/trojan-gfw-script" 8 78
+		whiptail --title "Bash Exited" --msgbox "Bash Exited RTFM: https://github.com/johnrosen1/trojan-gfw-script" 8 78
 		exit
 		;;
 		esac
@@ -2951,14 +2945,14 @@ if [[ -f /root/.trojan/license.json ]]; then
 fi
 
 if [[ $license != 1 ]]; then
-if (whiptail --title "Accept LICENSE?" --yesno "已阅读并接受MIT License(Please read and accept the MIT License)? https://github.com/johnrosen1/trojan-gfw-script/blob/master/LICENSE" 8 78); then
+if (whiptail --title "Accept LICENSE?" --yesno "Please read and accept the MIT License！ https://github.com/johnrosen1/trojan-gfw-script/blob/master/LICENSE" 8 78); then
 	cat > '/root/.trojan/license.json' << EOF
 {
   "license": "1"
 }
 EOF
 	else
-		whiptail --title "Accept LICENSE required" --msgbox "你必须阅读并接受MIT License才能继续(You must read and accept the MIT License to continue !!!)" 8 78
+		whiptail --title "Accept LICENSE required" --msgbox "You must read and accept the MIT License to continue !!!" 8 78
 		exit 1
 	fi
 fi
