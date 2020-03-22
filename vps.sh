@@ -2039,6 +2039,7 @@ echo "        proxy_hide_header       Origin;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header        Referer                 '';" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header        Origin                  '';" >> /etc/nginx/conf.d/trojan.conf
 echo "        # add_header              X-Frame-Options         "SAMEORIGIN"; # not needed since 4.1.0" >> /etc/nginx/conf.d/trojan.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 fi
 if [[ $install_file == 1 ]]; then
