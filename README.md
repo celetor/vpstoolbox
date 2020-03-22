@@ -16,9 +16,6 @@ Then
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vps.sh)"
 ```
-Screenshots:
-![menu](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/screenshot/1.png)
-![choose](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/screenshot/2.png)
 Flowchart:
 ![flowchart](https://raw.githubusercontent.com/jerrypoma/trojan-gfw-script/master/vpstoolbox.png)
 
