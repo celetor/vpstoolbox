@@ -433,31 +433,30 @@ if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安�
     fi
 fi
 
-whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨慎选择(Please choose carefully)" --title "User choose" --checklist --separate-output --nocancel "請按空格來選擇: !!! 请谨慎选择 !!!
-若不確定，請保持默認配置並回車" 25 75 17 \
-"back" "返回上级菜单(Back to main menu)" off \
+whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨慎选择(Please choose carefully)" --title "User choice" --checklist --separate-output --nocancel "请按空格來谨慎选择(Please press space to choose carefully) !!!" 25 52 17 \
+"Back" "返回上级菜单(Back to main menu)" off \
 "系统" "System" on  \
-"1" "系统升级(System Upgrade)" on \
-"2" "启用BBR | TCP效能优化(TCP-Turbo)" on \
+"1" "System Upgrade" on \
+"2" "Enable BBR | TCP-Turbo" on \
 "代理" "Proxy" on  \
-"3" "安裝Trojan-GFW" on \
-"4" "安裝Dnscrypt-proxy | DNS加密(dns encryption)" on \
+"3" "Trojan-GFW" on \
+"4" "Dnscrypt-proxy | Dns encryption" on \
 "下载" "Download" on  \
-"5" "安裝Qbittorrent | BT客户端(Bittorrent Client)" off \
-"6" "安裝Bittorrent-Tracker" off \
-"7" "安裝Aria2" on \
-"8" "安裝Filebrowser | 网盘(File manager)" on \
+"5" "Qbittorrent | Bittorrent Client" off \
+"6" "Bittorrent-Tracker" off \
+"7" "Aria2" on \
+"8" "Filebrowser | 网盘(File manager)" on \
 "状态" "Status" on  \
-"9" "安裝Netdata | 服务器状态监控(Server status monitor)" on \
+"9" "Netdata | Server status monitor" on \
 "其他" "Others" on  \
-"10" "安裝Tor-Relay" off \
-"11" "安裝BBRPLUS" off \
-"12" "仅启用TLS1.3(Enable TLS1.3 only)" off 2>results
+"10" "Tor-Relay" off \
+"11" "BBRPLUS" off \
+"12" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
 	case $choice in
-		back) 
+		Back) 
 		advancedMenu
 		break
 		;;
@@ -1945,6 +1944,7 @@ if [[ $install_trojan == 1 ]]; then
 #Do not change these settings unless you know what you are doing !
 server {
 	listen 127.0.0.1:80;
+	listen 127.0.0.1:82 http2;
 	server_name $domain;
 	if (\$http_user_agent ~* (wget|curl) ) { return 403; }
 	if (\$http_user_agent = "") { return 403; }
