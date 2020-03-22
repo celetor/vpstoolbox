@@ -238,6 +238,7 @@ footer a:link {
                     <ol>
                         <li>请将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！</li>
                         <li>请在Qbittorrent中添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a> ！！！否则速度不會快的！！！</li>
+                        <li>请在Web选项中将监听地址修改为127.0.0.1(端口请勿修改)来防止未授权访问！！！</li>
                     </ol>
                     
                     <p>附：优秀的BT站点推荐(Related Links)</p>
@@ -327,8 +328,8 @@ footer a:link {
                     </ul>
                     <p>Dnscrypt-proxy</p>
                     <ul>
-                        <li><code>sudo nano /etc/dnscrypt-proxy.toml</code></li>
-                        <li><code>sudo nano /etc/dnscrypt-proxy.toml</code></li>
+                        <li><code>sudo nano /etc/dnscrypt-proxy/dnscrypt-proxy.toml</code></li>
+                        <li><code>sudo systemctl start/restart/status dnscrypt-proxy</code></li>
                     </ul>
                     <p>Aria2</p>
                     <ul>
