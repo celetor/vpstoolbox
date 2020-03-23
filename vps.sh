@@ -941,6 +941,7 @@ if [[ -f /etc/trojan/trojan.crt ]] || [[ $dns_api == 1 ]]; then
 	whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
 	clear
 	colorEcho ${ERROR} "Please consider use api to issue certificate instead!"
+	exit 1
 	fi  
 fi
 #############################################
