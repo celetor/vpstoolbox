@@ -2153,9 +2153,81 @@ sharelink(){
 	if [[ $install_trojan = 1 ]]; then
 		curl -LO --progress-bar https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py
 		chmod +x trojan-url.py
-		./trojan-url.py -q -i /usr/share/nginx/html/client1-$password1.json -o /usr/share/nginx/html/$password1.png
-		./trojan-url.py -q -i /usr/share/nginx/html/client2-$password2.json -o /usr/share/nginx/html/$password2.png
-		rm -rf trojan-url.py
+	cat > "/usr/share/nginx/client1.json" << EOF
+{
+	"run_type": "client",
+	"local_addr": "127.0.0.1",
+	"local_port": 1080,
+	"remote_addr": "$domain",
+	"remote_port": 443,
+	"password": [
+		"$password1"
+	],
+	"log_level": 1,
+	"ssl": {
+		"verify": true,
+		"verify_hostname": true,
+		"cert": "",
+		"cipher": "$cipher_client",
+		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+		"sni": "",
+		"alpn": [
+			"h2",
+			"http/1.1"
+		],
+		"reuse_session": true,
+		"session_ticket": false,
+		"curves": ""
+	},
+	"tcp": {
+		"no_delay": true,
+		"keep_alive": true,
+		"reuse_port": false,
+		"fast_open": false,
+		"fast_open_qlen": 20
+	}
+}
+EOF
+	cat > "/usr/share/nginx/client2.json" << EOF
+{
+	"run_type": "client",
+	"local_addr": "127.0.0.1",
+	"local_port": 1080,
+	"remote_addr": "$domain",
+	"remote_port": 443,
+	"password": [
+		"$password2"
+	],
+	"log_level": 1,
+	"ssl": {
+		"verify": true,
+		"verify_hostname": true,
+		"cert": "",
+		"cipher": "$cipher_client",
+		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+		"sni": "",
+		"alpn": [
+			"h2",
+			"http/1.1"
+		],
+		"reuse_session": true,
+		"session_ticket": false,
+		"curves": ""
+	},
+	"tcp": {
+		"no_delay": true,
+		"keep_alive": true,
+		"reuse_port": false,
+		"fast_open": false,
+		"fast_open_qlen": 20
+	}
+}
+EOF
+	./trojan-url.py -q -i /usr/share/nginx/client1.json -o /usr/share/nginx/html/$password1.png
+	./trojan-url.py -q -i /usr/share/nginx/client2.json -o /usr/share/nginx/html/$password2.png
+	rm /usr/share/nginx/client1.json
+	rm /usr/share/nginx/client2.json
+	rm -rf trojan-url.py
 	fi
 	cat > "/usr/share/nginx/html/result.html" << EOF
 <!DOCTYPE html>
