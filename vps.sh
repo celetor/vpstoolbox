@@ -2013,6 +2013,7 @@ fi
 if [[ $install_qbt == 1 ]]; then
 echo "    location $qbtpath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass              http://127.0.0.1:8080/;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header        X-Forwarded-Host        \$server_name:\$server_port;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_hide_header       Referer;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_hide_header       Origin;" >> /etc/nginx/conf.d/trojan.conf
