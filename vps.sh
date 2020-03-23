@@ -1089,6 +1089,7 @@ events {
 }
 
 http {
+	http2_push_preload on;
 	aio threads;
 	charset UTF-8;
 	tcp_nodelay on;
@@ -2002,7 +2003,6 @@ echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:6800/jsonrpc;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
-echo "        http2_push_preload on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
@@ -2015,7 +2015,6 @@ if [[ $install_qbt == 1 ]]; then
 echo "    location $qbtpath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass              http://127.0.0.1:8080/;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
-echo "        http2_push_preload on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header        X-Forwarded-Host        \$server_name:\$server_port;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_hide_header       Referer;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_hide_header       Origin;" >> /etc/nginx/conf.d/trojan.conf
@@ -2030,7 +2029,6 @@ echo "    location $filepath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:8081/;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
-echo "        http2_push_preload on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
@@ -2043,7 +2041,6 @@ echo "    location $trackerpath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:8000/announce;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
-echo "        http2_push_preload on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
@@ -2055,7 +2052,6 @@ echo "    location $trackerstatuspath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:8000/stats;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
-echo "        http2_push_preload on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
@@ -2070,7 +2066,6 @@ echo "        proxy_set_header X-Forwarded-Host \$host;" >> /etc/nginx/conf.d/tr
 echo "        proxy_set_header X-Forwarded-Server \$host;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/trojan.conf
-echo "        http2_push_preload on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/trojan.conf
 echo '        proxy_set_header Connection "keep-alive";' >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_store off;" >> /etc/nginx/conf.d/trojan.conf
