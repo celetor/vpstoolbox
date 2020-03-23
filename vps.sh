@@ -1693,8 +1693,12 @@ systemctl enable trojan
         "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
         "prefer_server_cipher": true,
         "alpn": [
+        	"h2",
             "http/1.1"
         ],
+        "alpn_port_override": {
+            "h2": 82
+        },
         "reuse_session": true,
         "session_ticket": false,
         "session_timeout": 600,
@@ -1716,7 +1720,8 @@ systemctl enable trojan
         "server_port": 3306,
         "database": "trojan",
         "username": "trojan",
-        "password": ""
+        "password": "",
+        "cafile": ""
     }
 }
 EOF
