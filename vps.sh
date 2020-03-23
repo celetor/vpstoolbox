@@ -797,18 +797,15 @@ installdependency(){
 colorEcho ${INFO} "Updating system"
 	$pack update
 	if [[ $install_status == 0 ]]; then
-		caddystatus=$(systemctl is-active caddy)
-		if [[ $caddystatus == active ]]; then
+		if [[ $(systemctl is-active caddy) == active ]]; then
 			systemctl stop caddy
 			systemctl disable caddy
 		fi
-		apache2status=$(systemctl is-active apache2)
-		if [[ $caddystatus == active ]]; then
+		if [[ $(systemctl is-active apache2) == active ]]; then
 			systemctl stop apache2
 			systemctl disable apache2
 		fi
-		httpdstatus=$(systemctl is-active httpd)
-		if [[ $httpdstatus == active ]]; then
+		if [[ $(systemctl is-active httpd) == active ]]; then
 			systemctl stop httpd
 			systemctl disable httpd
 		fi
