@@ -538,16 +538,16 @@ fi
 		trackerpath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker路径" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
 		done
 		while [[ -z ${trackerstatuspath} ]]; do
-		trackerstatuspath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker状态路径" 8 78 /status --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
+		trackerstatuspath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker状态路径" 8 78 /mytracker --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
 	if [[ ${install_aria} == 1 ]]; then
 		while [[ -z ${ariapath} ]]; do
-		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC路径" 8 78 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
+		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC路径" 8 78 /myaria2 --title "Aria2 path input" 3>&1 1>&2 2>&3)
 		done
 		while [[ -z $ariapasswd ]]; do
-		ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+		ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token(密码)" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
 		if [[ -z ${ariapasswd} ]]; then
 		ariapasswd="123456789"
 		fi
@@ -940,6 +940,7 @@ if [[ -f /etc/trojan/trojan.crt ]] || [[ $dns_api == 1 ]]; then
 	else
 	whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
 	clear
+	colorEcho ${ERROR} "Please consider use api to issue certificate instead!"
 	fi  
 fi
 #############################################
@@ -1009,6 +1010,8 @@ events {
 }
 
 http {
+	proxy_intercept_errors on;
+	proxy_socket_keepalive on;
 	proxy_http_version 1.1;
 	http2_push_preload on;
 	aio threads;
@@ -1911,7 +1914,6 @@ if [[ $dnsmasq_install == 1 ]]; then
 echo "    #location /dns { #Doh Server !" >> /etc/nginx/conf.d/trojan.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        #proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        #proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        #proxy_pass https://127.0.0.1:3000/dns-query;" >> /etc/nginx/conf.d/trojan.conf
 echo "        #proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
 echo "        #proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
@@ -1925,7 +1927,6 @@ if [[ $install_aria == 1 ]]; then
 echo "    location $ariapath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:6800/jsonrpc;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
@@ -1945,7 +1946,6 @@ fi
 if [[ $install_file == 1 ]]; then
 echo "    location $filepath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:8081/;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
@@ -1956,7 +1956,6 @@ fi
 if [[ $install_tracker == 1 ]]; then
 echo "    location $trackerpath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:8000/announce;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
@@ -1966,7 +1965,6 @@ echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        }" >> /etc/nginx/conf.d/trojan.conf
 echo "    location $trackerstatuspath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:8000/stats;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_intercept_errors on;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
