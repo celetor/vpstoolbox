@@ -1343,7 +1343,7 @@ EOF
 ipv6_true="false"
 block_ipv6="true"
 if [[ -n ${myipv6} ]]; then
-	ping -6 ipv6.google.com -c 2
+	ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
 	if [[ $? -eq 0 ]]; then
 		ipv6_true="true"
 		block_ipv6="false"
@@ -1567,7 +1567,7 @@ if [[ $install_trojan = 1 ]]; then
 	fi
 	ipv4_prefer="true"
 	if [[ -n $myipv6 ]]; then
-		ping -6 ipv6.google.com -c 2
+		ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
 		if [[ $? -eq 0 ]]; then
 			ipv4_prefer="false"
 		fi
