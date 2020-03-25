@@ -4,18 +4,14 @@
 ## This script will help you set up many kind of useful tools on your VPS including website proxy download monitor and more.
 
 ### How to use
-For apt based system like Debian/Ubuntu
-```
-apt-get update && apt-get install sudo curl -y
-```
-For yum based system like Centos(not recommended)
-```
-yum update -y && yum install sudo curl -y
-```
-Then
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vps.sh)"
 ```
+If curl command not found , then:  
+```
+apt-get update && apt-get install sudo curl -y
+```
+
 Flowchart:
 ![flowchart](https://raw.githubusercontent.com/jerrypoma/trojan-gfw-script/master/vpstoolbox.png)
 
