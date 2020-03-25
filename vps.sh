@@ -2755,7 +2755,7 @@ bandwithusage(){
 }
 ##################################
 advancedMenu() {
-	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "hi" --title "VPS ToolBox Menu" --menu --nocancel "Choose an option: https://github.com/johnrosen1/trojan-gfw-script
+	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi,Please do not use Centos(请不要使用Centos)!" --title "VPS ToolBox Menu" --menu --nocancel "Choose an option: https://github.com/johnrosen1/trojan-gfw-script
 运行此脚本前请在控制面板中开启80 443端口并关闭Cloudflare CDN!" 13 78 4 \
 	"Install" "安裝" \
 	"Result" "结果" \
