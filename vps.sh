@@ -419,7 +419,7 @@ if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安�
     fi
 fi
 
-whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨慎选择(Please choose carefully)" --title "User choice" --checklist --separate-output --nocancel "请按空格來谨慎选择(Please press space to choose carefully) !!!" 25 52 17 \
+whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨慎选择(Please choose carefully)" --title "User choice" --checklist --separate-output --nocancel "请按空格來谨慎选择(Please press space to choose carefully) !!!" 24 52 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "系统" "System" on  \
 "1" "System Upgrade" on \
@@ -435,9 +435,10 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨�
 "状态" "Status" on  \
 "9" "Netdata | Server status monitor" on \
 "其他" "Others" on  \
-"10" "Tor-Relay" off \
+"10" "OPENSSL" off \
 "11" "BBRPLUS" off \
-"12" "Enable TLS1.3 only" off 2>results
+"12" "Tor-Relay" off \
+"13" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -474,12 +475,15 @@ do
 		install_netdata=1
 		;;
 		10)
-		install_tor=1
+		install_openssl=1
 		;;
 		11)
 		install_bbrplus=1
 		;;
-		12) 
+		12)
+		install_tor=1
+		;;
+		13) 
 		tls13only=1
 		;;
 		*)
@@ -923,7 +927,7 @@ if [[ $dist != centos ]]; then
 	apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron socat e2fsprogs less -q -y
 	apt-get install python3-qrcode -q -y
 else
-	$pack install sudo curl wget gnupg python3-qrcode unzip bind-utils epel-release chrony systemd dbus xz cron socat
+	$pack install sudo curl wget gnupg unzip bind-utils epel-release chrony systemd dbus xz cron socat
 	$pack install python3-qrcode
 fi
 clear
@@ -942,8 +946,25 @@ if [[ -f /etc/trojan/trojan.crt ]] || [[ $dns_api == 1 ]]; then
 	fi  
 fi
 #############################################
-if [[ $tls13only = 1 ]]; then
+if [[ $tls13only == 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
+fi
+###########################################
+if [[ ${install_openssl} == 1 ]] && [[ ${dist} != centos ]]; then
+	colorEcho ${INFO} "Install OPENSSL ing"
+apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
+wget https://www.openssl.org/source/openssl-1.1.1e.tar.gz
+tar -xvf openssl-1.1.1e.tar.gz
+rm openssl-1.1.1e.tar.gz
+cd openssl-1.1.1e
+./config no-ssl2 no-ssl3
+make
+make test
+make install
+cd ..
+rm -rf openssl*
+apt-get purge build-essential -y
+apt-get autoremove -y
 fi
 #####################################################
 if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
@@ -1473,7 +1494,7 @@ systemctl enable dnscrypt-proxy.service
 		if [[ $(systemctl is-active dnsmasq) == active ]]; then
 			systemctl disable dnsmasq
 		fi
-	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.40/dnscrypt-proxy-linux_x86_64-2.0.40.tar.gz
+	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.41/dnscrypt-proxy-linux_x86_64-2.0.41.tar.gz
 	tar -xvf dnscrypt-proxy-linux_x86_64-2.0.40.tar.gz
 	rm dnscrypt-proxy-linux_x86_64-2.0.40.tar.gz
 	cd linux-x86_64
