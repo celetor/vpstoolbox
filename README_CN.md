@@ -10,7 +10,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 如果 sudo/curl command not found ,则
 
 ```
-apt-get update && apt-get install sudo curl -y
+apt-get update && apt-get install sudo curl -y || yum update -y && yum install sudo curl -y
 ```
 
 #### 運行前的要求:
