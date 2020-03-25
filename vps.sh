@@ -1495,7 +1495,7 @@ systemctl enable dnscrypt-proxy.service
 			systemctl disable dnsmasq
 		fi
 	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.41/dnscrypt-proxy-linux_x86_64-2.0.41.tar.gz
-	tar -xvf dnscrypt-proxy-linux_x86_64-2.0.40.tar.gz
+	tar -xvf dnscrypt-proxy-linux_x86_64-2.0.41.tar.gz
 	rm dnscrypt-proxy-linux_x86_64-2.0.40.tar.gz
 	cd linux-x86_64
 	cp -f dnscrypt-proxy /usr/sbin/dnscrypt-proxy
