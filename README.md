@@ -9,7 +9,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-g
 ```
 If sudo/curl command not found , then:  
 ```
-apt-get update && apt-get install sudo curl -y
+apt-get update && apt-get install sudo curl -y || yum update -y && yum install sudo curl -y
 ```
 
 Flowchart:
