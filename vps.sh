@@ -1657,7 +1657,6 @@ Group=trojan
 ExecStart=/usr/local/bin/trojan /usr/local/etc/trojan/config.json
 ExecReload=/bin/kill -HUP \$MAINPID
 LimitNOFILE=51200
-LimitNPROC=51200
 Restart=on-failure
 RestartSec=1s
 
