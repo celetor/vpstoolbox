@@ -3,17 +3,14 @@
 ## 此Bash Script将帮助你以极快的速度从零开始打造一台全能的代理+下載+監控一体化的伺服器.
 
 ### 使用方法
-安裝依賴(Debian/Ubuntu)
-```
-apt-get update && apt-get install sudo whiptail curl locales -y
-```
-安裝依賴(Centos,不推荐)
-```
-yum update -y && yum install sudo newt curl -y
-```
-運行腳本
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vps.sh)"
+```
+
+如果 curl command not found ,则
+
+```
+apt-get update && apt-get install sudo whiptail curl locales -y
 ```
 
 #### 運行前的要求:
