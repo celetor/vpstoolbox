@@ -31,7 +31,7 @@ Flowchart:
 
 1. Auto install and config **[NGINX](https://www.nginx.com/)**
 3. Auto issue renew [let's encrypt certificate](https://letsencrypt.org/) and **auto reload Trojan-GFW after renewal**
-4. Auto OS Detect **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/) Centos(not recommended)**
+4. Auto OS Detect **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/) (Centos not recommended)**
 5. Auto [domain resolve verification](https://en.wikipedia.org/wiki/Nslookup)
 6. Auto [iptables](https://en.wikipedia.org/wiki/Iptables)(includes ipv6) firewall config and [iptables-persistent](https://github.com/zertrin/iptables-persistent)
 7. Auto generate Trojan-GFW [client config](https://trojan-gfw.github.io/trojan/config) 
