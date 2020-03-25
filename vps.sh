@@ -436,9 +436,10 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨�
 "9" "Netdata | Server status monitor" on \
 "其他" "Others" on  \
 "10" "OPENSSL" off \
-"11" "BBRPLUS" off \
-"12" "Tor-Relay" off \
-"13" "Enable TLS1.3 only" off 2>results
+"11" "OPENSSH **EXPERIMENTAL**" off \
+"12" "BBRPLUS" off \
+"13" "Tor-Relay" off \
+"14" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -478,12 +479,15 @@ do
 		install_openssl=1
 		;;
 		11)
-		install_bbrplus=1
+		install_openssh=1
 		;;
 		12)
+		install_bbrplus=1
+		;;
+		13)
 		install_tor=1
 		;;
-		13) 
+		14) 
 		tls13only=1
 		;;
 		*)
@@ -965,6 +969,51 @@ cd ..
 rm -rf openssl*
 apt-get purge build-essential -y
 apt-get autoremove -y
+fi
+###########################################
+if [[ ${install_openssh} == 1 ]] && [[ ${dist} != centos ]]; then
+	colorEcho ${INFO} "Install OPENSSH ing"
+apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
+wget https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.2p1.tar.gz
+tar -xvf openssh*
+rm openssh-8.2p1.tar.gz
+cd openssh-8.2p1
+./configure --with-md5-passwords
+make
+#make tests
+make install
+setcap CAP_NET_BIND_SERVICE=+eip /usr/local/sbin/sshd
+cd ..
+rm -rf openssh*
+apt-get purge build-essential -y
+apt-get autoremove -y
+#cp -f /usr/local/sbin/sshd /usr/sbin/sshd
+	cat > '/lib/systemd/system/ssh.service' << EOF
+[Unit]
+Description=OpenBSD Secure Shell server
+Documentation=man:sshd(8) man:sshd_config(5)
+After=network.target auditd.service
+#ConditionPathExists=!/etc/ssh/sshd_not_to_be_run
+
+[Service]
+RemainAfterExit=yes
+#EnvironmentFile=-/etc/default/ssh
+ExecStartPre=/usr/local/sbin/sshd -t
+ExecStart=/usr/local/sbin/sshd -f /usr/local/etc/sshd_config -D
+ExecReload=/usr/local/sbin/sshd -t
+ExecReload=/bin/kill -HUP \$MAINPID
+KillMode=process
+Restart=on-failure
+RestartPreventExitStatus=255
+Type=notify
+RuntimeDirectory=sshd
+RuntimeDirectoryMode=0755
+
+[Install]
+WantedBy=multi-user.target
+Alias=sshd.service
+EOF
+systemctl daemon-reload
 fi
 #####################################################
 if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
