@@ -7,7 +7,7 @@
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vps.sh)"
 ```
-If curl command not found , then:  
+If sudo/curl command not found , then:  
 ```
 apt-get update && apt-get install sudo curl -y
 ```
