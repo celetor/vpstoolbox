@@ -92,10 +92,5 @@ sudo ~/.acme.sh/acme.sh --cron //only if you use let's encrypt certificate
 timedatectl
 iptables -L -v
 ```
-#### [Telegram](https://telegram.org/) Channel And Group
-
-### https://t.me/johnrosen1
-
-### https://t.me/trojanscript
 
 [中文文檔](https://github.com/johnrosen1/trojan-gfw-script/blob/master/README_CN.md)
