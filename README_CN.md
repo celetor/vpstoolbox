@@ -45,8 +45,6 @@ apt-get update && apt-get install sudo curl -y || (yum update -y && yum install 
 23. 完全/部分 卸載
 24. 更多懒得写了...
 
-**如果你需要更多功能, 请 open a Github issue / 提交pull request.(严禁Centos相关issue/request)**
-
 ### VPS 推薦 (无个人aff)
 
 #### https://www.kamatera.com/ 1MONTH300 优惠码首月免费
