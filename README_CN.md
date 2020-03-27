@@ -57,33 +57,4 @@ Qbittorrent 相关: https://www.johnrosen1.com/qbt/
 
 Trojan-GFW 相关: https://www.johnrosen1.com/trojan/
 
-### 查錯指南
-
-网络相关：
-
-https://tools.ipip.net/ping.php
-
-伺服器相关：
-
-```
-sudo nginx -t
-sudo systemctl status trojan
-sudo systemctl status nginx
-sudo systemctl status tor
-sudo systemctl status tor@default
-sudo systemctl status dnscrypt-proxy
-sudo systemctl status qbittorrent
-sudo systemctl status tracker
-sudo systemctl status aria2
-sudo systemctl status filebrowser
-sudo systemctl status netdata
-journalctl -e -u trojan.service
-cat /usr/local/etc/trojan/config.json
-cat /etc/nginx/conf.d/trojan.conf
-cat /etc/aria.conf
-crontab -l
-sudo ~/.acme.sh/acme.sh --cron //仅当使用let's encrypt证书是有效
-timedatectl
-iptables -L -v
-```
 
