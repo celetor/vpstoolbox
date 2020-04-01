@@ -1032,13 +1032,24 @@ EOF
 	apt-get update -q
 	apt-get install nginx -q -y
  	else
- 	yum install nginx -y -q
-	systemctl stop nginx
-	curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/binary/nginx_centos
-	cp -f nginx_centos /usr/sbin/nginx
-	rm nginx_centos
+ 	#yum install nginx -y -q
+	#systemctl stop nginx
+	yum group install "Development Tools" -y
+	useradd -r nginx --shell=/usr/sbin/nologin
+	wget http://nginx.org/download/nginx-1.17.9.tar.gz && tar -xvf nginx-1.17.9.tar.gz && rm nginx-1.17.9.tar.gz -f
+	wget https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz && tar xzvf pcre-8.40.tar.gz && rm pcre-8.40.tar.gz -f
+	wget https://www.zlib.net/zlib-1.2.11.tar.gz && tar xzvf zlib-1.2.11.tar.gz && rm zlib-1.2.11.tar.gz -f
+	cd nginx-1.17.9
+	./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_realip_module --with-http_secure_link_module --with-http_v2_module --with-stream --with-stream_realip_module --with-http_flv_module --with-http_mp4_module --without-select_module --without-poll_module --with-http_stub_status_module --with-pcre=../pcre-8.40 --with-zlib=../zlib-1.2.11
+	make -j $(nproc --all)
+	make install
+	cd ..
+	rm -rf nginx-1.17.9
+	rm -rf pcre-8.40
+	rm -rf zlib-1.2.11
 	mkdir /var/cache/nginx/
-	chmod +x /usr/sbin/nginx
+	mkdir /usr/share/nginx/
+	mkdir /usr/share/nginx/html/
  	fi
 fi
 	cat > '/lib/systemd/system/nginx.service' << EOF
@@ -1342,10 +1353,9 @@ EOF
 		rm aria2c
 		apt-get autoremove -q -y
 	else
-		yum group install "Development Tools"
+		yum group install "Development Tools" -y
 		yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev
-		wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q
-		tar -xvf aria2-1.35.0.tar.xz
+		wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q && tar -xvf aria2-1.35.0.tar.xz && rm aria2-1.35.0.tar.xz -f
 		cd aria2-1.35.0
 		./configure --with-openssl --without-gnutls --without-appletls --without-wintls
 		make -j $(nproc --all)
