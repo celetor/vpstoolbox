@@ -957,10 +957,10 @@ fi
 if [[ ${install_openssl} == 1 ]] && [[ ${dist} != centos ]]; then
 	colorEcho ${INFO} "Install OPENSSL ing"
 apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
-wget https://www.openssl.org/source/openssl-1.1.1e.tar.gz
-tar -xvf openssl-1.1.1e.tar.gz
-rm openssl-1.1.1e.tar.gz
-cd openssl-1.1.1e
+wget https://www.openssl.org/source/openssl-1.1.1f.tar.gz
+tar -xvf openssl-1.1.1f.tar.gz
+rm openssl-1.1.1f.tar.gz
+cd openssl-1.1.1f
 ./config no-ssl2 no-ssl3
 make
 make test
