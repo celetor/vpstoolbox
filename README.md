@@ -23,7 +23,7 @@ Flowchart:
 
 ## If you found it useful , please give a star ,thanks!
 
-### Live Demo
+### Live Demo(no Guarantee)
 
 [https://www.trojan-gfw.xyz/vpstoolbox.html](https://www.trojan-gfw.xyz/vpstoolbox.html)
 
@@ -53,8 +53,4 @@ Flowchart:
 24. And so on...
 
 **If you need more functions, please open a Github issue.(No Centos related issues or bugs allowed except pull requests)**
-
-### VPS Recommendation (no personal aff included)
-
-#### https://www.kamatera.com/ 1MONTH300
 
