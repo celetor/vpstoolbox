@@ -45,8 +45,4 @@ apt-get update && apt-get install sudo curl -y || (yum update -y && yum install 
 23. 完全/部分 卸載
 24. 更多懒得写了...
 
-### VPS 推薦 (无个人aff)
-
-#### https://www.kamatera.com/ 1MONTH300 优惠码首月免费
-
 
