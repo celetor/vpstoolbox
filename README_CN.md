@@ -49,10 +49,4 @@ apt-get update && apt-get install sudo curl -y || (yum update -y && yum install 
 
 #### https://www.kamatera.com/ 1MONTH300 优惠码首月免费
 
-#### 相關鏈接
-
-Qbittorrent 相关: https://www.johnrosen1.com/qbt/
-
-Trojan-GFW 相关: https://www.johnrosen1.com/trojan/
-
 
