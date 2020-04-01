@@ -47,6 +47,12 @@ if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
 	exit 1
 fi
 
+colorEcho(){
+	set +e
+	COLOR=$1
+	echo -e "\033[${COLOR}${@:2}\033[0m"
+}
+
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
 colorEcho ${INFO} "Uninstall Aliyun aegis ing"
 iptables -I INPUT -s 140.205.201.0/28 -j DROP
@@ -264,12 +270,6 @@ installacme(){
 		exit 1
 	fi
 	~/.acme.sh/acme.sh --upgrade --auto-upgrade
-}
-#############################
-colorEcho(){
-	set +e
-	COLOR=$1
-	echo -e "\033[${COLOR}${@:2}\033[0m"
 }
 #########Domain resolve verification###################
 isresolved(){
