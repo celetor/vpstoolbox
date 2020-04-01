@@ -58,4 +58,3 @@ Flowchart:
 
 #### https://www.kamatera.com/ 1MONTH300
 
-[中文文檔](https://github.com/johnrosen1/trojan-gfw-script/blob/master/README_CN.md)
