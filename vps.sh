@@ -1342,12 +1342,15 @@ EOF
 		rm aria2c
 		apt-get autoremove -q -y
 	else
+		yum group install "Development Tools"
 		yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev
-		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/aria2c_centos.xz
-		xz --decompress aria2c_centos.xz
-		cp aria2c_centos /usr/local/bin/aria2c
-		chmod +x /usr/local/bin/aria2c
-		rm aria2c_centos
+		wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q
+		tar -xvf aria2-1.35.0.tar.xz
+		cd aria2-1.35.0
+		./configure --with-openssl --without-gnutls --without-appletls --without-wintls
+		make -j $(nproc --all)
+		make install
+		cd ..
 	fi
 	touch /usr/local/bin/aria2.session
 	mkdir /usr/share/nginx/aria2/
