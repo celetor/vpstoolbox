@@ -1032,8 +1032,6 @@ EOF
 	apt-get update -q
 	apt-get install nginx -q -y
  	else
- 	#yum install nginx -y -q
-	#systemctl stop nginx
 	yum group install "Development Tools" -y
 	useradd -r nginx --shell=/usr/sbin/nologin
 	wget http://nginx.org/download/nginx-1.17.9.tar.gz && tar -xvf nginx-1.17.9.tar.gz && rm nginx-1.17.9.tar.gz -f
