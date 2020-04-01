@@ -58,9 +58,4 @@ Flowchart:
 
 #### https://www.kamatera.com/ 1MONTH300
 
-#### Related Links
-Qbittorrent Related: https://www.johnrosen1.com/qbt/
-
-Trojan-GFW Related: https://www.johnrosen1.com/trojan/
-
 [中文文檔](https://github.com/johnrosen1/trojan-gfw-script/blob/master/README_CN.md)
