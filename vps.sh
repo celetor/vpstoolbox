@@ -3002,6 +3002,7 @@ if [[ ${dist} != centos ]]; then
 	:
 	else
 	ssh-keygen -A
+	echo "" >> /etc/ssh/sshd_config
 	echo "Protocol 2" >> /etc/ssh/sshd_config
 	echo "DebianBanner no" >> /etc/ssh/sshd_config
 	echo "AllowTcpForwarding no" >> /etc/ssh/sshd_config
