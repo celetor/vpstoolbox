@@ -514,7 +514,7 @@ if [[ ${system_upgrade} == 1 ]]; then
 fi
 #####################################
 while [[ -z ${domain} ]]; do
-domain=$(whiptail --inputbox --nocancel "快輸入你的域名並按回車(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+domain=$(whiptail --inputbox --nocancel "Please enter your domain(快輸入你的域名並按回車)(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
 if (whiptail --title "hostname" --yesno "修改hostname为域名(change hostname to your domain)?" 8 78); then
 	hostnamectl set-hostname $domain
 	echo "127.0.0.1 $domain" >> /etc/hosts
@@ -522,13 +522,13 @@ fi
 done
 if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
-password1=$(whiptail --passwordbox --nocancel "Trojan-GFW密碼一(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password1} ]]; then
 	password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 	fi
 done
 while [[ -z ${password2} ]]; do
-password2=$(whiptail --passwordbox --nocancel "Trojan-GFW密碼二(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
+password2=$(whiptail --passwordbox --nocancel "Trojan-GFW Password Two(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password2} ]]; then
 	password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 	fi
@@ -537,16 +537,16 @@ fi
 ###################################
 	if [[ $install_qbt = 1 ]]; then
 		while [[ -z $qbtpath ]]; do
-		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent路径" 8 78 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Path(路径)" 8 78 /myqbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 #####################################
 	if [[ $install_tracker == 1 ]]; then
 		while [[ -z ${trackerpath} ]]; do
-		trackerpath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker路径" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
+		trackerpath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker Path(路径)" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
 		done
 		while [[ -z ${trackerstatuspath} ]]; do
-		trackerstatuspath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker状态路径" 8 78 /mytracker --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
+		trackerstatuspath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker Status Path(状态路径)" 8 78 /mytracker --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
@@ -564,13 +564,13 @@ fi
 ####################################
 	if [[ ${install_file} = 1 ]]; then
 		while [[ -z ${filepath} ]]; do
-		filepath=$(whiptail --inputbox --nocancel "Filebrowser路径" 8 78 /files/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+		filepath=$(whiptail --inputbox --nocancel "Filebrowser路径" 8 78 /myfile/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
 	if [[ ${install_netdata} = 1 ]]; then
 		while [[ -z ${netdatapath} ]]; do
-		netdatapath=$(whiptail --inputbox --nocancel "Netdata路径" 8 78 /netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
+		netdatapath=$(whiptail --inputbox --nocancel "Netdata路径" 8 78 /mynetdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
@@ -969,7 +969,7 @@ tar -xvf openssl-1.1.1f.tar.gz
 rm openssl-1.1.1f.tar.gz
 cd openssl-1.1.1f
 ./config no-ssl2 no-ssl3
-make
+make -j $(nproc --all)
 make test
 make install
 cd ..
@@ -1049,9 +1049,9 @@ EOF
 	make -j $(nproc --all)
 	make install
 	cd ..
-	rm -rf nginx-1.17.9
-	rm -rf pcre-8.40
-	rm -rf zlib-1.2.11
+	rm -rf nginx*
+	rm -rf pcre*
+	rm -rf zlib*
 	mkdir /var/cache/nginx/
 	mkdir /usr/share/nginx/
 	mkdir /usr/share/nginx/html/
@@ -1293,7 +1293,7 @@ human-readable=true
 log=/var/log/aria2.log
 rlimit-nofile=51200
 event-poll=epoll
-min-tls-version=TLSv1.1
+min-tls-version=TLSv1.2
 dir=/usr/share/nginx/aria2/
 file-allocation=falloc
 check-integrity=true
@@ -1361,10 +1361,10 @@ EOF
 		yum group install "Development Tools" -y
 		wget https://www.openssl.org/source/openssl-1.1.1f.tar.gz
 		tar -xvf openssl-1.1.1f.tar.gz
-		rm openssl-1.1.1f.tar.gz
+		rm -rf openssl-1.1.1f.tar.gz
 		cd openssl-1.1.1f
 		./config no-ssl2 no-ssl3
-		make
+		make -j $(nproc --all)
 		make test
 		make install
 		cd ..
@@ -1376,6 +1376,7 @@ EOF
 		make -j $(nproc --all)
 		make install
 		cd ..
+                rm -rf aria2*
 	fi
 	touch /usr/local/bin/aria2.session
 	mkdir /usr/share/nginx/aria2/
