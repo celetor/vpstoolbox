@@ -887,6 +887,7 @@ net.ipv4.tcp_max_syn_backlog = 30000
 net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
 net.ipv4.tcp_ecn = 1
+net.ipv4.tcp_ecn_fallback = 1
 net.ipv4.tcp_frto = 0
 ##############################
 net.ipv6.conf.all.accept_redirects = 0
