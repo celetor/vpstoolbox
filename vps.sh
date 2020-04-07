@@ -852,7 +852,7 @@ net.core.rmem_max = 67108864
 net.core.wmem_max = 67108864
 net.core.rmem_default = 65536
 net.core.wmem_default = 65536
-net.core.somaxconn = 4096
+net.core.somaxconn = 10000
 ################################
 net.ipv4.icmp_echo_ignore_broadcasts = 1
 net.ipv4.icmp_ignore_bogus_error_responses = 1
