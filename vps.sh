@@ -514,8 +514,8 @@ if [[ ${system_upgrade} == 1 ]]; then
 fi
 #####################################
 while [[ -z ${domain} ]]; do
-domain=$(whiptail --inputbox --nocancel "Please enter your domain(快輸入你的域名並按回車)(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
-if (whiptail --title "hostname" --yesno "修改hostname为域名(change hostname to your domain)?" 8 78); then
+domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你的域名)(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+if (whiptail --title "hostname" --yesno "Change hostname to your domain(修改hostname为域名)?" 8 78); then
 	hostnamectl set-hostname $domain
 	echo "127.0.0.1 $domain" >> /etc/hosts
 fi
@@ -552,7 +552,7 @@ fi
 ####################################
 	if [[ ${install_aria} == 1 ]]; then
 		while [[ -z ${ariapath} ]]; do
-		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC路径" 8 78 /myaria2 --title "Aria2 path input" 3>&1 1>&2 2>&3)
+		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Path(路径)" 8 78 /myaria2 --title "Aria2 path input" 3>&1 1>&2 2>&3)
 		done
 		while [[ -z $ariapasswd ]]; do
 		ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token(密码)" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
@@ -576,7 +576,7 @@ fi
 ####################################
 	if [[ ${install_tor} = 1 ]]; then
 		while [[ -z ${tor_name} ]]; do
-		tor_name=$(whiptail --inputbox --nocancel "快輸入想要的tor nickname並按回車" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
+		tor_name=$(whiptail --inputbox --nocancel "Tor nickname" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
 		if [[ -z ${tor_name} ]]; then
 		tor_name="myrelay"
 	fi
@@ -887,13 +887,15 @@ net.ipv4.conf.default.arp_ignore = 2
 net.ipv4.conf.all.arp_announce = 2
 net.ipv4.conf.default.arp_announce = 2
 ##############################
+net.ipv4.tcp_autocorking = 0
 net.ipv4.tcp_slow_start_after_idle = 0
 net.ipv4.tcp_max_syn_backlog = 30000
 net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
-net.ipv4.tcp_ecn = 1
+net.ipv4.tcp_ecn = 2
 net.ipv4.tcp_ecn_fallback = 1
 net.ipv4.tcp_frto = 0
+net.ipv4.tcp_fack = 0
 ##############################
 net.ipv6.conf.all.accept_redirects = 0
 net.ipv6.conf.default.accept_redirects = 0
@@ -1355,18 +1357,12 @@ EOF
 		xz --decompress aria2c.xz
 		cp -f aria2c /usr/local/bin/aria2c
 		chmod +x /usr/local/bin/aria2c
-		rm aria2c
+		rm -rf aria2c
 		apt-get autoremove -q -y
 	else
 		yum group install "Development Tools" -y
-		wget https://www.openssl.org/source/openssl-1.1.1f.tar.gz
-		tar -xvf openssl-1.1.1f.tar.gz
-		rm -rf openssl-1.1.1f.tar.gz
-		cd openssl-1.1.1f
-		./config no-ssl2 no-ssl3
-		make -j $(nproc --all)
-		make test
-		make install
+		wget https://www.openssl.org/source/openssl-1.1.1f.tar.gz && tar -xvf openssl-1.1.1f.tar.gz && rm -rf openssl-1.1.1f.tar.gz && cd openssl-1.1.1f
+		./config no-ssl2 no-ssl3 && make -j $(nproc --all) && make test && make install
 		cd ..
 		rm -rf openssl*
 		yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev
@@ -1376,13 +1372,11 @@ EOF
 		make -j $(nproc --all)
 		make install
 		cd ..
-                rm -rf aria2*
+		rm -rf aria2*
 	fi
 	touch /usr/local/bin/aria2.session
 	mkdir /usr/share/nginx/aria2/
 	chmod 755 /usr/share/nginx/aria2/
-	cd ..
-	rm -rf aria2-1.35.0
 	fi
 systemctl daemon-reload
 systemctl enable aria2
@@ -1497,12 +1491,12 @@ cache_max_ttl = 86400
 cache_neg_min_ttl = 60
 cache_neg_max_ttl = 600
 
-[local_doh]
-
-listen_addresses = ['127.0.0.1:3000']
-path = "/dns-query"
-cert_file = "/etc/trojan/trojan.crt"
-cert_key_file = "/etc/trojan/trojan.key"
+#[local_doh]
+#
+#listen_addresses = ['127.0.0.1:3000']
+#path = "/dns-query"
+#cert_file = "/etc/trojan/trojan.crt"
+#cert_key_file = "/etc/trojan/trojan.key"
 
 [query_log]
 
@@ -1954,7 +1948,7 @@ server {
 	listen 127.0.0.1:82 http2;
 	server_name $domain;
 	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
-	if (\$http_user_agent = "") { return 403; }
+	#if (\$http_user_agent = "") { return 403; }
 	if (\$host != "$domain") { return 404; }
 	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
 	#add_header X-Frame-Options SAMEORIGIN always;
@@ -1999,7 +1993,7 @@ server {
 	#add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
 	#add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
 	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
-	if (\$http_user_agent = "") { return 403; }
+	#if (\$http_user_agent = "") { return 403; }
 	if (\$host != "$domain") { return 404; }
 	location / {
 		root /usr/share/nginx/html;
@@ -2008,7 +2002,7 @@ server {
 EOF
 fi
 if [[ $dnsmasq_install == 1 ]]; then
-echo "    #location /dns { #Doh Server !" >> /etc/nginx/conf.d/trojan.conf
+echo "    #location /dns {" >> /etc/nginx/conf.d/trojan.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        #proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        #proxy_pass https://127.0.0.1:3000/dns-query;" >> /etc/nginx/conf.d/trojan.conf
@@ -2936,10 +2930,7 @@ advancedMenu() {
 		clear
 		systeminfo
 		colorEcho ${INFO} "Hardware Benchmark"
-		curl -LO --progress-bar http://cdn.geekbench.com/Geekbench-5.1.0-Linux.tar.gz
-		tar -xvf Geekbench-5.1.0-Linux.tar.gz
-		rm -rf Geekbench-5.1.0-Linux.tar.gz
-		cd Geekbench-5.1.0-Linux
+		curl -LO --progress-bar http://cdn.geekbench.com/Geekbench-5.1.0-Linux.tar.gz && tar -xvf Geekbench-5.1.0-Linux.tar.gz && rm -rf Geekbench-5.1.0-Linux.tar.gz && cd Geekbench-5.1.0-Linux
 		./geekbench5
 		#./geekbench_x86_64
 		cd ..
@@ -2989,7 +2980,7 @@ advancedMenu() {
 		Update)
 		cd
 		checkupdate
-		colorEcho ${SUCCESS} "RTFM: https://github.com/johnrosen1/trojan-gfw-script"
+		colorEcho ${SUCCESS} "Update Success"
 		;;
 		Uninstall)
 		cd
@@ -2997,7 +2988,7 @@ advancedMenu() {
 		colorEcho ${SUCCESS} "Remove complete"
 		;;
 		Exit)
-		whiptail --title "Bash Exited" --msgbox "Bash Exited RTFM: https://github.com/johnrosen1/trojan-gfw-script" 8 78
+		whiptail --title "Bash Exited" --msgbox "Bash Exited" 8 78
 		exit
 		;;
 		esac
