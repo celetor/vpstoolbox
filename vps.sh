@@ -1860,9 +1860,24 @@ fi
 openfirewall(){
 	set +e
 	colorEcho ${INFO} "设置 firewall"
+	#policy
+	iptables -P INPUT ACCEPT
+	iptables -P FORWARD ACCEPT
+	iptables -P OUTPUT ACCEPT
+	ip6tables -P INPUT ACCEPT
+	ip6tables -P FORWARD ACCEPT
+	ip6tables -P OUTPUT ACCEPT
+	#flash
+	iptables -F
+	ip6tables -F
+	#block
+	iptables -I INPUT -s 36.110.236.68/16 -j DROP
+	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP
+	#keep connected
+	iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 	#icmp
-	iptables -I INPUT -p icmp --icmp-type echo-request -j ACCEPT
-	iptables -I OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
+	iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+	iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 -j REJECT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 192.168.0.0/16 -j REJECT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 10.0.0.0/8 -j REJECT
@@ -1870,40 +1885,38 @@ openfirewall(){
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 --dport 80 -j ACCEPT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 	#tcp
-	iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-	iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
-	iptables -I INPUT -s 36.110.236.68/16 -j DROP
+	iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 	#udp
-	iptables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
-	iptables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
-	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP
-	iptables -I OUTPUT -j ACCEPT
+	iptables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
+	iptables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
+	iptables -A OUTPUT -j ACCEPT
 	#iptables -I FORWARD -j DROP
 	#tcp6
 	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-	ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	ip6tables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 	#udp6
-	ip6tables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
-	ip6tables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
-	ip6tables -I OUTPUT -j ACCEPT
+	ip6tables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
+	ip6tables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
+	ip6tables -A OUTPUT -j ACCEPT
 	#ip6tables -I FORWARD -j DROP
 	if [[ $install_qbt == 1 ]]; then
-		iptables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
-		ip6tables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
-		iptables -I INPUT -p udp -m udp --dport 8999 -j ACCEPT
-		ip6tables -I INPUT -p udp -m udp --dport 8999 -j ACCEPT
+		iptables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
+		ip6tables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
+		iptables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT
+		ip6tables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT
 	fi
 	if [[ $install_tracker == 1 ]]; then
-		iptables -I INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
-		ip6tables -I INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
-		iptables -I INPUT -p udp -m udp --dport 8000 -j ACCEPT
-		ip6tables -I INPUT -p udp -m udp --dport 8000 -j ACCEPT
+		iptables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
+		ip6tables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
+		iptables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT
+		ip6tables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT
 	fi
 	if [[ $install_aria == 1 ]]; then
-		iptables -I INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
-		ip6tables -I INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
-		iptables -I INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
-		ip6tables -I INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
+		iptables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
+		ip6tables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
+		iptables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
+		ip6tables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
 	fi
 	if [[ $dist == debian ]]; then
 	export DEBIAN_FRONTEND=noninteractive 
