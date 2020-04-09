@@ -1875,6 +1875,7 @@ openfirewall(){
 	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP
 	#keep connected
 	iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+	ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 	#icmp
 	iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 	iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
@@ -2866,7 +2867,7 @@ bandwithusage(){
 }
 ##################################
 advancedMenu() {
-	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!" --title "VPS ToolBox Menu" --menu --nocancel "Hello, Please choose an option!" 13 78 4 \
+	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option!" 13 78 5 \
 	"Install" "安裝" \
 	"Result" "结果" \
 	"Benchmark" "效能"\
@@ -3005,7 +3006,7 @@ advancedMenu() {
 		colorEcho ${SUCCESS} "Remove complete"
 		;;
 		Exit)
-		whiptail --title "Bash Exited" --msgbox "Bash Exited" 8 78
+		whiptail --title "Bash Exited" --msgbox "Goodbye!" 8 78
 		exit
 		;;
 		esac
