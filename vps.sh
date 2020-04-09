@@ -1910,6 +1910,7 @@ openfirewall(){
 	export DEBIAN_FRONTEND=noninteractive
 	ufw allow http
 	ufw allow https
+	ufw allow ${ariaport}
 	apt-get install iptables-persistent -qq -y > /dev/null
 	iptables-save > /etc/iptables/rules.v4
 	ip6tables-save > /etc/iptables/rules.v6
