@@ -5,7 +5,7 @@ This script will help you set up many kind of useful tools on your VPS including
 
 #### How to use
 ```
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/vps.sh)"
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"
 ```
 If sudo/curl command not found , then:  
 ```
