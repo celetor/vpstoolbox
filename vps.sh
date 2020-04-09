@@ -1904,15 +1904,15 @@ openfirewall(){
 	if [[ $dist == debian ]]; then
 	export DEBIAN_FRONTEND=noninteractive 
 	apt-get install iptables-persistent -qq -y > /dev/null
-	iptables-save >> /etc/iptables/rules.v4
-	ip6tables-save >> /etc/iptables/rules.v6
+	iptables-save > /etc/iptables/rules.v4
+	ip6tables-save > /etc/iptables/rules.v6
  elif [[ $dist == ubuntu ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	ufw allow http
 	ufw allow https
 	apt-get install iptables-persistent -qq -y > /dev/null
-	iptables-save >> /etc/iptables/rules.v4
-	ip6tables-save >> /etc/iptables/rules.v6
+	iptables-save > /etc/iptables/rules.v4
+	ip6tables-save > /etc/iptables/rules.v6
  elif [[ $dist == centos ]]; then
 	setenforce 0
 	cat > '/etc/selinux/config' << EOF
