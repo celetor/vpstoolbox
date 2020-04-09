@@ -1876,6 +1876,7 @@ openfirewall(){
 	#udp
 	iptables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
 	iptables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
+	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP
 	iptables -I OUTPUT -j ACCEPT
 	#iptables -I FORWARD -j DROP
 	#tcp6
