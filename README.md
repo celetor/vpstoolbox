@@ -1,7 +1,7 @@
 ![logo](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/logo.png)
 # VPS Toolbox
 
-This script will help you set up many kind of useful tools on your VPS including website proxy download monitor and more.
+A powerful Toolbox for Linux VPS.
 
 #### How to use
 ```
