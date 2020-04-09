@@ -517,6 +517,7 @@ while [[ -z ${domain} ]]; do
 domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你的域名)(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
 if (whiptail --title "hostname" --yesno "Change hostname to your domain(修改hostname为域名)?" 8 78); then
 	hostnamectl set-hostname $domain
+	echo "" >> /etc/hosts
 	echo "127.0.0.1 $domain" >> /etc/hosts
 fi
 done
