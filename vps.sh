@@ -429,7 +429,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨�
 "4" "Dnscrypt-proxy | Dns encryption" on \
 "下载" "Download" on  \
 "5" "Qbittorrent | Bittorrent Client" off \
-"6" "Bittorrent-Tracker" off \
+"6" "Bittorrent-Tracker" on \
 "7" "Aria2" on \
 "8" "Filebrowser | File manager" on \
 "状态" "Status" on  \
