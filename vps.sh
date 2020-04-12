@@ -332,8 +332,6 @@ EOF
 	colorEcho ${ERROR} "Domain verification fail,Pleae Open port 80 443 on VPS panel !!!"
 	exit 1
 	fi
-	#~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
-	#chmod +r /etc/trojan/trojan.key
 	chmod +r /root/.acme.sh/${domain}_ecc/fullchain.cer
 	chmod +r /root/.acme.sh/${domain}_ecc/${domain}.key
 	fi
@@ -946,7 +944,7 @@ else
 fi
 clear
 #############################################
-if [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]]; then
+if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]] || [[ ${othercert} == 1 ]]; then
 	:
 	else
 	if isresolved $domain
@@ -1574,7 +1572,6 @@ systemctl enable dnscrypt-proxy.service
 	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md -q --show-progress
 	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/opennic.md -q --show-progress
 	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/relays.md -q --show-progress
-	
 	fi
 fi
 chmod -R 755 /etc/dnscrypt-proxy/
