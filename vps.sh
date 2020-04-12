@@ -670,31 +670,31 @@ colorEcho ${INFO} "初始化中(initializing)"
 	pack="yum -y -q"
 	yum update -y
 	yum install -y epel-release
-	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q
+	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof neofetch -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Red; then
 	dist=centos
 	pack="yum -y -q"
 	yum update -y
 	yum install -y epel-release
-	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q
+	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof neofetch -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Fedora; then
 	dist=centos
 	pack="yum -y -q"
 	yum update -y
 	yum install -y epel-release
-	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q
+	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof neofetch -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 	dist=ubuntu
 	pack="apt-get -y -q"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install whiptail curl locales lsb-release jq lsof -y -qq
+	apt-get install whiptail curl locales lsb-release jq lsof neofetch -y -qq
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
 	pack="apt-get -y -q"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install whiptail curl locales lsb-release jq lsof -y -qq
+	apt-get install whiptail curl locales lsb-release jq lsof neofetch -y -qq
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
 	exit 1;
@@ -2973,7 +2973,6 @@ advancedMenu() {
 		fi
 		mv /usr/share/nginx/html/result.html /usr/share/nginx/html/$password1.html
 		clear
-		$pack install neofetch
 		cat > '/etc/profile.d/mymotd.sh' << EOF
 #!/bin/bash
 neofetch
