@@ -685,13 +685,13 @@ colorEcho ${INFO} "初始化中(initializing)"
 	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 	dist=ubuntu
-	pack="apt-get -y -qq"
+	pack="apt-get -y -q"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get install whiptail curl locales lsb-release jq lsof -y -qq
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
-	pack="apt-get -y -qq"
+	pack="apt-get -y -q"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get install whiptail curl locales lsb-release jq lsof -y -qq
@@ -2979,13 +2979,13 @@ advancedMenu() {
 neofetch
 echo "**************************************************************************************"
 echo "*                                   Vps Toolbox Result                               *"
-echo "*     请访问下面的链接获取结果(Please visit the following link to get the result)      *"
-echo "*                       https://$domain/$password1.html                 *"
-echo "*           若访问失败，请运行以下两行命令自行检测服务是否正常:active(running)为正常  *"
-echo "*                       sudo systemctl status trojan                                  *"
-echo "*                       sudo systemctl status nginx                                   *"
-echo "*                 For more info ,please run the following command                     *"
-echo 'sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"'
+echo "*     请访问下面的链接获取结果(Please visit the following link to get the result)    *"
+echo "*                       https://$domain/$password1.html            *"
+echo "*           若访问失败，请运行以下两行命令自行检测服务是否正常:active(running)为正常 *"
+echo "*                       sudo systemctl status trojan                                 *"
+echo "*                       sudo systemctl status nginx                                  *"
+echo "*                 For more info ,please run the following command                    *"
+echo 'sudo bash -c "\$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"'
 echo "***************************************************************************************"
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
