@@ -1678,6 +1678,11 @@ RestartSec=1s
 [Install]
 WantedBy=multi-user.target
 EOF
+if [[ -f /usr/local/etc/trojan/trojan.pem ]]; then
+    colorEcho ${INFO} "DH已有，跳过生成。。。"
+    else
+    openssl dhparam -out /usr/local/etc/trojan/trojan.pem 2048
+    fi
 systemctl daemon-reload
 systemctl enable trojan
 if [[ ${othercert} != 1 ]]; then
@@ -1712,7 +1717,7 @@ if [[ ${othercert} != 1 ]]; then
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": ""
+        "dhparam": "/usr/local/etc/trojan/trojan.pem"
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -1765,7 +1770,7 @@ EOF
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": ""
+        "dhparam": "/usr/local/etc/trojan/trojan.pem"
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
