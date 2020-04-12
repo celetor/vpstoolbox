@@ -52,5 +52,3 @@ Flowchart:
 23. Support Full/Part Uninstall
 24. And so on...
 
-**If you need more functions, please open a Github issue.(No Centos related issues or bugs allowed except pull requests)**
-
