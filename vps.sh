@@ -332,8 +332,10 @@ EOF
 	colorEcho ${ERROR} "Domain verification fail,Pleae Open port 80 443 on VPS panel !!!"
 	exit 1
 	fi
-	~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
-	chmod +r /etc/trojan/trojan.key
+	#~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
+	#chmod +r /etc/trojan/trojan.key
+	chmod +r /root/.acme.sh/${domain}_ecc/fullchain.cer
+	chmod +r /root/.acme.sh/${domain}_ecc/${domain}.key
 	fi
 }
 ###############User input################
@@ -525,13 +527,13 @@ if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
 password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password1} ]]; then
-	password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
+	password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 15 ; echo '' )
 	fi
 done
 while [[ -z ${password2} ]]; do
 password2=$(whiptail --passwordbox --nocancel "Trojan-GFW Password Two(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password2} ]]; then
-	password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
+	password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 15 ; echo '' )
 	fi
 done
 fi
@@ -558,7 +560,7 @@ fi
 		while [[ -z $ariapasswd ]]; do
 		ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token(密码)" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
 		if [[ -z ${ariapasswd} ]]; then
-		ariapasswd="123456789"
+		ariapasswd=$(head /dev/urandom | tr -dc 0-9 | head -c 10 ; echo '' )
 		fi
 		done
 	fi
@@ -584,17 +586,15 @@ fi
 	done
 	fi
 ####################################
-	if [[ ! -d /etc/trojan ]]; then
-		mkdir /etc/trojan
-	fi
 	if [ -f /etc/trojan/*.crt ]; then
+		othercert=1
 		mv /etc/trojan/*.crt /etc/trojan/trojan.crt
 	fi
 	if [ -f /etc/trojan/*.key ]; then
 		mv /etc/trojan/*.key /etc/trojan/trojan.key
 	fi
 ####################################
-if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]]; then
+if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]] || [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else
 	if (whiptail --title "api" --yesno "使用 (use) api申请证书(to issue certificate)?" 8 78); then
@@ -667,9 +667,7 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
 	colorEcho ${ERROR} "证书申请失败，请检查域名是否正确"
 	colorEcho ${ERROR} "certificate issue fail,Pleae enter correct domain"
 	exit 1
-	fi 
-    ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/trojan/trojan.crt --keypath /etc/trojan/trojan.key --ecc
-    chmod +r /etc/trojan/trojan.key
+	fi
     fi
 fi
 }
@@ -866,15 +864,16 @@ net.ipv4.conf.all.send_redirects = 0
 net.ipv4.conf.default.send_redirects = 0
 net.ipv4.conf.default.rp_filter = 1
 net.ipv4.conf.all.rp_filter = 1
+net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.tcp_keepalive_intvl = 15
+net.ipv4.tcp_keepalive_probes = 5
+net.ipv4.tcp_synack_retries = 2
+net.ipv4.tcp_syncookies = 1
 net.ipv4.tcp_rfc1337 = 1
 net.ipv4.tcp_timestamps = 1
-net.ipv4.tcp_syncookies = 1
 net.ipv4.tcp_tw_recycle = 0
 net.ipv4.tcp_tw_reuse = 1
-net.ipv4.tcp_fin_timeout = 10
-net.ipv4.tcp_keepalive_time = 1200
-net.ipv4.tcp_keepalive_intvl = 10
-net.ipv4.tcp_keepalive_probes = 6
+net.ipv4.tcp_fin_timeout = 15
 net.ipv4.ip_local_port_range = 10000 65000
 net.ipv4.tcp_max_tw_buckets = 2000000
 net.ipv4.tcp_fastopen = 3
@@ -947,7 +946,7 @@ else
 fi
 clear
 #############################################
-if [[ -f /etc/trojan/trojan.crt ]] || [[ $dns_api == 1 ]]; then
+if [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]]; then
 	:
 	else
 	if isresolved $domain
@@ -958,7 +957,7 @@ if [[ -f /etc/trojan/trojan.crt ]] || [[ $dns_api == 1 ]]; then
 	clear
 	colorEcho ${ERROR} "Please consider use api to issue certificate instead!"
 	exit 1
-	fi  
+	fi
 fi
 #############################################
 if [[ $tls13only == 1 ]]; then
@@ -1575,6 +1574,7 @@ systemctl enable dnscrypt-proxy.service
 	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md -q --show-progress
 	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/opennic.md -q --show-progress
 	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/relays.md -q --show-progress
+	
 	fi
 fi
 chmod -R 755 /etc/dnscrypt-proxy/
@@ -1648,7 +1648,7 @@ if [[ $install_trojan = 1 ]]; then
 	if [[ ! -f /usr/local/bin/trojan ]]; then
 	clear
 	colorEcho ${INFO} "Install Trojan-GFW ing"
-	useradd -r trojan --shell=/usr/sbin/nologin
+	#useradd -r trojan --shell=/usr/sbin/nologin
 	bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
 	systemctl daemon-reload
 	clear
@@ -1671,8 +1671,8 @@ After=network.target network-online.target nss-lookup.target mysql.service maria
 [Service]
 Type=simple
 StandardError=journal
-User=trojan
-Group=trojan
+#User=trojan
+#Group=trojan
 ExecStart=/usr/local/bin/trojan /usr/local/etc/trojan/config.json
 ExecReload=/bin/kill -HUP \$MAINPID
 LimitNOFILE=51200
@@ -1684,7 +1684,61 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 systemctl enable trojan
-	cat > '/usr/local/etc/trojan/config.json' << EOF
+if [[ ${othercert} != 1 ]]; then
+		cat > '/usr/local/etc/trojan/config.json' << EOF
+{
+    "run_type": "server",
+    "local_addr": "::",
+    "local_port": 443,
+    "remote_addr": "127.0.0.1",
+    "remote_port": 80,
+    "password": [
+        "$password1",
+        "$password2"
+    ],
+    "log_level": 1,
+    "ssl": {
+        "cert": "/root/.acme.sh/${domain}_ecc/fullchain.cer",
+        "key": "/root/.acme.sh/${domain}_ecc/${domain}.key",
+        "key_password": "",
+        "cipher": "$cipher_server",
+        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+        "prefer_server_cipher": true,
+        "alpn": [
+        	"h2",
+            "http/1.1"
+        ],
+        "alpn_port_override": {
+            "h2": 82
+        },
+        "reuse_session": true,
+        "session_ticket": false,
+        "session_timeout": 600,
+        "plain_http_response": "",
+        "curves": "",
+        "dhparam": ""
+    },
+    "tcp": {
+        "prefer_ipv4": $ipv4_prefer,
+        "no_delay": true,
+        "keep_alive": true,
+        "reuse_port": false,
+        "fast_open": false,
+        "fast_open_qlen": 20
+    },
+    "mysql": {
+        "enabled": false,
+        "server_addr": "127.0.0.1",
+        "server_port": 3306,
+        "database": "trojan",
+        "username": "trojan",
+        "password": "",
+        "cafile": ""
+    }
+}
+EOF
+	else
+		cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
     "local_addr": "::",
@@ -1736,6 +1790,7 @@ systemctl enable trojan
     }
 }
 EOF
+fi
 	chmod -R 755 /usr/local/etc/trojan/
 	touch /usr/share/nginx/html/client1-$password1.json
 	touch /usr/share/nginx/html/client2-$password2.json
