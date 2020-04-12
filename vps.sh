@@ -303,7 +303,7 @@ issuecert(){
 	rm -rf /etc/nginx/sites-enabled/* &
 	rm -rf /etc/nginx/conf.d/*
 	touch /etc/nginx/conf.d/default.conf
-		cat > '/etc/nginx/conf.d/default.conf' << EOF
+		cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
 	listen       80;
 	listen       [::]:80;
@@ -518,7 +518,7 @@ domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你�
 if (whiptail --title "hostname" --yesno "Change hostname to your domain(修改hostname为域名)?" 8 78); then
 	hostnamectl set-hostname $domain
 	echo "" >> /etc/hosts
-	echo "127.0.0.1 $domain" >> /etc/hosts
+	echo "${localip} ${domain}" >> /etc/hosts
 fi
 done
 if [[ ${install_trojan} = 1 ]]; then
@@ -582,14 +582,6 @@ fi
 		tor_name="myrelay"
 	fi
 	done
-	fi
-####################################
-	if [ -f /etc/trojan/*.crt ]; then
-		othercert=1
-		mv /etc/trojan/*.crt /etc/trojan/trojan.crt
-	fi
-	if [ -f /etc/trojan/*.key ]; then
-		mv /etc/trojan/*.key /etc/trojan/trojan.key
 	fi
 ####################################
 if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]] || [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]]; then
@@ -802,6 +794,13 @@ installdependency(){
 colorEcho ${INFO} "Updating system"
 	$pack update
 	if [[ $install_status == 0 ]]; then
+		if [ -f /etc/trojan/*.crt ]; then
+		othercert=1
+		mv /etc/trojan/*.crt /etc/trojan/trojan.crt
+		fi
+		if [ -f /etc/trojan/*.key ]; then
+		mv /etc/trojan/*.key /etc/trojan/trojan.key
+		fi
 		if [[ $(systemctl is-active caddy) == active ]]; then
 			systemctl stop caddy
 			systemctl disable caddy
@@ -944,7 +943,7 @@ else
 fi
 clear
 #############################################
-if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]] || [[ ${othercert} == 1 ]]; then
+if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]] || [[ ${othercert} == 1 ]] || [[ ${installstatus} == 1 ]]; then
 	:
 	else
 	if isresolved $domain
@@ -2018,6 +2017,8 @@ server {
 	listen 127.0.0.1:80;
 	listen 127.0.0.1:82 http2;
 	server_name $domain;
+	resolver 127.0.0.1;
+	resolver_timeout 10s;
 	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
 	#if (\$http_user_agent = "") { return 403; }
 	if (\$host != "$domain") { return 404; }
@@ -2039,8 +2040,8 @@ server {
 	listen 443 ssl http2;
 	listen [::]:443 ssl http2;
 
-	ssl_certificate       /etc/trojan/trojan.crt;
-	ssl_certificate_key   /etc/trojan/trojan.key;
+	ssl_certificate       /root/.acme.sh/${domain}_ecc/fullchain.cer;
+	ssl_certificate_key   /root/.acme.sh/${domain}_ecc/${domain}.key;
 	ssl_protocols         TLSv1.3 TLSv1.2;
 	ssl_ciphers $cipher_server;
 	ssl_prefer_server_ciphers on;
@@ -2052,7 +2053,7 @@ server {
 	ssl_stapling_verify on;
 	#ssl_dhparam /etc/nginx/nginx.pem;
 
-	resolver 1.1.1.1;
+	resolver 127.0.0.1;
 	resolver_timeout 10s;
 	server_name           $domain;
 	#add_header alt-svc 'quic=":443"; ma=2592000; v="46"';
