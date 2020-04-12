@@ -25,11 +25,13 @@
 
 #apt-get update && apt-get install sudo curl -y || (yum update -y && yum install sudo curl -y) && sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"
 
-#			__   ___ __  ___| |_ ___   ___ | | |__ 
+#                 _              _ _               
+#__   ___ __  ___| |_ ___   ___ | | |__   _____  __
 #\ \ / / '_ \/ __| __/ _ \ / _ \| | '_ \ / _ \ \/ /
 # \ V /| |_) \__ \ || (_) | (_) | | |_) | (_) >  < 
 #  \_/ | .__/|___/\__\___/ \___/|_|_.__/ \___/_/\_\
 #      |_|                                         
+                                     
 
 clear
 
