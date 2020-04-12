@@ -296,13 +296,13 @@ issuecert(){
 	set +e
 	clear
 	colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
-	if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]]; then
+	if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -f /root/.acme.sh/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]] || [[ -f /etc/trojan/trojan.key ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else
 	rm -rf /etc/nginx/sites-available/* &
 	rm -rf /etc/nginx/sites-enabled/* &
 	rm -rf /etc/nginx/conf.d/*
-	touch /etc/nginx/conf.d/default.conf
+	touch /etc/nginx/conf.d/trojan.conf
 		cat > '/etc/nginx/conf.d/trojan.conf' << EOF
 server {
 	listen       80;
@@ -419,7 +419,7 @@ if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安�
     fi
 fi
 
-whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "hi 请谨慎选择(Please choose carefully)" --title "User choice" --checklist --separate-output --nocancel "请按空格來谨慎选择(Please press space to choose carefully) !!!" 24 52 16 \
+whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Please choose carefully!" --title "User choice" --checklist --separate-output --nocancel "Please press space to choose carefully !!!" 24 52 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "系统" "System" on  \
 "1" "System Upgrade" on \
@@ -584,7 +584,7 @@ fi
 	done
 	fi
 ####################################
-if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]] || [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]]; then
+if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]] || [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else
 	if (whiptail --title "api" --yesno "使用 (use) api申请证书(to issue certificate)?" 8 78); then
@@ -1678,9 +1678,10 @@ RestartSec=1s
 [Install]
 WantedBy=multi-user.target
 EOF
-if [[ -f /usr/local/etc/trojan/trojan.pem ]]; then
+if [[ -f /usr/local/etc/trojan/trojan.pem ]] && [[ -n /usr/local/etc/trojan/trojan.pem ]]; then
     colorEcho ${INFO} "DH已有，跳过生成。。。"
     else
+    colorEcho ${INFO} "Generating DH pem"
     openssl dhparam -out /usr/local/etc/trojan/trojan.pem 2048
     fi
 systemctl daemon-reload
