@@ -23,15 +23,13 @@
 
 #Run me with:
 
-#apt-get update && apt-get install sudo curl -y
+#apt-get update && apt-get install sudo curl -y || (yum update -y && yum install sudo curl -y) && sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"
 
-#or
-
-#yum update -y && yum install sudo curl -y
-
-#then
-
-#sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"
+#			__   ___ __  ___| |_ ___   ___ | | |__ 
+#\ \ / / '_ \/ __| __/ _ \ / _ \| | '_ \ / _ \ \/ /
+# \ V /| |_) \__ \ || (_) | (_) | | |_) | (_) >  < 
+#  \_/ | .__/|___/\__\___/ \___/|_|_.__/ \___/_/\_\
+#      |_|                                         
 
 clear
 
@@ -2973,19 +2971,22 @@ advancedMenu() {
 		fi
 		mv /usr/share/nginx/html/result.html /usr/share/nginx/html/$password1.html
 		clear
-		if grep -q "attention" /etc/motd
-		then
-		:
-		else
-		echo "***************************************************************************************" >> /etc/motd
-		echo "*                                   Pay attention!                                    *" >> /etc/motd
-		echo "*     请访问下面的链接获取结果(Please visit the following link to get the result)     *" >> /etc/motd
-		echo "*                       https://$domain/$password1.html            *" >> /etc/motd
-		echo "*           若访问失败，请运行以下两行命令自行检测服务是否正常:active(running)为正常  *" >> /etc/motd
-		echo "*                       sudo systemctl status trojan                                  *" >> /etc/motd
-		echo "*                       sudo systemctl status nginx                                   *" >> /etc/motd
-		echo "***************************************************************************************" >> /etc/motd
-		fi
+		$pack install neofetch
+		cat > '/etc/profile.d/mymotd.sh' << EOF
+#!/bin/bash
+neofetch
+echo "**************************************************************************************"
+echo "*                                   Vps Toolbox Result                               *"
+echo "*     请访问下面的链接获取结果(Please visit the following link to get the result)      *"
+echo "*                       https://$domain/$password1.html                 *"
+echo "*           若访问失败，请运行以下两行命令自行检测服务是否正常:active(running)为正常  *"
+echo "*                       sudo systemctl status trojan                                  *"
+echo "*                       sudo systemctl status nginx                                   *"
+echo "*                 For more info ,please run the following command                     *"
+echo 'sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"'
+echo "***************************************************************************************"
+EOF
+		chmod +x /etc/profile.d/mymotd.sh
 		echo "请访问下面的链接获取结果(Please visit the following link to get the result)" > /root/.trojan/result.txt
 		echo "https://$domain/$password1.html" >> /root/.trojan/result.txt
 		if [[ $install_bbrplus = 1 ]]; then
