@@ -1,7 +1,7 @@
 #!/bin/bash
 #MIT License
 #
-#Copyright (c) 2019-2020 johnrosen1
+#Copyright (c) 2019-2020 JohnRosen
 
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
