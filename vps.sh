@@ -169,6 +169,7 @@ cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-E
 cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
 #############################
 systeminfo(){
+	neofetch
 	#colorEcho ${INFO} "System Info"
 	#olorEcho ${INFO} "1. CPU INFO"
 	#colorEcho ${INFO} "model name: $( awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//' )"
@@ -2920,6 +2921,7 @@ logcheck(){
 ##################################
 bandwithusage(){
 	set +e
+	neofetch
 	colorEcho ${INFO} "流量使用情况(bandwithusage) 接收(Receive) 发送(Transmit)"
 	tail -n +3 /proc/net/dev | awk '{print $1 " " $2 " " $10}' | numfmt --to=iec --field=2,3
 	colorEcho ${INFO} "Done !"
