@@ -2940,7 +2940,6 @@ advancedMenu() {
 	"Exit" "退出" 3>&1 1>&2 2>&3)
 	case $Mainmenu in
 		Install)
-		cd
 		clear
 		userinput
 		systeminfo
@@ -3003,7 +3002,7 @@ EOF
 		fi
 		;;
 		Result)
-		cd
+		clear
 		whiptail --title "Install Success" --textbox --scrolltext /root/.trojan/result.txt 8 120
 		advancedMenu
 		;;
@@ -3046,25 +3045,25 @@ EOF
 		colorEcho ${INFO} "Benchmark complete"
 		;;
 		Log)
-		cd
+		clear
 		logcheck
 		advancedMenu
 		;;
 		Bandwith)
-		cd
+		clear
 		bandwithusage
 		;;
 		Status)
-		cd
+		clear
 		statuscheck
 		;;
 		Update)
-		cd
+		clear
 		checkupdate
 		colorEcho ${SUCCESS} "Update Success"
 		;;
 		Uninstall)
-		cd
+		clear
 		uninstall
 		colorEcho ${SUCCESS} "Remove complete"
 		;;
