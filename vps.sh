@@ -1937,8 +1937,8 @@ openfirewall(){
 	#icmp
 	iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 	iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
-	ip6tables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
-	ip6tables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
+	ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT
+	ip6tables -A OUTPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 -j REJECT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 192.168.0.0/16 -j REJECT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 10.0.0.0/8 -j REJECT
