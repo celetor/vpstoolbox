@@ -3082,6 +3082,7 @@ if [[ ${dist} != centos ]]; then
 	:
 	else
 	ssh-keygen -A
+	sed -i 's/#MaxAuthTries 6/MaxAuthTries 3/' /etc/ssh/sshd_config
 	echo "" >> /etc/ssh/sshd_config
 	echo "Protocol 2" >> /etc/ssh/sshd_config
 	echo "DebianBanner no" >> /etc/ssh/sshd_config
