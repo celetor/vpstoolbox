@@ -519,7 +519,7 @@ domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你�
 if (whiptail --title "hostname" --yesno "Change hostname to your domain(修改hostname为域名)?" 8 78); then
 	hostnamectl set-hostname $domain
 	echo "" >> /etc/hosts
-	echo "${localip} ${domain}" >> /etc/hosts
+	echo "${myip} ${domain}" >> /etc/hosts
 fi
 done
 if [[ ${install_trojan} = 1 ]]; then
