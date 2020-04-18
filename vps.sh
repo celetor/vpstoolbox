@@ -436,9 +436,10 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "9" "Filebrowser(File manager)" on \
 "状态" "Status" on  \
 "10" "Netdata(Server status monitor)" on \
+"速度" "Speedtest" on  \
+"11" "Speedtest" on \
 "其他" "Others" on  \
-"11" "OPENSSL" off \
-"12" "OPENSSH **EXPERIMENTAL**" off \
+"12" "OPENSSL" off \
 "13" "BBRPLUS" off \
 "14" "Tor-Relay" off \
 "15" "Enable TLS1.3 only" off 2>results
@@ -481,10 +482,10 @@ do
 		install_netdata=1
 		;;
 		11)
-		install_openssl=1
+		install_speedtest=1
 		;;
 		12)
-		install_openssh=1
+		install_openssl=1
 		;;
 		13)
 		install_bbrplus=1
@@ -986,6 +987,11 @@ if [[ $install_docker == 1 ]]; then
   systemctl start docker
   fi
 fi
+##########Install Speedtest#################
+if [[ ${install_speedtest} == 1 ]]; then
+docker pull adolfintel/speedtest
+docker run --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest 
+fi
 ##########Enable TLS13 ONLY#################
 if [[ $tls13only == 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
@@ -1000,51 +1006,6 @@ cd ..
 rm -rf openssl*
 apt-get purge build-essential -y
 apt-get autoremove -y
-fi
-############Install OPENSSH################
-if [[ ${install_openssh} == 1 ]] && [[ ${dist} != centos ]]; then
-	colorEcho ${INFO} "Install OPENSSH ing"
-apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
-wget https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.2p1.tar.gz
-tar -xvf openssh*
-rm openssh-8.2p1.tar.gz
-cd openssh-8.2p1
-./configure --with-md5-passwords
-make
-#make tests
-make install
-setcap CAP_NET_BIND_SERVICE=+eip /usr/local/sbin/sshd
-cd ..
-rm -rf openssh*
-apt-get purge build-essential -y
-apt-get autoremove -y
-#cp -f /usr/local/sbin/sshd /usr/sbin/sshd
-	cat > '/lib/systemd/system/ssh.service' << EOF
-[Unit]
-Description=OpenBSD Secure Shell server
-Documentation=man:sshd(8) man:sshd_config(5)
-After=network.target auditd.service
-#ConditionPathExists=!/etc/ssh/sshd_not_to_be_run
-
-[Service]
-RemainAfterExit=yes
-#EnvironmentFile=-/etc/default/ssh
-ExecStartPre=/usr/local/sbin/sshd -t
-ExecStart=/usr/local/sbin/sshd -f /usr/local/etc/sshd_config -D
-ExecReload=/usr/local/sbin/sshd -t
-ExecReload=/bin/kill -HUP \$MAINPID
-KillMode=process
-Restart=on-failure
-RestartPreventExitStatus=255
-Type=notify
-RuntimeDirectory=sshd
-RuntimeDirectoryMode=0755
-
-[Install]
-WantedBy=multi-user.target
-Alias=sshd.service
-EOF
-systemctl daemon-reload
 fi
 #############Install NGINX################
 if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
@@ -2124,6 +2085,17 @@ echo "        #proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >>
 echo "        #error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
 echo "        #}" >> /etc/nginx/conf.d/trojan.conf
 fi
+if [[ $install_speedtest == 1 ]]; then
+echo "    location /${password1}_speedtest/ {" >> /etc/nginx/conf.d/trojan.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_pass http://127.0.0.1:8001/;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
+echo "        }" >> /etc/nginx/conf.d/trojan.conf
+fi
 if [[ $install_aria == 1 ]]; then
 echo "    location $ariapath {" >> /etc/nginx/conf.d/trojan.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
@@ -2654,6 +2626,16 @@ footer a:link {
                         <li><a href="https://github.com/netdata/netdata" target="_blank">https://github.com/netdata/netdata</a></li>
                     </ol>
                     <br>
+
+                    <h2>Speedtest</h2>
+                    <p>你的Speedtest链接(Your Speedtest Information)</p>
+                    <p><a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain:443/${password1}_speedtest/</a></p>
+                    <p>相关链接（Related Links)</p>
+                    <ol>
+                        <li><a href="https://github.com/librespeed/speedtest" target="_blank">https://github.com/librespeed/speedtest</a></li>
+                        <li><a href="https://github.com/librespeed/speedtest/blob/docker/doc.md" target="_blank">https://github.com/librespeed/speedtest/blob/docker/doc.md</a></li>
+                    </ol>
+                    <br>
                     
                     <h2>自定义配置方法</h2>
                     <p>Nginx</p>
@@ -2681,6 +2663,11 @@ footer a:link {
                         <li><code>sudo nano /opt/netdata/etc/netdata/netdata.conf</code></li>
                         <li><code>sudo systemctl start/restart/status netdata</code></li>
                     </ul>
+                    <p>Speedtest</p>
+                    <ul>
+                        <li><code>docker ps/stop/start</code></li>
+                        <li><code>docker run --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest </code></li>
+                    </ul>
                     <p>Tor</p>
                     <ul>
                         <li><code>sudo nano /etc/tor/torrc</code></li>
@@ -2691,7 +2678,7 @@ footer a:link {
                 </div>
             </article>
             <footer>
-                <p><a href="https://github.com/johnrosen1/vpstoolbox">VPS Toolbox</a> Copyright &copy; 2020 Johnrosen</p>
+                <p><a href="https://github.com/johnrosen1/trojan-gfw-script">VPS Toolbox</a> Copyright &copy; 2020 Johnrosen</p>
             </footer>
         </div>
     </div>
