@@ -424,23 +424,24 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "Back" "返回上级菜单(Back to main menu)" off \
 "系统" "System" on  \
 "1" "System Upgrade" on \
-"2" "Enable BBR | TCP-Turbo" on \
+"2" "Enable BBR(TCP-Turbo)" on \
+"3" "Docker" on \
 "代理" "Proxy" on  \
-"3" "Trojan-GFW" on \
-"4" "Dnscrypt-proxy | Dns encryption" on \
+"4" "Trojan-GFW" on \
+"5" "Dnscrypt-proxy(Dns encryption)" on \
 "下载" "Download" on  \
-"5" "Qbittorrent | Bittorrent Client" off \
-"6" "Bittorrent-Tracker" on \
-"7" "Aria2" on \
-"8" "Filebrowser | File manager" on \
+"6" "Qbittorrent(Bittorrent Client)" off \
+"7" "Bittorrent-Tracker" on \
+"8" "Aria2" on \
+"9" "Filebrowser(File manager)" on \
 "状态" "Status" on  \
-"9" "Netdata | Server status monitor" on \
+"10" "Netdata(Server status monitor)" on \
 "其他" "Others" on  \
-"10" "OPENSSL" off \
-"11" "OPENSSH **EXPERIMENTAL**" off \
-"12" "BBRPLUS" off \
-"13" "Tor-Relay" off \
-"14" "Enable TLS1.3 only" off 2>results
+"11" "OPENSSL" off \
+"12" "OPENSSH **EXPERIMENTAL**" off \
+"13" "BBRPLUS" off \
+"14" "Tor-Relay" off \
+"15" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -456,39 +457,42 @@ do
 		install_bbr=1
 		;;
 		3)
+		install_docker=1
+		;;
+		4)
 		install_trojan=1
 		;;
-		4) 
+		5) 
 		dnsmasq_install=1
 		;;
-		5)
+		6)
 		install_qbt=1
 		;;
-		6)
+		7)
 		install_tracker=1
 		;;
-		7)
+		8)
 		install_aria=1
 		;;
-		8)
+		9)
 		install_file=1
 		;;
-		9)
+		10)
 		install_netdata=1
 		;;
-		10)
+		11)
 		install_openssl=1
 		;;
-		11)
+		12)
 		install_openssh=1
 		;;
-		12)
+		13)
 		install_bbrplus=1
 		;;
-		13)
+		14)
 		install_tor=1
 		;;
-		14) 
+		15) 
 		tls13only=1
 		;;
 		*)
@@ -957,11 +961,36 @@ if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -n /root/.acme.sh/$
 	exit 1
 	fi
 fi
-#############################################
+#########Install Docker###################
+if [[ $install_docker == 1 ]]; then
+  clear
+  colorEcho ${INFO} "安装Docker(Install Docker ing)"
+  if [[ $dist == debian ]]; then
+  apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
+  curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+  apt-key fingerprint 0EBFCD88
+  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+  apt-get update
+  apt-get install docker-ce docker-ce-cli containerd.io -y
+ elif [[ $dist == ubuntu ]]; then
+  apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  apt-key fingerprint 0EBFCD88
+  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  apt-get update
+  apt-get install docker-ce docker-ce-cli containerd.io -y
+ else
+  yum install -y yum-utils
+  yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  yum install -y docker-ce docker-ce-cli containerd.io
+  systemctl start docker
+  fi
+fi
+##########Enable TLS13 ONLY#################
 if [[ $tls13only == 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
 fi
-###########################################
+##########Install OPENSSL##############
 if [[ ${install_openssl} == 1 ]] && [[ ${dist} != centos ]]; then
 	colorEcho ${INFO} "Install OPENSSL ing"
 apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
@@ -972,7 +1001,7 @@ rm -rf openssl*
 apt-get purge build-essential -y
 apt-get autoremove -y
 fi
-###########################################
+############Install OPENSSH################
 if [[ ${install_openssh} == 1 ]] && [[ ${dist} != centos ]]; then
 	colorEcho ${INFO} "Install OPENSSH ing"
 apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
@@ -1017,7 +1046,7 @@ Alias=sshd.service
 EOF
 systemctl daemon-reload
 fi
-#####################################################
+#############Install NGINX################
 if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
 	clear
 	colorEcho ${INFO} "Install Nginx ing"
@@ -1118,7 +1147,7 @@ http {
 }
 EOF
 clear
-#############################################
+#############Install Qbittorrent################
 if [[ $install_qbt == 1 ]]; then
 	if [[ ! -f /usr/bin/qbittorrent-nox ]]; then
 	clear
@@ -1165,7 +1194,7 @@ chmod 755 /usr/share/nginx/
 fi
 fi
 clear
-#############################################
+###########Install Bittorrent-tracker##############
 if [[ $install_tracker = 1 ]]; then
 	if [[ ! -f /usr/bin/bittorrent-tracker ]]; then
 		clear
@@ -1211,7 +1240,7 @@ systemctl start tracker
 fi
 fi
 clear
-#############################################
+##############Install FILEBROWSER###############
 if [[ $install_file = 1 ]]; then
 	if [[ ! -f /usr/local/bin/filebrowser ]]; then
 		clear
@@ -1250,7 +1279,7 @@ chmod -R 755 /etc/filebrowser/
 fi
 fi
 clear
-#############################################
+##########Install Aria2c##########
 if [[ $install_aria = 1 ]]; then
 	ariaport=$(shuf -i 10000-19000 -n 1)
 	#trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
@@ -1375,7 +1404,7 @@ systemctl daemon-reload
 systemctl enable aria2
 systemctl start aria2
 fi
-#############################################
+###########Install Dnscrypt-proxy####################
 if [[ ${dnsmasq_install} == 1 ]]; then
 	if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
 		mkdir /etc/dnscrypt-proxy/
@@ -1576,7 +1605,7 @@ systemctl enable dnscrypt-proxy.service
 fi
 chmod -R 755 /etc/dnscrypt-proxy/
 clear
-#############################################
+########Install Tor Relay##################
 if [[ $install_tor = 1 ]]; then
 	clear
 	if [[ ! -f /usr/bin/tor ]]; then
@@ -1612,7 +1641,7 @@ service tor start
 systemctl restart tor@default
 	fi
 fi
-#############################################
+########Install Netdata################
 if [[ $install_netdata = 1 ]]; then
 	if [[ ! -f /usr/sbin/netdata ]]; then
 		clear
@@ -1640,7 +1669,7 @@ EOF
 	fi
 fi
 clear
-#############################################
+##########Install Trojan-GFW#############
 if [[ $install_trojan = 1 ]]; then
 	if [[ ! -f /usr/local/bin/trojan ]]; then
 	clear
@@ -2010,7 +2039,7 @@ EOF
 	exit 1;
  fi
 }
-########Nginx config for Trojan only##############
+########Nginx config##############
 nginxtrojan(){
 	set +e
 	clear
@@ -2670,7 +2699,7 @@ footer a:link {
 </html>
 EOF
 }
-##########Remove Trojan-Gfw##########
+##########Uninstall##########
 uninstall(){
 	set +e
 	cd
@@ -2871,7 +2900,7 @@ statuscheck(){
 	echo ""
 	colorEcho ${INFO} "状态检查完成(Status Check complete)"
 }
-##################################
+#######Auto Update##############
 autoupdate(){
 	set +e
 	if [[ $install_trojan == 1 ]]; then
@@ -2898,7 +2927,7 @@ EOF
 crontab -l | grep -q '0 * * * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
 	fi
 }
-###################################
+#########Log Check#########
 logcheck(){
 	set +e
 	readconfig
@@ -2920,7 +2949,7 @@ logcheck(){
 	less /var/log/nginx/error.log
 	less /var/log/nginx/access.log
 }
-##################################
+#########Bandwith usage######
 bandwithusage(){
 	set +e
 	neofetch
@@ -2928,7 +2957,7 @@ bandwithusage(){
 	tail -n +3 /proc/net/dev | awk '{print $1 " " $2 " " $10}' | numfmt --to=iec --field=2,3
 	colorEcho ${INFO} "Done !"
 }
-##################################
+#####Main menu##########
 advancedMenu() {
 	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option!" 13 78 5 \
 	"Install" "安裝" \
