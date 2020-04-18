@@ -314,6 +314,16 @@ footer a:link {
                         <li><a href="https://github.com/netdata/netdata" target="_blank">https://github.com/netdata/netdata</a></li>
                     </ol>
                     <br>
+
+                    <h2>Speedtest</h2>
+                    <p>你的Speedtest链接(Your Speedtest Information)</p>
+                    <p><a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain:443/${password1}_speedtest/</a></p>
+                    <p>相关链接（Related Links)</p>
+                    <ol>
+                        <li><a href="https://github.com/librespeed/speedtest" target="_blank">https://github.com/librespeed/speedtest</a></li>
+                        <li><a href="https://github.com/librespeed/speedtest/blob/docker/doc.md" target="_blank">https://github.com/librespeed/speedtest/blob/docker/doc.md</a></li>
+                    </ol>
+                    <br>
                     
                     <h2>自定义配置方法</h2>
                     <p>Nginx</p>
@@ -341,6 +351,11 @@ footer a:link {
                         <li><code>sudo nano /opt/netdata/etc/netdata/netdata.conf</code></li>
                         <li><code>sudo systemctl start/restart/status netdata</code></li>
                     </ul>
+                    <p>Speedtest</p>
+                    <ul>
+                        <li><code>docker ps/stop/start</code></li>
+                        <li><code>docker run -d --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest </code></li>
+                    </ul>
                     <p>Tor</p>
                     <ul>
                         <li><code>sudo nano /etc/tor/torrc</code></li>
@@ -351,7 +366,7 @@ footer a:link {
                 </div>
             </article>
             <footer>
-                <p><a href="https://github.com/johnrosen1/trojan-gfw-script">VPS Toolbox</a> Copyright &copy; 2020 Johnrosen</p>
+                <p><a href="https://github.com/johnrosen1/vpstoolbox">VPS Toolbox</a> Copyright &copy; 2020 Johnrosen</p>
             </footer>
         </div>
     </div>
