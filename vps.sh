@@ -523,8 +523,13 @@ while [[ -z ${domain} ]]; do
 domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你的域名)(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
 if (whiptail --title "hostname" --yesno "Change hostname to your domain(修改hostname为域名)?" 8 78); then
 	hostnamectl set-hostname $domain
+	if grep -q "${domain}" /etc/hosts
+		then
+		:
+		else
 	echo "" >> /etc/hosts
 	echo "${myip} ${domain}" >> /etc/hosts
+	fi
 fi
 done
 if [[ ${install_trojan} = 1 ]]; then
@@ -990,7 +995,7 @@ fi
 ##########Install Speedtest#################
 if [[ ${install_speedtest} == 1 ]]; then
 docker pull adolfintel/speedtest
-docker run --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest 
+docker run -d --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest 
 fi
 ##########Enable TLS13 ONLY#################
 if [[ $tls13only == 1 ]]; then
@@ -2666,7 +2671,7 @@ footer a:link {
                     <p>Speedtest</p>
                     <ul>
                         <li><code>docker ps/stop/start</code></li>
-                        <li><code>docker run --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest </code></li>
+                        <li><code>docker run -d --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest </code></li>
                     </ul>
                     <p>Tor</p>
                     <ul>
