@@ -437,7 +437,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "状态" "Status" on  \
 "10" "Netdata(Server status monitor)" on \
 "速度" "Speedtest" on  \
-"11" "Speedtest" on \
+"11" "Speedtest(Docker Version)" on \
 "其他" "Others" on  \
 "12" "OPENSSL" off \
 "13" "BBRPLUS" off \
@@ -2093,6 +2093,7 @@ fi
 if [[ $install_speedtest == 1 ]]; then
 echo "    location /${password1}_speedtest/ {" >> /etc/nginx/conf.d/trojan.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_pass http://127.0.0.1:8001/;" >> /etc/nginx/conf.d/trojan.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
