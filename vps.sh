@@ -201,6 +201,16 @@ echo -e "Processor Name:\t\t"`awk -F':' '/^model name/ {print $2}' /proc/cpuinfo
 echo -e "Active User:\t\t"`w | cut -d ' ' -f1 | grep -v USER | xargs -n1`
 echo -e "System Main IP:\t\t"`hostname -I`
 echo -e "-----------------------------------------------------------------------------"
+echo -e "-------------------------------IP Information----------------------------"
+echo -e "ip:\t\t"`jq -r '.ip' "/root/.trojan/ip.json"`
+echo -e "city:\t\t"`jq -r '.city' "/root/.trojan/ip.json"`
+echo -e "region:\t\t"`jq -r '.region' "/root/.trojan/ip.json"`
+echo -e "country:\t"`jq -r '.country' "/root/.trojan/ip.json"`
+echo -e "loc:\t\t"`jq -r '.loc' "/root/.trojan/ip.json"`
+echo -e "org:\t\t"`jq -r '.org' "/root/.trojan/ip.json"`
+echo -e "postal:\t\t"`jq -r '.postal' "/root/.trojan/ip.json"`
+echo -e "timezone:\t"`jq -r '.timezone' "/root/.trojan/ip.json"`
+echo -e "-----------------------------------------------------------------------------"
 }
 #############################
 setlanguage(){
@@ -288,7 +298,7 @@ isresolved(){
 		ips=(`nslookup $1 1.1.1.1 | grep -v 1.1.1.1 | grep Address | cut -d " " -f 2`)
 		for ip in "${ips[@]}"
 		do
-				if [ $ip == $myip ] || [ $ip == $myipv6 ] || [[ $ip == $localip ]] || [ $ip == $myip2 ]
+				if [ $ip == $myip ] || [ $ip == $myipv6 ] || [[ $ip == $localip ]]
 				then
 						return 0
 				else
@@ -308,8 +318,8 @@ issuecert(){
 	rm -rf /etc/nginx/sites-available/* &
 	rm -rf /etc/nginx/sites-enabled/* &
 	rm -rf /etc/nginx/conf.d/*
-	touch /etc/nginx/conf.d/trojan.conf
-		cat > '/etc/nginx/conf.d/trojan.conf' << EOF
+	touch /etc/nginx/conf.d/default.conf
+		cat > '/etc/nginx/conf.d/default.conf' << EOF
 server {
 	listen       80;
 	listen       [::]:80;
@@ -3013,6 +3023,16 @@ advancedMenu() {
 		cat > '/etc/profile.d/mymotd.sh' << EOF
 #!/bin/bash
 neofetch
+echo -e "-------------------------------IP Information----------------------------"
+echo -e "ip:\t\t"`jq -r '.ip' "/root/.trojan/ip.json"`
+echo -e "city:\t\t"`jq -r '.city' "/root/.trojan/ip.json"`
+echo -e "region:\t\t"`jq -r '.region' "/root/.trojan/ip.json"`
+echo -e "country:\t"`jq -r '.country' "/root/.trojan/ip.json"`
+echo -e "loc:\t\t"`jq -r '.loc' "/root/.trojan/ip.json"`
+echo -e "org:\t\t"`jq -r '.org' "/root/.trojan/ip.json"`
+echo -e "postal:\t\t"`jq -r '.postal' "/root/.trojan/ip.json"`
+echo -e "timezone:\t"`jq -r '.timezone' "/root/.trojan/ip.json"`
+echo -e "-----------------------------------------------------------------------------"
 echo "**************************************************************************************"
 echo "*                                   Vps Toolbox Result                               *"
 echo "*     请访问下面的链接获取结果(Please visit the following link to get the result)    *"
@@ -3023,6 +3043,7 @@ echo "*                       sudo systemctl status nginx                       
 echo "*                 For more info ,please run the following command                    *"
 echo 'sudo bash -c "\$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"'
 echo "***************************************************************************************"
+
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
 		echo "请访问下面的链接获取结果(Please visit the following link to get the result)" > /root/.trojan/result.txt
@@ -3146,8 +3167,9 @@ EOF
 	fi
 fi
 clear
-ip1=$(curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 10)
-myip=$(curl -s https://ipinfo.io/ip?token=56c375418c62c9 --connect-timeout 10)
+var1=$(curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300)
+echo ${var1} > /root/.trojan/ip.json
+myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
 localip=$(ip a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 advancedMenu
