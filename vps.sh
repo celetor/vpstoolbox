@@ -3043,7 +3043,6 @@ echo "*                       sudo systemctl status nginx                       
 echo "*                 For more info ,please run the following command                    *"
 echo 'sudo bash -c "\$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"'
 echo "***************************************************************************************"
-
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
 		echo "请访问下面的链接获取结果(Please visit the following link to get the result)" > /root/.trojan/result.txt
