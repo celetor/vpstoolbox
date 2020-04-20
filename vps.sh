@@ -389,19 +389,19 @@ fi
 install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
 colorEcho ${INFO} "被墙检测ing"
 colorEcho ${INFO} "test1"
-curl -s 36.110.213.10 --connect-timeout 10
+curl -s 36.110.213.10 --connect-timeout 5
 if [[ $? -ne 0 ]]; then
 	test1="0"
 	colorEcho ${WARNING} "test1 fail !"
 fi
 colorEcho ${INFO} "test2"
-curl -s 112.19.7.64 --connect-timeout 10
+curl -s 112.19.7.64 --connect-timeout 5
 if [[ $? -ne 0 ]]; then
 	test2="0"
 	colorEcho ${WARNING} "test2 fail !"
 fi
 colorEcho ${INFO} "test3"
-curl -s 120.92.174.135 --connect-timeout 10
+curl -s 120.92.174.135 --connect-timeout 5
 if [[ $? -ne 0 ]]; then
 	test3="0"
 	colorEcho ${WARNING} "test3 fail !"
