@@ -47,6 +47,11 @@ if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
 	exit 1
 fi
 
+if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) -le "3000000" ]]; then
+  echo Please run this script on machine with more than 3G free disk space.
+  exit 1
+fi
+
 colorEcho(){
 	set +e
 	COLOR=$1
@@ -1626,8 +1631,9 @@ nginx_log:
   name  : 'nginx_log'
   path  : '/var/log/nginx/access.log'
 EOF
+		sleep 3
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
-		touch /opt/netdata/etc/netdata/python.d/logind.conf
+		#touch /opt/netdata/etc/netdata/python.d/logind.conf
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		colorEcho ${INFO} "Restart netdata ing"
 		systemctl restart netdata
