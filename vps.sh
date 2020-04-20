@@ -47,7 +47,7 @@ if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
 	exit 1
 fi
 
-if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) <= "3000000" ]]; then
+if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) -le "3000000" ]]; then
   echo Please run this script on machine with more than 3G free disk space.
   exit 1
 fi
