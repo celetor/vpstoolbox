@@ -15,6 +15,10 @@ apt-get update && apt-get install sudo curl -y || (yum update -y && yum install 
 Flowchart:
 ![flowchart](https://raw.githubusercontent.com/jerrypoma/trojan-gfw-script/master/vpstoolbox.png)
 
+#### Privacy Statement:
+
+Ip Information is just an indispensable part of this project, all ip information comes from ipinfo.io,no spam related.
+
 #### Friendly Reminder:
 1. Please **Run as root**(sudo -i)
 2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this program!
