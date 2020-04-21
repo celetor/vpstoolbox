@@ -15,6 +15,10 @@ apt-get update && apt-get install sudo curl -y || (yum update -y && yum install 
 Flowchart:
 ![flowchart](https://raw.githubusercontent.com/jerrypoma/trojan-gfw-script/master/vpstoolbox.png)
 
+#### Privacy Statement:
+
+Ip Information is just an indispensable part of this project, all ip information comes from ipinfo.io,no spam related.
+
 #### Friendly Reminder:
 1. Please **Run as root**(sudo -i)
 2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this program!
@@ -22,9 +26,7 @@ Flowchart:
 4. For customized certificate , please put it in /etc/trojan/ , no name change required !
 5. Please use a VPS with more than **0.5 GB RAM** and at least **5G FREE DISK SPACE**. 
 
-## If you found it useful , please give a star ,thanks!
-
-### Live Demo(no Guarantee)
+### Give it a try ! (Live Demo,no Guarantee)
 
 [https://www.trojan-gfw.xyz/vpstoolbox.html](https://www.trojan-gfw.xyz/vpstoolbox.html)
 
@@ -46,3 +48,4 @@ Flowchart:
 23. Support Full/Part Uninstall
 24. And so on...
 
+## If you found it useful , please give a star ,thanks!
