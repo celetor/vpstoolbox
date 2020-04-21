@@ -2029,9 +2029,9 @@ nginxtrojan(){
 rm -rf /etc/nginx/sites-available/*
 rm -rf /etc/nginx/sites-enabled/*
 rm -rf /etc/nginx/conf.d/*
-touch /etc/nginx/conf.d/trojan.conf
+touch /etc/nginx/conf.d/default.conf
 if [[ $install_trojan == 1 ]]; then
-	cat > '/etc/nginx/conf.d/trojan.conf' << EOF
+	cat > '/etc/nginx/conf.d/default.conf' << EOF
 #Do not change these settings unless you know what you are doing !
 server {
 	listen 127.0.0.1:80;
@@ -2054,7 +2054,7 @@ server {
 		}
 EOF
 	else
-	cat > '/etc/nginx/conf.d/trojan.conf' << EOF
+	cat > '/etc/nginx/conf.d/default.conf' << EOF
 #Do not change these settings unless you know what you are doing !
 server {
 	listen 443 ssl http2;
@@ -2094,124 +2094,124 @@ server {
 EOF
 fi
 if [[ $dnsmasq_install == 1 ]]; then
-echo "    #location /dns {" >> /etc/nginx/conf.d/trojan.conf
-echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        #proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        #proxy_pass https://127.0.0.1:3000/dns-query;" >> /etc/nginx/conf.d/trojan.conf
-echo "        #proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
-echo "        #proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
-echo "        #proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
-echo "        #proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
-echo "        #proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
-echo "        #error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
-echo "        #}" >> /etc/nginx/conf.d/trojan.conf
+echo "    #location /dns {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        #proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
+echo "        #proxy_pass https://127.0.0.1:3000/dns-query;" >> /etc/nginx/conf.d/default.conf
+echo "        #proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
+echo "        #proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
+echo "        #proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
+echo "        #proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
+echo "        #proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+echo "        #error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
+echo "        #}" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_speedtest == 1 ]]; then
-echo "    location /${password1}_speedtest/ {" >> /etc/nginx/conf.d/trojan.conf
-echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_pass http://127.0.0.1:8001/;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
-echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "    location /${password1}_speedtest/ {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:8001/;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_aria == 1 ]]; then
-echo "    location $ariapath {" >> /etc/nginx/conf.d/trojan.conf
-echo "        #access_log off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_pass http://127.0.0.1:6800/jsonrpc;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
-echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "    location $ariapath {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:6800/jsonrpc;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_qbt == 1 ]]; then
-echo "    location $qbtpath {" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_pass              http://127.0.0.1:8080/;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header        X-Forwarded-Host        \$http_host;" >> /etc/nginx/conf.d/trojan.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
-echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "    location $qbtpath {" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass              http://127.0.0.1:8080/;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header        X-Forwarded-Host        \$http_host;" >> /etc/nginx/conf.d/default.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_file == 1 ]]; then
-echo "    location $filepath {" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_pass http://127.0.0.1:8081/;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
-echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/trojan.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
-echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "    location $filepath {" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:8081/;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_tracker == 1 ]]; then
-echo "    location $trackerpath {" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_pass http://127.0.0.1:8000/announce;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
-echo "        }" >> /etc/nginx/conf.d/trojan.conf
-echo "    location $trackerstatuspath {" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_pass http://127.0.0.1:8000/stats;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/trojan.conf
-echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "    location $trackerpath {" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:8000/announce;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "    location $trackerstatuspath {" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:8000/stats;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_netdata == 1 ]]; then
-echo "    location ~ $netdatapath(?<ndpath>.*) {" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_redirect off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Forwarded-Host \$host;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Forwarded-Server \$host;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/trojan.conf
-echo '        proxy_set_header Connection "keep-alive";' >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_store off;" >> /etc/nginx/conf.d/trojan.conf
-echo "        proxy_pass http://netdata/\$ndpath\$is_args\$args;" >> /etc/nginx/conf.d/trojan.conf
-echo "        gzip on;" >> /etc/nginx/conf.d/trojan.conf
-echo "        gzip_proxied any;" >> /etc/nginx/conf.d/trojan.conf
-echo "        gzip_types *;" >> /etc/nginx/conf.d/trojan.conf
-echo "        }" >> /etc/nginx/conf.d/trojan.conf
+echo "    location ~ $netdatapath(?<ndpath>.*) {" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forwarded-Host \$host;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forwarded-Server \$host;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
+echo '        proxy_set_header Connection "keep-alive";' >> /etc/nginx/conf.d/default.conf
+echo "        proxy_store off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://netdata/\$ndpath\$is_args\$args;" >> /etc/nginx/conf.d/default.conf
+echo "        gzip on;" >> /etc/nginx/conf.d/default.conf
+echo "        gzip_proxied any;" >> /etc/nginx/conf.d/default.conf
+echo "        gzip_types *;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
-echo "        location @errpage {" >> /etc/nginx/conf.d/trojan.conf
-echo "        return 404;" >> /etc/nginx/conf.d/trojan.conf
-echo "        }" >> /etc/nginx/conf.d/trojan.conf
-echo "}" >> /etc/nginx/conf.d/trojan.conf
-echo "" >> /etc/nginx/conf.d/trojan.conf
-echo "server {" >> /etc/nginx/conf.d/trojan.conf
-echo "    listen 80;" >> /etc/nginx/conf.d/trojan.conf
-echo "    listen [::]:80;" >> /etc/nginx/conf.d/trojan.conf
-echo "    server_name $domain;" >> /etc/nginx/conf.d/trojan.conf
-echo "    return 301 https://$domain\$request_uri;" >> /etc/nginx/conf.d/trojan.conf
-echo "}" >> /etc/nginx/conf.d/trojan.conf
-echo "" >> /etc/nginx/conf.d/trojan.conf
-echo "server {" >> /etc/nginx/conf.d/trojan.conf
-echo "    listen 80 default_server;" >> /etc/nginx/conf.d/trojan.conf
-echo "    listen [::]:80 default_server;" >> /etc/nginx/conf.d/trojan.conf
-echo "    server_name _;" >> /etc/nginx/conf.d/trojan.conf
-echo "    return 404;" >> /etc/nginx/conf.d/trojan.conf
-echo "}" >> /etc/nginx/conf.d/trojan.conf
+echo "        location @errpage {" >> /etc/nginx/conf.d/default.conf
+echo "        return 404;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "}" >> /etc/nginx/conf.d/default.conf
+echo "" >> /etc/nginx/conf.d/default.conf
+echo "server {" >> /etc/nginx/conf.d/default.conf
+echo "    listen 80;" >> /etc/nginx/conf.d/default.conf
+echo "    listen [::]:80;" >> /etc/nginx/conf.d/default.conf
+echo "    server_name $domain;" >> /etc/nginx/conf.d/default.conf
+echo "    return 301 https://$domain\$request_uri;" >> /etc/nginx/conf.d/default.conf
+echo "}" >> /etc/nginx/conf.d/default.conf
+echo "" >> /etc/nginx/conf.d/default.conf
+echo "server {" >> /etc/nginx/conf.d/default.conf
+echo "    listen 80 default_server;" >> /etc/nginx/conf.d/default.conf
+echo "    listen [::]:80 default_server;" >> /etc/nginx/conf.d/default.conf
+echo "    server_name _;" >> /etc/nginx/conf.d/default.conf
+echo "    return 404;" >> /etc/nginx/conf.d/default.conf
+echo "}" >> /etc/nginx/conf.d/default.conf
 if [[ $install_netdata == 1 ]]; then
-echo "server {" >> /etc/nginx/conf.d/trojan.conf
-echo "    listen 127.0.0.1:81;" >> /etc/nginx/conf.d/trojan.conf
-echo "    location /stub_status {" >> /etc/nginx/conf.d/trojan.conf
-echo "    access_log off;" >> /etc/nginx/conf.d/trojan.conf
-echo "    stub_status; #For Netdata only !" >> /etc/nginx/conf.d/trojan.conf
-echo "    }" >> /etc/nginx/conf.d/trojan.conf
-echo "}" >> /etc/nginx/conf.d/trojan.conf
-echo "upstream netdata {" >> /etc/nginx/conf.d/trojan.conf
-echo "    server 127.0.0.1:19999;" >> /etc/nginx/conf.d/trojan.conf
-echo "    keepalive 64;" >> /etc/nginx/conf.d/trojan.conf
-echo "}" >> /etc/nginx/conf.d/trojan.conf
+echo "server {" >> /etc/nginx/conf.d/default.conf
+echo "    listen 127.0.0.1:81;" >> /etc/nginx/conf.d/default.conf
+echo "    location /stub_status {" >> /etc/nginx/conf.d/default.conf
+echo "    access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "    stub_status; #For Netdata only !" >> /etc/nginx/conf.d/default.conf
+echo "    }" >> /etc/nginx/conf.d/default.conf
+echo "}" >> /etc/nginx/conf.d/default.conf
+echo "upstream netdata {" >> /etc/nginx/conf.d/default.conf
+echo "    server 127.0.0.1:19999;" >> /etc/nginx/conf.d/default.conf
+echo "    keepalive 64;" >> /etc/nginx/conf.d/default.conf
+echo "}" >> /etc/nginx/conf.d/default.conf
 fi
 nginx -t
 htmlcode=$(shuf -i 1-3 -n 1)
@@ -2668,7 +2668,7 @@ footer a:link {
                     <h2>How to change the default config </h2>
                     <p>Nginx</p>
                     <ul>
-                        <li><code>sudo nano /etc/nginx/conf.d/trojan.conf</code></li>
+                        <li><code>sudo nano /etc/nginx/conf.d/default.conf</code></li>
                         <li><code>sudo systemctl start/restart/status nginx</code></li>
                     </ul>
                     <p>Trojan-GFW</p>
