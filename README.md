@@ -26,9 +26,7 @@ Ip Information is just an indispensable part of this project, all ip information
 4. For customized certificate , please put it in /etc/trojan/ , no name change required !
 5. Please use a VPS with more than **0.5 GB RAM** and at least **5G FREE DISK SPACE**. 
 
-## If you found it useful , please give a star ,thanks!
-
-### Live Demo(no Guarantee)
+### Give it a try ! (Live Demo,no Guarantee)
 
 [https://www.trojan-gfw.xyz/vpstoolbox.html](https://www.trojan-gfw.xyz/vpstoolbox.html)
 
@@ -50,3 +48,4 @@ Ip Information is just an indispensable part of this project, all ip information
 23. Support Full/Part Uninstall
 24. And so on...
 
+## If you found it useful , please give a star ,thanks!
