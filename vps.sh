@@ -3028,56 +3028,56 @@ advancedMenu() {
 #!/bin/bash
 neofetch
 echo -e "-------------------------------IP Information----------------------------"
-echo -e "ip:\t\t"`jq -r '.ip' "/root/.trojan/ip.json"`
-echo -e "city:\t\t"`jq -r '.city' "/root/.trojan/ip.json"`
-echo -e "region:\t\t"`jq -r '.region' "/root/.trojan/ip.json"`
-echo -e "country:\t"`jq -r '.country' "/root/.trojan/ip.json"`
-echo -e "loc:\t\t"`jq -r '.loc' "/root/.trojan/ip.json"`
-echo -e "org:\t\t"`jq -r '.org' "/root/.trojan/ip.json"`
-echo -e "postal:\t\t"`jq -r '.postal' "/root/.trojan/ip.json"`
-echo -e "timezone:\t"`jq -r '.timezone' "/root/.trojan/ip.json"`
+echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ip.json")
+echo -e "city:\t\t"\$(jq -r '.city' "/root/.trojan/ip.json")
+echo -e "region:\t\t"\$(jq -r '.region' "/root/.trojan/ip.json")
+echo -e "country:\t"\$(jq -r '.country' "/root/.trojan/ip.json")
+echo -e "loc:\t\t"\$(jq -r '.loc' "/root/.trojan/ip.json")
+echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ip.json")
+echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ip.json")
+echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ip.json")
 echo -e "-------------------------------------------------------------------------"
 
 echo -e "-------------------------------Service Running status--------------------"
   if [[ -f /usr/local/bin/trojan ]]; then
-echo -e "Trojan:\t\t"`systemctl is-active trojan`
+echo -e "Trojan:\t\t"\$(systemctl is-active trojan)
   fi
   if [[ -f /usr/sbin/nginx ]]; then
-echo -e "Nginx:\t\t"`systemctl is-active nginx`
+echo -e "Nginx:\t\t"\$(systemctl is-active nginx)
   fi
   if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
-echo -e "Dnscrypt-proxy:\t"`systemctl is-active dnscrypt-proxy`
+echo -e "Dnscrypt-proxy:\t"\$(systemctl is-active dnscrypt-proxy)
   fi
   if [[ -f /usr/bin/qbittorrent-nox ]]; then
-echo -e "Qbittorrent:\t"`systemctl is-active qbittorrent`
+echo -e "Qbittorrent:\t"\$(systemctl is-active qbittorrent)
   fi
   if [[ -f /usr/bin/bittorrent-tracker ]]; then
-echo -e "Bittorrent-tracker:\t\t"`systemctl is-active tracker`
+echo -e "Bittorrent-tracker:\t\t"\$(systemctl is-active tracker)
   fi
   if [[ -f /usr/local/bin/aria2c ]]; then
-echo -e "Aria2c:\t\t"`systemctl is-active aria2`
+echo -e "Aria2c:\t\t"\$(systemctl is-active aria2)
   fi
   if [[ -f /usr/local/bin/filebrowser ]]; then
-echo -e "Filebrowser:\t"`systemctl is-active filebrowser`
+echo -e "Filebrowser:\t"\$(systemctl is-active filebrowser)
   fi
   if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
-echo -e "Netdata:\t"`systemctl is-active netdata`
+echo -e "Netdata:\t"\$(systemctl is-active netdata)
   fi
   if [[ -f /usr/bin/dockerd ]]; then
-echo -e "Docker:\t\t"`systemctl is-active docker`
+echo -e "Docker:\t\t"\$(systemctl is-active docker)
   fi
   if [[ -f /usr/sbin/sshd ]]; then
-echo -e "sshd:\t\t"`systemctl is-active sshd`
+echo -e "sshd:\t\t"\$(systemctl is-active sshd)
   fi
   if [[ -f /usr/bin/tor ]]; then
-echo -e "Tor:\t"`systemctl is-active tor`
+echo -e "Tor:\t"\$(systemctl is-active tor)
   fi
 echo -e "-------------------------------------------------------------------------"
 
 echo "****************************************************************************************************"
 echo "*                                   Vps Toolbox Result                                             *"
 echo "*                     Please visit the following link to get the result                            *"
-echo "*                       https://$domain/$password1.html                                            *"
+echo "*                       https://$domain/$password1.html                                     *"
 echo "*                 For more info ,please run the following command                                  *"
 echo 'sudo bash -c "\$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"*'
 echo "****************************************************************************************************"
