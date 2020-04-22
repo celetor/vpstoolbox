@@ -536,6 +536,7 @@ fi
 #####################################
 while [[ -z ${domain} ]]; do
 domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你的域名)(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+done
 if (whiptail --title "hostname" --yesno "Change hostname to your domain(修改hostname为域名)?" 8 78); then
 	hostnamectl set-hostname $domain
 	if grep -q "${domain}" /etc/hosts
@@ -546,7 +547,6 @@ if (whiptail --title "hostname" --yesno "Change hostname to your domain(修改ho
 	echo "${myip} ${domain}" >> /etc/hosts
 	fi
 fi
-done
 if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
 password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
