@@ -312,7 +312,7 @@ issuecert(){
 	set +e
 	clear
 	colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
-	if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -f /root/.acme.sh/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]] || [[ -f /etc/trojan/trojan.key ]]; then
+	if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -f /root/.acme.sh/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else
 	rm -rf /etc/nginx/sites-available/* &
@@ -578,6 +578,7 @@ fi
 	fi
 ####################################
 	if [[ ${install_aria} == 1 ]]; then
+		ariaport=$(shuf -i 10000-19000 -n 1)
 		while [[ -z ${ariapath} ]]; do
 		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Path(路径)" 8 78 /myaria2 --title "Aria2 path input" 3>&1 1>&2 2>&3)
 		done
@@ -814,6 +815,205 @@ fi
 	exit 1;
  fi
 }
+#############Install NGINX################
+installnginx(){
+if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
+	clear
+	colorEcho ${INFO} "Install Nginx ing"
+	if [[ $dist != centos ]]; then
+	curl -LO --progress-bar https://nginx.org/keys/nginx_signing.key
+	apt-key add nginx_signing.key
+	rm -rf nginx_signing.key
+	touch /etc/apt/sources.list.d/nginx.list
+	cat > '/etc/apt/sources.list.d/nginx.list' << EOF
+deb https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
+deb-src https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
+EOF
+	apt-get purge nginx -qq -y
+	apt-get update -q
+	apt-get install nginx -q -y
+ 	else
+	yum group install "Development Tools" -y
+	useradd -r nginx --shell=/usr/sbin/nologin
+	wget http://nginx.org/download/nginx-1.17.9.tar.gz && tar -xvf nginx-1.17.9.tar.gz && rm nginx-1.17.9.tar.gz -f
+	wget https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz && tar xzvf pcre-8.40.tar.gz && rm pcre-8.40.tar.gz -f
+	wget https://www.zlib.net/zlib-1.2.11.tar.gz && tar xzvf zlib-1.2.11.tar.gz && rm zlib-1.2.11.tar.gz -f
+	cd nginx-1.17.9
+	./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_realip_module --with-http_secure_link_module --with-http_v2_module --with-stream --with-stream_realip_module --with-http_flv_module --with-http_mp4_module --without-select_module --without-poll_module --with-http_stub_status_module --with-pcre=../pcre-8.40 --with-zlib=../zlib-1.2.11
+	make -j $(nproc --all)
+	make install
+	cd ..
+	rm -rf nginx*
+	rm -rf pcre*
+	rm -rf zlib*
+	mkdir /var/cache/nginx/
+	mkdir /usr/share/nginx/
+	mkdir /usr/share/nginx/html/
+ 	fi
+fi
+	cat > '/lib/systemd/system/nginx.service' << EOF
+[Unit]
+Description=The NGINX HTTP and reverse proxy server
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/run/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t
+ExecStart=/usr/sbin/nginx
+ExecReload=/usr/sbin/nginx -s reload
+ExecStop=/bin/kill -s QUIT \$MAINPID
+PrivateTmp=true
+LimitNOFILE=51200
+LimitNPROC=51200
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl enable nginx
+	cat > '/etc/nginx/nginx.conf' << EOF
+user nginx;
+worker_processes auto;
+
+error_log /var/log/nginx/error.log warn;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+events {
+	worker_connections 51200;
+	use epoll;
+	multi_accept on;
+}
+
+http {
+	proxy_intercept_errors on;
+	proxy_socket_keepalive on;
+	proxy_http_version 1.1;
+	http2_push_preload on;
+	aio threads;
+	charset UTF-8;
+	tcp_nodelay on;
+	tcp_nopush on;
+	server_tokens off;
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	access_log /var/log/nginx/access.log;
+
+	log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
+		'\$status $body_bytes_sent "\$http_referer" '
+		'"\$http_user_agent" "\$http_x_forwarded_for"';
+
+	sendfile on;
+	gzip on;
+	gzip_proxied any;
+	gzip_types *;
+	gzip_comp_level 9;
+
+	include /etc/nginx/conf.d/*.conf;
+}
+EOF
+clear
+}
+#########Open ports########################
+openfirewall(){
+	set +e
+	colorEcho ${INFO} "设置 firewall"
+	#policy
+	iptables -P INPUT ACCEPT
+	iptables -P FORWARD ACCEPT
+	iptables -P OUTPUT ACCEPT
+	ip6tables -P INPUT ACCEPT
+	ip6tables -P FORWARD ACCEPT
+	ip6tables -P OUTPUT ACCEPT
+	#flash
+	iptables -F
+	ip6tables -F
+	#block
+	iptables -I INPUT -s 36.110.236.68/16 -j DROP
+	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP
+	#keep connected
+	iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+	ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+	#icmp
+	iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+	iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
+	ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT
+	ip6tables -A OUTPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 -j REJECT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 192.168.0.0/16 -j REJECT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 10.0.0.0/8 -j REJECT
+	#iptables -m owner --uid-owner trojan -A OUTPUT --dport 53 -j ACCEPT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 --dport 80 -j ACCEPT
+	#iptables -m owner --uid-owner trojan -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+	#tcp
+	iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	#udp
+	iptables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
+	iptables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
+	iptables -A OUTPUT -j ACCEPT
+	#iptables -I FORWARD -j DROP
+	#tcp6
+	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+	ip6tables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	#udp6
+	ip6tables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
+	ip6tables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
+	ip6tables -A OUTPUT -j ACCEPT
+	#ip6tables -I FORWARD -j DROP
+	if [[ $install_qbt == 1 ]]; then
+		iptables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
+		ip6tables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
+		iptables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT
+		ip6tables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT
+	fi
+	if [[ $install_tracker == 1 ]]; then
+		iptables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
+		ip6tables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
+		iptables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT
+		ip6tables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT
+	fi
+	if [[ $install_aria == 1 ]]; then
+		iptables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
+		ip6tables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
+		iptables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
+		ip6tables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
+	fi
+	if [[ $dist == debian ]]; then
+	export DEBIAN_FRONTEND=noninteractive 
+	apt-get install iptables-persistent -qq -y > /dev/null
+	iptables-save > /etc/iptables/rules.v4
+	ip6tables-save > /etc/iptables/rules.v6
+ elif [[ $dist == ubuntu ]]; then
+	export DEBIAN_FRONTEND=noninteractive
+	ufw allow http
+	ufw allow https
+	ufw allow ${ariaport}
+	apt-get install iptables-persistent -qq -y > /dev/null
+	iptables-save > /etc/iptables/rules.v4
+	ip6tables-save > /etc/iptables/rules.v6
+ elif [[ $dist == centos ]]; then
+	setenforce 0
+	cat > '/etc/selinux/config' << EOF
+SELINUX=disabled
+SELINUXTYPE=targeted
+EOF
+	firewall-cmd --zone=public --add-port=80/tcp --permanent
+	firewall-cmd --zone=public --add-port=443/tcp --permanent
+	firewall-cmd --zone=public --add-port=80/udp --permanent
+	firewall-cmd --zone=public --add-port=443/udp --permanent
+	systemctl stop firewalld
+	systemctl disable firewalld
+ else
+	clear
+	TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
+	exit 1;
+ fi
+}
 ##########install dependencies#############
 installdependency(){
 	set +e
@@ -970,11 +1170,14 @@ fi
 clear
 #############################################
 if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]] || [[ ${othercert} == 1 ]] || [[ ${installstatus} == 1 ]]; then
-	:
+	installnginx
+	openfirewall
 	else
 	if isresolved $domain
 	then
-	:
+	installnginx
+	openfirewall
+	issuecert
 	else
 	whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
 	clear
@@ -1027,107 +1230,6 @@ rm -rf openssl*
 apt-get purge build-essential -y
 apt-get autoremove -y
 fi
-#############Install NGINX################
-if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
-	clear
-	colorEcho ${INFO} "Install Nginx ing"
-	if [[ $dist != centos ]]; then
-	curl -LO --progress-bar https://nginx.org/keys/nginx_signing.key
-	apt-key add nginx_signing.key
-	rm -rf nginx_signing.key
-	touch /etc/apt/sources.list.d/nginx.list
-	cat > '/etc/apt/sources.list.d/nginx.list' << EOF
-deb https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
-deb-src https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
-EOF
-	apt-get purge nginx -qq -y
-	apt-get update -q
-	apt-get install nginx -q -y
- 	else
-	yum group install "Development Tools" -y
-	useradd -r nginx --shell=/usr/sbin/nologin
-	wget http://nginx.org/download/nginx-1.17.9.tar.gz && tar -xvf nginx-1.17.9.tar.gz && rm nginx-1.17.9.tar.gz -f
-	wget https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz && tar xzvf pcre-8.40.tar.gz && rm pcre-8.40.tar.gz -f
-	wget https://www.zlib.net/zlib-1.2.11.tar.gz && tar xzvf zlib-1.2.11.tar.gz && rm zlib-1.2.11.tar.gz -f
-	cd nginx-1.17.9
-	./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_realip_module --with-http_secure_link_module --with-http_v2_module --with-stream --with-stream_realip_module --with-http_flv_module --with-http_mp4_module --without-select_module --without-poll_module --with-http_stub_status_module --with-pcre=../pcre-8.40 --with-zlib=../zlib-1.2.11
-	make -j $(nproc --all)
-	make install
-	cd ..
-	rm -rf nginx*
-	rm -rf pcre*
-	rm -rf zlib*
-	mkdir /var/cache/nginx/
-	mkdir /usr/share/nginx/
-	mkdir /usr/share/nginx/html/
- 	fi
-fi
-	cat > '/lib/systemd/system/nginx.service' << EOF
-[Unit]
-Description=The NGINX HTTP and reverse proxy server
-After=syslog.target network.target remote-fs.target nss-lookup.target
-
-[Service]
-Type=forking
-PIDFile=/run/nginx.pid
-ExecStartPre=/usr/sbin/nginx -t
-ExecStart=/usr/sbin/nginx
-ExecReload=/usr/sbin/nginx -s reload
-ExecStop=/bin/kill -s QUIT \$MAINPID
-PrivateTmp=true
-LimitNOFILE=51200
-LimitNPROC=51200
-Restart=on-failure
-RestartSec=3s
-
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable nginx
-	cat > '/etc/nginx/nginx.conf' << EOF
-user nginx;
-worker_processes auto;
-
-error_log /var/log/nginx/error.log warn;
-pid /run/nginx.pid;
-include /etc/nginx/modules-enabled/*.conf;
-events {
-	worker_connections 51200;
-	use epoll;
-	multi_accept on;
-}
-
-http {
-	proxy_intercept_errors on;
-	proxy_socket_keepalive on;
-	proxy_http_version 1.1;
-	http2_push_preload on;
-	aio threads;
-	charset UTF-8;
-	tcp_nodelay on;
-	tcp_nopush on;
-	server_tokens off;
-
-	include /etc/nginx/mime.types;
-	default_type application/octet-stream;
-
-	access_log /var/log/nginx/access.log;
-
-	log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
-		'\$status $body_bytes_sent "\$http_referer" '
-		'"\$http_user_agent" "\$http_x_forwarded_for"';
-
-	sendfile on;
-	gzip on;
-	gzip_proxied any;
-	gzip_types *;
-	gzip_comp_level 9;
-
-	include /etc/nginx/conf.d/*.conf;
-}
-EOF
-clear
 #############Install Qbittorrent################
 if [[ $install_qbt == 1 ]]; then
 	if [[ ! -f /usr/bin/qbittorrent-nox ]]; then
@@ -1262,7 +1364,6 @@ fi
 clear
 ##########Install Aria2c##########
 if [[ $install_aria = 1 ]]; then
-	ariaport=$(shuf -i 10000-19000 -n 1)
 	#trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
 	trackers_list=$(wget -qO- https://trackerslist.com/all_aria2.txt)
 	cat > '/etc/systemd/system/aria2.service' << EOF
@@ -1628,7 +1729,6 @@ if [[ $install_netdata = 1 ]]; then
 		clear
 		colorEcho ${INFO} "Install netdata ing"
 		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
-		sleep 1
 		cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
 localhost:
 
@@ -1641,13 +1741,6 @@ nginx_log:
   name  : 'nginx_log'
   path  : '/var/log/nginx/access.log'
 EOF
-		sleep 3
-		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
-		#touch /opt/netdata/etc/netdata/python.d/logind.conf
-		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
-		colorEcho ${INFO} "Restart netdata ing"
-		systemctl restart netdata
-		cd
 	fi
 fi
 clear
@@ -1924,103 +2017,16 @@ fi
 		ntpdate -qu 1.hk.pool.ntp.org > /dev/null
 	fi
 	clear
+
+if [[ $install_netdata = 1 ]]; then
+	wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
+	sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
+	colorEcho ${INFO} "Restart netdata ing"
+	systemctl restart netdata
+	cd
+fi
 }
-#########Open ports########################
-openfirewall(){
-	set +e
-	colorEcho ${INFO} "设置 firewall"
-	#policy
-	iptables -P INPUT ACCEPT
-	iptables -P FORWARD ACCEPT
-	iptables -P OUTPUT ACCEPT
-	ip6tables -P INPUT ACCEPT
-	ip6tables -P FORWARD ACCEPT
-	ip6tables -P OUTPUT ACCEPT
-	#flash
-	iptables -F
-	ip6tables -F
-	#block
-	iptables -I INPUT -s 36.110.236.68/16 -j DROP
-	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP
-	#keep connected
-	iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-	ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-	#icmp
-	iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
-	iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
-	ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT
-	ip6tables -A OUTPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT
-	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 -j REJECT
-	#iptables -m owner --uid-owner trojan -A OUTPUT -d 192.168.0.0/16 -j REJECT
-	#iptables -m owner --uid-owner trojan -A OUTPUT -d 10.0.0.0/8 -j REJECT
-	#iptables -m owner --uid-owner trojan -A OUTPUT --dport 53 -j ACCEPT
-	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 --dport 80 -j ACCEPT
-	#iptables -m owner --uid-owner trojan -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-	#tcp
-	iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
-	#udp
-	iptables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
-	iptables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
-	iptables -A OUTPUT -j ACCEPT
-	#iptables -I FORWARD -j DROP
-	#tcp6
-	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-	ip6tables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
-	#udp6
-	ip6tables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
-	ip6tables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
-	ip6tables -A OUTPUT -j ACCEPT
-	#ip6tables -I FORWARD -j DROP
-	if [[ $install_qbt == 1 ]]; then
-		iptables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
-		ip6tables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
-		iptables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT
-		ip6tables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT
-	fi
-	if [[ $install_tracker == 1 ]]; then
-		iptables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
-		ip6tables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
-		iptables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT
-		ip6tables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT
-	fi
-	if [[ $install_aria == 1 ]]; then
-		iptables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
-		ip6tables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
-		iptables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
-		ip6tables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
-	fi
-	if [[ $dist == debian ]]; then
-	export DEBIAN_FRONTEND=noninteractive 
-	apt-get install iptables-persistent -qq -y > /dev/null
-	iptables-save > /etc/iptables/rules.v4
-	ip6tables-save > /etc/iptables/rules.v6
- elif [[ $dist == ubuntu ]]; then
-	export DEBIAN_FRONTEND=noninteractive
-	ufw allow http
-	ufw allow https
-	ufw allow ${ariaport}
-	apt-get install iptables-persistent -qq -y > /dev/null
-	iptables-save > /etc/iptables/rules.v4
-	ip6tables-save > /etc/iptables/rules.v6
- elif [[ $dist == centos ]]; then
-	setenforce 0
-	cat > '/etc/selinux/config' << EOF
-SELINUX=disabled
-SELINUXTYPE=targeted
-EOF
-	firewall-cmd --zone=public --add-port=80/tcp --permanent
-	firewall-cmd --zone=public --add-port=443/tcp --permanent
-	firewall-cmd --zone=public --add-port=80/udp --permanent
-	firewall-cmd --zone=public --add-port=443/udp --permanent
-	systemctl stop firewalld
-	systemctl disable firewalld
- else
-	clear
-	TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
-	exit 1;
- fi
-}
+
 ########Nginx config##############
 nginxtrojan(){
 	set +e
@@ -2990,8 +2996,6 @@ advancedMenu() {
 		userinput
 		systeminfo
 		installdependency
-		openfirewall
-		issuecert
 		nginxtrojan
 		start
 		sharelink
@@ -3032,17 +3036,51 @@ echo -e "loc:\t\t"`jq -r '.loc' "/root/.trojan/ip.json"`
 echo -e "org:\t\t"`jq -r '.org' "/root/.trojan/ip.json"`
 echo -e "postal:\t\t"`jq -r '.postal' "/root/.trojan/ip.json"`
 echo -e "timezone:\t"`jq -r '.timezone' "/root/.trojan/ip.json"`
-echo -e "-----------------------------------------------------------------------------"
-echo "**************************************************************************************"
-echo "*                                   Vps Toolbox Result                               *"
-echo "*     请访问下面的链接获取结果(Please visit the following link to get the result)    *"
-echo "*                       https://$domain/$password1.html            *"
-echo "*           若访问失败，请运行以下两行命令自行检测服务是否正常:active(running)为正常 *"
-echo "*                       sudo systemctl status trojan                                 *"
-echo "*                       sudo systemctl status nginx                                  *"
-echo "*                 For more info ,please run the following command                    *"
-echo 'sudo bash -c "\$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"'
-echo "***************************************************************************************"
+echo -e "-------------------------------------------------------------------------"
+
+echo -e "-------------------------------Service Running status--------------------"
+  if [[ -f /usr/local/bin/trojan ]]; then
+echo -e "Trojan:\t\t"`systemctl is-active trojan`
+  fi
+  if [[ -f /usr/sbin/nginx ]]; then
+echo -e "Nginx:\t\t"`systemctl is-active nginx`
+  fi
+  if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
+echo -e "Dnscrypt-proxy:\t"`systemctl is-active dnscrypt-proxy`
+  fi
+  if [[ -f /usr/bin/qbittorrent-nox ]]; then
+echo -e "Qbittorrent:\t"`systemctl is-active qbittorrent`
+  fi
+  if [[ -f /usr/bin/bittorrent-tracker ]]; then
+echo -e "Bittorrent-tracker:\t\t"`systemctl is-active tracker`
+  fi
+  if [[ -f /usr/local/bin/aria2c ]]; then
+echo -e "Aria2c:\t\t"`systemctl is-active aria2`
+  fi
+  if [[ -f /usr/local/bin/filebrowser ]]; then
+echo -e "Filebrowser:\t"`systemctl is-active filebrowser`
+  fi
+  if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
+echo -e "Netdata:\t"`systemctl is-active netdata`
+  fi
+  if [[ -f /usr/bin/dockerd ]]; then
+echo -e "Docker:\t\t"`systemctl is-active docker`
+  fi
+  if [[ -f /usr/sbin/sshd ]]; then
+echo -e "sshd:\t\t"`systemctl is-active sshd`
+  fi
+  if [[ -f /usr/bin/tor ]]; then
+echo -e "Tor:\t"`systemctl is-active tor`
+  fi
+echo -e "-------------------------------------------------------------------------"
+
+echo "****************************************************************************************************"
+echo "*                                   Vps Toolbox Result                                             *"
+echo "*                     Please visit the following link to get the result                            *"
+echo "*                       https://$domain/$password1.html                                            *"
+echo "*                 For more info ,please run the following command                                  *"
+echo 'sudo bash -c "\$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"*'
+echo "****************************************************************************************************"
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
 		echo "请访问下面的链接获取结果(Please visit the following link to get the result)" > /root/.trojan/result.txt
@@ -3129,6 +3167,7 @@ EOF
 		;;
 		esac
 }
+clear
 cd
 osdist
 if [[ ${dist} != centos ]]; then
