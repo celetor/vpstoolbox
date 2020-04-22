@@ -3036,9 +3036,8 @@ echo -e "loc:\t\t"\$(jq -r '.loc' "/root/.trojan/ip.json")
 echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ip.json")
 echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ip.json")
 echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ip.json")
-echo -e "-------------------------------------------------------------------------"
 
-echo -e "-------------------------------Service Running status--------------------"
+echo -e "-------------------------------Service Status----------------------------"
   if [[ -f /usr/local/bin/trojan ]]; then
 echo -e "Trojan:\t\t"\$(systemctl is-active trojan)
   fi
@@ -3072,6 +3071,13 @@ echo -e "sshd:\t\t"\$(systemctl is-active sshd)
   if [[ -f /usr/bin/tor ]]; then
 echo -e "Tor:\t"\$(systemctl is-active tor)
   fi
+
+echo -e "-------------------------------Certificate Status----------------------------"
+ssl_date=\$(echo |openssl s_client -connect ${domain}:443 2>&1 |sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'|openssl x509 -text)
+tmp_last_date=\$(echo "\${ssl_date}" | grep 'Not After :' | awk -F' : ' '{print \$NF}')
+last_date=\$(date -ud "\${tmp_last_date}" +%Y-%m-%d" "%H:%M:%S)
+day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
+echo -e "\e[40;33;1m The [${domain}] expiration date is : \${last_date} && [\${day_count} days] \e[0m"
 echo -e "-------------------------------------------------------------------------"
 
 echo "****************************************************************************************************"
