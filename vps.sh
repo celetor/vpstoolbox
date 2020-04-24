@@ -211,6 +211,17 @@ echo -e "org:\t\t"`jq -r '.org' "/root/.trojan/ip.json"`
 echo -e "postal:\t\t"`jq -r '.postal' "/root/.trojan/ip.json"`
 echo -e "timezone:\t"`jq -r '.timezone' "/root/.trojan/ip.json"`
 echo -e "-----------------------------------------------------------------------------"
+if [[ -f /root/.trojan/ipv6.json ]]; then
+echo -e "-------------------------------IPv6 Information----------------------------"
+echo -e "ip:\t\t"$(jq -r '.ip' "/root/.trojan/ipv6.json")
+echo -e "city:\t\t"$(jq -r '.city' "/root/.trojan/ipv6.json")
+echo -e "region:\t\t"$(jq -r '.region' "/root/.trojan/ipv6.json")
+echo -e "country:\t"$(jq -r '.country' "/root/.trojan/ipv6.json")
+echo -e "loc:\t\t"$(jq -r '.loc' "/root/.trojan/ipv6.json")
+echo -e "org:\t\t"$(jq -r '.org' "/root/.trojan/ipv6.json")
+echo -e "postal:\t\t"$(jq -r '.postal' "/root/.trojan/ipv6.json")
+echo -e "timezone:\t"$(jq -r '.timezone' "/root/.trojan/ipv6.json")
+fi
 }
 #############################
 setlanguage(){
@@ -3036,7 +3047,17 @@ echo -e "loc:\t\t"\$(jq -r '.loc' "/root/.trojan/ip.json")
 echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ip.json")
 echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ip.json")
 echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ip.json")
-
+if [[ -f /root/.trojan/ipv6.json ]]; then
+echo -e "-------------------------------IPv6 Information----------------------------"
+echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ipv6.json")
+echo -e "city:\t\t"\$(jq -r '.city' "/root/.trojan/ipv6.json")
+echo -e "region:\t\t"\$(jq -r '.region' "/root/.trojan/ipv6.json")
+echo -e "country:\t"\$(jq -r '.country' "/root/.trojan/ipv6.json")
+echo -e "loc:\t\t"\$(jq -r '.loc' "/root/.trojan/ipv6.json")
+echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ipv6.json")
+echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ipv6.json")
+echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ipv6.json")
+fi
 echo -e "-------------------------------Service Status----------------------------"
   if [[ -f /usr/local/bin/trojan ]]; then
 echo -e "Trojan:\t\t"\$(systemctl is-active trojan)
@@ -3071,7 +3092,6 @@ echo -e "sshd:\t\t"\$(systemctl is-active sshd)
   if [[ -f /usr/bin/tor ]]; then
 echo -e "Tor:\t"\$(systemctl is-active tor)
   fi
-
 echo -e "-------------------------------Certificate Status----------------------------"
 ssl_date=\$(echo |openssl s_client -connect ${domain}:443 2>&1 |sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'|openssl x509 -text)
 tmp_last_date=\$(echo "\${ssl_date}" | grep 'Not After :' | awk -F' : ' '{print \$NF}')
@@ -3079,7 +3099,6 @@ last_date=\$(date -ud "\${tmp_last_date}" +%Y-%m-%d" "%H:%M:%S)
 day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
 echo -e "\e[40;33;1m The [${domain}] expiration date is : \${last_date} && [\${day_count} days] \e[0m"
 echo -e "-------------------------------------------------------------------------"
-
 echo "****************************************************************************************************"
 echo "*                                   Vps Toolbox Result                                             *"
 echo "*                     Please visit the following link to get the result                            *"
@@ -3211,9 +3230,11 @@ EOF
 	fi
 fi
 clear
-var1=$(curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300)
-echo ${var1} > /root/.trojan/ip.json
+curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
 myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
 localip=$(ip a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+if [[ -n ${myipv6} ]]; then
+	curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
+fi
 advancedMenu
