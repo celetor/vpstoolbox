@@ -3072,7 +3072,7 @@ echo -e "Dnscrypt-proxy:\t"\$(systemctl is-active dnscrypt-proxy)
 echo -e "Qbittorrent:\t"\$(systemctl is-active qbittorrent)
   fi
   if [[ -f /usr/bin/bittorrent-tracker ]]; then
-echo -e "Bittorrent-tracker:\t\t"\$(systemctl is-active tracker)
+echo -e "Bittorrent-tracker:\t"\$(systemctl is-active tracker)
   fi
   if [[ -f /usr/local/bin/aria2c ]]; then
 echo -e "Aria2c:\t\t"\$(systemctl is-active aria2)
