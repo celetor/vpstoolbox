@@ -101,14 +101,10 @@ killall -9 AliHids >/dev/null 2>&1
 killall -9 AliHips >/dev/null 2>&1
 killall -9 AliYunDunUpdate >/dev/null 2>&1
 rm -rf /etc/init.d/aegis
-rm -rf /etc/systemd/system/CmsGoAgent.service
-rm -rf /etc/systemd/system/aliyun.service
-rm -rf /lib/systemd/system/cloud-config.service
-rm -rf /lib/systemd/system/cloud-config.target
-rm -rf /lib/systemd/system/cloud-final.service
-rm -rf /lib/systemd/system/cloud-init-local.service
-rm -rf /lib/systemd/system/cloud-init.service
-rm -rf /lib/systemd/system/ecs_mq.service
+rm -rf /etc/systemd/system/CmsGoAgent*
+rm -rf /etc/systemd/system/aliyun*
+rm -rf /lib/systemd/system/cloud*
+rm -rf /lib/systemd/system/ecs_mq*
 rm -rf /usr/local/aegis
 rm -rf /usr/local/cloudmonitor
 rm -rf /usr/sbin/aliyun_installer
