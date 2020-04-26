@@ -2024,16 +2024,7 @@ fi
 		ntpdate -qu 1.hk.pool.ntp.org > /dev/null
 	fi
 	clear
-
-if [[ $install_netdata = 1 ]]; then
-	wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
-	sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
-	colorEcho ${INFO} "Restart netdata ing"
-	systemctl restart netdata
-	cd
-fi
 }
-
 ########Nginx config##############
 nginxtrojan(){
 	set +e
@@ -3028,6 +3019,13 @@ advancedMenu() {
 		fi
 		if [[ $password1 == "" ]]; then
 		password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
+		fi
+		if [[ $install_netdata = 1 ]]; then
+		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
+		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
+		colorEcho ${INFO} "Restart netdata ing"
+		systemctl restart netdata
+		cd
 		fi
 		mv /usr/share/nginx/html/result.html /usr/share/nginx/html/$password1.html
 		clear
