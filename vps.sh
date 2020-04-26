@@ -3021,7 +3021,7 @@ advancedMenu() {
 		password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 		fi
 		if [[ $install_netdata = 1 ]]; then
-		wget -O /opt/netdata/etc/netdata/netdata.conf http://localhost:19999/netdata.conf
+		wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		colorEcho ${INFO} "Restart netdata ing"
 		systemctl restart netdata
