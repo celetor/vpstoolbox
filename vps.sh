@@ -247,6 +247,7 @@ LANGUAGE="zh_TW.UTF-8"
 LANG="zh_TW.UTF-8"
 LC_ALL="zh_TW.UTF-8"
 EOF
+apt-get install manpages-zh -y
 	cat > '/root/.trojan/language.json' << EOF
 {
   "language": "$language"
