@@ -1521,7 +1521,7 @@ if [[ ${dnsmasq_install} == 1 ]]; then
 #ads.*
 
 ####Block 360####
-#*.cn
+*.cn
 *.360.com
 *.360jie.com
 *.360kan.com
@@ -1544,6 +1544,7 @@ if [[ ${dnsmasq_install} == 1 ]]; then
 *.tiebaimg.com
 *.xiaodutv.com
 *.sina.com
+*huawei.*
 EOF
 ipv6_true="false"
 block_ipv6="true"
