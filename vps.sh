@@ -3213,7 +3213,7 @@ if [[ -f /root/.trojan/license.json ]]; then
 fi
 
 if [[ $license != 1 ]]; then
-if (whiptail --title "Accept LICENSE?" --yesno "Please read and accept the MIT License！ https://github.com/johnrosen1/trojan-gfw-script/blob/master/LICENSE" 8 78); then
+if (whiptail --title "Accept LICENSE?" --yesno "Please read and accept the MIT License！ https://github.com/johnrosen1/vpstoolbox/blob/master/LICENSE" 8 78); then
 	cat > '/root/.trojan/license.json' << EOF
 {
   "license": "1"
