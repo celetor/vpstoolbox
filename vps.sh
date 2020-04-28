@@ -1545,6 +1545,8 @@ if [[ ${dnsmasq_install} == 1 ]]; then
 *.xiaodutv.com
 *.sina.com
 *huawei.*
+*.qq.com
+*.wechat.com
 EOF
 ipv6_true="false"
 block_ipv6="true"
