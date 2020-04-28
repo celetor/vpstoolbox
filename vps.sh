@@ -3020,6 +3020,8 @@ advancedMenu() {
 		touch /etc/resolv.conf
 		echo "nameserver 127.0.0.1" > '/etc/resolv.conf'
 		systemctl start dnscrypt-proxy
+		iptables -t nat -I OUTPUT ! -d 127.0.0.1/32 -p udp -m udp --dport 53 -j DNAT --to 127.0.0.1:53
+		iptables-save > /etc/iptables/rules.v4
 		fi
 		if [[ $password1 == "" ]]; then
 		password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
