@@ -405,24 +405,6 @@ if [ ! -f /root/.trojan/config.json ]; then
 EOF
 fi
 install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
-colorEcho ${INFO} "被墙检测ing"
-colorEcho ${INFO} "test1"
-curl -s 36.110.213.10 --connect-timeout 5
-if [[ $? -ne 0 ]]; then
-	test1="0"
-	colorEcho ${WARNING} "test1 fail !"
-fi
-colorEcho ${INFO} "test2"
-curl -s 120.92.174.135 --connect-timeout 5
-if [[ $? -ne 0 ]]; then
-	test2="0"
-	colorEcho ${WARNING} "test3 fail !"
-fi
-
-if [[ ${test1} == 0 ]] && [[ ${test2} == 0 ]] && [[ -z ${myipv6} ]]; then
-	colorEcho ${ERROR} "你的ip(v4)被墙了，滚蛋！"
-	exit 1
-fi
 
 clear
 if [[ ${install_status} == 1 ]]; then
