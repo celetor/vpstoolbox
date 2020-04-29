@@ -413,19 +413,13 @@ if [[ $? -ne 0 ]]; then
 	colorEcho ${WARNING} "test1 fail !"
 fi
 colorEcho ${INFO} "test2"
-curl -s 112.19.7.64 --connect-timeout 5
-if [[ $? -ne 0 ]]; then
-	test2="0"
-	colorEcho ${WARNING} "test2 fail !"
-fi
-colorEcho ${INFO} "test3"
 curl -s 120.92.174.135 --connect-timeout 5
 if [[ $? -ne 0 ]]; then
-	test3="0"
+	test2="0"
 	colorEcho ${WARNING} "test3 fail !"
 fi
 
-if [[ ${test1} == 0 ]] && [[ ${test2} == 0 ]] && [[ ${test3} == 0 ]] && [[ -z ${myipv6} ]]; then
+if [[ ${test1} == 0 ]] && [[ ${test2} == 0 ]] && [[ -z ${myipv6} ]]; then
 	colorEcho ${ERROR} "你的ip(v4)被墙了，滚蛋！"
 	exit 1
 fi
