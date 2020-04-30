@@ -3068,6 +3068,9 @@ echo -e "sshd:\t\t"\$(systemctl is-active sshd)
   if [[ -f /usr/bin/tor ]]; then
 echo -e "Tor:\t"\$(systemctl is-active tor)
   fi
+echo -e "-------------------------------Bandwith Usage----------------------------"
+echo -e "         Receive    Transmit"
+tail -n +3 /proc/net/dev | awk '{print \$1 " " \$2 " " \$10}' | numfmt --to=iec --field=2,3
 echo -e "-------------------------------Certificate Status----------------------------"
 ssl_date=\$(echo |openssl s_client -connect ${domain}:443 2>&1 |sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'|openssl x509 -text)
 tmp_last_date=\$(echo "\${ssl_date}" | grep 'Not After :' | awk -F' : ' '{print \$NF}')
