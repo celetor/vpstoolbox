@@ -2794,111 +2794,6 @@ EOF
 	systemctl daemon-reload
 	colorEcho ${INFO} "卸载完成"
 }
-###########Status#################
-statuscheck(){
-	set +e
-	if [[ -f /usr/local/bin/trojan ]]; then
-		trojanstatus=$(systemctl is-active trojan)
-		if [[ $trojanstatus == active ]]; then
-			echo ""
-			colorEcho ${INFO} "Trojan-GFW状态：正常运行中(Normal)"
-			else
-			echo ""
-			colorEcho ${INFO} "Trojan-GFW状态：服务状态异常,尝试重启服务(Not Running)"
-			systemctl restart trojan
-		fi
-	fi
-	if [[ -f /usr/sbin/nginx ]]; then
-		nginxstatus=$(systemctl is-active nginx)
-		if [[ $nginxstatus == active ]]; then
-			echo ""
-			colorEcho ${INFO} "Nginx状态：正常运行中(Normal)"
-			else
-			echo ""
-			colorEcho ${INFO} "Nginx状态：服务状态异常,尝试重启服务(Not Running)"
-			systemctl restart nginx
-		fi
-	fi
-	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
-		dnsmasqstatus=$(systemctl is-active dnscrypt-proxy)
-		if [[ $dnsmasqstatus == active ]]; then
-			echo ""
-			colorEcho ${INFO} "dnscrypt-proxy状态：正常运行中(Normal)"
-			else
-			echo ""
-			colorEcho ${INFO} "dnscrypt-proxy状态：服务状态异常,尝试重启服务(Not Running)"
-			systemctl restart dnscrypt-proxy
-		fi
-	fi
-	if [[ -f /usr/bin/qbittorrent-nox ]]; then
-		qbtstatus=$(systemctl is-active qbittorrent)
-		if [[ $qbtstatus == active ]]; then
-			echo ""
-			colorEcho ${INFO} "Qbittorrent状态：正常运行中(Normal)"
-			else
-			echo ""
-			colorEcho ${INFO} "Qbittorrent状态：服务状态异常,尝试重启服务(Not Running)"
-			systemctl restart qbittorrent
-		fi
-	fi
-	if [[ -f /usr/bin/bittorrent-tracker ]]; then
-		trackerstatus=$(systemctl is-active tracker)
-		if [[ $trackerstatus == active ]]; then
-			echo ""
-			colorEcho ${INFO} "Bittorrent-Tracker状态：正常运行中(Normal)"
-			else
-			echo ""
-			colorEcho ${INFO} "Bittorrent-Tracker状态：服务状态异常,尝试重启服务(Not Running)"
-			systemctl restart tracker
-		fi
-	fi
-	if [[ -f /usr/local/bin/aria2c ]]; then
-		aria2status=$(systemctl is-active aria2)
-		if [[ $nginxstatus == active ]]; then
-			echo ""
-			colorEcho ${INFO} "Aria2状态：正常运行中(Normal)"
-			else
-			echo ""
-			colorEcho ${INFO} "Aria2状态：服务状态异常,尝试重启服务(Not Running)"
-			systemctl restart aria2
-		fi
-	fi
-	if [[ -f /usr/local/bin/filebrowser ]]; then
-		filestatus=$(systemctl is-active filebrowser)
-		if [[ $filestatus == active ]]; then
-			echo ""
-			colorEcho ${INFO} "Filebrowser状态：正常运行中(Normal)"
-			else
-			echo ""
-			colorEcho ${INFO} "Filebrowser状态：服务状态异常,尝试重启服务(Not Running)"
-			systemctl restart filebrowser
-		fi
-	fi
-	if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
-		netdatastatus=$(systemctl is-active netdata)
-		if [[ $netdatastatus == active ]]; then
-			echo ""
-			colorEcho ${INFO} "Netdata状态：正常运行中(Normal)"
-			else
-			echo ""
-			colorEcho ${INFO} "Netdata状态：服务状态异常,尝试重启服务(Not Running)"
-			systemctl restart netdata
-		fi
-	fi
-	if [[ -f /usr/bin/tor ]]; then
-		torstatus=$(systemctl is-active tor)
-		if [[ $torstatus == active ]]; then
-			echo ""
-			colorEcho ${INFO} "Tor状态：正常运行中(Normal)"
-			else
-			echo ""
-			colorEcho ${INFO} "Tor状态：服务状态异常,尝试重启服务(Not Running)"
-			systemctl restart tor
-		fi
-	fi
-	echo ""
-	colorEcho ${INFO} "状态检查完成(Status Check complete)"
-}
 #######Auto Update##############
 autoupdate(){
 	set +e
@@ -2948,23 +2843,12 @@ logcheck(){
 	less /var/log/nginx/error.log
 	less /var/log/nginx/access.log
 }
-#########Bandwith usage######
-bandwithusage(){
-	set +e
-	neofetch
-	colorEcho ${INFO} "流量使用情况(bandwithusage) 接收(Receive) 发送(Transmit)"
-	tail -n +3 /proc/net/dev | awk '{print $1 " " $2 " " $10}' | numfmt --to=iec --field=2,3
-	colorEcho ${INFO} "Done !"
-}
 #####Main menu##########
 advancedMenu() {
 	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option!" 13 78 5 \
 	"Install" "安裝" \
-	"Result" "结果" \
 	"Benchmark" "效能"\
 	"Log" "日志" \
-	"Bandwith" "流量" \
-	"Status" "状态" \
 	"Update" "更新" \
 	"Uninstall" "卸載" \
 	"Exit" "退出" 3>&1 1>&2 2>&3)
@@ -3087,8 +2971,6 @@ echo 'sudo bash -c "\$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/v
 echo "****************************************************************************************************"
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
-		echo "请访问下面的链接获取结果(Please visit the following link to get the result)" > /root/.trojan/result.txt
-		echo "https://$domain/$password1.html" >> /root/.trojan/result.txt
 		if [[ $install_bbrplus = 1 ]]; then
 		bash -c "$(curl -fsSL https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh)"
 		fi
@@ -3098,11 +2980,6 @@ EOF
 		clear
 		reboot
 		fi
-		;;
-		Result)
-		clear
-		whiptail --title "Install Success" --textbox --scrolltext /root/.trojan/result.txt 8 120
-		advancedMenu
 		;;
 		Benchmark)
 		clear
@@ -3146,14 +3023,6 @@ EOF
 		clear
 		logcheck
 		advancedMenu
-		;;
-		Bandwith)
-		clear
-		bandwithusage
-		;;
-		Status)
-		clear
-		statuscheck
 		;;
 		Update)
 		clear
