@@ -23,7 +23,7 @@
 
 #Run me with:
 
-#apt-get update && apt-get install sudo curl -y || (yum update -y && yum install sudo curl -y) && sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"
+#apt-get update && apt-get install sudo curl -y && sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"
 
 #                 _              _ _               
 #__   ___ __  ___| |_ ___   ___ | | |__   _____  __
@@ -409,15 +409,8 @@ install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
 
 clear
 if [[ ${install_status} == 1 ]]; then
-if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安装，是否继续?" 8 78); then
-    if (whiptail --title "Installed Detected" --defaultno --yesno "检测到已安装，是否重新设置具体参数?" 8 78); then
-    :
-    else
-    readconfig
-    fi
-    else
-    advancedMenu
-    fi
+	whiptail --title "Installed" --msgbox "Installed,exiting" 8 78
+	advancedMenu
 fi
 
 whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Please choose carefully!" --title "User choice" --checklist --separate-output --nocancel "Please press space to choose carefully !!!" 24 52 16 \
