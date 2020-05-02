@@ -675,13 +675,13 @@ colorEcho ${INFO} "初始化中(initializing)"
 	pack="apt-get -y -q"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install whiptail curl locales lsb-release jq lsof neofetch -y -qq
+	apt-get install whiptail curl locales lsb-release jq lsof neofetch -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
 	pack="apt-get -y -q"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install whiptail curl locales lsb-release jq lsof neofetch -y -qq
+	apt-get install whiptail curl locales lsb-release jq lsof neofetch -y -q
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
 	exit 1;
