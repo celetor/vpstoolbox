@@ -677,25 +677,7 @@ fi
 osdist(){
 set +e
 colorEcho ${INFO} "初始化中(initializing)"
- if cat /etc/*release | grep ^NAME | grep -q CentOS; then
-	dist=centos
-	pack="yum -y -q"
-	yum update -y
-	yum install -y epel-release
-	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof neofetch -y -q
- elif cat /etc/*release | grep ^NAME | grep -q Red; then
-	dist=centos
-	pack="yum -y -q"
-	yum update -y
-	yum install -y epel-release
-	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof neofetch -y -q
- elif cat /etc/*release | grep ^NAME | grep -q Fedora; then
-	dist=centos
-	pack="yum -y -q"
-	yum update -y
-	yum install -y epel-release
-	yum install sudo newt curl e2fsprogs jq redhat-lsb-core lsof neofetch -y -q
- elif cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
+ if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 	dist=ubuntu
 	pack="apt-get -y -q"
 	apt-get update -q
