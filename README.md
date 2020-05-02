@@ -5,11 +5,7 @@ A powerful Toolbox for Linux VPS.
 
 #### How to use
 ```
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"
-```
-If sudo/curl command not found , then:  
-```
-apt-get update && apt-get install sudo curl -y || (yum update -y && yum install sudo curl -y)
+apt-get update && apt-get install sudo curl -y && sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"
 ```
 
 Flowchart:
