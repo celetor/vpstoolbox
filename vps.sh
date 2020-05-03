@@ -433,9 +433,8 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "11" "Speedtest(Docker Version)" on \
 "其他" "Others" on  \
 "12" "OPENSSL" off \
-"13" "BBRPLUS" off \
-"14" "Tor-Relay" off \
-"15" "Enable TLS1.3 only" off 2>results
+"13" "Tor-Relay" off \
+"14" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -481,12 +480,9 @@ do
 		install_openssl=1
 		;;
 		13)
-		install_bbrplus=1
-		;;
-		14)
 		install_tor=1
 		;;
-		15) 
+		14) 
 		tls13only=1
 		;;
 		*)
@@ -2947,9 +2943,6 @@ echo 'sudo bash -c "\$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/v
 echo "****************************************************************************************************"
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
-		if [[ $install_bbrplus = 1 ]]; then
-		bash -c "$(curl -fsSL https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh)"
-		fi
 		clear
 		cat /root/.trojan/result.txt
 		if (whiptail --title "Reboot" --yesno "安装成功(success)！ 重启 (reboot) 使配置生效,重新SSH连接后将自动出现结果 (to make the configuration effective)?" 8 78); then
