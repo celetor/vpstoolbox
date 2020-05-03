@@ -38,7 +38,6 @@ Ip Information is just an indispensable part of this project, all ip information
 19. Fail Restart
 20. [uninstall Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
 9.  Support [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks)
-20. Support [BBRPLUS](https://github.com/chiakge/Linux-NetSpeed)
 15. Support [TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)
 21. Support manually check for update
 23. Support Full/Part Uninstall
