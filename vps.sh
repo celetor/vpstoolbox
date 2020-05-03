@@ -686,9 +686,7 @@ colorEcho ${INFO} "初始化中(initializing)"
 ##############Upgrade system optional########
 upgradesystem(){
 	set +e
-	if [[ $dist == centos ]]; then
-		yum upgrade -y
- elif [[ $dist == ubuntu ]]; then
+ if [[ $dist == ubuntu ]]; then
 	export UBUNTU_FRONTEND=noninteractive
 	if [[ $ubuntu18_install == 1 ]]; then
 		cat > '/etc/apt/sources.list' << EOF
@@ -776,7 +774,6 @@ installnginx(){
 if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
 	clear
 	colorEcho ${INFO} "Install Nginx ing"
-	if [[ $dist != centos ]]; then
 	curl -LO --progress-bar https://nginx.org/keys/nginx_signing.key
 	apt-key add nginx_signing.key
 	rm -rf nginx_signing.key
@@ -788,24 +785,6 @@ EOF
 	apt-get purge nginx -qq -y
 	apt-get update -q
 	apt-get install nginx -q -y
- 	else
-	yum group install "Development Tools" -y
-	useradd -r nginx --shell=/usr/sbin/nologin
-	wget http://nginx.org/download/nginx-1.17.9.tar.gz && tar -xvf nginx-1.17.9.tar.gz && rm nginx-1.17.9.tar.gz -f
-	wget https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz && tar xzvf pcre-8.40.tar.gz && rm pcre-8.40.tar.gz -f
-	wget https://www.zlib.net/zlib-1.2.11.tar.gz && tar xzvf zlib-1.2.11.tar.gz && rm zlib-1.2.11.tar.gz -f
-	cd nginx-1.17.9
-	./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_realip_module --with-http_secure_link_module --with-http_v2_module --with-stream --with-stream_realip_module --with-http_flv_module --with-http_mp4_module --without-select_module --without-poll_module --with-http_stub_status_module --with-pcre=../pcre-8.40 --with-zlib=../zlib-1.2.11
-	make -j $(nproc --all)
-	make install
-	cd ..
-	rm -rf nginx*
-	rm -rf pcre*
-	rm -rf zlib*
-	mkdir /var/cache/nginx/
-	mkdir /usr/share/nginx/
-	mkdir /usr/share/nginx/html/
- 	fi
 fi
 	cat > '/lib/systemd/system/nginx.service' << EOF
 [Unit]
@@ -952,18 +931,6 @@ openfirewall(){
 	apt-get install iptables-persistent -qq -y > /dev/null
 	iptables-save > /etc/iptables/rules.v4
 	ip6tables-save > /etc/iptables/rules.v6
- elif [[ $dist == centos ]]; then
-	setenforce 0
-	cat > '/etc/selinux/config' << EOF
-SELINUX=disabled
-SELINUXTYPE=targeted
-EOF
-	firewall-cmd --zone=public --add-port=80/tcp --permanent
-	firewall-cmd --zone=public --add-port=443/tcp --permanent
-	firewall-cmd --zone=public --add-port=80/udp --permanent
-	firewall-cmd --zone=public --add-port=443/udp --permanent
-	systemctl stop firewalld
-	systemctl disable firewalld
  else
 	clear
 	TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
@@ -1114,15 +1081,10 @@ fi
 systemctl daemon-reload
 	fi
 ###########################################
-	clear
-	colorEcho ${INFO} "安装所有必备软件(Install all necessary Software)"
-if [[ $dist != centos ]]; then
-	apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less -q -y
-	apt-get install python3-qrcode -q -y
-else
-	$pack install sudo curl wget gnupg unzip bind-utils epel-release chrony systemd dbus xz cron
-	$pack install python3-qrcode
-fi
+clear
+colorEcho ${INFO} "Installing all necessary Software"
+apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less -q -y
+apt-get install python3-qrcode -q -y
 clear
 #############################################
 if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]] || [[ ${othercert} == 1 ]] || [[ ${installstatus} == 1 ]]; then
@@ -1160,10 +1122,7 @@ if [[ $install_docker == 1 ]]; then
   apt-get update
   apt-get install docker-ce docker-ce-cli containerd.io -y
  else
-  yum install -y yum-utils
-  yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-  yum install -y docker-ce docker-ce-cli containerd.io
-  systemctl start docker
+  echo "fail"
   fi
 fi
 ##########Install Speedtest#################
@@ -1176,7 +1135,7 @@ if [[ $tls13only == 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
 fi
 ##########Install OPENSSL##############
-if [[ ${install_openssl} == 1 ]] && [[ ${dist} != centos ]]; then
+if [[ ${install_openssl} == 1 ]]; then
 	colorEcho ${INFO} "Install OPENSSL ing"
 apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
 wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz && tar -xvf openssl-1.1.1g.tar.gz && rm -rf openssl-1.1.1g.tar.gz
@@ -1199,9 +1158,7 @@ if [[ $install_qbt == 1 ]]; then
 	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 	apt-get install qbittorrent-nox -q -y
  else
-	yum install -y -q epel-release
-	yum update -y -q
-	yum install qbittorrent-nox -y -q
+	echo "fail"
  fi
  #useradd -r qbittorrent --shell=/usr/sbin/nologin
 	cat > '/etc/systemd/system/qbittorrent.service' << EOF
@@ -1247,8 +1204,7 @@ if [[ $install_tracker = 1 ]]; then
 	curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
 	apt-get install -q -y nodejs
  else
-	curl -sL https://rpm.nodesource.com/setup_13.x | bash -
-	yum install -y -q nodejs
+	echo "fail"
  fi
  useradd -r bt_tracker --shell=/usr/sbin/nologin
  npm install -g bittorrent-tracker --quiet
@@ -1286,8 +1242,6 @@ if [[ $install_file = 1 ]]; then
 		colorEcho ${INFO} "Install Filebrowser ing"
 	if [[ $dist != centos ]]; then
 	export DEBIAN_FRONTEND=noninteractive
-	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
- else
 	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
  fi
 	cat > '/etc/systemd/system/filebrowser.service' << EOF
@@ -1419,20 +1373,6 @@ EOF
 		chmod +x /usr/local/bin/aria2c
 		rm -rf aria2c
 		apt-get autoremove -q -y
-	else
-		yum group install "Development Tools" -y
-		wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz && tar -xvf openssl-1.1.1g.tar.gz && rm -rf openssl-1.1.1g.tar.gz && cd openssl-1.1.1g
-		./config no-ssl2 no-ssl3 && make -j $(nproc --all) && make test && make install
-		cd ..
-		rm -rf openssl*
-		yum install -y -q nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev
-		wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz -q && tar -xvf aria2-1.35.0.tar.xz && rm aria2-1.35.0.tar.xz -f
-		cd aria2-1.35.0
-		./configure --with-openssl --without-gnutls --without-appletls --without-wintls
-		make -j $(nproc --all)
-		make install
-		cd ..
-		rm -rf aria2*
 	fi
 	touch /usr/local/bin/aria2.session
 	mkdir /usr/share/nginx/aria2/
@@ -1664,8 +1604,7 @@ EOF
 	apt-get install deb.torproject.org-keyring tor tor-arm tor-geoipdb -q -y
 	service tor stop
  else
-	yum install -y -q epel-release
-	yum install -y -q tor 
+	echo "fail"
  fi
 	cat > '/etc/tor/torrc' << EOF
 SocksPort 0
@@ -2976,13 +2915,7 @@ EOF
 		apt-get purge speedtest-cli -y -qq
 		apt-get install speedtest -y -qq
 			else
-			yum install wget -y
-			wget https://bintray.com/ookla/rhel/rpm -O bintray-ookla-rhel.repo
-			sudo mv bintray-ookla-rhel.repo /etc/yum.repos.d/
-			# Other non-official binaries will conflict with Speedtest CLI
-			# Example how to remove using yum
-			rpm -qa | grep speedtest | xargs -I {} sudo yum -y remove {}
-			yum install speedtest -y
+			echo "fail"
 		fi
 		#speedtest
 		sh -c 'echo "YES\n" | speedtest'
