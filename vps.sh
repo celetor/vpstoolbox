@@ -1238,12 +1238,10 @@ clear
 ##############Install FILEBROWSER###############
 if [[ $install_file = 1 ]]; then
 	if [[ ! -f /usr/local/bin/filebrowser ]]; then
-		clear
-		colorEcho ${INFO} "Install Filebrowser ing"
-	if [[ $dist != centos ]]; then
+	clear
+	colorEcho ${INFO} "Install Filebrowser ing"
 	export DEBIAN_FRONTEND=noninteractive
 	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
- fi
 	cat > '/etc/systemd/system/filebrowser.service' << EOF
 [Unit]
 Description=filebrowser browser
@@ -1365,15 +1363,13 @@ EOF
 	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
 	#usermod -a -G aria2 nginx
 	#useradd -r aria2 --shell=/usr/sbin/nologin
-	if [[ $dist != centos ]]; then
-		apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
-		curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/binary/aria2c.xz
-		xz --decompress aria2c.xz
-		cp -f aria2c /usr/local/bin/aria2c
-		chmod +x /usr/local/bin/aria2c
-		rm -rf aria2c
-		apt-get autoremove -q -y
-	fi
+	apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
+	curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/binary/aria2c.xz
+	xz --decompress aria2c.xz
+	cp -f aria2c /usr/local/bin/aria2c
+	chmod +x /usr/local/bin/aria2c
+	rm -rf aria2c
+	apt-get autoremove -q -y
 	touch /usr/local/bin/aria2.session
 	mkdir /usr/share/nginx/aria2/
 	chmod 755 /usr/share/nginx/aria2/
@@ -1591,7 +1587,6 @@ if [[ $install_tor = 1 ]]; then
 	clear
 	if [[ ! -f /usr/bin/tor ]]; then
 		colorEcho ${INFO} "Install Tor Relay ing"
-	if [[ $dist != centos ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	touch /etc/apt/sources.list.d/tor.list
 	cat > '/etc/apt/sources.list.d/tor.list' << EOF
@@ -1603,9 +1598,6 @@ EOF
 	apt-get update
 	apt-get install deb.torproject.org-keyring tor tor-arm tor-geoipdb -q -y
 	service tor stop
- else
-	echo "fail"
- fi
 	cat > '/etc/tor/torrc' << EOF
 SocksPort 0
 RunAsDaemon 1
@@ -1911,9 +1903,7 @@ fi
 	clear
 	timedatectl set-timezone Asia/Hong_Kong
 	timedatectl set-ntp on
-	if [[ $dist != centos ]]; then
-		ntpdate -qu 1.hk.pool.ntp.org > /dev/null
-	fi
+	ntpdate -qu 1.hk.pool.ntp.org > /dev/null
 	clear
 }
 ########Nginx config##############
@@ -2436,7 +2426,7 @@ footer a:link {
                             </ol>
                         </li>
                         <li>
-                            <h3>Trojan-GFW QR codes (Centos等不支援python3-prcode的系统会404!)</h3>
+                            <h3>Trojan-GFW QR codes (不支援python3-prcode的系统会404!)</h3>
                             <ol>
                                 <li><a href="$password1.png" target="_blank">QR code 1</a></li>
                                 <li><a href="$password2.png" target="_blank">QR code 2</a></li>
@@ -2775,10 +2765,8 @@ advancedMenu() {
 		rm results
 		prasejson
 		autoupdate
-		if [[ $dist != centos ]]; then
-			apt-get purge dnsutils python-pil socat python3-qrcode -q -y
-			apt-get autoremove -y
-		fi
+		apt-get purge dnsutils python-pil socat python3-qrcode -q -y
+		apt-get autoremove -y
 		if [[ $dnsmasq_install -eq 1 ]]; then
 			if [[ $dist = ubuntu ]]; then
 	 			systemctl stop systemd-resolved
@@ -2901,7 +2889,6 @@ EOF
 		colorEcho ${INFO} "Please read the result then hit enter to proceed"
 		read var
 		colorEcho ${INFO} "Network Benchmark"
-		if [[ ${dist} != centos ]]; then
 			apt-get install gnupg apt-transport-https dirmngr -y -qq
 		INSTALL_KEY="379CE192D401AB61"
 		# Ubuntu versions supported: xenial, bionic
@@ -2914,9 +2901,6 @@ EOF
 		# Example how to remove using apt-get
 		apt-get purge speedtest-cli -y -qq
 		apt-get install speedtest -y -qq
-			else
-			echo "fail"
-		fi
 		#speedtest
 		sh -c 'echo "YES\n" | speedtest'
 		colorEcho ${INFO} "Benchmark complete"
@@ -2945,28 +2929,26 @@ EOF
 clear
 cd
 osdist
-if [[ ${dist} != centos ]]; then
-	if grep -q "DebianBanner" /etc/ssh/sshd_config
-	then
-	:
-	else
-	ssh-keygen -A
-	sed -i 's/#MaxAuthTries 6/MaxAuthTries 3/' /etc/ssh/sshd_config
-	sed -i 's/^HostKey \/etc\/ssh\/ssh_host_\(dsa\|ecdsa\)_key$/\#HostKey \/etc\/ssh\/ssh_host_\1_key/g' /etc/ssh/sshd_config
-	sed -i 's/#HostKey \/etc\/ssh\/ssh_host_ed25519_key/HostKey \/etc\/ssh\/ssh_host_ed25519_key/g' /etc/ssh/sshd_config
-	sed -i 's/#TCPKeepAlive yes/TCPKeepAlive yes/' /etc/ssh/sshd_config
-	sed -i 's/#PermitTunnel no/PermitTunnel no/' /etc/ssh/sshd_config
-	sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config
-	sed -i 's/#GatewayPorts no/GatewayPorts no/' /etc/ssh/sshd_config
-	sed -i 's/#StrictModes yes/StrictModes yes/' /etc/ssh/sshd_config
-	sed -i 's/#AllowAgentForwarding yes/AllowAgentForwarding no/' /etc/ssh/sshd_config
-	sed -i 's/#AllowTcpForwarding yes/AllowTcpForwarding no/' /etc/ssh/sshd_config
-	echo "" >> /etc/ssh/sshd_config
-	echo "Protocol 2" >> /etc/ssh/sshd_config
-	echo "DebianBanner no" >> /etc/ssh/sshd_config
-	echo "AllowStreamLocalForwarding no" >> /etc/ssh/sshd_config
-	systemctl reload sshd
-	fi
+if grep -q "DebianBanner" /etc/ssh/sshd_config
+then
+:
+else
+ssh-keygen -A
+sed -i 's/#MaxAuthTries 6/MaxAuthTries 3/' /etc/ssh/sshd_config
+sed -i 's/^HostKey \/etc\/ssh\/ssh_host_\(dsa\|ecdsa\)_key$/\#HostKey \/etc\/ssh\/ssh_host_\1_key/g' /etc/ssh/sshd_config
+sed -i 's/#HostKey \/etc\/ssh\/ssh_host_ed25519_key/HostKey \/etc\/ssh\/ssh_host_ed25519_key/g' /etc/ssh/sshd_config
+sed -i 's/#TCPKeepAlive yes/TCPKeepAlive yes/' /etc/ssh/sshd_config
+sed -i 's/#PermitTunnel no/PermitTunnel no/' /etc/ssh/sshd_config
+sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config
+sed -i 's/#GatewayPorts no/GatewayPorts no/' /etc/ssh/sshd_config
+sed -i 's/#StrictModes yes/StrictModes yes/' /etc/ssh/sshd_config
+sed -i 's/#AllowAgentForwarding yes/AllowAgentForwarding no/' /etc/ssh/sshd_config
+sed -i 's/#AllowTcpForwarding yes/AllowTcpForwarding no/' /etc/ssh/sshd_config
+echo "" >> /etc/ssh/sshd_config
+echo "Protocol 2" >> /etc/ssh/sshd_config
+echo "DebianBanner no" >> /etc/ssh/sshd_config
+echo "AllowStreamLocalForwarding no" >> /etc/ssh/sshd_config
+systemctl reload sshd
 fi
 setlanguage
 if [[ -f /root/.trojan/license.json ]]; then
