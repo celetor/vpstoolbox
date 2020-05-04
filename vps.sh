@@ -869,7 +869,11 @@ openfirewall(){
 	ip6tables -F
 	#block
 	iptables -I INPUT -s 36.110.236.68/16 -j DROP
+	iptables -I INPUT -s 114.114.112.0/21 -j DROP
+	iptables -I INPUT -s 1.2.4.0/24 -j DROP
 	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP
+	iptables -I OUTPUT -d 114.114.112.0/21 -j DROP
+	iptables -I OUTPUT -d 1.2.4.0/24 -j DROP
 	#keep connected
 	iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 	ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -1138,8 +1142,8 @@ fi
 if [[ ${install_openssl} == 1 ]]; then
 	colorEcho ${INFO} "Install OPENSSL ing"
 apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
-wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz && tar -xvf openssl-1.1.1g.tar.gz && rm -rf openssl-1.1.1g.tar.gz
-cd openssl-1.1.1g && ./config no-ssl2 no-ssl3 && make -j $(nproc --all) && make test && make install
+wget https://www.openssl.org/source/openssl-1.1.1f.tar.gz && tar -xvf openssl-1.1.1f.tar.gz && rm -rf openssl-1.1.1f.tar.gz
+cd openssl-1.1.1f && ./config no-ssl2 no-ssl3 && make -j $(nproc --all) && make test && make install
 cd ..
 rm -rf openssl*
 apt-get purge build-essential -y
