@@ -1471,6 +1471,9 @@ xiaodutv.com
 *.xiaodutv.com
 *.sina.com
 *huawei.*
+hicloud.com
+vmall.com
+vmallres.com
 *.qq.com
 *.wechat.com
 ###Other###
