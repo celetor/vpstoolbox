@@ -1691,7 +1691,7 @@ if [[ -n ${myipv6} ]]; then
 fi
     cat > '/etc/dnscrypt-proxy/dnscrypt-proxy.toml' << EOF
 #Do not change these settings unless you know what you are doing !
-listen_addresses = ['127.0.0.1:53']
+listen_addresses = ['127.0.0.1:53','[::1]:53']
 user_name = 'nobody'
 max_clients = 250
 ipv4_servers = true
@@ -3028,6 +3028,7 @@ advancedMenu() {
 		echo "nameserver 127.0.0.1" > '/etc/resolv.conf'
 		systemctl start dnscrypt-proxy
 		iptables -t nat -I OUTPUT ! -d 127.0.0.1/32 -p udp -m udp --dport 53 -j DNAT --to 127.0.0.1:53
+		ip6tables -t nat -I OUTPUT ! -d ::1 -p udp -m udp --dport 53 -j DNAT --to [::1]:53
 		iptables-save > /etc/iptables/rules.v4
 		fi
 		if [[ $password1 == "" ]]; then
