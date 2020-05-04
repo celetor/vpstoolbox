@@ -3046,6 +3046,7 @@ advancedMenu() {
 		clear
 		cat > '/etc/profile.d/mymotd.sh' << EOF
 #!/bin/bash
+#!!! Do not change these settings unless you know what you are doing !!!
 neofetch
 echo -e "-------------------------------IP Information----------------------------"
 echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ip.json")
