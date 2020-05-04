@@ -981,6 +981,7 @@ fi
 	colorEcho ${INFO} "Enabling TCP-BBR boost"
 	#iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
 	cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
+#!!! Do not change these settings unless you know what you are doing !!!
 #net.ipv4.ip_forward = 1
 #net.ipv4.conf.all.forwarding = 1
 #net.ipv4.conf.default.forwarding = 1
@@ -1303,7 +1304,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 	cat > '/etc/aria2.conf' << EOF
-#Do not change these settings unless you know what you are doing !
+#!!! Do not change these settings unless you know what you are doing !!!
 #Global Settings###
 daemon=true
 async-dns=true
@@ -1391,7 +1392,7 @@ if [[ ${dnsmasq_install} == 1 ]]; then
 		mkdir /etc/dnscrypt-proxy/
 	fi
 	cat > '/etc/dnscrypt-proxy/blacklist.txt' << EOF
-
+#!!! Do not change these settings unless you know what you are doing !!!
 ###########################
 #        Blacklist        #
 ###########################
@@ -1690,7 +1691,7 @@ if [[ -n ${myipv6} ]]; then
 	fi
 fi
     cat > '/etc/dnscrypt-proxy/dnscrypt-proxy.toml' << EOF
-#Do not change these settings unless you know what you are doing !
+#!!! Do not change these settings unless you know what you are doing !!!
 listen_addresses = ['127.0.0.1:53','[::1]:53']
 user_name = 'nobody'
 max_clients = 250
@@ -2165,7 +2166,7 @@ rm -rf /etc/nginx/conf.d/*
 touch /etc/nginx/conf.d/default.conf
 if [[ $install_trojan == 1 ]]; then
 	cat > '/etc/nginx/conf.d/default.conf' << EOF
-#Do not change these settings unless you know what you are doing !
+#!!! Do not change these settings unless you know what you are doing !!!
 server {
 	listen 127.0.0.1:80;
 	listen 127.0.0.1:82 http2;
@@ -2188,7 +2189,7 @@ server {
 EOF
 	else
 	cat > '/etc/nginx/conf.d/default.conf' << EOF
-#Do not change these settings unless you know what you are doing !
+#!!! Do not change these settings unless you know what you are doing !!!
 server {
 	listen 443 ssl http2;
 	listen [::]:443 ssl http2;
@@ -2227,7 +2228,7 @@ server {
 EOF
 fi
 if [[ $dnsmasq_install == 1 ]]; then
-echo "    #location /dns {" >> /etc/nginx/conf.d/default.conf
+echo "    #location /dns-query {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_pass https://127.0.0.1:3000/dns-query;" >> /etc/nginx/conf.d/default.conf
