@@ -525,20 +525,20 @@ if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
 password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password1} ]]; then
-	password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 15 ; echo '' )
+	password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 10 ; echo '' )
 	fi
 done
 while [[ -z ${password2} ]]; do
 password2=$(whiptail --passwordbox --nocancel "Trojan-GFW Password Two(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password2} ]]; then
-	password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 15 ; echo '' )
+	password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 10 ; echo '' )
 	fi
 done
 fi
 ###################################
 	if [[ $install_qbt = 1 ]]; then
 		while [[ -z $qbtpath ]]; do
-		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Path(路径)" 8 78 /myqbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Path(路径)" 8 78 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 #####################################
@@ -547,14 +547,14 @@ fi
 		trackerpath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker Path(路径)" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
 		done
 		while [[ -z ${trackerstatuspath} ]]; do
-		trackerstatuspath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker Status Path(状态路径)" 8 78 /mytracker --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
+		trackerstatuspath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker Status Path(状态路径)" 8 78 /${password1}_tracker --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
 	if [[ ${install_aria} == 1 ]]; then
 		ariaport=$(shuf -i 10000-19000 -n 1)
 		while [[ -z ${ariapath} ]]; do
-		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Path(路径)" 8 78 /myaria2 --title "Aria2 path input" 3>&1 1>&2 2>&3)
+		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Path(路径)" 8 78 /${password1}_aria2/ --title "Aria2 path input" 3>&1 1>&2 2>&3)
 		done
 		while [[ -z $ariapasswd ]]; do
 		ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token(密码)" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
@@ -566,13 +566,13 @@ fi
 ####################################
 	if [[ ${install_file} = 1 ]]; then
 		while [[ -z ${filepath} ]]; do
-		filepath=$(whiptail --inputbox --nocancel "Filebrowser路径" 8 78 /myfile/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+		filepath=$(whiptail --inputbox --nocancel "Filebrowser路径" 8 78 /${password1}_file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
 	if [[ ${install_netdata} = 1 ]]; then
 		while [[ -z ${netdatapath} ]]; do
-		netdatapath=$(whiptail --inputbox --nocancel "Netdata路径" 8 78 /mynetdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
+		netdatapath=$(whiptail --inputbox --nocancel "Netdata路径" 8 78 /${password1}_netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
 		done
 	fi
 ####################################
