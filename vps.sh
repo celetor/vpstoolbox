@@ -879,6 +879,8 @@ openfirewall(){
 	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP
 	iptables -I OUTPUT -d 114.114.112.0/21 -j DROP
 	iptables -I OUTPUT -d 1.2.4.0/24 -j DROP
+	iptables -I OUTPUT -p tcp -m tcp --dport 5222 -j DROP
+	iptables -I OUTPUT -p udp -m udp --dport 5222 -j DROP
 	#keep connected
 	iptables -A INPUT -p tcp -m tcp --tcp-flags ALL FIN,PSH,URG -j DROP
 	iptables -A INPUT -p tcp -m tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
