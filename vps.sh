@@ -1750,8 +1750,8 @@ cache_neg_max_ttl = 600
 #
 #listen_addresses = ['127.0.0.1:3000']
 #path = "/dns-query"
-#cert_file = "/etc/trojan/trojan.crt"
-#cert_key_file = "/etc/trojan/trojan.key"
+#cert_file = "/root/.acme.sh/${domain}_ecc/fullchain.cer"
+#cert_key_file = "/root/.acme.sh/${domain}_ecc/${domain}.key"
 
 [query_log]
 
