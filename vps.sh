@@ -1766,6 +1766,7 @@ liuhua.in
 mimemi.vip
 yahaha.us
 cylink0501.icu
+nexitally.com
 EOF
 ipv6_true="false"
 block_ipv6="true"
