@@ -1528,6 +1528,8 @@ dlercloud.com
 dlercloud.org
 dlercloud.me
 dleris.best
+bgplink.com
+suda.cat
 # Migu
 migucloud.com
 migu.cn
