@@ -1982,7 +1982,7 @@ update_every : 60
 jobs:
   - name   : ${domain}_cert
     source : https://${domain}:443
-	check_revocation_status: yes
+    check_revocation_status: yes
 EOF
 	fi
 fi
