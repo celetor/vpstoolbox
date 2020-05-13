@@ -2485,6 +2485,9 @@ checkupdate(){
 	if [[ -f /usr/local/bin/trojan ]]; then
 		bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
 	fi
+	if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
+		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
+  	fi
 }
 ###########Trojan share link########
 sharelink(){
