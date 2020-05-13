@@ -1967,6 +1967,23 @@ nginx_log:
   name  : 'nginx_log'
   path  : '/var/log/nginx/access.log'
 EOF
+		cat > '/opt/netdata/etc/netdata/go.d/whoisquery.conf' << EOF
+update_every : 60
+
+jobs:
+  - name   : ${domain}
+    source : ${domain}
+    
+    days_until_expiration_critical: 30
+EOF
+		cat > '/opt/netdata/etc/netdata/go.d/x509check.conf' << EOF
+update_every : 60
+
+jobs:
+  - name   : ${domain}_cert
+    source : https://${domain}:443
+	check_revocation_status: yes
+EOF
 	fi
 fi
 clear
