@@ -414,8 +414,8 @@ install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
 
 clear
 if [[ ${install_status} == 1 ]]; then
-	whiptail --title "Installed" --msgbox "Installed,exiting" 8 78
-	advancedMenu
+	whiptail --title "Installed" --msgbox "Installed,reading configuration" 8 78
+	readconfig
 fi
 
 whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Please choose carefully!" --title "User choice" --checklist --separate-output --nocancel "Please press space to choose carefully !!!" 24 52 16 \
