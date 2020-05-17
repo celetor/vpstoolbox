@@ -2485,7 +2485,11 @@ checkupdate(){
 	fi
 	if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
 		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --no-updates
+		wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
+		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
+		systemctl restart netdata
   	fi
+  	echo "Done !"
 }
 ###########Trojan share link########
 sharelink(){
