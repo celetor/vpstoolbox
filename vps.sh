@@ -1953,7 +1953,7 @@ if [[ $install_netdata = 1 ]]; then
 	if [[ ! -f /usr/sbin/netdata ]]; then
 		clear
 		colorEcho ${INFO} "Install netdata ing"
-		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
+		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --no-updates
 		cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
 localhost:
 
@@ -2484,7 +2484,7 @@ checkupdate(){
 		bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
 	fi
 	if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
-		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
+		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --no-updates
   	fi
 }
 ###########Trojan share link########
