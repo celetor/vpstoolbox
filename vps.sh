@@ -1144,6 +1144,12 @@ if [[ $install_docker == 1 ]]; then
  else
   echo "fail"
   fi
+  cat > '/etc/docker/daemon.json' << EOF
+{
+  "metrics-addr" : "127.0.0.1:9323",
+  "experimental" : true
+}
+EOF
 fi
 ##########Install Speedtest#################
 if [[ ${install_speedtest} == 1 ]]; then
@@ -1977,11 +1983,16 @@ jobs:
     
     days_until_expiration_critical: 30
 EOF
+		cat > '/opt/netdata/etc/netdata/go.d/docker_engine.conf' << EOF
+jobs:
+  - name: local
+    url : http://127.0.0.1:9323/metrics
+EOF
 		cat > '/opt/netdata/etc/netdata/go.d/x509check.conf' << EOF
 update_every : 60
 
 jobs:
-  - name   : ${domain}_cert
+  - name   : ${domain}
     source : https://${domain}:443
     check_revocation_status: yes
 EOF
