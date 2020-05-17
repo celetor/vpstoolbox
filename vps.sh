@@ -3194,7 +3194,7 @@ echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ipv6.json")
 fi
 echo -e "-------------------------------Service Status----------------------------"
   if [[ -f /usr/local/bin/trojan ]]; then
-echo -e "Trojan:\t\t"\$(systemctl is-active trojan)
+echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
   fi
   if [[ -f /usr/sbin/nginx ]]; then
 echo -e "Nginx:\t\t"\$(systemctl is-active nginx)
@@ -3222,6 +3222,9 @@ echo -e "Docker:\t\t"\$(systemctl is-active docker)
   fi
   if [[ -f /usr/sbin/sshd ]]; then
 echo -e "sshd:\t\t"\$(systemctl is-active sshd)
+  fi
+  if [[ -f /usr/sbin/ntpd ]]; then
+echo -e "ntpd:\t\t"\$(systemctl is-active ntp)
   fi
   if [[ -f /usr/bin/tor ]]; then
 echo -e "Tor:\t"\$(systemctl is-active tor)
