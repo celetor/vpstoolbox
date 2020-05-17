@@ -1104,6 +1104,7 @@ clear
 colorEcho ${INFO} "Installing all necessary Software"
 apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less -q -y
 apt-get install python3-qrcode -q -y
+sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
 clear
 #############################################
 if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]] || [[ ${othercert} == 1 ]] || [[ ${installstatus} == 1 ]]; then
@@ -1954,6 +1955,17 @@ if [[ $install_netdata = 1 ]]; then
 		clear
 		colorEcho ${INFO} "Install netdata ing"
 		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --no-updates
+		cat > '/opt/netdata/etc/netdata/python.d/ntpd.conf' << EOF
+update_every: 10
+
+host: '127.0.0.1'
+port: '123'
+show_peers: yes
+# hide peers with source address in ranges 127.0.0.0/8 and 192.168.0.0/16
+peer_filter: '(127\..*)|(192\.168\..*)'
+# check for new/changed peers every 60 updates
+peer_rescan: 60
+EOF
 		cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
 localhost:
 
@@ -2254,7 +2266,7 @@ fi
 fi
 	clear
 	timedatectl set-timezone Asia/Hong_Kong
-	timedatectl set-ntp on
+	timedatectl set-ntp off
 	ntpdate -qu 1.hk.pool.ntp.org > /dev/null
 	clear
 }
