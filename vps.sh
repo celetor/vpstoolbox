@@ -429,17 +429,19 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "5" "Dnscrypt-proxy(Dns encryption)" on \
 "下载" "Download" on  \
 "6" "Qbittorrent(Bittorrent Client)" off \
-"7" "Bittorrent-Tracker" on \
+"7" "Bt-Tracker(Node.js Version)" on \
 "8" "Aria2" on \
 "9" "Filebrowser(File manager)" on \
 "状态" "Status" on  \
 "10" "Netdata(Server status monitor)" on \
-"速度" "Speedtest" on  \
+"测速" "Speedtest" on  \
 "11" "Speedtest(Docker Version)" on \
+"数据库" "Database" on  \
+"12" "MariaDB" on \
 "其他" "Others" on  \
-"12" "OPENSSL" off \
-"13" "Tor-Relay" off \
-"14" "Enable TLS1.3 only" off 2>results
+"13" "OPENSSL" off \
+"14" "Tor-Relay" off \
+"15" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -482,12 +484,15 @@ do
 		install_speedtest=1
 		;;
 		12)
-		install_openssl=1
+		install_mariadb=1
 		;;
 		13)
+		install_openssl=1
+		;;
+		14)
 		install_tor=1
 		;;
-		14) 
+		15) 
 		tls13only=1
 		;;
 		*)
@@ -2271,6 +2276,87 @@ fi
 	ntpdate -qu 1.hk.pool.ntp.org > /dev/null
 	clear
 }
+##########Install Mariadb#############
+install_mariadb(){
+  curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
+  sudo apt-get install mariadb-server -y
+  apt-get -y install expect
+
+  SECURE_MYSQL=$(expect -c "
+
+set timeout 10
+spawn mysql_secure_installation
+
+expect \"Enter current password for root (enter for none):\"
+send \"\r\"
+
+expect \"Switch to unix_socket authentication\"
+send \"n\r\"
+
+expect \"Change the root password?\"
+send \"n\r\"
+
+expect \"Remove anonymous users?\"
+send \"y\r\"
+
+expect \"Disallow root login remotely?\"
+send \"y\r\"
+
+expect \"Remove test database and access to it?\"
+send \"y\r\"
+
+expect \"Reload privilege tables now?\"
+send \"y\r\"
+
+expect eof
+")
+
+echo "$SECURE_MYSQL"
+
+apt-get -y purge expect
+
+    cat > '/etc/mysql/my.cnf' << EOF
+# MariaDB-specific config file.
+# Read by /etc/mysql/my.cnf
+
+[client]
+# Default is Latin1, if you need UTF-8 set this (also in server section)
+#default-character-set = utf8 
+
+[mysqld]
+#
+# * Character sets
+# 
+# Default is Latin1, if you need UTF-8 set all this (also in client section)
+#
+#character-set-server  = utf8 
+#collation-server      = utf8_general_ci 
+#character_set_server   = utf8 
+#collation_server       = utf8_general_ci 
+# Import all .cnf files from configuration directory
+!includedir /etc/mysql/mariadb.conf.d/
+bind-address=127.0.0.1
+
+[mariadb]
+
+userstat = 1
+EOF
+apt-get install python-mysqldb -y
+
+mysql -u root -e "create user 'netdata'@'localhost';"
+mysql -u root -e "grant usage on *.* to 'netdata'@'localhost';"
+mysql -u root -e "flush privileges;"
+
+    cat > '/opt/netdata/etc/netdata/python.d/mysql.conf' << EOF
+update_every : 10
+priority     : 90100
+
+local:
+  user     : 'netdata'
+  update_every : 1
+EOF
+
+}
 ########Nginx config##############
 nginxtrojan(){
 	set +e
@@ -2798,7 +2884,7 @@ footer a:link {
                             </ol>
                         </li>
                         <li>
-                            <h3>Trojan-GFW QR codes (不支援python3-prcode的系统会404!)</h3>
+                            <h3>Trojan-GFW QR codes (Centos等不支援python3-prcode的系统会404!)</h3>
                             <ol>
                                 <li><a href="$password1.png" target="_blank">QR code 1</a></li>
                                 <li><a href="$password2.png" target="_blank">QR code 2</a></li>
@@ -2921,11 +3007,21 @@ footer a:link {
                         <li><a href="https://github.com/librespeed/speedtest/blob/docker/doc.md" target="_blank">https://github.com/librespeed/speedtest/blob/docker/doc.md</a></li>
                     </ol>
                     <br>
+
+                    <h2>MariaDB</h2>
+                    <h4>默认安装: ✅</h4>
+                    <p>Your MariaDb Information</p>
+                    <p>No default root password, remote access has been disabled for security!</p>
+                    <p>无默认root密码,为了安全起见,外网访问已禁用,请直接使用以下命令访问数据库！</p>
+                    <p>mysql -u root</p>
+                    <p>如果需要外网访问,请自行注释掉/etc/mysql/my.cnf中的bind-address选项并重启mariadb！</p>
+                    <p>Please edit /etc/mysql/my.cnf and restart mariadb if you need remote access !</p>
+                    <br>
                     
                     <h2>How to change the default config </h2>
                     <p>Nginx</p>
                     <ul>
-                        <li><code>sudo nano /etc/nginx/conf.d/default.conf</code></li>
+                        <li><code>sudo nano /etc/nginx/conf.d/default.conf</code></li>1
                         <li><code>sudo systemctl start/restart/status nginx</code></li>
                     </ul>
                     <p>Trojan-GFW</p>
@@ -3131,6 +3227,9 @@ advancedMenu() {
 		userinput
 		systeminfo
 		installdependency
+		if [[ $install_mariadb == 1 ]]; then
+			install_mariadb
+		fi
 		nginxtrojan
 		start
 		sharelink
