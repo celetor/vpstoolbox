@@ -1065,7 +1065,7 @@ net.ipv4.tcp_fack = 0
 ##############################
 net.ipv6.conf.all.accept_redirects = 0
 net.ipv6.conf.default.accept_redirects = 0
-vm.swappiness = 5
+vm.swappiness = 1
 net.ipv4.ip_unprivileged_port_start = 0
 EOF
 	sysctl --system
