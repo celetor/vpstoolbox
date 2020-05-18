@@ -3320,6 +3320,9 @@ echo -e "Netdata:\t"\$(systemctl is-active netdata)
   if [[ -f /usr/bin/dockerd ]]; then
 echo -e "Docker:\t\t"\$(systemctl is-active docker)
   fi
+  if [[ -f /usr/sbin/mysqld ]]; then
+echo -e "MariaDB:\t\t"\$(systemctl is-active mariadb)
+  fi
   if [[ -f /usr/sbin/sshd ]]; then
 echo -e "sshd:\t\t"\$(systemctl is-active sshd)
   fi
