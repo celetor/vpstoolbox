@@ -2884,7 +2884,7 @@ footer a:link {
                             </ol>
                         </li>
                         <li>
-                            <h3>Trojan-GFW QR codes (Centos等不支援python3-prcode的系统会404!)</h3>
+                            <h3>Trojan-GFW QR codes (不支援python3-prcode的系统会404!)</h3>
                             <ol>
                                 <li><a href="$password1.png" target="_blank">QR code 1</a></li>
                                 <li><a href="$password2.png" target="_blank">QR code 2</a></li>
@@ -3021,7 +3021,7 @@ footer a:link {
                     <h2>How to change the default config </h2>
                     <p>Nginx</p>
                     <ul>
-                        <li><code>sudo nano /etc/nginx/conf.d/default.conf</code></li>1
+                        <li><code>sudo nano /etc/nginx/conf.d/default.conf</code></li>
                         <li><code>sudo systemctl start/restart/status nginx</code></li>
                     </ul>
                     <p>Trojan-GFW</p>
