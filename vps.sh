@@ -1107,7 +1107,7 @@ systemctl daemon-reload
 ###########################################
 clear
 colorEcho ${INFO} "Installing all necessary Software"
-apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less -q -y
+apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less haveged -q -y
 apt-get install python3-qrcode python-dnspython -q -y
 sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
 clear
