@@ -1228,11 +1228,11 @@ if [[ $install_tracker = 1 ]]; then
 		colorEcho ${INFO} "Install Bittorrent-tracker ing"
 	if [[ $dist = debian ]]; then
 		export DEBIAN_FRONTEND=noninteractive 
-		curl -sL https://deb.nodesource.com/setup_13.x | bash -
+		curl -sL https://deb.nodesource.com/setup_14.x | bash -
 		apt-get install -q -y nodejs
  elif [[ $dist = ubuntu ]]; then
 	export DEBIAN_FRONTEND=noninteractive
-	curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 	apt-get install -q -y nodejs
  else
 	echo "fail"
