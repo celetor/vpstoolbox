@@ -35,6 +35,7 @@ apt-get update && apt-get install sudo curl -y && sudo bash -c "$(curl -fsSL htt
 4. **支援 [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)**
 16. Random Html Template Choose
 17. [完整的IPV6支援](https://en.wikipedia.org/wiki/IPv6)
+17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
 18. [全自动时间较准](https://www.freedesktop.org/software/systemd/man/timedatectl.html)
 19. 全自动掉线重启
 20. [全自动检测并卸载阿里云监控](https://www.johnrosen1.com/ali-iso/)
