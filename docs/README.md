@@ -34,6 +34,7 @@ Ip Information is just an indispensable part of this project, all ip information
 4. **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)**
 16. Random Html Template Choose
 17. [Full IPv6 Support](https://en.wikipedia.org/wiki/IPv6)
+17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
 18. [time sync](https://www.freedesktop.org/software/systemd/man/timedatectl.html)
 19. Fail Restart
 20. [uninstall Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
