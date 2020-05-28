@@ -3237,7 +3237,7 @@ advancedMenu() {
 		prasejson
 		autoupdate
 		apt-get purge dnsutils python-pil socat python3-qrcode -q -y
-		apt-get autoremove -y
+		#apt-get autoremove -y
 		if [[ $dnsmasq_install -eq 1 ]]; then
 			if [[ $dist = ubuntu ]]; then
 	 			systemctl stop systemd-resolved
@@ -3260,10 +3260,10 @@ advancedMenu() {
 		if [[ $install_netdata = 1 ]]; then
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
-		colorEcho ${INFO} "Restart netdata ing"
-		systemctl restart netdata
 		cd /opt/netdata/bin
 		sudo ./netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud
+		colorEcho ${INFO} "Restart netdata ing"
+		systemctl restart netdata
 		cd
 		fi
 		mv /usr/share/nginx/html/result.html /usr/share/nginx/html/$password1.html
