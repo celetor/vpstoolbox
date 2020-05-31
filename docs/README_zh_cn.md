@@ -45,4 +45,4 @@ apt-get update && apt-get install sudo curl -y && sudo bash -c "$(curl -fsSL htt
 23. 支援完全/部分卸载
 24. And so on...
 
-## 如果此项目对你有用 , 请给颗star ,多谢!
+## 如果此项目对你有用 , 请给颗star ,谢谢!
