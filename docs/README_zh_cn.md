@@ -37,7 +37,7 @@ apt-get update && apt-get install sudo curl -y && sudo bash -c "$(curl -fsSL htt
 17. [完整的IPV6支援](https://en.wikipedia.org/wiki/IPv6)
 17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
 18. [全自动时间较准](https://www.freedesktop.org/software/systemd/man/timedatectl.html)
-19. 全自动掉线重启
+19. 全自动服务掉线重启
 20. [全自动检测并卸载阿里云监控](https://www.johnrosen1.com/ali-iso/)
 9.  支援 [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks)
 15. 支援 [TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)
