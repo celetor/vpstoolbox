@@ -1932,7 +1932,7 @@ clear
 if [[ $install_tor = 1 ]]; then
 	clear
 	if [[ ! -f /usr/bin/tor ]]; then
-		colorEcho ${INFO} "Install Tor Relay ing"
+	colorEcho ${INFO} "Install Tor Relay ing"
 	export DEBIAN_FRONTEND=noninteractive
 	touch /etc/apt/sources.list.d/tor.list
 	cat > '/etc/apt/sources.list.d/tor.list' << EOF
@@ -1961,8 +1961,8 @@ systemctl restart tor@default
 	fi
 fi
 ########Install Netdata################
-if [[ $install_netdata = 1 ]]; then
-	if [[ ! -f /usr/sbin/netdata ]]; then
+if [[ $install_netdata == 1 ]]; then
+	if [[ ! -f /opt/netdata/usr/sbin/netdata ]]; then
 		clear
 		colorEcho ${INFO} "Install netdata ing"
 		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --no-updates
@@ -1995,6 +1995,23 @@ jobs:
   - name   : ${domain}_${password1}_file_cert
     source : file:///root/.acme.sh/${domain}_ecc/fullchain.cer
 EOF
+if [[ ${install_tor} == 1 ]]; then
+apt-get install python-pip -y
+pip install stem
+cat > '/opt/netdata/etc/netdata/python.d/tor.conf' << EOF
+update_every : 1
+priority     : 60000
+
+local_tcp:
+ name: 'local'
+ control_port: 9051
+
+local_socket:
+ name: 'local'
+ control_port: '/var/run/tor/control'
+EOF
+fi
+
 	fi
 fi
 clear
