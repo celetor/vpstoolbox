@@ -47,8 +47,8 @@ if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
 	exit 1
 fi
 
-if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -le "480" ]]; then
-  echo Please run this script on machine with more than 512MB free ram.
+if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -le "400" ]]; then
+  echo Please run this script on machine with more than 500MB free ram.
   exit 1
 fi
 
@@ -253,7 +253,7 @@ LANGUAGE="zh_TW.UTF-8"
 LANG="zh_TW.UTF-8"
 LC_ALL="zh_TW.UTF-8"
 EOF
-apt-get install manpages-zh -y
+#apt-get install manpages-zh -y
 	cat > '/root/.trojan/language.json' << EOF
 {
   "language": "$language"
@@ -908,16 +908,16 @@ openfirewall(){
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 --dport 80 -j ACCEPT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 	#tcp
-	iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT #HTTPS
+	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT #HTTP
 	#udp
 	iptables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
 	iptables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
 	iptables -A OUTPUT -j ACCEPT
 	#iptables -I FORWARD -j DROP
 	#tcp6
-	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-	ip6tables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT #HTTPSv6
+	ip6tables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT #HTTPv6
 	#udp6
 	ip6tables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
 	ip6tables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
@@ -1997,9 +1997,12 @@ EOF
 update_every : 60
 
 jobs:
-  - name   : ${domain}
+  - name   : ${domain}_${password1}
     source : https://${domain}:443
     check_revocation_status: yes
+
+  - name   : ${domain}_${password1}_file_cert
+    source : file:///root/.acme.sh/${domain}_ecc/fullchain.cer
 EOF
 	fi
 fi
@@ -2279,7 +2282,8 @@ fi
 ##########Install Mariadb#############
 install_mariadb(){
   curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
-  sudo apt-get install mariadb-server -y
+  apt-get install mariadb-server -y
+  apt-get install python-mysqldb -y
   apt-get -y install expect
 
   SECURE_MYSQL=$(expect -c "
@@ -2321,7 +2325,7 @@ apt-get -y purge expect
 
 [client]
 # Default is Latin1, if you need UTF-8 set this (also in server section)
-#default-character-set = utf8 
+default-character-set = utf8 
 
 [mysqld]
 #
@@ -2329,10 +2333,10 @@ apt-get -y purge expect
 # 
 # Default is Latin1, if you need UTF-8 set all this (also in client section)
 #
-#character-set-server  = utf8 
-#collation-server      = utf8_general_ci 
-#character_set_server   = utf8 
-#collation_server       = utf8_general_ci 
+character-set-server  = utf8 
+collation-server      = utf8_general_ci 
+character_set_server   = utf8 
+collation_server       = utf8_general_ci 
 # Import all .cnf files from configuration directory
 !includedir /etc/mysql/mariadb.conf.d/
 bind-address=127.0.0.1
@@ -2341,7 +2345,6 @@ bind-address=127.0.0.1
 
 userstat = 1
 EOF
-apt-get install python-mysqldb -y
 
 mysql -u root -e "create user 'netdata'@'localhost';"
 mysql -u root -e "grant usage on *.* to 'netdata'@'localhost';"
@@ -2469,6 +2472,7 @@ echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_qbt == 1 ]]; then
 echo "    location $qbtpath {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass              http://127.0.0.1:8080/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header        X-Forwarded-Host        \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
@@ -2476,6 +2480,7 @@ echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_file == 1 ]]; then
 echo "    location $filepath {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:8081/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
@@ -2486,6 +2491,7 @@ echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_tracker == 1 ]]; then
 echo "    location $trackerpath {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:8000/announce;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
@@ -2495,6 +2501,7 @@ echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> 
 echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location $trackerstatuspath {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:8000/stats;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
@@ -2504,6 +2511,7 @@ echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_netdata == 1 ]]; then
 echo "    location ~ $netdatapath(?<ndpath>.*) {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$host;" >> /etc/nginx/conf.d/default.conf
@@ -3236,8 +3244,8 @@ advancedMenu() {
 		rm results
 		prasejson
 		autoupdate
-		apt-get purge dnsutils python-pil socat python3-qrcode -q -y
-		#apt-get autoremove -y
+		apt-get purge dnsutils python-pil python3-qrcode -q -y
+		apt-get autoremove -y
 		if [[ $dnsmasq_install -eq 1 ]]; then
 			if [[ $dist = ubuntu ]]; then
 	 			systemctl stop systemd-resolved
@@ -3352,7 +3360,6 @@ echo "**************************************************************************
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
 		clear
-		cat /root/.trojan/result.txt
 		if (whiptail --title "Reboot" --yesno "安装成功(success)！ 重启 (reboot) 使配置生效,重新SSH连接后将自动出现结果 (to make the configuration effective)?" 8 78); then
 		clear
 		reboot
@@ -3370,7 +3377,7 @@ EOF
 		colorEcho ${INFO} "Please read the result then hit enter to proceed"
 		read var
 		colorEcho ${INFO} "Network Benchmark"
-			apt-get install gnupg apt-transport-https dirmngr -y -qq
+		apt-get install gnupg apt-transport-https dirmngr -y -qq
 		INSTALL_KEY="379CE192D401AB61"
 		# Ubuntu versions supported: xenial, bionic
 		# Debian versions supported: jessie, stretch, buster
