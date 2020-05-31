@@ -1109,7 +1109,7 @@ clear
 colorEcho ${INFO} "Installing all necessary Software"
 apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less haveged -q -y
 apt-get install python3-qrcode python-dnspython -q -y
-sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
+sh -c 'echo "y\n\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
 clear
 #############################################
 if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]] || [[ ${othercert} == 1 ]] || [[ ${installstatus} == 1 ]]; then
@@ -1978,15 +1978,6 @@ EOF
 nginx_log:
   name  : 'nginx_log'
   path  : '/var/log/nginx/access.log'
-EOF
-		cat > '/opt/netdata/etc/netdata/go.d/whoisquery.conf' << EOF
-update_every : 60
-
-jobs:
-  - name   : ${domain}
-    source : ${domain}
-    
-    days_until_expiration_critical: 30
 EOF
 		cat > '/opt/netdata/etc/netdata/go.d/docker_engine.conf' << EOF
 jobs:
@@ -3269,6 +3260,7 @@ advancedMenu() {
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		cd /opt/netdata/bin
+		sleep 1
 		sudo ./netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud
 		colorEcho ${INFO} "Restart netdata ing"
 		systemctl restart netdata
@@ -3379,14 +3371,10 @@ EOF
 		colorEcho ${INFO} "Network Benchmark"
 		apt-get install gnupg apt-transport-https dirmngr -y -qq
 		INSTALL_KEY="379CE192D401AB61"
-		# Ubuntu versions supported: xenial, bionic
-		# Debian versions supported: jessie, stretch, buster
 		DEB_DISTRO=$(lsb_release -sc)
 		apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
 		echo "deb https://ookla.bintray.com/debian ${DEB_DISTRO} main" | sudo tee  /etc/apt/sources.list.d/speedtest.list
 		apt-get update -q
-		# Other non-official binaries will conflict with Speedtest CLI
-		# Example how to remove using apt-get
 		apt-get purge speedtest-cli -y -qq
 		apt-get install speedtest -y -qq
 		#speedtest
