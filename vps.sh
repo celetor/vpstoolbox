@@ -2000,18 +2000,13 @@ apt-get install python-pip -y
 pip install stem
 cat > '/opt/netdata/etc/netdata/python.d/tor.conf' << EOF
 update_every : 1
-priority     : 60000
+priority     : 60001
 
 local_tcp:
  name: 'local'
  control_port: 9051
-
-local_socket:
- name: 'local'
- control_port: '/var/run/tor/control'
 EOF
 fi
-
 	fi
 fi
 clear
@@ -3278,7 +3273,7 @@ advancedMenu() {
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		cd /opt/netdata/bin
 		sleep 1
-		sudo ./netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud
+		bash netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud
 		colorEcho ${INFO} "Restart netdata ing"
 		systemctl restart netdata
 		cd
