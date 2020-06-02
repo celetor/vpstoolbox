@@ -3848,7 +3848,7 @@ echo "*                                   Vps Toolbox Result                    
 echo "*                     Please visit the following link to get the result                            *"
 echo "*                       https://$domain/$password1.html                                     *"
 echo "*                 For more info ,please run the following command                                  *"
-echo 'wget https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh && sudo bash vps.sh*'
+echo 'curl -sO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh && sudo bash vps.sh*'
 echo "****************************************************************************************************"
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
