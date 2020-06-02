@@ -5,7 +5,7 @@ A powerful Toolbox for Linux VPS.
 
 #### 如何使用
 ```
-apt-get update && apt-get install sudo curl -y && sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"
+apt-get update && apt-get install sudo curl -y && wget https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh && sudo bash vps.sh
 ```
 
 流量图示:
