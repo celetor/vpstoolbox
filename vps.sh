@@ -1969,6 +1969,7 @@ if [[ $install_php = 1 ]]; then
 	apt-get -y install php7.4
 	systemctl disable --now apache2
 	apt-get install php7.4-fpm -y
+	apt-get install php7.4-{common,mysql,xml,json,readline,xmlrpc,curl,gd,imagick,cli,dev,imap,mbstring,opcache,soap,zip,intl,bcmath} -y
 cat > '/etc/php/7.4/fpm/pool.d/www.conf' << EOF
 ; Start a new pool named 'www'.
 ; the variable $pool can be used in any directive and will be replaced by the
