@@ -1104,7 +1104,7 @@ systemctl daemon-reload
 ###########################################
 clear
 colorEcho ${INFO} "Installing all necessary Software"
-apt-get install sudo curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less haveged -q -y
+apt-get install sudo git curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less haveged -q -y
 apt-get install python3-qrcode python-dnspython -q -y
 sh -c 'echo "y\n\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
 clear
@@ -1969,7 +1969,7 @@ if [[ $install_php = 1 ]]; then
 	apt-get -y install php7.4
 	systemctl disable --now apache2
 	apt-get install php7.4-fpm -y
-	apt-get install php7.4-{common,mysql,xml,json,readline,xmlrpc,curl,gd,imagick,cli,dev,imap,mbstring,opcache,soap,zip,intl,bcmath} -y
+	apt-get install php7.4-common php7.4-mysql php7.4-xml php7.4-json php7.4-readline php7.4-xmlrpc php7.4-curl php7.4-gd php7.4-imagick php7.4-cli php7.4-dev php7.4-imap php7.4-mbstring php7.4-opcache php7.4-soap php7.4-zip php7.4-intl php7.4-bcmath -y
 cat > '/etc/php/7.4/fpm/pool.d/www.conf' << EOF
 ; Start a new pool named 'www'.
 ; the variable $pool can be used in any directive and will be replaced by the
@@ -2007,7 +2007,7 @@ group = nginx
 ;   '/path/to/unix/socket' - to listen on a unix socket.
 ; Note: This value is mandatory.
 listen = /run/php/php7.4-fpm.sock
-listen = 127.0.0.1:9000
+; listen = 127.0.0.1:9000
 ; Set listen(2) backlog.
 ; Default Value: 511 (-1 on FreeBSD and OpenBSD)
 ;listen.backlog = 511
@@ -2351,7 +2351,7 @@ pm.status_path = /status
 ; Note: on highloaded environement, this can cause some delay in the page
 ; process time (several ms).
 ; Default Value: no
-;catch_workers_output = yes
+catch_workers_output = yes
 
 ; Decorate worker output with prefix and suffix containing information about
 ; the child that writes to the log and if stdout or stderr is used as well as
@@ -2839,6 +2839,7 @@ server {
 	listen 127.0.0.1:80;
 	listen 127.0.0.1:82 http2;
 	server_name $domain;
+	root /usr/share/nginx/html/;
 	resolver 127.0.0.1;
 	resolver_timeout 10s;
 	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
@@ -2851,9 +2852,17 @@ server {
 	#add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
 	#add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
 	location / {
-		root /usr/share/nginx/html/;
 			index index.html;
 		}
+    location ~ \.php\$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)\$;
+        fastcgi_param SCRIPT_FILENAME \$request_filename;
+        #fastcgi_index index.php;
+        include fastcgi_params;
+        #fastcgi_pass 127.0.0.1:9000;
+        fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
+        }
+
 EOF
 	else
 	cat > '/etc/nginx/conf.d/default.conf' << EOF
@@ -2875,6 +2884,8 @@ server {
 	ssl_stapling_verify on;
 	#ssl_dhparam /etc/nginx/nginx.pem;
 
+	root /usr/share/nginx/html;
+
 	resolver 127.0.0.1;
 	resolver_timeout 10s;
 	server_name           $domain;
@@ -2890,8 +2901,14 @@ server {
 	#if (\$http_user_agent = "") { return 403; }
 	if (\$host != "$domain") { return 404; }
 	location / {
-		root /usr/share/nginx/html;
 		index index.html;
+	}
+	location ~ \.php\$ {
+        #fastcgi_param SCRIPT_FILENAME \$request_filename;
+        #fastcgi_index index.php;
+        include fastcgi_params;
+        #fastcgi_pass 127.0.0.1:9000;
+        fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
 	}
 EOF
 fi
@@ -3017,11 +3034,11 @@ echo "    }" >> /etc/nginx/conf.d/default.conf
 echo "    location ~ ^/(status|ping)\$ {" >> /etc/nginx/conf.d/default.conf
 echo "    access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "    allow 127.0.0.1;" >> /etc/nginx/conf.d/default.conf
-echo "    fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;" >> /etc/nginx/conf.d/default.conf
+echo "    fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
 echo "    fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
 echo "    include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
-echo "    fastcgi_pass 127.0.0.1:9000;" >> /etc/nginx/conf.d/default.conf
-echo "    #fastcgi_pass   unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
+echo "    #fastcgi_pass 127.0.0.1:9000;" >> /etc/nginx/conf.d/default.conf
+echo "    fastcgi_pass   unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 echo "upstream netdata {" >> /etc/nginx/conf.d/default.conf
