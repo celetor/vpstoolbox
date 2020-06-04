@@ -230,6 +230,7 @@ setlanguage(){
 	set +e
 	if [[ ! -d /root/.trojan/ ]]; then
 		mkdir /root/.trojan/
+		mkdir /etc/certs/
 	fi
 	if [[ -f /root/.trojan/language.json ]]; then
 		language="$( jq -r '.language' "/root/.trojan/language.json" )"
@@ -326,7 +327,7 @@ issuecert(){
 	set +e
 	clear
 	colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
-	if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -f /root/.acme.sh/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
+	if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else
 	rm -rf /etc/nginx/sites-available/* &
@@ -346,7 +347,7 @@ EOF
 	installacme
 	clear
 	colorEcho ${INFO} "测试证书申请ing(test issuing) let\'s encrypt certificate"
-	~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --test --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"
+	~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --force --test --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"
 	if [[ $? != 0 ]]; then
 	colorEcho ${ERROR} "证书申请测试失败，请检查VPS控制面板防火墙(80 443)是否打开!!!"
 	colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
@@ -355,7 +356,7 @@ EOF
 	fi 
 	clear
 	colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
-	~/.acme.sh/acme.sh --issue --nginx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"
+	~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload"
 	if [[ $? != 0 ]]; then
 	colorEcho ${ERROR} "证书申请测试失败，请检查VPS控制面板防火墙(80 443)是否打开!!!"
 	colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
@@ -530,13 +531,13 @@ if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
 password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password1} ]]; then
-	password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 10 ; echo '' )
+	password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 10 ; echo '' )
 	fi
 done
 while [[ -z ${password2} ]]; do
 password2=$(whiptail --passwordbox --nocancel "Trojan-GFW Password Two(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password2} ]]; then
-	password2=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 10 ; echo '' )
+	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 10 ; echo '' )
 	fi
 done
 fi
@@ -590,7 +591,7 @@ fi
 	done
 	fi
 ####################################
-if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]] || [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]]; then
+if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]] || [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else
 	if (whiptail --title "api" --yesno "使用 (use) api申请证书(to issue certificate)?" 8 78); then
@@ -601,6 +602,7 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
 "3" "Aliyun" \
 "4" "DNSPod.cn" \
 "5" "CloudXNS.com" \
+"6" "GoDaddy" \
 "back" "返回"  3>&1 1>&2 2>&3)
 
     case $APIOPTION in
@@ -612,7 +614,7 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         export CF_Key="$CF_Key"
         export CF_Email="$CF_Email"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_cf -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ~/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
         ;;
         2)
         while [[ -z $Namesilo_Key ]]; do
@@ -620,7 +622,7 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         done
         export Namesilo_Key="$Namesilo_Key"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_namesilo --dnssleep 900 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ~/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 900 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
         ;;
         3)
         while [[ -z $Ali_Key ]] || [[ -z $Ali_Secret ]]; do
@@ -630,7 +632,7 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         export Ali_Key="$Ali_Key"
         export Ali_Secret="$Ali_Secret"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_ali -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ~/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
         ;;
         4)
         while [[ -z $DP_Id ]] || [[ -z $DP_Key ]]; do
@@ -640,7 +642,7 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         export DP_Id="$DP_Id"
         export DP_Key="$DP_Key"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_dp -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ~/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
         ;;
         5)
         while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
@@ -650,7 +652,17 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         export CX_Key="$CX_Key"
         export CX_Secret="$CX_Secret"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_cx -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ~/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
+        ;;
+        6)
+        while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
+        CX_Key=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Key" 8 78 --title "GD_Key input" 3>&1 1>&2 2>&3)
+        CX_Secret=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Secret" 8 78 --title "GD_Secret input" 3>&1 1>&2 2>&3)
+        done
+        export GD_Key="$CX_Key"
+        export GD_Secret="$CX_Secret"
+        installacme
+        ~/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan || true && nginx -s reload || true"
         ;;
         back) 
 		userinput
@@ -676,13 +688,13 @@ colorEcho ${INFO} "初始化中(initializing)"
 	pack="apt-get -y -q"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install whiptail curl locales lsb-release jq lsof neofetch -y -q
+	apt-get install whiptail curl locales lsb-release jq lsof -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
 	pack="apt-get -y -q"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install whiptail curl locales lsb-release jq lsof neofetch -y -q
+	apt-get install whiptail curl locales lsb-release jq lsof -y -q
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
 	exit 1;
@@ -1104,7 +1116,7 @@ systemctl daemon-reload
 ###########################################
 clear
 colorEcho ${INFO} "Installing all necessary Software"
-apt-get install sudo git curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less haveged -q -y
+apt-get install sudo git curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less haveged neofetch -q -y
 apt-get install python3-qrcode python-dnspython -q -y
 sh -c 'echo "y\n\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
 clear
@@ -1969,7 +1981,7 @@ if [[ $install_php = 1 ]]; then
 	apt-get -y install php7.4
 	systemctl disable --now apache2
 	apt-get install php7.4-fpm -y
-	apt-get install php7.4-common php7.4-mysql php7.4-xml php7.4-json php7.4-readline php7.4-xmlrpc php7.4-curl php7.4-gd php7.4-imagick php7.4-cli php7.4-dev php7.4-imap php7.4-mbstring php7.4-opcache php7.4-soap php7.4-zip php7.4-intl php7.4-bcmath -y
+	apt-get install php7.4-common php7.4-mysql php7.4-ldap php7.4-xml php7.4-json php7.4-readline php7.4-xmlrpc php7.4-curl php7.4-gd php7.4-imagick php7.4-cli php7.4-dev php7.4-imap php7.4-mbstring php7.4-opcache php7.4-soap php7.4-zip php7.4-intl php7.4-bcmath -y
 cat > '/etc/php/7.4/fpm/pool.d/www.conf' << EOF
 ; Start a new pool named 'www'.
 ; the variable $pool can be used in any directive and will be replaced by the
@@ -2531,8 +2543,8 @@ if [[ ${othercert} != 1 ]]; then
     ],
     "log_level": 1,
     "ssl": {
-        "cert": "/root/.acme.sh/${domain}_ecc/fullchain.cer",
-        "key": "/root/.acme.sh/${domain}_ecc/${domain}.key",
+        "cert": "/etc/certs/${domain}_ecc/fullchain.cer",
+        "key": "/etc/certs/${domain}_ecc/${domain}.key",
         "key_password": "",
         "cipher": "$cipher_server",
         "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
@@ -2903,13 +2915,14 @@ server {
 	location / {
 		index index.html;
 	}
-	location ~ \.php\$ {
-        #fastcgi_param SCRIPT_FILENAME \$request_filename;
+    location ~ \.php\$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)\$;
+        fastcgi_param SCRIPT_FILENAME \$request_filename;
         #fastcgi_index index.php;
         include fastcgi_params;
         #fastcgi_pass 127.0.0.1:9000;
         fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
-	}
+        }
 EOF
 fi
 if [[ $dnsmasq_install == 1 ]]; then
