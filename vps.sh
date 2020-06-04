@@ -363,8 +363,8 @@ EOF
 	colorEcho ${ERROR} "Domain verification fail,Pleae Open port 80 443 on VPS panel !!!"
 	exit 1
 	fi
-	chmod +r /root/.acme.sh/${domain}_ecc/fullchain.cer
-	chmod +r /root/.acme.sh/${domain}_ecc/${domain}.key
+	chmod +r /etc/certs/${domain}_ecc/fullchain.cer
+	chmod +r /etc/certs/${domain}_ecc/${domain}.key
 	fi
 }
 ###############User input################
@@ -1121,7 +1121,7 @@ apt-get install python3-qrcode python-dnspython -q -y
 sh -c 'echo "y\n\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
 clear
 #############################################
-if [[ -f /root/.acme.sh/${domain}_ecc/fullchain.cer ]] && [[ -n /root/.acme.sh/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]] || [[ ${othercert} == 1 ]] || [[ ${installstatus} == 1 ]]; then
+if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -n /etc/certs/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]] || [[ ${othercert} == 1 ]] || [[ ${installstatus} == 1 ]]; then
 	installnginx
 	openfirewall
 	else
@@ -1849,8 +1849,8 @@ cache_neg_max_ttl = 600
 #
 #listen_addresses = ['127.0.0.1:3000']
 #path = "/dns-query"
-#cert_file = "/root/.acme.sh/${domain}_ecc/fullchain.cer"
-#cert_key_file = "/root/.acme.sh/${domain}_ecc/${domain}.key"
+#cert_file = "/etc/certs/${domain}_ecc/fullchain.cer"
+#cert_key_file = "/etc/certs/${domain}_ecc/${domain}.key"
 
 [query_log]
 
@@ -2459,7 +2459,7 @@ jobs:
     check_revocation_status: yes
 
   - name   : ${domain}_${password1}_file_cert
-    source : file:///root/.acme.sh/${domain}_ecc/fullchain.cer
+    source : file:///etc/certs/${domain}_ecc/fullchain.cer
 EOF
 if [[ ${install_php} == 1 ]]; then
 cat > '/opt/netdata/etc/netdata/python.d/phpfpm.conf' << EOF
@@ -2883,8 +2883,8 @@ server {
 	listen 443 ssl http2;
 	listen [::]:443 ssl http2;
 
-	ssl_certificate       /root/.acme.sh/${domain}_ecc/fullchain.cer;
-	ssl_certificate_key   /root/.acme.sh/${domain}_ecc/${domain}.key;
+	ssl_certificate       /etc/certs/${domain}_ecc/fullchain.cer;
+	ssl_certificate_key   /etc/certs/${domain}_ecc/${domain}.key;
 	ssl_protocols         TLSv1.3 TLSv1.2;
 	ssl_ciphers $cipher_server;
 	ssl_prefer_server_ciphers on;
