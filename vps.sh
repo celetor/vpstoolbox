@@ -2894,6 +2894,8 @@ smtp_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
 # See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
 # information on enabling SSL in the smtp client.
 
+smtpd_sasl_type = dovecot
+
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 myhostname = ${domain}
 alias_maps = hash:/etc/aliases
@@ -3017,6 +3019,7 @@ gpg --export ED409DA1 > /etc/apt/trusted.gpg.d/dovecot.gpg
 echo "deb https://repo.dovecot.org/ce-2.3-latest/${dist}/$(lsb_release -cs) $(lsb_release -cs) main" > /etc/apt/sources.list.d/dovecot.list
 apt-get update
 apt-get install dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd -y
+systemctl enable dovecot
 cd /usr/share/nginx/
 wget https://github.com/roundcube/roundcubemail/releases/download/1.4.5/roundcubemail-1.4.5-complete.tar.gz
 tar -xvf roundcubemail-1.4.5-complete.tar.gz
@@ -3482,11 +3485,11 @@ echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
 echo "        alias /usr/share/nginx/roundcubemail/;" >> /etc/nginx/conf.d/default.conf
 echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
-echo "        		include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
-echo "        		fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
-echo "        		fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
-echo "        		fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
-echo "        		}" >> /etc/nginx/conf.d/default.conf
+echo "        	include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
+echo "        	fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
+echo "        	fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        	fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
+echo "        	}" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $dnsmasq_install == 1 ]]; then
