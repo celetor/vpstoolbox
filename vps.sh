@@ -440,10 +440,12 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "12" "Speedtest(Docker Version)" on \
 "数据库" "Database" on  \
 "13" "MariaDB" on \
-"其他" "Others" on  \
-"14" "OPENSSL" off \
-"15" "Tor-Relay" off \
-"16" "Enable TLS1.3 only" off 2>results
+"邮件" "Mail" on  \
+"14" "Mail service" off \
+"其他" "Others" off  \
+"15" "OPENSSL" off \
+"16" "Tor-Relay" off \
+"17" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -492,12 +494,15 @@ do
 		install_mariadb=1
 		;;
 		14)
-		install_openssl=1
+		install_mail=1
 		;;
 		15)
+		install_openssl=1
+		;;
+		16)
 		install_tor=1
 		;;
-		16) 
+		17) 
 		tls13only=1
 		;;
 		*)
@@ -521,6 +526,11 @@ if [[ ${system_upgrade} == 1 ]]; then
 			ubuntu18_install=1
 		fi
 	fi
+fi
+####################################
+if [[ ${install_mail} == 1 ]]; then
+whiptail --title "Warning" --msgbox "Warning!!!:邮件服务仅支援根域名(only support root domain),严禁www等前缀(no www allowed),否则后果自负!!!" 8 78
+whiptail --title "Warning" --msgbox "Warning!!!:邮件服务需要MX DNS Record,请自行添加,否则后果自负!!!" 8 78
 fi
 #####################################
 while [[ -z ${domain} ]]; do
@@ -796,8 +806,8 @@ if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
 	rm -rf nginx_signing.key
 	touch /etc/apt/sources.list.d/nginx.list
 	cat > '/etc/apt/sources.list.d/nginx.list' << EOF
-deb https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
-deb-src https://nginx.org/packages/mainline/$dist/ $(lsb_release -cs) nginx
+deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
+deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
 	apt-get purge nginx -qq -y
 	apt-get update -q
@@ -950,12 +960,12 @@ openfirewall(){
 		iptables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
 		ip6tables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
 	fi
-	if [[ $dist == debian ]]; then
+	if [[ ${dist} == debian ]]; then
 	export DEBIAN_FRONTEND=noninteractive 
 	apt-get install iptables-persistent -qq -y > /dev/null
 	iptables-save > /etc/iptables/rules.v4
 	ip6tables-save > /etc/iptables/rules.v6
- elif [[ $dist == ubuntu ]]; then
+ elif [[ ${dist} == ubuntu ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	ufw allow http
 	ufw allow https
@@ -1141,14 +1151,14 @@ fi
 if [[ $install_docker == 1 ]]; then
   clear
   colorEcho ${INFO} "安装Docker(Install Docker ing)"
-  if [[ $dist == debian ]]; then
+  if [[ ${dist} == debian ]]; then
   apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
   curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
   apt-key fingerprint 0EBFCD88
   add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
   apt-get update
   apt-get install docker-ce docker-ce-cli containerd.io -y
- elif [[ $dist == ubuntu ]]; then
+ elif [[ ${dist} == ubuntu ]]; then
   apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   apt-key fingerprint 0EBFCD88
@@ -1190,10 +1200,10 @@ if [[ $install_qbt == 1 ]]; then
 	if [[ ! -f /usr/bin/qbittorrent-nox ]]; then
 	clear
 	colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
-	if [[ $dist == debian ]]; then
+	if [[ ${dist} == debian ]]; then
 	export DEBIAN_FRONTEND=noninteractive 
 	apt-get install qbittorrent-nox -q -y
- elif [[ $dist == ubuntu ]]; then
+ elif [[ ${dist} == ubuntu ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 	apt-get install qbittorrent-nox -q -y
@@ -1235,11 +1245,11 @@ if [[ $install_tracker = 1 ]]; then
 	if [[ ! -f /usr/bin/bittorrent-tracker ]]; then
 		clear
 		colorEcho ${INFO} "Install Bittorrent-tracker ing"
-	if [[ $dist = debian ]]; then
+	if [[ ${dist} = debian ]]; then
 		export DEBIAN_FRONTEND=noninteractive 
 		curl -sL https://deb.nodesource.com/setup_14.x | bash -
 		apt-get install -q -y nodejs
- elif [[ $dist = ubuntu ]]; then
+ elif [[ ${dist} = ubuntu ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 	apt-get install -q -y nodejs
@@ -2833,7 +2843,547 @@ local:
   user     : 'netdata'
   update_every : 1
 EOF
+##############Install Mail Service###############
+if [[ $install_mail = 1 ]]; then
+	if [[ ! -f /usr/sbin/postfix ]]; then
+	clear
+	colorEcho ${INFO} "Install Mail Service ing"
+	export DEBIAN_FRONTEND=noninteractive
+	apt-get install postfix -y
+	cat > '/etc/postfix/main.cf' << EOF
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
+# Debian specific:  Specifying a file name will cause the first
+# line of that file to be used as the name.  The Debian default
+# is /etc/mailname.
+#myorigin = /etc/mailname
+
+smtpd_banner = \$myhostname ESMTP \$mail_name (Debian/GNU)
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+
+# Uncomment the next line to generate "delayed mail" warnings
+#delay_warning_time = 4h
+
+readme_directory = no
+
+# See http://www.postfix.org/COMPATIBILITY_README.html -- default to 2 on
+# fresh installs.
+compatibility_level = 2
+
+# TLS parameters
+smtpd_tls_loglevel = 1
+smtpd_tls_security_level=may
+smtpd_tls_eccert_file = /etc/certs/${domain}_ecc/fullchain.cer
+smtpd_tls_eckey_file = /etc/certs/${domain}_ecc/${domain}.key
+smtpd_use_tls=yes
+smtpd_tls_session_cache_database = btree:\${data_directory}/smtpd_scache
+smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+smtpd_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+
+smtp_tls_loglevel = 1
+smtp_tls_security_level = may
+smtp_tls_eccert_file = /etc/certs/${domain}_ecc/fullchain.cer
+smtp_tls_eckey_file = /etc/certs/${domain}_ecc/${domain}.key
+smtp_tls_session_cache_database = btree:\${data_directory}/smtp_scache
+smtp_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+smtp_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+
+# See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
+# information on enabling SSL in the smtp client.
+
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+myhostname = ${domain}
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+myorigin = /etc/mailname
+mydestination = $myhostname, ${domain}, localhost.${domain}, , localhost
+relayhost = 
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = all
+
+mailbox_transport = lmtp:unix:private/dovecot-lmtp
+smtputf8_enable = no
+message_size_limit = 52428800
+
+smtpd_helo_required = yes
+smtpd_helo_restrictions = reject_non_fqdn_helo_hostname,reject_invalid_helo_hostname,reject_unknown_helo_hostname
+disable_vrfy_command = yes
+EOF
+	cat > '/etc/postfix/master.cf' << EOF
+#
+# Postfix master process configuration file.  For details on the format
+# of the file, see the master(5) manual page (command: "man 5 master" or
+# on-line: http://www.postfix.org/master.5.html).
+#
+# Do not forget to execute "postfix reload" after editing this file.
+#
+# ==========================================================================
+# service type  private unpriv  chroot  wakeup  maxproc command + args
+#               (yes)   (yes)   (no)    (never) (100)
+# ==========================================================================
+smtp      inet  n       -       y       -       -       smtpd
+#smtp      inet  n       -       y       -       1       postscreen
+#smtpd     pass  -       -       y       -       -       smtpd
+#dnsblog   unix  -       -       y       -       0       dnsblog
+#tlsproxy  unix  -       -       y       -       0       tlsproxy
+#submission inet n       -       y       -       -       smtpd
+#628       inet  n       -       y       -       -       qmqpd
+pickup    unix  n       -       y       60      1       pickup
+cleanup   unix  n       -       y       -       0       cleanup
+qmgr      unix  n       -       n       300     1       qmgr
+#qmgr     unix  n       -       n       300     1       oqmgr
+tlsmgr    unix  -       -       y       1000?   1       tlsmgr
+rewrite   unix  -       -       y       -       -       trivial-rewrite
+bounce    unix  -       -       y       -       0       bounce
+defer     unix  -       -       y       -       0       bounce
+trace     unix  -       -       y       -       0       bounce
+verify    unix  -       -       y       -       1       verify
+flush     unix  n       -       y       1000?   0       flush
+proxymap  unix  -       -       n       -       -       proxymap
+proxywrite unix -       -       n       -       1       proxymap
+smtp      unix  -       -       y       -       -       smtp
+relay     unix  -       -       y       -       -       smtp
+        -o syslog_name=postfix/$service_name
+#       -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
+showq     unix  n       -       y       -       -       showq
+error     unix  -       -       y       -       -       error
+retry     unix  -       -       y       -       -       error
+discard   unix  -       -       y       -       -       discard
+local     unix  -       n       n       -       -       local
+virtual   unix  -       n       n       -       -       virtual
+lmtp      unix  -       -       y       -       -       lmtp
+anvil     unix  -       -       y       -       1       anvil
+scache    unix  -       -       y       -       1       scache
+postlog   unix-dgram n  -       n       -       1       postlogd
+#
+# ====================================================================
+# Interfaces to non-Postfix software. Be sure to examine the manual
+# pages of the non-Postfix software to find out what options it wants.
+#
+# Many of the following services use the Postfix pipe(8) delivery
+# agent.  See the pipe(8) man page for information about ${recipient}
+# and other message envelope options.
+# ====================================================================
+#
+# maildrop. See the Postfix MAILDROP_README file for details.
+# Also specify in main.cf: maildrop_destination_recipient_limit=1
+#
+maildrop  unix  -       n       n       -       -       pipe
+  flags=DRhu user=vmail argv=/usr/bin/maildrop -d ${recipient}
+#
+# See the Postfix UUCP_README file for configuration details.
+#
+uucp      unix  -       n       n       -       -       pipe
+  flags=Fqhu user=uucp argv=uux -r -n -z -a$sender - $nexthop!rmail ($recipient)
+#
+# Other external delivery methods.
+#
+ifmail    unix  -       n       n       -       -       pipe
+  flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r \$nexthop (\$recipient)
+bsmtp     unix  -       n       n       -       -       pipe
+  flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -t\$nexthop -f\$sender $recipient
+scalemail-backend unix	-	n	n	-	2	pipe
+  flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store \${nexthop} \${user} \${extension}
+mailman   unix  -       n       n       -       -       pipe
+  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
+  \${nexthop} \${user}
+
+submission     inet     n    -    y    -    -    smtpd
+ -o syslog_name=postfix/submission
+ -o smtpd_tls_security_level=encrypt
+ -o smtpd_tls_wrappermode=no
+ -o smtpd_sasl_auth_enable=yes
+ -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
+ -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
+ -o smtpd_sasl_type=dovecot
+ -o smtpd_sasl_path=private/auth
+
+smtps     inet  n       -       y       -       -       smtpd
+  -o syslog_name=postfix/smtps
+  -o smtpd_tls_wrappermode=yes
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
+  -o smtpd_sasl_type=dovecot
+  -o smtpd_sasl_path=private/auth
+EOF
+curl https://repo.dovecot.org/DOVECOT-REPO-GPG | gpg --import
+gpg --export ED409DA1 > /etc/apt/trusted.gpg.d/dovecot.gpg
+echo "deb https://repo.dovecot.org/ce-2.3-latest/${dist}/$(lsb_release -cs) $(lsb_release -cs) main" > /etc/apt/sources.list.d/dovecot.list
+apt-get update
+apt-get install dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd -y
+cd /usr/share/nginx/
+wget https://github.com/roundcube/roundcubemail/releases/download/1.4.5/roundcubemail-1.4.5-complete.tar.gz
+tar -xvf roundcubemail-1.4.5-complete.tar.gz
+rm -rf roundcubemail-1.4.5-complete.tar.gz
+mv /usr/share/nginx/roundcubemail*/ /usr/share/nginx/roundcubemail/
+chown -R nginx:nginx /usr/share/nginx/roundcubemail/
+mysql -u root -e "CREATE DATABASE roundcubemail DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
+mysql -u root -e "CREATE USER roundcube@localhost;"
+mysql -u root -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost;"
+mysql -u root -e "flush privileges;"
+mysql roundcube < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
+useradd -m -s /sbin/nologin roundcube
+echo "${password1}" | passwd "roundcube" --stdin
+	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
+##
+## Authentication processes
+##
+
+# Disable LOGIN command and all other plaintext authentications unless
+# SSL/TLS is used (LOGINDISABLED capability). Note that if the remote IP
+# matches the local IP (ie. you're connecting from the same computer), the
+# connection is considered secure and plaintext authentication is allowed.
+# See also ssl=required setting.
+disable_plaintext_auth = yes
+
+# Authentication cache size (e.g. 10M). 0 means it's disabled. Note that
+# bsdauth, PAM and vpopmail require cache_key to be set for caching to be used.
+#auth_cache_size = 0
+# Time to live for cached data. After TTL expires the cached record is no
+# longer used, *except* if the main database lookup returns internal failure.
+# We also try to handle password changes automatically: If user's previous
+# authentication was successful, but this one wasn't, the cache isn't used.
+# For now this works only with plaintext authentication.
+#auth_cache_ttl = 1 hour
+# TTL for negative hits (user not found, password mismatch).
+# 0 disables caching them completely.
+#auth_cache_negative_ttl = 1 hour
+
+# Space separated list of realms for SASL authentication mechanisms that need
+# them. You can leave it empty if you don't want to support multiple realms.
+# Many clients simply use the first one listed here, so keep the default realm
+# first.
+#auth_realms =
+
+# Default realm/domain to use if none was specified. This is used for both
+# SASL realms and appending @domain to username in plaintext logins.
+#auth_default_realm = 
+
+# List of allowed characters in username. If the user-given username contains
+# a character not listed in here, the login automatically fails. This is just
+# an extra check to make sure user can't exploit any potential quote escaping
+# vulnerabilities with SQL/LDAP databases. If you want to allow all characters,
+# set this value to empty.
+#auth_username_chars = abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890.-_@
+
+# Username character translations before it's looked up from databases. The
+# value contains series of from -> to characters. For example "#@/@" means
+# that '#' and '/' characters are translated to '@'.
+#auth_username_translation =
+
+# Username formatting before it's looked up from databases. You can use
+# the standard variables here, eg. %Lu would lowercase the username, %n would
+# drop away the domain if it was given, or "%n-AT-%d" would change the '@' into
+# "-AT-". This translation is done after auth_username_translation changes.
+#auth_username_format = %Lu
+
+# If you want to allow master users to log in by specifying the master
+# username within the normal username string (ie. not using SASL mechanism's
+# support for it), you can specify the separator character here. The format
+# is then <username><separator><master username>. UW-IMAP uses "*" as the
+# separator, so that could be a good choice.
+#auth_master_user_separator =
+
+# Username to use for users logging in with ANONYMOUS SASL mechanism
+#auth_anonymous_username = anonymous
+
+# Maximum number of dovecot-auth worker processes. They're used to execute
+# blocking passdb and userdb queries (eg. MySQL and PAM). They're
+# automatically created and destroyed as needed.
+#auth_worker_max_count = 30
+
+# Host name to use in GSSAPI principal names. The default is to use the
+# name returned by gethostname(). Use "$ALL" (with quotes) to allow all keytab
+# entries.
+#auth_gssapi_hostname =
+
+# Kerberos keytab to use for the GSSAPI mechanism. Will use the system
+# default (usually /etc/krb5.keytab) if not specified. You may need to change
+# the auth service to run as root to be able to read this file.
+#auth_krb5_keytab = 
+
+# Do NTLM and GSS-SPNEGO authentication using Samba's winbind daemon and
+# ntlm_auth helper. <doc/wiki/Authentication/Mechanisms/Winbind.txt>
+#auth_use_winbind = no
+
+# Path for Samba's ntlm_auth helper binary.
+#auth_winbind_helper_path = /usr/bin/ntlm_auth
+
+# Time to delay before replying to failed authentications.
+#auth_failure_delay = 2 secs
+
+# Require a valid SSL client certificate or the authentication fails.
+#auth_ssl_require_client_cert = no
+
+# Take the username from client's SSL certificate, using 
+# X509_NAME_get_text_by_NID() which returns the subject's DN's
+# CommonName. 
+#auth_ssl_username_from_cert = no
+
+# Space separated list of wanted authentication mechanisms:
+#   plain login digest-md5 cram-md5 ntlm rpa apop anonymous gssapi otp skey
+#   gss-spnego
+# NOTE: See also disable_plaintext_auth setting.
+auth_mechanisms = plain
+
+##
+## Password and user databases
+##
+
+#
+# Password database is used to verify user's password (and nothing more).
+# You can have multiple passdbs and userdbs. This is useful if you want to
+# allow both system users (/etc/passwd) and virtual users to login without
+# duplicating the system users into virtual database.
+#
+# <doc/wiki/PasswordDatabase.txt>
+#
+# User database specifies where mails are located and what user/group IDs
+# own them. For single-UID configuration use "static" userdb.
+#
+# <doc/wiki/UserDatabase.txt>
+
+#!include auth-deny.conf.ext
+#!include auth-master.conf.ext
+
+!include auth-system.conf.ext
+#!include auth-sql.conf.ext
+#!include auth-ldap.conf.ext
+#!include auth-passwdfile.conf.ext
+#!include auth-checkpassword.conf.ext
+#!include auth-vpopmail.conf.ext
+#!include auth-static.conf.ext
+EOF
+	cat > '/etc/dovecot/conf.d/10-ssl.conf' << EOF
+##
+## SSL settings
+##
+
+# SSL/TLS support: yes, no, required. <doc/wiki/SSL.txt>
+ssl = required
+
+ssl_cert = </etc/certs/${domain}_ecc/fullchain.cer
+ssl_key = </etc/certs/${domain}_ecc/${domain}.key
+
+ssl_dh = </usr/local/etc/trojan/trojan.pem
+
+# Minimum SSL protocol version to use. Potentially recognized values are SSLv3,
+# TLSv1, TLSv1.1, and TLSv1.2, depending on the OpenSSL version used.
+ssl_min_protocol = TLSv1.2
+
+# SSL ciphers to use, the default is:
+#ssl_cipher_list = ALL:!kRSA:!SRP:!kDHd:!DSS:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH
+# To disable non-EC DH, use:
+#ssl_cipher_list = ALL:!DH:!kRSA:!SRP:!kDHd:!DSS:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH
+
+# Colon separated list of elliptic curves to use. Empty value (the default)
+# means use the defaults from the SSL library. P-521:P-384:P-256 would be an
+# example of a valid value.
+#ssl_curve_list =
+ssl_prefer_server_ciphers = yes
+
+# SSL extra options. Currently supported options are:
+#   compression - Enable compression.
+#   no_ticket - Disable SSL session tickets.
+ssl_options = no_ticket
+EOF
+	cat > '/etc/dovecot/conf.d/10-master.conf' << EOF
+#default_process_limit = 100
+#default_client_limit = 1000
+
+# Default VSZ (virtual memory size) limit for service processes. This is mainly
+# intended to catch and kill processes that leak memory before they eat up
+# everything.
+#default_vsz_limit = 256M
+
+# Login user is internally used by login processes. This is the most untrusted
+# user in Dovecot system. It shouldn't have access to anything at all.
+#default_login_user = dovenull
+
+# Internal user is used by unprivileged processes. It should be separate from
+# login user, so that login processes can't disturb other processes.
+#default_internal_user = dovecot
+
+service imap-login {
+  inet_listener imap {
+    #port = 143
+  }
+  inet_listener imaps {
+    #port = 993
+    #ssl = yes
+  }
+
+  # Number of connections to handle before starting a new process. Typically
+  # the only useful values are 0 (unlimited) or 1. 1 is more secure, but 0
+  # is faster. <doc/wiki/LoginProcess.txt>
+  #service_count = 1
+
+  # Number of processes to always keep waiting for more connections.
+  #process_min_avail = 0
+
+  # If you set service_count=0, you probably need to grow this.
+  #vsz_limit = $default_vsz_limit
+}
+
+service pop3-login {
+  inet_listener pop3 {
+    #port = 110
+  }
+  inet_listener pop3s {
+    #port = 995
+    #ssl = yes
+  }
+}
+
+service submission-login {
+  inet_listener submission {
+    #port = 587
+  }
+}
+
+#service lmtp {
+#  unix_listener lmtp {
+    #mode = 0666
+#  }
+
+  # Create inet listener only if you can't use the above UNIX socket
+  #inet_listener lmtp {
+    # Avoid making LMTP visible for the entire internet
+    #address =
+    #port = 
+  #}
+#}
+
+service lmtp {
+ unix_listener /var/spool/postfix/private/dovecot-lmtp {
+   mode = 0600
+   user = postfix
+   group = postfix
+  }
+}
+
+service imap {
+  # Most of the memory goes to mmap()ing files. You may need to increase this
+  # limit if you have huge mailboxes.
+  #vsz_limit = $default_vsz_limit
+
+  # Max. number of IMAP processes (connections)
+  #process_limit = 1024
+}
+
+service pop3 {
+  # Max. number of POP3 processes (connections)
+  #process_limit = 1024
+}
+
+service submission {
+  # Max. number of SMTP Submission processes (connections)
+  #process_limit = 1024
+}
+
+service auth {
+  # auth_socket_path points to this userdb socket by default. It's typically
+  # used by dovecot-lda, doveadm, possibly imap process, etc. Users that have
+  # full permissions to this socket are able to get a list of all usernames and
+  # get the results of everyone's userdb lookups.
+  #
+  # The default 0666 mode allows anyone to connect to the socket, but the
+  # userdb lookups will succeed only if the userdb returns an "uid" field that
+  # matches the caller process's UID. Also if caller's uid or gid matches the
+  # socket's uid or gid the lookup succeeds. Anything else causes a failure.
+  #
+  # To give the caller full permissions to lookup all users, set the mode to
+  # something else than 0666 and Dovecot lets the kernel enforce the
+  # permissions (e.g. 0777 allows everyone full permissions).
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0666
+    user = postfix
+    group = postfix
+  }
+
+  # Postfix smtp-auth
+  #unix_listener /var/spool/postfix/private/auth {
+  #  mode = 0666
+  #}
+
+  # Auth process is run as this user.
+  #user = $default_internal_user
+}
+
+service auth-worker {
+  # Auth worker process is run as root by default, so that it can access
+  # /etc/shadow. If this isn't necessary, the user should be changed to
+  # $default_internal_user.
+  #user = root
+}
+
+service dict {
+  # If dict proxy is used, mail processes should have access to its socket.
+  # For example: mode=0660, group=vmail and global mail_access_groups=vmail
+  unix_listener dict {
+    #mode = 0600
+    #user = 
+    #group = 
+  }
+}
+EOF
+	cat > '/etc/dovecot/conf.d/15-mailboxes.conf' << EOF
+# comment:
+#   Defines a default comment or note associated with the mailbox. This
+#   value is accessible through the IMAP METADATA mailbox entries
+#   "/shared/comment" and "/private/comment". Users with sufficient
+#   privileges can override the default value for entries with a custom
+#   value.
+
+# NOTE: Assumes "namespace inbox" has been defined in 10-mail.conf.
+namespace inbox {
+  # These mailboxes are widely used and could perhaps be created automatically:
+  mailbox Drafts {
+    auto = create
+    special_use = \Drafts
+  }
+  mailbox Junk {
+    auto = create
+    special_use = \Junk
+  }
+  mailbox Trash {
+    auto = create
+    special_use = \Trash
+  }
+
+  # For \Sent mailboxes there are two widely used names. We'll mark both of
+  # them as \Sent. User typically deletes one of them if duplicates are created.
+  mailbox Sent {
+    auto = create
+    special_use = \Sent
+  }
+  mailbox "Sent Messages" {
+    special_use = \Sent
+  }
+
+  # If you have a virtual "All messages" mailbox:
+  #mailbox virtual/All {
+  #  special_use = \All
+  #  comment = All my messages
+  #}
+
+  # If you have a virtual "Flagged" mailbox:
+  #mailbox virtual/Flagged {
+  #  special_use = \Flagged
+  #  comment = All my flagged messages
+  #}
+}
+EOF
+fi
+systemctl restart postfix dovecot
+fi
+clear
 }
 ########Nginx config##############
 nginxtrojan(){
@@ -2924,6 +3474,20 @@ server {
         fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
         }
 EOF
+fi
+if [[ $install_mail == 1 ]]; then
+echo "    location /${password1}_webmail/ {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        alias /usr/share/nginx/roundcubemail/;" >> /etc/nginx/conf.d/default.conf
+echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
+echo "        		include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
+echo "        		fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
+echo "        		fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        		fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
+echo "        		}" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $dnsmasq_install == 1 ]]; then
 echo "    #location /dns-query {" >> /etc/nginx/conf.d/default.conf
@@ -3528,6 +4092,40 @@ footer a:link {
                     <p>Please edit /etc/mysql/my.cnf and restart mariadb if you need remote access !</p>
                     <br>
                     
+                    <h2>Mail Service</h2>
+                    <h4>默认安装: ❎</h4>
+                    <p>Your Mail service Information</p>
+                    <!-- <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p> -->
+                    <ul>
+                        <li><a href="https://${domain}/${password1}_webmail/installer/" target="_blank">install page</a></li>
+                        <li><a href="https://${domain}/${password1}_webmail/" target="_blank">production page</a></li>
+                        <li>用户名(username): roundcube</li>
+                        <li>密碼(password): ${password1}</li>
+                    </ul>
+                    <p>Tips:</p>
+                    <ol>
+                        <li>请</li>
+                        <li>请</li>
+                        <li>请</li>
+                    </ol>
+                    
+                    <p>附：</p>
+                    <ol>
+                        <li><a href="https://thepiratebay.org/" target="_blank">https://thepiratebay.org/</a></li>
+                        <li><a href="https://sukebei.nyaa.si/" target="_blank">https://sukebei.nyaa.si/</a></li>
+                        <li><a href="https://rarbgprx.org/torrents.php" target="_blank">https://rarbgprx.org/torrents.php</a></li>
+                    </ol>
+                    <p>Related Links</p>
+                    <ol>
+                        <li><a href="https://www.qbittorrent.org/download.php" target="_blank">win等平台下载页面</a></li>
+                        <li><a href="https://github.com/qbittorrent/qBittorrent" target="_blank">Github页面</a></li>
+                        <li><a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank">Android远程操控客户端</a></li>
+                        <li><a href="https://www.qbittorrent.org/" target="_blank">https://www.qbittorrent.org/</a></li>
+                        <li><a href="https://www.johnrosen1.com/qbt/" target="_blank">https://www.johnrosen1.com/qbt/</a></li>
+                    </ol>
+                    <br>
+
+
                     <h2>How to change the default config </h2>
                     <p>Nginx</p>
                     <ul>
@@ -3697,7 +4295,7 @@ if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
     echo "Update complete" >> /root/.trojan/update.log
 fi
 EOF
-crontab -l | grep -q '0 * * * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
+crontab -l | grep -q '0 0 0 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
 	fi
 }
 #########Log Check#########
@@ -3749,7 +4347,7 @@ advancedMenu() {
 		apt-get purge dnsutils python-pil python3-qrcode -q -y
 		apt-get autoremove -y
 		if [[ $dnsmasq_install -eq 1 ]]; then
-			if [[ $dist = ubuntu ]]; then
+			if [[ ${dist} = ubuntu ]]; then
 	 			systemctl stop systemd-resolved
 	 			systemctl disable systemd-resolved
  			fi
