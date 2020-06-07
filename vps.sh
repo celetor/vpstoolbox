@@ -2435,9 +2435,9 @@ catch_workers_output = yes
 ; Default Value: nothing is defined by default except the values in php.ini and
 ;                specified at startup with the -d argument
 ;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
-;php_flag[display_errors] = off
-;php_admin_value[error_log] = /var/log/fpm-php.www.log
-;php_admin_flag[log_errors] = on
+php_flag[display_errors] = on
+php_admin_value[error_log] = /var/log/fpm-php.www.log
+php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 32M
 EOF
 systemctl restart php7.4-fpm
