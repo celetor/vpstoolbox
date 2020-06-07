@@ -960,6 +960,12 @@ openfirewall(){
 		iptables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
 		ip6tables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
 	fi
+	if [[ ${install_mail} == 1 ]]; then
+		iptables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT
+		ip6tables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT
+		iptables -A INPUT -p udp -m udp --dport 25 -j ACCEPT
+		ip6tables -A INPUT -p udp -m udp --dport 25 -j ACCEPT
+	fi
 	if [[ ${dist} == debian ]]; then
 	export DEBIAN_FRONTEND=noninteractive 
 	apt-get install iptables-persistent -qq -y > /dev/null
