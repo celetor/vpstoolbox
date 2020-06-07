@@ -529,8 +529,8 @@ if [[ ${system_upgrade} == 1 ]]; then
 fi
 ####################################
 if [[ ${install_mail} == 1 ]]; then
-whiptail --title "Warning" --msgbox "Warning!!!:邮件服务仅支援根域名(only support root domain),严禁www等前缀(no www allowed),否则后果自负!!!" 8 78
-whiptail --title "Warning" --msgbox "Warning!!!:邮件服务需要MX DNS Record,请自行添加,否则后果自负!!!" 8 78
+whiptail --title "Warning" --msgbox "Warning!!!:邮件服务仅推荐使用根域名(only recommend root domain),不推荐使用www等前缀(no www allowed),否则后果自负!!!" 8 78
+whiptail --title "Warning" --msgbox "Warning!!!:邮件服务需要MX and PTR(reverse dns record) DNS Record,请自行添加,否则后果自负!!!" 8 78
 fi
 #####################################
 while [[ -z ${domain} ]]; do
@@ -2851,6 +2851,8 @@ if [[ $install_mail = 1 ]]; then
 	colorEcho ${INFO} "Install Mail Service ing"
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get install postfix -y
+	apt-get install postfix-policyd-spf-python -y
+	echo ${domain} > /etc/mailname
 	cat > '/etc/postfix/main.cf' << EOF
 # See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
@@ -2915,8 +2917,15 @@ smtputf8_enable = no
 message_size_limit = 52428800
 
 smtpd_helo_required = yes
-smtpd_helo_restrictions = reject_non_fqdn_helo_hostname,reject_invalid_helo_hostname,reject_unknown_helo_hostname
+smtpd_helo_restrictions = permit_mynetworks permit_sasl_authenticated reject_non_fqdn_helo_hostname reject_invalid_helo_hostname reject_unknown_helo_hostname
 disable_vrfy_command = yes
+
+smtpd_sender_restrictions = permit_mynetworks permit_sasl_authenticated reject_unknown_sender_domain reject_unknown_reverse_client_hostname reject_unknown_client_hostname
+smtpd_recipient_restrictions =
+   permit_mynetworks,
+   permit_sasl_authenticated,
+   reject_unauth_destination,
+   check_policy_service unix:private/policyd-spf
 EOF
 	cat > '/etc/postfix/master.cf' << EOF
 #
@@ -3014,6 +3023,9 @@ smtps     inet  n       -       y       -       -       smtpd
   -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
   -o smtpd_sasl_type=dovecot
   -o smtpd_sasl_path=private/auth
+
+  policyd-spf  unix  -       n       n       -       0       spawn
+    user=policyd-spf argv=/usr/bin/policyd-spf
 EOF
 curl https://repo.dovecot.org/DOVECOT-REPO-GPG | gpg --import
 gpg --export ED409DA1 > /etc/apt/trusted.gpg.d/dovecot.gpg
@@ -3033,7 +3045,13 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost
 mysql -u root -e "flush privileges;"
 mysql roundcube < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
 useradd -m -s /sbin/nologin roundcube
-echo "${password1}" | passwd "roundcube" --stdin
+echo -e "${password1}\n${password1}" | passwd roundcube
+apt-get install opendkim opendkim-tools -y
+gpasswd -a postfix opendkim
+mkdir /etc/opendkim/
+mkdir /etc/opendkim/keys/
+chown -R opendkim:opendkim /etc/opendkim
+chmod go-rw /etc/opendkim/keys
 	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
 ##
 ## Authentication processes
