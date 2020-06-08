@@ -4552,43 +4552,49 @@ echo -e "-------------------------------Service Status--------------------------
 echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
   fi
   if [[ -f /usr/sbin/nginx ]]; then
-echo -e "Nginx:\t\t"\$(systemctl is-active nginx)
+echo -e "Nginx:\t\t\t"\$(systemctl is-active nginx)
   fi
   if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
-echo -e "Dnscrypt-proxy:\t"\$(systemctl is-active dnscrypt-proxy)
+echo -e "Dnscrypt-proxy:\t\t"\$(systemctl is-active dnscrypt-proxy)
   fi
   if [[ -f /usr/bin/qbittorrent-nox ]]; then
-echo -e "Qbittorrent:\t"\$(systemctl is-active qbittorrent)
+echo -e "Qbittorrent:\t\t"\$(systemctl is-active qbittorrent)
   fi
   if [[ -f /usr/bin/bittorrent-tracker ]]; then
 echo -e "Bittorrent-tracker:\t"\$(systemctl is-active tracker)
   fi
   if [[ -f /usr/local/bin/aria2c ]]; then
-echo -e "Aria2c:\t\t"\$(systemctl is-active aria2)
+echo -e "Aria2c:\t\t\t"\$(systemctl is-active aria2)
   fi
   if [[ -f /usr/local/bin/filebrowser ]]; then
-echo -e "Filebrowser:\t"\$(systemctl is-active filebrowser)
+echo -e "Filebrowser:\t\t"\$(systemctl is-active filebrowser)
   fi
   if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
-echo -e "Netdata:\t"\$(systemctl is-active netdata)
+echo -e "Netdata:\t\t"\$(systemctl is-active netdata)
   fi
   if [[ -f /usr/bin/dockerd ]]; then
-echo -e "Docker:\t\t"\$(systemctl is-active docker)
+echo -e "Docker:\t\t\t"\$(systemctl is-active docker)
   fi
   if [[ -f /usr/sbin/mysqld ]]; then
 echo -e "MariaDB:\t\t"\$(systemctl is-active mariadb)
   fi
   if [[ -f /usr/sbin/php-fpm7.4 ]]; then
-echo -e "PHP:\t\t"\$(systemctl is-active php7.4-fpm)
+echo -e "PHP:\t\t\t"\$(systemctl is-active php7.4-fpm)
+  fi
+  if [[ -f /usr/sbin/dovecot ]]; then
+echo -e "Dovecot:\t\t"\$(systemctl is-active dovecot)
+  fi
+  if [[ -f /usr/sbin/postfix ]]; then
+echo -e "Postfix:\t\t"\$(systemctl is-active postfix)
   fi
   if [[ -f /usr/sbin/sshd ]]; then
-echo -e "sshd:\t\t"\$(systemctl is-active sshd)
+echo -e "sshd:\t\t\t"\$(systemctl is-active sshd)
   fi
   if [[ -f /usr/sbin/ntpd ]]; then
-echo -e "ntpd:\t\t"\$(systemctl is-active ntp)
+echo -e "ntpd:\t\t\t"\$(systemctl is-active ntp)
   fi
   if [[ -f /usr/bin/tor ]]; then
-echo -e "Tor:\t"\$(systemctl is-active tor)
+echo -e "Tor:\t\t"\$(systemctl is-active tor)
   fi
 echo -e "-------------------------------Bandwith Usage----------------------------"
 echo -e "         Receive    Transmit"
