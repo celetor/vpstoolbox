@@ -4250,7 +4250,7 @@ footer a:link {
                     </ul>
                     <p>Tips:</p>
                     <ol>
-                        <li>请自行添加SPF(TXT) RECORD: v=spf1 mx a ~all</li>
+                        <li>请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all</li>
                         <li>请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD</li>
                         <li>请</li>
                     </ol>
