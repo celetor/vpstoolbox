@@ -176,7 +176,7 @@ cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-E
 cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
 #############################
 systeminfo(){
-	neofetch
+	#neofetch
 	#colorEcho ${INFO} "System Info"
 	#olorEcho ${INFO} "1. CPU INFO"
 	#colorEcho ${INFO} "model name: $( awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//' )"
@@ -2932,6 +2932,12 @@ smtpd_recipient_restrictions =
    permit_sasl_authenticated,
    reject_unauth_destination,
    check_policy_service unix:private/policyd-spf
+
+# Milter configuration
+milter_default_action = accept
+milter_protocol = 6
+smtpd_milters = local:opendkim/opendkim.sock
+non_smtpd_milters = \$smtpd_milters
 EOF
 	cat > '/etc/postfix/master.cf' << EOF
 #
@@ -3054,10 +3060,122 @@ useradd -m -s /sbin/nologin roundcube
 echo -e "${password1}\n${password1}" | passwd roundcube
 apt-get install opendkim opendkim-tools -y
 gpasswd -a postfix opendkim
+	cat > '/etc/opendkim.conf' << EOF
+# This is a basic configuration that can easily be adapted to suit a standard
+# installation. For more advanced options, see opendkim.conf(5) and/or
+# /usr/share/doc/opendkim/examples/opendkim.conf.sample.
+
+# Log to syslog
+Syslog			yes
+# Required to use local socket with MTAs that access the socket as a non-
+# privileged user (e.g. Postfix)
+UMask			007
+
+# Sign for example.com with key in /etc/dkimkeys/dkim.key using
+# selector '2007' (e.g. 2007._domainkey.example.com)
+#Domain			example.com
+#KeyFile		/etc/dkimkeys/dkim.key
+#Selector		2007
+
+# Commonly-used options; the commented-out versions show the defaults.
+Canonicalization	relaxed/simple
+Mode			sv
+SubDomains		no
+
+AutoRestart         yes
+AutoRestartRate     10/1M
+Background          yes
+DNSTimeout          5
+SignatureAlgorithm  rsa-sha256
+
+# Socket smtp://localhost
+#
+# ##  Socket socketspec
+# ##
+# ##  Names the socket where this filter should listen for milter connections
+# ##  from the MTA.  Required.  Should be in one of these forms:
+# ##
+# ##  inet:port@address           to listen on a specific interface
+# ##  inet:port                   to listen on all interfaces
+# ##  local:/path/to/socket       to listen on a UNIX domain socket
+#
+#Socket                  inet:8892@localhost
+Socket			local:/var/spool/postfix/opendkim/opendkim.sock
+
+##  PidFile filename
+###      default (none)
+###
+###  Name of the file where the filter should write its pid before beginning
+###  normal operations.
+#
+PidFile               /var/run/opendkim/opendkim.pid
+
+
+# Always oversign From (sign using actual From and a null From to prevent
+# malicious signatures header fields (From and/or others) between the signer
+# and the verifier.  From is oversigned by default in the Debian pacakge
+# because it is often the identity key used by reputation systems and thus
+# somewhat security sensitive.
+OversignHeaders		From
+
+##  ResolverConfiguration filename
+##      default (none)
+##
+##  Specifies a configuration file to be passed to the Unbound library that
+##  performs DNS queries applying the DNSSEC protocol.  See the Unbound
+##  documentation at http://unbound.net for the expected content of this file.
+##  The results of using this and the TrustAnchorFile setting at the same
+##  time are undefined.
+##  In Debian, /etc/unbound/unbound.conf is shipped as part of the Suggested
+##  unbound package
+
+# ResolverConfiguration     /etc/unbound/unbound.conf
+
+##  TrustAnchorFile filename
+##      default (none)
+##
+## Specifies a file from which trust anchor data should be read when doing
+## DNS queries and applying the DNSSEC protocol.  See the Unbound documentation
+## at http://unbound.net for the expected format of this file.
+
+TrustAnchorFile       /usr/share/dns/root.key
+
+##  Userid userid
+###      default (none)
+###
+###  Change to user "userid" before starting normal operation?  May include
+###  a group ID as well, separated from the userid by a colon.
+#
+UserID                opendkim
+
+# Map domains in From addresses to keys used to sign messages
+KeyTable           refile:/etc/opendkim/key.table
+SigningTable       refile:/etc/opendkim/signing.table
+
+# Hosts to ignore when verifying signatures
+ExternalIgnoreList  /etc/opendkim/trusted.hosts
+
+# A set of internal hosts whose mail should be signed
+InternalHosts       /etc/opendkim/trusted.hosts
+EOF
 mkdir /etc/opendkim/
 mkdir /etc/opendkim/keys/
 chown -R opendkim:opendkim /etc/opendkim
 chmod go-rw /etc/opendkim/keys
+echo "*@${domain}    default._domainkey.${domain}" > /etc/opendkim/signing.table
+echo "default._domainkey.${domain}     ${domain}:default:/etc/opendkim/keys/${domain}/default.private" > /etc/opendkim/key.table
+	cat > '/etc/opendkim/trusted.hosts' << EOF
+127.0.0.1
+localhost
+
+*.${domain}
+EOF
+mkdir /etc/opendkim/keys/${domain}/
+opendkim-genkey -b 2048 -d ${domain} -D /etc/opendkim/keys/${domain} -s default -v
+chown opendkim:opendkim /etc/opendkim/keys/${domain}/default.private
+mkdir /var/spool/postfix/opendkim/
+chown opendkim:postfix /var/spool/postfix/opendkim
+
 	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
 ##
 ## Authentication processes
@@ -4132,8 +4250,8 @@ footer a:link {
                     </ul>
                     <p>Tips:</p>
                     <ol>
-                        <li>请</li>
-                        <li>请</li>
+                        <li>请自行添加SPF(TXT) RECORD: v=spf1 mx a ~all</li>
+                        <li>请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD</li>
                         <li>请</li>
                     </ol>
                     
