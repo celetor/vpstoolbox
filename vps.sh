@@ -441,12 +441,14 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "13" "Speedtest(Docker Version)" on \
 "数据库" "Database" on  \
 "14" "MariaDB" on \
+"安全" "Security" on  \
+"15" "Fail2ban" on \
 "邮件" "Mail" on  \
-"15" "Mail service" off \
+"16" "Mail service" off \
 "其他" "Others" off  \
-"16" "OPENSSL" off \
-"17" "Tor-Relay" off \
-"18" "Enable TLS1.3 only" off 2>results
+"17" "OPENSSL" off \
+"18" "Tor-Relay" off \
+"19" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -498,15 +500,18 @@ do
 		install_mariadb=1
 		;;
 		15)
-		install_mail=1
+		install_fail2ban=1
 		;;
 		16)
-		install_openssl=1
+		install_mail=1
 		;;
 		17)
+		install_openssl=1
+		;;
+		18)
 		install_tor=1
 		;;
-		18) 
+		19) 
 		tls13only=1
 		;;
 		*)
@@ -1190,10 +1195,14 @@ if [[ ${install_speedtest} == 1 ]]; then
 docker pull adolfintel/speedtest
 docker run -d --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest 
 fi
-##########Install Speedtest#################
+##########Install RSSHUB#################
 if [[ ${install_rsshub} == 1 ]]; then
 docker pull diygod/rsshub
 docker run -d --restart unless-stopped --name rsshub -p 127.0.0.1:1200:1200 diygod/rsshub
+fi
+##########Install Fail2ban#################
+if [[ ${install_fail2ban} == 1 ]]; then
+apt-get install fail2ban -y
 fi
 ##########Enable TLS13 ONLY#################
 if [[ $tls13only == 1 ]]; then
@@ -4613,6 +4622,9 @@ echo -e "Postfix:\t\t"\$(systemctl is-active postfix)
   fi
   if [[ -f /usr/sbin/sshd ]]; then
 echo -e "sshd:\t\t\t"\$(systemctl is-active sshd)
+  fi
+  if [[ -f /usr/bin/fail2ban-server ]]; then
+echo -e "Fail2ban:\t\t\t"\$(systemctl is-active fail2ban)
   fi
   if [[ -f /usr/sbin/ntpd ]]; then
 echo -e "ntpd:\t\t\t"\$(systemctl is-active ntp)
