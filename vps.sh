@@ -429,23 +429,24 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "代理" "Proxy" on  \
 "5" "Trojan-GFW" on \
 "6" "Dnscrypt-proxy(Dns encryption)" on \
+"7" "RSSHUB(Docker Version)" on \
 "下载" "Download" on  \
-"7" "Qbittorrent(Bittorrent Client)" off \
-"8" "Bt-Tracker(Node.js Version)" on \
-"9" "Aria2" on \
-"10" "Filebrowser(File manager)" on \
+"8" "Qbittorrent(Bittorrent Client)" off \
+"9" "Bt-Tracker(Node.js Version)" on \
+"10" "Aria2" on \
+"11" "Filebrowser(File manager)" on \
 "状态" "Status" on  \
-"11" "Netdata(Server status monitor)" on \
+"12" "Netdata(Server status monitor)" on \
 "测速" "Speedtest" on  \
-"12" "Speedtest(Docker Version)" on \
+"13" "Speedtest(Docker Version)" on \
 "数据库" "Database" on  \
-"13" "MariaDB" on \
+"14" "MariaDB" on \
 "邮件" "Mail" on  \
-"14" "Mail service" off \
+"15" "Mail service" off \
 "其他" "Others" off  \
-"15" "OPENSSL" off \
-"16" "Tor-Relay" off \
-"17" "Enable TLS1.3 only" off 2>results
+"16" "OPENSSL" off \
+"17" "Tor-Relay" off \
+"18" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -473,36 +474,39 @@ do
 		dnsmasq_install=1
 		;;
 		7)
-		install_qbt=1
+		install_rsshub=1
 		;;
 		8)
-		install_tracker=1
+		install_qbt=1
 		;;
 		9)
-		install_aria=1
+		install_tracker=1
 		;;
 		10)
-		install_file=1
+		install_aria=1
 		;;
 		11)
-		install_netdata=1
+		install_file=1
 		;;
 		12)
-		install_speedtest=1
+		install_netdata=1
 		;;
 		13)
-		install_mariadb=1
+		install_speedtest=1
 		;;
 		14)
-		install_mail=1
+		install_mariadb=1
 		;;
 		15)
-		install_openssl=1
+		install_mail=1
 		;;
 		16)
+		install_openssl=1
+		;;
+		17)
 		install_tor=1
 		;;
-		17) 
+		18) 
 		tls13only=1
 		;;
 		*)
@@ -851,7 +855,7 @@ events {
 
 http {
 	proxy_intercept_errors on;
-	proxy_socket_keepalive on;
+	proxy_socket_keepalive off;
 	proxy_http_version 1.1;
 	http2_push_preload on;
 	aio threads;
@@ -1185,6 +1189,11 @@ fi
 if [[ ${install_speedtest} == 1 ]]; then
 docker pull adolfintel/speedtest
 docker run -d --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest 
+fi
+##########Install Speedtest#################
+if [[ ${install_rsshub} == 1 ]]; then
+docker pull diygod/rsshub
+docker run -d --restart unless-stopped --name rsshub -p 127.0.0.1:1200:1200 diygod/rsshub
 fi
 ##########Enable TLS13 ONLY#################
 if [[ $tls13only == 1 ]]; then
@@ -3657,7 +3666,17 @@ echo "        proxy_pass http://127.0.0.1:8001/;" >> /etc/nginx/conf.d/default.c
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+fi
+if [[ $install_rsshub == 1 ]]; then
+echo "    location /${password1}_rsshub/ {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:1200/;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_aria == 1 ]]; then
@@ -3670,7 +3689,6 @@ echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/defau
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_qbt == 1 ]]; then
@@ -3678,7 +3696,6 @@ echo "    location $qbtpath {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass              http://127.0.0.1:8080/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header        X-Forwarded-Host        \$http_host;" >> /etc/nginx/conf.d/default.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_file == 1 ]]; then
@@ -3689,7 +3706,6 @@ echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.c
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_tracker == 1 ]]; then
@@ -3701,7 +3717,6 @@ echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/defau
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location $trackerstatuspath {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
@@ -3709,7 +3724,6 @@ echo "        proxy_pass http://127.0.0.1:8000/stats;" >> /etc/nginx/conf.d/defa
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
-echo "        error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_netdata == 1 ]]; then
@@ -3729,9 +3743,6 @@ echo "        gzip_proxied any;" >> /etc/nginx/conf.d/default.conf
 echo "        gzip_types *;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
-echo "        location @errpage {" >> /etc/nginx/conf.d/default.conf
-echo "        return 404;" >> /etc/nginx/conf.d/default.conf
-echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 echo "" >> /etc/nginx/conf.d/default.conf
 echo "server {" >> /etc/nginx/conf.d/default.conf
@@ -4121,6 +4132,19 @@ footer a:link {
                             </ol>
                         </li>
                     </ul>
+                    <br>
+
+                    <h2>Rsshub</h2>
+                    <h4>默认安装: ✅</h4>
+                    <p>Your Rsshub Information</p>
+                    <p><a href="https://$domain/${password1}_rsshub/" target="_blank">https://$domain/${password1}_rsshub/</a></p>
+                    <p>Related Links</p>
+                    <ol>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">tset</a></li>
+                    </ol>
                     <br>
                     
                     <h2>Qbittorrent</h2>
