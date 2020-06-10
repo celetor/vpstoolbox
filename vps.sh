@@ -1491,20 +1491,20 @@ if [[ ${dnsmasq_install} == 1 ]]; then
 #ads.*
 
 ####Block 360####
-*.cn
-*.360.com
-*.360jie.com
-*.360kan.com
-*.360taojin.com
-*.i360mall.com
-*.qhimg.com
-*.qhmsg.com
-*.qhres.com
-*.qihoo.com
-*.nicaifu.com
-*.so.com
+#*.cn
+360.com
+360jie.com
+360kan.com
+360taojin.com
+i360mall.com
+qhimg.com
+qhmsg.com
+qhres.com
+qihoo.com
+nicaifu.com
+so.com
 ####Block Xunlei###
-*.xunlei.com
+xunlei.com
 ####Block Baidu###
 91.com
 aipage.com
@@ -1542,20 +1542,24 @@ xianfae.com
 xiaodutv.com
 ###
 *baidu.*
-*.bdimg.com
-*.bdstatic.com
-*.duapps.com
-*.quyaoya.com
-*.tiebaimg.com
-*.xiaodutv.com
-*.sina.com
+bdimg.com
+bdstatic.com
+duapps.com
+quyaoya.com
+tiebaimg.com
+xiaodutv.com
+sina.com
 *huawei.*
 hicloud.com
 vmall.com
 vmallres.com
-*.qq.com
-*.wechat.com
+qq.com
+wechat.com
 ###Other###
+cyberghostvpn.com
+vyprvpn.com
+nordvpn.com
+expressvpn.com
 mi.com
 mifile.cn
 xiaomi.com
@@ -1595,12 +1599,10 @@ dlercloud.me
 dleris.best
 bgplink.com
 suda.cat
-# Migu
 migucloud.com
 migu.cn
 cmvideo.cn
 miguvideo.com
-# 中移互联
 andfx.cn
 andfx.net
 cmicrwx.cn
@@ -2280,7 +2282,7 @@ pm.status_path = /status
 ;       anything, but it may not be a good idea to use the .php extension or it
 ;       may conflict with a real PHP file.
 ; Default Value: not set
-;ping.path = /ping
+ping.path = /ping
 
 ; This directive may be used to customize the response of a ping request. The
 ; response is formatted as text/plain with a 200 response code.
@@ -2471,6 +2473,10 @@ php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 32M
 EOF
 systemctl restart php7.4-fpm
+cd /etc/php/7.4/
+curl -sS https://getcomposer.org/installer -o composer-setup.php
+php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+cd
 	fi
 fi
 ########Install Netdata################
@@ -2867,6 +2873,12 @@ EOF
 mysql -u root -e "create user 'netdata'@'localhost';"
 mysql -u root -e "grant usage on *.* to 'netdata'@'localhost';"
 mysql -u root -e "flush privileges;"
+
+#mysql -u root -e "CREATE DATABASE trojan;"
+#mysql -u root -e "create user 'trojan'@'localhost';"
+#mysql -u root -e "GRANT ALL PRIVILEGES ON trojan.* to trojan@'localhost';"
+#mysql -u root -e "flush privileges;"
+
 
     cat > '/opt/netdata/etc/netdata/python.d/mysql.conf' << EOF
 update_every : 10
