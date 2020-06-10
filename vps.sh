@@ -550,16 +550,25 @@ if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
 password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password1} ]]; then
-	password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 10 ; echo '' )
+	password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 	fi
 done
 while [[ -z ${password2} ]]; do
 password2=$(whiptail --passwordbox --nocancel "Trojan-GFW Password Two(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password2} ]]; then
-	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 10 ; echo '' )
+	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 	fi
 done
 fi
+if [[ ${password1} == ${password2} ]]; then
+	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
+	fi
+if [[ -z ${password1} ]]; then
+	password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
+	fi
+if [[ -z ${password2} ]]; then
+	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
+	fi
 ###################################
 	if [[ $install_qbt = 1 ]]; then
 		while [[ -z $qbtpath ]]; do
@@ -888,6 +897,9 @@ http {
 }
 EOF
 clear
+timedatectl set-timezone Asia/Hong_Kong
+timedatectl set-ntp off
+ntpdate -qu 1.hk.pool.ntp.org > /dev/null
 }
 #########Open ports########################
 openfirewall(){
@@ -1193,7 +1205,7 @@ fi
 ##########Install Speedtest#################
 if [[ ${install_speedtest} == 1 ]]; then
 docker pull adolfintel/speedtest
-docker run -d --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest 
+docker run -d --restart unless-stopped --name speedtest -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest 
 fi
 ##########Install RSSHUB#################
 if [[ ${install_rsshub} == 1 ]]; then
@@ -2783,10 +2795,6 @@ if [[ -n $myipv6 ]]; then
 EOF
 fi
 fi
-	clear
-	timedatectl set-timezone Asia/Hong_Kong
-	timedatectl set-ntp off
-	ntpdate -qu 1.hk.pool.ntp.org > /dev/null
 	clear
 }
 ##########Install Mariadb#############
@@ -4529,7 +4537,6 @@ advancedMenu() {
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		cd /opt/netdata/bin
-		sleep 1
 		bash netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud
 		colorEcho ${INFO} "Restart netdata ing"
 		systemctl restart netdata
@@ -4550,9 +4557,6 @@ advancedMenu() {
 		iptables -t nat -I OUTPUT ! -d 127.0.0.1/32 -p udp -m udp --dport 53 -j DNAT --to 127.0.0.1:53
 		ip6tables -t nat -I OUTPUT ! -d ::1 -p udp -m udp --dport 53 -j DNAT --to [::1]:53
 		iptables-save > /etc/iptables/rules.v4
-		fi
-		if [[ $password1 == "" ]]; then
-		password1=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo '' )
 		fi
 		mv /usr/share/nginx/html/result.html /usr/share/nginx/html/$password1.html
 		clear
@@ -4624,7 +4628,7 @@ echo -e "Postfix:\t\t"\$(systemctl is-active postfix)
 echo -e "sshd:\t\t\t"\$(systemctl is-active sshd)
   fi
   if [[ -f /usr/bin/fail2ban-server ]]; then
-echo -e "Fail2ban:\t\t\t"\$(systemctl is-active fail2ban)
+echo -e "Fail2ban:\t\t"\$(systemctl is-active fail2ban)
   fi
   if [[ -f /usr/sbin/ntpd ]]; then
 echo -e "ntpd:\t\t\t"\$(systemctl is-active ntp)
@@ -4732,7 +4736,7 @@ if [[ -f /root/.trojan/license.json ]]; then
 fi
 
 if [[ $license != 1 ]]; then
-if (whiptail --title "Accept LICENSE?" --yesno "Please read and accept the MIT License！ https://github.com/johnrosen1/vpstoolbox/blob/master/LICENSE" 8 78); then
+	if (whiptail --title "Accept LICENSE?" --yesno "Please read and accept the MIT License！ https://github.com/johnrosen1/vpstoolbox/blob/master/LICENSE" 8 78); then
 	cat > '/root/.trojan/license.json' << EOF
 {
   "license": "1"
