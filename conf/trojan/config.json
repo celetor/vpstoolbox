@@ -28,7 +28,7 @@
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": ""
+        "dhparam": "/usr/local/etc/trojan/trojan.pem"
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -44,7 +44,9 @@
         "server_port": 3306,
         "database": "trojan",
         "username": "trojan",
-        "password": "",
-        "cafile": ""
+        "password": "${password1}",
+        "key": "",
+        "cert": "",
+        "ca": ""
     }
 }
