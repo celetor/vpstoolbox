@@ -2505,8 +2505,8 @@ npm install
 npm audit fix
 cp .env.example .env
 php artisan key:generate
-sed -i "s/your_domain/${domain}/;" /usr/share/nginx/trojan-panel/.env
-sed -i "s/your_password/${password1}/;" /usr/share/nginx/trojan-panel/.env
+sed -i "s/example.com/${domain}/;" /usr/share/nginx/trojan-panel/.env
+sed -i "s/DB_PASSWORD=/DB_PASSWORD=${password1}/;" /usr/share/nginx/trojan-panel/.env
 sh -c 'echo "yes\n" | php artisan migrate'
 chown -R nginx:nginx /usr/share/nginx/trojan-panel
 cd
