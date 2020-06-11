@@ -3226,7 +3226,7 @@ mysql -u root -e "CREATE DATABASE roundcubemail DEFAULT CHARACTER SET utf8 COLLA
 mysql -u root -e "CREATE USER roundcube@localhost;"
 mysql -u root -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost;"
 mysql -u root -e "flush privileges;"
-mysql roundcube < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
+mysql -u roundcube -p roundcubemail < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
 useradd -m -s /sbin/nologin ${mailuser}
 echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
