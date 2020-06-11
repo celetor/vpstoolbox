@@ -2491,26 +2491,6 @@ php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 cd
 	fi
 fi
-##########Install Trojan-panel#################
-if [[ ${install_tjp} == 1 ]]; then
-colorEcho ${INFO} "Install Trojan-panel ing"
-curl -sL https://deb.nodesource.com/setup_14.x | bash -
-apt-get install -q -y nodejs
-cd /usr/share/nginx/
-git clone https://github.com/trojan-gfw/trojan-panel.git
-chown -R nginx:nginx /usr/share/nginx/trojan-panel
-cd trojan-panel
-composer install
-npm install
-npm audit fix
-cp .env.example .env
-php artisan key:generate
-sed -i "s/example.com/${domain}/;" /usr/share/nginx/trojan-panel/.env
-sed -i "s/DB_PASSWORD=/DB_PASSWORD=${password1}/;" /usr/share/nginx/trojan-panel/.env
-sh -c 'echo "yes\n" | php artisan migrate'
-chown -R nginx:nginx /usr/share/nginx/trojan-panel
-cd
-fi
 ########Install Netdata################
 if [[ $install_netdata == 1 ]]; then
 	if [[ ! -f /opt/netdata/usr/sbin/netdata ]]; then
@@ -4718,6 +4698,27 @@ advancedMenu() {
 		if [[ $install_mariadb == 1 ]]; then
 			install_mariadb
 		fi
+##########Install Trojan-panel#################
+if [[ ${install_tjp} == 1 ]]; then
+colorEcho ${INFO} "Install Trojan-panel ing"
+curl -sL https://deb.nodesource.com/setup_14.x | bash -
+apt-get install -q -y nodejs
+cd /usr/share/nginx/
+git clone https://github.com/trojan-gfw/trojan-panel.git
+chown -R nginx:nginx /usr/share/nginx/trojan-panel
+cd trojan-panel
+composer install
+npm install
+npm audit fix
+cp .env.example .env
+php artisan key:generate
+sed -i "s/example.com/${domain}/;" /usr/share/nginx/trojan-panel/.env
+sed -i "s/DB_PASSWORD=/DB_PASSWORD=${password1}/;" /usr/share/nginx/trojan-panel/.env
+sh -c 'echo "yes\n" | php artisan migrate'
+chown -R nginx:nginx /usr/share/nginx/trojan-panel
+cd
+fi
+################################################
 		nginxtrojan
 		start
 		sharelink
