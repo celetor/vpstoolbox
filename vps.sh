@@ -2979,7 +2979,7 @@ apt-get -y purge expect
 
 [client]
 # Default is Latin1, if you need UTF-8 set this (also in server section)
-default-character-set = utf8 
+default-character-set = utf8mb4 
 
 [mysqld]
 #
