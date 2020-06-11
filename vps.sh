@@ -1560,6 +1560,7 @@ cyberghostvpn.com
 vyprvpn.com
 nordvpn.com
 expressvpn.com
+lantern.io
 mi.com
 mifile.cn
 xiaomi.com
@@ -2695,7 +2696,8 @@ EOF
 fi
 
 if [[ ${othercert} == 1 ]]; then
-cat > '/usr/local/etc/trojan/config.json' << EOF
+	if [[ ${install_mariadb} == 1 ]]; then
+		cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
     "local_addr": "::",
@@ -2708,8 +2710,63 @@ cat > '/usr/local/etc/trojan/config.json' << EOF
     ],
     "log_level": 1,
     "ssl": {
-        "cert": "/etc/certs/${domain}_ecc/fullchain.cer",
-        "key": "/etc/certs/${domain}_ecc/${domain}.key",
+        "cert": "/etc/trojan/trojan.crt",
+        "key": "/etc/trojan/trojan.key",
+        "key_password": "",
+        "cipher": "$cipher_server",
+        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+        "prefer_server_cipher": true,
+        "alpn": [
+        	"h2",
+            "http/1.1"
+        ],
+        "alpn_port_override": {
+            "h2": 82
+        },
+        "reuse_session": true,
+        "session_ticket": false,
+        "session_timeout": 600,
+        "plain_http_response": "",
+        "curves": "",
+        "dhparam": "/usr/local/etc/trojan/trojan.pem"
+    },
+    "tcp": {
+        "prefer_ipv4": $ipv4_prefer,
+        "no_delay": true,
+        "keep_alive": true,
+        "reuse_port": false,
+        "fast_open": false,
+        "fast_open_qlen": 20
+    },
+    "mysql": {
+        "enabled": true,
+        "server_addr": "127.0.0.1",
+        "server_port": 3306,
+        "database": "trojan",
+        "username": "trojan",
+        "password": "${password1}",
+        "key": "",
+        "cert": "",
+        "ca": ""
+    }
+}
+EOF
+		else
+		cat > '/usr/local/etc/trojan/config.json' << EOF
+{
+    "run_type": "server",
+    "local_addr": "::",
+    "local_port": 443,
+    "remote_addr": "127.0.0.1",
+    "remote_port": 80,
+    "password": [
+        "$password1",
+        "$password2"
+    ],
+    "log_level": 1,
+    "ssl": {
+        "cert": "/etc/trojan/trojan.crt",
+        "key": "/etc/trojan/trojan.key",
         "key_password": "",
         "cipher": "$cipher_server",
         "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
@@ -2749,6 +2806,7 @@ cat > '/usr/local/etc/trojan/config.json' << EOF
     }
 }
 EOF
+	fi
 fi
 	chmod -R 755 /usr/local/etc/trojan/
 	touch /usr/share/nginx/html/client1-$password1.json
@@ -3116,23 +3174,23 @@ mailman   unix  -       n       n       -       -       pipe
   flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
   \${nexthop} \${user}
 
-submission     inet     n    -    y    -    -    smtpd
- -o syslog_name=postfix/submission
- -o smtpd_tls_security_level=encrypt
- -o smtpd_tls_wrappermode=no
- -o smtpd_sasl_auth_enable=yes
- -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
- -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
- -o smtpd_sasl_type=dovecot
- -o smtpd_sasl_path=private/auth
+#submission     inet     n    -    y    -    -    smtpd
+# -o syslog_name=postfix/submission
+# -o smtpd_tls_security_level=encrypt
+# -o smtpd_tls_wrappermode=no
+# -o smtpd_sasl_auth_enable=yes
+# -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
+# -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
+# -o smtpd_sasl_type=dovecot
+# -o smtpd_sasl_path=private/auth
 
-smtps     inet  n       -       y       -       -       smtpd
-  -o syslog_name=postfix/smtps
-  -o smtpd_tls_wrappermode=yes
-  -o smtpd_sasl_auth_enable=yes
-  -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
-  -o smtpd_sasl_type=dovecot
-  -o smtpd_sasl_path=private/auth
+#smtps     inet  n       -       y       -       -       smtpd
+#  -o syslog_name=postfix/smtps
+#  -o smtpd_tls_wrappermode=yes
+#  -o smtpd_sasl_auth_enable=yes
+#  -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
+#  -o smtpd_sasl_type=dovecot
+#  -o smtpd_sasl_path=private/auth
 
   policyd-spf  unix  -       n       n       -       0       spawn
     user=policyd-spf argv=/usr/bin/policyd-spf
