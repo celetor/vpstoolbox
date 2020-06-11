@@ -570,6 +570,13 @@ if [[ -z ${password2} ]]; then
 	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 	fi
 ###################################
+	if [[ ${install_mail} == 1 ]]; then
+mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername" 8 78 --title "Mail user input" 3>&1 1>&2 2>&3)
+if [[ -z ${mailuser} ]]; then
+	mailuser=$(head /dev/urandom | tr -dc a-z | head -c 4 ; echo '' )
+	fi
+fi
+###################################
 	if [[ $install_qbt = 1 ]]; then
 		while [[ -z $qbtpath ]]; do
 		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Path(路径)" 8 78 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
@@ -3212,8 +3219,8 @@ mysql -u root -e "CREATE USER roundcube@localhost;"
 mysql -u root -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost;"
 mysql -u root -e "flush privileges;"
 mysql roundcube < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
-useradd -m -s /sbin/nologin roundcube
-echo -e "${password1}\n${password1}" | passwd roundcube
+useradd -m -s /sbin/nologin ${mailuser}
+echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
 gpasswd -a postfix opendkim
 	cat > '/etc/opendkim.conf' << EOF
@@ -3906,11 +3913,11 @@ echo "    server_name _;" >> /etc/nginx/conf.d/default.conf
 echo "    return 404;" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 if [[ $install_netdata == 1 ]]; then
-echo "server {" >> /etc/nginx/conf.d/default.conf
+echo "server { #For Netdata only !" >> /etc/nginx/conf.d/default.conf
 echo "    listen 127.0.0.1:81;" >> /etc/nginx/conf.d/default.conf
 echo "    location /stub_status {" >> /etc/nginx/conf.d/default.conf
 echo "    access_log off;" >> /etc/nginx/conf.d/default.conf
-echo "    stub_status; #For Netdata only !" >> /etc/nginx/conf.d/default.conf
+echo "    stub_status;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
 echo "    location ~ ^/(status|ping)\$ {" >> /etc/nginx/conf.d/default.conf
 echo "    access_log off;" >> /etc/nginx/conf.d/default.conf
@@ -4416,7 +4423,7 @@ footer a:link {
                     <ul>
                         <li><a href="https://${domain}/${password1}_webmail/installer/" target="_blank">install page</a></li>
                         <li><a href="https://${domain}/${password1}_webmail/" target="_blank">production page</a></li>
-                        <li>用户名(username): roundcube</li>
+                        <li>用户名(username): ${mailusers}</li>
                         <li>密碼(password): ${password1}</li>
                     </ul>
                     <p>Tips:</p>
@@ -4612,7 +4619,7 @@ if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
     echo "Update complete" >> /root/.trojan/update.log
 fi
 EOF
-crontab -l | grep -q '0 0 0 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
+crontab -l | grep -q '0 0 1 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
 	fi
 }
 #########Log Check#########
