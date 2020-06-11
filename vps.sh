@@ -4463,7 +4463,7 @@ footer a:link {
                     <ul>
                         <li><a href="https://${domain}/${password1}_webmail/installer/" target="_blank">install page</a></li>
                         <li><a href="https://${domain}/${password1}_webmail/" target="_blank">production page</a></li>
-                        <li>用户名(username): ${mailusers}</li>
+                        <li>用户名(username): ${mailuser}</li>
                         <li>密碼(password): ${password1}</li>
                     </ul>
                     <p>Tips:</p>
