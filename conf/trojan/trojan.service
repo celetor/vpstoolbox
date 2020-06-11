@@ -13,7 +13,7 @@ ExecReload=/bin/kill -HUP $MAINPID
 LimitNOFILE=51200
 LimitNPROC=51200
 Restart=on-failure
-RestartSec=3s
+RestartSec=1s
 
 [Install]
 WantedBy=multi-user.target
