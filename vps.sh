@@ -2988,9 +2988,9 @@ default-character-set = utf8
 # Default is Latin1, if you need UTF-8 set all this (also in client section)
 #
 character-set-server  = utf8mb4 
-collation-server      = utf8mb4_0900_ai_ci
+collation-server      = utf8mb4_unicode_ci
 character_set_server   = utf8mb4 
-collation_server       = utf8mb4_0900_ai_ci
+collation_server       = utf8mb4_unicode_ci
 # Import all .cnf files from configuration directory
 !includedir /etc/mysql/mariadb.conf.d/
 bind-address=127.0.0.1
@@ -3004,7 +3004,7 @@ mysql -u root -e "create user 'netdata'@'localhost';"
 mysql -u root -e "grant usage on *.* to 'netdata'@'localhost';"
 mysql -u root -e "flush privileges;"
 
-mysql -u root -e "CREATE DATABASE trojan CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;"
+mysql -u root -e "CREATE DATABASE trojan CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql -u root -e "create user 'trojan'@'localhost' IDENTIFIED BY '${password1}';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON trojan.* to trojan@'localhost';"
 mysql -u root -e "flush privileges;"
@@ -4312,7 +4312,7 @@ footer a:link {
                     <br>
 
                     <h2>Trojan-panel</h2>
-                    <h4>默认安装: ✅</h4>
+                    <h4>默认安装: ❎</h4>
                     <p>Your Rsshub Information</p>
                     <p><a href="https://$domain/${password1}_config/" target="_blank">https://$domain/${password1}_config/</a></p>
                     <p>Related Links</p>
@@ -4714,7 +4714,9 @@ cp .env.example .env
 php artisan key:generate
 sed -i "s/example.com/${domain}/;" /usr/share/nginx/trojan-panel/.env
 sed -i "s/DB_PASSWORD=/DB_PASSWORD=${password1}/;" /usr/share/nginx/trojan-panel/.env
-sh -c 'echo "yes\n" | php artisan migrate'
+colorEcho ${INFO} "Please type yes !"
+clear
+php artisan migrate
 chown -R nginx:nginx /usr/share/nginx/trojan-panel
 cd
 fi
