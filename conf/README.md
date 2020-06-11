@@ -1,1 +1,1 @@
-A place for quick review of bash script config files,please do not mind if they are old or unupdated.
+A place for quick review of config files in the bash script ,please do not mind if they are old or unupdated.
