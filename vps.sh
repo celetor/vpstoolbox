@@ -3105,6 +3105,10 @@ milter_default_action = accept
 milter_protocol = 6
 smtpd_milters = local:opendkim/opendkim.sock
 non_smtpd_milters = \$smtpd_milters
+
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
 EOF
 	cat > '/etc/postfix/master.cf' << EOF
 #
@@ -3353,7 +3357,7 @@ chown opendkim:postfix /var/spool/postfix/opendkim
 # matches the local IP (ie. you're connecting from the same computer), the
 # connection is considered secure and plaintext authentication is allowed.
 # See also ssl=required setting.
-disable_plaintext_auth = yes
+disable_plaintext_auth = no
 
 # Authentication cache size (e.g. 10M). 0 means it's disabled. Note that
 # bsdauth, PAM and vpopmail require cache_key to be set for caching to be used.
@@ -3443,7 +3447,7 @@ disable_plaintext_auth = yes
 #   plain login digest-md5 cram-md5 ntlm rpa apop anonymous gssapi otp skey
 #   gss-spnego
 # NOTE: See also disable_plaintext_auth setting.
-auth_mechanisms = plain
+auth_mechanisms = plain login
 
 ##
 ## Password and user databases
