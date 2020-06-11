@@ -428,27 +428,28 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "4" "PHP" on \
 "代理" "Proxy" on  \
 "5" "Trojan-GFW" on \
-"6" "Dnscrypt-proxy(Dns encryption)" on \
-"7" "RSSHUB(Docker Version)" on \
+"6" "Trojan-panel(require PHP)" off \
+"7" "Dnscrypt-proxy(Dns encryption)" on \
+"8" "RSSHUB(Docker Version)" on \
 "下载" "Download" on  \
-"8" "Qbittorrent(Bittorrent Client)" off \
-"9" "Bt-Tracker(Node.js Version)" on \
-"10" "Aria2" on \
-"11" "Filebrowser(File manager)" on \
+"9" "Qbittorrent" off \
+"10" "Bt-Tracker(Node.js Version)" on \
+"11" "Aria2" on \
+"12" "Filebrowser" on \
 "状态" "Status" on  \
-"12" "Netdata(Server status monitor)" on \
+"13" "Netdata(Server status monitor)" on \
 "测速" "Speedtest" on  \
-"13" "Speedtest(Docker Version)" on \
+"14" "Speedtest(Docker Version)" on \
 "数据库" "Database" on  \
-"14" "MariaDB" on \
+"15" "MariaDB" on \
 "安全" "Security" on  \
-"15" "Fail2ban" on \
+"16" "Fail2ban" on \
 "邮件" "Mail" on  \
-"16" "Mail service" off \
+"17" "Mail service" off \
 "其他" "Others" off  \
-"17" "OPENSSL" off \
-"18" "Tor-Relay" off \
-"19" "Enable TLS1.3 only" off 2>results
+"18" "OPENSSL" off \
+"19" "Tor-Relay" off \
+"20" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -473,45 +474,48 @@ do
 		install_trojan=1
 		;;
 		6) 
+		install_tjp=1
+		;;
+		7) 
 		dnsmasq_install=1
 		;;
-		7)
+		8)
 		install_rsshub=1
 		;;
-		8)
+		9)
 		install_qbt=1
 		;;
-		9)
+		10)
 		install_tracker=1
 		;;
-		10)
+		11)
 		install_aria=1
 		;;
-		11)
+		12)
 		install_file=1
 		;;
-		12)
+		13)
 		install_netdata=1
 		;;
-		13)
+		14)
 		install_speedtest=1
 		;;
-		14)
+		15)
 		install_mariadb=1
 		;;
-		15)
+		16)
 		install_fail2ban=1
 		;;
-		16)
+		17)
 		install_mail=1
 		;;
-		17)
+		18)
 		install_openssl=1
 		;;
-		18)
+		19)
 		install_tor=1
 		;;
-		19) 
+		20) 
 		tls13only=1
 		;;
 		*)
@@ -569,6 +573,13 @@ if [[ -z ${password1} ]]; then
 if [[ -z ${password2} ]]; then
 	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 	fi
+###################################
+	if [[ ${install_mail} == 1 ]]; then
+mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername" 8 78 --title "Mail user input" 3>&1 1>&2 2>&3)
+if [[ -z ${mailuser} ]]; then
+	mailuser=$(head /dev/urandom | tr -dc a-z | head -c 4 ; echo '' )
+	fi
+fi
 ###################################
 	if [[ $install_qbt = 1 ]]; then
 		while [[ -z $qbtpath ]]; do
@@ -1491,20 +1502,20 @@ if [[ ${dnsmasq_install} == 1 ]]; then
 #ads.*
 
 ####Block 360####
-*.cn
-*.360.com
-*.360jie.com
-*.360kan.com
-*.360taojin.com
-*.i360mall.com
-*.qhimg.com
-*.qhmsg.com
-*.qhres.com
-*.qihoo.com
-*.nicaifu.com
-*.so.com
+#*.cn
+360.com
+360jie.com
+360kan.com
+360taojin.com
+i360mall.com
+qhimg.com
+qhmsg.com
+qhres.com
+qihoo.com
+nicaifu.com
+so.com
 ####Block Xunlei###
-*.xunlei.com
+xunlei.com
 ####Block Baidu###
 91.com
 aipage.com
@@ -1542,20 +1553,25 @@ xianfae.com
 xiaodutv.com
 ###
 *baidu.*
-*.bdimg.com
-*.bdstatic.com
-*.duapps.com
-*.quyaoya.com
-*.tiebaimg.com
-*.xiaodutv.com
-*.sina.com
+bdimg.com
+bdstatic.com
+duapps.com
+quyaoya.com
+tiebaimg.com
+xiaodutv.com
+sina.com
 *huawei.*
 hicloud.com
 vmall.com
 vmallres.com
-*.qq.com
-*.wechat.com
+qq.com
+wechat.com
 ###Other###
+cyberghostvpn.com
+vyprvpn.com
+nordvpn.com
+expressvpn.com
+lantern.io
 mi.com
 mifile.cn
 xiaomi.com
@@ -1595,12 +1611,10 @@ dlercloud.me
 dleris.best
 bgplink.com
 suda.cat
-# Migu
 migucloud.com
 migu.cn
 cmvideo.cn
 miguvideo.com
-# 中移互联
 andfx.cn
 andfx.net
 cmicrwx.cn
@@ -2280,7 +2294,7 @@ pm.status_path = /status
 ;       anything, but it may not be a good idea to use the .php extension or it
 ;       may conflict with a real PHP file.
 ; Default Value: not set
-;ping.path = /ping
+ping.path = /ping
 
 ; This directive may be used to customize the response of a ping request. The
 ; response is formatted as text/plain with a 200 response code.
@@ -2471,6 +2485,10 @@ php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 32M
 EOF
 systemctl restart php7.4-fpm
+cd /etc/php/7.4/
+curl -sS https://getcomposer.org/installer -o composer-setup.php
+php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+cd
 	fi
 fi
 ########Install Netdata################
@@ -2576,7 +2594,62 @@ if [[ -f /usr/local/etc/trojan/trojan.pem ]] && [[ -n /usr/local/etc/trojan/troj
     fi
 systemctl daemon-reload
 systemctl enable trojan
-if [[ ${othercert} != 1 ]]; then
+if [[ ${install_mariadb} == 1 ]]; then
+		cat > '/usr/local/etc/trojan/config.json' << EOF
+{
+    "run_type": "server",
+    "local_addr": "::",
+    "local_port": 443,
+    "remote_addr": "127.0.0.1",
+    "remote_port": 80,
+    "password": [
+        "$password1",
+        "$password2"
+    ],
+    "log_level": 1,
+    "ssl": {
+        "cert": "/etc/certs/${domain}_ecc/fullchain.cer",
+        "key": "/etc/certs/${domain}_ecc/${domain}.key",
+        "key_password": "",
+        "cipher": "$cipher_server",
+        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+        "prefer_server_cipher": true,
+        "alpn": [
+        	"h2",
+            "http/1.1"
+        ],
+        "alpn_port_override": {
+            "h2": 82
+        },
+        "reuse_session": true,
+        "session_ticket": false,
+        "session_timeout": 600,
+        "plain_http_response": "",
+        "curves": "",
+        "dhparam": "/usr/local/etc/trojan/trojan.pem"
+    },
+    "tcp": {
+        "prefer_ipv4": $ipv4_prefer,
+        "no_delay": true,
+        "keep_alive": true,
+        "reuse_port": false,
+        "fast_open": false,
+        "fast_open_qlen": 20
+    },
+    "mysql": {
+        "enabled": true,
+        "server_addr": "127.0.0.1",
+        "server_port": 3306,
+        "database": "trojan",
+        "username": "trojan",
+        "password": "${password1}",
+        "key": "",
+        "cert": "",
+        "ca": ""
+    }
+}
+EOF
+	else
 		cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
@@ -2624,12 +2697,72 @@ if [[ ${othercert} != 1 ]]; then
         "server_port": 3306,
         "database": "trojan",
         "username": "trojan",
-        "password": "",
-        "cafile": ""
+        "password": "${password1}",
+        "key": "",
+        "cert": "",
+        "ca": ""
     }
 }
 EOF
-	else
+fi
+
+if [[ ${othercert} == 1 ]]; then
+	if [[ ${install_mariadb} == 1 ]]; then
+		cat > '/usr/local/etc/trojan/config.json' << EOF
+{
+    "run_type": "server",
+    "local_addr": "::",
+    "local_port": 443,
+    "remote_addr": "127.0.0.1",
+    "remote_port": 80,
+    "password": [
+        "$password1",
+        "$password2"
+    ],
+    "log_level": 1,
+    "ssl": {
+        "cert": "/etc/trojan/trojan.crt",
+        "key": "/etc/trojan/trojan.key",
+        "key_password": "",
+        "cipher": "$cipher_server",
+        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+        "prefer_server_cipher": true,
+        "alpn": [
+        	"h2",
+            "http/1.1"
+        ],
+        "alpn_port_override": {
+            "h2": 82
+        },
+        "reuse_session": true,
+        "session_ticket": false,
+        "session_timeout": 600,
+        "plain_http_response": "",
+        "curves": "",
+        "dhparam": "/usr/local/etc/trojan/trojan.pem"
+    },
+    "tcp": {
+        "prefer_ipv4": $ipv4_prefer,
+        "no_delay": true,
+        "keep_alive": true,
+        "reuse_port": false,
+        "fast_open": false,
+        "fast_open_qlen": 20
+    },
+    "mysql": {
+        "enabled": true,
+        "server_addr": "127.0.0.1",
+        "server_port": 3306,
+        "database": "trojan",
+        "username": "trojan",
+        "password": "${password1}",
+        "key": "",
+        "cert": "",
+        "ca": ""
+    }
+}
+EOF
+		else
 		cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
@@ -2677,11 +2810,14 @@ EOF
         "server_port": 3306,
         "database": "trojan",
         "username": "trojan",
-        "password": "",
-        "cafile": ""
+        "password": "${password1}",
+        "key": "",
+        "cert": "",
+        "ca": ""
     }
 }
 EOF
+	fi
 fi
 	chmod -R 755 /usr/local/etc/trojan/
 	touch /usr/share/nginx/html/client1-$password1.json
@@ -2843,7 +2979,7 @@ apt-get -y purge expect
 
 [client]
 # Default is Latin1, if you need UTF-8 set this (also in server section)
-default-character-set = utf8 
+default-character-set = utf8mb4 
 
 [mysqld]
 #
@@ -2851,10 +2987,10 @@ default-character-set = utf8
 # 
 # Default is Latin1, if you need UTF-8 set all this (also in client section)
 #
-character-set-server  = utf8 
-collation-server      = utf8_general_ci 
-character_set_server   = utf8 
-collation_server       = utf8_general_ci 
+character-set-server  = utf8mb4 
+collation-server      = utf8mb4_unicode_ci
+character_set_server   = utf8mb4 
+collation_server       = utf8mb4_unicode_ci
 # Import all .cnf files from configuration directory
 !includedir /etc/mysql/mariadb.conf.d/
 bind-address=127.0.0.1
@@ -2866,6 +3002,11 @@ EOF
 
 mysql -u root -e "create user 'netdata'@'localhost';"
 mysql -u root -e "grant usage on *.* to 'netdata'@'localhost';"
+mysql -u root -e "flush privileges;"
+
+mysql -u root -e "CREATE DATABASE trojan CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -e "create user 'trojan'@'localhost' IDENTIFIED BY '${password1}';"
+mysql -u root -e "GRANT ALL PRIVILEGES ON trojan.* to trojan@'localhost';"
 mysql -u root -e "flush privileges;"
 
     cat > '/opt/netdata/etc/netdata/python.d/mysql.conf' << EOF
@@ -3044,23 +3185,23 @@ mailman   unix  -       n       n       -       -       pipe
   flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
   \${nexthop} \${user}
 
-submission     inet     n    -    y    -    -    smtpd
- -o syslog_name=postfix/submission
- -o smtpd_tls_security_level=encrypt
- -o smtpd_tls_wrappermode=no
- -o smtpd_sasl_auth_enable=yes
- -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
- -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
- -o smtpd_sasl_type=dovecot
- -o smtpd_sasl_path=private/auth
+#submission     inet     n    -    y    -    -    smtpd
+# -o syslog_name=postfix/submission
+# -o smtpd_tls_security_level=encrypt
+# -o smtpd_tls_wrappermode=no
+# -o smtpd_sasl_auth_enable=yes
+# -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
+# -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
+# -o smtpd_sasl_type=dovecot
+# -o smtpd_sasl_path=private/auth
 
-smtps     inet  n       -       y       -       -       smtpd
-  -o syslog_name=postfix/smtps
-  -o smtpd_tls_wrappermode=yes
-  -o smtpd_sasl_auth_enable=yes
-  -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
-  -o smtpd_sasl_type=dovecot
-  -o smtpd_sasl_path=private/auth
+#smtps     inet  n       -       y       -       -       smtpd
+#  -o syslog_name=postfix/smtps
+#  -o smtpd_tls_wrappermode=yes
+#  -o smtpd_sasl_auth_enable=yes
+#  -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
+#  -o smtpd_sasl_type=dovecot
+#  -o smtpd_sasl_path=private/auth
 
   policyd-spf  unix  -       n       n       -       0       spawn
     user=policyd-spf argv=/usr/bin/policyd-spf
@@ -3082,8 +3223,8 @@ mysql -u root -e "CREATE USER roundcube@localhost;"
 mysql -u root -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost;"
 mysql -u root -e "flush privileges;"
 mysql roundcube < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
-useradd -m -s /sbin/nologin roundcube
-echo -e "${password1}\n${password1}" | passwd roundcube
+useradd -m -s /sbin/nologin ${mailuser}
+echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
 gpasswd -a postfix opendkim
 	cat > '/etc/opendkim.conf' << EOF
@@ -3573,7 +3714,7 @@ server {
 	listen 127.0.0.1:80;
 	listen 127.0.0.1:82 http2;
 	server_name $domain;
-	root /usr/share/nginx/html/;
+	
 	resolver 127.0.0.1;
 	resolver_timeout 10s;
 	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
@@ -3586,6 +3727,7 @@ server {
 	#add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
 	#add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
 	location / {
+			root /usr/share/nginx/html/;
 			index index.html;
 		}
     location ~ \.php\$ {
@@ -3647,6 +3789,24 @@ server {
         }
 EOF
 fi
+if [[ $install_tjp == 1 ]]; then
+echo "    location /${password1}_config/ {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        alias /usr/share/nginx/trojan-panel/public/;" >> /etc/nginx/conf.d/default.conf
+echo "        try_files \$uri \$uri/ @config;" >> /etc/nginx/conf.d/default.conf
+echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
+echo "        include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "        location @config {" >> /etc/nginx/conf.d/default.conf
+echo "        rewrite /${password1}_config/(.*)\$ /${password1}_config/index.php?/\$1 last;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+fi
 if [[ $install_mail == 1 ]]; then
 echo "    location /${password1}_webmail/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
@@ -3654,11 +3814,11 @@ echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
 echo "        alias /usr/share/nginx/roundcubemail/;" >> /etc/nginx/conf.d/default.conf
 echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
-echo "        	include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
-echo "        	fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
-echo "        	fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
-echo "        	fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
-echo "        	}" >> /etc/nginx/conf.d/default.conf
+echo "        include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $dnsmasq_install == 1 ]]; then
@@ -3776,11 +3936,11 @@ echo "    server_name _;" >> /etc/nginx/conf.d/default.conf
 echo "    return 404;" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 if [[ $install_netdata == 1 ]]; then
-echo "server {" >> /etc/nginx/conf.d/default.conf
+echo "server { #For Netdata only !" >> /etc/nginx/conf.d/default.conf
 echo "    listen 127.0.0.1:81;" >> /etc/nginx/conf.d/default.conf
 echo "    location /stub_status {" >> /etc/nginx/conf.d/default.conf
 echo "    access_log off;" >> /etc/nginx/conf.d/default.conf
-echo "    stub_status; #For Netdata only !" >> /etc/nginx/conf.d/default.conf
+echo "    stub_status;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
 echo "    location ~ ^/(status|ping)\$ {" >> /etc/nginx/conf.d/default.conf
 echo "    access_log off;" >> /etc/nginx/conf.d/default.conf
@@ -4151,6 +4311,19 @@ footer a:link {
                     </ul>
                     <br>
 
+                    <h2>Trojan-panel</h2>
+                    <h4>默认安装: ✅</h4>
+                    <p>Your Trojan-panel Information</p>
+                    <p><a href="https://$domain/${password1}_config/" target="_blank">https://$domain/${password1}_config/</a></p>
+                    <p>Related Links</p>
+                    <ol>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">tset</a></li>
+                    </ol>
+                    <br>
+
                     <h2>Rsshub</h2>
                     <h4>默认安装: ✅</h4>
                     <p>Your Rsshub Information</p>
@@ -4286,7 +4459,7 @@ footer a:link {
                     <ul>
                         <li><a href="https://${domain}/${password1}_webmail/installer/" target="_blank">install page</a></li>
                         <li><a href="https://${domain}/${password1}_webmail/" target="_blank">production page</a></li>
-                        <li>用户名(username): roundcube</li>
+                        <li>用户名(username): ${mailusers}</li>
                         <li>密碼(password): ${password1}</li>
                     </ul>
                     <p>Tips:</p>
@@ -4482,7 +4655,7 @@ if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
     echo "Update complete" >> /root/.trojan/update.log
 fi
 EOF
-crontab -l | grep -q '0 0 0 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
+crontab -l | grep -q '0 0 1 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
 	fi
 }
 #########Log Check#########
@@ -4525,6 +4698,29 @@ advancedMenu() {
 		if [[ $install_mariadb == 1 ]]; then
 			install_mariadb
 		fi
+##########Install Trojan-panel#################
+if [[ ${install_tjp} == 1 ]]; then
+colorEcho ${INFO} "Install Trojan-panel ing"
+curl -sL https://deb.nodesource.com/setup_14.x | bash -
+apt-get install -q -y nodejs
+cd /usr/share/nginx/
+git clone https://github.com/trojan-gfw/trojan-panel.git
+chown -R nginx:nginx /usr/share/nginx/trojan-panel
+cd trojan-panel
+composer install
+npm install
+npm audit fix
+cp .env.example .env
+php artisan key:generate
+sed -i "s/example.com/${domain}/;" /usr/share/nginx/trojan-panel/.env
+sed -i "s/DB_PASSWORD=/DB_PASSWORD=${password1}/;" /usr/share/nginx/trojan-panel/.env
+colorEcho ${INFO} "Please type yes !"
+clear
+php artisan migrate
+chown -R nginx:nginx /usr/share/nginx/trojan-panel
+cd
+fi
+################################################
 		nginxtrojan
 		start
 		sharelink
