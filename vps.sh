@@ -428,27 +428,28 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "4" "PHP" on \
 "代理" "Proxy" on  \
 "5" "Trojan-GFW" on \
-"6" "Dnscrypt-proxy(Dns encryption)" on \
-"7" "RSSHUB(Docker Version)" on \
+"6" "Trojan-panel(require PHP)" on \
+"7" "Dnscrypt-proxy(Dns encryption)" on \
+"8" "RSSHUB(Docker Version)" on \
 "下载" "Download" on  \
-"8" "Qbittorrent(Bittorrent Client)" off \
-"9" "Bt-Tracker(Node.js Version)" on \
-"10" "Aria2" on \
-"11" "Filebrowser(File manager)" on \
+"9" "Qbittorrent" off \
+"10" "Bt-Tracker(Node.js Version)" on \
+"11" "Aria2" on \
+"12" "Filebrowser" on \
 "状态" "Status" on  \
-"12" "Netdata(Server status monitor)" on \
+"13" "Netdata(Server status monitor)" on \
 "测速" "Speedtest" on  \
-"13" "Speedtest(Docker Version)" on \
+"14" "Speedtest(Docker Version)" on \
 "数据库" "Database" on  \
-"14" "MariaDB" on \
+"15" "MariaDB" on \
 "安全" "Security" on  \
-"15" "Fail2ban" on \
+"16" "Fail2ban" on \
 "邮件" "Mail" on  \
-"16" "Mail service" off \
+"17" "Mail service" off \
 "其他" "Others" off  \
-"17" "OPENSSL" off \
-"18" "Tor-Relay" off \
-"19" "Enable TLS1.3 only" off 2>results
+"18" "OPENSSL" off \
+"19" "Tor-Relay" off \
+"20" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -473,45 +474,48 @@ do
 		install_trojan=1
 		;;
 		6) 
+		install_tjp=1
+		;;
+		7) 
 		dnsmasq_install=1
 		;;
-		7)
+		8)
 		install_rsshub=1
 		;;
-		8)
+		9)
 		install_qbt=1
 		;;
-		9)
+		10)
 		install_tracker=1
 		;;
-		10)
+		11)
 		install_aria=1
 		;;
-		11)
+		12)
 		install_file=1
 		;;
-		12)
+		13)
 		install_netdata=1
 		;;
-		13)
+		14)
 		install_speedtest=1
 		;;
-		14)
+		15)
 		install_mariadb=1
 		;;
-		15)
+		16)
 		install_fail2ban=1
 		;;
-		16)
+		17)
 		install_mail=1
 		;;
-		17)
+		18)
 		install_openssl=1
 		;;
-		18)
+		19)
 		install_tor=1
 		;;
-		19) 
+		20) 
 		tls13only=1
 		;;
 		*)
@@ -2487,6 +2491,26 @@ php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 cd
 	fi
 fi
+##########Install Trojan-panel#################
+if [[ ${install_tjp} == 1 ]]; then
+colorEcho ${INFO} "Install Trojan-panel ing"
+curl -sL https://deb.nodesource.com/setup_14.x | bash -
+apt-get install -q -y nodejs
+cd /usr/share/nginx/
+git clone https://github.com/trojan-gfw/trojan-panel.git
+chown -R nginx:nginx /usr/share/nginx/trojan-panel
+cd trojan-panel
+composer install
+npm install
+npm audit fix
+cp .env.example .env
+php artisan key:generate
+sed -i "s/your_domain/${domain}/;" /usr/share/nginx/trojan-panel/.env
+sed -i "s/your_password/${password1}/;" /usr/share/nginx/trojan-panel/.env
+sh -c 'echo "yes\n" | php artisan migrate'
+chown -R nginx:nginx /usr/share/nginx/trojan-panel
+cd
+fi
 ########Install Netdata################
 if [[ $install_netdata == 1 ]]; then
 	if [[ ! -f /opt/netdata/usr/sbin/netdata ]]; then
@@ -3784,6 +3808,24 @@ server {
         }
 EOF
 fi
+if [[ $install_tjp == 1 ]]; then
+echo "    location /${password1}_config/ {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        alias /usr/share/nginx/trojan-panel/public/;" >> /etc/nginx/conf.d/default.conf
+echo "        try_files $uri $uri/ @config;" >> /etc/nginx/conf.d/default.conf
+echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
+echo "        	include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
+echo "        	fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
+echo "        	fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        	fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
+echo "        	}" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "        location @config {" >> /etc/nginx/conf.d/default.conf
+echo "        rewrite /${password1}_config/(.*)\$ /config/index.php?/\$1 last;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+fi
 if [[ $install_mail == 1 ]]; then
 echo "    location /${password1}_webmail/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
@@ -4286,6 +4328,19 @@ footer a:link {
                             </ol>
                         </li>
                     </ul>
+                    <br>
+
+                    <h2>Trojan-panel</h2>
+                    <h4>默认安装: ✅</h4>
+                    <p>Your Rsshub Information</p>
+                    <p><a href="https://$domain/${password1}_config/" target="_blank">https://$domain/${password1}_config/</a></p>
+                    <p>Related Links</p>
+                    <ol>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">tset</a></li>
+                    </ol>
                     <br>
 
                     <h2>Rsshub</h2>
