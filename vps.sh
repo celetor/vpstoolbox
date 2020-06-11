@@ -3217,9 +3217,9 @@ apt-get update
 apt-get install dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd -y
 systemctl enable dovecot
 cd /usr/share/nginx/
-wget https://github.com/roundcube/roundcubemail/releases/download/1.4.5/roundcubemail-1.4.5-complete.tar.gz
-tar -xvf roundcubemail-1.4.5-complete.tar.gz
-rm -rf roundcubemail-1.4.5-complete.tar.gz
+wget https://github.com/roundcube/roundcubemail/releases/download/1.4.6/roundcubemail-1.4.6-complete.tar.gz
+tar -xvf roundcubemail-1.4.6-complete.tar.gz
+rm -rf roundcubemail-1.4.6-complete.tar.gz
 mv /usr/share/nginx/roundcubemail*/ /usr/share/nginx/roundcubemail/
 chown -R nginx:nginx /usr/share/nginx/roundcubemail/
 mysql -u root -e "CREATE DATABASE roundcubemail DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
