@@ -1,3 +1,38 @@
+	iptables -P INPUT ACCEPT
+	iptables -P FORWARD ACCEPT
+	iptables -P OUTPUT ACCEPT
+	ip6tables -P INPUT ACCEPT
+	ip6tables -P FORWARD ACCEPT
+	ip6tables -P OUTPUT ACCEPT
+	#flash
+	iptables -F
+	ip6tables -F
+	#block
+	iptables -I INPUT -s 36.110.236.68/16 -j DROP
+	iptables -I INPUT -s 114.114.112.0/21 -j DROP
+	iptables -I INPUT -s 1.2.4.0/24 -j DROP
+	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP
+	iptables -I OUTPUT -d 114.114.112.0/21 -j DROP
+	iptables -I OUTPUT -d 1.2.4.0/24 -j DROP
+	iptables -I OUTPUT -p tcp -m tcp --dport 5222 -j DROP
+	iptables -I OUTPUT -p udp -m udp --dport 5222 -j DROP
+	iptables -I OUTPUT -p tcp -m tcp --dport 1723 -j DROP
+	iptables -I OUTPUT -p udp -m udp --dport 1723 -j DROP
+	iptables -I OUTPUT -p tcp -m tcp --dport 1701 -j DROP
+	iptables -I OUTPUT -p udp -m udp --dport 1701 -j DROP
+	iptables -I OUTPUT -p tcp -m tcp --dport 500 -j DROP
+	iptables -I OUTPUT -p udp -m udp --dport 500 -j DROP
+	#keep connected
+	iptables -A INPUT -p tcp -m tcp --tcp-flags ALL FIN,PSH,URG -j DROP
+	iptables -A INPUT -p tcp -m tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
+	iptables -A INPUT -p tcp -m conntrack --ctstate NEW -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -j DROP
+	iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+	ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+	#icmp
+	iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+	iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
+	ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT
+	ip6tables -A OUTPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 -j REJECT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 192.168.0.0/16 -j REJECT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 10.0.0.0/8 -j REJECT
@@ -5,59 +40,58 @@
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 --dport 80 -j ACCEPT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 	#tcp
-	iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-	iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT #HTTPS
+	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT #HTTP
 	#udp
-	iptables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
-	iptables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
-	iptables -I OUTPUT -j ACCEPT
-	iptables -I FORWARD -j DROP
+	iptables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
+	iptables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
+	iptables -A OUTPUT -j ACCEPT
+	#iptables -I FORWARD -j DROP
 	#tcp6
-	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-	ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT #HTTPSv6
+	ip6tables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT #HTTPv6
 	#udp6
-	ip6tables -I INPUT -p udp -m udp --dport 443 -j ACCEPT
-	ip6tables -I INPUT -p udp -m udp --dport 80 -j ACCEPT
-	ip6tables -I OUTPUT -j ACCEPT
-	ip6tables -I FORWARD -j DROP
+	ip6tables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
+	ip6tables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
+	ip6tables -A OUTPUT -j ACCEPT
+	#ip6tables -I FORWARD -j DROP
 	if [[ $install_qbt == 1 ]]; then
-		iptables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
-		ip6tables -I INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
-		iptables -I INPUT -p udp -m udp --dport 8999 -j ACCEPT
-		ip6tables -I INPUT -p udp -m udp --dport 8999 -j ACCEPT
+		iptables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
+		ip6tables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
+		iptables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT
+		ip6tables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT
 	fi
 	if [[ $install_tracker == 1 ]]; then
-		iptables -I INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
-		ip6tables -I INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
-		iptables -I INPUT -p udp -m udp --dport 8000 -j ACCEPT
-		ip6tables -I INPUT -p udp -m udp --dport 8000 -j ACCEPT
+		iptables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
+		ip6tables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
+		iptables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT
+		ip6tables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT
 	fi
 	if [[ $install_aria == 1 ]]; then
-		iptables -I INPUT -p tcp -m tcp --dport $ariaport -j ACCEPT
-		ip6tables -I INPUT -p tcp -m tcp --dport $ariaport -j ACCEPT
-		iptables -I INPUT -p udp -m udp --dport $ariaport -j ACCEPT
-		ip6tables -I INPUT -p udp -m udp --dport $ariaport -j ACCEPT
+		iptables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
+		ip6tables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
+		iptables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
+		ip6tables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
 	fi
-	if [[ $dist == debian ]]; then
+	if [[ ${install_mail} == 1 ]]; then
+		iptables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT
+		ip6tables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT
+		iptables -A INPUT -p udp -m udp --dport 25 -j ACCEPT
+		ip6tables -A INPUT -p udp -m udp --dport 25 -j ACCEPT
+	fi
+	if [[ ${dist} == debian ]]; then
 	export DEBIAN_FRONTEND=noninteractive 
 	apt-get install iptables-persistent -qq -y > /dev/null
- elif [[ $dist == ubuntu ]]; then
+	iptables-save > /etc/iptables/rules.v4
+	ip6tables-save > /etc/iptables/rules.v6
+ elif [[ ${dist} == ubuntu ]]; then
 	export DEBIAN_FRONTEND=noninteractive
 	ufw allow http
 	ufw allow https
+	ufw allow ${ariaport}
 	apt-get install iptables-persistent -qq -y > /dev/null
- elif [[ $dist == centos ]]; then
-	setenforce 0
-	cat > '/etc/selinux/config' << EOF
-SELINUX=disabled
-SELINUXTYPE=targeted
-EOF
-	firewall-cmd --zone=public --add-port=80/tcp --permanent
-	firewall-cmd --zone=public --add-port=443/tcp --permanent
-	firewall-cmd --zone=public --add-port=80/udp --permanent
-	firewall-cmd --zone=public --add-port=443/udp --permanent
-	systemctl stop firewalld
-	systemctl disable firewalld
+	iptables-save > /etc/iptables/rules.v4
+	ip6tables-save > /etc/iptables/rules.v6
  else
 	clear
 	TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
