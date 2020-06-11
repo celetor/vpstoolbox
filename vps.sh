@@ -428,7 +428,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "4" "PHP" on \
 "代理" "Proxy" on  \
 "5" "Trojan-GFW" on \
-"6" "Trojan-panel(require PHP)" on \
+"6" "Trojan-panel(require PHP)" off \
 "7" "Dnscrypt-proxy(Dns encryption)" on \
 "8" "RSSHUB(Docker Version)" on \
 "下载" "Download" on  \
@@ -3007,10 +3007,10 @@ default-character-set = utf8
 # 
 # Default is Latin1, if you need UTF-8 set all this (also in client section)
 #
-character-set-server  = utf8 
-collation-server      = utf8_general_ci 
-character_set_server   = utf8 
-collation_server       = utf8_general_ci 
+character-set-server  = utf8mb4 
+collation-server      = utf8mb4_0900_ai_ci
+character_set_server   = utf8mb4 
+collation_server       = utf8mb4_0900_ai_ci
 # Import all .cnf files from configuration directory
 !includedir /etc/mysql/mariadb.conf.d/
 bind-address=127.0.0.1
@@ -3024,7 +3024,7 @@ mysql -u root -e "create user 'netdata'@'localhost';"
 mysql -u root -e "grant usage on *.* to 'netdata'@'localhost';"
 mysql -u root -e "flush privileges;"
 
-mysql -u root -e "CREATE DATABASE trojan;"
+mysql -u root -e "CREATE DATABASE trojan CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;"
 mysql -u root -e "create user 'trojan'@'localhost' IDENTIFIED BY '${password1}';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON trojan.* to trojan@'localhost';"
 mysql -u root -e "flush privileges;"
@@ -3734,7 +3734,7 @@ server {
 	listen 127.0.0.1:80;
 	listen 127.0.0.1:82 http2;
 	server_name $domain;
-	root /usr/share/nginx/html/;
+	
 	resolver 127.0.0.1;
 	resolver_timeout 10s;
 	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
@@ -3747,6 +3747,7 @@ server {
 	#add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
 	#add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
 	location / {
+			root /usr/share/nginx/html/;
 			index index.html;
 		}
     location ~ \.php\$ {
@@ -3814,16 +3815,16 @@ echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
 echo "        alias /usr/share/nginx/trojan-panel/public/;" >> /etc/nginx/conf.d/default.conf
-echo "        try_files $uri $uri/ @config;" >> /etc/nginx/conf.d/default.conf
+echo "        try_files \$uri \$uri/ @config;" >> /etc/nginx/conf.d/default.conf
 echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
-echo "        	include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
-echo "        	fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
-echo "        	fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
-echo "        	fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
-echo "        	}" >> /etc/nginx/conf.d/default.conf
+echo "        include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        location @config {" >> /etc/nginx/conf.d/default.conf
-echo "        rewrite /${password1}_config/(.*)\$ /config/index.php?/\$1 last;" >> /etc/nginx/conf.d/default.conf
+echo "        rewrite /${password1}_config/(.*)\$ /${password1}_config/index.php?/\$1 last;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_mail == 1 ]]; then
@@ -3833,11 +3834,11 @@ echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
 echo "        alias /usr/share/nginx/roundcubemail/;" >> /etc/nginx/conf.d/default.conf
 echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
-echo "        	include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
-echo "        	fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
-echo "        	fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
-echo "        	fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
-echo "        	}" >> /etc/nginx/conf.d/default.conf
+echo "        include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $dnsmasq_install == 1 ]]; then
