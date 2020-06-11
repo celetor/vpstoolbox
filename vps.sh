@@ -433,7 +433,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "8" "RSSHUB(Docker Version)" on \
 "下载" "Download" on  \
 "9" "Qbittorrent" off \
-"10" "Bt-Tracker(Node.js Version)" on \
+"10" "Bt-Tracker(Node.js Version)" off \
 "11" "Aria2" on \
 "12" "Filebrowser" on \
 "状态" "Status" on  \
