@@ -4718,8 +4718,8 @@ cp .env.example .env
 php artisan key:generate
 sed -i "s/example.com/${domain}/;" /usr/share/nginx/trojan-panel/.env
 sed -i "s/DB_PASSWORD=/DB_PASSWORD=${password1}/;" /usr/share/nginx/trojan-panel/.env
-colorEcho ${INFO} "Please type yes !"
 clear
+colorEcho ${INFO} "Please type yes !"
 php artisan migrate
 chown -R nginx:nginx /usr/share/nginx/trojan-panel
 cd
