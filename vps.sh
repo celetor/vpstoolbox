@@ -2586,11 +2586,11 @@ RestartSec=1s
 [Install]
 WantedBy=multi-user.target
 EOF
-if [[ -f /usr/local/etc/trojan/trojan.pem ]] && [[ -n /usr/local/etc/trojan/trojan.pem ]]; then
+if [[ -f /usr/local/etc/trojan/dh.pem ]] && [[ -n /usr/local/etc/trojan/dh.pem ]]; then
     colorEcho ${INFO} "DH已有，跳过生成。。。"
     else
     colorEcho ${INFO} "Generating DH pem"
-    openssl dhparam -out /usr/local/etc/trojan/trojan.pem 2048
+    openssl dhparam -out /usr/local/etc/trojan/dh.pem 2048
     fi
 systemctl daemon-reload
 systemctl enable trojan
@@ -2626,7 +2626,7 @@ if [[ ${install_mariadb} == 1 ]]; then
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/trojan.pem"
+        "dhparam": "/usr/local/etc/trojan/dh.pem"
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -2681,7 +2681,7 @@ EOF
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/trojan.pem"
+        "dhparam": "/usr/local/etc/trojan/dh.pem"
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -2739,7 +2739,7 @@ if [[ ${othercert} == 1 ]]; then
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/trojan.pem"
+        "dhparam": "/usr/local/etc/trojan/dh.pem"
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -2794,7 +2794,7 @@ EOF
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/trojan.pem"
+        "dhparam": "/usr/local/etc/trojan/dh.pem"
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -3026,6 +3026,13 @@ if [[ $install_mail = 1 ]]; then
 	apt-get install postfix -y
 	apt-get install postfix-policyd-spf-python -y
 	echo ${domain} > /etc/mailname
+	postproto="ipv4"
+	if [[ -n $myipv6 ]]; then
+		ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
+		if [[ $? -eq 0 ]]; then
+			postproto="all"
+		fi
+	fi
 	cat > '/etc/postfix/main.cf' << EOF
 # See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
@@ -3033,6 +3040,8 @@ if [[ $install_mail = 1 ]]; then
 # line of that file to be used as the name.  The Debian default
 # is /etc/mailname.
 #myorigin = /etc/mailname
+
+home_mailbox = Maildir/
 
 smtpd_banner = \$myhostname ESMTP \$mail_name (Debian/GNU)
 biff = no
@@ -3051,7 +3060,7 @@ compatibility_level = 2
 
 # TLS parameters
 smtpd_tls_loglevel = 1
-smtpd_tls_security_level=may
+smtpd_tls_security_level = may
 smtpd_tls_eccert_file = /etc/certs/${domain}_ecc/fullchain.cer
 smtpd_tls_eckey_file = /etc/certs/${domain}_ecc/${domain}.key
 smtpd_use_tls=yes
@@ -3077,16 +3086,14 @@ myhostname = ${domain}
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
-mydestination = $myhostname, ${domain}, localhost.${domain}, , localhost
+mydestination = \$myhostname, ${domain}, localhost.${domain}, localhost
 relayhost = 
 mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 mailbox_size_limit = 0
 recipient_delimiter = +
 inet_interfaces = all
-inet_protocols = all
+inet_protocols = ${postproto}
 
-mailbox_transport = lmtp:unix:private/dovecot-lmtp
-smtputf8_enable = no
 message_size_limit = 52428800
 
 smtpd_helo_required = yes
@@ -3094,11 +3101,11 @@ smtpd_helo_restrictions = permit_mynetworks permit_sasl_authenticated reject_non
 disable_vrfy_command = yes
 
 smtpd_sender_restrictions = permit_mynetworks permit_sasl_authenticated reject_unknown_sender_domain reject_unknown_reverse_client_hostname reject_unknown_client_hostname
-smtpd_recipient_restrictions =
-   permit_mynetworks,
-   permit_sasl_authenticated,
-   reject_unauth_destination,
-   check_policy_service unix:private/policyd-spf
+#smtpd_recipient_restrictions =
+#   permit_mynetworks,
+#   permit_sasl_authenticated,
+#   reject_unauth_destination,
+#   check_policy_service unix:private/policyd-spf
 
 # Milter configuration
 milter_default_action = accept
@@ -3109,113 +3116,24 @@ non_smtpd_milters = \$smtpd_milters
 smtpd_sasl_security_options = noanonymous
 smtpd_sasl_path = private/auth
 smtpd_sasl_auth_enable = yes
+
+smtp_header_checks = regexp:/etc/postfix/smtp_header_checks
 EOF
-	cat > '/etc/postfix/master.cf' << EOF
-#
-# Postfix master process configuration file.  For details on the format
-# of the file, see the master(5) manual page (command: "man 5 master" or
-# on-line: http://www.postfix.org/master.5.html).
-#
-# Do not forget to execute "postfix reload" after editing this file.
-#
-# ==========================================================================
-# service type  private unpriv  chroot  wakeup  maxproc command + args
-#               (yes)   (yes)   (no)    (never) (100)
-# ==========================================================================
-smtp      inet  n       -       y       -       -       smtpd
-#smtp      inet  n       -       y       -       1       postscreen
-#smtpd     pass  -       -       y       -       -       smtpd
-#dnsblog   unix  -       -       y       -       0       dnsblog
-#tlsproxy  unix  -       -       y       -       0       tlsproxy
-#submission inet n       -       y       -       -       smtpd
-#628       inet  n       -       y       -       -       qmqpd
-pickup    unix  n       -       y       60      1       pickup
-cleanup   unix  n       -       y       -       0       cleanup
-qmgr      unix  n       -       n       300     1       qmgr
-#qmgr     unix  n       -       n       300     1       oqmgr
-tlsmgr    unix  -       -       y       1000?   1       tlsmgr
-rewrite   unix  -       -       y       -       -       trivial-rewrite
-bounce    unix  -       -       y       -       0       bounce
-defer     unix  -       -       y       -       0       bounce
-trace     unix  -       -       y       -       0       bounce
-verify    unix  -       -       y       -       1       verify
-flush     unix  n       -       y       1000?   0       flush
-proxymap  unix  -       -       n       -       -       proxymap
-proxywrite unix -       -       n       -       1       proxymap
-smtp      unix  -       -       y       -       -       smtp
-relay     unix  -       -       y       -       -       smtp
-        -o syslog_name=postfix/$service_name
-#       -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
-showq     unix  n       -       y       -       -       showq
-error     unix  -       -       y       -       -       error
-retry     unix  -       -       y       -       -       error
-discard   unix  -       -       y       -       -       discard
-local     unix  -       n       n       -       -       local
-virtual   unix  -       n       n       -       -       virtual
-lmtp      unix  -       -       y       -       -       lmtp
-anvil     unix  -       -       y       -       1       anvil
-scache    unix  -       -       y       -       1       scache
-postlog   unix-dgram n  -       n       -       1       postlogd
-#
-# ====================================================================
-# Interfaces to non-Postfix software. Be sure to examine the manual
-# pages of the non-Postfix software to find out what options it wants.
-#
-# Many of the following services use the Postfix pipe(8) delivery
-# agent.  See the pipe(8) man page for information about ${recipient}
-# and other message envelope options.
-# ====================================================================
-#
-# maildrop. See the Postfix MAILDROP_README file for details.
-# Also specify in main.cf: maildrop_destination_recipient_limit=1
-#
-maildrop  unix  -       n       n       -       -       pipe
-  flags=DRhu user=vmail argv=/usr/bin/maildrop -d ${recipient}
-#
-# See the Postfix UUCP_README file for configuration details.
-#
-uucp      unix  -       n       n       -       -       pipe
-  flags=Fqhu user=uucp argv=uux -r -n -z -a$sender - $nexthop!rmail ($recipient)
-#
-# Other external delivery methods.
-#
-ifmail    unix  -       n       n       -       -       pipe
-  flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r \$nexthop (\$recipient)
-bsmtp     unix  -       n       n       -       -       pipe
-  flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -t\$nexthop -f\$sender $recipient
-scalemail-backend unix	-	n	n	-	2	pipe
-  flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store \${nexthop} \${user} \${extension}
-mailman   unix  -       n       n       -       -       pipe
-  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
-  \${nexthop} \${user}
-
-#submission     inet     n    -    y    -    -    smtpd
-# -o syslog_name=postfix/submission
-# -o smtpd_tls_security_level=encrypt
-# -o smtpd_tls_wrappermode=no
-# -o smtpd_sasl_auth_enable=yes
-# -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
-# -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
-# -o smtpd_sasl_type=dovecot
-# -o smtpd_sasl_path=private/auth
-
-#smtps     inet  n       -       y       -       -       smtpd
-#  -o syslog_name=postfix/smtps
-#  -o smtpd_tls_wrappermode=yes
-#  -o smtpd_sasl_auth_enable=yes
-#  -o smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
-#  -o smtpd_sasl_type=dovecot
-#  -o smtpd_sasl_path=private/auth
-
-  policyd-spf  unix  -       n       n       -       0       spawn
-    user=policyd-spf argv=/usr/bin/policyd-spf
+	cat > '/etc/aliases' << EOF
+# See man 5 aliases for format
+postmaster:    root
+root:   ${mailuser}
 EOF
+newaliases
+echo "/^User-Agent.*Roundcube Webmail/            IGNORE" > /etc/postfix/smtp_header_checks
+postmap /etc/postfix/smtp_header_checks
 curl https://repo.dovecot.org/DOVECOT-REPO-GPG | gpg --import
 gpg --export ED409DA1 > /etc/apt/trusted.gpg.d/dovecot.gpg
 echo "deb https://repo.dovecot.org/ce-2.3-latest/${dist}/$(lsb_release -cs) $(lsb_release -cs) main" > /etc/apt/sources.list.d/dovecot.list
 apt-get update
-apt-get install dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd -y
+apt-get install dovecot-core dovecot-imapd -y
 systemctl enable dovecot
+adduser dovecot mail
 cd /usr/share/nginx/
 wget https://github.com/roundcube/roundcubemail/releases/download/1.4.6/roundcubemail-1.4.6-complete.tar.gz
 tar -xvf roundcubemail-1.4.6-complete.tar.gz
@@ -3232,10 +3150,6 @@ echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
 gpasswd -a postfix opendkim
 	cat > '/etc/opendkim.conf' << EOF
-# This is a basic configuration that can easily be adapted to suit a standard
-# installation. For more advanced options, see opendkim.conf(5) and/or
-# /usr/share/doc/opendkim/examples/opendkim.conf.sample.
-
 # Log to syslog
 Syslog			yes
 # Required to use local socket with MTAs that access the socket as a non-
@@ -3259,28 +3173,9 @@ Background          yes
 DNSTimeout          5
 SignatureAlgorithm  rsa-sha256
 
-# Socket smtp://localhost
-#
-# ##  Socket socketspec
-# ##
-# ##  Names the socket where this filter should listen for milter connections
-# ##  from the MTA.  Required.  Should be in one of these forms:
-# ##
-# ##  inet:port@address           to listen on a specific interface
-# ##  inet:port                   to listen on all interfaces
-# ##  local:/path/to/socket       to listen on a UNIX domain socket
-#
-#Socket                  inet:8892@localhost
 Socket			local:/var/spool/postfix/opendkim/opendkim.sock
 
-##  PidFile filename
-###      default (none)
-###
-###  Name of the file where the filter should write its pid before beginning
-###  normal operations.
-#
 PidFile               /var/run/opendkim/opendkim.pid
-
 
 # Always oversign From (sign using actual From and a null From to prevent
 # malicious signatures header fields (From and/or others) between the signer
@@ -3329,6 +3224,30 @@ ExternalIgnoreList  /etc/opendkim/trusted.hosts
 # A set of internal hosts whose mail should be signed
 InternalHosts       /etc/opendkim/trusted.hosts
 EOF
+	cat > '/etc/default/opendkim' << EOF
+# Command-line options specified here will override the contents of
+# /etc/opendkim.conf. See opendkim(8) for a complete list of options.
+#DAEMON_OPTS=""
+# Change to /var/spool/postfix/var/run/opendkim to use a Unix socket with
+# postfix in a chroot:
+#RUNDIR=/var/spool/postfix/var/run/opendkim
+RUNDIR=/var/run/opendkim
+#
+# Uncomment to specify an alternate socket
+# Note that setting this will override any Socket value in opendkim.conf
+# default:
+SOCKET="local:/var/spool/postfix/opendkim/opendkim.sock"
+# listen on all interfaces on port 54321:
+#SOCKET=inet:54321
+# listen on loopback on port 12345:
+#SOCKET=inet:12345@localhost
+# listen on 192.0.2.1 on port 12345:
+#SOCKET=inet:12345@192.0.2.1
+USER=opendkim
+GROUP=opendkim
+PIDFILE=\$RUNDIR/\$NAME.pid
+EXTRAAFTER=
+EOF
 mkdir /etc/opendkim/
 mkdir /etc/opendkim/keys/
 chown -R opendkim:opendkim /etc/opendkim
@@ -3338,6 +3257,9 @@ echo "default._domainkey.${domain}     ${domain}:default:/etc/opendkim/keys/${do
 	cat > '/etc/opendkim/trusted.hosts' << EOF
 127.0.0.1
 localhost
+10.0.0.0/8
+172.16.0.0/12
+192.168.0.0/16
 
 *.${domain}
 EOF
@@ -3348,99 +3270,42 @@ mkdir /var/spool/postfix/opendkim/
 chown opendkim:postfix /var/spool/postfix/opendkim
 
 	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
-##
-## Authentication processes
-##
-
-# Disable LOGIN command and all other plaintext authentications unless
-# SSL/TLS is used (LOGINDISABLED capability). Note that if the remote IP
-# matches the local IP (ie. you're connecting from the same computer), the
-# connection is considered secure and plaintext authentication is allowed.
-# See also ssl=required setting.
 disable_plaintext_auth = no
 
-# Authentication cache size (e.g. 10M). 0 means it's disabled. Note that
-# bsdauth, PAM and vpopmail require cache_key to be set for caching to be used.
 #auth_cache_size = 0
-# Time to live for cached data. After TTL expires the cached record is no
-# longer used, *except* if the main database lookup returns internal failure.
-# We also try to handle password changes automatically: If user's previous
-# authentication was successful, but this one wasn't, the cache isn't used.
-# For now this works only with plaintext authentication.
+
 #auth_cache_ttl = 1 hour
-# TTL for negative hits (user not found, password mismatch).
-# 0 disables caching them completely.
+
 #auth_cache_negative_ttl = 1 hour
 
-# Space separated list of realms for SASL authentication mechanisms that need
-# them. You can leave it empty if you don't want to support multiple realms.
-# Many clients simply use the first one listed here, so keep the default realm
-# first.
 #auth_realms =
 
-# Default realm/domain to use if none was specified. This is used for both
-# SASL realms and appending @domain to username in plaintext logins.
 #auth_default_realm = 
 
-# List of allowed characters in username. If the user-given username contains
-# a character not listed in here, the login automatically fails. This is just
-# an extra check to make sure user can't exploit any potential quote escaping
-# vulnerabilities with SQL/LDAP databases. If you want to allow all characters,
-# set this value to empty.
 #auth_username_chars = abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890.-_@
 
-# Username character translations before it's looked up from databases. The
-# value contains series of from -> to characters. For example "#@/@" means
-# that '#' and '/' characters are translated to '@'.
 #auth_username_translation =
 
-# Username formatting before it's looked up from databases. You can use
-# the standard variables here, eg. %Lu would lowercase the username, %n would
-# drop away the domain if it was given, or "%n-AT-%d" would change the '@' into
-# "-AT-". This translation is done after auth_username_translation changes.
 #auth_username_format = %Lu
 
-# If you want to allow master users to log in by specifying the master
-# username within the normal username string (ie. not using SASL mechanism's
-# support for it), you can specify the separator character here. The format
-# is then <username><separator><master username>. UW-IMAP uses "*" as the
-# separator, so that could be a good choice.
 #auth_master_user_separator =
 
-# Username to use for users logging in with ANONYMOUS SASL mechanism
 #auth_anonymous_username = anonymous
 
-# Maximum number of dovecot-auth worker processes. They're used to execute
-# blocking passdb and userdb queries (eg. MySQL and PAM). They're
-# automatically created and destroyed as needed.
 #auth_worker_max_count = 30
 
-# Host name to use in GSSAPI principal names. The default is to use the
-# name returned by gethostname(). Use "$ALL" (with quotes) to allow all keytab
-# entries.
 #auth_gssapi_hostname =
 
-# Kerberos keytab to use for the GSSAPI mechanism. Will use the system
-# default (usually /etc/krb5.keytab) if not specified. You may need to change
-# the auth service to run as root to be able to read this file.
 #auth_krb5_keytab = 
 
-# Do NTLM and GSS-SPNEGO authentication using Samba's winbind daemon and
-# ntlm_auth helper. <doc/wiki/Authentication/Mechanisms/Winbind.txt>
 #auth_use_winbind = no
 
-# Path for Samba's ntlm_auth helper binary.
 #auth_winbind_helper_path = /usr/bin/ntlm_auth
 
-# Time to delay before replying to failed authentications.
 #auth_failure_delay = 2 secs
 
-# Require a valid SSL client certificate or the authentication fails.
 #auth_ssl_require_client_cert = no
 
-# Take the username from client's SSL certificate, using 
-# X509_NAME_get_text_by_NID() which returns the subject's DN's
-# CommonName. 
 #auth_ssl_username_from_cert = no
 
 # Space separated list of wanted authentication mechanisms:
@@ -3478,20 +3343,15 @@ auth_mechanisms = plain login
 #!include auth-static.conf.ext
 EOF
 	cat > '/etc/dovecot/conf.d/10-ssl.conf' << EOF
-##
-## SSL settings
-##
 
 # SSL/TLS support: yes, no, required. <doc/wiki/SSL.txt>
-ssl = required
+ssl = yes
 
 ssl_cert = </etc/certs/${domain}_ecc/fullchain.cer
 ssl_key = </etc/certs/${domain}_ecc/${domain}.key
 
-ssl_dh = </usr/local/etc/trojan/trojan.pem
+ssl_dh = </usr/local/etc/trojan/dh.pem
 
-# Minimum SSL protocol version to use. Potentially recognized values are SSLv3,
-# TLSv1, TLSv1.1, and TLSv1.2, depending on the OpenSSL version used.
 ssl_min_protocol = TLSv1.2
 
 # SSL ciphers to use, the default is:
@@ -3499,15 +3359,9 @@ ssl_min_protocol = TLSv1.2
 # To disable non-EC DH, use:
 #ssl_cipher_list = ALL:!DH:!kRSA:!SRP:!kDHd:!DSS:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH
 
-# Colon separated list of elliptic curves to use. Empty value (the default)
-# means use the defaults from the SSL library. P-521:P-384:P-256 would be an
-# example of a valid value.
 #ssl_curve_list =
 ssl_prefer_server_ciphers = yes
 
-# SSL extra options. Currently supported options are:
-#   compression - Enable compression.
-#   no_ticket - Disable SSL session tickets.
 ssl_options = no_ticket
 EOF
 	cat > '/etc/dovecot/conf.d/10-master.conf' << EOF
@@ -3548,16 +3402,6 @@ service imap-login {
   #vsz_limit = $default_vsz_limit
 }
 
-service pop3-login {
-  inet_listener pop3 {
-    #port = 110
-  }
-  inet_listener pop3s {
-    #port = 995
-    #ssl = yes
-  }
-}
-
 service submission-login {
   inet_listener submission {
     #port = 587
@@ -3577,14 +3421,6 @@ service submission-login {
   #}
 #}
 
-service lmtp {
- unix_listener /var/spool/postfix/private/dovecot-lmtp {
-   mode = 0600
-   user = postfix
-   group = postfix
-  }
-}
-
 service imap {
   # Most of the memory goes to mmap()ing files. You may need to increase this
   # limit if you have huge mailboxes.
@@ -3594,43 +3430,18 @@ service imap {
   #process_limit = 1024
 }
 
-service pop3 {
-  # Max. number of POP3 processes (connections)
-  #process_limit = 1024
-}
-
 service submission {
   # Max. number of SMTP Submission processes (connections)
   #process_limit = 1024
 }
 
 service auth {
-  # auth_socket_path points to this userdb socket by default. It's typically
-  # used by dovecot-lda, doveadm, possibly imap process, etc. Users that have
-  # full permissions to this socket are able to get a list of all usernames and
-  # get the results of everyone's userdb lookups.
-  #
-  # The default 0666 mode allows anyone to connect to the socket, but the
-  # userdb lookups will succeed only if the userdb returns an "uid" field that
-  # matches the caller process's UID. Also if caller's uid or gid matches the
-  # socket's uid or gid the lookup succeeds. Anything else causes a failure.
-  #
-  # To give the caller full permissions to lookup all users, set the mode to
-  # something else than 0666 and Dovecot lets the kernel enforce the
-  # permissions (e.g. 0777 allows everyone full permissions).
   unix_listener /var/spool/postfix/private/auth {
     mode = 0666
     user = postfix
     group = postfix
   }
 
-  # Postfix smtp-auth
-  #unix_listener /var/spool/postfix/private/auth {
-  #  mode = 0666
-  #}
-
-  # Auth process is run as this user.
-  #user = $default_internal_user
 }
 
 service auth-worker {
@@ -3650,52 +3461,427 @@ service dict {
   }
 }
 EOF
-	cat > '/etc/dovecot/conf.d/15-mailboxes.conf' << EOF
-# comment:
-#   Defines a default comment or note associated with the mailbox. This
-#   value is accessible through the IMAP METADATA mailbox entries
-#   "/shared/comment" and "/private/comment". Users with sufficient
-#   privileges can override the default value for entries with a custom
-#   value.
+	cat > '/etc/dovecot/conf.d/10-mail.conf' << EOF
+##
+## Mailbox locations and namespaces
+##
 
-# NOTE: Assumes "namespace inbox" has been defined in 10-mail.conf.
+# Location for users' mailboxes. The default is empty, which means that Dovecot
+# tries to find the mailboxes automatically. This won't work if the user
+# doesn't yet have any mail, so you should explicitly tell Dovecot the full
+# location.
+#
+# If you're using mbox, giving a path to the INBOX file (eg. /var/mail/%u)
+# isn't enough. You'll also need to tell Dovecot where the other mailboxes are
+# kept. This is called the "root mail directory", and it must be the first
+# path given in the mail_location setting.
+#
+# There are a few special variables you can use, eg.:
+#
+#   %u - username
+#   %n - user part in user@domain, same as %u if there's no domain
+#   %d - domain part in user@domain, empty if there's no domain
+#   %h - home directory
+#
+# See doc/wiki/Variables.txt for full list. Some examples:
+#
+#   mail_location = maildir:~/Maildir
+#   mail_location = mbox:~/mail:INBOX=/var/mail/%u
+#   mail_location = mbox:/var/mail/%d/%1n/%n:INDEX=/var/indexes/%d/%1n/%n
+#
+# <doc/wiki/MailLocation.txt>
+#
+mail_location = maildir:~/Maildir
+
+# If you need to set multiple mailbox locations or want to change default
+# namespace settings, you can do it by defining namespace sections.
+#
+# You can have private, shared and public namespaces. Private namespaces
+# are for user's personal mails. Shared namespaces are for accessing other
+# users' mailboxes that have been shared. Public namespaces are for shared
+# mailboxes that are managed by sysadmin. If you create any shared or public
+# namespaces you'll typically want to enable ACL plugin also, otherwise all
+# users can access all the shared mailboxes, assuming they have permissions
+# on filesystem level to do so.
 namespace inbox {
-  # These mailboxes are widely used and could perhaps be created automatically:
-  mailbox Drafts {
-    auto = create
-    special_use = \Drafts
-  }
-  mailbox Junk {
-    auto = create
-    special_use = \Junk
-  }
-  mailbox Trash {
-    auto = create
-    special_use = \Trash
-  }
+  # Namespace type: private, shared or public
+  #type = private
 
-  # For \Sent mailboxes there are two widely used names. We'll mark both of
-  # them as \Sent. User typically deletes one of them if duplicates are created.
-  mailbox Sent {
-    auto = create
-    special_use = \Sent
-  }
-  mailbox "Sent Messages" {
-    special_use = \Sent
-  }
+  # Hierarchy separator to use. You should use the same separator for all
+  # namespaces or some clients get confused. '/' is usually a good one.
+  # The default however depends on the underlying mail storage format.
+  #separator = 
 
-  # If you have a virtual "All messages" mailbox:
-  #mailbox virtual/All {
-  #  special_use = \All
-  #  comment = All my messages
-  #}
+  # Prefix required to access this namespace. This needs to be different for
+  # all namespaces. For example "Public/".
+  #prefix = 
 
-  # If you have a virtual "Flagged" mailbox:
-  #mailbox virtual/Flagged {
-  #  special_use = \Flagged
-  #  comment = All my flagged messages
-  #}
+  # Physical location of the mailbox. This is in same format as
+  # mail_location, which is also the default for it.
+  #location =
+
+  # There can be only one INBOX, and this setting defines which namespace
+  # has it.
+  inbox = yes
+
+  # If namespace is hidden, it's not advertised to clients via NAMESPACE
+  # extension. You'll most likely also want to set list=no. This is mostly
+  # useful when converting from another server with different namespaces which
+  # you want to deprecate but still keep working. For example you can create
+  # hidden namespaces with prefixes "~/mail/", "~%u/mail/" and "mail/".
+  #hidden = no
+
+  # Show the mailboxes under this namespace with LIST command. This makes the
+  # namespace visible for clients that don't support NAMESPACE extension.
+  # "children" value lists child mailboxes, but hides the namespace prefix.
+  #list = yes
+
+  # Namespace handles its own subscriptions. If set to "no", the parent
+  # namespace handles them (empty prefix should always have this as "yes")
+  #subscriptions = yes
+
+  # See 15-mailboxes.conf for definitions of special mailboxes.
 }
+
+# Example shared namespace configuration
+#namespace {
+  #type = shared
+  #separator = /
+
+  # Mailboxes are visible under "shared/user@domain/"
+  # %%n, %%d and %%u are expanded to the destination user.
+  #prefix = shared/%%u/
+
+  # Mail location for other users' mailboxes. Note that %variables and ~/
+  # expands to the logged in user's data. %%n, %%d, %%u and %%h expand to the
+  # destination user's data.
+  #location = maildir:%%h/Maildir:INDEX=~/Maildir/shared/%%u
+
+  # Use the default namespace for saving subscriptions.
+  #subscriptions = no
+
+  # List the shared/ namespace only if there are visible shared mailboxes.
+  #list = children
+#}
+# Should shared INBOX be visible as "shared/user" or "shared/user/INBOX"?
+#mail_shared_explicit_inbox = no
+
+# System user and group used to access mails. If you use multiple, userdb
+# can override these by returning uid or gid fields. You can use either numbers
+# or names. <doc/wiki/UserIds.txt>
+#mail_uid =
+#mail_gid =
+
+# Group to enable temporarily for privileged operations. Currently this is
+# used only with INBOX when either its initial creation or dotlocking fails.
+# Typically this is set to "mail" to give access to /var/mail.
+mail_privileged_group = mail
+
+# Grant access to these supplementary groups for mail processes. Typically
+# these are used to set up access to shared mailboxes. Note that it may be
+# dangerous to set these if users can create symlinks (e.g. if "mail" group is
+# set here, ln -s /var/mail ~/mail/var could allow a user to delete others'
+# mailboxes, or ln -s /secret/shared/box ~/mail/mybox would allow reading it).
+#mail_access_groups =
+
+# Allow full filesystem access to clients. There's no access checks other than
+# what the operating system does for the active UID/GID. It works with both
+# maildir and mboxes, allowing you to prefix mailboxes names with eg. /path/
+# or ~user/.
+#mail_full_filesystem_access = no
+
+# Dictionary for key=value mailbox attributes. This is used for example by
+# URLAUTH and METADATA extensions.
+#mail_attribute_dict =
+
+# A comment or note that is associated with the server. This value is
+# accessible for authenticated users through the IMAP METADATA server
+# entry "/shared/comment". 
+#mail_server_comment = ""
+
+# Indicates a method for contacting the server administrator. According to
+# RFC 5464, this value MUST be a URI (e.g., a mailto: or tel: URL), but that
+# is currently not enforced. Use for example mailto:admin@example.com. This
+# value is accessible for authenticated users through the IMAP METADATA server
+# entry "/shared/admin".
+#mail_server_admin = 
+
+##
+## Mail processes
+##
+
+# Don't use mmap() at all. This is required if you store indexes to shared
+# filesystems (NFS or clustered filesystem).
+#mmap_disable = no
+
+# Rely on O_EXCL to work when creating dotlock files. NFS supports O_EXCL
+# since version 3, so this should be safe to use nowadays by default.
+#dotlock_use_excl = yes
+
+# When to use fsync() or fdatasync() calls:
+#   optimized (default): Whenever necessary to avoid losing important data
+#   always: Useful with e.g. NFS when write()s are delayed
+#   never: Never use it (best performance, but crashes can lose data)
+#mail_fsync = optimized
+
+# Locking method for index files. Alternatives are fcntl, flock and dotlock.
+# Dotlocking uses some tricks which may create more disk I/O than other locking
+# methods. NFS users: flock doesn't work, remember to change mmap_disable.
+#lock_method = fcntl
+
+# Directory where mails can be temporarily stored. Usually it's used only for
+# mails larger than >= 128 kB. It's used by various parts of Dovecot, for
+# example LDA/LMTP while delivering large mails or zlib plugin for keeping
+# uncompressed mails.
+#mail_temp_dir = /tmp
+
+# Valid UID range for users, defaults to 500 and above. This is mostly
+# to make sure that users can't log in as daemons or other system users.
+# Note that denying root logins is hardcoded to dovecot binary and can't
+# be done even if first_valid_uid is set to 0.
+#first_valid_uid = 500
+#last_valid_uid = 0
+
+# Valid GID range for users, defaults to non-root/wheel. Users having
+# non-valid GID as primary group ID aren't allowed to log in. If user
+# belongs to supplementary groups with non-valid GIDs, those groups are
+# not set.
+#first_valid_gid = 1
+#last_valid_gid = 0
+
+# Maximum allowed length for mail keyword name. It's only forced when trying
+# to create new keywords.
+#mail_max_keyword_length = 50
+
+# ':' separated list of directories under which chrooting is allowed for mail
+# processes (ie. /var/mail will allow chrooting to /var/mail/foo/bar too).
+# This setting doesn't affect login_chroot, mail_chroot or auth chroot
+# settings. If this setting is empty, "/./" in home dirs are ignored.
+# WARNING: Never add directories here which local users can modify, that
+# may lead to root exploit. Usually this should be done only if you don't
+# allow shell access for users. <doc/wiki/Chrooting.txt>
+#valid_chroot_dirs = 
+
+# Default chroot directory for mail processes. This can be overridden for
+# specific users in user database by giving /./ in user's home directory
+# (eg. /home/./user chroots into /home). Note that usually there is no real
+# need to do chrooting, Dovecot doesn't allow users to access files outside
+# their mail directory anyway. If your home directories are prefixed with
+# the chroot directory, append "/." to mail_chroot. <doc/wiki/Chrooting.txt>
+#mail_chroot = 
+
+# UNIX socket path to master authentication server to find users.
+# This is used by imap (for shared users) and lda.
+#auth_socket_path = /var/run/dovecot/auth-userdb
+
+# Directory where to look up mail plugins.
+#mail_plugin_dir = /usr/lib/dovecot/modules
+
+# Space separated list of plugins to load for all services. Plugins specific to
+# IMAP, LDA, etc. are added to this list in their own .conf files.
+#mail_plugins = 
+
+##
+## Mailbox handling optimizations
+##
+
+# Mailbox list indexes can be used to optimize IMAP STATUS commands. They are
+# also required for IMAP NOTIFY extension to be enabled.
+#mailbox_list_index = yes
+
+# Trust mailbox list index to be up-to-date. This reduces disk I/O at the cost
+# of potentially returning out-of-date results after e.g. server crashes.
+# The results will be automatically fixed once the folders are opened.
+#mailbox_list_index_very_dirty_syncs = yes
+
+# Should INBOX be kept up-to-date in the mailbox list index? By default it's
+# not, because most of the mailbox accesses will open INBOX anyway.
+#mailbox_list_index_include_inbox = no
+
+# The minimum number of mails in a mailbox before updates are done to cache
+# file. This allows optimizing Dovecot's behavior to do less disk writes at
+# the cost of more disk reads.
+#mail_cache_min_mail_count = 0
+
+# When IDLE command is running, mailbox is checked once in a while to see if
+# there are any new mails or other changes. This setting defines the minimum
+# time to wait between those checks. Dovecot can also use inotify and
+# kqueue to find out immediately when changes occur.
+#mailbox_idle_check_interval = 30 secs
+
+# Save mails with CR+LF instead of plain LF. This makes sending those mails
+# take less CPU, especially with sendfile() syscall with Linux and FreeBSD.
+# But it also creates a bit more disk I/O which may just make it slower.
+# Also note that if other software reads the mboxes/maildirs, they may handle
+# the extra CRs wrong and cause problems.
+#mail_save_crlf = no
+
+# Max number of mails to keep open and prefetch to memory. This only works with
+# some mailbox formats and/or operating systems.
+#mail_prefetch_count = 0
+
+# How often to scan for stale temporary files and delete them (0 = never).
+# These should exist only after Dovecot dies in the middle of saving mails.
+#mail_temp_scan_interval = 1w
+
+# How many slow mail accesses sorting can perform before it returns failure.
+# With IMAP the reply is: NO [LIMIT] Requested sort would have taken too long.
+# The untagged SORT reply is still returned, but it's likely not correct.
+#mail_sort_max_read_count = 0
+
+protocol !indexer-worker {
+  # If folder vsize calculation requires opening more than this many mails from
+  # disk (i.e. mail sizes aren't in cache already), return failure and finish
+  # the calculation via indexer process. Disabled by default. This setting must
+  # be 0 for indexer-worker processes.
+  #mail_vsize_bg_after_count = 0
+}
+
+##
+## Maildir-specific settings
+##
+
+# By default LIST command returns all entries in maildir beginning with a dot.
+# Enabling this option makes Dovecot return only entries which are directories.
+# This is done by stat()ing each entry, so it causes more disk I/O.
+# (For systems setting struct dirent->d_type, this check is free and it's
+# done always regardless of this setting)
+#maildir_stat_dirs = no
+
+# When copying a message, do it with hard links whenever possible. This makes
+# the performance much better, and it's unlikely to have any side effects.
+#maildir_copy_with_hardlinks = yes
+
+# Assume Dovecot is the only MUA accessing Maildir: Scan cur/ directory only
+# when its mtime changes unexpectedly or when we can't find the mail otherwise.
+#maildir_very_dirty_syncs = no
+
+# If enabled, Dovecot doesn't use the S=<size> in the Maildir filenames for
+# getting the mail's physical size, except when recalculating Maildir++ quota.
+# This can be useful in systems where a lot of the Maildir filenames have a
+# broken size. The performance hit for enabling this is very small.
+#maildir_broken_filename_sizes = no
+
+# Always move mails from new/ directory to cur/, even when the \Recent flags
+# aren't being reset.
+#maildir_empty_new = no
+
+##
+## mbox-specific settings
+##
+
+# Which locking methods to use for locking mbox. There are four available:
+#  dotlock: Create <mailbox>.lock file. This is the oldest and most NFS-safe
+#           solution. If you want to use /var/mail/ like directory, the users
+#           will need write access to that directory.
+#  dotlock_try: Same as dotlock, but if it fails because of permissions or
+#               because there isn't enough disk space, just skip it.
+#  fcntl  : Use this if possible. Works with NFS too if lockd is used.
+#  flock  : May not exist in all systems. Doesn't work with NFS.
+#  lockf  : May not exist in all systems. Doesn't work with NFS.
+#
+# You can use multiple locking methods; if you do the order they're declared
+# in is important to avoid deadlocks if other MTAs/MUAs are using multiple
+# locking methods as well. Some operating systems don't allow using some of
+# them simultaneously.
+#
+# The Debian value for mbox_write_locks differs from upstream Dovecot. It is
+# changed to be compliant with Debian Policy (section 11.6) for NFS safety.
+#       Dovecot: mbox_write_locks = dotlock fcntl
+#       Debian:  mbox_write_locks = fcntl dotlock
+#
+#mbox_read_locks = fcntl
+#mbox_write_locks = fcntl dotlock
+
+# Maximum time to wait for lock (all of them) before aborting.
+#mbox_lock_timeout = 5 mins
+
+# If dotlock exists but the mailbox isn't modified in any way, override the
+# lock file after this much time.
+#mbox_dotlock_change_timeout = 2 mins
+
+# When mbox changes unexpectedly we have to fully read it to find out what
+# changed. If the mbox is large this can take a long time. Since the change
+# is usually just a newly appended mail, it'd be faster to simply read the
+# new mails. If this setting is enabled, Dovecot does this but still safely
+# fallbacks to re-reading the whole mbox file whenever something in mbox isn't
+# how it's expected to be. The only real downside to this setting is that if
+# some other MUA changes message flags, Dovecot doesn't notice it immediately.
+# Note that a full sync is done with SELECT, EXAMINE, EXPUNGE and CHECK 
+# commands.
+#mbox_dirty_syncs = yes
+
+# Like mbox_dirty_syncs, but don't do full syncs even with SELECT, EXAMINE,
+# EXPUNGE or CHECK commands. If this is set, mbox_dirty_syncs is ignored.
+#mbox_very_dirty_syncs = no
+
+# Delay writing mbox headers until doing a full write sync (EXPUNGE and CHECK
+# commands and when closing the mailbox). This is especially useful for POP3
+# where clients often delete all mails. The downside is that our changes
+# aren't immediately visible to other MUAs.
+#mbox_lazy_writes = yes
+
+# If mbox size is smaller than this (e.g. 100k), don't write index files.
+# If an index file already exists it's still read, just not updated.
+#mbox_min_index_size = 0
+
+# Mail header selection algorithm to use for MD5 POP3 UIDLs when
+# pop3_uidl_format=%m. For backwards compatibility we use apop3d inspired
+# algorithm, but it fails if the first Received: header isn't unique in all
+# mails. An alternative algorithm is "all" that selects all headers.
+#mbox_md5 = apop3d
+
+##
+## mdbox-specific settings
+##
+
+# Maximum dbox file size until it's rotated.
+#mdbox_rotate_size = 10M
+
+# Maximum dbox file age until it's rotated. Typically in days. Day begins
+# from midnight, so 1d = today, 2d = yesterday, etc. 0 = check disabled.
+#mdbox_rotate_interval = 0
+
+# When creating new mdbox files, immediately preallocate their size to
+# mdbox_rotate_size. This setting currently works only in Linux with some
+# filesystems (ext4, xfs).
+#mdbox_preallocate_space = no
+
+##
+## Mail attachments
+##
+
+# sdbox and mdbox support saving mail attachments to external files, which
+# also allows single instance storage for them. Other backends don't support
+# this for now.
+
+# Directory root where to store mail attachments. Disabled, if empty.
+#mail_attachment_dir =
+
+# Attachments smaller than this aren't saved externally. It's also possible to
+# write a plugin to disable saving specific attachments externally.
+#mail_attachment_min_size = 128k
+
+# Filesystem backend to use for saving attachments:
+#  posix : No SiS done by Dovecot (but this might help FS's own deduplication)
+#  sis posix : SiS with immediate byte-by-byte comparison during saving
+#  sis-queue posix : SiS with delayed comparison and deduplication
+#mail_attachment_fs = sis posix
+
+# Hash format to use in attachment filenames. You can add any text and
+# variables: %{md4}, %{md5}, %{sha1}, %{sha256}, %{sha512}, %{size}.
+# Variables can be truncated, e.g. %{sha256:80} returns only first 80 bits
+#mail_attachment_hash = %{sha1}
+
+# Settings to control adding $HasAttachment or $HasNoAttachment keywords.
+# By default, all MIME parts with Content-Disposition=attachment, or inlines
+# with filename parameter are consired attachments.
+#   add-flags-on-save - Add the keywords when saving new mails.
+#   content-type=type or !type - Include/exclude content type. Excluding will
+#     never consider the matched MIME part as attachment. Including will only
+#     negate an exclusion (e.g. content-type=!foo/* content-type=foo/bar).
+#   exclude-inlined - Exclude any Content-Disposition=inline MIME part.
+#mail_attachment_detection_options =
 EOF
 fi
 systemctl restart postfix dovecot
@@ -4602,13 +4788,6 @@ uninstall(){
 		rm /etc/systemd/system/filebrowser.service
 		fi
 	fi
-	if [[ -f /usr/sbin/netdata ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) netdata?" 8 78); then
-		systemctl stop netdata
-		systemctl disable netdata
-		rm -rf /usr/sbin/netdata
-		fi
-	fi
 	if [[ -f /usr/bin/tor ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) tor?" 8 78); then
 		systemctl stop tor
@@ -4659,7 +4838,7 @@ if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
     echo "Update complete" >> /root/.trojan/update.log
 fi
 EOF
-crontab -l | grep -q '0 0 1 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
+crontab -l | grep -q '0 0 1 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 0 1 * * bash /root/.trojan/autoupdate.sh" | crontab
 	fi
 }
 #########Log Check#########
@@ -4738,8 +4917,6 @@ fi
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		cd /opt/netdata/bin
 		bash netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud
-		colorEcho ${INFO} "Restart netdata ing"
-		systemctl restart netdata
 		cd
 		fi
 		if [[ $dnsmasq_install -eq 1 ]]; then
@@ -4763,6 +4940,9 @@ fi
 		cat > '/etc/profile.d/mymotd.sh' << EOF
 #!/bin/bash
 #!!! Do not change these settings unless you know what you are doing !!!
+domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
+password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
+password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
 neofetch
 echo -e "-------------------------------IP Information----------------------------"
 echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ip.json")
