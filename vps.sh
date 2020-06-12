@@ -3150,10 +3150,6 @@ echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
 gpasswd -a postfix opendkim
 	cat > '/etc/opendkim.conf' << EOF
-# This is a basic configuration that can easily be adapted to suit a standard
-# installation. For more advanced options, see opendkim.conf(5) and/or
-# /usr/share/doc/opendkim/examples/opendkim.conf.sample.
-
 # Log to syslog
 Syslog			yes
 # Required to use local socket with MTAs that access the socket as a non-
@@ -3177,28 +3173,9 @@ Background          yes
 DNSTimeout          5
 SignatureAlgorithm  rsa-sha256
 
-# Socket smtp://localhost
-#
-# ##  Socket socketspec
-# ##
-# ##  Names the socket where this filter should listen for milter connections
-# ##  from the MTA.  Required.  Should be in one of these forms:
-# ##
-# ##  inet:port@address           to listen on a specific interface
-# ##  inet:port                   to listen on all interfaces
-# ##  local:/path/to/socket       to listen on a UNIX domain socket
-#
-#Socket                  inet:8892@localhost
 Socket			local:/var/spool/postfix/opendkim/opendkim.sock
 
-##  PidFile filename
-###      default (none)
-###
-###  Name of the file where the filter should write its pid before beginning
-###  normal operations.
-#
 PidFile               /var/run/opendkim/opendkim.pid
-
 
 # Always oversign From (sign using actual From and a null From to prevent
 # malicious signatures header fields (From and/or others) between the signer
@@ -3280,6 +3257,9 @@ echo "default._domainkey.${domain}     ${domain}:default:/etc/opendkim/keys/${do
 	cat > '/etc/opendkim/trusted.hosts' << EOF
 127.0.0.1
 localhost
+10.0.0.0/8
+172.16.0.0/12
+192.168.0.0/16
 
 *.${domain}
 EOF
@@ -3456,32 +3436,12 @@ service submission {
 }
 
 service auth {
-  # auth_socket_path points to this userdb socket by default. It's typically
-  # used by dovecot-lda, doveadm, possibly imap process, etc. Users that have
-  # full permissions to this socket are able to get a list of all usernames and
-  # get the results of everyone's userdb lookups.
-  #
-  # The default 0666 mode allows anyone to connect to the socket, but the
-  # userdb lookups will succeed only if the userdb returns an "uid" field that
-  # matches the caller process's UID. Also if caller's uid or gid matches the
-  # socket's uid or gid the lookup succeeds. Anything else causes a failure.
-  #
-  # To give the caller full permissions to lookup all users, set the mode to
-  # something else than 0666 and Dovecot lets the kernel enforce the
-  # permissions (e.g. 0777 allows everyone full permissions).
   unix_listener /var/spool/postfix/private/auth {
     mode = 0666
     user = postfix
     group = postfix
   }
 
-  # Postfix smtp-auth
-  #unix_listener /var/spool/postfix/private/auth {
-  #  mode = 0666
-  #}
-
-  # Auth process is run as this user.
-  #user = $default_internal_user
 }
 
 service auth-worker {
