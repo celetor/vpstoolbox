@@ -4374,7 +4374,7 @@ footer a:link {
                     <br>
                     
                     <h2>Bittorrent-trackers</h2>
-                    <h4>默认安装: ✅</h4>
+                    <h4>默认安装: ❎</h4>
                     <p>Your Bittorrent-Tracker Information</p>
                     <p><code>https://$domain:443$trackerpath</code></p>
                     <p><code>http://$domain:8000/announce</code></p>
