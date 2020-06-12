@@ -4891,13 +4891,6 @@ uninstall(){
 		rm /etc/systemd/system/filebrowser.service
 		fi
 	fi
-	if [[ -f /usr/sbin/netdata ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) netdata?" 8 78); then
-		systemctl stop netdata
-		systemctl disable netdata
-		rm -rf /usr/sbin/netdata
-		fi
-	fi
 	if [[ -f /usr/bin/tor ]]; then
 		if (whiptail --title "api" --yesno "卸载 (uninstall) tor?" 8 78); then
 		systemctl stop tor
@@ -4948,7 +4941,7 @@ if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
     echo "Update complete" >> /root/.trojan/update.log
 fi
 EOF
-crontab -l | grep -q '0 0 1 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 * * * * bash /root/.trojan/autoupdate.sh" | crontab
+crontab -l | grep -q '0 0 1 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 0 1 * * bash /root/.trojan/autoupdate.sh" | crontab
 	fi
 }
 #########Log Check#########
@@ -5027,8 +5020,6 @@ fi
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		cd /opt/netdata/bin
 		bash netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud
-		colorEcho ${INFO} "Restart netdata ing"
-		systemctl restart netdata
 		cd
 		fi
 		if [[ $dnsmasq_install -eq 1 ]]; then
@@ -5052,6 +5043,9 @@ fi
 		cat > '/etc/profile.d/mymotd.sh' << EOF
 #!/bin/bash
 #!!! Do not change these settings unless you know what you are doing !!!
+domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
+password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
+password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
 neofetch
 echo -e "-------------------------------IP Information----------------------------"
 echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ip.json")
