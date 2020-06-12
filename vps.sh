@@ -2586,11 +2586,11 @@ RestartSec=1s
 [Install]
 WantedBy=multi-user.target
 EOF
-if [[ -f /usr/local/etc/trojan/trojan.pem ]] && [[ -n /usr/local/etc/trojan/trojan.pem ]]; then
+if [[ -f /usr/local/etc/trojan/dh.pem ]] && [[ -n /usr/local/etc/trojan/dh.pem ]]; then
     colorEcho ${INFO} "DH已有，跳过生成。。。"
     else
     colorEcho ${INFO} "Generating DH pem"
-    openssl dhparam -out /usr/local/etc/trojan/trojan.pem 2048
+    openssl dhparam -out /usr/local/etc/trojan/dh.pem 2048
     fi
 systemctl daemon-reload
 systemctl enable trojan
@@ -2626,7 +2626,7 @@ if [[ ${install_mariadb} == 1 ]]; then
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/trojan.pem"
+        "dhparam": "/usr/local/etc/trojan/dh.pem"
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -2681,7 +2681,7 @@ EOF
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/trojan.pem"
+        "dhparam": "/usr/local/etc/trojan/dh.pem"
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -2739,7 +2739,7 @@ if [[ ${othercert} == 1 ]]; then
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/trojan.pem"
+        "dhparam": "/usr/local/etc/trojan/dh.pem"
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -2794,7 +2794,7 @@ EOF
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/trojan.pem"
+        "dhparam": "/usr/local/etc/trojan/dh.pem"
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -3040,6 +3040,8 @@ if [[ $install_mail = 1 ]]; then
 # line of that file to be used as the name.  The Debian default
 # is /etc/mailname.
 #myorigin = /etc/mailname
+
+home_mailbox = Maildir/
 
 smtpd_banner = \$myhostname ESMTP \$mail_name (Debian/GNU)
 biff = no
@@ -3288,99 +3290,42 @@ mkdir /var/spool/postfix/opendkim/
 chown opendkim:postfix /var/spool/postfix/opendkim
 
 	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
-##
-## Authentication processes
-##
-
-# Disable LOGIN command and all other plaintext authentications unless
-# SSL/TLS is used (LOGINDISABLED capability). Note that if the remote IP
-# matches the local IP (ie. you're connecting from the same computer), the
-# connection is considered secure and plaintext authentication is allowed.
-# See also ssl=required setting.
 disable_plaintext_auth = no
 
-# Authentication cache size (e.g. 10M). 0 means it's disabled. Note that
-# bsdauth, PAM and vpopmail require cache_key to be set for caching to be used.
 #auth_cache_size = 0
-# Time to live for cached data. After TTL expires the cached record is no
-# longer used, *except* if the main database lookup returns internal failure.
-# We also try to handle password changes automatically: If user's previous
-# authentication was successful, but this one wasn't, the cache isn't used.
-# For now this works only with plaintext authentication.
+
 #auth_cache_ttl = 1 hour
-# TTL for negative hits (user not found, password mismatch).
-# 0 disables caching them completely.
+
 #auth_cache_negative_ttl = 1 hour
 
-# Space separated list of realms for SASL authentication mechanisms that need
-# them. You can leave it empty if you don't want to support multiple realms.
-# Many clients simply use the first one listed here, so keep the default realm
-# first.
 #auth_realms =
 
-# Default realm/domain to use if none was specified. This is used for both
-# SASL realms and appending @domain to username in plaintext logins.
 #auth_default_realm = 
 
-# List of allowed characters in username. If the user-given username contains
-# a character not listed in here, the login automatically fails. This is just
-# an extra check to make sure user can't exploit any potential quote escaping
-# vulnerabilities with SQL/LDAP databases. If you want to allow all characters,
-# set this value to empty.
 #auth_username_chars = abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890.-_@
 
-# Username character translations before it's looked up from databases. The
-# value contains series of from -> to characters. For example "#@/@" means
-# that '#' and '/' characters are translated to '@'.
 #auth_username_translation =
 
-# Username formatting before it's looked up from databases. You can use
-# the standard variables here, eg. %Lu would lowercase the username, %n would
-# drop away the domain if it was given, or "%n-AT-%d" would change the '@' into
-# "-AT-". This translation is done after auth_username_translation changes.
 #auth_username_format = %Lu
 
-# If you want to allow master users to log in by specifying the master
-# username within the normal username string (ie. not using SASL mechanism's
-# support for it), you can specify the separator character here. The format
-# is then <username><separator><master username>. UW-IMAP uses "*" as the
-# separator, so that could be a good choice.
 #auth_master_user_separator =
 
-# Username to use for users logging in with ANONYMOUS SASL mechanism
 #auth_anonymous_username = anonymous
 
-# Maximum number of dovecot-auth worker processes. They're used to execute
-# blocking passdb and userdb queries (eg. MySQL and PAM). They're
-# automatically created and destroyed as needed.
 #auth_worker_max_count = 30
 
-# Host name to use in GSSAPI principal names. The default is to use the
-# name returned by gethostname(). Use "$ALL" (with quotes) to allow all keytab
-# entries.
 #auth_gssapi_hostname =
 
-# Kerberos keytab to use for the GSSAPI mechanism. Will use the system
-# default (usually /etc/krb5.keytab) if not specified. You may need to change
-# the auth service to run as root to be able to read this file.
 #auth_krb5_keytab = 
 
-# Do NTLM and GSS-SPNEGO authentication using Samba's winbind daemon and
-# ntlm_auth helper. <doc/wiki/Authentication/Mechanisms/Winbind.txt>
 #auth_use_winbind = no
 
-# Path for Samba's ntlm_auth helper binary.
 #auth_winbind_helper_path = /usr/bin/ntlm_auth
 
-# Time to delay before replying to failed authentications.
 #auth_failure_delay = 2 secs
 
-# Require a valid SSL client certificate or the authentication fails.
 #auth_ssl_require_client_cert = no
 
-# Take the username from client's SSL certificate, using 
-# X509_NAME_get_text_by_NID() which returns the subject's DN's
-# CommonName. 
 #auth_ssl_username_from_cert = no
 
 # Space separated list of wanted authentication mechanisms:
@@ -3418,9 +3363,6 @@ auth_mechanisms = plain login
 #!include auth-static.conf.ext
 EOF
 	cat > '/etc/dovecot/conf.d/10-ssl.conf' << EOF
-##
-## SSL settings
-##
 
 # SSL/TLS support: yes, no, required. <doc/wiki/SSL.txt>
 ssl = yes
@@ -3428,10 +3370,8 @@ ssl = yes
 ssl_cert = </etc/certs/${domain}_ecc/fullchain.cer
 ssl_key = </etc/certs/${domain}_ecc/${domain}.key
 
-ssl_dh = </usr/local/etc/trojan/trojan.pem
+ssl_dh = </usr/local/etc/trojan/dh.pem
 
-# Minimum SSL protocol version to use. Potentially recognized values are SSLv3,
-# TLSv1, TLSv1.1, and TLSv1.2, depending on the OpenSSL version used.
 ssl_min_protocol = TLSv1.2
 
 # SSL ciphers to use, the default is:
@@ -3439,9 +3379,6 @@ ssl_min_protocol = TLSv1.2
 # To disable non-EC DH, use:
 #ssl_cipher_list = ALL:!DH:!kRSA:!SRP:!kDHd:!DSS:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH
 
-# Colon separated list of elliptic curves to use. Empty value (the default)
-# means use the defaults from the SSL library. P-521:P-384:P-256 would be an
-# example of a valid value.
 #ssl_curve_list =
 ssl_prefer_server_ciphers = yes
 
