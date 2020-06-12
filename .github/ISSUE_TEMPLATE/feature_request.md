@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+**ls your proposed feature nessary，why?(你提议添加的功能是否有必要,为什么？)**
+
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
