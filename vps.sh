@@ -419,7 +419,7 @@ if [[ ${install_status} == 1 ]]; then
 	readconfig
 fi
 
-whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Please choose carefully!" --title "User choice" --checklist --separate-output --nocancel "Please press space to choose carefully !!!" 24 52 16 \
+whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Please choose carefully!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 52 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "系统" "System" on  \
 "1" "Enable BBR(TCP-Turbo)" on \
