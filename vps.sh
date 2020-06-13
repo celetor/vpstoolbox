@@ -4899,7 +4899,7 @@ sed -i "s/example.com/${domain}/;" /usr/share/nginx/trojan-panel/.env
 sed -i "s/DB_PASSWORD=/DB_PASSWORD=${password1}/;" /usr/share/nginx/trojan-panel/.env
 clear
 colorEcho ${INFO} "Please type yes !"
-php artisan migrate
+php artisan migrate --force
 chown -R nginx:nginx /usr/share/nginx/trojan-panel
 cd
 fi
