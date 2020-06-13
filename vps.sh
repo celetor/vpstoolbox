@@ -2303,7 +2303,7 @@ ping.path = /ping
 
 ; The access log file
 ; Default: not set
-;access.log = log/$pool.access.log
+access.log = log/$pool.access.log
 
 ; The access log format.
 ; The following syntax is allowed
@@ -2978,15 +2978,11 @@ apt-get -y purge expect
 # Read by /etc/mysql/my.cnf
 
 [client]
-# Default is Latin1, if you need UTF-8 set this (also in server section)
+
 default-character-set = utf8mb4 
 
 [mysqld]
-#
-# * Character sets
-# 
-# Default is Latin1, if you need UTF-8 set all this (also in client section)
-#
+
 character-set-server  = utf8mb4 
 collation-server      = utf8mb4_unicode_ci
 character_set_server   = utf8mb4 
@@ -3177,41 +3173,12 @@ Socket			local:/var/spool/postfix/opendkim/opendkim.sock
 
 PidFile               /var/run/opendkim/opendkim.pid
 
-# Always oversign From (sign using actual From and a null From to prevent
-# malicious signatures header fields (From and/or others) between the signer
-# and the verifier.  From is oversigned by default in the Debian pacakge
-# because it is often the identity key used by reputation systems and thus
-# somewhat security sensitive.
 OversignHeaders		From
-
-##  ResolverConfiguration filename
-##      default (none)
-##
-##  Specifies a configuration file to be passed to the Unbound library that
-##  performs DNS queries applying the DNSSEC protocol.  See the Unbound
-##  documentation at http://unbound.net for the expected content of this file.
-##  The results of using this and the TrustAnchorFile setting at the same
-##  time are undefined.
-##  In Debian, /etc/unbound/unbound.conf is shipped as part of the Suggested
-##  unbound package
 
 # ResolverConfiguration     /etc/unbound/unbound.conf
 
-##  TrustAnchorFile filename
-##      default (none)
-##
-## Specifies a file from which trust anchor data should be read when doing
-## DNS queries and applying the DNSSEC protocol.  See the Unbound documentation
-## at http://unbound.net for the expected format of this file.
-
 TrustAnchorFile       /usr/share/dns/root.key
 
-##  Userid userid
-###      default (none)
-###
-###  Change to user "userid" before starting normal operation?  May include
-###  a group ID as well, separated from the userid by a colon.
-#
 UserID                opendkim
 
 # Map domains in From addresses to keys used to sign messages
