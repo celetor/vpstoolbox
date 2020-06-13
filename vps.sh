@@ -2221,59 +2221,6 @@ pm.max_spare_servers = $(($(nproc --all)*4))
 ;   max active processes: 12
 ;   max children reached: 0
 ;
-; By default the status page output is formatted as text/plain. Passing either
-; 'html', 'xml' or 'json' in the query string will return the corresponding
-; output syntax. Example:
-;   http://www.foo.bar/status
-;   http://www.foo.bar/status?json
-;   http://www.foo.bar/status?html
-;   http://www.foo.bar/status?xml
-;
-; By default the status page only outputs short status. Passing 'full' in the
-; query string will also return status for each pool process.
-; Example:
-;   http://www.foo.bar/status?full
-;   http://www.foo.bar/status?json&full
-;   http://www.foo.bar/status?html&full
-;   http://www.foo.bar/status?xml&full
-; The Full status returns for each process:
-;   pid                  - the PID of the process;
-;   state                - the state of the process (Idle, Running, ...);
-;   start time           - the date and time the process has started;
-;   start since          - the number of seconds since the process has started;
-;   requests             - the number of requests the process has served;
-;   request duration     - the duration in µs of the requests;
-;   request method       - the request method (GET, POST, ...);
-;   request URI          - the request URI with the query string;
-;   content length       - the content length of the request (only with POST);
-;   user                 - the user (PHP_AUTH_USER) (or '-' if not set);
-;   script               - the main script called (or '-' if not set);
-;   last request cpu     - the %cpu the last request consumed
-;                          it's always 0 if the process is not in Idle state
-;                          because CPU calculation is done when the request
-;                          processing has terminated;
-;   last request memory  - the max amount of memory the last request consumed
-;                          it's always 0 if the process is not in Idle state
-;                          because memory calculation is done when the request
-;                          processing has terminated;
-; If the process is in Idle state, then informations are related to the
-; last request the process has served. Otherwise informations are related to
-; the current request being served.
-; Example output:
-;   ************************
-;   pid:                  31330
-;   state:                Running
-;   start time:           01/Jul/2011:17:53:49 +0200
-;   start since:          63087
-;   requests:             12808
-;   request duration:     1250261
-;   request method:       GET
-;   request URI:          /test_mem.php?N=10000
-;   content length:       0
-;   user:                 -
-;   script:               /home/fat/web/docs/php/test_mem.php
-;   last request cpu:     0.00
-;   last request memory:  0
 ;
 ; Note: There is a real-time FPM status monitoring sample web page available
 ;       It's available in: /usr/share/php/7.4/fpm/status.html
@@ -2284,16 +2231,6 @@ pm.max_spare_servers = $(($(nproc --all)*4))
 ; Default Value: not set
 pm.status_path = /status
 
-; The ping URI to call the monitoring page of FPM. If this value is not set, no
-; URI will be recognized as a ping page. This could be used to test from outside
-; that FPM is alive and responding, or to
-; - create a graph of FPM availability (rrd or such);
-; - remove a server from a group if it is not responding (load balancing);
-; - trigger alerts for the operating team (24/7).
-; Note: The value must start with a leading slash (/). The value can be
-;       anything, but it may not be a good idea to use the .php extension or it
-;       may conflict with a real PHP file.
-; Default Value: not set
 ping.path = /ping
 
 ; This directive may be used to customize the response of a ping request. The
@@ -2303,7 +2240,7 @@ ping.path = /ping
 
 ; The access log file
 ; Default: not set
-access.log = log/$pool.access.log
+access.log = log/\$pool.access.log
 
 ; The access log format.
 ; The following syntax is allowed
@@ -3892,7 +3829,6 @@ server {
         fastcgi_param SCRIPT_FILENAME \$request_filename;
         #fastcgi_index index.php;
         include fastcgi_params;
-        #fastcgi_pass 127.0.0.1:9000;
         fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
         }
 
@@ -3941,7 +3877,6 @@ server {
         fastcgi_param SCRIPT_FILENAME \$request_filename;
         #fastcgi_index index.php;
         include fastcgi_params;
-        #fastcgi_pass 127.0.0.1:9000;
         fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
         }
 EOF
@@ -4105,7 +4040,6 @@ echo "    allow 127.0.0.1;" >> /etc/nginx/conf.d/default.conf
 echo "    fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
 echo "    fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
 echo "    include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
-echo "    #fastcgi_pass 127.0.0.1:9000;" >> /etc/nginx/conf.d/default.conf
 echo "    fastcgi_pass   unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
