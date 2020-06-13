@@ -3366,7 +3366,6 @@ service dict {
 }
 
 service stats {
-  client_limit = 10000 # make this large enough so all Dovecot processes (especially imap, pop3, lmtp) can connect to it
   unix_listener stats {
     user = netdata
     group = netdata
