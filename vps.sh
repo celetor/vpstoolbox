@@ -422,34 +422,33 @@ fi
 whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Please choose carefully!" --title "User choice" --checklist --separate-output --nocancel "Please press space to choose carefully !!!" 24 52 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "系统" "System" on  \
-"1" "System Upgrade" on \
-"2" "Enable BBR(TCP-Turbo)" on \
-"3" "Docker" on \
-"4" "PHP" on \
+"1" "Enable BBR(TCP-Turbo)" on \
+"2" "Docker" on \
+"3" "PHP" on \
 "代理" "Proxy" on  \
-"5" "Trojan-GFW" on \
-"6" "Trojan-panel(require PHP)" off \
-"7" "Dnscrypt-proxy(Dns encryption)" on \
-"8" "RSSHUB(Docker Version)" on \
+"4" "Trojan-GFW" on \
+"5" "Trojan-panel(require PHP)" off \
+"6" "Dnscrypt-proxy(Dns encryption)" on \
+"7" "RSSHUB(Docker Version)" on \
 "下载" "Download" on  \
-"9" "Qbittorrent" off \
-"10" "Bt-Tracker(Node.js Version)" off \
-"11" "Aria2" on \
-"12" "Filebrowser" on \
+"8" "Qbittorrent" off \
+"9" "Bt-Tracker(Node.js Version)" off \
+"10" "Aria2" on \
+"11" "Filebrowser" on \
 "状态" "Status" on  \
-"13" "Netdata(Server status monitor)" on \
+"12" "Netdata(Server status monitor)" on \
 "测速" "Speedtest" on  \
-"14" "Speedtest(Docker Version)" on \
+"13" "Speedtest(Docker Version)" on \
 "数据库" "Database" on  \
-"15" "MariaDB" on \
+"14" "MariaDB" on \
 "安全" "Security" on  \
-"16" "Fail2ban" on \
+"15" "Fail2ban" on \
 "邮件" "Mail" on  \
-"17" "Mail service" off \
+"16" "Mail service" off \
 "其他" "Others" off  \
-"18" "OPENSSL" off \
-"19" "Tor-Relay" off \
-"20" "Enable TLS1.3 only" off 2>results
+"17" "OPENSSL" off \
+"18" "Tor-Relay" off \
+"19" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -459,63 +458,60 @@ do
 		break
 		;;
 		1) 
-		system_upgrade=1
-		;;
-		2) 
 		install_bbr=1
 		;;
-		3)
+		2)
 		install_docker=1
 		;;
-		4)
+		3)
 		install_php=1
 		;;
-		5)
+		4)
 		install_trojan=1
 		;;
-		6) 
+		5) 
 		install_tjp=1
 		;;
-		7) 
+		6) 
 		dnsmasq_install=1
 		;;
-		8)
+		7)
 		install_rsshub=1
 		;;
-		9)
+		8)
 		install_qbt=1
 		;;
-		10)
+		9)
 		install_tracker=1
 		;;
-		11)
+		10)
 		install_aria=1
 		;;
-		12)
+		11)
 		install_file=1
 		;;
-		13)
+		12)
 		install_netdata=1
 		;;
-		14)
+		13)
 		install_speedtest=1
 		;;
-		15)
+		14)
 		install_mariadb=1
 		;;
-		16)
+		15)
 		install_fail2ban=1
 		;;
-		17)
+		16)
 		install_mail=1
 		;;
-		18)
+		17)
 		install_openssl=1
 		;;
-		19)
+		18)
 		install_tor=1
 		;;
-		20) 
+		19) 
 		tls13only=1
 		;;
 		*)
@@ -523,6 +519,7 @@ do
 	esac
 done < results
 ####################################
+system_upgrade=1
 if [[ ${system_upgrade} == 1 ]]; then
 	if [[ $(lsb_release -cs) == stretch ]]; then
 		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 10?" 8 78); then
