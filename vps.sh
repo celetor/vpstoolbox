@@ -3364,6 +3364,48 @@ service dict {
     #group = 
   }
 }
+
+service stats {
+  client_limit = 10000 # make this large enough so all Dovecot processes (especially imap, pop3, lmtp) can connect to it
+  unix_listener stats {
+    user = netdata
+    group = netdata
+    #mode = 0666 # Use only if nothing else works. It's a bit insecure, since it allows any user in the system to mess up with the statistics.
+  }
+}
+
+metric imap_select_no {
+  event_name = imap_command_finished
+  filter {
+    cmd_name = SELECT
+    tagged_reply_state = NO
+  }
+}
+
+metric imap_select_no_notfound {
+  event_name = imap_command_finished
+  filter {
+    cmd_name = SELECT
+    tagged_reply = NO*Mailbox doesn't exist:*
+  }
+}
+
+metric storage_http_gets {
+  event_name = http_request_finished
+  categories = storage
+  filter {
+    method = get
+  }
+}
+
+# generate per-command metrics on successful commands
+metric imap_command {
+  event_name = imap_command_finished
+  filter {
+    tagged_reply_state = OK
+  }
+  group_by = cmd_name
+}
 EOF
 	cat > '/etc/dovecot/conf.d/10-mail.conf' << EOF
 ##
