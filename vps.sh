@@ -4780,6 +4780,7 @@ if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
     echo "Update complete" >> /root/.trojan/update.log
 fi
 EOF
+touch /root/.trojan/update.log
 crontab -l | grep -q '0 0 1 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 0 1 * * bash /root/.trojan/autoupdate.sh" | crontab
 	fi
 }
