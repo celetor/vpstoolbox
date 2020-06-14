@@ -4760,6 +4760,8 @@ autoupdate(){
 	if [[ $install_trojan == 1 ]]; then
 cat > '/root/.trojan/autoupdate.sh' << EOF
 #!/bin/bash
+apt-get update
+apt-get upgrade -y
 trojanversion=\$(curl -fsSL https://api.github.com/repos/trojan-gfw/trojan/releases/latest | grep tag_name | sed -E 's/.*"v(.*)".*/\1/')
 /usr/local/bin/trojan -v &> /root/.trojan/trojan_version.txt
 if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
