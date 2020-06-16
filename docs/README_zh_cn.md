@@ -23,10 +23,6 @@ apt-get update && apt-get install sudo curl -y && curl -sO https://raw.githubuse
 4. For customized certificate , please put it in /etc/trojan/ , no name change required !
 5. 请使用一台有至少 **0.5 GB RAM** 以及 **5G 硬盘空间的VPS**. 
 
-### Give it a try ! (Live Demo,随时可能会挂)
-
-[https://www.trojan-gfw.xyz/vpstoolbox.html](https://www.trojan-gfw.xyz/vpstoolbox.html)
-
 #### 特性:
 
 1. 全自动安装并配置 **[NGINX Web Server](https://www.nginx.com/)**
