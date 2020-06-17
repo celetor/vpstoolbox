@@ -721,16 +721,14 @@ set +e
 colorEcho ${INFO} "初始化中(initializing)"
  if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 	dist=ubuntu
-	pack="apt-get -y -q"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install whiptail curl locales lsb-release jq lsof -y -q
+	apt-get install whiptail curl locales lsb-release jq -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
-	pack="apt-get -y -q"
 	apt-get update -q
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get install whiptail curl locales lsb-release jq lsof -y -q
+	apt-get install whiptail curl locales lsb-release jq -y -q
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
 	exit 1;
@@ -1018,7 +1016,7 @@ openfirewall(){
 installdependency(){
 	set +e
 colorEcho ${INFO} "Updating system"
-	$pack update
+	apt-get update
 	if [[ $install_status == 0 ]]; then
 		if [ -f /etc/trojan/*.crt ]; then
 		othercert=1
@@ -4772,7 +4770,7 @@ uninstall(){
 		if (whiptail --title "api" --yesno "卸载 (uninstall) nginx?" 8 78); then
 		systemctl stop nginx
 		systemctl disable nginx
-		$pack remove nginx
+		apt-get -y remove nginx
 		rm -rf /etc/apt/sources.list.d/nginx.list
 		rm -rf /usr/share/nginx/html/
 		fi
@@ -4789,7 +4787,7 @@ uninstall(){
 		if (whiptail --title "api" --yesno "卸载 (uninstall) qbittorrent?" 8 78); then
 		systemctl stop qbittorrent
 		systemctl disable qbittorrent
-		$pack remove qbittorrent-nox
+		apt-get -y remove qbittorrent-nox
 		rm /etc/systemd/system/qbittorrent.service
 		fi
 	fi
@@ -4823,7 +4821,7 @@ uninstall(){
 		systemctl stop tor
 		systemctl disable tor
 		systemctl stop tor@default
-		$pack remove tor
+		apt-get -y remove tor
 		rm -rf /etc/apt/sources.list.d/tor.list
 		fi
 	fi
