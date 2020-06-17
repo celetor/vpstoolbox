@@ -2428,7 +2428,6 @@ cd
 fi
 ########Install Netdata################
 if [[ $install_netdata == 1 ]]; then
-	if [[ ! -f /opt/netdata/usr/sbin/netdata ]]; then
 		clear
 		colorEcho ${INFO} "Install netdata ing"
 		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --no-updates
@@ -2479,7 +2478,6 @@ local_tcp:
  control_port: 9051
 EOF
 fi
-	fi
 fi
 clear
 ##########Install Trojan-GFW#############
