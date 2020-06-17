@@ -3873,22 +3873,22 @@ EOF
 namespace inbox {
   # These mailboxes are widely used and could perhaps be created automatically:
   mailbox Drafts {
-    auto = create
+    auto = subscribe
     special_use = \Drafts
   }
   mailbox Junk {
-    auto = create
+    auto = subscribe
     special_use = \Junk
   }
   mailbox Trash {
-    auto = create
+    auto = subscribe
     special_use = \Trash
   }
 
   # For \Sent mailboxes there are two widely used names. We'll mark both of
   # them as \Sent. User typically deletes one of them if duplicates are created.
   mailbox Sent {
-    auto = create
+    auto = subscribe
     special_use = \Sent
   }
   mailbox "Sent Messages" {
