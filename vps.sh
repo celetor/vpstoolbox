@@ -4622,7 +4622,7 @@ footer a:link {
                     <h2>Filebrowser</h2>
                     <h4>默认安装: ✅</h4>
                     <p>Your Filebrowser Information</p>
-                    <p>Introduction: download any resources(formaly downloaded by qbt or aria2) from your vps to your local computer</p>
+                    <p>Introduction: download any resources(formaly downloaded by qbt or aria2) from your vps to your local network</p>
                     <!-- <p><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a> 用户名(username): admin 密碼(password): admin</p> -->
                     <ul>
                         <li><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a></li>
@@ -4748,7 +4748,7 @@ footer a:link {
                 </div>
             </article>
             <footer>
-                <p><a href="https://github.com/johnrosen1/vpstoolbox">VPS Toolbox</a> Copyright &copy; MIT License 2020 Johnrosen</p>
+                <p><a href="https://github.com/johnrosen1/vpstoolbox">VPS Toolbox</a> Copyright &copy; MIT 2020 Johnrosen</p>
             </footer>
         </div>
     </div>
