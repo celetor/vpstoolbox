@@ -2025,6 +2025,7 @@ if [[ $install_php = 1 ]]; then
 	if [[ ! -f /usr/sbin/php-fpm7.4 ]]; then
 	colorEcho ${INFO} "Install PHP ing"
 	apt-get purge php* -y
+	mkdir /usr/log/
 	wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 	echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
 	apt-get update
@@ -2034,6 +2035,11 @@ if [[ $install_php = 1 ]]; then
 	apt-get install php7.4-common php7.4-mysql php7.4-ldap php7.4-xml php7.4-json php7.4-readline php7.4-xmlrpc php7.4-curl php7.4-gd php7.4-imagick php7.4-cli php7.4-dev php7.4-imap php7.4-mbstring php7.4-opcache php7.4-soap php7.4-zip php7.4-intl php7.4-bcmath -y
 	apt-get purge apache2* -y
 	sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.4/fpm/php.ini
+	cd /etc/php/7.4/
+	curl -sS https://getcomposer.org/installer -o composer-setup.php
+	php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+	cd
+	fi
 cat > '/etc/php/7.4/fpm/pool.d/www.conf' << EOF
 ; Start a new pool named 'www'.
 ; the variable $pool can be used in any directive and will be replaced by the
@@ -2413,11 +2419,6 @@ php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 32M
 EOF
 systemctl restart php7.4-fpm
-cd /etc/php/7.4/
-curl -sS https://getcomposer.org/installer -o composer-setup.php
-php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-cd
-	fi
 fi
 ########Install Netdata################
 if [[ $install_netdata == 1 ]]; then
