@@ -427,7 +427,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "3" "PHP" on \
 "代理" "Proxy" on  \
 "4" "Trojan-GFW" on \
-"5" "Trojan-panel(require PHP and MariaDB)" off \
+"5" "Trojan-panel(require PHP MariaDB)" off \
 "6" "Dnscrypt-proxy(Dns encryption)" on \
 "7" "RSSHUB(Docker Version)" on \
 "下载" "Download" on  \
@@ -2231,7 +2231,7 @@ ping.path = /ping
 
 ; The access log file
 ; Default: not set
-access.log = log/\$pool.access.log
+;access.log = log/\$pool.access.log
 
 ; The access log format.
 ; The following syntax is allowed
