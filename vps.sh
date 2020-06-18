@@ -4547,7 +4547,7 @@ footer a:link {
                     <p>Related Links</p>
                     <ol>
                         <li><a href="https://docs.rsshub.app/" target="_blank">RSSHUB docs</a></li>
-                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="https://github.com/DIYgod/RSSHub-Radar" target="_blank">RSSHub Radar</a></li>
                         <li><a href="" target="_blank">test</a></li>
                         <li><a href="" target="_blank">tset</a></li>
                     </ol>
