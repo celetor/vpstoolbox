@@ -4530,7 +4530,7 @@ footer a:link {
                     <br>
 
                     <h2>Trojan-panel</h2>
-                    <h4>默认安装: ✅</h4>
+                    <h4>默认安装: ❎</h4>
                     <p>Your Trojan-panel Information</p>
                     <p><a href="https://$domain/${password1}_config/" target="_blank">https://$domain/${password1}_config/</a></p>
                     <p>Related Links</p>
