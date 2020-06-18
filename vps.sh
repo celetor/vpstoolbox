@@ -427,7 +427,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "3" "PHP" on \
 "代理" "Proxy" on  \
 "4" "Trojan-GFW" on \
-"5" "Trojan-panel(require PHP)" off \
+"5" "Trojan-panel(require PHP and MariaDB)" off \
 "6" "Dnscrypt-proxy(Dns encryption)" on \
 "7" "RSSHUB(Docker Version)" on \
 "下载" "Download" on  \
@@ -1343,7 +1343,7 @@ After=network.target
 User=root
 Group=root
 RemainAfterExit=yes
-ExecStart=/usr/local/bin/filebrowser -r /usr/share/nginx/ -d /etc/filebrowser/database.db -b $filepath -p 8081
+ExecStart=/usr/local/bin/filebrowser -r /usr/share/nginx/ -d /etc/filebrowser/database.db -b ${filepath} -p 8081
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
 LimitNOFILE=51200
@@ -1547,7 +1547,7 @@ tiebaimg.com
 xianfae.com
 xiaodutv.com
 ###
-*baidu.*
+*baidu.cn
 bdimg.com
 bdstatic.com
 duapps.com
@@ -1559,17 +1559,13 @@ sina.com
 hicloud.com
 vmall.com
 vmallres.com
-qq.com
 wechat.com
 ###Other###
 cyberghostvpn.com
 vyprvpn.com
 nordvpn.com
 expressvpn.com
-lantern.io
-mi.com
 mifile.cn
-xiaomi.com
 xiaomi.cn
 mi-img.com
 miui.com
@@ -1715,7 +1711,6 @@ gifshow.com
 kuaishou.com
 static.yximgs.com
 getlantern.org
-lantern.io
 openvpn.net
 rixcloud.com
 sina.com
@@ -4305,10 +4300,11 @@ EOF
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta name="description" content="Vpstoolbox Result">
+    <meta name="keywords" content="Vpstoolbox">
     <meta name="author" content="John Rosen">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/binary/trojan.ico">
     <title>Vps Toolbox Result</title>
 </head>
 <style>
@@ -4493,6 +4489,7 @@ footer a:link {
                     
                     <h2>Trojan-GFW</h2>
                     <h4> 默认安装: ✅</h4>
+                    <p>Introduction: An unidentifiable mechanism that helps you bypass GFW.</p>
                     <ul class="ttlist">
                         <li>
                             <h3>Trojan-GFW client config profiles</h3>
@@ -4531,12 +4528,12 @@ footer a:link {
 
                     <h2>Trojan-panel</h2>
                     <h4>默认安装: ❎</h4>
-                    <p>Your Trojan-panel Information</p>
+                    <p>Introduction: Trojan multi-user control panel</p>
                     <p><a href="https://$domain/${password1}_config/" target="_blank">https://$domain/${password1}_config/</a></p>
                     <p>Related Links</p>
                     <ol>
-                        <li><a href="" target="_blank">test</a></li>
-                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="https://trojan-tutor.github.io/2019/06/08/p43.html#more" target="_blank">Trojan-Panel配置(仅供参考！)</a></li>
+                        <li><a href="https://github.com/trojan-gfw/trojan-panel" target="_blank">https://github.com/trojan-gfw/trojan-panel</a></li>
                         <li><a href="" target="_blank">test</a></li>
                         <li><a href="" target="_blank">tset</a></li>
                     </ol>
@@ -4544,11 +4541,11 @@ footer a:link {
 
                     <h2>Rsshub</h2>
                     <h4>默认安装: ✅</h4>
-                    <p>Your Rsshub Information</p>
+                    <p>Introduction: Please read the rsshub docs</p>
                     <p><a href="https://$domain/${password1}_rsshub/" target="_blank">https://$domain/${password1}_rsshub/</a></p>
                     <p>Related Links</p>
                     <ol>
-                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="https://docs.rsshub.app/" target="_blank">RSSHUB docs</a></li>
                         <li><a href="" target="_blank">test</a></li>
                         <li><a href="" target="_blank">test</a></li>
                         <li><a href="" target="_blank">tset</a></li>
@@ -4557,7 +4554,7 @@ footer a:link {
                     
                     <h2>Qbittorrent</h2>
                     <h4>默认安装: ❎</h4>
-                    <p>Your Qbittorrent Information</p>
+                    <p>Introduction: download resources you want to your vps(support bt only but extremely fast)</p>
                     <!-- <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p> -->
                     <ul>
                         <li><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a></li>
@@ -4566,8 +4563,8 @@ footer a:link {
                     </ul>
                     <p>Tips:</p>
                     <ol>
-                        <li>请将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ！！！否则會被迅雷吸血！！！</li>
-                        <li>请在Qbittorrent中添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a> ！！！否则速度不會快的！！！</li>
+                        <li>请将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ,否则會被迅雷吸血！！！</li>
+                        <li>请在Qbittorrent中添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a> ,否则速度不會快的！！！</li>
                         <li>请在Web选项中将监听地址修改为127.0.0.1并关闭 UPnP／NAT-PMP (端口请勿修改)来防止未授权访问！！！</li>
                     </ol>
                     
@@ -4589,7 +4586,7 @@ footer a:link {
                     
                     <h2>Bittorrent-trackers</h2>
                     <h4>默认安装: ❎</h4>
-                    <p>Your Bittorrent-Tracker Information</p>
+                    <p>Introduction: use it as a private or public(not recommended) bittorrent tracker</p>
                     <p><code>https://$domain:443$trackerpath</code></p>
                     <p><code>http://$domain:8000/announce</code></p>
                     <p>你的Bittorrent-Tracker信息（查看状态用）(Your Bittorrent-Tracker Status Information)</p>
@@ -4610,8 +4607,10 @@ footer a:link {
                     <h2>Aria2</h2>
                     <h4>默认安装: ✅</h4>
                     <p>Your Aria2 Information</p>
+                    <p>Introduction: download resources you want to your vps(support ftp/http/https/bt)</p>
                     <p><code>$ariapasswd@https://$domain:443$ariapath</code></p>
-                    <p>Related Links</p>
+                    <p>Related Links:</p>
+                    <p>Ariang is recommended to connect to your server</p>
                     <ol>
                         <li><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">Aria客户端(远程操控)</a></li>
                         <li><a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a></li>
@@ -4623,6 +4622,7 @@ footer a:link {
                     <h2>Filebrowser</h2>
                     <h4>默认安装: ✅</h4>
                     <p>Your Filebrowser Information</p>
+                    <p>Introduction: download any resources(formaly downloaded by qbt or aria2) from your vps to your local computer</p>
                     <!-- <p><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a> 用户名(username): admin 密碼(password): admin</p> -->
                     <ul>
                         <li><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a></li>
@@ -4651,7 +4651,7 @@ footer a:link {
 
                     <h2>Speedtest</h2>
                     <h4>默认安装: ✅</h4>
-                    <p>Your Speedtest Information</p>
+                    <p>Introduction: test download and upload speed from vps to your local network</p>
                     <p><a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain:443/${password1}_speedtest/</a></p>
                     <p>Related Links</p>
                     <ol>
@@ -4679,9 +4679,12 @@ footer a:link {
                         <li><a href="https://${domain}/${password1}_webmail/" target="_blank">production page</a></li>
                         <li>用户名(username): ${mailuser}</li>
                         <li>密碼(password): ${password1}</li>
+                        <li>收件地址: ${mailuser}@${domain}</li>
                     </ul>
                     <p>Tips:</p>
                     <ol>
+                        <li>阿里云，gcp等厂商默认不开放25端口，不能发邮件，请注意.</li>
+                        <li>请先在安装页面中将smtp port改为25-->下一步-->初始化数据库-->测试登录与邮件发送成功后-->进入production page-->将地址改为${mailuser}@${domain}-->测试收发邮件-->Done!</li>
                         <li>请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all</li>
                         <li>请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD</li>
                         <li>请</li>
@@ -4689,17 +4692,17 @@ footer a:link {
                     
                     <p>附：</p>
                     <ol>
-                        <li><a href="https://thepiratebay.org/" target="_blank">https://thepiratebay.org/</a></li>
-                        <li><a href="https://sukebei.nyaa.si/" target="_blank">https://sukebei.nyaa.si/</a></li>
-                        <li><a href="https://rarbgprx.org/torrents.php" target="_blank">https://rarbgprx.org/torrents.php</a></li>
+                        <li><a href="https://www.mail-tester.com/" target="_blank">https://www.mail-tester.com/</a></li>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">test</a></li>
                     </ol>
                     <p>Related Links</p>
                     <ol>
-                        <li><a href="https://www.qbittorrent.org/download.php" target="_blank">win等平台下载页面</a></li>
-                        <li><a href="https://github.com/qbittorrent/qBittorrent" target="_blank">Github页面</a></li>
-                        <li><a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank">Android远程操控客户端</a></li>
-                        <li><a href="https://www.qbittorrent.org/" target="_blank">https://www.qbittorrent.org/</a></li>
-                        <li><a href="https://www.johnrosen1.com/qbt/" target="_blank">https://www.johnrosen1.com/qbt/</a></li>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">test</a></li>
+                        <li><a href="" target="_blank">test</a></li>
                     </ol>
                     <br>
 
@@ -4745,7 +4748,7 @@ footer a:link {
                 </div>
             </article>
             <footer>
-                <p><a href="https://github.com/johnrosen1/vpstoolbox">VPS Toolbox</a> Copyright &copy; 2020 Johnrosen</p>
+                <p><a href="https://github.com/johnrosen1/vpstoolbox">VPS Toolbox</a> Copyright &copy; MIT 2020 Johnrosen</p>
             </footer>
         </div>
     </div>
