@@ -2472,6 +2472,7 @@ local_tcp:
  control_port: 9051
 EOF
 fi
+systemctl restart netdata
 fi
 clear
 ##########Install Trojan-GFW#############
