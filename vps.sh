@@ -2027,9 +2027,16 @@ if [[ $install_php = 1 ]]; then
 	colorEcho ${INFO} "Install PHP ing"
 	apt-get purge php* -y
 	mkdir /usr/log/
-	wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-	echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
-	apt-get update
+	if [[ ${dist} == debian ]]; then
+		wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+		echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
+		apt-get update
+ elif [[ ${dist} == ubuntu ]]; then
+		add-apt-repository ppa:ondrej/php -y
+		apt-get update
+ else
+	echo "fail"
+ fi
 	apt-get -y install php7.4
 	systemctl disable --now apache2
 	apt-get install php7.4-fpm -y
