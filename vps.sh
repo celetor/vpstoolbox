@@ -4675,9 +4675,9 @@ footer a:link {
                     <p>Tips:</p>
                     <ol>
                         <li>阿里云，gcp等厂商默认不开放25端口，不能发邮件，请注意.</li>
+                        <li>请自行修改发件人身份为${mailuser}@${domain}</li>
                         <li>请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all</li>
                         <li>请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD</li>
-                        <li>请</li>
                     </ol>
                     
                     <p>附：</p>
