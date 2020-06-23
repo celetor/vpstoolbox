@@ -3006,9 +3006,6 @@ smtp_tls_session_cache_database = btree:\${data_directory}/smtp_scache
 smtp_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
 smtp_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
 
-# See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
-# information on enabling SSL in the smtp client.
-
 smtpd_sasl_type = dovecot
 
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
@@ -3070,11 +3067,34 @@ tar -xvf roundcubemail-1.4.6-complete.tar.gz
 rm -rf roundcubemail-1.4.6-complete.tar.gz
 mv /usr/share/nginx/roundcubemail*/ /usr/share/nginx/roundcubemail/
 chown -R nginx:nginx /usr/share/nginx/roundcubemail/
-mysql -u root -e "CREATE DATABASE roundcubemail DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
-mysql -u root -e "CREATE USER roundcube@localhost;"
+cd /usr/share/nginx/roundcubemail/
+curl -s https://getcomposer.org/installer | php
+cp -f composer.json-dist composer.json
+sed -i "s/587/25/;" /usr/share/nginx/roundcubemail/config/config.inc.php.sample
+mysql -u root -e "CREATE DATABASE roundcubemail DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -e "CREATE USER roundcube@localhost IDENTIFIED BY '${password1}';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost;"
 mysql -u root -e "flush privileges;"
-#mysql -u roundcube -p roundcubemail < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
+mysql -u roundcube -p"${password1}" -D roundcubemail < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
+deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
+	cat > '/usr/share/nginx/roundcubemail/config/config.inc.php' << EOF
+<?php
+
+$config['db_dsnw'] = 'mysql://roundcube:${password1}@localhost/roundcubemail';
+$config['default_host'] = 'localhost';
+$config['default_port'] = 143;
+$config['smtp_server'] = 'localhost';
+$config['smtp_port'] = 25;
+$config['support_url'] = 'https://github.com/johnrosen1/vpstoolbox';
+$config['des_key'] = '${deskey}';
+$config['enable_installer'] = false;
+
+// ----------------------------------
+// PLUGINS
+// ----------------------------------
+// List of active plugins (in plugins/ directory)
+$config['plugins'] = array();
+EOF
 useradd -m -s /sbin/nologin ${mailuser}
 echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
@@ -3404,35 +3424,7 @@ metric imap_command {
 }
 EOF
 	cat > '/etc/dovecot/conf.d/10-mail.conf' << EOF
-##
-## Mailbox locations and namespaces
-##
 
-# Location for users' mailboxes. The default is empty, which means that Dovecot
-# tries to find the mailboxes automatically. This won't work if the user
-# doesn't yet have any mail, so you should explicitly tell Dovecot the full
-# location.
-#
-# If you're using mbox, giving a path to the INBOX file (eg. /var/mail/%u)
-# isn't enough. You'll also need to tell Dovecot where the other mailboxes are
-# kept. This is called the "root mail directory", and it must be the first
-# path given in the mail_location setting.
-#
-# There are a few special variables you can use, eg.:
-#
-#   %u - username
-#   %n - user part in user@domain, same as %u if there's no domain
-#   %d - domain part in user@domain, empty if there's no domain
-#   %h - home directory
-#
-# See doc/wiki/Variables.txt for full list. Some examples:
-#
-#   mail_location = maildir:~/Maildir
-#   mail_location = mbox:~/mail:INBOX=/var/mail/%u
-#   mail_location = mbox:/var/mail/%d/%1n/%n:INDEX=/var/indexes/%d/%1n/%n
-#
-# <doc/wiki/MailLocation.txt>
-#
 mail_location = maildir:~/Maildir
 
 # If you need to set multiple mailbox locations or want to change default
@@ -3834,15 +3826,6 @@ EOF
 # specifies the mailbox name. If it has spaces, you can put the name
 # "in quotes". These sections can contain the following mailbox settings:
 #
-# auto:
-#   Indicates whether the mailbox with this name is automatically created
-#   implicitly when it is first accessed. The user can also be automatically
-#   subscribed to the mailbox after creation. The following values are
-#   defined for this setting:
-# 
-#     no        - Never created automatically.
-#     create    - Automatically created, but no automatic subscription.
-#     subscribe - Automatically created and subscribed.
 #  
 # special_use:
 #   A space-separated list of SPECIAL-USE flags (RFC 6154) to use for the
@@ -4683,8 +4666,7 @@ footer a:link {
                     <p>Your Mail service Information</p>
                     <!-- <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p> -->
                     <ul>
-                        <li><a href="https://${domain}/${password1}_webmail/installer/" target="_blank">install page</a></li>
-                        <li><a href="https://${domain}/${password1}_webmail/" target="_blank">production page</a></li>
+                        <li><a href="https://${domain}/${password1}_webmail/" target="_blank">Roundcube Webmail</a></li>
                         <li>用户名(username): ${mailuser}</li>
                         <li>密碼(password): ${password1}</li>
                         <li>收件地址: ${mailuser}@${domain}</li>
@@ -4692,7 +4674,6 @@ footer a:link {
                     <p>Tips:</p>
                     <ol>
                         <li>阿里云，gcp等厂商默认不开放25端口，不能发邮件，请注意.</li>
-                        <li>请先在安装页面中将smtp port改为25-->下一步-->初始化数据库-->测试登录与邮件发送成功后-->进入production page-->将地址改为${mailuser}@${domain}-->测试收发邮件-->Done!</li>
                         <li>请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all</li>
                         <li>请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD</li>
                         <li>请</li>
