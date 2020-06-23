@@ -3070,6 +3070,7 @@ chown -R nginx:nginx /usr/share/nginx/roundcubemail/
 cd /usr/share/nginx/roundcubemail/
 curl -s https://getcomposer.org/installer | php
 cp -f composer.json-dist composer.json
+cd
 sed -i "s/587/25/;" /usr/share/nginx/roundcubemail/config/config.inc.php.sample
 mysql -u root -e "CREATE DATABASE roundcubemail DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql -u root -e "CREATE USER roundcube@localhost IDENTIFIED BY '${password1}';"
