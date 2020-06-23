@@ -48,7 +48,7 @@ if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
 fi
 
 if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -le "400" ]]; then
-  echo Please run this script on machine with more than 500MB free ram.
+  echo Please run this script on machine with more than 400MB free ram.
   exit 1
 fi
 
