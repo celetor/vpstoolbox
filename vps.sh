@@ -3081,20 +3081,20 @@ deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
 	cat > '/usr/share/nginx/roundcubemail/config/config.inc.php' << EOF
 <?php
 
-$config['db_dsnw'] = 'mysql://roundcube:${password1}@localhost/roundcubemail';
-$config['default_host'] = 'localhost';
-$config['default_port'] = 143;
-$config['smtp_server'] = 'localhost';
-$config['smtp_port'] = 25;
-$config['support_url'] = 'https://github.com/johnrosen1/vpstoolbox';
-$config['des_key'] = '${deskey}';
-$config['enable_installer'] = false;
+\$config['db_dsnw'] = 'mysql://roundcube:${password1}@localhost/roundcubemail';
+\$config['default_host'] = 'localhost';
+\$config['default_port'] = 143;
+\$config['smtp_server'] = 'localhost';
+\$config['smtp_port'] = 25;
+\$config['support_url'] = 'https://github.com/johnrosen1/vpstoolbox';
+\$config['des_key'] = '${deskey}';
+\$config['enable_installer'] = false;
 
 // ----------------------------------
 // PLUGINS
 // ----------------------------------
 // List of active plugins (in plugins/ directory)
-$config['plugins'] = array();
+\$config['plugins'] = array();
 EOF
 useradd -m -s /sbin/nologin ${mailuser}
 echo -e "${password1}\n${password1}" | passwd ${mailuser}
