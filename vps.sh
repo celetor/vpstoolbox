@@ -113,9 +113,7 @@ rm -rf /lib/systemd/system/cloud*
 rm -rf /lib/systemd/system/ecs_mq*
 rm -rf /usr/local/aegis
 rm -rf /usr/local/cloudmonitor
-rm -rf /usr/sbin/aliyun_installer
-rm -rf /usr/sbin/aliyun-service
-rm -rf /usr/sbin/aliyun-service.backup
+rm -rf /usr/sbin/aliyun*
 rm -rf /sbin/ecs_mq_rps_rfs
 for ((var=2; var<=5; var++)) do
 	if [ -d "/etc/rc${var}.d/" ];then
