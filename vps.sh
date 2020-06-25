@@ -427,7 +427,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "4" "Trojan-GFW" on \
 "5" "Trojan-panel(require PHP MariaDB)" off \
 "6" "Dnscrypt-proxy(Dns encryption)" on \
-"7" "RSSHUB(Docker Version)" on \
+"7" "RSSHUB(require Docker)" on \
 "下载" "Download" on  \
 "8" "Qbittorrent" off \
 "9" "Bt-Tracker(Node.js Version)" off \
@@ -436,7 +436,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "状态" "Status" on  \
 "12" "Netdata(Server status monitor)" on \
 "测速" "Speedtest" on  \
-"13" "Speedtest(Docker Version)" on \
+"13" "Speedtest(require Docker)" on \
 "数据库" "Database" on  \
 "14" "MariaDB" on \
 "安全" "Security" on  \
