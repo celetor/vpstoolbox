@@ -873,6 +873,7 @@ events {
 }
 
 http {
+	autoindex_exact_size off;
 	proxy_intercept_errors on;
 	proxy_socket_keepalive off;
 	proxy_http_version 1.1;
