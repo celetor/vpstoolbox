@@ -442,7 +442,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Pleas
 "安全" "Security" on  \
 "15" "Fail2ban" on \
 "邮件" "Mail" on  \
-"16" "Mail service" off \
+"16" "Mail service(require PHP MariaDB)" off \
 "其他" "Others" off  \
 "17" "OPENSSL" off \
 "18" "Tor-Relay" off \
