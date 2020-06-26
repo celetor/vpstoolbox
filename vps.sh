@@ -874,15 +874,17 @@ events {
 
 http {
 	autoindex_exact_size off;
-	proxy_intercept_errors on;
-	proxy_socket_keepalive off;
-	proxy_http_version 1.1;
 	http2_push_preload on;
 	aio threads;
 	charset UTF-8;
 	tcp_nodelay on;
 	tcp_nopush on;
 	server_tokens off;
+	
+	proxy_intercept_errors on;
+	proxy_socket_keepalive off;
+	proxy_http_version 1.1;
+	proxy_ssl_protocols TLSv1.2 TLSv1.3;
 
 	include /etc/nginx/mime.types;
 	default_type application/octet-stream;
