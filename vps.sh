@@ -3104,6 +3104,7 @@ chown -R nginx:nginx /usr/share/nginx/roundcubemail/
 cd /usr/share/nginx/roundcubemail/
 curl -s https://getcomposer.org/installer | php
 cp -f composer.json-dist composer.json
+php composer.phar install --no-dev
 cd
 sed -i "s/587/25/;" /usr/share/nginx/roundcubemail/config/config.inc.php.sample
 mysql -u root -e "CREATE DATABASE roundcubemail DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
@@ -3128,7 +3129,7 @@ deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
 // PLUGINS
 // ----------------------------------
 // List of active plugins (in plugins/ directory)
-\$config['plugins'] = array();
+\$config['plugins'] = array('archive','zipdownload');
 EOF
 useradd -m -s /sbin/nologin ${mailuser}
 echo -e "${password1}\n${password1}" | passwd ${mailuser}
@@ -3859,6 +3860,10 @@ EOF
 
 # NOTE: Assumes "namespace inbox" has been defined in 10-mail.conf.
 namespace inbox {
+  mailbox Archive {
+    auto = create
+    special_use = \Archive
+  }
   # These mailboxes are widely used and could perhaps be created automatically:
   mailbox Drafts {
     auto = subscribe
