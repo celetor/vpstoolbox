@@ -3855,39 +3855,6 @@ EOF
 ## Mailbox definitions
 ##
 
-# Each mailbox is specified in a separate mailbox section. The section name
-# specifies the mailbox name. If it has spaces, you can put the name
-# "in quotes". These sections can contain the following mailbox settings:
-#
-#  
-# special_use:
-#   A space-separated list of SPECIAL-USE flags (RFC 6154) to use for the
-#   mailbox. There are no validity checks, so you could specify anything
-#   you want in here, but it's not a good idea to use flags other than the
-#   standard ones specified in the RFC:
-#
-#     \All       - This (virtual) mailbox presents all messages in the
-#                  user's message store.
-#     \Archive   - This mailbox is used to archive messages.
-#     \Drafts    - This mailbox is used to hold draft messages.
-#     \Flagged   - This (virtual) mailbox presents all messages in the
-#                  user's message store marked with the IMAP \Flagged flag.
-#     \Important - This (virtual) mailbox presents all messages in the
-#                  user's message store deemed important to user.
-#     \Junk      - This mailbox is where messages deemed to be junk mail
-#                  are held.
-#     \Sent      - This mailbox is used to hold copies of messages that
-#                  have been sent.
-#     \Trash     - This mailbox is used to hold messages that have been
-#                  deleted.
-#
-# comment:
-#   Defines a default comment or note associated with the mailbox. This
-#   value is accessible through the IMAP METADATA mailbox entries
-#   "/shared/comment" and "/private/comment". Users with sufficient
-#   privileges can override the default value for entries with a custom
-#   value.
-
 # NOTE: Assumes "namespace inbox" has been defined in 10-mail.conf.
 namespace inbox {
   # These mailboxes are widely used and could perhaps be created automatically:
@@ -3903,34 +3870,10 @@ namespace inbox {
     auto = subscribe
     special_use = \Trash
   }
-
-  # For \Sent mailboxes there are two widely used names. We'll mark both of
-  # them as \Sent. User typically deletes one of them if duplicates are created.
   mailbox Sent {
     auto = subscribe
     special_use = \Sent
   }
-  mailbox "Sent Messages" {
-    special_use = \Sent
-  }
-
-  # If you have a virtual "All messages" mailbox:
-  #mailbox virtual/All {
-  #  special_use = \All
-  #  comment = All my messages
-  #}
-
-  # If you have a virtual "Flagged" mailbox:
-  #mailbox virtual/Flagged {
-  #  special_use = \Flagged
-  #  comment = All my flagged messages
-  #}
-
-  # If you have a virtual "Important" mailbox:
-  #mailbox virtual/Important {
-  #  special_use = \Important
-  #  comment = All my important messages
-  #}
 }
 EOF
 fi
@@ -3959,7 +3902,7 @@ server {
 	resolver_timeout 10s;
 	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
 	#if (\$http_user_agent = "") { return 403; }
-	if (\$host != "$domain") { return 404; }
+	#if (\$host != "$domain") { return 404; }
 	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
 	#add_header X-Frame-Options SAMEORIGIN always;
 	#add_header X-Content-Type-Options "nosniff" always;
@@ -4014,7 +3957,7 @@ server {
 	#add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
 	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
 	#if (\$http_user_agent = "") { return 403; }
-	if (\$host != "$domain") { return 404; }
+	#if (\$host != "$domain") { return 404; }
 	location / {
 		index index.html;
 	}
