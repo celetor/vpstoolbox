@@ -2929,7 +2929,38 @@ bind-address=127.0.0.1
 [mariadb]
 
 userstat = 1
+tls_version = TLSv1.2,TLSv1.3
+ssl_cert = /etc/certs/${domain}_ecc/fullchain.cer
+ssl_key = /etc/certs/${domain}_ecc/${domain}.key
 EOF
+
+if [[ ${othercert} == 1 ]]; then
+    cat > '/etc/mysql/my.cnf' << EOF
+# MariaDB-specific config file.
+# Read by /etc/mysql/my.cnf
+
+[client]
+
+default-character-set = utf8mb4 
+
+[mysqld]
+
+character-set-server  = utf8mb4 
+collation-server      = utf8mb4_unicode_ci
+character_set_server   = utf8mb4 
+collation_server       = utf8mb4_unicode_ci
+# Import all .cnf files from configuration directory
+!includedir /etc/mysql/mariadb.conf.d/
+bind-address=127.0.0.1
+
+[mariadb]
+
+userstat = 1
+tls_version = TLSv1.2,TLSv1.3
+ssl_cert = /etc/trojan/trojan.crt
+ssl_key = /etc/trojan/trojan.key
+EOF
+fi
 
 mysql -u root -e "create user 'netdata'@'localhost';"
 mysql -u root -e "grant usage on *.* to 'netdata'@'localhost';"
