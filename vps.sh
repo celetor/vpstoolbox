@@ -3861,7 +3861,7 @@ EOF
 # NOTE: Assumes "namespace inbox" has been defined in 10-mail.conf.
 namespace inbox {
   mailbox Archive {
-    auto = create
+    auto = subscribe
     special_use = \Archive
   }
   # These mailboxes are widely used and could perhaps be created automatically:
