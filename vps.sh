@@ -3123,14 +3123,16 @@ deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
 \$config['smtp_port'] = 25;
 \$config['support_url'] = 'https://github.com/johnrosen1/vpstoolbox';
 \$config['des_key'] = '${deskey}';
+\$config['ip_check'] = true;
 \$config['enable_installer'] = false;
 
 // ----------------------------------
 // PLUGINS
 // ----------------------------------
 // List of active plugins (in plugins/ directory)
-\$config['plugins'] = array('archive','zipdownload');
+\$config['plugins'] = array('archive','emoticons','newmail_notifier','zipdownload');
 EOF
+rm -rf /usr/share/nginx/roundcubemail/installer/
 useradd -m -s /sbin/nologin ${mailuser}
 echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
