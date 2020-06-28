@@ -24,7 +24,7 @@ Ip Information is just an indispensable part of this project, all ip information
 
 ### Give it a try ! (Live Demo,no Guarantee)
 
-[https://www.trojan-gfw.xyz/vpstoolbox.html](https://www.trojan-gfw.xyz/vpstoolbox.html)
+[https://trojan-gfw.xyz/vpstoolbox.html](https://trojan-gfw.xyz/vpstoolbox.html)
 
 #### Features:
 
