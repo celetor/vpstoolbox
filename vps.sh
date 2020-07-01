@@ -2928,31 +2928,12 @@ if [[ $install_mail = 1 ]]; then
 		fi
 	fi
 	cat > '/etc/postfix/main.cf' << EOF
-# See /usr/share/postfix/main.cf.dist for a commented, more complete version
-
-# Debian specific:  Specifying a file name will cause the first
-# line of that file to be used as the name.  The Debian default
-# is /etc/mailname.
-#myorigin = /etc/mailname
-
 home_mailbox = Maildir/
-
 smtpd_banner = \$myhostname ESMTP \$mail_name (Debian/GNU)
 biff = no
-
-# appending .domain is the MUA's job.
 append_dot_mydomain = no
-
-# Uncomment the next line to generate "delayed mail" warnings
-#delay_warning_time = 4h
-
 readme_directory = no
-
-# See http://www.postfix.org/COMPATIBILITY_README.html -- default to 2 on
-# fresh installs.
 compatibility_level = 2
-
-# TLS parameters
 smtpd_tls_loglevel = 1
 smtpd_tls_security_level = may
 smtpd_tls_eccert_file = /etc/certs/${domain}_ecc/fullchain.cer
@@ -2961,7 +2942,6 @@ smtpd_use_tls=yes
 smtpd_tls_session_cache_database = btree:\${data_directory}/smtpd_scache
 smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
 smtpd_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
-
 smtp_tls_loglevel = 1
 smtp_tls_security_level = may
 smtp_tls_eccert_file = /etc/certs/${domain}_ecc/fullchain.cer
@@ -2969,9 +2949,10 @@ smtp_tls_eckey_file = /etc/certs/${domain}_ecc/${domain}.key
 smtp_tls_session_cache_database = btree:\${data_directory}/smtp_scache
 smtp_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
 smtp_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
-
 smtpd_sasl_type = dovecot
-
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 myhostname = ${domain}
 alias_maps = hash:/etc/aliases
@@ -2984,30 +2965,20 @@ mailbox_size_limit = 0
 recipient_delimiter = +
 inet_interfaces = all
 inet_protocols = ${postproto}
-
 message_size_limit = 52428800
-
 smtpd_helo_required = yes
 smtpd_helo_restrictions = permit_mynetworks permit_sasl_authenticated reject_non_fqdn_helo_hostname reject_invalid_helo_hostname reject_unknown_helo_hostname
 disable_vrfy_command = yes
-
 smtpd_sender_restrictions = permit_mynetworks permit_sasl_authenticated reject_unknown_sender_domain reject_unknown_reverse_client_hostname reject_unknown_client_hostname
 #smtpd_recipient_restrictions =
 #   permit_mynetworks,
 #   permit_sasl_authenticated,
 #   reject_unauth_destination,
 #   check_policy_service unix:private/policyd-spf
-
-# Milter configuration
 milter_default_action = accept
 milter_protocol = 6
 smtpd_milters = local:opendkim/opendkim.sock
 non_smtpd_milters = \$smtpd_milters
-
-smtpd_sasl_security_options = noanonymous
-smtpd_sasl_path = private/auth
-smtpd_sasl_auth_enable = yes
-
 smtp_header_checks = regexp:/etc/postfix/smtp_header_checks
 EOF
 	cat > '/etc/aliases' << EOF
@@ -3068,70 +3039,29 @@ echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
 gpasswd -a postfix opendkim
 	cat > '/etc/opendkim.conf' << EOF
-# Log to syslog
 Syslog			yes
-# Required to use local socket with MTAs that access the socket as a non-
-# privileged user (e.g. Postfix)
 UMask			007
-
-# Sign for example.com with key in /etc/dkimkeys/dkim.key using
-# selector '2007' (e.g. 2007._domainkey.example.com)
-#Domain			example.com
-#KeyFile		/etc/dkimkeys/dkim.key
-#Selector		2007
-
-# Commonly-used options; the commented-out versions show the defaults.
 Canonicalization	relaxed/simple
 Mode			sv
 SubDomains		no
-
 AutoRestart         yes
 AutoRestartRate     10/1M
 Background          yes
 DNSTimeout          5
 SignatureAlgorithm  rsa-sha256
-
 Socket			local:/var/spool/postfix/opendkim/opendkim.sock
-
 PidFile               /var/run/opendkim/opendkim.pid
-
 OversignHeaders		From
-
-# ResolverConfiguration     /etc/unbound/unbound.conf
-
 TrustAnchorFile       /usr/share/dns/root.key
-
 UserID                opendkim
-
-# Map domains in From addresses to keys used to sign messages
 KeyTable           refile:/etc/opendkim/key.table
 SigningTable       refile:/etc/opendkim/signing.table
-
-# Hosts to ignore when verifying signatures
 ExternalIgnoreList  /etc/opendkim/trusted.hosts
-
-# A set of internal hosts whose mail should be signed
 InternalHosts       /etc/opendkim/trusted.hosts
 EOF
 	cat > '/etc/default/opendkim' << EOF
-# Command-line options specified here will override the contents of
-# /etc/opendkim.conf. See opendkim(8) for a complete list of options.
-#DAEMON_OPTS=""
-# Change to /var/spool/postfix/var/run/opendkim to use a Unix socket with
-# postfix in a chroot:
-#RUNDIR=/var/spool/postfix/var/run/opendkim
 RUNDIR=/var/run/opendkim
-#
-# Uncomment to specify an alternate socket
-# Note that setting this will override any Socket value in opendkim.conf
-# default:
 SOCKET="local:/var/spool/postfix/opendkim/opendkim.sock"
-# listen on all interfaces on port 54321:
-#SOCKET=inet:54321
-# listen on loopback on port 12345:
-#SOCKET=inet:12345@localhost
-# listen on 192.0.2.1 on port 12345:
-#SOCKET=inet:12345@192.0.2.1
 USER=opendkim
 GROUP=opendkim
 PIDFILE=\$RUNDIR/\$NAME.pid
@@ -3160,65 +3090,26 @@ chown opendkim:postfix /var/spool/postfix/opendkim
 
 	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
 disable_plaintext_auth = no
-
 #auth_cache_size = 0
-
 #auth_cache_ttl = 1 hour
-
 #auth_cache_negative_ttl = 1 hour
-
 #auth_realms =
-
 #auth_default_realm = 
-
 #auth_username_chars = abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890.-_@
-
 #auth_username_translation =
-
 #auth_username_format = %Lu
-
 #auth_master_user_separator =
-
 #auth_anonymous_username = anonymous
-
 #auth_worker_max_count = 30
-
 #auth_gssapi_hostname =
-
 #auth_krb5_keytab = 
-
 #auth_use_winbind = no
-
 #auth_winbind_helper_path = /usr/bin/ntlm_auth
-
 #auth_failure_delay = 2 secs
-
 #auth_ssl_require_client_cert = no
-
 #auth_ssl_username_from_cert = no
 
-# Space separated list of wanted authentication mechanisms:
-#   plain login digest-md5 cram-md5 ntlm rpa apop anonymous gssapi otp skey
-#   gss-spnego
-# NOTE: See also disable_plaintext_auth setting.
 auth_mechanisms = plain login
-
-##
-## Password and user databases
-##
-
-#
-# Password database is used to verify user's password (and nothing more).
-# You can have multiple passdbs and userdbs. This is useful if you want to
-# allow both system users (/etc/passwd) and virtual users to login without
-# duplicating the system users into virtual database.
-#
-# <doc/wiki/PasswordDatabase.txt>
-#
-# User database specifies where mails are located and what user/group IDs
-# own them. For single-UID configuration use "static" userdb.
-#
-# <doc/wiki/UserDatabase.txt>
 
 #!include auth-deny.conf.ext
 #!include auth-master.conf.ext
@@ -3232,25 +3123,17 @@ auth_mechanisms = plain login
 #!include auth-static.conf.ext
 EOF
 	cat > '/etc/dovecot/conf.d/10-ssl.conf' << EOF
-
-# SSL/TLS support: yes, no, required. <doc/wiki/SSL.txt>
 ssl = yes
-
 ssl_cert = </etc/certs/${domain}_ecc/fullchain.cer
 ssl_key = </etc/certs/${domain}_ecc/${domain}.key
-
 ssl_dh = </usr/local/etc/trojan/dh.pem
-
 ssl_min_protocol = TLSv1.2
-
 # SSL ciphers to use, the default is:
 #ssl_cipher_list = ALL:!kRSA:!SRP:!kDHd:!DSS:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH
 # To disable non-EC DH, use:
 #ssl_cipher_list = ALL:!DH:!kRSA:!SRP:!kDHd:!DSS:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH
-
 #ssl_curve_list =
 ssl_prefer_server_ciphers = yes
-
 ssl_options = no_ticket
 EOF
 	cat > '/etc/dovecot/conf.d/10-master.conf' << EOF
@@ -3354,7 +3237,7 @@ service stats {
   unix_listener stats {
     user = netdata
     group = netdata
-    #mode = 0666 # Use only if nothing else works. It's a bit insecure, since it allows any user in the system to mess up with the statistics.
+    mode = 0666 # Use only if nothing else works. It's a bit insecure, since it allows any user in the system to mess up with the statistics.
   }
 }
 
@@ -3395,16 +3278,6 @@ EOF
 
 mail_location = maildir:~/Maildir
 
-# If you need to set multiple mailbox locations or want to change default
-# namespace settings, you can do it by defining namespace sections.
-#
-# You can have private, shared and public namespaces. Private namespaces
-# are for user's personal mails. Shared namespaces are for accessing other
-# users' mailboxes that have been shared. Public namespaces are for shared
-# mailboxes that are managed by sysadmin. If you create any shared or public
-# namespaces you'll typically want to enable ACL plugin also, otherwise all
-# users can access all the shared mailboxes, assuming they have permissions
-# on filesystem level to do so.
 namespace inbox {
   # Namespace type: private, shared or public
   #type = private
@@ -3774,17 +3647,11 @@ protocol !indexer-worker {
 #mail_attachment_detection_options =
 EOF
 	cat > '/etc/dovecot/conf.d/15-mailboxes.conf' << EOF
-##
-## Mailbox definitions
-##
-
-# NOTE: Assumes "namespace inbox" has been defined in 10-mail.conf.
 namespace inbox {
   mailbox Archive {
     auto = subscribe
     special_use = \Archive
   }
-  # These mailboxes are widely used and could perhaps be created automatically:
   mailbox Drafts {
     auto = subscribe
     special_use = \Drafts
