@@ -37,6 +37,8 @@ clear
 
 set +e
 
+export DEBIAN_FRONTEND=noninteractive
+
 if [[ $(id -u) != 0 ]]; then
 	echo Please run this script as root.
 	exit 1
@@ -417,36 +419,37 @@ if [[ ${install_status} == 1 ]]; then
 	readconfig
 fi
 
-whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi , Please choose carefully!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 52 16 \
+whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 52 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
-"系统" "System" on  \
-"1" "Enable BBR(TCP-Turbo)" on \
+"依赖" "dependence" off  \
+"1" "TCP-BBR(TCP-Turbo)" on \
 "2" "Docker" on \
 "3" "PHP" on \
-"代理" "Proxy" on  \
-"4" "Trojan-GFW" on \
-"5" "Trojan-panel(require PHP MariaDB)" off \
-"6" "Dnscrypt-proxy(Dns encryption)" on \
-"7" "RSSHUB(require Docker)" on \
-"下载" "Download" on  \
-"8" "Qbittorrent" off \
-"9" "Bt-Tracker(Node.js Version)" off \
-"10" "Aria2" on \
-"11" "Filebrowser" on \
-"状态" "Status" on  \
-"12" "Netdata(Server status monitor)" on \
-"测速" "Speedtest" on  \
-"13" "Speedtest(require Docker)" on \
-"数据库" "Database" on  \
-"14" "MariaDB" on \
-"安全" "Security" on  \
-"15" "Fail2ban" on \
-"邮件" "Mail" on  \
-"16" "Mail service(require PHP MariaDB)" off \
+"4" "Node.js" on \
+"代理" "Proxy" off  \
+"5" "Trojan-GFW(不支援Cloudflare CDN !)" on \
+"6" "Trojan-panel(require PHP MariaDB)" off \
+"7" "Dnscrypt-proxy(Dns encryption)" on \
+"8" "RSSHUB(require Docker)" on \
+"下载" "Download" off  \
+"9" "Qbittorrent" off \
+"10" "Bt-Tracker(require Node.js)" off \
+"11" "Aria2" on \
+"12" "Filebrowser" on \
+"状态" "Status" off  \
+"13" "Netdata(Server status monitor)" on \
+"测速" "Speedtest" off  \
+"14" "Speedtest(require Docker)" on \
+"数据库" "Database" off  \
+"15" "MariaDB" on \
+"安全" "Security" off  \
+"16" "Fail2ban" on \
+"邮件" "Mail" off  \
+"17" "Mail service(require PHP MariaDB)" off \
 "其他" "Others" off  \
-"17" "OPENSSL" off \
-"18" "Tor-Relay" off \
-"19" "Enable TLS1.3 only" off 2>results
+"18" "OPENSSL" off \
+"19" "Tor-Relay" off \
+"20" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -465,51 +468,54 @@ do
 		install_php=1
 		;;
 		4)
+		install_nodejs=1
+		;;
+		5)
 		install_trojan=1
 		;;
-		5) 
+		6) 
 		install_tjp=1
 		;;
-		6) 
+		7) 
 		dnsmasq_install=1
 		;;
-		7)
+		8)
 		install_rsshub=1
 		;;
-		8)
+		9)
 		install_qbt=1
 		;;
-		9)
+		10)
 		install_tracker=1
 		;;
-		10)
+		11)
 		install_aria=1
 		;;
-		11)
+		12)
 		install_file=1
 		;;
-		12)
+		13)
 		install_netdata=1
 		;;
-		13)
+		14)
 		install_speedtest=1
 		;;
-		14)
+		15)
 		install_mariadb=1
 		;;
-		15)
+		16)
 		install_fail2ban=1
 		;;
-		16)
+		17)
 		install_mail=1
 		;;
-		17)
+		18)
 		install_openssl=1
 		;;
-		18)
+		19)
 		install_tor=1
 		;;
-		19) 
+		20) 
 		tls13only=1
 		;;
 		*)
@@ -723,12 +729,10 @@ colorEcho ${INFO} "初始化中(initializing)"
  if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 	dist=ubuntu
 	apt-get update -q
-	export DEBIAN_FRONTEND=noninteractive
 	apt-get install whiptail curl locales lsb-release jq -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
 	apt-get update -q
-	export DEBIAN_FRONTEND=noninteractive
 	apt-get install whiptail curl locales lsb-release jq -y -q
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
@@ -765,7 +769,6 @@ fi
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
 	clear
  elif [[ $dist == debian ]]; then
-	export DEBIAN_FRONTEND=noninteractive
 	apt-get update --fix-missing
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
 	if [[ ${debian10_install} == 1 ]]; then
@@ -998,12 +1001,10 @@ openfirewall(){
 		ip6tables -A INPUT -p udp -m udp --dport 25 -j ACCEPT
 	fi
 	if [[ ${dist} == debian ]]; then
-	export DEBIAN_FRONTEND=noninteractive 
 	apt-get install iptables-persistent -qq -y > /dev/null
 	iptables-save > /etc/iptables/rules.v4
 	ip6tables-save > /etc/iptables/rules.v6
  elif [[ ${dist} == ubuntu ]]; then
-	export DEBIAN_FRONTEND=noninteractive
 	ufw allow http
 	ufw allow https
 	ufw allow ${ariaport}
@@ -1230,6 +1231,19 @@ fi
 if [[ $tls13only == 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
 fi
+###########Install Node.js##############
+if [[ $install_nodejs == 1 ]]; then
+	if [[ ${dist} == debian ]]; then
+	curl -sL https://deb.nodesource.com/setup_14.x | bash -
+ elif [[ ${dist} == ubuntu ]]; then
+	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+ else
+	echo "fail"
+ fi
+apt-get update
+apt-get install -q -y nodejs
+fi
+clear
 ##########Install OPENSSL##############
 if [[ ${install_openssl} == 1 ]]; then
 	colorEcho ${INFO} "Install OPENSSL ing"
@@ -1247,10 +1261,8 @@ if [[ $install_qbt == 1 ]]; then
 	clear
 	colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
 	if [[ ${dist} == debian ]]; then
-	export DEBIAN_FRONTEND=noninteractive 
 	apt-get install qbittorrent-nox -q -y
  elif [[ ${dist} == ubuntu ]]; then
-	export DEBIAN_FRONTEND=noninteractive
 	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 	apt-get install qbittorrent-nox -q -y
  else
@@ -1288,22 +1300,10 @@ fi
 clear
 ###########Install Bittorrent-tracker##############
 if [[ $install_tracker = 1 ]]; then
-	if [[ ! -f /usr/bin/bittorrent-tracker ]]; then
-		clear
-		colorEcho ${INFO} "Install Bittorrent-tracker ing"
-	if [[ ${dist} = debian ]]; then
-		export DEBIAN_FRONTEND=noninteractive 
-		curl -sL https://deb.nodesource.com/setup_14.x | bash -
-		apt-get install -q -y nodejs
- elif [[ ${dist} = ubuntu ]]; then
-	export DEBIAN_FRONTEND=noninteractive
-	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-	apt-get install -q -y nodejs
- else
-	echo "fail"
- fi
- useradd -r bt_tracker --shell=/usr/sbin/nologin
- npm install -g bittorrent-tracker --quiet
+clear
+colorEcho ${INFO} "Install Bittorrent-tracker ing"
+useradd -r bt_tracker --shell=/usr/sbin/nologin
+npm install -g bittorrent-tracker --quiet
 	cat > '/etc/systemd/system/tracker.service' << EOF
 [Unit]
 Description=Bittorrent-Tracker Daemon Service
@@ -1329,14 +1329,12 @@ systemctl daemon-reload
 systemctl enable tracker
 systemctl start tracker
 fi
-fi
 clear
 ##############Install FILEBROWSER###############
 if [[ $install_file = 1 ]]; then
 	if [[ ! -f /usr/local/bin/filebrowser ]]; then
 	clear
 	colorEcho ${INFO} "Install Filebrowser ing"
-	export DEBIAN_FRONTEND=noninteractive
 	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 	cat > '/etc/systemd/system/filebrowser.service' << EOF
 [Unit]
@@ -1500,6 +1498,8 @@ if [[ ${dnsmasq_install} == 1 ]]; then
 #ad.*
 #ads.*
 
+pagead*.googlesyn*.com
+
 ####Block 360####
 #*.cn
 360.com
@@ -1551,8 +1551,6 @@ tiebaimg.com
 xianfae.com
 xiaodutv.com
 ###
-*baidu.cn
-bdimg.com
 bdstatic.com
 duapps.com
 quyaoya.com
@@ -1996,7 +1994,6 @@ if [[ $install_tor = 1 ]]; then
 	clear
 	if [[ ! -f /usr/bin/tor ]]; then
 	colorEcho ${INFO} "Install Tor Relay ing"
-	export DEBIAN_FRONTEND=noninteractive
 	touch /etc/apt/sources.list.d/tor.list
 	cat > '/etc/apt/sources.list.d/tor.list' << EOF
 deb https://deb.torproject.org/torproject.org $(lsb_release -cs) main
@@ -2130,30 +2127,6 @@ listen.group = nginx
 ; Default Value: no
 ; process.dumpable = yes
 
-; Choose how the process manager will control the number of child processes.
-; Possible Values:
-;   static  - a fixed number (pm.max_children) of child processes;
-;   dynamic - the number of child processes are set dynamically based on the
-;             following directives. With this process management, there will be
-;             always at least 1 children.
-;             pm.max_children      - the maximum number of children that can
-;                                    be alive at the same time.
-;             pm.start_servers     - the number of children created on startup.
-;             pm.min_spare_servers - the minimum number of children in 'idle'
-;                                    state (waiting to process). If the number
-;                                    of 'idle' processes is less than this
-;                                    number then some children will be created.
-;             pm.max_spare_servers - the maximum number of children in 'idle'
-;                                    state (waiting to process). If the number
-;                                    of 'idle' processes is greater than this
-;                                    number then some children will be killed.
-;  ondemand - no children are created at startup. Children will be forked when
-;             new requests will connect. The following parameter are used:
-;             pm.max_children           - the maximum number of children that
-;                                         can be alive at the same time.
-;             pm.process_idle_timeout   - The number of seconds after which
-;                                         an idle process will be killed.
-; Note: This value is mandatory.
 pm = dynamic
 
 ; The number of child processes to be created when pm is set to 'static' and the
@@ -2193,50 +2166,6 @@ pm.max_spare_servers = $(($(nproc --all)*4))
 ; Default Value: 0
 ;pm.max_requests = 500
 
-; The URI to view the FPM status page. If this value is not set, no URI will be
-; recognized as a status page. It shows the following informations:
-;   pool                 - the name of the pool;
-;   process manager      - static, dynamic or ondemand;
-;   start time           - the date and time FPM has started;
-;   start since          - number of seconds since FPM has started;
-;   accepted conn        - the number of request accepted by the pool;
-;   listen queue         - the number of request in the queue of pending
-;                          connections (see backlog in listen(2));
-;   max listen queue     - the maximum number of requests in the queue
-;                          of pending connections since FPM has started;
-;   listen queue len     - the size of the socket queue of pending connections;
-;   idle processes       - the number of idle processes;
-;   active processes     - the number of active processes;
-;   total processes      - the number of idle + active processes;
-;   max active processes - the maximum number of active processes since FPM
-;                          has started;
-;   max children reached - number of times, the process limit has been reached,
-;                          when pm tries to start more children (works only for
-;                          pm 'dynamic' and 'ondemand');
-; Value are updated in real time.
-; Example output:
-;   pool:                 www
-;   process manager:      static
-;   start time:           01/Jul/2011:17:53:49 +0200
-;   start since:          62636
-;   accepted conn:        190460
-;   listen queue:         0
-;   max listen queue:     1
-;   listen queue len:     42
-;   idle processes:       4
-;   active processes:     11
-;   total processes:      15
-;   max active processes: 12
-;   max children reached: 0
-;
-;
-; Note: There is a real-time FPM status monitoring sample web page available
-;       It's available in: /usr/share/php/7.4/fpm/status.html
-;
-; Note: The value must start with a leading slash (/). The value can be
-;       anything, but it may not be a good idea to use the .php extension or it
-;       may conflict with a real PHP file.
-; Default Value: not set
 pm.status_path = /status
 
 ping.path = /ping
@@ -2988,7 +2917,6 @@ if [[ $install_mail = 1 ]]; then
 	if [[ ! -f /usr/sbin/postfix ]]; then
 	clear
 	colorEcho ${INFO} "Install Mail Service ing"
-	export DEBIAN_FRONTEND=noninteractive
 	apt-get install postfix -y
 	apt-get install postfix-policyd-spf-python -y
 	echo ${domain} > /etc/mailname
@@ -3789,21 +3717,9 @@ protocol !indexer-worker {
 # EXPUNGE or CHECK commands. If this is set, mbox_dirty_syncs is ignored.
 #mbox_very_dirty_syncs = no
 
-# Delay writing mbox headers until doing a full write sync (EXPUNGE and CHECK
-# commands and when closing the mailbox). This is especially useful for POP3
-# where clients often delete all mails. The downside is that our changes
-# aren't immediately visible to other MUAs.
-#mbox_lazy_writes = yes
-
 # If mbox size is smaller than this (e.g. 100k), don't write index files.
 # If an index file already exists it's still read, just not updated.
 #mbox_min_index_size = 0
-
-# Mail header selection algorithm to use for MD5 POP3 UIDLs when
-# pop3_uidl_format=%m. For backwards compatibility we use apop3d inspired
-# algorithm, but it fails if the first Received: header isn't unique in all
-# mails. An alternative algorithm is "all" that selects all headers.
-#mbox_md5 = apop3d
 
 ##
 ## mdbox-specific settings
