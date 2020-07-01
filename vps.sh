@@ -421,8 +421,8 @@ fi
 
 whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 52 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
-"系统" "System" off  \
-"1" "Enable BBR(TCP-Turbo)" on \
+"依赖" "dependence" off  \
+"1" "TCP-BBR(TCP-Turbo)" on \
 "2" "Docker" on \
 "3" "PHP" on \
 "4" "Node.js" on \
