@@ -37,6 +37,8 @@ clear
 
 set +e
 
+export DEBIAN_FRONTEND=noninteractive
+
 if [[ $(id -u) != 0 ]]; then
 	echo Please run this script as root.
 	exit 1
@@ -727,12 +729,10 @@ colorEcho ${INFO} "初始化中(initializing)"
  if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 	dist=ubuntu
 	apt-get update -q
-	export DEBIAN_FRONTEND=noninteractive
 	apt-get install whiptail curl locales lsb-release jq -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
 	apt-get update -q
-	export DEBIAN_FRONTEND=noninteractive
 	apt-get install whiptail curl locales lsb-release jq -y -q
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
@@ -769,7 +769,6 @@ fi
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
 	clear
  elif [[ $dist == debian ]]; then
-	export DEBIAN_FRONTEND=noninteractive
 	apt-get update --fix-missing
 	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
 	if [[ ${debian10_install} == 1 ]]; then
@@ -1002,12 +1001,10 @@ openfirewall(){
 		ip6tables -A INPUT -p udp -m udp --dport 25 -j ACCEPT
 	fi
 	if [[ ${dist} == debian ]]; then
-	export DEBIAN_FRONTEND=noninteractive 
 	apt-get install iptables-persistent -qq -y > /dev/null
 	iptables-save > /etc/iptables/rules.v4
 	ip6tables-save > /etc/iptables/rules.v6
  elif [[ ${dist} == ubuntu ]]; then
-	export DEBIAN_FRONTEND=noninteractive
 	ufw allow http
 	ufw allow https
 	ufw allow ${ariaport}
@@ -1235,9 +1232,15 @@ if [[ $tls13only == 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
 fi
 ###########Install Node.js##############
-if [[ $install_tracker = 1 ]]; then
-export DEBIAN_FRONTEND=noninteractive
-curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+if [[ $install_nodejs == 1 ]]; then
+	if [[ ${dist} == debian ]]; then
+	curl -sL https://deb.nodesource.com/setup_14.x | bash -
+ elif [[ ${dist} == ubuntu ]]; then
+	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+ else
+	echo "fail"
+ fi
+apt-get update
 apt-get install -q -y nodejs
 fi
 clear
@@ -1258,10 +1261,8 @@ if [[ $install_qbt == 1 ]]; then
 	clear
 	colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
 	if [[ ${dist} == debian ]]; then
-	export DEBIAN_FRONTEND=noninteractive 
 	apt-get install qbittorrent-nox -q -y
  elif [[ ${dist} == ubuntu ]]; then
-	export DEBIAN_FRONTEND=noninteractive
 	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 	apt-get install qbittorrent-nox -q -y
  else
@@ -1334,7 +1335,6 @@ if [[ $install_file = 1 ]]; then
 	if [[ ! -f /usr/local/bin/filebrowser ]]; then
 	clear
 	colorEcho ${INFO} "Install Filebrowser ing"
-	export DEBIAN_FRONTEND=noninteractive
 	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 	cat > '/etc/systemd/system/filebrowser.service' << EOF
 [Unit]
@@ -1457,6 +1457,7 @@ EOF
 	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
 	#usermod -a -G aria2 nginx
 	#useradd -r aria2 --shell=/usr/sbin/nologin
+
 	apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
 	curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/binary/aria2c.xz
 	xz --decompress aria2c.xz
@@ -1994,7 +1995,6 @@ if [[ $install_tor = 1 ]]; then
 	clear
 	if [[ ! -f /usr/bin/tor ]]; then
 	colorEcho ${INFO} "Install Tor Relay ing"
-	export DEBIAN_FRONTEND=noninteractive
 	touch /etc/apt/sources.list.d/tor.list
 	cat > '/etc/apt/sources.list.d/tor.list' << EOF
 deb https://deb.torproject.org/torproject.org $(lsb_release -cs) main
@@ -2918,7 +2918,6 @@ if [[ $install_mail = 1 ]]; then
 	if [[ ! -f /usr/sbin/postfix ]]; then
 	clear
 	colorEcho ${INFO} "Install Mail Service ing"
-	export DEBIAN_FRONTEND=noninteractive
 	apt-get install postfix -y
 	apt-get install postfix-policyd-spf-python -y
 	echo ${domain} > /etc/mailname
