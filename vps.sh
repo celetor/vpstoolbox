@@ -39,6 +39,8 @@ set +e
 
 export DEBIAN_FRONTEND=noninteractive
 
+install_bbr=1
+
 if [[ $(id -u) != 0 ]]; then
 	echo Please run this script as root.
 	exit 1
@@ -2399,7 +2401,6 @@ cat > '/opt/netdata/etc/netdata/python.d/phpfpm.conf' << EOF
 local:
   url     : 'http://127.0.0.1:81/status?full&json'
 EOF
-fi
 if [[ ${install_tor} == 1 ]]; then
 apt-get install python-pip -y
 pip install stem
@@ -3087,7 +3088,7 @@ opendkim-genkey -b 2048 -d ${domain} -D /etc/opendkim/keys/${domain} -s default 
 chown opendkim:opendkim /etc/opendkim/keys/${domain}/default.private
 mkdir /var/spool/postfix/opendkim/
 chown opendkim:postfix /var/spool/postfix/opendkim
-
+usermod -a -G dovecot netdata
 	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
 disable_plaintext_auth = no
 #auth_cache_size = 0
@@ -3237,41 +3238,8 @@ service stats {
   unix_listener stats {
     user = netdata
     group = netdata
-    mode = 0666 # Use only if nothing else works. It's a bit insecure, since it allows any user in the system to mess up with the statistics.
+    mode = 0666
   }
-}
-
-metric imap_select_no {
-  event_name = imap_command_finished
-  filter {
-    cmd_name = SELECT
-    tagged_reply_state = NO
-  }
-}
-
-metric imap_select_no_notfound {
-  event_name = imap_command_finished
-  filter {
-    cmd_name = SELECT
-    tagged_reply = NO*Mailbox doesn't exist:*
-  }
-}
-
-metric storage_http_gets {
-  event_name = http_request_finished
-  categories = storage
-  filter {
-    method = get
-  }
-}
-
-# generate per-command metrics on successful commands
-metric imap_command {
-  event_name = imap_command_finished
-  filter {
-    tagged_reply_state = OK
-  }
-  group_by = cmd_name
 }
 EOF
 	cat > '/etc/dovecot/conf.d/10-mail.conf' << EOF
@@ -3385,20 +3353,6 @@ mail_privileged_group = mail
 ## Mail processes
 ##
 
-# Don't use mmap() at all. This is required if you store indexes to shared
-# filesystems (NFS or clustered filesystem).
-#mmap_disable = no
-
-# Rely on O_EXCL to work when creating dotlock files. NFS supports O_EXCL
-# since version 3, so this should be safe to use nowadays by default.
-#dotlock_use_excl = yes
-
-# When to use fsync() or fdatasync() calls:
-#   optimized (default): Whenever necessary to avoid losing important data
-#   always: Useful with e.g. NFS when write()s are delayed
-#   never: Never use it (best performance, but crashes can lose data)
-#mail_fsync = optimized
-
 # Locking method for index files. Alternatives are fcntl, flock and dotlock.
 # Dotlocking uses some tricks which may create more disk I/O than other locking
 # methods. NFS users: flock doesn't work, remember to change mmap_disable.
@@ -3428,23 +3382,6 @@ mail_privileged_group = mail
 # to create new keywords.
 #mail_max_keyword_length = 50
 
-# ':' separated list of directories under which chrooting is allowed for mail
-# processes (ie. /var/mail will allow chrooting to /var/mail/foo/bar too).
-# This setting doesn't affect login_chroot, mail_chroot or auth chroot
-# settings. If this setting is empty, "/./" in home dirs are ignored.
-# WARNING: Never add directories here which local users can modify, that
-# may lead to root exploit. Usually this should be done only if you don't
-# allow shell access for users. <doc/wiki/Chrooting.txt>
-#valid_chroot_dirs = 
-
-# Default chroot directory for mail processes. This can be overridden for
-# specific users in user database by giving /./ in user's home directory
-# (eg. /home/./user chroots into /home). Note that usually there is no real
-# need to do chrooting, Dovecot doesn't allow users to access files outside
-# their mail directory anyway. If your home directories are prefixed with
-# the chroot directory, append "/." to mail_chroot. <doc/wiki/Chrooting.txt>
-#mail_chroot = 
-
 # UNIX socket path to master authentication server to find users.
 # This is used by imap (for shared users) and lda.
 #auth_socket_path = /var/run/dovecot/auth-userdb
@@ -3456,54 +3393,6 @@ mail_privileged_group = mail
 # IMAP, LDA, etc. are added to this list in their own .conf files.
 #mail_plugins = 
 
-##
-## Mailbox handling optimizations
-##
-
-# Mailbox list indexes can be used to optimize IMAP STATUS commands. They are
-# also required for IMAP NOTIFY extension to be enabled.
-#mailbox_list_index = yes
-
-# Trust mailbox list index to be up-to-date. This reduces disk I/O at the cost
-# of potentially returning out-of-date results after e.g. server crashes.
-# The results will be automatically fixed once the folders are opened.
-#mailbox_list_index_very_dirty_syncs = yes
-
-# Should INBOX be kept up-to-date in the mailbox list index? By default it's
-# not, because most of the mailbox accesses will open INBOX anyway.
-#mailbox_list_index_include_inbox = no
-
-# The minimum number of mails in a mailbox before updates are done to cache
-# file. This allows optimizing Dovecot's behavior to do less disk writes at
-# the cost of more disk reads.
-#mail_cache_min_mail_count = 0
-
-# When IDLE command is running, mailbox is checked once in a while to see if
-# there are any new mails or other changes. This setting defines the minimum
-# time to wait between those checks. Dovecot can also use inotify and
-# kqueue to find out immediately when changes occur.
-#mailbox_idle_check_interval = 30 secs
-
-# Save mails with CR+LF instead of plain LF. This makes sending those mails
-# take less CPU, especially with sendfile() syscall with Linux and FreeBSD.
-# But it also creates a bit more disk I/O which may just make it slower.
-# Also note that if other software reads the mboxes/maildirs, they may handle
-# the extra CRs wrong and cause problems.
-#mail_save_crlf = no
-
-# Max number of mails to keep open and prefetch to memory. This only works with
-# some mailbox formats and/or operating systems.
-#mail_prefetch_count = 0
-
-# How often to scan for stale temporary files and delete them (0 = never).
-# These should exist only after Dovecot dies in the middle of saving mails.
-#mail_temp_scan_interval = 1w
-
-# How many slow mail accesses sorting can perform before it returns failure.
-# With IMAP the reply is: NO [LIMIT] Requested sort would have taken too long.
-# The untagged SORT reply is still returned, but it's likely not correct.
-#mail_sort_max_read_count = 0
-
 protocol !indexer-worker {
   # If folder vsize calculation requires opening more than this many mails from
   # disk (i.e. mail sizes aren't in cache already), return failure and finish
@@ -3511,35 +3400,6 @@ protocol !indexer-worker {
   # be 0 for indexer-worker processes.
   #mail_vsize_bg_after_count = 0
 }
-
-##
-## Maildir-specific settings
-##
-
-# By default LIST command returns all entries in maildir beginning with a dot.
-# Enabling this option makes Dovecot return only entries which are directories.
-# This is done by stat()ing each entry, so it causes more disk I/O.
-# (For systems setting struct dirent->d_type, this check is free and it's
-# done always regardless of this setting)
-#maildir_stat_dirs = no
-
-# When copying a message, do it with hard links whenever possible. This makes
-# the performance much better, and it's unlikely to have any side effects.
-#maildir_copy_with_hardlinks = yes
-
-# Assume Dovecot is the only MUA accessing Maildir: Scan cur/ directory only
-# when its mtime changes unexpectedly or when we can't find the mail otherwise.
-#maildir_very_dirty_syncs = no
-
-# If enabled, Dovecot doesn't use the S=<size> in the Maildir filenames for
-# getting the mail's physical size, except when recalculating Maildir++ quota.
-# This can be useful in systems where a lot of the Maildir filenames have a
-# broken size. The performance hit for enabling this is very small.
-#maildir_broken_filename_sizes = no
-
-# Always move mails from new/ directory to cur/, even when the \Recent flags
-# aren't being reset.
-#maildir_empty_new = no
 
 ##
 ## mbox-specific settings
@@ -3609,42 +3469,6 @@ protocol !indexer-worker {
 # mdbox_rotate_size. This setting currently works only in Linux with some
 # filesystems (ext4, xfs).
 #mdbox_preallocate_space = no
-
-##
-## Mail attachments
-##
-
-# sdbox and mdbox support saving mail attachments to external files, which
-# also allows single instance storage for them. Other backends don't support
-# this for now.
-
-# Directory root where to store mail attachments. Disabled, if empty.
-#mail_attachment_dir =
-
-# Attachments smaller than this aren't saved externally. It's also possible to
-# write a plugin to disable saving specific attachments externally.
-#mail_attachment_min_size = 128k
-
-# Filesystem backend to use for saving attachments:
-#  posix : No SiS done by Dovecot (but this might help FS's own deduplication)
-#  sis posix : SiS with immediate byte-by-byte comparison during saving
-#  sis-queue posix : SiS with delayed comparison and deduplication
-#mail_attachment_fs = sis posix
-
-# Hash format to use in attachment filenames. You can add any text and
-# variables: %{md4}, %{md5}, %{sha1}, %{sha256}, %{sha512}, %{size}.
-# Variables can be truncated, e.g. %{sha256:80} returns only first 80 bits
-#mail_attachment_hash = %{sha1}
-
-# Settings to control adding $HasAttachment or $HasNoAttachment keywords.
-# By default, all MIME parts with Content-Disposition=attachment, or inlines
-# with filename parameter are consired attachments.
-#   add-flags-on-save - Add the keywords when saving new mails.
-#   content-type=type or !type - Include/exclude content type. Excluding will
-#     never consider the matched MIME part as attachment. Including will only
-#     negate an exclusion (e.g. content-type=!foo/* content-type=foo/bar).
-#   exclude-inlined - Exclude any Content-Disposition=inline MIME part.
-#mail_attachment_detection_options =
 EOF
 	cat > '/etc/dovecot/conf.d/15-mailboxes.conf' << EOF
 namespace inbox {
