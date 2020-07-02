@@ -3092,37 +3092,8 @@ chown opendkim:postfix /var/spool/postfix/opendkim
 usermod -a -G dovecot netdata
 	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
 disable_plaintext_auth = no
-#auth_cache_size = 0
-#auth_cache_ttl = 1 hour
-#auth_cache_negative_ttl = 1 hour
-#auth_realms =
-#auth_default_realm = 
-#auth_username_chars = abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890.-_@
-#auth_username_translation =
-#auth_username_format = %Lu
-#auth_master_user_separator =
-#auth_anonymous_username = anonymous
-#auth_worker_max_count = 30
-#auth_gssapi_hostname =
-#auth_krb5_keytab = 
-#auth_use_winbind = no
-#auth_winbind_helper_path = /usr/bin/ntlm_auth
-#auth_failure_delay = 2 secs
-#auth_ssl_require_client_cert = no
-#auth_ssl_username_from_cert = no
-
 auth_mechanisms = plain login
-
-#!include auth-deny.conf.ext
-#!include auth-master.conf.ext
-
 !include auth-system.conf.ext
-#!include auth-sql.conf.ext
-#!include auth-ldap.conf.ext
-#!include auth-passwdfile.conf.ext
-#!include auth-checkpassword.conf.ext
-#!include auth-vpopmail.conf.ext
-#!include auth-static.conf.ext
 EOF
 	cat > '/etc/dovecot/conf.d/10-ssl.conf' << EOF
 ssl = yes
@@ -3130,31 +3101,10 @@ ssl_cert = </etc/certs/${domain}_ecc/fullchain.cer
 ssl_key = </etc/certs/${domain}_ecc/${domain}.key
 ssl_dh = </usr/local/etc/trojan/dh.pem
 ssl_min_protocol = TLSv1.2
-# SSL ciphers to use, the default is:
-#ssl_cipher_list = ALL:!kRSA:!SRP:!kDHd:!DSS:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH
-# To disable non-EC DH, use:
-#ssl_cipher_list = ALL:!DH:!kRSA:!SRP:!kDHd:!DSS:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH
-#ssl_curve_list =
 ssl_prefer_server_ciphers = yes
 ssl_options = no_ticket
 EOF
 	cat > '/etc/dovecot/conf.d/10-master.conf' << EOF
-#default_process_limit = 100
-#default_client_limit = 1000
-
-# Default VSZ (virtual memory size) limit for service processes. This is mainly
-# intended to catch and kill processes that leak memory before they eat up
-# everything.
-#default_vsz_limit = 256M
-
-# Login user is internally used by login processes. This is the most untrusted
-# user in Dovecot system. It shouldn't have access to anything at all.
-#default_login_user = dovenull
-
-# Internal user is used by unprivileged processes. It should be separate from
-# login user, so that login processes can't disturb other processes.
-#default_internal_user = dovecot
-
 service imap-login {
   inet_listener imap {
     #port = 143
@@ -3163,17 +3113,6 @@ service imap-login {
     #port = 993
     #ssl = yes
   }
-
-  # Number of connections to handle before starting a new process. Typically
-  # the only useful values are 0 (unlimited) or 1. 1 is more secure, but 0
-  # is faster. <doc/wiki/LoginProcess.txt>
-  #service_count = 1
-
-  # Number of processes to always keep waiting for more connections.
-  #process_min_avail = 0
-
-  # If you set service_count=0, you probably need to grow this.
-  #vsz_limit = $default_vsz_limit
 }
 
 service submission-login {
@@ -3236,10 +3175,6 @@ namespace inbox {
 mail_privileged_group = mail
 
 protocol !indexer-worker {
-  # If folder vsize calculation requires opening more than this many mails from
-  # disk (i.e. mail sizes aren't in cache already), return failure and finish
-  # the calculation via indexer process. Disabled by default. This setting must
-  # be 0 for indexer-worker processes.
   #mail_vsize_bg_after_count = 0
 }
 EOF
