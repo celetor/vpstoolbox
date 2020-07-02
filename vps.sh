@@ -2401,6 +2401,7 @@ cat > '/opt/netdata/etc/netdata/python.d/phpfpm.conf' << EOF
 local:
   url     : 'http://127.0.0.1:81/status?full&json'
 EOF
+fi
 if [[ ${install_tor} == 1 ]]; then
 apt-get install python-pip -y
 pip install stem
