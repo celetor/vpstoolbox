@@ -3182,19 +3182,6 @@ service submission-login {
   }
 }
 
-#service lmtp {
-#  unix_listener lmtp {
-    #mode = 0666
-#  }
-
-  # Create inet listener only if you can't use the above UNIX socket
-  #inet_listener lmtp {
-    # Avoid making LMTP visible for the entire internet
-    #address =
-    #port = 
-  #}
-#}
-
 service imap {
   # Most of the memory goes to mmap()ing files. You may need to increase this
   # limit if you have huge mailboxes.
@@ -3219,15 +3206,10 @@ service auth {
 }
 
 service auth-worker {
-  # Auth worker process is run as root by default, so that it can access
-  # /etc/shadow. If this isn't necessary, the user should be changed to
-  # $default_internal_user.
   #user = root
 }
 
 service dict {
-  # If dict proxy is used, mail processes should have access to its socket.
-  # For example: mode=0660, group=vmail and global mail_access_groups=vmail
   unix_listener dict {
     #mode = 0600
     #user = 
@@ -3248,151 +3230,10 @@ EOF
 mail_location = maildir:~/Maildir
 
 namespace inbox {
-  # Namespace type: private, shared or public
-  #type = private
-
-  # Hierarchy separator to use. You should use the same separator for all
-  # namespaces or some clients get confused. '/' is usually a good one.
-  # The default however depends on the underlying mail storage format.
-  #separator = 
-
-  # Prefix required to access this namespace. This needs to be different for
-  # all namespaces. For example "Public/".
-  #prefix = 
-
-  # Physical location of the mailbox. This is in same format as
-  # mail_location, which is also the default for it.
-  #location =
-
-  # There can be only one INBOX, and this setting defines which namespace
-  # has it.
   inbox = yes
-
-  # If namespace is hidden, it's not advertised to clients via NAMESPACE
-  # extension. You'll most likely also want to set list=no. This is mostly
-  # useful when converting from another server with different namespaces which
-  # you want to deprecate but still keep working. For example you can create
-  # hidden namespaces with prefixes "~/mail/", "~%u/mail/" and "mail/".
-  #hidden = no
-
-  # Show the mailboxes under this namespace with LIST command. This makes the
-  # namespace visible for clients that don't support NAMESPACE extension.
-  # "children" value lists child mailboxes, but hides the namespace prefix.
-  #list = yes
-
-  # Namespace handles its own subscriptions. If set to "no", the parent
-  # namespace handles them (empty prefix should always have this as "yes")
-  #subscriptions = yes
-
-  # See 15-mailboxes.conf for definitions of special mailboxes.
 }
 
-# Example shared namespace configuration
-#namespace {
-  #type = shared
-  #separator = /
-
-  # Mailboxes are visible under "shared/user@domain/"
-  # %%n, %%d and %%u are expanded to the destination user.
-  #prefix = shared/%%u/
-
-  # Mail location for other users' mailboxes. Note that %variables and ~/
-  # expands to the logged in user's data. %%n, %%d, %%u and %%h expand to the
-  # destination user's data.
-  #location = maildir:%%h/Maildir:INDEX=~/Maildir/shared/%%u
-
-  # Use the default namespace for saving subscriptions.
-  #subscriptions = no
-
-  # List the shared/ namespace only if there are visible shared mailboxes.
-  #list = children
-#}
-# Should shared INBOX be visible as "shared/user" or "shared/user/INBOX"?
-#mail_shared_explicit_inbox = no
-
-# System user and group used to access mails. If you use multiple, userdb
-# can override these by returning uid or gid fields. You can use either numbers
-# or names. <doc/wiki/UserIds.txt>
-#mail_uid =
-#mail_gid =
-
-# Group to enable temporarily for privileged operations. Currently this is
-# used only with INBOX when either its initial creation or dotlocking fails.
-# Typically this is set to "mail" to give access to /var/mail.
 mail_privileged_group = mail
-
-# Grant access to these supplementary groups for mail processes. Typically
-# these are used to set up access to shared mailboxes. Note that it may be
-# dangerous to set these if users can create symlinks (e.g. if "mail" group is
-# set here, ln -s /var/mail ~/mail/var could allow a user to delete others'
-# mailboxes, or ln -s /secret/shared/box ~/mail/mybox would allow reading it).
-#mail_access_groups =
-
-# Allow full filesystem access to clients. There's no access checks other than
-# what the operating system does for the active UID/GID. It works with both
-# maildir and mboxes, allowing you to prefix mailboxes names with eg. /path/
-# or ~user/.
-#mail_full_filesystem_access = no
-
-# Dictionary for key=value mailbox attributes. This is used for example by
-# URLAUTH and METADATA extensions.
-#mail_attribute_dict =
-
-# A comment or note that is associated with the server. This value is
-# accessible for authenticated users through the IMAP METADATA server
-# entry "/shared/comment". 
-#mail_server_comment = ""
-
-# Indicates a method for contacting the server administrator. According to
-# RFC 5464, this value MUST be a URI (e.g., a mailto: or tel: URL), but that
-# is currently not enforced. Use for example mailto:admin@example.com. This
-# value is accessible for authenticated users through the IMAP METADATA server
-# entry "/shared/admin".
-#mail_server_admin = 
-
-##
-## Mail processes
-##
-
-# Locking method for index files. Alternatives are fcntl, flock and dotlock.
-# Dotlocking uses some tricks which may create more disk I/O than other locking
-# methods. NFS users: flock doesn't work, remember to change mmap_disable.
-#lock_method = fcntl
-
-# Directory where mails can be temporarily stored. Usually it's used only for
-# mails larger than >= 128 kB. It's used by various parts of Dovecot, for
-# example LDA/LMTP while delivering large mails or zlib plugin for keeping
-# uncompressed mails.
-#mail_temp_dir = /tmp
-
-# Valid UID range for users, defaults to 500 and above. This is mostly
-# to make sure that users can't log in as daemons or other system users.
-# Note that denying root logins is hardcoded to dovecot binary and can't
-# be done even if first_valid_uid is set to 0.
-#first_valid_uid = 500
-#last_valid_uid = 0
-
-# Valid GID range for users, defaults to non-root/wheel. Users having
-# non-valid GID as primary group ID aren't allowed to log in. If user
-# belongs to supplementary groups with non-valid GIDs, those groups are
-# not set.
-#first_valid_gid = 1
-#last_valid_gid = 0
-
-# Maximum allowed length for mail keyword name. It's only forced when trying
-# to create new keywords.
-#mail_max_keyword_length = 50
-
-# UNIX socket path to master authentication server to find users.
-# This is used by imap (for shared users) and lda.
-#auth_socket_path = /var/run/dovecot/auth-userdb
-
-# Directory where to look up mail plugins.
-#mail_plugin_dir = /usr/lib/dovecot/modules
-
-# Space separated list of plugins to load for all services. Plugins specific to
-# IMAP, LDA, etc. are added to this list in their own .conf files.
-#mail_plugins = 
 
 protocol !indexer-worker {
   # If folder vsize calculation requires opening more than this many mails from
@@ -3401,75 +3242,6 @@ protocol !indexer-worker {
   # be 0 for indexer-worker processes.
   #mail_vsize_bg_after_count = 0
 }
-
-##
-## mbox-specific settings
-##
-
-# Which locking methods to use for locking mbox. There are four available:
-#  dotlock: Create <mailbox>.lock file. This is the oldest and most NFS-safe
-#           solution. If you want to use /var/mail/ like directory, the users
-#           will need write access to that directory.
-#  dotlock_try: Same as dotlock, but if it fails because of permissions or
-#               because there isn't enough disk space, just skip it.
-#  fcntl  : Use this if possible. Works with NFS too if lockd is used.
-#  flock  : May not exist in all systems. Doesn't work with NFS.
-#  lockf  : May not exist in all systems. Doesn't work with NFS.
-#
-# You can use multiple locking methods; if you do the order they're declared
-# in is important to avoid deadlocks if other MTAs/MUAs are using multiple
-# locking methods as well. Some operating systems don't allow using some of
-# them simultaneously.
-#
-# The Debian value for mbox_write_locks differs from upstream Dovecot. It is
-# changed to be compliant with Debian Policy (section 11.6) for NFS safety.
-#       Dovecot: mbox_write_locks = dotlock fcntl
-#       Debian:  mbox_write_locks = fcntl dotlock
-#
-#mbox_read_locks = fcntl
-#mbox_write_locks = fcntl dotlock
-
-# Maximum time to wait for lock (all of them) before aborting.
-#mbox_lock_timeout = 5 mins
-
-# If dotlock exists but the mailbox isn't modified in any way, override the
-# lock file after this much time.
-#mbox_dotlock_change_timeout = 2 mins
-
-# When mbox changes unexpectedly we have to fully read it to find out what
-# changed. If the mbox is large this can take a long time. Since the change
-# is usually just a newly appended mail, it'd be faster to simply read the
-# new mails. If this setting is enabled, Dovecot does this but still safely
-# fallbacks to re-reading the whole mbox file whenever something in mbox isn't
-# how it's expected to be. The only real downside to this setting is that if
-# some other MUA changes message flags, Dovecot doesn't notice it immediately.
-# Note that a full sync is done with SELECT, EXAMINE, EXPUNGE and CHECK 
-# commands.
-#mbox_dirty_syncs = yes
-
-# Like mbox_dirty_syncs, but don't do full syncs even with SELECT, EXAMINE,
-# EXPUNGE or CHECK commands. If this is set, mbox_dirty_syncs is ignored.
-#mbox_very_dirty_syncs = no
-
-# If mbox size is smaller than this (e.g. 100k), don't write index files.
-# If an index file already exists it's still read, just not updated.
-#mbox_min_index_size = 0
-
-##
-## mdbox-specific settings
-##
-
-# Maximum dbox file size until it's rotated.
-#mdbox_rotate_size = 10M
-
-# Maximum dbox file age until it's rotated. Typically in days. Day begins
-# from midnight, so 1d = today, 2d = yesterday, etc. 0 = check disabled.
-#mdbox_rotate_interval = 0
-
-# When creating new mdbox files, immediately preallocate their size to
-# mdbox_rotate_size. This setting currently works only in Linux with some
-# filesystems (ext4, xfs).
-#mdbox_preallocate_space = no
 EOF
 	cat > '/etc/dovecot/conf.d/15-mailboxes.conf' << EOF
 namespace inbox {
