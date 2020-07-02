@@ -2051,9 +2051,6 @@ if [[ $install_php = 1 ]]; then
 	cd
 	fi
 cat > '/etc/php/7.4/fpm/pool.d/www.conf' << EOF
-; Start a new pool named 'www'.
-; the variable $pool can be used in any directive and will be replaced by the
-; pool name ('www' here)
 [www]
 
 ; Per pool prefix
@@ -2115,20 +2112,6 @@ listen.group = nginx
 ; Default Value: any
 ; listen.allowed_clients = 127.0.0.1
 
-; Specify the nice(2) priority to apply to the pool processes (only if set)
-; The value can vary from -19 (highest priority) to 20 (lower priority)
-; Note: - It will only work if the FPM master process is launched as root
-;       - The pool processes will inherit the master process priority
-;         unless it specified otherwise
-; Default Value: no set
-; process.priority = -19
-
-; Set the process dumpable flag (PR_SET_DUMPABLE prctl) even if the process user
-; or group is differrent than the master process user. It allows to create process
-; core dump and ptrace the process for the pool user.
-; Default Value: no
-; process.dumpable = yes
-
 pm = dynamic
 
 ; The number of child processes to be created when pm is set to 'static' and the
@@ -2181,62 +2164,6 @@ ping.path = /ping
 ; Default: not set
 ;access.log = log/\$pool.access.log
 
-; The access log format.
-; The following syntax is allowed
-;  %%: the '%' character
-;  %C: %CPU used by the request
-;      it can accept the following format:
-;      - %{user}C for user CPU only
-;      - %{system}C for system CPU only
-;      - %{total}C  for user + system CPU (default)
-;  %d: time taken to serve the request
-;      it can accept the following format:
-;      - %{seconds}d (default)
-;      - %{miliseconds}d
-;      - %{mili}d
-;      - %{microseconds}d
-;      - %{micro}d
-;  %e: an environment variable (same as $_ENV or $_SERVER)
-;      it must be associated with embraces to specify the name of the env
-;      variable. Some exemples:
-;      - server specifics like: %{REQUEST_METHOD}e or %{SERVER_PROTOCOL}e
-;      - HTTP headers like: %{HTTP_HOST}e or %{HTTP_USER_AGENT}e
-;  %f: script filename
-;  %l: content-length of the request (for POST request only)
-;  %m: request method
-;  %M: peak of memory allocated by PHP
-;      it can accept the following format:
-;      - %{bytes}M (default)
-;      - %{kilobytes}M
-;      - %{kilo}M
-;      - %{megabytes}M
-;      - %{mega}M
-;  %n: pool name
-;  %o: output header
-;      it must be associated with embraces to specify the name of the header:
-;      - %{Content-Type}o
-;      - %{X-Powered-By}o
-;      - %{Transfert-Encoding}o
-;      - ....
-;  %p: PID of the child that serviced the request
-;  %P: PID of the parent of the child that serviced the request
-;  %q: the query string
-;  %Q: the '?' character if query string exists
-;  %r: the request URI (without the query string, see %q and %Q)
-;  %R: remote IP address
-;  %s: status (response code)
-;  %t: server time the request was received
-;      it can accept a strftime(3) format:
-;      %d/%b/%Y:%H:%M:%S %z (default)
-;      The strftime(3) format must be encapsuled in a %{<strftime_format>}t tag
-;      e.g. for a ISO8601 formatted timestring, use: %{%Y-%m-%dT%H:%M:%S%z}t
-;  %T: time the log has been written (the request has finished)
-;      it can accept a strftime(3) format:
-;      %d/%b/%Y:%H:%M:%S %z (default)
-;      The strftime(3) format must be encapsuled in a %{<strftime_format>}t tag
-;      e.g. for a ISO8601 formatted timestring, use: %{%Y-%m-%dT%H:%M:%S%z}t
-;  %u: remote user
-;
 ; Default: "%R - %u %t \"%m %r\" %s"
 ;access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"
 
@@ -2270,10 +2197,6 @@ ping.path = /ping
 ; Default Value: no
 ;request_terminate_timeout_track_finished = no
 
-; Set open file descriptor rlimit.
-; Default Value: system defined value
-;rlimit_files = 1024
-
 ; Set max core size rlimit.
 ; Possible Values: 'unlimited' or an integer greater or equal to 0
 ; Default Value: system defined value
@@ -2301,22 +2224,6 @@ ping.path = /ping
 ; process time (several ms).
 ; Default Value: no
 catch_workers_output = yes
-
-; Decorate worker output with prefix and suffix containing information about
-; the child that writes to the log and if stdout or stderr is used as well as
-; log level and time. This options is used only if catch_workers_output is yes.
-; Settings to "no" will output data as written to the stdout or stderr.
-; Default value: yes
-;decorate_workers_output = no
-
-; Clear environment in FPM workers
-; Prevents arbitrary environment variables from reaching FPM worker processes
-; by clearing the environment in workers before env vars specified in this
-; pool configuration are added.
-; Setting to "no" will make all environment variables available to PHP code
-; via getenv(), $_ENV and $_SERVER.
-; Default Value: yes
-;clear_env = no
 
 ; Limits the extensions of the main script FPM will allow to parse. This can
 ; prevent configuration mistakes on the web server side. You should only limit
