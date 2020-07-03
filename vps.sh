@@ -2167,11 +2167,6 @@ ping.path = /ping
 ; Default: "%R - %u %t \"%m %r\" %s"
 ;access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"
 
-; The log file for slow requests
-; Default Value: not set
-; Note: slowlog is mandatory if request_slowlog_timeout is set
-;slowlog = log/$pool.log.slow
-
 ; The timeout for serving a single request after which a PHP backtrace will be
 ; dumped to the 'slowlog' file. A value of '0s' means 'off'.
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
@@ -2201,17 +2196,6 @@ ping.path = /ping
 ; Possible Values: 'unlimited' or an integer greater or equal to 0
 ; Default Value: system defined value
 ;rlimit_core = 0
-
-; Chroot to this directory at the start. This value must be defined as an
-; absolute path. When this value is not set, chroot is not used.
-; Note: you can prefix with '$prefix' to chroot to the pool prefix or one
-; of its subdirectories. If the pool prefix is not set, the global prefix
-; will be used instead.
-; Note: chrooting is a great security feature and should be used whenever
-;       possible. However, all PHP paths will be relative to the chroot
-;       (error_log, sessions.save_path, ...).
-; Default Value: not set
-;chroot =
 
 ; Chdir to this directory at the start.
 ; Note: relative path can be used.
@@ -3688,6 +3672,7 @@ footer a:link {
                     <br>
                     
                     <h2>Trojan-GFW</h2>
+                    <p>PS: 不支援Cloudflare CDN !</p>
                     <h4> 默认安装: ✅</h4>
                     <p>Introduction: An unidentifiable mechanism that helps you bypass GFW.</p>
                     <ul class="ttlist">
@@ -3728,6 +3713,7 @@ footer a:link {
 
                     <h2>Trojan-panel</h2>
                     <h4>默认安装: ❎</h4>
+                    <p>PS: Quota为流量(设置为-1则等于无限流量),password为使用密码,email仅用于管理,无实际意义。</p>
                     <p>Introduction: Trojan multi-user control panel</p>
                     <p><a href="https://$domain/${password1}_config/" target="_blank">https://$domain/${password1}_config/</a></p>
                     <p>Related Links</p>
