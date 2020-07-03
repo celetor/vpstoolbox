@@ -2114,30 +2114,12 @@ listen.group = nginx
 
 pm = dynamic
 
-; The number of child processes to be created when pm is set to 'static' and the
-; maximum number of child processes when pm is set to 'dynamic' or 'ondemand'.
-; This value sets the limit on the number of simultaneous requests that will be
-; served. Equivalent to the ApacheMaxClients directive with mpm_prefork.
-; Equivalent to the PHP_FCGI_CHILDREN environment variable in the original PHP
-; CGI. The below defaults are based on a server without much resources. Don't
-; forget to tweak pm.* to fit your needs.
-; Note: Used when pm is set to 'static', 'dynamic' or 'ondemand'
-; Note: This value is mandatory.
 pm.max_children = $(($(nproc --all)*5))
 
-; The number of child processes created on startup.
-; Note: Used only when pm is set to 'dynamic'
-; Default Value: (min_spare_servers + max_spare_servers) / 2
 pm.start_servers = $(($(nproc --all)*4))
 
-; The desired minimum number of idle server processes.
-; Note: Used only when pm is set to 'dynamic'
-; Note: Mandatory when pm is set to 'dynamic'
 pm.min_spare_servers = $(($(nproc --all)*2))
 
-; The desired maximum number of idle server processes.
-; Note: Used only when pm is set to 'dynamic'
-; Note: Mandatory when pm is set to 'dynamic'
 pm.max_spare_servers = $(($(nproc --all)*4))
 
 ; The number of seconds after which an idle process will be killed.
@@ -2154,33 +2136,6 @@ pm.max_spare_servers = $(($(nproc --all)*4))
 pm.status_path = /status
 
 ping.path = /ping
-
-; This directive may be used to customize the response of a ping request. The
-; response is formatted as text/plain with a 200 response code.
-; Default Value: pong
-;ping.response = pong
-
-; The access log file
-; Default: not set
-;access.log = log/\$pool.access.log
-
-; Default: "%R - %u %t \"%m %r\" %s"
-;access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"
-
-; The log file for slow requests
-; Default Value: not set
-; Note: slowlog is mandatory if request_slowlog_timeout is set
-;slowlog = log/$pool.log.slow
-
-; The timeout for serving a single request after which a PHP backtrace will be
-; dumped to the 'slowlog' file. A value of '0s' means 'off'.
-; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
-; Default Value: 0
-;request_slowlog_timeout = 0
-
-; Depth of slow log stack trace.
-; Default Value: 20
-;request_slowlog_trace_depth = 20
 
 ; The timeout for serving a single request after which the worker process will
 ; be killed. This option should be used when the 'max_execution_time' ini option
@@ -2201,17 +2156,6 @@ ping.path = /ping
 ; Possible Values: 'unlimited' or an integer greater or equal to 0
 ; Default Value: system defined value
 ;rlimit_core = 0
-
-; Chroot to this directory at the start. This value must be defined as an
-; absolute path. When this value is not set, chroot is not used.
-; Note: you can prefix with '$prefix' to chroot to the pool prefix or one
-; of its subdirectories. If the pool prefix is not set, the global prefix
-; will be used instead.
-; Note: chrooting is a great security feature and should be used whenever
-;       possible. However, all PHP paths will be relative to the chroot
-;       (error_log, sessions.save_path, ...).
-; Default Value: not set
-;chroot =
 
 ; Chdir to this directory at the start.
 ; Note: relative path can be used.
@@ -3690,6 +3634,7 @@ footer a:link {
                     <h2>Trojan-GFW</h2>
                     <h4> 默认安装: ✅</h4>
                     <p>Introduction: An unidentifiable mechanism that helps you bypass GFW.</p>
+                    <p>PS: 不支援Cloudflare等 CDN !</p>
                     <ul class="ttlist">
                         <li>
                             <h3>Trojan-GFW client config profiles</h3>
@@ -3728,6 +3673,8 @@ footer a:link {
 
                     <h2>Trojan-panel</h2>
                     <h4>默认安装: ❎</h4>
+                    <p>简介: 简易Trojan-gfw多用户管理面板。</p>
+                    <p>PS: Quota为流量(设置为-1则等于无限流量),password为使用密码,email仅用于管理,无实际意义。</p>
                     <p>Introduction: Trojan multi-user control panel</p>
                     <p><a href="https://$domain/${password1}_config/" target="_blank">https://$domain/${password1}_config/</a></p>
                     <p>Related Links</p>
@@ -3754,6 +3701,7 @@ footer a:link {
                     
                     <h2>Qbittorrent</h2>
                     <h4>默认安装: ❎</h4>
+                    <p>简介: 一款用于 下载bt资源到你的VPS上 的软件</p>
                     <p>Introduction: download resources you want to your vps(support bt only but extremely fast)</p>
                     <!-- <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p> -->
                     <ul>
@@ -3786,6 +3734,7 @@ footer a:link {
                     
                     <h2>Bittorrent-trackers</h2>
                     <h4>默认安装: ❎</h4>
+                    <p>简介: 简易Bittorrent-tracker。</p>
                     <p>Introduction: use it as a private or public(not recommended) bittorrent tracker</p>
                     <p><code>https://$domain:443$trackerpath</code></p>
                     <p><code>http://$domain:8000/announce</code></p>
@@ -3807,12 +3756,14 @@ footer a:link {
                     <h2>Aria2</h2>
                     <h4>默认安装: ✅</h4>
                     <p>Your Aria2 Information</p>
+                    <p>简介: 将任何你想下载的东西(支援http/https/ftp/bt等,不支援emule)下到你的VPS上的软件。</p>
+                    <p>PS: 推荐使用Ariang连接(aria2没有官方web interface!)</p>
                     <p>Introduction: download resources you want to your vps(support ftp/http/https/bt)</p>
                     <p><code>$ariapasswd@https://$domain:443$ariapath</code></p>
                     <p>Related Links:</p>
                     <p>Ariang is recommended to connect to your server</p>
                     <ol>
-                        <li><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">Aria客户端(远程操控)</a></li>
+                        <li><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">AriaNG</a></li>
                         <li><a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a></li>
                         <li><a href="https://aria2.github.io/manual/en/html/index.html" target="_blank">https://aria2.github.io/manual/en/html/index.html</a> 官方文档</li>
                         <li><a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank">https://play.google.com/store/apps/details?id=com.gianlu.aria2app</a></li>
@@ -3822,6 +3773,7 @@ footer a:link {
                     <h2>Filebrowser</h2>
                     <h4>默认安装: ✅</h4>
                     <p>Your Filebrowser Information</p>
+                    <p>简介: 一款用于 从VPS上下载资源(在aria2/qbt下载完成后)到本地网络 的软件。</p>
                     <p>Introduction: download any resources(formaly downloaded by qbt or aria2) from your vps to your local network</p>
                     <!-- <p><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a> 用户名(username): admin 密碼(password): admin</p> -->
                     <ul>
@@ -3851,6 +3803,7 @@ footer a:link {
 
                     <h2>Speedtest</h2>
                     <h4>默认安装: ✅</h4>
+                    <p>简介: 一款用于 测试本地网络到VPS的延迟及带宽 的简易应用(不准的话别来找我,网络波动是正常事情)。</p>
                     <p>Introduction: test download and upload speed from vps to your local network</p>
                     <p><a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain:443/${password1}_speedtest/</a></p>
                     <p>Related Links</p>
@@ -3872,6 +3825,7 @@ footer a:link {
                     
                     <h2>Mail Service</h2>
                     <h4>默认安装: ❎</h4>
+                    <p>PS: 不支援自定义证书,仅支援全自动申请的let证书!</p>
                     <p>Your Mail service Information</p>
                     <!-- <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p> -->
                     <ul>
@@ -3882,7 +3836,7 @@ footer a:link {
                     </ul>
                     <p>Tips:</p>
                     <ol>
-                        <li>阿里云，gcp等厂商默认不开放25端口，不能发邮件，请注意.</li>
+                        <li>阿里云，gcp等厂商默认不开放25(包括对外访问)端口，不能发邮件，请注意。</li>
                         <li>请自行修改发件人身份为${mailuser}@${domain}</li>
                         <li>请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all</li>
                         <li>请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD</li>
@@ -3905,7 +3859,8 @@ footer a:link {
                     <br>
 
 
-                    <h2>How to change the default config </h2>
+                    <h2>How to change the default config or debug </h2>
+                    <p>PS:如果你自己搞炸了别来提issue!!!</p>
                     <p>Nginx</p>
                     <ul>
                         <li><code>sudo nano /etc/nginx/conf.d/default.conf</code></li>
@@ -3915,6 +3870,11 @@ footer a:link {
                     <ul>
                         <li><code>sudo nano /usr/local/etc/trojan/config.json</code></li>
                         <li><code>sudo systemctl start/restart/status trojan</code></li>
+                    </ul>
+                    <p>PHP</p>
+                    <ul>
+                        <li><code>sudo nano /etc/php/7.4/fpm/pool.d/www.conf</code></li>
+                        <li><code>sudo systemctl start/restart/status php7.4-fpm</code></li>
                     </ul>
                     <p>Dnscrypt-proxy</p>
                     <ul>
@@ -3931,10 +3891,30 @@ footer a:link {
                         <li><code>sudo nano /opt/netdata/etc/netdata/netdata.conf</code></li>
                         <li><code>sudo systemctl start/restart/status netdata</code></li>
                     </ul>
+                    <p>MariaDB</p>
+                    <ul>
+                        <li><code>sudo nano /etc/mysql/my.cnf</code></li>
+                        <li><code>sudo systemctl start/restart/status mariadb</code></li>
+                    </ul>
                     <p>Speedtest</p>
                     <ul>
                         <li><code>docker ps/stop/start</code></li>
                         <li><code>docker run -d --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest </code></li>
+                    </ul>
+                    <p>Postfix</p>
+                    <ul>
+                        <li><code>sudo nano /etc/postfix/main.cf</code></li>
+                        <li><code>sudo systemctl start/restart/status postfix</code></li>
+                    </ul>
+                    <p>Dovecot</p>
+                    <ul>
+                        <li><code>sudo nano /etc/dovecot/conf.d/*.conf(please search by yourself)</code></li>
+                        <li><code>sudo systemctl start/restart/status dovecot</code></li>
+                    </ul>
+                    <p>Iptables</p>
+                    <ul>
+                        <li><code>sudo iptables -L -v -n</code></li>
+                        <li><code>sudo iptables-save > /etc/iptables/rules.v4</code></li>
                     </ul>
                     <p>Tor</p>
                     <ul>
