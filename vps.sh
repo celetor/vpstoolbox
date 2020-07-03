@@ -555,6 +555,7 @@ done
 hostnamectl set-hostname $domain
 echo "${domain}" > /etc/hostname
 rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
+rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
 if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
 password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
