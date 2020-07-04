@@ -551,6 +551,13 @@ fi
 #####################################
 while [[ -z ${domain} ]]; do
 domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你的域名)(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+colorEcho ${INFO} "Checking if domain is vaild."
+host ${domain}
+if [[ $? != 0 ]]; then
+	whiptail --title "Warning" --msgbox "Warning: Invaild Domain !!!" 8 78
+	domain=""
+	clear
+fi
 done
 hostnamectl set-hostname $domain
 echo "${domain}" > /etc/hostname
@@ -732,11 +739,11 @@ colorEcho ${INFO} "初始化中(initializing)"
  if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 	dist=ubuntu
 	apt-get update -q
-	apt-get install whiptail curl locales lsb-release jq -y -q
+	apt-get install whiptail curl dnsutils locales lsb-release jq -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
 	apt-get update -q
-	apt-get install whiptail curl locales lsb-release jq -y -q
+	apt-get install whiptail curl dnsutils locales lsb-release jq -y -q
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
 	exit 1;
@@ -1167,7 +1174,7 @@ systemctl daemon-reload
 ###########################################
 clear
 colorEcho ${INFO} "Installing all necessary Software"
-apt-get install sudo git curl xz-utils wget apt-transport-https gnupg dnsutils lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less haveged neofetch -q -y
+apt-get install sudo git curl xz-utils wget apt-transport-https gnupg lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less haveged neofetch -q -y
 apt-get install python3-qrcode python-dnspython -q -y
 sh -c 'echo "y\n\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
 clear
