@@ -204,8 +204,7 @@ echo -e "Architecture:\t\t"`arch`
 echo -e "Processor Name:\t\t"`awk -F':' '/^model name/ {print $2}' /proc/cpuinfo | uniq | sed -e 's/^[ \t]*//'`
 echo -e "Active User:\t\t"`w | cut -d ' ' -f1 | grep -v USER | xargs -n1`
 echo -e "System Main IP:\t\t"`hostname -I`
-echo -e "-----------------------------------------------------------------------------"
-echo -e "-------------------------------IP Information----------------------------"
+echo -e "-------------------------------IP Information--------------------------------"
 echo -e "ip:\t\t"`jq -r '.ip' "/root/.trojan/ip.json"`
 echo -e "city:\t\t"`jq -r '.city' "/root/.trojan/ip.json"`
 echo -e "region:\t\t"`jq -r '.region' "/root/.trojan/ip.json"`
@@ -216,7 +215,7 @@ echo -e "postal:\t\t"`jq -r '.postal' "/root/.trojan/ip.json"`
 echo -e "timezone:\t"`jq -r '.timezone' "/root/.trojan/ip.json"`
 echo -e "-----------------------------------------------------------------------------"
 if [[ -f /root/.trojan/ipv6.json ]]; then
-echo -e "-------------------------------IPv6 Information----------------------------"
+echo -e "-------------------------------IPv6 Information------------------------------"
 echo -e "ip:\t\t"$(jq -r '.ip' "/root/.trojan/ipv6.json")
 echo -e "city:\t\t"$(jq -r '.city' "/root/.trojan/ipv6.json")
 echo -e "region:\t\t"$(jq -r '.region' "/root/.trojan/ipv6.json")
@@ -2075,24 +2074,10 @@ cat > '/etc/php/7.4/fpm/pool.d/www.conf' << EOF
 ; Default Value: none
 ;prefix = /path/to/pools/$pool
 
-; Unix user/group of processes
-; Note: The user is mandatory. If the group is not set, the default user's group
-;       will be used.
 user = nginx
 group = nginx
 
-; The address on which to accept FastCGI requests.
-; Valid syntaxes are:
-;   'ip.add.re.ss:port'    - to listen on a TCP socket to a specific IPv4 address on
-;                            a specific port;
-;   '[ip:6:addr:ess]:port' - to listen on a TCP socket to a specific IPv6 address on
-;                            a specific port;
-;   'port'                 - to listen on a TCP socket to all addresses
-;                            (IPv6 and IPv4-mapped) on a specific port;
-;   '/path/to/unix/socket' - to listen on a unix socket.
-; Note: This value is mandatory.
 listen = /run/php/php7.4-fpm.sock
-; listen = 127.0.0.1:9000
 ; Set listen(2) backlog.
 ; Default Value: 511 (-1 on FreeBSD and OpenBSD)
 ;listen.backlog = 511
@@ -4281,7 +4266,6 @@ EOF
 		apt-get update -q
 		apt-get purge speedtest-cli -y -qq
 		apt-get install speedtest -y -qq
-		#speedtest
 		sh -c 'echo "YES\n" | speedtest'
 		colorEcho ${INFO} "Benchmark complete"
 		;;
