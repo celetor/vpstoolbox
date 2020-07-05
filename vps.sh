@@ -3955,6 +3955,7 @@ uninstall(){
 			systemctl disable dnscrypt-proxy
 			rm -rf /usr/sbin/dnscrypt-proxy
 			rm /etc/systemd/system/dnscrypt-proxy.service
+			echo "nameserver 1.1.1.1" > /etc/resolv.conf
 		fi
 	fi
 	if [[ -f /usr/bin/qbittorrent-nox ]]; then
