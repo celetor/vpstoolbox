@@ -3962,6 +3962,7 @@ uninstall(){
 			rm -rf /usr/sbin/dnscrypt-proxy
 			rm /etc/systemd/system/dnscrypt-proxy.service
 			echo "nameserver 1.1.1.1" > /etc/resolv.conf
+			iptables -t nat -F
 		fi
 	fi
 	if [[ -f /usr/bin/qbittorrent-nox ]]; then
