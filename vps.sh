@@ -1005,6 +1005,10 @@ openfirewall(){
 		iptables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
 		ip6tables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
 	fi
+	if [[ $install_netdata == 1 ]]; then
+		iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 19999 -j DROP
+		iptables -A INPUT ! -s 127.0.0.1 -p udp -m udp --dport 19999 -j DROP
+	fi
 	if [[ ${install_mail} == 1 ]]; then
 		iptables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT
 		ip6tables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT
@@ -2212,7 +2216,7 @@ fi
 if [[ $install_netdata == 1 ]]; then
 		clear
 		colorEcho ${INFO} "Install netdata ing"
-		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --no-updates
+		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
 		touch /opt/netdata/etc/netdata/python.d/dns_query_time.conf
 		cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
 localhost:
@@ -3343,7 +3347,7 @@ checkupdate(){
 		bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
 	fi
 	if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
-		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --no-updates
+		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
 		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		systemctl restart netdata
