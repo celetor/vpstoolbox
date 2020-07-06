@@ -433,7 +433,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按�
 "7" "Dnscrypt-proxy(Dns encryption)" on \
 "8" "RSSHUB(require Docker)" on \
 "下载" "Download" off  \
-"9" "Qbittorrent" off \
+"9" "Qbittorrent" on \
 "10" "Bt-Tracker(require Node.js)" off \
 "11" "Aria2" on \
 "12" "Filebrowser" on \
@@ -986,6 +986,8 @@ openfirewall(){
 	ip6tables -A OUTPUT -j ACCEPT
 	#ip6tables -I FORWARD -j DROP
 	if [[ $install_qbt == 1 ]]; then
+		iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 8080 -j DROP
+		iptables -A INPUT ! -s 127.0.0.1 -p udp -m udp --dport 8080 -j DROP
 		iptables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
 		ip6tables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
 		iptables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT
@@ -3693,7 +3695,7 @@ footer a:link {
                     <br>
                     
                     <h2>Qbittorrent</h2>
-                    <h4>默认安装: ❎</h4>
+                    <h4>默认安装: ✅</h4>
                     <p>简介: 一款用于 下载bt资源到你的VPS上 的软件</p>
                     <p>Introduction: download resources you want to your vps(support bt only but extremely fast)</p>
                     <!-- <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p> -->
