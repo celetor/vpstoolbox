@@ -429,7 +429,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按�
 "4" "Node.js" on \
 "代理" "Proxy" off  \
 "5" "Trojan-GFW(不支援Cloudflare CDN !)" on \
-"6" "Trojan-panel(require PHP MariaDB)" off \
+"6" "Trojan-panel(require PHP Node.js MariaDB)" off \
 "7" "Dnscrypt-proxy(Dns encryption)" on \
 "8" "RSSHUB(require Docker)" on \
 "下载" "Download" off  \
