@@ -41,6 +41,8 @@ export DEBIAN_FRONTEND=noninteractive
 
 install_bbr=1
 
+rm -rf /lib/systemd/system/cloud*
+
 if [[ $(id -u) != 0 ]]; then
 	echo Please run this script as root.
 	exit 1
