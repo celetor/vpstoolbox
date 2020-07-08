@@ -42,6 +42,10 @@ export DEBIAN_FRONTEND=noninteractive
 install_bbr=1
 
 rm -rf /lib/systemd/system/cloud*
+#disable tencent cloud process
+rm -rf /usr/local/sa
+rm -rf /usr/local/agenttools
+rm -rf /usr/local/qcloud
 
 if [[ $(id -u) != 0 ]]; then
 	echo Please run this script as root.
