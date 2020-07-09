@@ -4035,7 +4035,7 @@ footer a:link {
 
                     <h2>Speedtest</h2>
                     <h4>默认安装: ✅</h4>
-                    <p>简介: 一款用于 测试本地网络到VPS的延迟及带宽 的简易应用(不准的话别来找我,网络波动是正常事情)。</p>
+                    <p>简介: 一款用于 测试本地网络到VPS的延迟及带宽 的简易应用。</p>
                     <p>Introduction: test download and upload speed from vps to your local network</p>
                     <p><a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain:443/${password1}_speedtest/</a></p>
                     <p>Related Links</p>
@@ -4127,11 +4127,6 @@ footer a:link {
                     <ul>
                         <li><code>sudo nano /etc/mysql/my.cnf</code></li>
                         <li><code>sudo systemctl start/restart/status mariadb</code></li>
-                    </ul>
-                    <p>Speedtest</p>
-                    <ul>
-                        <li><code>docker ps/stop/start</code></li>
-                        <li><code>docker run -d --restart unless-stopped -e MODE=standalone -p 127.0.0.1:8001:80 -it adolfintel/speedtest </code></li>
                     </ul>
                     <p>Postfix</p>
                     <ul>
