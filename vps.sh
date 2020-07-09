@@ -46,6 +46,8 @@ rm -rf /lib/systemd/system/cloud*
 rm -rf /usr/local/sa
 rm -rf /usr/local/agenttools
 rm -rf /usr/local/qcloud
+#disable huawei cloud process
+rm -rf /usr/local/telescope
 
 if [[ $(id -u) != 0 ]]; then
 	echo Please run this script as root.
