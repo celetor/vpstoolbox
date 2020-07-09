@@ -428,7 +428,7 @@ if [[ ${install_status} == 1 ]]; then
 	readconfig
 fi
 
-whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 52 16 \
+whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 60 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "依赖" "dependence" off  \
 "1" "TCP-BBR(TCP-Turbo)" on \
@@ -566,6 +566,7 @@ if [[ $? != 0 ]]; then
 	clear
 fi
 done
+clear
 hostnamectl set-hostname $domain
 echo "${domain}" > /etc/hostname
 rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
