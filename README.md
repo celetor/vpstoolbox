@@ -41,4 +41,8 @@ Ip Information is just an indispensable part of this project, all ip information
 23. Support Full/Part Uninstall
 24. And so on...
 
+### Give it a try ! (Live Demo,no Guarantee)
+
+[https://trojan-gfw.xyz/vpstoolbox.html](https://trojan-gfw.xyz/vpstoolbox.html)
+
 ## If you found it useful , please give a star ,thanks!
