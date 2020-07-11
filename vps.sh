@@ -439,7 +439,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按�
 "5" "Trojan-GFW(不支援Cloudflare CDN !)" on \
 "6" "Trojan-panel(require PHP Node.js MariaDB)" off \
 "7" "Dnscrypt-proxy(Dns encryption)" on \
-"8" "RSSHUB(require Docker)" on \
+"8" "RSSHUB+TT-RSS(require Docker PHP MariaDB)" on \
 "下载" "Download" off  \
 "9" "Qbittorrent" on \
 "10" "Bt-Tracker(require Node.js)" off \
@@ -733,9 +733,9 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         ;;
     esac
     if [[ $? != 0 ]]; then
-	colorEcho ${ERROR} "证书申请失败，请检查域名以及其他信息是否正确"
-	colorEcho ${ERROR} "certificate issue fail,Pleae enter correct information and check your network"
-	exit 1
+    whiptail --title "ERROR" --msgbox "证书申请失败，请检查域名以及其他信息是否正确!(certificate issue fail,Pleae enter correct information and check your network)" 8 78
+	whiptail --title "Warning" --msgbox "若你确定A解析已成功,请在api yes/no 选项中选否以继续,并确定tcp 80/http端口可从外网访问!" 8 78
+	advancedMenu
 	fi
     fi
 fi
@@ -1465,6 +1465,106 @@ fi
 if [[ ${install_rsshub} == 1 ]]; then
 docker pull diygod/rsshub
 docker run -d --restart unless-stopped --name rsshub -p 127.0.0.1:1200:1200 diygod/rsshub
+cd /usr/share/nginx/
+git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
+  cat > '/usr/share/nginx/tt-rss/config.php' << EOF
+<?php
+	// *******************************************
+	// *** Database configuration (important!) ***
+	// *******************************************
+
+	define('DB_TYPE', 'mysql');
+	define('DB_HOST', '');
+	define('DB_USER', 'ttrss');
+	define('DB_NAME', 'ttrss');
+	define('DB_PASS', '${password1}');
+	define('DB_PORT', '3306');
+	define('MYSQL_CHARSET', 'UTF8');
+
+	// ***********************************
+	// *** Basic settings (important!) ***
+	// ***********************************
+
+	define('SELF_URL_PATH', 'https://${domain}/${password1}_ttrss//');
+	define('SINGLE_USER_MODE', false);
+	define('SIMPLE_UPDATE_MODE', false);
+
+	// *****************************
+	// *** Files and directories ***
+	// *****************************
+
+	define('PHP_EXECUTABLE', '/usr/bin/php');
+	define('LOCK_DIRECTORY', 'lock');
+	define('CACHE_DIR', 'cache');
+	define('ICONS_DIR', "feed-icons");
+	define('ICONS_URL', "feed-icons");
+
+	// **********************
+	// *** Authentication ***
+	// **********************
+
+	define('AUTH_AUTO_CREATE', true);
+	define('AUTH_AUTO_LOGIN', true);
+
+	// *********************
+	// *** Feed settings ***
+	// *********************
+
+	define('FORCE_ARTICLE_PURGE', 0);
+
+	// ****************************
+	// *** Sphinx search plugin ***
+	// ****************************
+
+	define('SPHINX_SERVER', 'localhost:9312');
+	define('SPHINX_INDEX', 'ttrss, delta');
+
+	// ***********************************
+	// *** Self-registrations by users ***
+	// ***********************************
+
+	define('ENABLE_REGISTRATION', false);
+	define('REG_NOTIFY_ADDRESS', 'user@your.domain.dom');
+	define('REG_MAX_USERS', 10);
+
+	// **********************************
+	// *** Cookies and login sessions ***
+	// **********************************
+
+	define('SESSION_COOKIE_LIFETIME', 86400);
+	define('SMTP_FROM_NAME', 'Tiny Tiny RSS');
+	define('SMTP_FROM_ADDRESS', 'noreply@your.domain.dom');
+	define('DIGEST_SUBJECT', '[tt-rss] New headlines for last 24 hours');
+
+	// ***************************************
+	// *** Other settings (less important) ***
+	// ***************************************
+
+	define('CHECK_FOR_UPDATES', true);
+	define('ENABLE_GZIP_OUTPUT', false);
+	define('PLUGINS', 'auth_internal, note');
+	define('LOG_DESTINATION', 'sql');
+	define('CONFIG_VERSION', 26);
+	define('_SKIP_SELF_URL_PATH_CHECKS', true);
+EOF
+cd
+
+  cat > '/etc/systemd/system/rssfeed.service' << EOF
+[Unit]
+Description=ttrss_backend
+After=network.target mysql.service
+
+[Service]
+User=nginx
+ExecStart=/usr/share/nginx/tt-rss/update_daemon2.php
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl enable rssfeed
+
 fi
 ##########Install Fail2ban#################
 if [[ ${install_fail2ban} == 1 ]]; then
@@ -1491,8 +1591,8 @@ clear
 if [[ ${install_openssl} == 1 ]]; then
 	colorEcho ${INFO} "Install OPENSSL ing"
 apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
-wget https://www.openssl.org/source/openssl-1.1.1f.tar.gz && tar -xvf openssl-1.1.1f.tar.gz && rm -rf openssl-1.1.1f.tar.gz
-cd openssl-1.1.1f && ./config no-ssl2 no-ssl3 && make -j $(nproc --all) && make test && make install
+wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz && tar -xvf openssl*.tar.gz && rm -rf openssl*.tar.gz
+cd openssl* && ./config no-ssl2 no-ssl3 && make -j $(nproc --all) && make test && make install
 cd ..
 rm -rf openssl*
 apt-get purge build-essential -y
@@ -2984,6 +3084,14 @@ mysql -u root -e "create user 'trojan'@'localhost' IDENTIFIED BY '${password1}';
 mysql -u root -e "GRANT ALL PRIVILEGES ON trojan.* to trojan@'localhost';"
 mysql -u root -e "flush privileges;"
 
+if [[ ${install_rsshub} == 1 ]]; then
+mysql -u root -e "CREATE DATABASE ttrss CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -e "create user 'ttrss'@'localhost' IDENTIFIED BY '${password1}';"
+mysql -u root -e "GRANT ALL PRIVILEGES ON ttrss.* to ttrss@'localhost';"
+mysql -u root -e "flush privileges;"
+mysql -u ttrss -p"${password1}" -D ttrss < /usr/share/nginx/tt-rss/schema/ttrss_schema_mysql.sql
+fi
+
     cat > '/opt/netdata/etc/netdata/python.d/mysql.conf' << EOF
 update_every : 10
 priority     : 90100
@@ -3424,9 +3532,6 @@ echo "    location /${password1}_speedtest/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        alias /usr/share/nginx/speedtest/;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_split_path_info ^(.+\.php)(/.+)\$;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
@@ -3444,6 +3549,19 @@ echo "        proxy_pass http://127.0.0.1:1200/;" >> /etc/nginx/conf.d/default.c
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "    location /${password1}_ttrss/ {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        alias /usr/share/nginx/tt-rss/;" >> /etc/nginx/conf.d/default.conf
+echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_split_path_info ^(.+\.php)(/.+)\$;" >> /etc/nginx/conf.d/default.conf
+echo "        include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_aria == 1 ]]; then
@@ -3869,7 +3987,7 @@ footer a:link {
                     <p>PS: 不支援Cloudflare等 CDN !</p>
                     <ul class="ttlist">
                         <li>
-                            <h3>Trojan-GFW client config profiles</h3>
+                            <h3>Trojan-GFW client config profiles(客户端配置文件)</h3>
                             <ol>
                                 <li><a href="client1-$password1.json" target="_blank">Profile 1</a></li>
                                 <li><a href="client2-$password2.json" target="_blank">Profile 2</a></li>
@@ -3884,7 +4002,7 @@ footer a:link {
                             </ol>
                         </li>
                         <li>
-                            <h3>Trojan-GFW QR codes (不支援python3-prcode的系统会404!)</h3>
+                            <h3>Trojan-GFW QR codes(二维码) (不支援python3-prcode的系统会404!)</h3>
                             <ol>
                                 <li><a href="$password1.png" target="_blank">QR code 1</a></li>
                                 <li><a href="$password2.png" target="_blank">QR code 2</a></li>
@@ -3893,14 +4011,34 @@ footer a:link {
                         <li>
                             <h3>Related Links</h3>
                             <ol>
-                                <li><a href="https://github.com/trojan-gfw/igniter/releases" target="_blank">Android client</a></li>
-                                <li><a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank">ios client</a></li>
-                                <li><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">windows client</a></li>
+                                <li><a href="https://github.com/trojan-gfw/igniter/releases" target="_blank">Android client</a>安卓客户端</li>
+                                <li><a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank">ios client</a>苹果客户端</li>
+                                <li><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">windows client</a>windows客户端</li>
                                 <li><a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a></li>
                                 <li><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">https://github.com/trojan-gfw/trojan/releases/latest</a></li>
                             </ol>
                         </li>
                     </ul>
+                    <br>
+
+                    <h2>Rsshub</h2>
+                    <h4>默认安装: ✅</h4>
+                    <p>简介: RSSHUB + Tiny Tiny RSS。</p>
+                    <p>RSSHUB :</p>
+                    <p><a href="https://$domain/${password1}_rsshub/" target="_blank">https://$domain/${password1}_rsshub/</a></p>
+                    <p>Tiny Tiny RSS :</p>
+                    <ul>
+                        <li><a href="https://$domain/${password1}_ttrss/" target="_blank">https://$domain/${password1}_ttrss/</a></li>
+                        <li>用户名(username): admin</li>
+                        <li>密碼(password): password</li>
+                    </ul>
+                    <p>Related Links</p>
+                    <ol>
+                        <li><a href="https://docs.rsshub.app/" target="_blank">RSSHUB docs</a></li>
+                        <li><a href="https://github.com/DIYgod/RSSHub-Radar" target="_blank">RSSHub Radar</a>(请自行将默认的rsshub.app换成上述自建的)</li>
+                        <li><a href="https://docs.rsshub.app/social-media.html" target="_blank">RSSHUB路由</a></li>
+                        <li><a href="https://wzfou.com/tt-rss/" target="_blank">自建RSS阅读器Tiny Tiny RSS安装和配置自动更新</a>(仅供参考 ! )</li>
+                    </ol>
                     <br>
 
                     <h2>Trojan-panel</h2>
@@ -3911,23 +4049,8 @@ footer a:link {
                     <p><a href="https://$domain/${password1}_config/" target="_blank">https://$domain/${password1}_config/</a></p>
                     <p>Related Links</p>
                     <ol>
-                        <li><a href="https://trojan-tutor.github.io/2019/06/08/p43.html#more" target="_blank">Trojan-Panel配置(仅供参考！)</a></li>
+                        <li><a href="https://trojan-tutor.github.io/2019/06/08/p43.html#more" target="_blank">Trojan-Panel配置</a>(仅供参考 ! )</li>
                         <li><a href="https://github.com/trojan-gfw/trojan-panel" target="_blank">https://github.com/trojan-gfw/trojan-panel</a></li>
-                        <li><a href="" target="_blank">test</a></li>
-                        <li><a href="" target="_blank">tset</a></li>
-                    </ol>
-                    <br>
-
-                    <h2>Rsshub</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>Introduction: Please read the rsshub docs</p>
-                    <p><a href="https://$domain/${password1}_rsshub/" target="_blank">https://$domain/${password1}_rsshub/</a></p>
-                    <p>Related Links</p>
-                    <ol>
-                        <li><a href="https://docs.rsshub.app/" target="_blank">RSSHUB docs</a></li>
-                        <li><a href="https://github.com/DIYgod/RSSHub-Radar" target="_blank">RSSHub Radar</a></li>
-                        <li><a href="" target="_blank">test</a></li>
-                        <li><a href="" target="_blank">tset</a></li>
                     </ol>
                     <br>
                     
@@ -3943,8 +4066,8 @@ footer a:link {
                     </ul>
                     <p>Tips:</p>
                     <ol>
-                        <li>请将Qbittorrent中的Bittorrent加密選項改为 強制加密(Require encryption) ,否则會被迅雷吸血！！！</li>
-                        <li>请在Qbittorrent中添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a> ,否则速度不會快的！！！</li>
+                        <li>请将Bittorrent加密選項改为 強制加密(Require encryption) ,否则會被迅雷吸血！！！</li>
+                        <li>请手动添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a>！！！</li>
                         <li>请在Web选项中将监听地址修改为127.0.0.1并关闭 UPnP／NAT-PMP (端口请勿修改)来防止未授权访问！！！</li>
                     </ol>
                     
@@ -3961,6 +4084,92 @@ footer a:link {
                         <li><a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank">Android远程操控客户端</a></li>
                         <li><a href="https://www.qbittorrent.org/" target="_blank">https://www.qbittorrent.org/</a></li>
                         <li><a href="https://www.johnrosen1.com/qbt/" target="_blank">https://www.johnrosen1.com/qbt/</a></li>
+                    </ol>
+                    <br>
+
+                    <h2>Aria2</h2>
+                    <h4>默认安装: ✅</h4>
+                    <p>Your Aria2 Information</p>
+                    <p>简介: 将任何你想下载的东西(支援http/https/ftp/bt等,不支援emule)下到你的VPS上的软件。</p>
+                    <p>PS: 推荐使用Ariang连接(aria2没有官方web interface!)</p>
+                    <p>Introduction: download resources you want to your vps(support ftp/http/https/bt)</p>
+                    <p><code>$ariapasswd@https://$domain:443$ariapath</code></p>
+                    <p>Related Links:</p>
+                    <p>Ariang is recommended to connect to your server</p>
+                    <ol>
+                        <li><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">AriaNG</a></li>
+                        <li><a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a></li>
+                        <li><a href="https://aria2.github.io/manual/en/html/index.html" target="_blank">https://aria2.github.io/manual/en/html/index.html</a> 官方文档</li>
+                        <li><a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank">https://play.google.com/store/apps/details?id=com.gianlu.aria2app</a></li>
+                    </ol>
+                    <br>
+
+                    <h2>Filebrowser</h2>
+                    <h4>默认安装: ✅</h4>
+                    <p>Your Filebrowser Information</p>
+                    <p>简介: 一款用于 从VPS上下载资源(在aria2/qbt下载完成后)到本地网络 的软件。</p>
+                    <p>Introduction: download any resources(formaly downloaded by qbt or aria2) from your vps to your local network</p>
+                    <!-- <p><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a> 用户名(username): admin 密碼(password): admin</p> -->
+                    <ul>
+                        <li><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a></li>
+                        <li>用户名(username): admin</li>
+                        <li>密碼(password): admin</li>
+                    </ul>
+                    <p>Tips:</p>
+                    <p>！请修改默认用户名和密码！。</p>
+                    <p>Related Links</p>
+                    <ul>
+                        <li><a href="https://github.com/filebrowser/filebrowser" target="_blank">https://github.com/filebrowser/filebrowser</a></li>
+                        <li><a href="https://filebrowser.xyz/" target="_blank">https://filebrowser.xyz/</a></li>
+                    </ul>
+                    <br>
+
+                    <h2>Speedtest</h2>
+                    <h4>默认安装: ✅</h4>
+                    <p>简介: 一款用于 测试本地网络到VPS的延迟及带宽 的简易应用。</p>
+                    <p>Introduction: test download and upload speed from vps to your local network</p>
+                    <p><a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain:443/${password1}_speedtest/</a></p>
+                    <p>Related Links</p>
+                    <ol>
+                        <li><a href="https://github.com/librespeed/speedtest" target="_blank">https://github.com/librespeed/speedtest</a></li>
+                        <li><a href="https://github.com/librespeed/speedtest/blob/docker/doc.md" target="_blank">https://github.com/librespeed/speedtest/blob/docker/doc.md</a></li>
+                    </ol>
+                    <br>
+
+                    <h2>Netdata</h2>
+                    <h4>默认安装: ✅</h4>
+                    <p>Your Netdata Information</p>
+                    <p><a href="https://$domain:443$netdatapath" target="_blank">https://$domain:443$netdatapath</a></p>
+                    <p>Related Links</p>
+                    <ol>
+                        <li><a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank">https://play.google.com/store/apps/details?id=com.kpots.netdata</a>安卓客户端</li>
+                        <li><a href="https://github.com/netdata/netdata" target="_blank">https://github.com/netdata/netdata</a></li>
+                    </ol>
+                    <br>
+
+                    <h2>Mail Service</h2>
+                    <h4>默认安装: ❎</h4>
+                    <p>PS: 不支援自定义证书,仅支援全自动申请的let证书!</p>
+                    <p>Your Mail service Information</p>
+                    <!-- <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p> -->
+                    <ul>
+                        <li><a href="https://${domain}/${password1}_webmail/" target="_blank">Roundcube Webmail</a></li>
+                        <li>用户名(username): ${mailuser}</li>
+                        <li>密碼(password): ${password1}</li>
+                        <li>收件地址: ${mailuser}@${domain}</li>
+                    </ul>
+                    <p>Tips:</p>
+                    <ol>
+                        <li>阿里云，gcp等厂商默认不开放25(包括对外访问)端口，不能发邮件，请注意。</li>
+                        <li>请自行修改发件人身份为${mailuser}@${domain}</li>
+                        <li>请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all</li>
+                        <li>请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD</li>
+                    </ol>
+                    
+                    <p>附：</p>
+                    <ol>
+                        <li><a href="https://www.mail-tester.com/" target="_blank">https://www.mail-tester.com/</a></li>
+                        <li><a href="https://lala.im/6838.html" target="_blank">Debian10使用Postfix+Dovecot+Roundcube搭建邮件服务器</a>(仅供参考!)</li>
                     </ol>
                     <br>
                     
@@ -3984,66 +4193,6 @@ footer a:link {
                         <li><a href="https://www.howtogeek.com/141257/htg-explains-how-does-bittorrent-work/" target="_blank">How Does BitTorrent Work?</a></li>
                     </ol>
                     <br>
-                    
-                    <h2>Aria2</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>Your Aria2 Information</p>
-                    <p>简介: 将任何你想下载的东西(支援http/https/ftp/bt等,不支援emule)下到你的VPS上的软件。</p>
-                    <p>PS: 推荐使用Ariang连接(aria2没有官方web interface!)</p>
-                    <p>Introduction: download resources you want to your vps(support ftp/http/https/bt)</p>
-                    <p><code>$ariapasswd@https://$domain:443$ariapath</code></p>
-                    <p>Related Links:</p>
-                    <p>Ariang is recommended to connect to your server</p>
-                    <ol>
-                        <li><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">AriaNG</a></li>
-                        <li><a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a></li>
-                        <li><a href="https://aria2.github.io/manual/en/html/index.html" target="_blank">https://aria2.github.io/manual/en/html/index.html</a> 官方文档</li>
-                        <li><a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank">https://play.google.com/store/apps/details?id=com.gianlu.aria2app</a></li>
-                    </ol>
-                    <br>
-                    
-                    <h2>Filebrowser</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>Your Filebrowser Information</p>
-                    <p>简介: 一款用于 从VPS上下载资源(在aria2/qbt下载完成后)到本地网络 的软件。</p>
-                    <p>Introduction: download any resources(formaly downloaded by qbt or aria2) from your vps to your local network</p>
-                    <!-- <p><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a> 用户名(username): admin 密碼(password): admin</p> -->
-                    <ul>
-                        <li><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a></li>
-                        <li>用户名(username): admin</li>
-                        <li>密碼(password): admin</li>
-                    </ul>
-                    <p>Tips:</p>
-                    <p>！请修改默认用户名和密码！。</p>
-                    <p>Related Links</p>
-                    <ul>
-                        <li><a href="https://github.com/filebrowser/filebrowser" target="_blank">https://github.com/filebrowser/filebrowser</a></li>
-                        <li><a href="https://filebrowser.xyz/" target="_blank">https://filebrowser.xyz/</a></li>
-                    </ul>
-                    <br>
-
-                    <h2>Netdata</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>Your Netdata Information</p>
-                    <p><a href="https://$domain:443$netdatapath" target="_blank">https://$domain:443$netdatapath</a></p>
-                    <p>Related Links</p>
-                    <ol>
-                        <li><a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank">https://play.google.com/store/apps/details?id=com.kpots.netdata</a></li>
-                        <li><a href="https://github.com/netdata/netdata" target="_blank">https://github.com/netdata/netdata</a></li>
-                    </ol>
-                    <br>
-
-                    <h2>Speedtest</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>简介: 一款用于 测试本地网络到VPS的延迟及带宽 的简易应用。</p>
-                    <p>Introduction: test download and upload speed from vps to your local network</p>
-                    <p><a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain:443/${password1}_speedtest/</a></p>
-                    <p>Related Links</p>
-                    <ol>
-                        <li><a href="https://github.com/librespeed/speedtest" target="_blank">https://github.com/librespeed/speedtest</a></li>
-                        <li><a href="https://github.com/librespeed/speedtest/blob/docker/doc.md" target="_blank">https://github.com/librespeed/speedtest/blob/docker/doc.md</a></li>
-                    </ol>
-                    <br>
 
                     <h2>MariaDB</h2>
                     <h4>默认安装: ✅</h4>
@@ -4054,42 +4203,6 @@ footer a:link {
                     <p>如果需要外网访问,请自行注释掉/etc/mysql/my.cnf中的bind-address选项并重启mariadb！</p>
                     <p>Please edit /etc/mysql/my.cnf and restart mariadb if you need remote access !</p>
                     <br>
-                    
-                    <h2>Mail Service</h2>
-                    <h4>默认安装: ❎</h4>
-                    <p>PS: 不支援自定义证书,仅支援全自动申请的let证书!</p>
-                    <p>Your Mail service Information</p>
-                    <!-- <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p> -->
-                    <ul>
-                        <li><a href="https://${domain}/${password1}_webmail/" target="_blank">Roundcube Webmail</a></li>
-                        <li>用户名(username): ${mailuser}</li>
-                        <li>密碼(password): ${password1}</li>
-                        <li>收件地址: ${mailuser}@${domain}</li>
-                    </ul>
-                    <p>Tips:</p>
-                    <ol>
-                        <li>阿里云，gcp等厂商默认不开放25(包括对外访问)端口，不能发邮件，请注意。</li>
-                        <li>请自行修改发件人身份为${mailuser}@${domain}</li>
-                        <li>请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all</li>
-                        <li>请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD</li>
-                    </ol>
-                    
-                    <p>附：</p>
-                    <ol>
-                        <li><a href="https://www.mail-tester.com/" target="_blank">https://www.mail-tester.com/</a></li>
-                        <li><a href="https://lala.im/6838.html" target="_blank">Debian10使用Postfix+Dovecot+Roundcube搭建邮件服务器</a></li>
-                        <li><a href="" target="_blank">test</a></li>
-                    </ol>
-                    <p>Related Links</p>
-                    <ol>
-                        <li><a href="" target="_blank">test</a></li>
-                        <li><a href="" target="_blank">test</a></li>
-                        <li><a href="" target="_blank">test</a></li>
-                        <li><a href="" target="_blank">test</a></li>
-                        <li><a href="" target="_blank">test</a></li>
-                    </ol>
-                    <br>
-
 
                     <h2>How to change the default config or debug </h2>
                     <p>PS:如果你自己搞炸了别来提issue!!!</p>
