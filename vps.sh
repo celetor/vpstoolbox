@@ -733,9 +733,9 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         ;;
     esac
     if [[ $? != 0 ]]; then
-	colorEcho ${ERROR} "证书申请失败，请检查域名以及其他信息是否正确"
-	colorEcho ${ERROR} "certificate issue fail,Pleae enter correct information and check your network"
-	exit 1
+    whiptail --title "ERROR" --msgbox "证书申请失败，请检查域名以及其他信息是否正确!(certificate issue fail,Pleae enter correct information and check your network)" 8 78
+	whiptail --title "Warning" --msgbox "若你确定A解析已成功,请在api yes/no 选项中选否以继续,并确定tcp 80/http端口可从外网访问!" 8 78
+	advancedMenu
 	fi
     fi
 fi
