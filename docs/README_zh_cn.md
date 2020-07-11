@@ -42,4 +42,8 @@ apt-get update && apt-get install sudo curl -y && curl -sO https://raw.githubuse
 23. 支援完全/部分卸载
 24. And so on...
 
+### Give it a try ! (Live Demo,no Guarantee)
+
+[https://trojan-gfw.xyz/vpstoolbox.html](https://trojan-gfw.xyz/vpstoolbox.html)
+
 ## 如果此项目对你有用 , 请给颗star ,谢谢!
