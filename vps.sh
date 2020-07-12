@@ -1638,6 +1638,11 @@ systemctl daemon-reload
 systemctl enable qbittorrent.service
 mkdir /usr/share/nginx/qBittorrent/
 mkdir /usr/share/nginx/qBittorrent/downloads/
+mkdir /usr/share/nginx/qBittorrent/data/
+mkdir /usr/share/nginx/qBittorrent/data/GeoIP/
+cd /usr/share/nginx/qBittorrent/data/GeoIP/
+curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/GeoLite2-Country.mmdb
+cd
 chmod 755 /usr/share/nginx/
 fi
 fi
@@ -1802,7 +1807,7 @@ EOF
 	#usermod -a -G aria2 nginx
 	#useradd -r aria2 --shell=/usr/sbin/nologin
 	apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
-	curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/binary/aria2c.xz
+	curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/aria2c.xz
 	xz --decompress aria2c.xz
 	cp -f aria2c /usr/local/bin/aria2c
 	chmod +x /usr/local/bin/aria2c
@@ -3667,7 +3672,7 @@ echo "}" >> /etc/nginx/conf.d/default.conf
 fi
 nginx -t
 htmlcode=$(shuf -i 1-3 -n 1)
-curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/$htmlcode.zip
+curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/$htmlcode.zip
 unzip -o $htmlcode.zip -d /usr/share/nginx/html/
 rm -rf $htmlcode.zip
 rm -rf /usr/share/nginx/html/readme.txt
@@ -3799,7 +3804,7 @@ EOF
     <meta name="keywords" content="Vpstoolbox">
     <meta name="author" content="John Rosen">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/binary/trojan.ico">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/trojan.ico">
     <title>Vps Toolbox Result</title>
 </head>
 <style>
