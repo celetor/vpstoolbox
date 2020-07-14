@@ -535,17 +535,17 @@ done < results
 system_upgrade=1
 if [[ ${system_upgrade} == 1 ]]; then
 	if [[ $(lsb_release -cs) == stretch ]]; then
-		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 10?" 8 78); then
+		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 10(recommended)?" 8 78); then
 			debian10_install=1
 		fi
 	fi
 	if [[ $(lsb_release -cs) == jessie ]]; then
-		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 9?" 8 78); then
+		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 9?(recommended)" 8 78); then
 			debian9_install=1
 		fi
 	fi
 	if [[ $(lsb_release -cs) == xenial ]]; then
-		if (whiptail --title "System Upgrade" --yesno "Upgrade to Ubuntu 18.04?" 8 78); then
+		if (whiptail --title "System Upgrade" --yesno "Upgrade to Ubuntu 18.04(recommended)?" 8 78); then
 			ubuntu18_install=1
 		fi
 	fi
