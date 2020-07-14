@@ -4072,9 +4072,8 @@ footer a:link {
                     </ul>
                     <p>Tips:</p>
                     <ol>
-                        <li>请将Bittorrent加密選項改为 強制加密(Require encryption) ,否则會被迅雷吸血！！！</li>
-                        <li>请手动添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a>！！！</li>
-                        <li>请在Web选项中将监听地址修改为127.0.0.1并关闭 UPnP／NAT-PMP (端口请勿修改)来防止未授权访问！！！</li>
+                        <li>请将Bittorrent加密選項改为 <strong>強制加密(Require encryption)</strong> ,否则會被迅雷吸血！</li>
+                        <li>请手动添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a>！</li>
                     </ol>
                     
                     <p>附：优秀的BT站点推荐(Related Links)</p>
@@ -4097,7 +4096,7 @@ footer a:link {
                     <h4>默认安装: ✅</h4>
                     <p>Your Aria2 Information</p>
                     <p>简介: 将任何你想下载的东西(支援http/https/ftp/bt等,不支援emule)下到你的VPS上的软件。</p>
-                    <p>PS: 推荐使用Ariang连接(aria2没有官方web interface!)</p>
+                    <p>PS: 推荐使用<strong>Ariang</strong>连接(aria2没有官方web interface!)</p>
                     <p>Introduction: download resources you want to your vps(support ftp/http/https/bt)</p>
                     <p><code>$ariapasswd@https://$domain:443$ariapath</code></p>
                     <p>Related Links:</p>
