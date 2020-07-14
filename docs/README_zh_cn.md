@@ -22,7 +22,7 @@ apt-get update && apt-get install sudo curl -y && curl -sO https://raw.githubuse
 3. 请在控制面板中 **开启TCP端口 [80](https://www.speedguide.net/port.php?port=80) 以及 [443](https://www.speedguide.net/port.php?port=443) 并 关闭 Cloudflare CDN** !
 4. 如果您需要使用自定义证书(不推荐) , 请放在 /etc/trojan/ 里面 , 不需要修改名称(证书类型需为fullchain) !
 5. 请使用一台有至少 **0.5 GB RAM** 以及 **5G 硬盘空间的VPS**. 
-6. 出于安全原因，本脚本已禁止360/qq/xiaomi等垃圾国产浏览器访问最终结果页面，请使用chrome/firefox等访问。
+6. 出于安全原因，本脚本已禁止360/qq/xiaomi等垃圾国产浏览器访问最终结果页面及相关服务，请使用chrome/firefox等访问。
 
 #### 特性:
 
