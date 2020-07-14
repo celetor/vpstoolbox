@@ -2060,7 +2060,6 @@ jinshuju.net
 jinshujucdn.com
 gifshow.com
 kuaishou.com
-static.yximgs.com
 getlantern.org
 openvpn.net
 rixcloud.com
@@ -2187,6 +2186,16 @@ mimemi.vip
 yahaha.us
 cylink0501.icu
 nexitally.com
+#############
+toutiao.com
+pstatp.com
+snssdk.com
+ixigua.com
+amemv.com
+ixiguavideo.com
+yximgs.com
+huoshan.com
+iesdouyin.com
 EOF
 ipv6_true="false"
 block_ipv6="true"
