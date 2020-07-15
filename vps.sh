@@ -862,6 +862,7 @@ fi
 	cat > '/lib/systemd/system/nginx.service' << EOF
 [Unit]
 Description=The NGINX HTTP and reverse proxy server
+Before=netdata.service trojan.service
 After=syslog.target network.target remote-fs.target nss-lookup.target
 
 [Service]
@@ -2633,6 +2634,7 @@ if [[ $install_trojan = 1 ]]; then
 [Unit]
 Description=trojan
 Documentation=https://trojan-gfw.github.io/trojan/config https://trojan-gfw.github.io/trojan/
+Before=netdata.service
 After=network.target network-online.target nss-lookup.target mysql.service mariadb.service mysqld.service
 
 [Service]
