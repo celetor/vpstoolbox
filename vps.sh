@@ -733,9 +733,20 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         ;;
     esac
     if [[ $? != 0 ]]; then
-    whiptail --title "ERROR" --msgbox "证书申请失败，请检查域名以及其他信息是否正确!(certificate issue fail,Pleae enter correct information and check your network)" 8 78
-	whiptail --title "Warning" --msgbox "若你确定A解析已成功,请在api yes/no 选项中选否以继续,并确定tcp 80/http端口可从外网访问!" 8 78
-	advancedMenu
+    	colorEcho ${ERROR} "DNS申请证书失败，尝试HTTP申请中."
+    	dns_api=0
+    	if isresolved $domain
+		then
+		installnginx
+		openfirewall
+		issuecert
+		else
+		whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
+		whiptail --title "ERROR" --msgbox "证书申请失败，请检查域名以及其他信息是否正确!(certificate issue fail,Pleae enter correct information and check your network)" 8 78
+		whiptail --title "Warning" --msgbox "若你确定A解析已成功,请在api yes/no 选项中选否以继续,并确定tcp 80/http端口可从外网访问!" 8 78
+		advancedMenu
+		clear
+		fi
 	fi
     fi
 fi
