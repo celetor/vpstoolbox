@@ -1,7 +1,7 @@
 ![logo](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/logo.png)
 # VPS Toolbox
 
-A powerful Toolbox for Linux VPS.
+超级Linux VPS工具箱，一键安装包含TLEMP(Trojan-GFW+Linux+NGINX+MariaDB+PHP7.4),全能下载套件(Qbitttorrent-nox+Aria2c+Filebrowser),RSS套件(RSSHUB+Tiny Tiny RSS),邮箱套件(Postfix+Dovecot+Roundcube Webmail),伺服器实时监控(Netdata)等实用软件(除NGINX外皆为可选项)。
 
 #### 如何使用
 ```
