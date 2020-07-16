@@ -5,7 +5,7 @@
 
 #### 如何使用
 ```
-apt-get update && apt-get install sudo curl -y && bash <(curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)
+apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 ```
 
 流量图示(仅供参考):
