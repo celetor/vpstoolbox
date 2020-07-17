@@ -23,7 +23,7 @@
 
 #Run me with:
 
-#apt-get update && apt-get install sudo curl -y && sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh)"
+#apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 
 #                 _              _ _               
 #__   ___ __  ___| |_ ___   ___ | | |__   _____  __
@@ -4614,7 +4614,7 @@ echo "|                                   Vps Toolbox Result                    
 echo "|                     Please visit the following link to get the result                            |"
 echo "|                       https://$domain/$password1.html                                     |"
 echo "|                 For more info ,please run the following command                                  |"
-echo 'curl -sO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh && sudo bash vps.sh'
+echo 'curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash'
 echo "****************************************************************************************************"
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
