@@ -4044,6 +4044,7 @@ footer a:link {
                                 <li><a href="https://github.com/trojan-gfw/igniter/releases" target="_blank">Android client</a>安卓客户端</li>
                                 <li><a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank">ios client</a>苹果客户端</li>
                                 <li><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">windows client</a>windows客户端</li>
+                                <li><a href="https://github.com/NetchX/Netch" target="_blank">https://github.com/NetchX/Netch</a>推荐的<strong>游戏</strong>客户端</li>
                                 <li><a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a></li>
                                 <li><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">https://github.com/trojan-gfw/trojan/releases/latest</a></li>
                             </ol>
@@ -4145,7 +4146,7 @@ footer a:link {
                         <li>密碼(password): admin</li>
                     </ul>
                     <p>Tips:</p>
-                    <p>！请修改默认用户名和密码！。</p>
+                    <p>请修改默认用户名和密码！</p>
                     <p>Related Links</p>
                     <ul>
                         <li><a href="https://github.com/filebrowser/filebrowser" target="_blank">https://github.com/filebrowser/filebrowser</a></li>
