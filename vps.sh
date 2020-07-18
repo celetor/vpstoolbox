@@ -4655,6 +4655,7 @@ EOF
 		apt-get install speedtest -y -qq
 		sh -c 'echo "YES\n" | speedtest'
 		colorEcho ${INFO} "Benchmark complete"
+		exit 0
 		;;
 		Log)
 		clear
