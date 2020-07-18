@@ -650,6 +650,21 @@ fi
 	fi
 	done
 	fi
+if [ -f /etc/trojan/*.crt ]; then
+	othercert=1
+	mv /etc/trojan/*.crt /etc/trojan/trojan.crt
+	fi
+if [ -f /etc/trojan/*.key ]; then
+	mv /etc/trojan/*.key /etc/trojan/trojan.key
+fi
+apt-get install gnutls-bin -y
+certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
+if [[ $? != 0 ]]; then
+	whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,快滚!!!" 8 78
+	advancedMenu
+	domain=""
+	othercert=0
+fi
 ####################################
 if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]] || [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
@@ -1059,13 +1074,6 @@ installdependency(){
 colorEcho ${INFO} "Updating system"
 	apt-get update
 	if [[ $install_status == 0 ]]; then
-		if [ -f /etc/trojan/*.crt ]; then
-		othercert=1
-		mv /etc/trojan/*.crt /etc/trojan/trojan.crt
-		fi
-		if [ -f /etc/trojan/*.key ]; then
-		mv /etc/trojan/*.key /etc/trojan/trojan.key
-		fi
 		if [[ $(systemctl is-active caddy) == active ]]; then
 			systemctl stop caddy
 			systemctl disable caddy
