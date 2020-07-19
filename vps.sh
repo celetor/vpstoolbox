@@ -1686,6 +1686,7 @@ npm install -g bittorrent-tracker --quiet
 	cat > '/etc/systemd/system/tracker.service' << EOF
 [Unit]
 Description=Bittorrent-Tracker Daemon Service
+Documentation=https://github.com/webtorrent/bittorrent-tracker
 Wants=network-online.target
 After=network-online.target nss-lookup.target
 
@@ -1718,6 +1719,7 @@ if [[ $install_file = 1 ]]; then
 	cat > '/etc/systemd/system/filebrowser.service' << EOF
 [Unit]
 Description=filebrowser browser
+Documentation=https://github.com/filebrowser/filebrowser
 After=network.target
 
 [Service]
@@ -1750,6 +1752,7 @@ if [[ $install_aria = 1 ]]; then
 	cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
 Description=Aria2c download manager
+Documentation=https://aria2.github.io/manual/en/html/index.html
 Requires=network.target
 After=network.target
 
@@ -2253,7 +2256,7 @@ force_tcp = false
 timeout = 5000
 keepalive = 30
 lb_estimator = true
-log_level = 2
+log_level = 0
 use_syslog = true
 #log_file = '/var/log/dnscrypt-proxy/dnscrypt-proxy.log'
 cert_refresh_delay = 720
