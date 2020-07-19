@@ -484,18 +484,24 @@ do
 		;;
 		6) 
 		install_tjp=1
+		install_php=1
+		install_nodejs=1
+		install_mariadb=1
 		;;
 		7) 
 		dnsmasq_install=1
 		;;
 		8)
 		install_rsshub=1
+		install_php=1
+		install_mariadb=1
 		;;
 		9)
 		install_qbt=1
 		;;
 		10)
 		install_tracker=1
+		install_nodejs=1
 		;;
 		11)
 		install_aria=1
@@ -508,6 +514,7 @@ do
 		;;
 		14)
 		install_speedtest=1
+		install_php=1
 		;;
 		15)
 		install_mariadb=1
@@ -517,6 +524,8 @@ do
 		;;
 		17)
 		install_mail=1
+		install_php=1
+		install_mariadb=1
 		;;
 		18)
 		install_openssl=1
@@ -2230,7 +2239,7 @@ fi
     cat > '/etc/dnscrypt-proxy/dnscrypt-proxy.toml' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 listen_addresses = ['127.0.0.1:53','[::1]:53']
-user_name = 'nobody'
+#user_name = 'nobody'
 max_clients = 250
 ipv4_servers = true
 ipv6_servers = $ipv6_true
