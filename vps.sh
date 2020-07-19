@@ -3583,6 +3583,8 @@ echo "    location /${password1}_speedtest/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        alias /usr/share/nginx/speedtest/;" >> /etc/nginx/conf.d/default.conf
+echo "        http2_push /${password1}_speedtest/speedtest.js;" >> /etc/nginx/conf.d/default.conf
+echo "        http2_push /${password1}_speedtest/favicon.ico;" >> /etc/nginx/conf.d/default.conf
 echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_split_path_info ^(.+\.php)(/.+)\$;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
