@@ -4605,6 +4605,13 @@ advancedMenu() {
 	case $Mainmenu in
 		Install)
 		clear
+		curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
+		myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
+		localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+		myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+		if [[ -n ${myipv6} ]]; then
+		curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
+		fi
 		userinput
 		systeminfo
 		installdependency
@@ -4858,11 +4865,4 @@ EOF
 	fi
 fi
 clear
-curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
-myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
-localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
-myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
-if [[ -n ${myipv6} ]]; then
-	curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
-fi
 advancedMenu
