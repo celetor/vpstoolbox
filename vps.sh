@@ -374,6 +374,34 @@ EOF
 	fi
 	chmod +r /etc/certs/${domain}_ecc/fullchain.cer
 	chmod +r /etc/certs/${domain}_ecc/${domain}.key
+	cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
+
+	cat > '/etc/systemd/system/acme_letsencrypt.timer' << EOF
+[Unit]
+Description=Daily renewal of Let's Encrypt's certificates
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+systemctl daemon-reload
+systemctl enable acme_letsencrypt.timer
 	fi
 }
 ###############User input################
@@ -701,6 +729,19 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         export CF_Email="$CF_Email"
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
         ;;
         2)
         while [[ -z $Namesilo_Key ]]; do
@@ -709,6 +750,19 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         export Namesilo_Key="$Namesilo_Key"
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
         ;;
         3)
         while [[ -z $Ali_Key ]] || [[ -z $Ali_Secret ]]; do
@@ -719,6 +773,19 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         export Ali_Secret="$Ali_Secret"
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
         ;;
         4)
         while [[ -z $DP_Id ]] || [[ -z $DP_Key ]]; do
@@ -729,6 +796,19 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         export DP_Key="$DP_Key"
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
         ;;
         5)
         while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
@@ -739,6 +819,19 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         export CX_Secret="$CX_Secret"
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
         ;;
         6)
         while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
@@ -749,6 +842,19 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
         export GD_Secret="$CX_Secret"
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
         ;;
         back) 
 		userinput
@@ -773,6 +879,22 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
 		clear
 		fi
 	fi
+
+	cat > '/etc/systemd/system/acme_letsencrypt.timer' << EOF
+[Unit]
+Description=Daily renewal of Let's Encrypt's certificates
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+systemctl daemon-reload
+systemctl enable acme_letsencrypt.timer
+
     fi
 fi
 }
@@ -3687,6 +3809,7 @@ echo "server {" >> /etc/nginx/conf.d/default.conf
 echo "    listen 80;" >> /etc/nginx/conf.d/default.conf
 echo "    listen [::]:80;" >> /etc/nginx/conf.d/default.conf
 echo "    server_name $domain;" >> /etc/nginx/conf.d/default.conf
+echo "    if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345) ) { return 403; }" >> /etc/nginx/conf.d/default.conf
 echo "    return 301 https://$domain\$request_uri;" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 echo "" >> /etc/nginx/conf.d/default.conf
