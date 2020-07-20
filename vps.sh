@@ -3660,6 +3660,8 @@ echo "    location /${password1}_config/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        http2_push /${password1}_config/css/app.css;" >> /etc/nginx/conf.d/default.conf
+echo "        http2_push /${password1}_config/js/app.js;" >> /etc/nginx/conf.d/default.conf
 echo "        alias /usr/share/nginx/trojan-panel/public/;" >> /etc/nginx/conf.d/default.conf
 echo "        try_files \$uri \$uri/ @config;" >> /etc/nginx/conf.d/default.conf
 echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
