@@ -4289,7 +4289,7 @@ footer a:link {
                     <p>Introduction: download any resources(formaly downloaded by qbt or aria2) from your vps to your local network</p>
                     <!-- <p><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a> 用户名(username): admin 密碼(password): admin</p> -->
                     <ul>
-                        <li><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a></li>
+                        <li><a href="https://$domain:443$filepath" target="_blank">https://$domain$filepath</a></li>
                         <li>用户名(username): admin</li>
                         <li>密碼(password): admin</li>
                     </ul>
@@ -4306,7 +4306,7 @@ footer a:link {
                     <h4>默认安装: ✅</h4>
                     <p>简介: 一款用于 测试本地网络到VPS的延迟及带宽 的简易应用。</p>
                     <p>Introduction: test download and upload speed from vps to your local network</p>
-                    <p><a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain:443/${password1}_speedtest/</a></p>
+                    <p><a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain/${password1}_speedtest/</a></p>
                     <p>Related Links</p>
                     <ol>
                         <li><a href="https://github.com/librespeed/speedtest" target="_blank">https://github.com/librespeed/speedtest</a></li>
@@ -4317,7 +4317,7 @@ footer a:link {
                     <h2>Netdata</h2>
                     <h4>默认安装: ✅</h4>
                     <p>Your Netdata Information</p>
-                    <p><a href="https://$domain:443$netdatapath" target="_blank">https://$domain:443$netdatapath</a></p>
+                    <p><a href="https://$domain:443$netdatapath" target="_blank">https://${domain}${netdatapath}</a></p>
                     <p>Related Links</p>
                     <ol>
                         <li><a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank">https://play.google.com/store/apps/details?id=com.kpots.netdata</a>安卓客户端</li>
