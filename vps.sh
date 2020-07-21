@@ -4597,7 +4597,7 @@ logcheck(){
 }
 #####Main menu##########
 advancedMenu() {
-	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option!" 13 78 5 \
+	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!欢迎使用VPSTOOLBOX!" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option! 欢迎使用VPSTOOLBOX,请选择一个选项!" 14 78 5 \
 	"Install or Update" "安裝/更新" \
 	"Benchmark" "效能"\
 	"Log" "日志" \
