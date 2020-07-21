@@ -367,7 +367,7 @@ EOF
 	fi 
 	clear
 	colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
-	~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+	~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 	if [[ $? != 0 ]] && [[ $? != 2 ]]; then
 	colorEcho ${ERROR} "证书申请测试失败，请检查VPS控制面板防火墙(80 443)是否打开!!!"
 	colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
@@ -699,8 +699,9 @@ if [ -f /etc/trojan/*.crt ]; then
 		advancedMenu
 		domain=""
 		othercert=0
-		fi
 	fi
+fi
+
 if [ -f /etc/trojan/*.key ]; then
 	mv /etc/trojan/*.key /etc/trojan/trojan.key
 fi
