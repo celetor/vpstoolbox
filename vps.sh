@@ -1839,10 +1839,9 @@ fi
 clear
 ##############Install FILEBROWSER###############
 if [[ $install_file = 1 ]]; then
-	if [[ ! -f /usr/local/bin/filebrowser ]]; then
-	clear
-	colorEcho ${INFO} "Install Filebrowser ing"
-	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
+clear
+colorEcho ${INFO} "Install Filebrowser ing"
+curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 	cat > '/etc/systemd/system/filebrowser.service' << EOF
 [Unit]
 Description=filebrowser browser
@@ -1869,7 +1868,6 @@ systemctl enable filebrowser
 mkdir /etc/filebrowser/
 touch /etc/filebrowser/database.db
 chmod -R 755 /etc/filebrowser/
-fi
 fi
 clear
 ##########Install Aria2c##########
