@@ -4598,13 +4598,13 @@ logcheck(){
 #####Main menu##########
 advancedMenu() {
 	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!欢迎使用VPSTOOLBOX!" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option! 欢迎使用VPSTOOLBOX,请选择一个选项!" 14 78 5 \
-	"Install or Update" "安裝/更新" \
+	"Install/Update" "安裝/更新" \
 	"Benchmark" "效能"\
 	"Log" "日志" \
 	"Uninstall" "卸載" \
 	"Exit" "退出" 3>&1 1>&2 2>&3)
 	case $Mainmenu in
-		Install)
+		Install/Update)
 		clear
 		curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
 		myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
