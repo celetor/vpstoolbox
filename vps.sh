@@ -37,20 +37,8 @@ clear
 
 set +e
 
-export DEBIAN_FRONTEND=noninteractive
-
-install_bbr=1
-
-rm -rf /lib/systemd/system/cloud*
-#disable tencent cloud process
-rm -rf /usr/local/sa
-rm -rf /usr/local/agenttools
-rm -rf /usr/local/qcloud
-#disable huawei cloud process
-rm -rf /usr/local/telescope
-
 if [[ $(id -u) != 0 ]]; then
-	echo Please run this script as root.
+	echo Please run this script as root or sudoer.
 	exit 1
 fi
 
@@ -68,6 +56,29 @@ if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) -le "3000000" ]]; 
   echo Please run this script on machine with more than 3G free disk space.
   exit 1
 fi
+
+export DEBIAN_FRONTEND=noninteractive
+
+#######color code############
+ERROR="31m"      # Error message
+SUCCESS="32m"    # Success message
+WARNING="33m"   # Warning message
+INFO="36m"     # Info message
+LINK="92m"     # Share Link Message
+#############################
+cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
+cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
+#############################
+
+install_bbr=1
+
+rm -rf /lib/systemd/system/cloud*
+#disable tencent cloud process
+rm -rf /usr/local/sa
+rm -rf /usr/local/agenttools
+rm -rf /usr/local/qcloud
+#disable huawei cloud process
+rm -rf /usr/local/telescope
 
 colorEcho(){
 	set +e
@@ -175,16 +186,7 @@ EOF
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 	fi
 fi
-#######color code############
-ERROR="31m"      # Error message
-SUCCESS="32m"    # Success message
-WARNING="33m"   # Warning message
-INFO="36m"     # Info message
-LINK="92m"     # Share Link Message
-#############################
-cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
-cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
-#############################
+
 systeminfo(){
 	#neofetch
 	#colorEcho ${INFO} "System Info"
@@ -356,8 +358,8 @@ EOF
 	installacme
 	clear
 	colorEcho ${INFO} "测试证书申请ing(test issuing) let\'s encrypt certificate"
-	~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --force --test --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-	if [[ $? != 0 ]]; then
+	~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --test --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+	if [[ $? != 0 ]] && [[ $? != 2 ]]; then
 	colorEcho ${ERROR} "证书申请测试失败，请检查VPS控制面板防火墙(80 443)是否打开!!!"
 	colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
 	colorEcho ${ERROR} "Domain verification fail,Pleae Open port 80 443 on VPS panel !!!"
@@ -366,7 +368,7 @@ EOF
 	clear
 	colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
 	~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-	if [[ $? != 0 ]]; then
+	if [[ $? != 0 ]] && [[ $? != 2 ]]; then
 	colorEcho ${ERROR} "证书申请测试失败，请检查VPS控制面板防火墙(80 443)是否打开!!!"
 	colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
 	colorEcho ${ERROR} "Domain verification fail,Pleae Open port 80 443 on VPS panel !!!"
@@ -604,13 +606,13 @@ if [[ $? != 0 ]]; then
 fi
 done
 clear
-hostnamectl set-hostname $domain
+hostnamectl set-hostname ${domain}
 echo "${domain}" > /etc/hostname
 rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
 rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
 if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
-password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(若不確定，請直接回車，会随机生成)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐强密码)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password1} ]]; then
 	password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 	fi
@@ -697,8 +699,9 @@ if [ -f /etc/trojan/*.crt ]; then
 		advancedMenu
 		domain=""
 		othercert=0
-		fi
 	fi
+fi
+
 if [ -f /etc/trojan/*.key ]; then
 	mv /etc/trojan/*.key /etc/trojan/trojan.key
 fi
@@ -863,7 +866,9 @@ EOF
         *)
         ;;
     esac
-    if [[ $? != 0 ]]; then
+    if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
+    	:
+    	else
     	colorEcho ${ERROR} "DNS申请证书失败，尝试HTTP申请中."
     	dns_api=0
     	if isresolved $domain
@@ -919,7 +924,6 @@ colorEcho ${INFO} "初始化中(initializing)"
 upgradesystem(){
 	set +e
  if [[ $dist == ubuntu ]]; then
-	export UBUNTU_FRONTEND=noninteractive
 	if [[ $ubuntu18_install == 1 ]]; then
 		cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
@@ -1705,6 +1709,7 @@ cd
   cat > '/etc/systemd/system/rssfeed.service' << EOF
 [Unit]
 Description=ttrss_backend
+Documentation=https://tt-rss.org/
 After=network.target mysql.service
 
 [Service]
@@ -2479,44 +2484,41 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 systemctl enable dnscrypt-proxy.service
-	if [[ ! -f /usr/sbin/dnscrypt-proxy ]]; then
-	clear
-	colorEcho ${INFO} "Install dnscrypt-proxy ing"
-		if [[ $(systemctl is-active dnsmasq) == active ]]; then
-			systemctl disable dnsmasq
-		fi
-	dnsver=$(curl -s "https://api.github.com/repos/DNSCrypt/dnscrypt-proxy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-	curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/${dnsver}/dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
-	tar -xvf dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
-	rm dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
-	cd linux-x86_64
-	cp -f dnscrypt-proxy /usr/sbin/dnscrypt-proxy
-	chmod +x /usr/sbin/dnscrypt-proxy
-	cd ..
-	rm -rf linux-x86_64
-	setcap CAP_NET_BIND_SERVICE=+eip /usr/sbin/dnscrypt-proxy
-	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md -q --show-progress
-	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/opennic.md -q --show-progress
-	wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md -q --show-progress
-	fi
+clear
+colorEcho ${INFO} "Install dnscrypt-proxy ing"
+if [[ $(systemctl is-active dnsmasq) == active ]]; then
+	systemctl disable dnsmasq
+fi
+dnsver=$(curl -s "https://api.github.com/repos/DNSCrypt/dnscrypt-proxy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/${dnsver}/dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
+tar -xvf dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
+rm dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
+cd linux-x86_64
+cp -f dnscrypt-proxy /usr/sbin/dnscrypt-proxy
+chmod +x /usr/sbin/dnscrypt-proxy
+cd ..
+rm -rf linux-x86_64
+setcap CAP_NET_BIND_SERVICE=+eip /usr/sbin/dnscrypt-proxy
+wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md -q --show-progress
+wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/opennic.md -q --show-progress
+wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md -q --show-progress
 fi
 chmod -R 755 /etc/dnscrypt-proxy/
 clear
 ########Install Tor Relay##################
 if [[ $install_tor = 1 ]]; then
-	clear
-	if [[ ! -f /usr/bin/tor ]]; then
-	colorEcho ${INFO} "Install Tor Relay ing"
-	touch /etc/apt/sources.list.d/tor.list
+clear
+colorEcho ${INFO} "Install Tor Relay ing"
+touch /etc/apt/sources.list.d/tor.list
 	cat > '/etc/apt/sources.list.d/tor.list' << EOF
 deb https://deb.torproject.org/torproject.org $(lsb_release -cs) main
 deb-src https://deb.torproject.org/torproject.org $(lsb_release -cs) main
 EOF
-	curl https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
-	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
-	apt-get update
-	apt-get install deb.torproject.org-keyring tor tor-arm tor-geoipdb -q -y
-	service tor stop
+curl https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
+gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
+apt-get update
+apt-get install deb.torproject.org-keyring tor tor-arm tor-geoipdb -q -y
+service tor stop
 	cat > '/etc/tor/torrc' << EOF
 SocksPort 0
 ControlPort 9051
@@ -2531,7 +2533,6 @@ ExitPolicy reject6 *:*, reject *:*
 EOF
 service tor start
 systemctl restart tor@default
-	fi
 fi
 ########Install PHP##################
 if [[ $install_php = 1 ]]; then
@@ -3447,6 +3448,7 @@ chown opendkim:opendkim /etc/opendkim/keys/${domain}/default.private
 mkdir /var/spool/postfix/opendkim/
 chown opendkim:postfix /var/spool/postfix/opendkim
 usermod -a -G dovecot netdata
+fi
 	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
 disable_plaintext_auth = no
 auth_mechanisms = plain login
@@ -3559,7 +3561,6 @@ namespace inbox {
   }
 }
 EOF
-fi
 systemctl restart postfix dovecot
 fi
 clear
@@ -4597,15 +4598,14 @@ logcheck(){
 }
 #####Main menu##########
 advancedMenu() {
-	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option!" 13 78 5 \
-	"Install" "安裝" \
+	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!欢迎使用VPSTOOLBOX!" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option! 欢迎使用VPSTOOLBOX,请选择一个选项!" 14 78 5 \
+	"Install/Update" "安裝/更新" \
 	"Benchmark" "效能"\
 	"Log" "日志" \
-	"Update" "更新" \
 	"Uninstall" "卸載" \
 	"Exit" "退出" 3>&1 1>&2 2>&3)
 	case $Mainmenu in
-		Install)
+		Install/Update)
 		clear
 		curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
 		myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
@@ -4623,8 +4623,6 @@ advancedMenu() {
 ##########Install Trojan-panel#################
 if [[ ${install_tjp} == 1 ]]; then
 colorEcho ${INFO} "Install Trojan-panel ing"
-curl -sL https://deb.nodesource.com/setup_14.x | bash -
-apt-get install -q -y nodejs
 cd /usr/share/nginx/
 git clone https://github.com/trojan-gfw/trojan-panel.git
 chown -R nginx:nginx /usr/share/nginx/trojan-panel
@@ -4808,11 +4806,6 @@ EOF
 		clear
 		logcheck
 		advancedMenu
-		;;
-		Update)
-		clear
-		checkupdate
-		colorEcho ${SUCCESS} "Update Success"
 		;;
 		Uninstall)
 		clear
