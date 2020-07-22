@@ -714,7 +714,7 @@ if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /
 		whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr !" 8 78
     dns_api=1
     APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
-"1" "Cloudflare" \
+"1" "Cloudflare(不支援免费域名!)" \
 "2" "Namesilo" \
 "3" "Aliyun" \
 "4" "DNSPod.cn" \
