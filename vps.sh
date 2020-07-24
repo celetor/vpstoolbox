@@ -710,7 +710,7 @@ fi
 if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]] || [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]]; then
 		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
 		else
-	if (whiptail --title "api" --yesno "使用 (use) api申请证书(to issue certificate)?" 8 78); then
+	if (whiptail --title "api" --yes-button "DNS API申请" --no-button "HTTP申请" --yesno "使用 (use) api申请证书(to issue certificate)?" 8 78); then
 		whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr !" 8 78
     dns_api=1
     APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
