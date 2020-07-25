@@ -1,7 +1,7 @@
 ![logo](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/logo.png)
 # VPS Toolbox
 
-超级Linux VPS工具箱，一键安装包含TLEMP(Trojan-GFW+Linux+NGINX+MariaDB+PHP7.4),全能下载套件(Qbitttorrent-nox+Aria2c+Filebrowser),RSS套件(RSSHUB+Tiny Tiny RSS),邮箱套件(Postfix+Dovecot+Roundcube Webmail),伺服器实时监控(Netdata)等实用软件(除NGINX外皆为可选项)。
+超级Linux VPS工具箱，一键安装包含Hexo,TLEMP(Trojan-GFW+Linux+NGINX+MariaDB+PHP7.4),全能下载套件(Qbitttorrent-nox+Aria2c+Filebrowser),RSS套件(RSSHUB+Tiny Tiny RSS),邮箱套件(Postfix+Dovecot+Roundcube Webmail),伺服器实时监控(Netdata)等实用软件(除NGINX以及Hexo外皆为可选项)。
 
 #### 使用方法(請以root/sudo用戶運行)
 ```
@@ -28,7 +28,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 1. 全自动安装并配置 **[NGINX Web Server](https://www.nginx.com/)**
 2. 支援所有种类的虚拟化技术，包括kvm openvz等
-20. 支援全自动安装并配置 **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [Speedtest](https://github.com/librespeed/speedtest) [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) [Trojan-panel](https://github.com/trojan-gfw/trojan-panel) Postfix Dovecot Roundcube-Webmail**
+20. 支援全自动安装并配置 **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [Speedtest](https://github.com/librespeed/speedtest) [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) [Trojan-panel](https://github.com/trojan-gfw/trojan-panel) Postfix Dovecot Roundcube-Webmail**
 3. 全自动签发,续签,重启服务 [let's encrypt 证书](https://letsencrypt.org/)
 4. **支援 [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)**
 16. 随机HTML模板选择
