@@ -348,7 +348,6 @@ php artisan key:generate
 sed -i "s/example.com/${domain}/;" /usr/share/nginx/trojan-panel/.env
 sed -i "s/DB_PASSWORD=/DB_PASSWORD=${password1}/;" /usr/share/nginx/trojan-panel/.env
 clear
-colorEcho ${INFO} "Please type yes !"
 php artisan migrate --force
 chown -R nginx:nginx /usr/share/nginx/
 cd
@@ -2583,18 +2582,6 @@ if [[ $install_php = 1 ]]; then
 cat > '/etc/php/7.4/fpm/pool.d/www.conf' << EOF
 [www]
 
-; Per pool prefix
-; It only applies on the following directives:
-; - 'access.log'
-; - 'slowlog'
-; - 'listen' (unixsocket)
-; - 'chroot'
-; - 'chdir'
-; - 'php_values'
-; - 'php_admin_values'
-; When not set, the global prefix (or /usr) applies instead.
-; Note: This directive can also be relative to the global prefix.
-; Default Value: none
 ;prefix = /path/to/pools/$pool
 
 user = nginx
@@ -2614,9 +2601,6 @@ listen = /run/php/php7.4-fpm.sock
 listen.owner = nginx
 listen.group = nginx
 ;listen.mode = 0660
-; When POSIX Access Control Lists are supported you can set them using
-; these options, value is a comma separated list of user/group names.
-; When set, listen.owner and listen.group are ignored
 ;listen.acl_users =
 ;listen.acl_groups =
 
@@ -2668,48 +2652,9 @@ ping.path = /ping
 ; Default Value: no
 ;request_terminate_timeout_track_finished = no
 
-; Set max core size rlimit.
-; Possible Values: 'unlimited' or an integer greater or equal to 0
-; Default Value: system defined value
-;rlimit_core = 0
+catch_workers_output = no
 
-; Chdir to this directory at the start.
-; Note: relative path can be used.
-; Default Value: current directory or / when chroot
-;chdir = /var/www
-
-; Redirect worker stdout and stderr into main error log. If not set, stdout and
-; stderr will be redirected to /dev/null according to FastCGI specs.
-; Note: on highloaded environement, this can cause some delay in the page
-; process time (several ms).
-; Default Value: no
-catch_workers_output = yes
-
-; Limits the extensions of the main script FPM will allow to parse. This can
-; prevent configuration mistakes on the web server side. You should only limit
-; FPM to .php extensions to prevent malicious users to use other extensions to
-; execute php code.
-; Note: set an empty value to allow all extensions.
-; Default Value: .php
 ;security.limit_extensions = .php .php3 .php4 .php5 .php7
-
-; Pass environment variables like LD_LIBRARY_PATH. All $VARIABLEs are taken from
-; the current environment.
-; Default Value: clean env
-;env[HOSTNAME] = $HOSTNAME
-;env[PATH] = /usr/local/bin:/usr/bin:/bin
-;env[TMP] = /tmp
-;env[TMPDIR] = /tmp
-;env[TEMP] = /tmp
-
-; Additional php.ini defines, specific to this pool of workers. These settings
-; overwrite the values previously defined in the php.ini. The directives are the
-; same as the PHP SAPI:
-;   php_value/php_flag             - you can set classic ini defines which can
-;                                    be overwritten from PHP call 'ini_set'.
-;   php_admin_value/php_admin_flag - these directives won't be overwritten by
-;                                     PHP call 'ini_set'
-; For php_*flag, valid values are on, off, 1, 0, true, false, yes or no.
 
 ; Defining 'extension' will load the corresponding shared extension from
 ; extension_dir. Defining 'disable_functions' or 'disable_classes' will not
@@ -2727,6 +2672,7 @@ php_admin_value[error_log] = /var/log/fpm-php.www.log
 php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 32M
 EOF
+touch /var/log/fpm-php.www.log
 systemctl restart php7.4-fpm
 fi
 ########Install Netdata################
