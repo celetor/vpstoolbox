@@ -49,6 +49,6 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 ### Give it a try ! (Live Demo,no Guarantee)
 
-[https://trojan-gfw.xyz/vpstoolbox.html](https://trojan-gfw.xyz/vpstoolbox.html)
+[https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
 
 ## 如果此项目对你有用 , 请给颗star ,谢谢!
