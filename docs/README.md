@@ -43,6 +43,6 @@ Ip Information is just an indispensable part of this project, all ip information
 
 ### Give it a try ! (Live Demo,no Guarantee)
 
-[https://trojan-gfw.xyz/vpstoolbox.html](https://trojan-gfw.xyz/vpstoolbox.html)
+[https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
 
 ## If you found it useful , please give a star ,thanks!
