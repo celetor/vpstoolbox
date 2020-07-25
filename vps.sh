@@ -71,6 +71,7 @@ cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-E
 #############################
 
 install_bbr=1
+install_nodejs=1
 
 rm -rf /lib/systemd/system/cloud*
 #disable tencent cloud process
@@ -88,7 +89,6 @@ colorEcho(){
 
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
 colorEcho ${INFO} "Uninstall Aliyun aegis ing"
-echo "" > /etc/motd
 iptables -I INPUT -s 140.205.201.0/28 -j DROP
 iptables -I INPUT -s 140.205.201.16/29 -j DROP
 iptables -I INPUT -s 140.205.201.32/28 -j DROP
@@ -332,6 +332,26 @@ isresolved(){
 				fi
 		done
 		return 1
+}
+####################################################
+install_tjp(){
+  colorEcho ${INFO} "Install Trojan-panel ing"
+cd /usr/share/nginx/
+git clone https://github.com/trojan-gfw/trojan-panel.git
+chown -R nginx:nginx /usr/share/nginx/trojan-panel
+cd trojan-panel
+composer install
+npm install
+npm audit fix
+cp .env.example .env
+php artisan key:generate
+sed -i "s/example.com/${domain}/;" /usr/share/nginx/trojan-panel/.env
+sed -i "s/DB_PASSWORD=/DB_PASSWORD=${password1}/;" /usr/share/nginx/trojan-panel/.env
+clear
+colorEcho ${INFO} "Please type yes !"
+php artisan migrate --force
+chown -R nginx:nginx /usr/share/nginx/
+cd
 }
 ########################################################
 issuecert(){
@@ -3579,7 +3599,6 @@ server {
 	listen 127.0.0.1:80;
 	listen 127.0.0.1:82 http2;
 	server_name $domain;
-	
 	resolver 127.0.0.1;
 	resolver_timeout 10s;
 	if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345) ) { return 403; }
@@ -3593,9 +3612,23 @@ server {
 	#add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://assets.zendesk.com https://connect.facebook.net; img-src 'self' https://ssl.google-analytics.com https://s-static.ak.facebook.com https://assets.zendesk.com; style-src 'self' https://fonts.googleapis.com https://assets.zendesk.com; font-src 'self' https://themes.googleusercontent.com; frame-src https://assets.zendesk.com https://www.facebook.com https://s-static.ak.facebook.com https://tautt.zendesk.com; object-src 'none'";
 	#add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
 	location / {
-			root /usr/share/nginx/html/;
-			index index.html;
-		}
+		proxy_pass http://127.0.0.1:4000/;
+		proxy_set_header Host \$http_host;
+		proxy_set_header X-Real-IP \$remote_addr;
+		proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+	}
+	location /${password1}.png {
+		root /usr/share/nginx/html/;
+	}
+	location /${password2}.png {
+		root /usr/share/nginx/html/;
+	}
+	location /client1-${password1}.json {
+		root /usr/share/nginx/html/;
+	}
+	location /client2-${password2}.json {
+		root /usr/share/nginx/html/;
+	}
     location ~ \.php\$ {
         fastcgi_split_path_info ^(.+\.php)(/.+)\$;
         fastcgi_param SCRIPT_FILENAME \$request_filename;
@@ -3611,7 +3644,6 @@ EOF
 server {
 	listen 443 ssl http2;
 	listen [::]:443 ssl http2;
-
 	ssl_certificate       /etc/certs/${domain}_ecc/fullchain.cer;
 	ssl_certificate_key   /etc/certs/${domain}_ecc/${domain}.key;
 	ssl_protocols         TLSv1.3 TLSv1.2;
@@ -3624,9 +3656,6 @@ server {
 	ssl_stapling on;
 	ssl_stapling_verify on;
 	#ssl_dhparam /etc/nginx/nginx.pem;
-
-	root /usr/share/nginx/html;
-
 	resolver 127.0.0.1;
 	resolver_timeout 10s;
 	server_name           $domain;
@@ -3643,7 +3672,22 @@ server {
 	#if (\$http_user_agent = "") { return 403; }
 	#if (\$host != "$domain") { return 404; }
 	location / {
-		index index.html;
+		proxy_pass http://127.0.0.1:4000/;
+		proxy_set_header Host \$http_host;
+		proxy_set_header X-Real-IP \$remote_addr;
+		proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+	}
+	location /${password1}.png {
+		root /usr/share/nginx/html/;
+	}
+	location /${password2}.png {
+		root /usr/share/nginx/html/;
+	}
+	location /client1-${password1}.json {
+		root /usr/share/nginx/html/;
+	}
+	location /client2-${password2}.json {
+		root /usr/share/nginx/html/;
 	}
     location ~ \.php\$ {
         fastcgi_split_path_info ^(.+\.php)(/.+)\$;
@@ -3745,8 +3789,6 @@ echo "    location $ariapath {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:6800/jsonrpc;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
@@ -3770,15 +3812,15 @@ echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_tracker == 1 ]]; then
-echo "    location $trackerpath {" >> /etc/nginx/conf.d/default.conf
-echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_pass http://127.0.0.1:8000/announce;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
-echo "        }" >> /etc/nginx/conf.d/default.conf
+#echo "    location $trackerpath {" >> /etc/nginx/conf.d/default.conf
+#echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+#echo "        proxy_pass http://127.0.0.1:8000/announce;" >> /etc/nginx/conf.d/default.conf
+#echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
+#echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
+#echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
+#echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
+#echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+#echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location $trackerstatuspath {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:8000/stats;" >> /etc/nginx/conf.d/default.conf
@@ -3842,11 +3884,6 @@ echo "    keepalive 64;" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 fi
 nginx -t
-htmlcode=$(shuf -i 1-3 -n 1)
-curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/$htmlcode.zip
-unzip -o $htmlcode.zip -d /usr/share/nginx/html/
-rm -rf $htmlcode.zip
-rm -rf /usr/share/nginx/html/readme.txt
 chown -R nginx:nginx /usr/share/nginx/
 systemctl restart nginx
 }
@@ -3883,6 +3920,371 @@ checkupdate(){
   	echo "Done !"
 }
 ###########Trojan share link########
+installhexo(){
+  cd /usr/share/nginx
+  mkdir hexo
+  cd /usr/share/nginx/hexo
+  npm install -g npm
+  npm install -g hexo-cli
+  hexo init
+  npm audit fix
+  hexo new page ${password1}
+  cd /usr/share/nginx/hexo/themes
+  wget https://github.com/SukkaW/hexo-theme-suka/archive/1.4.0.zip
+  unzip 1.4.0.zip
+  rm -rf /usr/share/nginx/hexo/themes/1.4.0.zip
+  mv hexo-theme-suka-1.4.0 suka
+  cd /usr/share/nginx/hexo/themes/suka
+  npm install --production
+  cp -i _config.example.yml _config.yml
+    cat > '/usr/share/nginx/hexo/_config.yml' << EOF
+language: zh-tw
+url: https://${domain}
+theme: suka
+suka_theme:
+  search:
+    enable: true
+    path: search.json
+    field: post # Page | Post | All. Default post
+  prism:
+    enable: false
+    line_number: true
+    theme: default
+EOF
+cd /usr/share/nginx/hexo/source/${password1}
+cat > "index.md" << EOF
+---
+title: VPS Toolbox Result
+---
+Welcome to [VPSToolBox](https://github.com/johnrosen1/vpstoolbox)! This page is generated by [Hexo](https://hexo.io/zh-tw/docs/),Check [documentation](https://github.com/johnrosen1/vpstoolbox/wiki) for more info. If you get any problems when using VPSToolBox, you can find the answer in [troubleshooting](https://github.com/johnrosen1/vpstoolbox/wiki/VPSTOOLBOX%E5%8F%AF%E8%83%BD%E7%9A%84%E9%94%99%E8%AF%AF%E5%8E%9F%E5%9B%A0%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95) or you can ask me on [GitHub](https://github.com/johnrosen1/vpstoolbox/issues).
+
+欢迎使用[VPSToolBox](https://github.com/johnrosen1/vpstoolbox) ! 此页面由[Hexo](https://hexo.io/zh-tw/docs/)生成,如果你在使用VPSToolBox时遇到任何问题,请仔细阅读以下所有链接以及信息,并且你可以在[VPSTOOLBOX可能的错误原因及解决办法](https://github.com/johnrosen1/vpstoolbox/wiki/VPSTOOLBOX%E5%8F%AF%E8%83%BD%E7%9A%84%E9%94%99%E8%AF%AF%E5%8E%9F%E5%9B%A0%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95)中找到额外的信息,***请勿随意发[issue](https://github.com/johnrosen1/vpstoolbox/issues)*** !
+
+> *如果你安装的时候没有选择相应的软件，请自行忽略相关内容 ❗*
+
+**以下所有链接以及信息都是有用的，请在提任何问题或者issue前仔细阅读相关内容,否则你的issue将会被立即关闭 ❗**
+
+***⚠️WARNING⚠️请不要自行修改默认配置,除非你知道你在做什么 ❗❗❗***
+
+*[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md)*
+
+---
+
+### Trojan-GFW
+
+*默认安装: ✅*
+
+> Introduction: An unidentifiable mechanism that helps you bypass GFW.
+
+PS: ***不支援Cloudflare CDN ❗***
+
+#### Trojan-GFW client config profiles(客户端配置文件)
+
+1. <a href="https://$domain/client1-$password1.json" target="_blank">Profile 1</a>
+2. <a href="https://$domain/client2-$password2.json" target="_blank">Profile 2</a>
+
+#### Trojan-GFW Share Links
+
+1. trojan://$password1@$domain:443
+2. trojan://$password2@$domain:443
+
+#### Trojan-GFW QR codes(二维码) (不支援python3-qrcode的系统会404!)
+
+1. <a href="https://$domain/$password1.png" target="_blank">QR code 1</a>
+2. <a href="https://$domain/$password2.png" target="_blank">QR code 2</a>
+
+#### Related Links
+
+1. <a href="https://github.com/trojan-gfw/igniter/releases" target="_blank">Android client</a> 安卓客户端
+2. <a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank">ios client</a>苹果客户端
+3. <a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">windows client</a>windows客户端
+4. <a href="https://github.com/NetchX/Netch" target="_blank">https://github.com/NetchX/Netch</a>推荐的**游戏**客户端
+5. <a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a>
+
+---
+
+### Hexo
+
+*默认安装: ✅*
+
+> 简介: 快速、簡單且強大的網誌框架。
+
+#### Hexo location
+
+{% blockquote %}
+cd /usr/share/nginx/hexo/
+{% endblockquote %}
+
+{% blockquote %}
+sudo systemctl start/restart/status hexo
+{% endblockquote %}
+
+#### Docs
+
+1. <a href="https://hexo.io/zh-tw/docs/" target="_blank">Hexo docs</a>
+
+---
+### Rsshub + TT-RSS
+
+*默认安装: ✅*
+
+> 简介: RSSHUB + Tiny Tiny RSS。
+
+#### RSSHUB
+
+<a href="https://$domain/${password1}_rsshub/" target="_blank">https://$domain/${password1}_rsshub/</a>
+
+#### Tiny Tiny RSS
+
+- <a href="https://$domain/${password1}_ttrss/" target="_blank">https://$domain/${password1}_ttrss/</a>
+- 用户名(username): **admin**
+- 密碼(password): **password**
+
+> *请自行修改初始用户名和密码！*
+
+#### Related Links
+
+1. <a href="https://docs.rsshub.app/" target="_blank">RSSHUB docs</a>
+2. <a href="https://github.com/DIYgod/RSSHub-Radar" target="_blank">RSSHub Radar</a>(推荐自行将默认的rsshub.app换成上述自建的)
+3. <a href="https://docs.rsshub.app/social-media.html" target="_blank">RSSHUB路由</a>
+4. <a href="https://wzfou.com/tt-rss/" target="_blank">自建RSS阅读器Tiny Tiny RSS安装和配置自动更新</a>(仅供参考 !)
+
+---
+
+### Trojan-panel
+
+*默认安装: ❎*
+
+> 简介: 简易Trojan-gfw**多用户管理面板**。
+
+PS: Quota为流量(设置为-1则等于无限流量),password为使用密码,email仅用于管理,无实际意义。
+
+Introduction: Trojan multi-user control panel
+
+<a href="https://$domain/${password1}_config/" target="_blank">https://$domain/${password1}_config/</a>
+
+#### Related Links
+
+1. <a href="https://trojan-tutor.github.io/2019/06/08/p43.html#more" target="_blank">Trojan-Panel配置</a>(仅供参考 !)
+2. <a href="https://github.com/trojan-gfw/trojan-panel" target="_blank">https://github.com/trojan-gfw/trojan-panel</a>
+
+---
+
+### Qbittorrent
+
+*默认安装: ✅*
+
+> 简介: 一款用于 **下载bt资源到你的VPS上** 的软件
+
+Introduction: download resources you want to your vps(support bt only but extremely fast)
+
+- <a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a>
+- 用户名(username): admin
+- 密碼(password): adminadmin
+
+> *请自行修改初始用户名和密码！*
+
+#### Tips:
+
+1. 请将Bittorrent加密選項改为 ***強制加密(Require encryption)*** ,否则會被迅雷吸血！
+2. 请手动添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a>
+
+#### 附：优秀的BT站点推荐(Excellent bt sites recommendation)
+
+1. <a href="https://thepiratebay.org/" target="_blank">https://thepiratebay.org/</a>
+2. <a href="https://sukebei.nyaa.si/" target="_blank">https://sukebei.nyaa.si/</a></li>
+3. <a href="https://rarbgprx.org/torrents.php" target="_blank">https://rarbgprx.org/torrents.php</a>
+
+#### Related Links
+
+1. <a href="https://www.qbittorrent.org/download.php" target="_blank">win等平台下载页面</a>
+2. <a href="https://github.com/qbittorrent/qBittorrent" target="_blank">Github页面</a>
+3. <a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank">Android远程操控客户端</a>
+4. <a href="https://www.qbittorrent.org/" target="_blank">https://www.qbittorrent.org/</a>
+
+---
+
+### Aria2
+
+*默认安装: ✅*
+
+> 简介: 将任何你想下载的东西(支援http/https/ftp/bt等,不支援emule/ed2k)**下载到你的VPS**上的软件。
+
+PS: 推荐使用**Ariang**连接(aria2没有官方web interface!)
+
+#### Aria2
+
+- https://$domain:443$ariapath
+- 密碼(token): **$ariapasswd**
+
+#### Related Links
+
+1. **<a href="https://github.com/mayswind/AriaNg/releases" target="_blank">AriaNG</a>**
+2. <a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a>
+3. <a href="https://aria2.github.io/manual/en/html/index.html" target="_blank">https://aria2.github.io/manual/en/html/index.html</a> 官方文档
+4. <a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank">Aria2 for Android</a>
+
+---
+
+### Filebrowser
+
+*默认安装: ✅*
+
+> 简介: 一款 **从VPS上下载资源(在aria2/qbt下载完成后)到本地网络** 的软件。
+
+Introduction: download any resources(formaly downloaded by qbt or aria2) from your vps to your local network
+
+#### Filebrowser
+
+- <a href="https://$domain:443$filepath" target="_blank">https://$domain$filepath</a>
+- 用户名(username): **admin**
+- 密碼(token): **admin**
+
+> *请自行修改初始用户名和密码！*
+
+#### Related Links
+
+1. <a href="https://github.com/filebrowser/filebrowser" target="_blank">https://github.com/filebrowser/filebrowser</a>
+2. <a href="https://filebrowser.xyz/" target="_blank">https://filebrowser.xyz/</a>
+
+---
+
+### Speedtest
+
+*默认安装: ✅*
+
+> 简介: 一款 **测试本地网络到VPS的延迟及带宽** 的应用。
+
+Introduction: test download and upload speed from vps to your local network.
+
+#### Speedtest
+
+- <a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain/${password1}_speedtest/</a>
+
+#### Related Links
+
+1. <a href="https://github.com/librespeed/speedtest" target="_blank">https://github.com/librespeed/speedtest</a>
+
+---
+
+### Netdata
+
+*默认安装: ✅*
+
+> 简介: 一款 **实时效能监测工具** 应用。
+
+> Introduction: Open-source, distributed, real-time, performance and health monitoring for systems and applications.
+
+#### Netdata
+
+- <a href="https://$domain:443$netdatapath" target="_blank">https://${domain}${netdatapath}</a>
+
+#### Related Links
+
+1. <a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank">https://play.google.com/store/apps/details?id=com.kpots.netdata</a>安卓客户端
+2. <a href="https://github.com/netdata/netdata" target="_blank">https://github.com/netdata/netdata</a>
+
+---
+
+### Mail Service
+
+*默认安装: ❎*
+
+***⚠️WARNING⚠️请不要自行修改任何邮件配置,除非你知道你在做什么 ❗❗❗***
+
+> 简介: 邮件软件。
+
+> Introduction: Mail Service
+
+PS: 不支援自定义证书,仅支援全自动申请的let证书!
+
+#### Roundcube Webmail
+
+- <a href="https://${domain}/${password1}_webmail/" target="_blank">Roundcube Webmail</a>
+- 用户名(username): **${mailuser}**
+- 密碼(password): **${password1}**
+- 收件地址: **${mailuser}@${domain}**
+
+#### Tips:
+
+1. 阿里云，gcp等厂商默认不开放25(包括对外访问)端口，不能发邮件，请注意。
+2. 请自行修改发件人身份为${mailuser}@${domain}。
+3. 请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all
+4. 请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD
+
+#### Related Links
+
+1. <a href="https://www.mail-tester.com/" target="_blank">https://www.mail-tester.com/</a>
+2. <a href="https://lala.im/6838.html" target="_blank">Debian10使用Postfix+Dovecot+Roundcube搭建邮件服务器</a>(仅供参考!)
+
+---
+
+### Bittorrent-trackers
+
+*默认安装: ❎*
+
+> 简介: Bittorrent-tracker , 可作为私人或公开Bt-tracker。
+
+> Introduction: Bittorrent-tracker as private or public.
+
+#### Bittorrent-trackers
+
+http://$domain:8000/announce
+
+#### Info link
+
+<a href="https://$domain:443$trackerstatuspath" target="_blank">https://$domain:443$trackerstatuspath</a>
+
+#### Tips:
+
+1. 请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。
+2. 请记得将此Tracker分享给你的朋友们。
+
+#### Related Links
+
+1. <a href="https://github.com/webtorrent/bittorrent-tracker" target="_blank">https://github.com/webtorrent/bittorrent-tracker</a>
+
+---
+
+### MariaDB
+
+*默认安装: ✅*
+
+> 简介: MariaDB 数据库。
+
+> Introduction: MariaDB Database.
+
+无默认root密码,为了安全起见,外网访问已禁用,请直接使用以下命令访问数据库！
+
+{% blockquote %}
+mysql -u root
+{% endblockquote %}
+
+如果需要外网访问,请自行注释掉/etc/mysql/my.cnf中的bind-address选项并重启mariadb！
+
+Please edit /etc/mysql/my.cnf and restart mariadb if you need remote access !
+EOF
+
+cd
+
+    cat > '/etc/systemd/system/hexo.service' << EOF
+[Unit]
+Description=Hexo Server Service
+Documentation=https://hexo.io/zh-tw/docs/
+After=network.target
+
+[Service]
+WorkingDirectory=/usr/share/nginx/hexo
+ExecStart=/usr/bin/hexo server -i 127.0.0.1
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl enable hexo
+systemctl start hexo
+}
+####################################
 sharelink(){
 	set +e
 	cd
@@ -3966,490 +4368,6 @@ EOF
 	rm /usr/share/nginx/client2.json
 	rm -rf trojan-url.py
 	fi
-	cat > "/usr/share/nginx/html/result.html" << EOF
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Vpstoolbox Result">
-    <meta name="keywords" content="Vpstoolbox">
-    <meta name="author" content="John Rosen">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/trojan.ico">
-    <title>Vps Toolbox Result</title>
-</head>
-<style>
-body {
-  background-color: #cccccc;
-  font-size: 1.2em;
-}
-
-ul.ttlist{
-    list-style: cjk-ideographic;
-}
-
-.menu{
-    position: relative;
-    background-color: #B2BEB5;  
-    font-family: sans-serif;
-    font-size: 2em;
-    margin-top: -10px;
-    padding-top: 0px;
-    text-align: center;
-    width: 100%;
-    height: 8%;
-}
-
-.menu ul{
-    list-style-type: none;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-}
-
-.menu li{
-    float: left;
-}
-.menu a{
-    display: inline;
-    color: white;
-    text-align: center;
-    padding-left: 100px;
-    padding-right: 100px;
-    text-decoration: none;
-}
-
-.menu li:hover {
-    background-color: #CC99FF;
-}
-
-.tt{
-    /* position: absolute; */
-    border:1px #00f none;
-    border-radius: 5px;
-    width: 75%;
-    width: calc(100% - 120px);
-    box-sizing: border-box;
-    margin: 20px auto 70px;
-    padding: 0 50px 10px 50px;
-    /* margin-left: 150px; */
-    /* margin-top: 20px; */
-    /* font-size: 1.2em; */
-    font-family: PingFangSC, 'Noto Sans CJK SC', sans-serif;
-    /* font-weight: bold; */
-    /* padding-left: 50px;
-    padding-right: 50px;
-    padding-bottom: 10px; */
-    /* margin-bottom: 60px; */
-    background-color: #E6FFFB;
-    overflow: visible;
-}
-.tt a {
-    text-decoration: none;
-    color: #8095ff;
-    /* font-size: 1.3em; */
-}
-
-.tt img{
-    width: 550px;
-    height: 40%;
-}
-
-.tt li {
-    padding-top: 10px;
-}
-
-.subtt{
-    text-align: center;
-    margin: auto;
-    font-size: 2em;
-    padding-top: 30px;
-}
-.desc {
-    font-size: 0.8em;
-    text-align: right;
-}
-
-.t1{
-    font-size: 1.2em;
-}
-
-footer{
-    padding-top: 0;
-    position: fixed;
-    margin: 0;
-    background-color: #B2BEB5;
-    width: 100%;
-    height: 50px;
-    bottom: 0;
-}
-
-footer p{
-    color: #fff;
-    text-align: center;
-    font-size: 1em;
-    font-family: sans-serif;
-}
-
-footer a{
-    color: #fff;
-}
-
-footer a:link {
-    text-decoration: none;
-}
-
-@media (max-width: 560px){
-    .menu{
-        font-size: 1.2em;
-    }
-    .sidebar {
-        display: none;
-    }
-
-    .cate {
-        display: none;
-    }
-    .tt{
-        position: absolute;
-        width: 80%;
-        margin-left: 0;
-    }
-    .menu{
-        padding-top: 0px;
-    }
-}
-
-@media (max-width: 750px){
-    .sidebar {
-        display: none;
-    }
-    .cate{
-        display: none;
-    }
-}
-::-webkit-scrollbar {
-    width: 11px;
-}
-
-::-webkit-scrollbar-track {
-    background: #CCFFEE;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #B3E5FF;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #156; 
-}
-</style>
-<body>
-    <div>
-        <div>
-            <article>
-                <div class="tt">
-                    <h1 class="subtt">Vps Toolbox Result</h1>
-                    <p class="desc">If you did not choose any of the softwares during the installation below, just ignore them.</p>
-                    <p class="desc">！如果你安装的时候没有选择相应的软件，请自动忽略相关内容！</p>
-                    <p class="desc">！以下所有链接以及信息都是有用的，请在提任何问题或者issue前仔细阅读相关内容！</p>
-                    <p class="desc"><a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md" target="_blank">提问的智慧</a></p>
-                    <br>
-                    
-                    <h2>Trojan-GFW</h2>
-                    <h4> 默认安装: ✅</h4>
-                    <p>Introduction: An unidentifiable mechanism that helps you bypass GFW.</p>
-                    <p>PS: 不支援Cloudflare等 CDN !</p>
-                    <ul class="ttlist">
-                        <li>
-                            <h3>Trojan-GFW client config profiles(客户端配置文件)</h3>
-                            <ol>
-                                <li><a href="client1-$password1.json" target="_blank">Profile 1</a></li>
-                                <li><a href="client2-$password2.json" target="_blank">Profile 2</a></li>
-                                <li><a href="clientv6-$password1.json" target="_blank">IPV6 Profile</a>(only vaild when your server has a ipv6 address,or will 404 !)</li>
-                            </ol>
-                        </li>
-                        <li>
-                            <h3>Trojan-GFW Share Links</h3>
-                            <ol>
-                                <li><code>trojan://$password1@$domain:443</code></li>
-                                <li><code>trojan://$password2@$domain:443</code></li>
-                            </ol>
-                        </li>
-                        <li>
-                            <h3>Trojan-GFW QR codes(二维码) (不支援python3-prcode的系统会404!)</h3>
-                            <ol>
-                                <li><a href="$password1.png" target="_blank">QR code 1</a></li>
-                                <li><a href="$password2.png" target="_blank">QR code 2</a></li>
-                            </ol>
-                        </li>
-                        <li>
-                            <h3>Related Links</h3>
-                            <ol>
-                                <li><a href="https://github.com/trojan-gfw/igniter/releases" target="_blank">Android client</a>安卓客户端</li>
-                                <li><a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank">ios client</a>苹果客户端</li>
-                                <li><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">windows client</a>windows客户端</li>
-                                <li><a href="https://github.com/NetchX/Netch" target="_blank">https://github.com/NetchX/Netch</a>推荐的<strong>游戏</strong>客户端</li>
-                                <li><a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a></li>
-                                <li><a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">https://github.com/trojan-gfw/trojan/releases/latest</a></li>
-                            </ol>
-                        </li>
-                    </ul>
-                    <br>
-
-                    <h2>Rsshub</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>简介: RSSHUB + Tiny Tiny RSS。</p>
-                    <p>RSSHUB :</p>
-                    <p><a href="https://$domain/${password1}_rsshub/" target="_blank">https://$domain/${password1}_rsshub/</a></p>
-                    <p>Tiny Tiny RSS :</p>
-                    <ul>
-                        <li><a href="https://$domain/${password1}_ttrss/" target="_blank">https://$domain/${password1}_ttrss/</a></li>
-                        <li>用户名(username): admin</li>
-                        <li>密碼(password): password</li>
-                    </ul>
-                    <p>Related Links</p>
-                    <ol>
-                        <li><a href="https://docs.rsshub.app/" target="_blank">RSSHUB docs</a></li>
-                        <li><a href="https://github.com/DIYgod/RSSHub-Radar" target="_blank">RSSHub Radar</a>(请自行将默认的rsshub.app换成上述自建的)</li>
-                        <li><a href="https://docs.rsshub.app/social-media.html" target="_blank">RSSHUB路由</a></li>
-                        <li><a href="https://wzfou.com/tt-rss/" target="_blank">自建RSS阅读器Tiny Tiny RSS安装和配置自动更新</a>(仅供参考 ! )</li>
-                    </ol>
-                    <br>
-
-                    <h2>Trojan-panel</h2>
-                    <h4>默认安装: ❎</h4>
-                    <p>简介: 简易Trojan-gfw多用户管理面板。</p>
-                    <p>PS: Quota为流量(设置为-1则等于无限流量),password为使用密码,email仅用于管理,无实际意义。</p>
-                    <p>Introduction: Trojan multi-user control panel</p>
-                    <p><a href="https://$domain/${password1}_config/" target="_blank">https://$domain/${password1}_config/</a></p>
-                    <p>Related Links</p>
-                    <ol>
-                        <li><a href="https://trojan-tutor.github.io/2019/06/08/p43.html#more" target="_blank">Trojan-Panel配置</a>(仅供参考 ! )</li>
-                        <li><a href="https://github.com/trojan-gfw/trojan-panel" target="_blank">https://github.com/trojan-gfw/trojan-panel</a></li>
-                    </ol>
-                    <br>
-                    
-                    <h2>Qbittorrent</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>简介: 一款用于 下载bt资源到你的VPS上 的软件</p>
-                    <p>Introduction: download resources you want to your vps(support bt only but extremely fast)</p>
-                    <!-- <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p> -->
-                    <ul>
-                        <li><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a></li>
-                        <li>用户名(username): admin</li>
-                        <li>密碼(password): adminadmin</li>
-                    </ul>
-                    <p>Tips:</p>
-                    <ol>
-                        <li>请将Bittorrent加密選項改为 <strong>強制加密(Require encryption)</strong> ,否则會被迅雷吸血！</li>
-                        <li>请手动添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a>！</li>
-                    </ol>
-                    
-                    <p>附：优秀的BT站点推荐(Related Links)</p>
-                    <ol>
-                        <li><a href="https://thepiratebay.org/" target="_blank">https://thepiratebay.org/</a></li>
-                        <li><a href="https://sukebei.nyaa.si/" target="_blank">https://sukebei.nyaa.si/</a></li>
-                        <li><a href="https://rarbgprx.org/torrents.php" target="_blank">https://rarbgprx.org/torrents.php</a></li>
-                    </ol>
-                    <p>Related Links</p>
-                    <ol>
-                        <li><a href="https://www.qbittorrent.org/download.php" target="_blank">win等平台下载页面</a></li>
-                        <li><a href="https://github.com/qbittorrent/qBittorrent" target="_blank">Github页面</a></li>
-                        <li><a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank">Android远程操控客户端</a></li>
-                        <li><a href="https://www.qbittorrent.org/" target="_blank">https://www.qbittorrent.org/</a></li>
-                        <li><a href="https://www.johnrosen1.com/qbt/" target="_blank">https://www.johnrosen1.com/qbt/</a></li>
-                    </ol>
-                    <br>
-
-                    <h2>Aria2</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>Your Aria2 Information</p>
-                    <p>简介: 将任何你想下载的东西(支援http/https/ftp/bt等,不支援emule)下到你的VPS上的软件。</p>
-                    <p>PS: 推荐使用<strong>Ariang</strong>连接(aria2没有官方web interface!)</p>
-                    <p>Introduction: download resources you want to your vps(support ftp/http/https/bt)</p>
-                    <p><code>$ariapasswd@https://$domain:443$ariapath</code></p>
-                    <p>Related Links:</p>
-                    <p>Ariang is recommended to connect to your server</p>
-                    <ol>
-                        <li><a href="https://github.com/mayswind/AriaNg/releases" target="_blank">AriaNG</a></li>
-                        <li><a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a></li>
-                        <li><a href="https://aria2.github.io/manual/en/html/index.html" target="_blank">https://aria2.github.io/manual/en/html/index.html</a> 官方文档</li>
-                        <li><a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank">https://play.google.com/store/apps/details?id=com.gianlu.aria2app</a></li>
-                    </ol>
-                    <br>
-
-                    <h2>Filebrowser</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>Your Filebrowser Information</p>
-                    <p>简介: 一款用于 从VPS上下载资源(在aria2/qbt下载完成后)到本地网络 的软件。</p>
-                    <p>Introduction: download any resources(formaly downloaded by qbt or aria2) from your vps to your local network</p>
-                    <!-- <p><a href="https://$domain:443$filepath" target="_blank">https://$domain:443$filepath</a> 用户名(username): admin 密碼(password): admin</p> -->
-                    <ul>
-                        <li><a href="https://$domain:443$filepath" target="_blank">https://$domain$filepath</a></li>
-                        <li>用户名(username): admin</li>
-                        <li>密碼(password): admin</li>
-                    </ul>
-                    <p>Tips:</p>
-                    <p>请修改默认用户名和密码！</p>
-                    <p>Related Links</p>
-                    <ul>
-                        <li><a href="https://github.com/filebrowser/filebrowser" target="_blank">https://github.com/filebrowser/filebrowser</a></li>
-                        <li><a href="https://filebrowser.xyz/" target="_blank">https://filebrowser.xyz/</a></li>
-                    </ul>
-                    <br>
-
-                    <h2>Speedtest</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>简介: 一款用于 测试本地网络到VPS的延迟及带宽 的简易应用。</p>
-                    <p>Introduction: test download and upload speed from vps to your local network</p>
-                    <p><a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain/${password1}_speedtest/</a></p>
-                    <p>Related Links</p>
-                    <ol>
-                        <li><a href="https://github.com/librespeed/speedtest" target="_blank">https://github.com/librespeed/speedtest</a></li>
-                        <li><a href="https://github.com/librespeed/speedtest/blob/docker/doc.md" target="_blank">https://github.com/librespeed/speedtest/blob/docker/doc.md</a></li>
-                    </ol>
-                    <br>
-
-                    <h2>Netdata</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>Your Netdata Information</p>
-                    <p><a href="https://$domain:443$netdatapath" target="_blank">https://${domain}${netdatapath}</a></p>
-                    <p>Related Links</p>
-                    <ol>
-                        <li><a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank">https://play.google.com/store/apps/details?id=com.kpots.netdata</a>安卓客户端</li>
-                        <li><a href="https://github.com/netdata/netdata" target="_blank">https://github.com/netdata/netdata</a></li>
-                    </ol>
-                    <br>
-
-                    <h2>Mail Service</h2>
-                    <h4>默认安装: ❎</h4>
-                    <p>PS: 不支援自定义证书,仅支援全自动申请的let证书!</p>
-                    <p>Your Mail service Information</p>
-                    <!-- <p><a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a> 用户名(username): admin 密碼(password): adminadmin</p> -->
-                    <ul>
-                        <li><a href="https://${domain}/${password1}_webmail/" target="_blank">Roundcube Webmail</a></li>
-                        <li>用户名(username): ${mailuser}</li>
-                        <li>密碼(password): ${password1}</li>
-                        <li>收件地址: ${mailuser}@${domain}</li>
-                    </ul>
-                    <p>Tips:</p>
-                    <ol>
-                        <li>阿里云，gcp等厂商默认不开放25(包括对外访问)端口，不能发邮件，请注意。</li>
-                        <li>请自行修改发件人身份为${mailuser}@${domain}</li>
-                        <li>请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all</li>
-                        <li>请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD</li>
-                    </ol>
-                    
-                    <p>附：</p>
-                    <ol>
-                        <li><a href="https://www.mail-tester.com/" target="_blank">https://www.mail-tester.com/</a></li>
-                        <li><a href="https://lala.im/6838.html" target="_blank">Debian10使用Postfix+Dovecot+Roundcube搭建邮件服务器</a>(仅供参考!)</li>
-                    </ol>
-                    <br>
-                    
-                    <h2>Bittorrent-trackers</h2>
-                    <h4>默认安装: ❎</h4>
-                    <p>简介: 简易Bittorrent-tracker。</p>
-                    <p>Introduction: use it as a private or public(not recommended) bittorrent tracker</p>
-                    <p><code>https://$domain:443$trackerpath</code></p>
-                    <p><code>http://$domain:8000/announce</code></p>
-                    <p>你的Bittorrent-Tracker信息（查看状态用）(Your Bittorrent-Tracker Status Information)</p>
-                    <p><a href="https://$domain:443$trackerstatuspath" target="_blank">https://$domain:443$trackerstatuspath</a></p>
-                    <p>Tips:</p>
-                    <ol>
-                        <li>请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。</li>
-                        <li>请记得将此Tracker分享给你的朋友们。</li>
-                    </ol>
-                    <p>Related Links</p>
-                    <ol>
-                        <li><a href="https://github.com/webtorrent/bittorrent-tracker" target="_blank">https://github.com/webtorrent/bittorrent-tracker</a></li>
-                        <li><a href="https://lifehacker.com/whats-a-private-bittorrent-tracker-and-why-should-i-us-5897095" target="_blank">What's a Private BitTorrent Tracker, and Why Should I Use One?</a></li>
-                        <li><a href="https://www.howtogeek.com/141257/htg-explains-how-does-bittorrent-work/" target="_blank">How Does BitTorrent Work?</a></li>
-                    </ol>
-                    <br>
-
-                    <h2>MariaDB</h2>
-                    <h4>默认安装: ✅</h4>
-                    <p>Your MariaDb Information</p>
-                    <p>No default root password, remote access has been disabled for security!</p>
-                    <p>无默认root密码,为了安全起见,外网访问已禁用,请直接使用以下命令访问数据库！</p>
-                    <p>mysql -u root</p>
-                    <p>如果需要外网访问,请自行注释掉/etc/mysql/my.cnf中的bind-address选项并重启mariadb！</p>
-                    <p>Please edit /etc/mysql/my.cnf and restart mariadb if you need remote access !</p>
-                    <br>
-
-                    <h2>How to change the default config or debug </h2>
-                    <p>PS:如果你自己搞炸了别来提issue!!!</p>
-                    <p>Nginx</p>
-                    <ul>
-                        <li><code>sudo nano /etc/nginx/conf.d/default.conf</code></li>
-                        <li><code>sudo systemctl start/restart/status nginx</code></li>
-                    </ul>
-                    <p>Trojan-GFW</p>
-                    <ul>
-                        <li><code>sudo nano /usr/local/etc/trojan/config.json</code></li>
-                        <li><code>sudo systemctl start/restart/status trojan</code></li>
-                    </ul>
-                    <p>PHP</p>
-                    <ul>
-                        <li><code>sudo nano /etc/php/7.4/fpm/pool.d/www.conf</code></li>
-                        <li><code>sudo systemctl start/restart/status php7.4-fpm</code></li>
-                    </ul>
-                    <p>Dnscrypt-proxy</p>
-                    <ul>
-                        <li><code>sudo nano /etc/dnscrypt-proxy/dnscrypt-proxy.toml</code></li>
-                        <li><code>sudo systemctl start/restart/status dnscrypt-proxy</code></li>
-                    </ul>
-                    <p>Aria2</p>
-                    <ul>
-                        <li><code>sudo nano /etc/aria2.conf</code></li>
-                        <li><code>sudo systemctl start/restart/status aria2</code></li>
-                    </ul>
-                    <p>Netdata</p>
-                    <ul>
-                        <li><code>sudo nano /opt/netdata/etc/netdata/netdata.conf</code></li>
-                        <li><code>sudo systemctl start/restart/status netdata</code></li>
-                    </ul>
-                    <p>MariaDB</p>
-                    <ul>
-                        <li><code>sudo nano /etc/mysql/my.cnf</code></li>
-                        <li><code>sudo systemctl start/restart/status mariadb</code></li>
-                    </ul>
-                    <p>Postfix</p>
-                    <ul>
-                        <li><code>sudo nano /etc/postfix/main.cf</code></li>
-                        <li><code>sudo systemctl start/restart/status postfix</code></li>
-                    </ul>
-                    <p>Dovecot</p>
-                    <ul>
-                        <li><code>sudo nano /etc/dovecot/conf.d/*.conf(please search by yourself)</code></li>
-                        <li><code>sudo systemctl start/restart/status dovecot</code></li>
-                    </ul>
-                    <p>Iptables</p>
-                    <ul>
-                        <li><code>sudo iptables -L -v -n</code></li>
-                        <li><code>sudo iptables-save > /etc/iptables/rules.v4</code></li>
-                    </ul>
-                    <p>Tor</p>
-                    <ul>
-                        <li><code>sudo nano /etc/tor/torrc</code></li>
-                        <li><code>sudo systemctl start/restart/status tor@default</code></li>
-                    </ul>
-                    <br>
-
-                </div>
-            </article>
-            <footer>
-                <p><a href="https://github.com/johnrosen1/vpstoolbox">VPS Toolbox</a> Copyright &copy; MIT License 2020 Johnrosen</p>
-            </footer>
-        </div>
-    </div>
-</body>
-</html>
-EOF
 }
 ##########Uninstall##########
 uninstall(){
@@ -4523,6 +4441,12 @@ uninstall(){
 		systemctl stop tor@default
 		apt-get -y remove tor
 		rm -rf /etc/apt/sources.list.d/tor.list
+		fi
+	fi
+	if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
+		if (whiptail --title "api" --yesno "卸载 (uninstall) Netdata?" 8 78); then
+		systemctl stop netdata
+		systemctl disable netdata
 		fi
 	fi
 	if (whiptail --title "api" --yesno "卸载 (uninstall) acme.sh?" 8 78); then
@@ -4618,28 +4542,11 @@ advancedMenu() {
 		if [[ $install_mariadb == 1 ]]; then
 			install_mariadb
 		fi
-##########Install Trojan-panel#################
-if [[ ${install_tjp} == 1 ]]; then
-colorEcho ${INFO} "Install Trojan-panel ing"
-cd /usr/share/nginx/
-git clone https://github.com/trojan-gfw/trojan-panel.git
-chown -R nginx:nginx /usr/share/nginx/trojan-panel
-cd trojan-panel
-composer install
-npm install
-npm audit fix
-cp .env.example .env
-php artisan key:generate
-sed -i "s/example.com/${domain}/;" /usr/share/nginx/trojan-panel/.env
-sed -i "s/DB_PASSWORD=/DB_PASSWORD=${password1}/;" /usr/share/nginx/trojan-panel/.env
-clear
-colorEcho ${INFO} "Please type yes !"
-php artisan migrate --force
-chown -R nginx:nginx /usr/share/nginx/trojan-panel
-cd
-fi
-################################################
+		if [[ ${install_tjp} == 1 ]]; then
+		install_tjp
+		fi
 		nginxtrojan
+		installhexo
 		start
 		sharelink
 		rm results
@@ -4670,7 +4577,6 @@ fi
 		ip6tables -t nat -I OUTPUT ! -d ::1 -p udp -m udp --dport 53 -j DNAT --to [::1]:53
 		iptables-save > /etc/iptables/rules.v4
 		fi
-		mv /usr/share/nginx/html/result.html /usr/share/nginx/html/$password1.html
 		clear
 		cat > '/etc/profile.d/mymotd.sh' << EOF
 #!/bin/bash
@@ -4705,6 +4611,9 @@ echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
   fi
   if [[ -f /usr/sbin/nginx ]]; then
 echo -e "Nginx:\t\t\t"\$(systemctl is-active nginx)
+  fi
+  if [[ -f /usr/bin/hexo ]]; then
+echo -e "Hexo:\t\t\t"\$(systemctl is-active hexo)
   fi
   if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
 echo -e "Dnscrypt-proxy:\t\t"\$(systemctl is-active dnscrypt-proxy)
@@ -4764,13 +4673,14 @@ echo -e "-----------------------------------------------------------------------
 echo "****************************************************************************************************"
 echo "|                                   Vps Toolbox Result                                             |"
 echo "|                     Please visit the following link to get the result                            |"
-echo "|                       https://$domain/$password1.html                                     |"
+echo "|                       https://$domain/${password1}/                                     |"
 echo "|                 For more info ,please run the following command                                  |"
 echo 'curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash'
 echo "****************************************************************************************************"
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
 		clear
+		echo "" > /etc/motd
 		if (whiptail --title "Reboot" --yesno "安装成功(success)！ 重启 (reboot) 使配置生效,重新SSH连接后将自动出现结果 (to make the configuration effective)?" 8 78); then
 		clear
 		reboot
@@ -4803,16 +4713,17 @@ EOF
 		Log)
 		clear
 		logcheck
-		advancedMenu
+		exit 0
 		;;
 		Uninstall)
 		clear
 		uninstall
 		colorEcho ${SUCCESS} "Remove complete"
+		exit 0
 		;;
 		Exit)
 		whiptail --title "Bash Exited" --msgbox "Goodbye!" 8 78
-		exit
+		exit 0
 		;;
 		esac
 }
@@ -4835,9 +4746,9 @@ sed -i 's/#StrictModes yes/StrictModes yes/' /etc/ssh/sshd_config
 sed -i 's/#AllowAgentForwarding yes/AllowAgentForwarding no/' /etc/ssh/sshd_config
 sed -i 's/#AllowTcpForwarding yes/AllowTcpForwarding no/' /etc/ssh/sshd_config
 echo "" >> /etc/ssh/sshd_config
-echo "Protocol 2" >> /etc/ssh/sshd_config
+#echo "Protocol 2" >> /etc/ssh/sshd_config
 echo "DebianBanner no" >> /etc/ssh/sshd_config
-echo "AllowStreamLocalForwarding no" >> /etc/ssh/sshd_config
+#echo "AllowStreamLocalForwarding no" >> /etc/ssh/sshd_config
 systemctl reload sshd
 fi
 setlanguage
