@@ -1364,6 +1364,8 @@ apt-get install python3-qrcode python-dnspython -q -y
 sh -c 'echo "y\n\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
 clear
 
+installnginx
+
 if [[ $install_docker == 1 ]]; then
   clear
   colorEcho ${INFO} "安装Docker(Install Docker ing)"
