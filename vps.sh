@@ -450,8 +450,6 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
 "6" "GoDaddy" \
 "back" "返回"  3>&1 1>&2 2>&3)
 
-	installacme
-
     case $APIOPTION in
         1)
         while [[ -z ${CF_Key} ]] || [[ -z ${CF_Email} ]]; do
@@ -460,6 +458,7 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
         done
         export CF_Key="$CF_Key"
         export CF_Email="$CF_Email"
+        installacme
         ~/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
@@ -480,6 +479,7 @@ EOF
         Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
         done
         export Namesilo_Key="$Namesilo_Key"
+        installacme
         ~/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
@@ -502,6 +502,7 @@ EOF
         done
         export Ali_Key="$Ali_Key"
         export Ali_Secret="$Ali_Secret"
+        installacme
         ~/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
@@ -524,6 +525,7 @@ EOF
         done
         export DP_Id="$DP_Id"
         export DP_Key="$DP_Key"
+        installacme
         ~/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
@@ -546,6 +548,7 @@ EOF
         done
         export CX_Key="$CX_Key"
         export CX_Secret="$CX_Secret"
+        installacme
         ~/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
@@ -568,6 +571,7 @@ EOF
         done
         export GD_Key="$CX_Key"
         export GD_Secret="$CX_Secret"
+        installacme
         ~/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
