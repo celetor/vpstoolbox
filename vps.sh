@@ -37,6 +37,7 @@ clear
 
 set +e
 
+#System Requirement
 if [[ $(id -u) != 0 ]]; then
 	echo Please run this script as root or sudoer.
 	exit 1
@@ -57,22 +58,24 @@ if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) -le "3000000" ]]; 
   exit 1
 fi
 
+#Do not show user interface for apt
 export DEBIAN_FRONTEND=noninteractive
 
-#######color code############
 ERROR="31m"      # Error message
 SUCCESS="32m"    # Success message
 WARNING="33m"   # Warning message
 INFO="36m"     # Info message
 LINK="92m"     # Share Link Message
-#############################
+
+#Trojan Server and Client cipher
 cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
 cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
-#############################
 
+#Predefined install
 install_bbr=1
 install_nodejs=1
 
+#Disable cloud-init
 rm -rf /lib/systemd/system/cloud*
 #disable tencent cloud process
 rm -rf /usr/local/sa
@@ -87,6 +90,7 @@ colorEcho(){
 	echo -e "\033[${COLOR}${@:2}\033[0m"
 }
 
+#Remove Aliyun aegis
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
 colorEcho ${INFO} "Uninstall Aliyun aegis ing"
 iptables -I INPUT -s 140.205.201.0/28 -j DROP
@@ -187,6 +191,7 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 	fi
 fi
 
+#Show simple system info 
 systeminfo(){
 	#neofetch
 	#colorEcho ${INFO} "System Info"
@@ -236,7 +241,8 @@ echo -e "postal:\t\t"$(jq -r '.postal' "/root/.trojan/ipv6.json")
 echo -e "timezone:\t"$(jq -r '.timezone' "/root/.trojan/ipv6.json")
 fi
 }
-#############################
+
+#Set system language
 setlanguage(){
 	set +e
 	if [[ ! -d /root/.trojan/ ]]; then
@@ -303,7 +309,8 @@ export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 fi
 }
-#############################
+
+#install acme.sh
 installacme(){
 	set +e
 	curl -s https://get.acme.sh | sh
@@ -313,7 +320,8 @@ installacme(){
 	fi
 	~/.acme.sh/acme.sh --upgrade --auto-upgrade
 }
-#########Domain resolve verification###################
+
+#Check if domain is resolved properly
 isresolved(){
 	if [ $# = 2 ]
 	then
@@ -333,7 +341,277 @@ isresolved(){
 		done
 		return 1
 }
-####################################################
+
+#Issue Let's Encrypt Certificate
+issuecert(){
+  set +e
+  clear
+  if [ -f /etc/trojan/*.crt ] && [ -f /etc/trojan/*.key ]; then
+  othercert=1
+  mv /etc/trojan/*.crt /etc/trojan/trojan.crt
+  mv /etc/trojan/*.key /etc/trojan/trojan.key
+  apt-get install gnutls-bin -y
+  certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
+  if [[ $? != 0 ]]; then
+    whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,快滚!!!" 8 78
+    advancedMenu
+    domain=""
+    othercert=0
+  fi
+fi
+
+if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
+    colorEcho ${INFO} "证书已有,跳过申请(skipping cert issue)"
+    else
+    	if (whiptail --title "Issue TLS Cert" --yes-button "DNS API申请" --no-button "HTTP申请" --yesno "使用 (use) API/HTTP申请证书(to issue certificate)?" 8 78); then
+  		dnsissue
+  		else
+  		httpissue
+  		fi
+  fi
+}
+
+#Issue Let's Encrypt Certificate by http
+httpissue(){
+if isresolved $domain
+  then
+  installacme
+  installnginx
+  openfirewall
+  rm -rf /etc/nginx/sites-available/*
+  rm -rf /etc/nginx/sites-enabled/*
+  rm -rf /etc/nginx/conf.d/*
+  touch /etc/nginx/conf.d/default.conf
+  cat > '/etc/nginx/conf.d/default.conf' << EOF
+server {
+  listen       80;
+  listen       [::]:80;
+  server_name  $domain;
+  root   /usr/share/nginx/html;
+}
+EOF
+  nginx -t
+  systemctl start nginx
+  clear
+  colorEcho ${INFO} "正式证书申请ing(test issuing) let\'s encrypt certificate"
+  ~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+  if [[ $? != 0 ]] && [[ $? != 2 ]]; then
+  colorEcho ${ERROR} "证书申请测试失败，请检查VPS控制面板防火墙(80 443)是否打开!!!"
+  colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
+  colorEcho ${ERROR} "Cert issue fail,Pleae Open port 80 443 on VPS panel !!!"
+  exit 1
+  fi
+  chmod +r /etc/certs/${domain}_ecc/fullchain.cer
+  chmod +r /etc/certs/${domain}_ecc/${domain}.key
+  cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
+  cat > '/etc/systemd/system/acme_letsencrypt.timer' << EOF
+[Unit]
+Description=Daily renewal of Let's Encrypt's certificates
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+systemctl daemon-reload
+systemctl enable acme_letsencrypt.timer
+else
+whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功以及域名是否输入错误,并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
+domain=""
+clear
+userinput
+fi
+}
+
+#Issue Let's Encrypt Certificate by DNS API
+dnsissue(){
+whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr !" 8 78
+    APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
+"1" "Cloudflare(不支援免费域名!)" \
+"2" "Namesilo" \
+"3" "Aliyun" \
+"4" "DNSPod.cn" \
+"5" "CloudXNS.com" \
+"6" "GoDaddy" \
+"back" "返回"  3>&1 1>&2 2>&3)
+
+	installacme
+
+    case $APIOPTION in
+        1)
+        while [[ -z ${CF_Key} ]] || [[ -z ${CF_Email} ]]; do
+        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF Global Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        done
+        export CF_Key="$CF_Key"
+        export CF_Email="$CF_Email"
+        ~/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
+        ;;
+        2)
+        while [[ -z $Namesilo_Key ]]; do
+        Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
+        done
+        export Namesilo_Key="$Namesilo_Key"
+        ~/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
+        ;;
+        3)
+        while [[ -z $Ali_Key ]] || [[ -z $Ali_Secret ]]; do
+        Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 78 --title "Ali_Key input" 3>&1 1>&2 2>&3)
+        Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 78 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
+        done
+        export Ali_Key="$Ali_Key"
+        export Ali_Secret="$Ali_Secret"
+        ~/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
+        ;;
+        4)
+        while [[ -z $DP_Id ]] || [[ -z $DP_Key ]]; do
+        DP_Id=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Id併按回車" 8 78 --title "DP_Id input" 3>&1 1>&2 2>&3)
+        DP_Key=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Key併按回車" 8 78 --title "DP_Key input" 3>&1 1>&2 2>&3)
+        done
+        export DP_Id="$DP_Id"
+        export DP_Key="$DP_Key"
+        ~/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
+        ;;
+        5)
+        while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
+        CX_Key=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Key併按回車" 8 78 --title "CX_Key input" 3>&1 1>&2 2>&3)
+        CX_Secret=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Secret併按回車" 8 78 --title "CX_Secret input" 3>&1 1>&2 2>&3)
+        done
+        export CX_Key="$CX_Key"
+        export CX_Secret="$CX_Secret"
+        ~/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
+        ;;
+        6)
+        while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
+        CX_Key=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Key" 8 78 --title "GD_Key input" 3>&1 1>&2 2>&3)
+        CX_Secret=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Secret" 8 78 --title "GD_Secret input" 3>&1 1>&2 2>&3)
+        done
+        export GD_Key="$CX_Key"
+        export GD_Secret="$CX_Secret"
+        ~/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
+[Unit]
+Description=Renew Let's Encrypt certificates using acme.sh
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Directory where the acme.sh script resides.
+Environment="HOME=/root/"
+ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
+SuccessExitStatus=0 2
+EOF
+        ;;
+        back) 
+        userinput
+        break
+        ;;
+        *)
+        ;;
+    esac
+  cat > '/etc/systemd/system/acme_letsencrypt.timer' << EOF
+[Unit]
+Description=Daily renewal of Let's Encrypt's certificates
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+
+if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
+    :
+    else
+    colorEcho ${ERROR} "DNS申请证书失败，尝试HTTP申请中."
+    httpissue
+  fi
+}
+
+#Install Trojan-panel
 install_tjp(){
   colorEcho ${INFO} "Install Trojan-panel ing"
 cd /usr/share/nginx/
@@ -352,80 +630,8 @@ php artisan migrate --force
 chown -R nginx:nginx /usr/share/nginx/
 cd
 }
-########################################################
-issuecert(){
-	set +e
-	clear
-	colorEcho ${INFO} "申请(issuing) let\'s encrypt certificate"
-	if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
-		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
-		else
-	rm -rf /etc/nginx/sites-available/* &
-	rm -rf /etc/nginx/sites-enabled/* &
-	rm -rf /etc/nginx/conf.d/*
-	touch /etc/nginx/conf.d/default.conf
-		cat > '/etc/nginx/conf.d/default.conf' << EOF
-server {
-	listen       80;
-	listen       [::]:80;
-	server_name  $domain;
-	root   /usr/share/nginx/html;
-}
-EOF
-	nginx -t
-	systemctl start nginx
-	installacme
-	clear
-	colorEcho ${INFO} "测试证书申请ing(test issuing) let\'s encrypt certificate"
-	~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --test --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-	if [[ $? != 0 ]] && [[ $? != 2 ]]; then
-	colorEcho ${ERROR} "证书申请测试失败，请检查VPS控制面板防火墙(80 443)是否打开!!!"
-	colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
-	colorEcho ${ERROR} "Domain verification fail,Pleae Open port 80 443 on VPS panel !!!"
-	exit 1
-	fi 
-	clear
-	colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
-	~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-	if [[ $? != 0 ]] && [[ $? != 2 ]]; then
-	colorEcho ${ERROR} "证书申请测试失败，请检查VPS控制面板防火墙(80 443)是否打开!!!"
-	colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
-	colorEcho ${ERROR} "Domain verification fail,Pleae Open port 80 443 on VPS panel !!!"
-	exit 1
-	fi
-	chmod +r /etc/certs/${domain}_ecc/fullchain.cer
-	chmod +r /etc/certs/${domain}_ecc/${domain}.key
-	cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
 
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
-
-	cat > '/etc/systemd/system/acme_letsencrypt.timer' << EOF
-[Unit]
-Description=Daily renewal of Let's Encrypt's certificates
-
-[Timer]
-OnCalendar=daily
-RandomizedDelaySec=1h
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-EOF
-systemctl daemon-reload
-systemctl enable acme_letsencrypt.timer
-	fi
-}
-###############User input################
+#Set json file after installation
 prasejson(){
 	set +e
 	cat > '/root/.trojan/config.json' << EOF
@@ -445,7 +651,8 @@ prasejson(){
 }
 EOF
 }
-################################################
+
+#Read var from json
 readconfig(){
 	domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
     password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
@@ -459,7 +666,8 @@ readconfig(){
     netdatapath="$( jq -r '.netdatapath' "/root/.trojan/config.json" )"
     tor_name="$( jq -r '.tor_name' "/root/.trojan/config.json" )"  
 }
-####################################
+
+#User input
 userinput(){
 	set +e
 if [ ! -f /root/.trojan/config.json ]; then
@@ -469,12 +677,14 @@ if [ ! -f /root/.trojan/config.json ]; then
 }
 EOF
 fi
+
 install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
 
 clear
 if [[ ${install_status} == 1 ]]; then
-	whiptail --title "Installed" --msgbox "Installed,reading configuration" 8 78
-	readconfig
+	if (whiptail --title "Installed" --yesno "已安装，是否读取先前的配置?(Installed,read configuration?)" 8 78); then
+  		readconfig
+  	fi
 fi
 
 whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 60 16 \
@@ -589,7 +799,7 @@ do
 		;;
 	esac
 done < results
-####################################
+
 system_upgrade=1
 if [[ ${system_upgrade} == 1 ]]; then
 	if [[ $(lsb_release -cs) == stretch ]]; then
@@ -608,12 +818,12 @@ if [[ ${system_upgrade} == 1 ]]; then
 		fi
 	fi
 fi
-####################################
+
 if [[ ${install_mail} == 1 ]]; then
 whiptail --title "Warning" --msgbox "Warning!!!:邮件服务仅推荐使用根域名(only recommend root domain),不推荐使用www等前缀(no www allowed),否则后果自负!!!" 8 78
 whiptail --title "Warning" --msgbox "Warning!!!:邮件服务需要MX and PTR(reverse dns record) DNS Record,请自行添加,否则后果自负!!!" 8 78
 fi
-#####################################
+
 while [[ -z ${domain} ]]; do
 domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你的域名)(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
 colorEcho ${INFO} "Checking if domain is vaild."
@@ -652,33 +862,29 @@ if [[ -z ${password1} ]]; then
 if [[ -z ${password2} ]]; then
 	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 	fi
-###################################
 	if [[ ${install_mail} == 1 ]]; then
-mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername" 8 78 --title "Mail user input" 3>&1 1>&2 2>&3)
-if [[ -z ${mailuser} ]]; then
+	mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername" 8 78 --title "Mail user input" 3>&1 1>&2 2>&3)
+	if [[ -z ${mailuser} ]]; then
 	mailuser=$(head /dev/urandom | tr -dc a-z | head -c 4 ; echo '' )
 	fi
 fi
-###################################
 	if [[ $install_qbt = 1 ]]; then
 		while [[ -z $qbtpath ]]; do
-		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Path(路径)" 8 78 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Nginx Path(路径)" 8 78 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
 		done
 	fi
-#####################################
 	if [[ $install_tracker == 1 ]]; then
 		while [[ -z ${trackerpath} ]]; do
-		trackerpath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker Path(路径)" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
+		trackerpath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker Nginx Path(路径)" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
 		done
 		while [[ -z ${trackerstatuspath} ]]; do
-		trackerstatuspath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker Status Path(状态路径)" 8 78 /${password1}_tracker --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
+		trackerstatuspath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker Status Nginx Path(状态路径)" 8 78 /${password1}_tracker --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
 		done
 	fi
-####################################
 	if [[ ${install_aria} == 1 ]]; then
 		ariaport=$(shuf -i 10000-19000 -n 1)
 		while [[ -z ${ariapath} ]]; do
-		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Path(路径)" 8 78 /${password1}_aria2/ --title "Aria2 path input" 3>&1 1>&2 2>&3)
+		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Nginx Path(路径)" 8 78 /${password1}_aria2/ --title "Aria2 path input" 3>&1 1>&2 2>&3)
 		done
 		while [[ -z $ariapasswd ]]; do
 		ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token(密码)" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
@@ -687,19 +893,16 @@ fi
 		fi
 		done
 	fi
-####################################
 	if [[ ${install_file} = 1 ]]; then
 		while [[ -z ${filepath} ]]; do
-		filepath=$(whiptail --inputbox --nocancel "Filebrowser路径" 8 78 /${password1}_file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+		filepath=$(whiptail --inputbox --nocancel "Filebrowser Nginx 路径" 8 78 /${password1}_file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
 		done
 	fi
-####################################
 	if [[ ${install_netdata} = 1 ]]; then
 		while [[ -z ${netdatapath} ]]; do
-		netdatapath=$(whiptail --inputbox --nocancel "Netdata路径" 8 78 /${password1}_netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
+		netdatapath=$(whiptail --inputbox --nocancel "Netdata Nginx 路径" 8 78 /${password1}_netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
 		done
 	fi
-####################################
 	if [[ ${install_tor} = 1 ]]; then
 		while [[ -z ${tor_name} ]]; do
 		tor_name=$(whiptail --inputbox --nocancel "Tor nickname" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
@@ -708,219 +911,6 @@ fi
 	fi
 	done
 	fi
-if [ -f /etc/trojan/*.crt ]; then
-	othercert=1
-	mv /etc/trojan/*.crt /etc/trojan/trojan.crt
-	apt-get install gnutls-bin -y
-	certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
-	if [[ $? != 0 ]]; then
-		whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,快滚!!!" 8 78
-		advancedMenu
-		domain=""
-		othercert=0
-	fi
-fi
-
-if [ -f /etc/trojan/*.key ]; then
-	mv /etc/trojan/*.key /etc/trojan/trojan.key
-fi
-
-####################################
-if [[ -f /etc/trojan/trojan.crt ]] && [[ -f /etc/trojan/trojan.key ]] && [[ -n /etc/trojan/trojan.crt ]] || [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]]; then
-		TERM=ansi whiptail --title "证书已有，跳过申请" --infobox "证书已有，跳过申请。。。" 8 78
-		else
-	if (whiptail --title "api" --yes-button "DNS API申请" --no-button "HTTP申请" --yesno "使用 (use) api申请证书(to issue certificate)?" 8 78); then
-		whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr !" 8 78
-    dns_api=1
-    APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
-"1" "Cloudflare(不支援免费域名!)" \
-"2" "Namesilo" \
-"3" "Aliyun" \
-"4" "DNSPod.cn" \
-"5" "CloudXNS.com" \
-"6" "GoDaddy" \
-"back" "返回"  3>&1 1>&2 2>&3)
-
-    case $APIOPTION in
-        1)
-        while [[ -z ${CF_Key} ]] || [[ -z ${CF_Email} ]]; do
-        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF Global Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
-        CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
-        done
-        export CF_Key="$CF_Key"
-        export CF_Email="$CF_Email"
-        installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
-        ;;
-        2)
-        while [[ -z $Namesilo_Key ]]; do
-        Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
-        done
-        export Namesilo_Key="$Namesilo_Key"
-        installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
-        ;;
-        3)
-        while [[ -z $Ali_Key ]] || [[ -z $Ali_Secret ]]; do
-        Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 78 --title "Ali_Key input" 3>&1 1>&2 2>&3)
-        Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 78 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
-        done
-        export Ali_Key="$Ali_Key"
-        export Ali_Secret="$Ali_Secret"
-        installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
-        ;;
-        4)
-        while [[ -z $DP_Id ]] || [[ -z $DP_Key ]]; do
-        DP_Id=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Id併按回車" 8 78 --title "DP_Id input" 3>&1 1>&2 2>&3)
-        DP_Key=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Key併按回車" 8 78 --title "DP_Key input" 3>&1 1>&2 2>&3)
-        done
-        export DP_Id="$DP_Id"
-        export DP_Key="$DP_Key"
-        installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
-        ;;
-        5)
-        while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
-        CX_Key=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Key併按回車" 8 78 --title "CX_Key input" 3>&1 1>&2 2>&3)
-        CX_Secret=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Secret併按回車" 8 78 --title "CX_Secret input" 3>&1 1>&2 2>&3)
-        done
-        export CX_Key="$CX_Key"
-        export CX_Secret="$CX_Secret"
-        installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
-        ;;
-        6)
-        while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
-        CX_Key=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Key" 8 78 --title "GD_Key input" 3>&1 1>&2 2>&3)
-        CX_Secret=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Secret" 8 78 --title "GD_Secret input" 3>&1 1>&2 2>&3)
-        done
-        export GD_Key="$CX_Key"
-        export GD_Secret="$CX_Secret"
-        installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
-        ;;
-        back) 
-		userinput
-		break
-		;;
-        *)
-        ;;
-    esac
-    if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
-    	:
-    	else
-    	colorEcho ${ERROR} "DNS申请证书失败，尝试HTTP申请中."
-    	dns_api=0
-    	if isresolved $domain
-		then
-		installnginx
-		openfirewall
-		issuecert
-		else
-		whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
-		whiptail --title "ERROR" --msgbox "证书申请失败，请检查域名以及其他信息是否正确!(certificate issue fail,Pleae enter correct information and check your network)" 8 78
-		whiptail --title "Warning" --msgbox "若你确定A解析已成功,请在api yes/no 选项中选否以继续,并确定tcp 80/http端口可从外网访问!" 8 78
-		advancedMenu
-		clear
-		fi
-	fi
-
-	cat > '/etc/systemd/system/acme_letsencrypt.timer' << EOF
-[Unit]
-Description=Daily renewal of Let's Encrypt's certificates
-
-[Timer]
-OnCalendar=daily
-RandomizedDelaySec=1h
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-EOF
-systemctl daemon-reload
-systemctl enable acme_letsencrypt.timer
-
-    fi
-fi
 }
 ###############OS detect####################
 osdist(){
@@ -939,7 +929,8 @@ colorEcho ${INFO} "初始化中(initializing)"
 	exit 1;
  fi
 }
-##############Upgrade system optional########
+
+#Run apt upgrade
 upgradesystem(){
 	set +e
  if [[ $dist == ubuntu ]]; then
@@ -1023,12 +1014,13 @@ fi
 	exit 1;
  fi
 }
-#############Install NGINX################
+
+#Install Nginx
 installnginx(){
-if [[ ! -f /etc/apt/sources.list.d/nginx.list ]]; then
 	clear
 	colorEcho ${INFO} "Install Nginx ing"
 	curl -LO --progress-bar https://nginx.org/keys/nginx_signing.key
+	apt-get install gnupg -y
 	apt-key add nginx_signing.key
 	rm -rf nginx_signing.key
 	touch /etc/apt/sources.list.d/nginx.list
@@ -1038,8 +1030,7 @@ deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
 	apt-get purge nginx -qq -y
 	apt-get update -q
-	apt-get install nginx -q -y
-fi
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | apt-get install nginx -q -y'
 	cat > '/lib/systemd/system/nginx.service' << EOF
 [Unit]
 Description=The NGINX HTTP and reverse proxy server
@@ -1112,9 +1103,9 @@ EOF
 clear
 timedatectl set-timezone Asia/Hong_Kong
 timedatectl set-ntp off
-ntpdate -qu 1.hk.pool.ntp.org > /dev/null
 }
-#########Open ports########################
+
+#Open ports
 openfirewall(){
 	set +e
 	colorEcho ${INFO} "设置 firewall"
@@ -1244,12 +1235,11 @@ colorEcho ${INFO} "Updating system"
 		#(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 80 open" && kill $(lsof -t -i:80) || echo "Moving on"
 		#(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 443 open" && kill $(lsof -t -i:443) || echo "Moving on"
 	fi
-###########################################
+
 if [[ $system_upgrade = 1 ]]; then
 upgradesystem
 fi
-###########################################
-	if [[ $install_bbr == 1 ]]; then
+if [[ $install_bbr == 1 ]]; then
 	colorEcho ${INFO} "Enabling TCP-BBR boost"
 	#iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
 	cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
@@ -1362,31 +1352,14 @@ echo "session required pam_limits.so" >> /etc/pam.d/common-session
 fi
 systemctl daemon-reload
 	fi
-###########################################
+
 clear
 colorEcho ${INFO} "Installing all necessary Software"
 apt-get install sudo git curl xz-utils wget apt-transport-https gnupg lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less haveged neofetch -q -y
 apt-get install python3-qrcode python-dnspython -q -y
 sh -c 'echo "y\n\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
 clear
-#############################################
-if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -n /etc/certs/${domain}_ecc/fullchain.cer ]] || [[ $dns_api == 1 ]] || [[ ${othercert} == 1 ]] || [[ ${installstatus} == 1 ]]; then
-	installnginx
-	openfirewall
-	else
-	if isresolved $domain
-	then
-	installnginx
-	openfirewall
-	issuecert
-	else
-	whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
-	clear
-	colorEcho ${ERROR} "Please consider use api to issue certificate instead!"
-	exit 1
-	fi
-fi
-#########Install Docker###################
+
 if [[ $install_docker == 1 ]]; then
   clear
   colorEcho ${INFO} "安装Docker(Install Docker ing)"
@@ -1414,7 +1387,7 @@ if [[ $install_docker == 1 ]]; then
 }
 EOF
 fi
-##########Install Speedtest#################
+
 if [[ ${install_speedtest} == 1 ]]; then
 cd /usr/share/nginx/
 git clone https://github.com/librespeed/speedtest.git
@@ -1637,7 +1610,7 @@ function I(id){return document.getElementById(id);}
 </html>
 EOF
 fi
-##########Install RSSHUB#################
+
 if [[ ${install_rsshub} == 1 ]]; then
 docker pull diygod/rsshub
 docker run -d --restart unless-stopped --name rsshub -p 127.0.0.1:1200:1200 diygod/rsshub
@@ -1743,15 +1716,15 @@ EOF
 systemctl enable rssfeed
 
 fi
-##########Install Fail2ban#################
+
 if [[ ${install_fail2ban} == 1 ]]; then
 apt-get install fail2ban -y
 fi
-##########Enable TLS13 ONLY#################
+
 if [[ $tls13only == 1 ]]; then
 cipher_server="TLS_AES_128_GCM_SHA256"
 fi
-###########Install Node.js##############
+
 if [[ $install_nodejs == 1 ]]; then
 	if [[ ${dist} == debian ]]; then
 	curl -sL https://deb.nodesource.com/setup_14.x | bash -
@@ -1764,7 +1737,7 @@ apt-get update
 apt-get install -q -y nodejs
 fi
 clear
-##########Install OPENSSL##############
+
 if [[ ${install_openssl} == 1 ]]; then
 	colorEcho ${INFO} "Install OPENSSL ing"
 apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
@@ -1775,9 +1748,8 @@ rm -rf openssl*
 apt-get purge build-essential -y
 apt-get autoremove -y
 fi
-#############Install Qbittorrent################
+
 if [[ $install_qbt == 1 ]]; then
-	if [[ ! -f /usr/bin/qbittorrent-nox ]]; then
 	clear
 	colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
 	if [[ ${dist} == debian ]]; then
@@ -1821,7 +1793,6 @@ curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/
 cd
 chmod 755 /usr/share/nginx/
 fi
-fi
 clear
 ###########Install Bittorrent-tracker##############
 if [[ $install_tracker = 1 ]]; then
@@ -1856,7 +1827,7 @@ systemctl enable tracker
 systemctl start tracker
 fi
 clear
-##############Install FILEBROWSER###############
+
 if [[ $install_file = 1 ]]; then
 clear
 colorEcho ${INFO} "Install Filebrowser ing"
@@ -1889,7 +1860,7 @@ touch /etc/filebrowser/database.db
 chmod -R 755 /etc/filebrowser/
 fi
 clear
-##########Install Aria2c##########
+
 if [[ $install_aria = 1 ]]; then
 	#trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
 	trackers_list=$(wget -qO- https://trackerslist.com/all_aria2.txt)
@@ -1998,7 +1969,7 @@ systemctl daemon-reload
 systemctl enable aria2
 systemctl start aria2
 fi
-###########Install Dnscrypt-proxy####################
+
 if [[ ${dnsmasq_install} == 1 ]]; then
 	if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
 		mkdir /etc/dnscrypt-proxy/
@@ -2522,7 +2493,7 @@ wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt
 fi
 chmod -R 755 /etc/dnscrypt-proxy/
 clear
-########Install Tor Relay##################
+
 if [[ $install_tor = 1 ]]; then
 clear
 colorEcho ${INFO} "Install Tor Relay ing"
@@ -2546,12 +2517,12 @@ Nickname $tor_name
 ContactInfo $domain [tor-relay.co]
 Log notice file /var/log/tor/notices.log
 DirPort 9030
-ExitPolicy reject6 *:*, reject *:*
+#ExitPolicy reject6 *:*, reject *:*
 EOF
 service tor start
 systemctl restart tor@default
 fi
-########Install PHP##################
+
 if [[ $install_php = 1 ]]; then
 	clear
 	if [[ ! -f /usr/sbin/php-fpm7.4 ]]; then
@@ -2675,12 +2646,11 @@ EOF
 touch /var/log/fpm-php.www.log
 systemctl restart php7.4-fpm
 fi
-########Install Netdata################
+
 if [[ $install_netdata == 1 ]]; then
-		clear
-		colorEcho ${INFO} "Install netdata ing"
-		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
-		touch /opt/netdata/etc/netdata/python.d/dns_query_time.conf
+	clear
+	colorEcho ${INFO} "Install netdata ing"
+	bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
 		cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
 localhost:
 
@@ -2730,7 +2700,7 @@ fi
 systemctl restart netdata
 fi
 clear
-##########Install Trojan-GFW#############
+
 if [[ $install_trojan = 1 ]]; then
 	if [[ ! -f /usr/local/bin/trojan ]]; then
 	clear
@@ -3331,7 +3301,6 @@ curl -s https://getcomposer.org/installer | php
 cp -f composer.json-dist composer.json
 php composer.phar install --no-dev
 cd
-sed -i "s/587/25/;" /usr/share/nginx/roundcubemail/config/config.inc.php.sample
 mysql -u root -e "CREATE DATABASE roundcubemail DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql -u root -e "CREATE USER roundcube@localhost IDENTIFIED BY '${password1}';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost;"
@@ -3833,10 +3802,10 @@ nginx -t
 chown -R nginx:nginx /usr/share/nginx/
 systemctl restart nginx
 }
-##########Auto boot start###############
+
 start(){
 	set +e
-	colorEcho ${INFO} "启动(starting) trojan-gfw and nginx ing..."
+	colorEcho ${INFO} "启动(starting) trojan-gfw ing..."
 	systemctl daemon-reload
 	if [[ $install_qbt = 1 ]]; then
 		systemctl start qbittorrent.service
@@ -3848,24 +3817,7 @@ start(){
 		systemctl start trojan
 	fi
 }
-##########Check for update############
-checkupdate(){
-	set +e
-	cd
-	apt-get update
-	apt-get upgrade -y
-	if [[ -f /usr/local/bin/trojan ]]; then
-		bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
-	fi
-	if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
-		bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
-		wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
-		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
-		systemctl restart netdata
-  	fi
-  	echo "Done !"
-}
-###########Trojan share link########
+
 installhexo(){
   cd /usr/share/nginx
   mkdir hexo
@@ -4232,7 +4184,7 @@ EOF
 systemctl enable hexo
 systemctl start hexo
 }
-####################################
+
 sharelink(){
 	set +e
 	cd
@@ -4317,7 +4269,7 @@ EOF
 	rm -rf trojan-url.py
 	fi
 }
-##########Uninstall##########
+
 uninstall(){
 	set +e
 	cd
@@ -4414,7 +4366,7 @@ EOF
 	systemctl daemon-reload
 	colorEcho ${INFO} "卸载完成"
 }
-#######Auto Update##############
+
 autoupdate(){
 	set +e
 	if [[ $install_trojan == 1 ]]; then
@@ -4444,7 +4396,7 @@ touch /root/.trojan/update.log
 crontab -l | grep -q '0 0 1 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 0 1 * * bash /root/.trojan/autoupdate.sh" | crontab
 	fi
 }
-#########Log Check#########
+
 logcheck(){
 	set +e
 	readconfig
@@ -4466,7 +4418,7 @@ logcheck(){
 	less /var/log/nginx/error.log
 	less /var/log/nginx/access.log
 }
-#####Main menu##########
+
 advancedMenu() {
 	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!欢迎使用VPSTOOLBOX!" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option! 欢迎使用VPSTOOLBOX,请选择一个选项!" 14 78 5 \
 	"Install/Update" "安裝/更新" \
@@ -4485,6 +4437,7 @@ advancedMenu() {
 		curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
 		fi
 		userinput
+		issuecert
 		systeminfo
 		installdependency
 		if [[ $install_mariadb == 1 ]]; then
