@@ -3884,6 +3884,7 @@ installhexo(){
   npm install --production
   cp -i _config.example.yml _config.yml
   sed -i 's/qq: true/qq: false/' _config.yml
+  sed -i 's/googleplus: true/googleplus: false/' _config.yml
     cat > '/usr/share/nginx/hexo/_config.yml' << EOF
 language: zh-tw
 url: https://${domain}
