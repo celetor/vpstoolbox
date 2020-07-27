@@ -377,7 +377,6 @@ if isresolved $domain
   then
   installacme
   installnginx
-  openfirewall
   rm -rf /etc/nginx/sites-available/*
   rm -rf /etc/nginx/sites-enabled/*
   rm -rf /etc/nginx/conf.d/*
@@ -4443,6 +4442,7 @@ advancedMenu() {
 		curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
 		fi
 		userinput
+		openfirewall
 		issuecert
 		systeminfo
 		installdependency
