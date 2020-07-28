@@ -3543,6 +3543,9 @@ server {
 		proxy_set_header Host \$http_host;
 		proxy_set_header X-Real-IP \$remote_addr;
 		proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+		http2_push /css/style.min.css;
+        http2_push /lib/spectre/spectre.min.css;
+        http2_push /lib/vanilla-lazyload/lazyload.min.js;
 	}
 	location /${password1}.png {
 		root /usr/share/nginx/html/;
@@ -3603,6 +3606,9 @@ server {
 		proxy_set_header Host \$http_host;
 		proxy_set_header X-Real-IP \$remote_addr;
 		proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+		http2_push /css/style.min.css;
+        http2_push /lib/spectre/spectre.min.css;
+        http2_push /lib/vanilla-lazyload/lazyload.min.js;
 	}
 	location /${password1}.png {
 		root /usr/share/nginx/html/;
@@ -3929,6 +3935,10 @@ cd /usr/share/nginx/hexo/
 
 {% blockquote %}
 sudo systemctl start/restart/status hexo
+{% endblockquote %}
+
+{% blockquote %}
+sudo nano /etc/nginx/conf.d/default.conf
 {% endblockquote %}
 
 #### Docs
