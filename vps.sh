@@ -719,6 +719,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按�
 "邮件" "Mail" off  \
 "17" "Mail service(require PHP MariaDB)" off \
 "其他" "Others" off  \
+"ddns" "DDNS(仅支援Cloudflare!)" off \
 "18" "OPENSSL" off \
 "19" "Tor-Relay" off \
 "20" "Enable TLS1.3 only" off 2>results
@@ -789,6 +790,9 @@ do
 		install_mail=1
 		install_php=1
 		install_mariadb=1
+		;;
+		ddns)
+		install_ddns=1
 		;;
 		18)
 		install_openssl=1
@@ -4427,6 +4431,82 @@ logcheck(){
 	less /var/log/nginx/access.log
 }
 
+install_ddns(){
+    while [[ -z ${domain1} ]]; do
+domain1=$(whiptail --inputbox --nocancel "Please enter your bare domain(请輸入你的二级域名,请勿添加www等前缀!)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+colorEcho ${INFO} "Checking if domain is vaild."
+host ${domain1}
+if [[ $? != 0 ]]; then
+  whiptail --title "Warning" --msgbox "Warning: Invaild Domain !!!" 8 78
+  domain1=""
+  clear
+  exit 1
+fi
+done
+  while [[ -z ${CF_Key} ]] || [[ -z ${CF_Email} ]]; do
+    CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF Global Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+    CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+  done
+    cloudflare_auth_key="$CF_Key"
+    cloudflare_auth_email="$CF_Email"
+    zone=${domain1}
+    dnsrecord=${domain}
+    zoneid=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones?name=$zone&status=active" \
+  -H "X-Auth-Email: $cloudflare_auth_email" \
+  -H "X-Auth-Key: $cloudflare_auth_key" \
+  -H "Content-Type: application/json" | jq -r '{"result"}[] | .[0] | .id')
+  if [[ $? != 0 ]]; then
+  whiptail --title "Warning" --msgbox "Warning: Invaild Domain !!!" 8 78
+  domain1=""
+  clear
+  exit 1
+  fi
+    dnsrecordid=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/$zoneid/dns_records?type=A&name=$dnsrecord" \
+  -H "X-Auth-Email: $cloudflare_auth_email" \
+  -H "X-Auth-Key: $cloudflare_auth_key" \
+  -H "Content-Type: application/json" | jq -r '{"result"}[] | .[0] | .id') 
+  if [[ $? != 0 ]]; then
+  whiptail --title "Warning" --msgbox "Warning: Invaild Domain !!!" 8 78
+  domain1=""
+  clear
+  exit 1
+  fi
+  cat > '/root/.trojan/ddns.sh' << EOF
+#!/bin/bash
+
+# Get the current external IP address
+ip=\$(curl -s -X GET https://checkip.amazonaws.com)
+
+ipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+
+
+echo "Current IP is \$ip" >> /root/.trojan/ddns.log
+
+if host $dnsrecord 1.1.1.1 | grep "has address" | grep "\$ip"; then
+  echo "$dnsrecord is currently set to $ip; no changes needed" >> /root/.trojan/ddns.log
+  exit 0
+fi
+
+# update the record
+curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/$zoneid/dns_records/$dnsrecordid" \
+  -H "X-Auth-Email: $cloudflare_auth_email" \
+  -H "X-Auth-Key: $cloudflare_auth_key" \
+  -H "Content-Type: application/json" \
+  --data "{\"type\":\"A\",\"name\":\"$dnsrecord\",\"content\":\"$ip\",\"ttl\":1,\"proxied\":false}" | jq
+
+if [[ -n ${ipv6} ]]; then
+curl -s -X PUT "https://api.cloudflare.com/client/v6/zones/$zoneid/dns_records/$dnsrecordid" \
+  -H "X-Auth-Email: $cloudflare_auth_email" \
+  -H "X-Auth-Key: $cloudflare_auth_key" \
+  -H "Content-Type: application/json" \
+  --data "{\"type\":\"AAAA\",\"name\":\"$dnsrecord\",\"content\":\"$ipv6\",\"ttl\":1,\"proxied\":false}" | jq
+fi
+EOF
+
+crontab -l | grep -q '* * * * * bash /root/.trojan/ddns.sh'  && echo 'cron exists' || echo "* * * * * bash /root/.trojan/ddns.sh" | crontab
+
+}
+
 advancedMenu() {
 	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!欢迎使用VPSTOOLBOX!" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option! 欢迎使用VPSTOOLBOX,请选择一个选项!" 14 78 5 \
 	"Install/Update" "安裝/更新" \
@@ -4446,6 +4526,9 @@ advancedMenu() {
 		fi
 		userinput
 		openfirewall
+		if [[ ${install_ddns} == 1 ]]; then
+		install_ddns
+		fi
 		issuecert
 		systeminfo
 		installdependency
@@ -4462,7 +4545,7 @@ advancedMenu() {
 		rm results
 		prasejson
 		autoupdate
-		apt-get purge dnsutils python-pil python3-qrcode -q -y
+		apt-get purge python-pil python3-qrcode -q -y
 		apt-get autoremove -y
 		if [[ $install_netdata = 1 ]]; then
 		wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
