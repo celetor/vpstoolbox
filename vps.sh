@@ -4678,6 +4678,9 @@ EOF
 		clear
 		reboot
 		fi
+		echo "Install complete!"
+		bash /etc/profile.d/mymotd.sh
+		exit 0
 		;;
 		Benchmark)
 		clear
