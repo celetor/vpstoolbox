@@ -1034,7 +1034,7 @@ deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
 	apt-get purge nginx -qq -y
 	apt-get update -q
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | apt-get install nginx -q -y'
+	apt-get install nginx -q -y
 	cat > '/lib/systemd/system/nginx.service' << EOF
 [Unit]
 Description=The NGINX HTTP and reverse proxy server
