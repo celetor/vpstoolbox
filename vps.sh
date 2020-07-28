@@ -719,7 +719,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按�
 "邮件" "Mail" off  \
 "17" "Mail service(require PHP MariaDB)" off \
 "其他" "Others" off  \
-"ddns" "ddns(仅支援Cloudflare!)" off \
+"ddns" "DDNS(仅支援Cloudflare!)" off \
 "18" "OPENSSL" off \
 "19" "Tor-Relay" off \
 "20" "Enable TLS1.3 only" off 2>results
