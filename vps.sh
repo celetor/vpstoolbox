@@ -375,6 +375,7 @@ if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}
 httpissue(){
 if isresolved $domain
   then
+  http_issue=1
   installacme
   installnginx
   rm -rf /etc/nginx/sites-available/*
@@ -1363,7 +1364,9 @@ apt-get install python3-qrcode python-dnspython -q -y
 sh -c 'echo "y\n\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
 clear
 
+if [[ $http_issue != 1 ]]; then
 installnginx
+fi
 
 if [[ $install_docker == 1 ]]; then
   clear
