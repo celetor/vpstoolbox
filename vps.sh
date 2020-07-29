@@ -2461,7 +2461,7 @@ EOF
 Description=DNSCrypt client proxy
 Documentation=https://github.com/DNSCrypt/dnscrypt-proxy/wiki
 After=network.target
-Before=nss-lookup.target
+Before=nss-lookup.target netdata.service
 Wants=nss-lookup.target
 
 [Service]
