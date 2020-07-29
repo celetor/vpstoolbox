@@ -1904,7 +1904,7 @@ EOF
 daemon=true
 async-dns=true
 #enable-async-dns6=true
-log-level=notice
+log-level=warn
 console-log-level=info
 human-readable=true
 log=/var/log/aria2.log
@@ -1973,6 +1973,7 @@ EOF
 	chmod +x /usr/local/bin/aria2c
 	rm -rf aria2c
 	apt-get autoremove -q -y
+	touch /var/log/aria2.log
 	touch /usr/local/bin/aria2.session
 	mkdir /usr/share/nginx/aria2/
 	chmod 755 /usr/share/nginx/aria2/
