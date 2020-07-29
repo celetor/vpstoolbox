@@ -2742,8 +2742,8 @@ After=network.target network-online.target nss-lookup.target mysql.service maria
 [Service]
 Type=simple
 StandardError=journal
-#User=trojan
-#Group=trojan
+CPUSchedulingPolicy=rr
+CPUSchedulingPriority=99
 ExecStart=/usr/local/bin/trojan /usr/local/etc/trojan/config.json
 ExecReload=/bin/kill -HUP \$MAINPID
 LimitNOFILE=51200
