@@ -3844,6 +3844,7 @@ installhexo(){
   cd /usr/share/nginx/hexo
   npm install hexo-cli -g
   npm update
+  npm i hexo@4
   npm audit fix
   hexo init
   hexo new page ${password1}
