@@ -3838,11 +3838,12 @@ start(){
 }
 
 installhexo(){
+	colorEcho ${INFO} "Install Hexo ing..."
   cd /usr/share/nginx
   mkdir hexo
   cd /usr/share/nginx/hexo
-  npm install npm -g
   npm install hexo-cli -g
+  npm update
   hexo init
   npm audit fix
   hexo new page ${password1}
@@ -4550,8 +4551,8 @@ advancedMenu() {
 		if [[ ${install_tjp} == 1 ]]; then
 		install_tjp
 		fi
-		nginxtrojan
 		installhexo
+		nginxtrojan
 		start
 		sharelink
 		rm results
