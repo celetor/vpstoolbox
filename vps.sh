@@ -3844,8 +3844,8 @@ installhexo(){
   cd /usr/share/nginx/hexo
   npm install hexo-cli -g
   npm update
-  hexo init
   npm audit fix
+  hexo init
   hexo new page ${password1}
   cd /usr/share/nginx/hexo/themes
   wget https://github.com/SukkaW/hexo-theme-suka/archive/1.4.0.zip
