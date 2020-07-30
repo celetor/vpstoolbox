@@ -4199,7 +4199,8 @@ After=network.target
 [Service]
 WorkingDirectory=/usr/share/nginx/hexo
 ExecStart=/usr/bin/hexo server -i 127.0.0.1
-Restart=on-abort
+Restart=on-failure
+RestartSec=1s
 
 [Install]
 WantedBy=multi-user.target
