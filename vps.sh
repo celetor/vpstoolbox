@@ -3899,8 +3899,8 @@ PS: ***不支援Cloudflare CDN ❗***
 
 #### Trojan-GFW client config profiles(客户端配置文件)
 
-1. <a href="https://$domain/client1-$password1.json" target="_blank">Profile 1</a>
-2. <a href="https://$domain/client2-$password2.json" target="_blank">Profile 2</a>
+1. <a href="https://$domain/client1-$password1.json" target="_blank" rel="noreferrer">Profile 1</a>
+2. <a href="https://$domain/client2-$password2.json" target="_blank" rel="noreferrer">Profile 2</a>
 
 #### Trojan-GFW Share Links
 
@@ -3914,11 +3914,11 @@ PS: ***不支援Cloudflare CDN ❗***
 
 #### Related Links
 
-1. <a href="https://github.com/trojan-gfw/igniter/releases" target="_blank">Android client</a> 安卓客户端
-2. <a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank">ios client</a>苹果客户端
-3. <a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank">windows client</a>windows客户端
-4. <a href="https://github.com/NetchX/Netch" target="_blank">https://github.com/NetchX/Netch</a>推荐的**游戏**客户端
-5. <a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a>
+1. <a href="https://github.com/trojan-gfw/igniter/releases" target="_blank" rel="noreferrer">Android client</a> 安卓客户端
+2. <a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank" rel="noreferrer">ios client</a>苹果客户端
+3. <a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank" rel="noreferrer">windows client</a>windows客户端
+4. <a href="https://github.com/NetchX/Netch" target="_blank" rel="noreferrer">https://github.com/NetchX/Netch</a>推荐的**游戏**客户端
+5. <a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank" rel="noreferrer">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a>
 
 ---
 
@@ -3944,7 +3944,7 @@ sudo nano /etc/nginx/conf.d/default.conf
 
 #### Docs
 
-1. <a href="https://hexo.io/zh-tw/docs/" target="_blank">Hexo docs</a>
+1. <a href="https://hexo.io/zh-tw/docs/" target="_blank" rel="noreferrer">Hexo docs</a>
 
 ---
 ### Rsshub + TT-RSS
@@ -3955,11 +3955,11 @@ sudo nano /etc/nginx/conf.d/default.conf
 
 #### RSSHUB
 
-<a href="https://$domain/${password1}_rsshub/" target="_blank">https://$domain/${password1}_rsshub/</a>
+<a href="https://$domain/${password1}_rsshub/" target="_blank" rel="noreferrer">https://$domain/${password1}_rsshub/</a>
 
 #### Tiny Tiny RSS
 
-- <a href="https://$domain/${password1}_ttrss/" target="_blank">https://$domain/${password1}_ttrss/</a>
+- <a href="https://$domain/${password1}_ttrss/" target="_blank" rel="noreferrer">https://$domain/${password1}_ttrss/</a>
 - 用户名(username): **admin**
 - 密碼(password): **password**
 
@@ -3967,10 +3967,10 @@ sudo nano /etc/nginx/conf.d/default.conf
 
 #### Related Links
 
-1. <a href="https://docs.rsshub.app/" target="_blank">RSSHUB docs</a>
-2. <a href="https://github.com/DIYgod/RSSHub-Radar" target="_blank">RSSHub Radar</a>(推荐自行将默认的rsshub.app换成上述自建的)
-3. <a href="https://docs.rsshub.app/social-media.html" target="_blank">RSSHUB路由</a>
-4. <a href="https://wzfou.com/tt-rss/" target="_blank">自建RSS阅读器Tiny Tiny RSS安装和配置自动更新</a>(仅供参考 !)
+1. <a href="https://docs.rsshub.app/" target="_blank" rel="noreferrer">RSSHUB docs</a>
+2. <a href="https://github.com/DIYgod/RSSHub-Radar" target="_blank" rel="noreferrer">RSSHub Radar</a>(推荐自行将默认的rsshub.app换成上述自建的)
+3. <a href="https://docs.rsshub.app/social-media.html" target="_blank" rel="noreferrer">RSSHUB路由</a>
+4. <a href="https://wzfou.com/tt-rss/" target="_blank" rel="noreferrer">自建RSS阅读器Tiny Tiny RSS安装和配置自动更新</a>(仅供参考 !)
 
 ---
 
@@ -3984,12 +3984,12 @@ PS: Quota为流量(设置为-1则等于无限流量),password为使用密码,ema
 
 Introduction: Trojan multi-user control panel
 
-<a href="https://$domain/${password1}_config/" target="_blank">https://$domain/${password1}_config/</a>
+<a href="https://$domain/${password1}_config/" target="_blank" rel="noreferrer">https://$domain/${password1}_config/</a>
 
 #### Related Links
 
-1. <a href="https://trojan-tutor.github.io/2019/06/08/p43.html#more" target="_blank">Trojan-Panel配置</a>(仅供参考 !)
-2. <a href="https://github.com/trojan-gfw/trojan-panel" target="_blank">https://github.com/trojan-gfw/trojan-panel</a>
+1. <a href="https://trojan-tutor.github.io/2019/06/08/p43.html#more" target="_blank" rel="noreferrer">Trojan-Panel配置</a>(仅供参考 !)
+2. <a href="https://github.com/trojan-gfw/trojan-panel" target="_blank" rel="noreferrer">https://github.com/trojan-gfw/trojan-panel</a>
 
 ---
 
@@ -4001,7 +4001,7 @@ Introduction: Trojan multi-user control panel
 
 Introduction: download resources you want to your vps(support bt only but extremely fast)
 
-- <a href="https://$domain$qbtpath" target="_blank">https://$domain$qbtpath</a>
+- <a href="https://$domain$qbtpath" target="_blank" rel="noreferrer">https://$domain$qbtpath</a>
 - 用户名(username): admin
 - 密碼(password): adminadmin
 
@@ -4010,20 +4010,20 @@ Introduction: download resources you want to your vps(support bt only but extrem
 #### Tips:
 
 1. 请将Bittorrent加密選項改为 ***強制加密(Require encryption)*** ,否则會被迅雷吸血！
-2. 请手动添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank">https://trackerslist.com/all.txt</a>
+2. 请手动添加Trackers <a href="https://trackerslist.com/all.txt" target="_blank" rel="noreferrer">https://trackerslist.com/all.txt</a>
 
 #### 附：优秀的BT站点推荐(Excellent bt sites recommendation)
 
-1. <a href="https://thepiratebay.org/" target="_blank">https://thepiratebay.org/</a>
-2. <a href="https://sukebei.nyaa.si/" target="_blank">https://sukebei.nyaa.si/</a></li>
-3. <a href="https://rarbgprx.org/torrents.php" target="_blank">https://rarbgprx.org/torrents.php</a>
+1. <a href="https://thepiratebay.org/" target="_blank" rel="noreferrer">https://thepiratebay.org/</a>
+2. <a href="https://sukebei.nyaa.si/" target="_blank" rel="noreferrer">https://sukebei.nyaa.si/</a></li>
+3. <a href="https://rarbgprx.org/torrents.php" target="_blank" rel="noreferrer">https://rarbgprx.org/torrents.php</a>
 
 #### Related Links
 
-1. <a href="https://www.qbittorrent.org/download.php" target="_blank">win等平台下载页面</a>
-2. <a href="https://github.com/qbittorrent/qBittorrent" target="_blank">Github页面</a>
-3. <a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank">Android远程操控客户端</a>
-4. <a href="https://www.qbittorrent.org/" target="_blank">https://www.qbittorrent.org/</a>
+1. <a href="https://www.qbittorrent.org/download.php" target="_blank" rel="noreferrer">win等平台下载页面</a>
+2. <a href="https://github.com/qbittorrent/qBittorrent" target="_blank" rel="noreferrer">Github页面</a>
+3. <a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank" rel="noreferrer">Android远程操控客户端</a>
+4. <a href="https://www.qbittorrent.org/" target="_blank" rel="noreferrer">https://www.qbittorrent.org/</a>
 
 ---
 
@@ -4042,10 +4042,10 @@ PS: 推荐使用**Ariang**连接(aria2没有官方web interface!)
 
 #### Related Links
 
-1. **<a href="https://github.com/mayswind/AriaNg/releases" target="_blank">AriaNG</a>**
-2. <a href="https://github.com/aria2/aria2" target="_blank">https://github.com/aria2/aria2</a>
-3. <a href="https://aria2.github.io/manual/en/html/index.html" target="_blank">https://aria2.github.io/manual/en/html/index.html</a> 官方文档
-4. <a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank">Aria2 for Android</a>
+1. **<a href="https://github.com/mayswind/AriaNg/releases" target="_blank" rel="noreferrer">AriaNG</a>**
+2. <a href="https://github.com/aria2/aria2" target="_blank" rel="noreferrer">https://github.com/aria2/aria2</a>
+3. <a href="https://aria2.github.io/manual/en/html/index.html" target="_blank" rel="noreferrer">https://aria2.github.io/manual/en/html/index.html</a> 官方文档
+4. <a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank" rel="noreferrer">Aria2 for Android</a>
 
 ---
 
@@ -4059,7 +4059,7 @@ Introduction: download any resources(formaly downloaded by qbt or aria2) from yo
 
 #### Filebrowser
 
-- <a href="https://$domain:443$filepath" target="_blank">https://$domain$filepath</a>
+- <a href="https://$domain:443$filepath" target="_blank" rel="noreferrer">https://$domain$filepath</a>
 - 用户名(username): **admin**
 - 密碼(token): **admin**
 
@@ -4067,8 +4067,8 @@ Introduction: download any resources(formaly downloaded by qbt or aria2) from yo
 
 #### Related Links
 
-1. <a href="https://github.com/filebrowser/filebrowser" target="_blank">https://github.com/filebrowser/filebrowser</a>
-2. <a href="https://filebrowser.xyz/" target="_blank">https://filebrowser.xyz/</a>
+1. <a href="https://github.com/filebrowser/filebrowser" target="_blank" rel="noreferrer">https://github.com/filebrowser/filebrowser</a>
+2. <a href="https://filebrowser.xyz/" target="_blank" rel="noreferrer">https://filebrowser.xyz/</a>
 
 ---
 
@@ -4082,11 +4082,11 @@ Introduction: test download and upload speed from vps to your local network.
 
 #### Speedtest
 
-- <a href="https://$domain:443/${password1}_speedtest/" target="_blank">https://$domain/${password1}_speedtest/</a>
+- <a href="https://$domain:443/${password1}_speedtest/" target="_blank" rel="noreferrer">https://$domain/${password1}_speedtest/</a>
 
 #### Related Links
 
-1. <a href="https://github.com/librespeed/speedtest" target="_blank">https://github.com/librespeed/speedtest</a>
+1. <a href="https://github.com/librespeed/speedtest" target="_blank" rel="noreferrer">https://github.com/librespeed/speedtest</a>
 
 ---
 
@@ -4100,12 +4100,12 @@ Introduction: test download and upload speed from vps to your local network.
 
 #### Netdata
 
-- <a href="https://$domain:443$netdatapath" target="_blank">https://${domain}${netdatapath}</a>
+- <a href="https://$domain:443$netdatapath" target="_blank" rel="noreferrer">https://${domain}${netdatapath}</a>
 
 #### Related Links
 
-1. <a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank">https://play.google.com/store/apps/details?id=com.kpots.netdata</a>安卓客户端
-2. <a href="https://github.com/netdata/netdata" target="_blank">https://github.com/netdata/netdata</a>
+1. <a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank" rel="noreferrer">https://play.google.com/store/apps/details?id=com.kpots.netdata</a>安卓客户端
+2. <a href="https://github.com/netdata/netdata" target="_blank" rel="noreferrer">https://github.com/netdata/netdata</a>
 
 ---
 
@@ -4123,7 +4123,7 @@ PS: 不支援自定义证书,仅支援全自动申请的let证书!
 
 #### Roundcube Webmail
 
-- <a href="https://${domain}/${password1}_webmail/" target="_blank">Roundcube Webmail</a>
+- <a href="https://${domain}/${password1}_webmail/" target="_blank" rel="noreferrer">Roundcube Webmail</a>
 - 用户名(username): **${mailuser}**
 - 密碼(password): **${password1}**
 - 收件地址: **${mailuser}@${domain}**
@@ -4137,8 +4137,8 @@ PS: 不支援自定义证书,仅支援全自动申请的let证书!
 
 #### Related Links
 
-1. <a href="https://www.mail-tester.com/" target="_blank">https://www.mail-tester.com/</a>
-2. <a href="https://lala.im/6838.html" target="_blank">Debian10使用Postfix+Dovecot+Roundcube搭建邮件服务器</a>(仅供参考!)
+1. <a href="https://www.mail-tester.com/" target="_blank" rel="noreferrer">https://www.mail-tester.com/</a>
+2. <a href="https://lala.im/6838.html" target="_blank" rel="noreferrer">Debian10使用Postfix+Dovecot+Roundcube搭建邮件服务器</a>(仅供参考!)
 
 ---
 
@@ -4156,7 +4156,7 @@ http://$domain:8000/announce
 
 #### Info link
 
-<a href="https://$domain:443$trackerstatuspath" target="_blank">https://$domain:443$trackerstatuspath</a>
+<a href="https://$domain:443$trackerstatuspath" target="_blank" rel="noreferrer">https://$domain:443$trackerstatuspath</a>
 
 #### Tips:
 
@@ -4165,7 +4165,7 @@ http://$domain:8000/announce
 
 #### Related Links
 
-1. <a href="https://github.com/webtorrent/bittorrent-tracker" target="_blank">https://github.com/webtorrent/bittorrent-tracker</a>
+1. <a href="https://github.com/webtorrent/bittorrent-tracker" target="_blank" rel="noreferrer">https://github.com/webtorrent/bittorrent-tracker</a>
 
 ---
 
