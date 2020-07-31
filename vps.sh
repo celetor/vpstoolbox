@@ -589,7 +589,6 @@ EOF
         ;;
         back) 
         userinput
-        break
         ;;
         *)
         ;;
@@ -3847,6 +3846,7 @@ installhexo(){
   #npm i hexo@4
   hexo init hexo
   cd /usr/share/nginx/hexo
+  npm i hexo@4
   npm audit fix
   hexo new page ${password1}
   cd /usr/share/nginx/hexo/themes
