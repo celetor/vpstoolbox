@@ -3842,13 +3842,12 @@ start(){
 installhexo(){
 	colorEcho ${INFO} "Install Hexo ing..."
   cd /usr/share/nginx
-  mkdir hexo
-  cd /usr/share/nginx/hexo
   npm install hexo-cli -g
   npm update
-  npm i hexo@4
+  #npm i hexo@4
+  hexo init hexo
+  cd /usr/share/nginx/hexo
   npm audit fix
-  hexo init
   hexo new page ${password1}
   cd /usr/share/nginx/hexo/themes
   wget https://github.com/SukkaW/hexo-theme-suka/archive/1.4.0.zip
