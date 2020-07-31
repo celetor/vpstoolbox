@@ -2710,6 +2710,8 @@ local_tcp:
  control_port: 9051
 EOF
 fi
+sed -i 's/Restart=on-failure/Restart=always/' /lib/systemd/system/netdata.service
+systemctl daemon-reload
 systemctl restart netdata
 fi
 clear
