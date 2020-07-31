@@ -1407,10 +1407,10 @@ wget -P /usr/share/nginx/speedtest/ https://raw.githubusercontent.com/librespeed
 wget -P /usr/share/nginx/speedtest/ https://raw.githubusercontent.com/librespeed/speedtest/master/backend/getIP.php -q --show-progress
   cat > '/usr/share/nginx/speedtest/index.html' << EOF
 <!DOCTYPE html>
-<html>
+<html lang="zh-tw">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no />
 <title>LibreSpeed</title>
 <link rel="shortcut icon" href="favicon.ico">
 <script type="text/javascript" src="speedtest.js"></script>
