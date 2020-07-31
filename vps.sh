@@ -3843,10 +3843,8 @@ installhexo(){
   cd /usr/share/nginx
   npm install hexo-cli -g
   npm update
-  #npm i hexo@4
   hexo init hexo
   cd /usr/share/nginx/hexo
-  npm i hexo@4
   npm audit fix
   hexo new page ${password1}
   cd /usr/share/nginx/hexo/themes
@@ -3859,6 +3857,8 @@ installhexo(){
   cp -i _config.example.yml _config.yml
   sed -i 's/qq: true/qq: false/' _config.yml
   sed -i 's/googleplus: true/googleplus: false/' _config.yml
+  cd /usr/share/nginx/hexo
+  npm i hexo@4
     cat > '/usr/share/nginx/hexo/_config.yml' << EOF
 language: zh-tw
 url: https://${domain}
