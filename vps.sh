@@ -390,7 +390,6 @@ server {
   root   /usr/share/nginx/html;
 }
 EOF
-  nginx -t
   systemctl start nginx
   clear
   colorEcho ${INFO} "正式证书申请ing(test issuing) let\'s encrypt certificate"
@@ -3818,7 +3817,6 @@ echo "    server 127.0.0.1:19999;" >> /etc/nginx/conf.d/default.conf
 echo "    keepalive 64;" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 fi
-nginx -t
 chown -R nginx:nginx /usr/share/nginx/
 systemctl restart nginx
 }
