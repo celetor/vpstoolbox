@@ -11,6 +11,8 @@ assignees: ''
 
 **Non-related topics will be marked as spam and be closed immediately!（所有与本项目无关的话题都将被视为spam并被立即关闭！）**
 
+**请勿使用Vultr运行本项目,vultr导致的一切错误,本项目不负责！！！**
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
