@@ -351,8 +351,8 @@ issuecert(){
   mv /etc/trojan/*.crt /etc/trojan/trojan.crt
   mv /etc/trojan/*.key /etc/trojan/trojan.key
   apt-get install gnutls-bin -y
-  certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
   openfirewall
+  certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
   if [[ $? != 0 ]]; then
     whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,快滚!!!" 8 78
     advancedMenu
