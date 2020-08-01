@@ -352,6 +352,7 @@ issuecert(){
   mv /etc/trojan/*.key /etc/trojan/trojan.key
   apt-get install gnutls-bin -y
   certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
+  openfirewall
   if [[ $? != 0 ]]; then
     whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,快滚!!!" 8 78
     advancedMenu
@@ -373,6 +374,7 @@ if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}
 
 #Issue Let's Encrypt Certificate by http
 httpissue(){
+openfirewall
 if isresolved $domain
   then
   http_issue=1
@@ -439,6 +441,7 @@ fi
 
 #Issue Let's Encrypt Certificate by DNS API
 dnsissue(){
+openfirewall
 whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr !" 8 78
     APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
 "1" "Cloudflare(不支援免费域名!)" \
@@ -4538,11 +4541,10 @@ advancedMenu() {
 		curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
 		fi
 		userinput
-		openfirewall
+		issuecert
 		if [[ ${install_ddns} == 1 ]]; then
 		install_ddns
 		fi
-		issuecert
 		systeminfo
 		installdependency
 		if [[ $install_mariadb == 1 ]]; then
