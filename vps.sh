@@ -1234,6 +1234,7 @@ installdependency(){
 colorEcho ${INFO} "Updating system"
 	apt-get update
 	if [[ $install_status == 0 ]]; then
+		echo "nameserver 1.1.1.1" > /etc/resolv.conf
 		if [[ $(systemctl is-active caddy) == active ]]; then
 			systemctl stop caddy
 			systemctl disable caddy
