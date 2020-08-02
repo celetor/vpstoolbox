@@ -441,7 +441,6 @@ fi
 
 #Issue Let's Encrypt Certificate by DNS API
 dnsissue(){
-openfirewall
 whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr !" 8 78
     APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
 "1" "Cloudflare(不支援免费域名!)" \
@@ -450,7 +449,7 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
 "4" "DNSPod.cn" \
 "5" "CloudXNS.com" \
 "6" "GoDaddy" \
-"back" "返回"  3>&1 1>&2 2>&3)
+"http" "使用HTTP申请"  3>&1 1>&2 2>&3)
 
     case $APIOPTION in
         1)
@@ -460,6 +459,7 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
         done
         export CF_Key="$CF_Key"
         export CF_Email="$CF_Email"
+        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
@@ -481,6 +481,7 @@ EOF
         Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
         done
         export Namesilo_Key="$Namesilo_Key"
+        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
@@ -504,6 +505,7 @@ EOF
         done
         export Ali_Key="$Ali_Key"
         export Ali_Secret="$Ali_Secret"
+        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
@@ -527,6 +529,7 @@ EOF
         done
         export DP_Id="$DP_Id"
         export DP_Key="$DP_Key"
+        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
@@ -550,6 +553,7 @@ EOF
         done
         export CX_Key="$CX_Key"
         export CX_Secret="$CX_Secret"
+        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
@@ -573,6 +577,7 @@ EOF
         done
         export GD_Key="$CX_Key"
         export GD_Secret="$CX_Secret"
+        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
@@ -589,8 +594,8 @@ ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d 
 SuccessExitStatus=0 2
 EOF
         ;;
-        back) 
-        userinput
+        http)
+        httpissue
         ;;
         *)
         ;;
