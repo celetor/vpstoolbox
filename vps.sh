@@ -2377,7 +2377,7 @@ fi
 #!!! Do not change these settings unless you know what you are doing !!!
 listen_addresses = ['127.0.0.1:53','[::1]:53']
 #user_name = 'nobody'
-max_clients = 250
+max_clients = 51200
 ipv4_servers = true
 ipv6_servers = $ipv6_true
 dnscrypt_servers = true
