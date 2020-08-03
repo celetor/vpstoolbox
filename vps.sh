@@ -3596,7 +3596,7 @@ server {
 	ssl_stapling on;
 	ssl_stapling_verify on;
 	#ssl_dhparam /etc/nginx/nginx.pem;
-	resolver 127.0.0.1;
+	#resolver 127.0.0.1;
 	resolver_timeout 10s;
 	server_name           $domain;
 	#add_header alt-svc 'quic=":443"; ma=2592000; v="46"';
