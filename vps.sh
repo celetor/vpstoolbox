@@ -3593,8 +3593,8 @@ server {
 	ssl_session_cache   shared:SSL:40m;
 	ssl_session_timeout 1d;
 	ssl_session_tickets off;
-	ssl_stapling on;
-	ssl_stapling_verify on;
+	#ssl_stapling on;
+	#ssl_stapling_verify on;
 	#ssl_dhparam /etc/nginx/nginx.pem;
 	#resolver 127.0.0.1;
 	resolver_timeout 10s;
