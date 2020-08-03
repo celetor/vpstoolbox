@@ -3955,6 +3955,7 @@ sudo nano /etc/nginx/conf.d/default.conf
 #### Docs
 
 1. <a href="https://hexo.io/zh-tw/docs/" target="_blank" rel="noreferrer">Hexo docs</a>
+2. <a href="https://www.typora.io" target="_blank" rel="noreferrer">A new way to read & write Markdown</a>
 
 ---
 ### Rsshub + TT-RSS
