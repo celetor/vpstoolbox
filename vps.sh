@@ -2765,12 +2765,12 @@ RestartSec=1s
 [Install]
 WantedBy=multi-user.target
 EOF
-if [[ -f /usr/local/etc/trojan/dh.pem ]] && [[ -n /usr/local/etc/trojan/dh.pem ]]; then
-    colorEcho ${INFO} "DH已有，跳过生成。。。"
-    else
-    colorEcho ${INFO} "Generating DH pem"
-    openssl dhparam -out /usr/local/etc/trojan/dh.pem 2048
-    fi
+#if [[ -f /usr/local/etc/trojan/dh.pem ]] && [[ -n /usr/local/etc/trojan/dh.pem ]]; then
+    #colorEcho ${INFO} "DH已有，跳过生成。。。"
+    #else
+    #colorEcho ${INFO} "Generating DH pem"
+    #openssl dhparam -out /usr/local/etc/trojan/dh.pem 2048
+#fi
 systemctl daemon-reload
 systemctl enable trojan
 if [[ ${install_mariadb} == 1 ]]; then
@@ -2805,7 +2805,7 @@ if [[ ${install_mariadb} == 1 ]]; then
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/dh.pem"
+        "dhparam": ""
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -2860,7 +2860,7 @@ EOF
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/dh.pem"
+        "dhparam": ""
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -2918,7 +2918,7 @@ if [[ ${othercert} == 1 ]]; then
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/dh.pem"
+        "dhparam": ""
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -2973,7 +2973,7 @@ EOF
         "session_timeout": 600,
         "plain_http_response": "",
         "curves": "",
-        "dhparam": "/usr/local/etc/trojan/dh.pem"
+        "dhparam": ""
     },
     "tcp": {
         "prefer_ipv4": $ipv4_prefer,
@@ -3416,7 +3416,8 @@ EOF
 ssl = yes
 ssl_cert = </etc/certs/${domain}_ecc/fullchain.cer
 ssl_key = </etc/certs/${domain}_ecc/${domain}.key
-ssl_dh = </usr/local/etc/trojan/dh.pem
+#ssl_dh = </usr/local/etc/trojan/dh.pem
+ssl_cipher_list = ${cipher_server}
 ssl_min_protocol = TLSv1.2
 ssl_prefer_server_ciphers = yes
 ssl_options = no_ticket
