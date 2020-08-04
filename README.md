@@ -31,7 +31,6 @@ Ip Information is just an indispensable part of this project, all ip information
 20. Support Auto install and config **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) [Speedtest](https://github.com/librespeed/speedtest) [Trojan-panel](https://github.com/trojan-gfw/trojan-panel) Postfix Dovecot Roundcube-Webmail**
 3. Auto issue and renew [let's encrypt certificate](https://letsencrypt.org/) and auto reload Trojan-GFW after renewal
 4. **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)**
-16. Random Html Template Choose
 17. [Full IPv6 Support](https://en.wikipedia.org/wiki/IPv6)
 17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
 18. [time sync](https://www.freedesktop.org/software/systemd/man/timedatectl.html)
@@ -39,7 +38,6 @@ Ip Information is just an indispensable part of this project, all ip information
 20. [uninstall Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
 9.  Support [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks)
 15. Support [TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)
-21. Support manually check for update
 23. Support Full/Part Uninstall
 24. And so on...
 
