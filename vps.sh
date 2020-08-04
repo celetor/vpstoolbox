@@ -1379,6 +1379,7 @@ if [[ $http_issue != 1 ]]; then
 installnginx
 fi
 
+#Install docker
 if [[ $install_docker == 1 ]]; then
   clear
   colorEcho ${INFO} "安装Docker(Install Docker ing)"
@@ -1406,7 +1407,9 @@ if [[ $install_docker == 1 ]]; then
 }
 EOF
 fi
+systemctl restart docker
 
+#Install Speedtest
 if [[ ${install_speedtest} == 1 ]]; then
 cd /usr/share/nginx/
 git clone https://github.com/librespeed/speedtest.git
