@@ -4567,7 +4567,7 @@ advancedMenu() {
 		bash netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud
 		cd
 		fi
-		if [[ $dnsmasq_install -eq 1 ]]; then
+		if [[ ${dnsmasq_install} == 1 ]]; then
 			if [[ ${dist} = ubuntu ]]; then
 	 			systemctl stop systemd-resolved
 	 			systemctl disable systemd-resolved
@@ -4578,6 +4578,8 @@ advancedMenu() {
 		rm /etc/resolv.conf
 		touch /etc/resolv.conf
 		echo "nameserver 127.0.0.1" > '/etc/resolv.conf'
+		echo "" >> /etc/hosts
+		echo "$(jq -r '.ip' "/root/.trojan/ip.json") ${domain}" >> /etc/hosts
 		systemctl start dnscrypt-proxy
 		iptables -t nat -I OUTPUT ! -d 127.0.0.1/32 -p udp -m udp --dport 53 -j DNAT --to 127.0.0.1:53
 		ip6tables -t nat -I OUTPUT ! -d ::1 -p udp -m udp --dport 53 -j DNAT --to [::1]:53
@@ -4687,11 +4689,12 @@ EOF
 		chmod +x /etc/profile.d/mymotd.sh
 		clear
 		echo "" > /etc/motd
-		if (whiptail --title "Reboot" --yesno "安装成功(success)！ 重启 (reboot) 使配置生效,重新SSH连接后将自动出现结果 (to make the configuration effective)?" 8 78); then
-		clear
-		reboot
-		fi
+		#if (whiptail --title "Reboot" --yesno "安装成功(success)！ 重启 (reboot) 使配置生效,重新SSH连接后将自动出现结果 (to make the configuration effective)?" 8 78); then
+		#clear
+		#reboot
+		#fi
 		echo "Install complete!"
+		whiptail --title "Success" --msgbox "Install Success!" 8 78
 		bash /etc/profile.d/mymotd.sh
 		exit 0
 		;;
