@@ -11,8 +11,6 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 流量图示(仅供参考):
 ![flowchart](https://raw.githubusercontent.com/jerrypoma/trojan-gfw-script/master/vpstoolbox.png)
 
-***请勿使用Vultr运行本项目,vultr导致的一切错误,本项目不负责！！！***
-
 #### 隐私声明:
 
 1. 此项目使用MIT开源协议，欢迎PR.
@@ -52,3 +50,5 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 [https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
 
 ## 如果此项目对你有用 , 请给颗star ,谢谢!
+
+***请勿使用Vultr运行本项目,vultr导致的一切错误,本项目不负责！！！***
