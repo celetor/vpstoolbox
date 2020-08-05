@@ -93,17 +93,17 @@ colorEcho(){
 #Remove Aliyun aegis
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
 colorEcho ${INFO} "Uninstall Aliyun aegis ing"
-iptables -I INPUT -s 140.205.201.0/28 -j DROP
-iptables -I INPUT -s 140.205.201.16/29 -j DROP
-iptables -I INPUT -s 140.205.201.32/28 -j DROP
-iptables -I INPUT -s 140.205.225.192/29 -j DROP
-iptables -I INPUT -s 140.205.225.200/30 -j DROP
-iptables -I INPUT -s 140.205.225.184/29 -j DROP
-iptables -I INPUT -s 140.205.225.183/32 -j DROP
-iptables -I INPUT -s 140.205.225.206/32 -j DROP
-iptables -I INPUT -s 140.205.225.205/32 -j DROP
-iptables -I INPUT -s 140.205.225.195/32 -j DROP
-iptables -I INPUT -s 140.205.225.204/32 -j DROP
+iptables -I INPUT -s 140.205.201.0/28 -j DROP &>/dev/null
+iptables -I INPUT -s 140.205.201.16/29 -j DROP &>/dev/null
+iptables -I INPUT -s 140.205.201.32/28 -j DROP &>/dev/null
+iptables -I INPUT -s 140.205.225.192/29 -j DROP &>/dev/null
+iptables -I INPUT -s 140.205.225.200/30 -j DROP &>/dev/null
+iptables -I INPUT -s 140.205.225.184/29 -j DROP &>/dev/null
+iptables -I INPUT -s 140.205.225.183/32 -j DROP &>/dev/null
+iptables -I INPUT -s 140.205.225.206/32 -j DROP &>/dev/null
+iptables -I INPUT -s 140.205.225.205/32 -j DROP &>/dev/null
+iptables -I INPUT -s 140.205.225.195/32 -j DROP &>/dev/null
+iptables -I INPUT -s 140.205.225.204/32 -j DROP &>/dev/null
 systemctl stop aegis
 systemctl stop CmsGoAgent.service
 systemctl stop aliyun
@@ -1124,41 +1124,41 @@ openfirewall(){
 	set +e
 	colorEcho ${INFO} "设置 firewall"
 	#policy
-	iptables -P INPUT ACCEPT
-	iptables -P FORWARD ACCEPT
-	iptables -P OUTPUT ACCEPT
-	ip6tables -P INPUT ACCEPT
-	ip6tables -P FORWARD ACCEPT
-	ip6tables -P OUTPUT ACCEPT
+	iptables -P INPUT ACCEPT &>/dev/null
+	iptables -P FORWARD ACCEPT &>/dev/null
+	iptables -P OUTPUT ACCEPT &>/dev/null
+	ip6tables -P INPUT ACCEPT &>/dev/null
+	ip6tables -P FORWARD ACCEPT &>/dev/null
+	ip6tables -P OUTPUT ACCEPT &>/dev/null
 	#flash
-	iptables -F
-	ip6tables -F
+	iptables -F &>/dev/null
+	ip6tables -F &>/dev/null
 	#block
-	iptables -I INPUT -s 36.110.236.68/16 -j DROP
-	iptables -I INPUT -s 114.114.112.0/21 -j DROP
-	iptables -I INPUT -s 1.2.4.0/24 -j DROP
-	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP
-	iptables -I OUTPUT -d 114.114.112.0/21 -j DROP
-	iptables -I OUTPUT -d 1.2.4.0/24 -j DROP
-	iptables -I OUTPUT -p tcp -m tcp --dport 5222 -j DROP
-	iptables -I OUTPUT -p udp -m udp --dport 5222 -j DROP
-	iptables -I OUTPUT -p tcp -m tcp --dport 1723 -j DROP
-	iptables -I OUTPUT -p udp -m udp --dport 1723 -j DROP
-	iptables -I OUTPUT -p tcp -m tcp --dport 1701 -j DROP
-	iptables -I OUTPUT -p udp -m udp --dport 1701 -j DROP
-	iptables -I OUTPUT -p tcp -m tcp --dport 500 -j DROP
-	iptables -I OUTPUT -p udp -m udp --dport 500 -j DROP
+	iptables -I INPUT -s 36.110.236.68/16 -j DROP &>/dev/null
+	iptables -I INPUT -s 114.114.112.0/21 -j DROP &>/dev/null
+	iptables -I INPUT -s 1.2.4.0/24 -j DROP &>/dev/null
+	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP &>/dev/null
+	iptables -I OUTPUT -d 114.114.112.0/21 -j DROP &>/dev/null
+	iptables -I OUTPUT -d 1.2.4.0/24 -j DROP &>/dev/null
+	iptables -I OUTPUT -p tcp -m tcp --dport 5222 -j DROP &>/dev/null
+	iptables -I OUTPUT -p udp -m udp --dport 5222 -j DROP &>/dev/null
+	iptables -I OUTPUT -p tcp -m tcp --dport 1723 -j DROP &>/dev/null
+	iptables -I OUTPUT -p udp -m udp --dport 1723 -j DROP &>/dev/null
+	iptables -I OUTPUT -p tcp -m tcp --dport 1701 -j DROP &>/dev/null
+	iptables -I OUTPUT -p udp -m udp --dport 1701 -j DROP &>/dev/null
+	iptables -I OUTPUT -p tcp -m tcp --dport 500 -j DROP &>/dev/null
+	iptables -I OUTPUT -p udp -m udp --dport 500 -j DROP &>/dev/null
 	#keep connected
-	iptables -A INPUT -p tcp -m tcp --tcp-flags ALL FIN,PSH,URG -j DROP
-	iptables -A INPUT -p tcp -m tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
-	iptables -A INPUT -p tcp -m conntrack --ctstate NEW -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -j DROP
-	iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-	ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+	iptables -A INPUT -p tcp -m tcp --tcp-flags ALL FIN,PSH,URG -j DROP &>/dev/null
+	iptables -A INPUT -p tcp -m tcp --tcp-flags SYN,FIN SYN,FIN -j DROP &>/dev/null
+	iptables -A INPUT -p tcp -m conntrack --ctstate NEW -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -j DROP &>/dev/null
+	iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT &>/dev/null
+	ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT &>/dev/null
 	#icmp
-	iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
-	iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
-	ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT
-	ip6tables -A OUTPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT
+	iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT &>/dev/null
+	iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT &>/dev/null
+	ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT &>/dev/null
+	ip6tables -A OUTPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT &>/dev/null
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 -j REJECT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 192.168.0.0/16 -j REJECT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 10.0.0.0/8 -j REJECT
@@ -1166,50 +1166,50 @@ openfirewall(){
 	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 --dport 80 -j ACCEPT
 	#iptables -m owner --uid-owner trojan -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 	#tcp
-	iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT #HTTPS
-	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT #HTTP
+	iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT  &>/dev/null #HTTPS
+	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT &>/dev/null #HTTP
 	#udp
-	iptables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
-	iptables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
+	iptables -A INPUT -p udp -m udp --dport 443 -j ACCEPT &>/dev/null
+	iptables -A INPUT -p udp -m udp --dport 80 -j ACCEPT &>/dev/null
 	iptables -A OUTPUT -j ACCEPT
 	#iptables -I FORWARD -j DROP
 	#tcp6
-	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT #HTTPSv6
-	ip6tables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT #HTTPv6
+	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT &>/dev/null #HTTPSv6
+	ip6tables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT &>/dev/null #HTTPv6
 	#udp6
-	ip6tables -A INPUT -p udp -m udp --dport 443 -j ACCEPT
-	ip6tables -A INPUT -p udp -m udp --dport 80 -j ACCEPT
-	ip6tables -A OUTPUT -j ACCEPT
+	ip6tables -A INPUT -p udp -m udp --dport 443 -j ACCEPT &>/dev/null
+	ip6tables -A INPUT -p udp -m udp --dport 80 -j ACCEPT &>/dev/null
+	ip6tables -A OUTPUT -j ACCEPT &>/dev/null
 	#ip6tables -I FORWARD -j DROP
 	if [[ $install_qbt == 1 ]]; then
-		iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 8080 -j DROP
-		iptables -A INPUT ! -s 127.0.0.1 -p udp -m udp --dport 8080 -j DROP
-		iptables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
-		ip6tables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT
-		iptables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT
-		ip6tables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT
+		iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 8080 -j DROP &>/dev/null
+		iptables -A INPUT ! -s 127.0.0.1 -p udp -m udp --dport 8080 -j DROP &>/dev/null
+		iptables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT &>/dev/null
+		iptables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT &>/dev/null
 	fi
 	if [[ $install_tracker == 1 ]]; then
-		iptables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
-		ip6tables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT
-		iptables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT
-		ip6tables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT
+		iptables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT &>/dev/null
+		iptables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT &>/dev/null
 	fi
 	if [[ $install_aria == 1 ]]; then
-		iptables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
-		ip6tables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT
-		iptables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
-		ip6tables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT
+		iptables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT &>/dev/null
+		iptables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT &>/dev/null
 	fi
 	if [[ $install_netdata == 1 ]]; then
-		iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 19999 -j DROP
-		iptables -A INPUT ! -s 127.0.0.1 -p udp -m udp --dport 19999 -j DROP
+		iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 19999 -j DROP &>/dev/null
+		iptables -A INPUT ! -s 127.0.0.1 -p udp -m udp --dport 19999 -j DROP &>/dev/null
 	fi
 	if [[ ${install_mail} == 1 ]]; then
-		iptables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT
-		ip6tables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT
-		iptables -A INPUT -p udp -m udp --dport 25 -j ACCEPT
-		ip6tables -A INPUT -p udp -m udp --dport 25 -j ACCEPT
+		iptables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT &>/dev/null
+		iptables -A INPUT -p udp -m udp --dport 25 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p udp -m udp --dport 25 -j ACCEPT &>/dev/null
 	fi
 	if [[ ${dist} == debian ]]; then
 	apt-get install iptables-persistent -qq -y > /dev/null
