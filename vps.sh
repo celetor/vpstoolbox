@@ -2785,7 +2785,7 @@ if [[ ${install_mariadb} == 1 ]]; then
         "$password1",
         "$password2"
     ],
-    "log_level": 1,
+    "log_level": 2,
     "ssl": {
         "cert": "/etc/certs/${domain}_ecc/fullchain.cer",
         "key": "/etc/certs/${domain}_ecc/${domain}.key",
@@ -2840,7 +2840,7 @@ EOF
         "$password1",
         "$password2"
     ],
-    "log_level": 1,
+    "log_level": 2,
     "ssl": {
         "cert": "/etc/certs/${domain}_ecc/fullchain.cer",
         "key": "/etc/certs/${domain}_ecc/${domain}.key",
@@ -2898,7 +2898,7 @@ if [[ ${othercert} == 1 ]]; then
         "$password1",
         "$password2"
     ],
-    "log_level": 1,
+    "log_level": 2,
     "ssl": {
         "cert": "/etc/trojan/trojan.crt",
         "key": "/etc/trojan/trojan.key",
@@ -2953,7 +2953,7 @@ EOF
         "$password1",
         "$password2"
     ],
-    "log_level": 1,
+    "log_level": 2,
     "ssl": {
         "cert": "/etc/trojan/trojan.crt",
         "key": "/etc/trojan/trojan.key",
