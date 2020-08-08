@@ -11,8 +11,6 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 Flowchart:
 ![flowchart](https://raw.githubusercontent.com/jerrypoma/trojan-gfw-script/master/vpstoolbox.png)
 
-***Please do not use vultr to run this project !***
-
 #### Privacy Statement:
 
 Ip Information is just an indispensable part of this project, all ip information comes from ipinfo.io,no spam related.
@@ -46,3 +44,5 @@ Ip Information is just an indispensable part of this project, all ip information
 [https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
 
 ## If you found it useful , please give a star ,thanks!
+
+***Please do not use vultr to run this project !***
