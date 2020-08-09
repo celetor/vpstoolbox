@@ -726,9 +726,8 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按�
 "17" "Mail service(require PHP MariaDB)" off \
 "其他" "Others" off  \
 "ddns" "DDNS(仅支援Cloudflare!)" off \
-"18" "OPENSSL" off \
-"19" "Tor-Relay" off \
-"20" "Enable TLS1.3 only" off 2>results
+"18" "Tor-Relay" off \
+"19" "Enable TLS1.3 only" off 2>results
 
 while read choice
 do
@@ -751,6 +750,7 @@ do
 		;;
 		5)
 		install_trojan=1
+		install_netdata=1
 		;;
 		6) 
 		install_tjp=1
@@ -801,12 +801,9 @@ do
 		install_ddns=1
 		;;
 		18)
-		install_openssl=1
-		;;
-		19)
 		install_tor=1
 		;;
-		20) 
+		19) 
 		tls13only=1
 		;;
 		*)
@@ -1760,16 +1757,16 @@ apt-get install -q -y nodejs
 fi
 clear
 
-if [[ ${install_openssl} == 1 ]]; then
-	colorEcho ${INFO} "Install OPENSSL ing"
-apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
-wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz && tar -xvf openssl*.tar.gz && rm -rf openssl*.tar.gz
-cd openssl* && ./config no-ssl2 no-ssl3 && make -j $(nproc --all) && make test && make install
-cd ..
-rm -rf openssl*
-apt-get purge build-essential -y
-apt-get autoremove -y
-fi
+#if [[ ${install_openssl} == 1 ]]; then
+#	colorEcho ${INFO} "Install OPENSSL ing"
+#apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
+#wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz && tar -xvf openssl*.tar.gz && rm -rf openssl*.tar.gz
+#cd openssl* && ./config no-ssl2 no-ssl3 && make -j $(nproc --all) && make test && make install
+#cd ..
+#rm -rf openssl*
+#apt-get purge build-essential -y
+#apt-get autoremove -y
+#fi
 
 if [[ $install_qbt == 1 ]]; then
 	clear
@@ -4473,22 +4470,16 @@ done
   -H "X-Auth-Email: $cloudflare_auth_email" \
   -H "X-Auth-Key: $cloudflare_auth_key" \
   -H "Content-Type: application/json" | jq -r '{"result"}[] | .[0] | .id')
-  if [[ $? != 0 ]]; then
-  whiptail --title "Warning" --msgbox "Warning: Invaild Domain !!!" 8 78
-  domain1=""
-  clear
-  exit 1
-  fi
+
     dnsrecordid=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/$zoneid/dns_records?type=A&name=$dnsrecord" \
   -H "X-Auth-Email: $cloudflare_auth_email" \
   -H "X-Auth-Key: $cloudflare_auth_key" \
   -H "Content-Type: application/json" | jq -r '{"result"}[] | .[0] | .id') 
-  if [[ $? != 0 ]]; then
-  whiptail --title "Warning" --msgbox "Warning: Invaild Domain !!!" 8 78
-  domain1=""
-  clear
-  exit 1
-  fi
+
+  dnsrecordidv6=$(curl -s -X GET "https://api.cloudflare.com/client/v6/zones/$zoneid/dns_records?type=AAAA&name=$dnsrecord" \
+  -H "X-Auth-Email: $cloudflare_auth_email" \
+  -H "X-Auth-Key: $cloudflare_auth_key" \
+  -H "Content-Type: application/json" | jq -r '{"result"}[] | .[0] | .id') 
   cat > '/root/.trojan/ddns.sh' << EOF
 #!/bin/bash
 
@@ -4513,7 +4504,7 @@ curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/$zoneid/dns_records/$
   --data "{\"type\":\"A\",\"name\":\"$dnsrecord\",\"content\":\"$ip\",\"ttl\":1,\"proxied\":false}" | jq
 
 if [[ -n ${ipv6} ]]; then
-curl -s -X PUT "https://api.cloudflare.com/client/v6/zones/$zoneid/dns_records/$dnsrecordid" \
+curl -s -X PUT "https://api.cloudflare.com/client/v6/zones/$zoneid/dns_records/$dnsrecordidv6" \
   -H "X-Auth-Email: $cloudflare_auth_email" \
   -H "X-Auth-Key: $cloudflare_auth_key" \
   -H "Content-Type: application/json" \
@@ -4543,10 +4534,10 @@ advancedMenu() {
 		curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
 		fi
 		userinput
-		issuecert
 		if [[ ${install_ddns} == 1 ]]; then
 		install_ddns
 		fi
+		issuecert
 		systeminfo
 		installdependency
 		if [[ $install_mariadb == 1 ]]; then
@@ -4565,10 +4556,11 @@ advancedMenu() {
 		apt-get purge python-pil python3-qrcode -q -y
 		apt-get autoremove -y
 		if [[ $install_netdata = 1 ]]; then
-		wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
-		sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
+		#wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
+		#sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		cd /opt/netdata/bin
-		bash netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud
+		bash netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud &>/dev/null
+		systemctl restart netdata
 		cd
 		fi
 		if [[ ${dnsmasq_install} == 1 ]]; then
