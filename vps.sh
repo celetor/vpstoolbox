@@ -1030,15 +1030,14 @@ fi
 installnginx(){
 	clear
 	colorEcho ${INFO} "Install Nginx ing"
-	curl -LO --progress-bar https://nginx.org/keys/nginx_signing.key
-	apt-get install gnupg -y
-	apt-key add nginx_signing.key
-	rm -rf nginx_signing.key
+	apt-get install gnupg2 ca-certificates lsb-release -y
 	touch /etc/apt/sources.list.d/nginx.list
 	cat > '/etc/apt/sources.list.d/nginx.list' << EOF
 deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
-deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
+#deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
+	curl -fsSL https://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+	apt-key fingerprint ABF5BD827BD9BF62
 	apt-get purge nginx -qq -y
 	apt-get update -q
 	apt-get install nginx -q -y
@@ -2520,7 +2519,7 @@ colorEcho ${INFO} "Install Tor Relay ing"
 touch /etc/apt/sources.list.d/tor.list
 	cat > '/etc/apt/sources.list.d/tor.list' << EOF
 deb https://deb.torproject.org/torproject.org $(lsb_release -cs) main
-deb-src https://deb.torproject.org/torproject.org $(lsb_release -cs) main
+#deb-src https://deb.torproject.org/torproject.org $(lsb_release -cs) main
 EOF
 curl https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
 gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
