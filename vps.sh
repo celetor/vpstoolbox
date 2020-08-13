@@ -1030,6 +1030,7 @@ if [[ -f /etc/apt/sources.list.d/nginx.list ]]; then
 deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 #deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
+apt-get update
 fi
 }
 
