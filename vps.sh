@@ -1688,7 +1688,7 @@ git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
 	define('_SKIP_SELF_URL_PATH_CHECKS', true);
 EOF
 cd
-
+rm -rf /usr/share/nginx/tt-rss/install
   cat > '/etc/systemd/system/rssfeed.service' << EOF
 [Unit]
 Description=ttrss_backend
