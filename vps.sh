@@ -864,7 +864,7 @@ fi
 		done
 	fi
 	if [[ ${install_aria} == 1 ]]; then
-		ariaport=$(shuf -i 10000-19000 -n 1)
+		ariaport=$(shuf -i 13000-19000 -n 1)
 		while [[ -z ${ariapath} ]]; do
 		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Nginx Path(路径)" 8 78 /${password1}_aria2/ --title "Aria2 path input" 3>&1 1>&2 2>&3)
 		done
@@ -3271,8 +3271,8 @@ smtpd_sender_restrictions = permit_mynetworks permit_sasl_authenticated reject_u
 #   check_policy_service unix:private/policyd-spf
 milter_default_action = accept
 milter_protocol = 6
-smtpd_milters = local:opendkim/opendkim.sock
-non_smtpd_milters = \$smtpd_milters
+smtpd_milters = inet:localhost:12301
+non_smtpd_milters = inet:localhost:12301
 smtp_header_checks = regexp:/etc/postfix/smtp_header_checks
 EOF
 	cat > '/etc/aliases' << EOF
@@ -3344,7 +3344,7 @@ AutoRestartRate     10/1M
 Background          yes
 DNSTimeout          5
 SignatureAlgorithm  rsa-sha256
-Socket			local:/var/spool/postfix/opendkim/opendkim.sock
+Socket                  inet:12301@localhost
 PidFile               /var/run/opendkim/opendkim.pid
 OversignHeaders		From
 TrustAnchorFile       /usr/share/dns/root.key
@@ -3356,7 +3356,7 @@ InternalHosts       /etc/opendkim/trusted.hosts
 EOF
 	cat > '/etc/default/opendkim' << EOF
 RUNDIR=/var/run/opendkim
-SOCKET="local:/var/spool/postfix/opendkim/opendkim.sock"
+SOCKET="inet:12301@localhost"
 USER=opendkim
 GROUP=opendkim
 PIDFILE=\$RUNDIR/\$NAME.pid
@@ -3382,6 +3382,7 @@ opendkim-genkey -b 2048 -d ${domain} -D /etc/opendkim/keys/${domain} -s default 
 chown opendkim:opendkim /etc/opendkim/keys/${domain}/default.private
 mkdir /var/spool/postfix/opendkim/
 chown opendkim:postfix /var/spool/postfix/opendkim
+systemctl restart opendkim
 usermod -a -G dovecot netdata
 fi
 	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
