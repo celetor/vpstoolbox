@@ -565,6 +565,9 @@ SuccessExitStatus=0 2
 EOF
         ;;
         http)
+		if [[ $(lsb_release -cs) == stretch ]]; then
+		debian10_install=1
+		fi
 		upgradesystem
         httpissue
         ;;
