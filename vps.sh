@@ -152,16 +152,16 @@ systemctl daemon-reload
 
 ###### Debian Main Repos
 deb http://deb.debian.org/debian/ oldstable main contrib non-free
-deb-src http://deb.debian.org/debian/ oldstable main contrib non-free
+#deb-src http://deb.debian.org/debian/ oldstable main contrib non-free
 
 deb http://deb.debian.org/debian/ oldstable-updates main contrib non-free
-deb-src http://deb.debian.org/debian/ oldstable-updates main contrib non-free
+#deb-src http://deb.debian.org/debian/ oldstable-updates main contrib non-free
 
 deb http://deb.debian.org/debian-security oldstable/updates main
-deb-src http://deb.debian.org/debian-security oldstable/updates main
+#deb-src http://deb.debian.org/debian-security oldstable/updates main
 
 deb http://ftp.debian.org/debian stretch-backports main
-deb-src http://ftp.debian.org/debian stretch-backports main
+#deb-src http://ftp.debian.org/debian stretch-backports main
 EOF
 fi
 	if [[ $(lsb_release -cs) == bionic ]]; then
@@ -172,13 +172,13 @@ fi
 
 ###### Ubuntu Main Repos
 deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
-deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
+#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
 
 ###### Ubuntu Update Repos
 deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
 deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
-deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
-deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
 EOF
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 	fi
@@ -920,13 +920,13 @@ upgradesystem(){
 
 ###### Ubuntu Main Repos
 deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
-deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
+#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
 
 ###### Ubuntu Update Repos
 deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
 deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
-deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
-deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
 EOF
 fi
 	apt-get update --fix-missing
@@ -947,16 +947,16 @@ fi
 
 ###### Debian Main Repos
 deb http://deb.debian.org/debian/ stable main contrib non-free
-deb-src http://deb.debian.org/debian/ stable main contrib non-free
+#deb-src http://deb.debian.org/debian/ stable main contrib non-free
 
 deb http://deb.debian.org/debian/ stable-updates main contrib non-free
-deb-src http://deb.debian.org/debian/ stable-updates main contrib non-free
+#deb-src http://deb.debian.org/debian/ stable-updates main contrib non-free
 
 deb http://deb.debian.org/debian-security stable/updates main
-deb-src http://deb.debian.org/debian-security stable/updates main
+#deb-src http://deb.debian.org/debian-security stable/updates main
 
 deb http://ftp.debian.org/debian buster-backports main
-deb-src http://ftp.debian.org/debian buster-backports main
+#deb-src http://ftp.debian.org/debian buster-backports main
 EOF
 fi
 	if [[ ${debian9_install} == 1 ]]; then
@@ -967,16 +967,16 @@ fi
 
 ###### Debian Main Repos
 deb http://deb.debian.org/debian/ oldstable main contrib non-free
-deb-src http://deb.debian.org/debian/ oldstable main contrib non-free
+#deb-src http://deb.debian.org/debian/ oldstable main contrib non-free
 
 deb http://deb.debian.org/debian/ oldstable-updates main contrib non-free
-deb-src http://deb.debian.org/debian/ oldstable-updates main contrib non-free
+#deb-src http://deb.debian.org/debian/ oldstable-updates main contrib non-free
 
 deb http://deb.debian.org/debian-security oldstable/updates main
-deb-src http://deb.debian.org/debian-security oldstable/updates main
+#deb-src http://deb.debian.org/debian-security oldstable/updates main
 
 deb http://ftp.debian.org/debian stretch-backports main
-deb-src http://ftp.debian.org/debian stretch-backports main
+#deb-src http://ftp.debian.org/debian stretch-backports main
 EOF
 fi
 	apt-get update --fix-missing
