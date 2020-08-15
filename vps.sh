@@ -342,36 +342,6 @@ isresolved(){
 		return 1
 }
 
-#Issue Let's Encrypt Certificate
-issuecert(){
-  set +e
-  clear
-  if [ -f /etc/trojan/*.crt ] && [ -f /etc/trojan/*.key ]; then
-  othercert=1
-  mv /etc/trojan/*.crt /etc/trojan/trojan.crt
-  mv /etc/trojan/*.key /etc/trojan/trojan.key
-  apt-get install gnutls-bin -y
-  openfirewall
-  certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
-  if [[ $? != 0 ]]; then
-    whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,快滚!!!" 8 78
-    advancedMenu
-    domain=""
-    othercert=0
-  fi
-fi
-
-if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
-    colorEcho ${INFO} "证书已有,跳过申请(skipping cert issue)"
-    else
-    	if (whiptail --title "Issue TLS Cert" --yes-button "DNS API申请" --no-button "HTTP申请" --yesno "使用 (use) API/HTTP申请证书(to issue certificate)?" 8 78); then
-  		dnsissue
-  		else
-  		httpissue
-  		fi
-  fi
-}
-
 #Issue Let's Encrypt Certificate by http
 httpissue(){
 openfirewall
@@ -595,6 +565,7 @@ SuccessExitStatus=0 2
 EOF
         ;;
         http)
+		upgradesystem
         httpissue
         ;;
         *)
@@ -1048,7 +1019,8 @@ EOF
 	apt-key fingerprint ABF5BD827BD9BF62
 	apt-get purge nginx -qq -y
 	apt-get update -q
-	apt-get install nginx -q -y
+	#apt-get install nginx -q -y
+	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | apt-get install nginx -q -y'
 	cat > '/lib/systemd/system/nginx.service' << EOF
 [Unit]
 Description=The NGINX HTTP and reverse proxy server
@@ -4540,8 +4512,41 @@ advancedMenu() {
 		if [[ ${install_ddns} == 1 ]]; then
 		install_ddns
 		fi
+		#检测是否为自定义证书
+		if [ -f /etc/trojan/*.crt ] && [ -f /etc/trojan/*.key ]; then
+  		othercert=1
+  		cp /etc/trojan/*.crt /etc/trojan/trojan.crt
+  		cp /etc/trojan/*.key /etc/trojan/trojan.key
+  		apt-get install gnutls-bin -y
+  		openfirewall
+  		certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
+  		if [[ $? != 0 ]]; then
+    		whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,快滚!!!" 8 78
+    		rm -rf /etc/trojan/trojan.crt
+    		rm -rf /etc/trojan/trojan.key
+    		domain=""
+    		othercert=0
+    		userinput
+  			fi
+		fi
+		#检测证书是否已有
+		if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
+    	colorEcho ${INFO} "证书已有,跳过申请(skipping cert issue)"
+    	else
+  			if (whiptail --title "Issue TLS Cert" --yes-button "DNS API申请" --no-button "HTTP申请" --yesno "使用 (use) API/HTTP申请证书(to issue certificate)?" 8 78); then
+  			dnsissue
+  			else
+  			httpissue=1
+  			#Debian9 Nginx issue有问题，必须使用Debian10
+  				if [[ $(lsb_release -cs) == stretch ]]; then
+				debian10_install=1
+				fi
+  			fi
+  		fi
 		upgradesystem
-		issuecert
+		if [[ ${httpissue} == 1 ]]; then
+			httpissue
+		fi
 		systeminfo
 		installdependency
 		if [[ $install_mariadb == 1 ]]; then
