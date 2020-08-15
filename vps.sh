@@ -3291,9 +3291,11 @@ apt-get install dovecot-core dovecot-imapd -y
 systemctl enable dovecot
 adduser dovecot mail
 cd /usr/share/nginx/
-wget --no-check-certificate https://github.com/roundcube/roundcubemail/releases/download/1.4.8/roundcubemail-1.4.8-complete.tar.gz
-tar -xvf roundcubemail-1.4.8-complete.tar.gz
-rm -rf roundcubemail-1.4.8-complete.tar.gz
+rm -rf /usr/share/nginx/roundcubemail
+mailver=$(curl -s "https://api.github.com/repos/roundcube/roundcubemail/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+wget --no-check-certificate https://github.com/roundcube/roundcubemail/releases/download/${mailver}/roundcubemail-${mailver}-complete.tar.gz
+tar -xvf roundcubemail-${mailver}-complete.tar.gz
+rm -rf roundcubemail-${mailver}-complete.tar.gz
 mv /usr/share/nginx/roundcubemail*/ /usr/share/nginx/roundcubemail/
 chown -R nginx:nginx /usr/share/nginx/roundcubemail/
 cd /usr/share/nginx/roundcubemail/
