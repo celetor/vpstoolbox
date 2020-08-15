@@ -1255,9 +1255,6 @@ colorEcho ${INFO} "Updating system"
 		#(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 443 open" && kill $(lsof -t -i:443) || echo "Moving on"
 	fi
 
-if [[ $system_upgrade = 1 ]]; then
-upgradesystem
-fi
 if [[ $install_bbr == 1 ]]; then
 	colorEcho ${INFO} "Enabling TCP-BBR boost"
 	#iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
@@ -4543,6 +4540,7 @@ advancedMenu() {
 		if [[ ${install_ddns} == 1 ]]; then
 		install_ddns
 		fi
+		upgradesystem
 		issuecert
 		systeminfo
 		installdependency
