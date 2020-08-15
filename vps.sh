@@ -3832,7 +3832,7 @@ installhexo(){
   npm audit fix
   hexo new page ${password1}
   cd /usr/share/nginx/hexo/themes
-  wget https://github.com/SukkaW/hexo-theme-suka/archive/1.4.0.zip
+  wget --no-check-certificate https://github.com/SukkaW/hexo-theme-suka/archive/1.4.0.zip
   unzip 1.4.0.zip
   rm -rf /usr/share/nginx/hexo/themes/1.4.0.zip
   mv hexo-theme-suka-1.4.0 suka
