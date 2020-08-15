@@ -1858,7 +1858,7 @@ clear
 
 if [[ $install_aria = 1 ]]; then
 	#trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
-	trackers_list=$(wget -qO- https://trackerslist.com/all_aria2.txt)
+	trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/all_aria2.txt)
 	cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
 Description=Aria2c download manager
@@ -2483,9 +2483,9 @@ chmod +x /usr/sbin/dnscrypt-proxy
 cd ..
 rm -rf linux-x86_64
 setcap CAP_NET_BIND_SERVICE=+eip /usr/sbin/dnscrypt-proxy
-wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md -q --show-progress
-wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/opennic.md -q --show-progress
-wget -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md -q --show-progress
+wget --no-check-certificate -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md -q --show-progress
+wget --no-check-certificate -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/opennic.md -q --show-progress
+wget --no-check-certificate -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md -q --show-progress
 fi
 chmod -R 755 /etc/dnscrypt-proxy/
 clear
@@ -2526,7 +2526,7 @@ if [[ $install_php = 1 ]]; then
 	apt-get purge php* -y
 	mkdir /usr/log/
 	if [[ ${dist} == debian ]]; then
-		wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+		wget --no-check-certificate -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 		echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
 		apt-get update
  elif [[ ${dist} == ubuntu ]]; then
@@ -3291,9 +3291,9 @@ apt-get install dovecot-core dovecot-imapd -y
 systemctl enable dovecot
 adduser dovecot mail
 cd /usr/share/nginx/
-wget https://github.com/roundcube/roundcubemail/releases/download/1.4.6/roundcubemail-1.4.6-complete.tar.gz
-tar -xvf roundcubemail-1.4.6-complete.tar.gz
-rm -rf roundcubemail-1.4.6-complete.tar.gz
+wget --no-check-certificate https://github.com/roundcube/roundcubemail/releases/download/1.4.8/roundcubemail-1.4.8-complete.tar.gz
+tar -xvf roundcubemail-1.4.8-complete.tar.gz
+rm -rf roundcubemail-1.4.8-complete.tar.gz
 mv /usr/share/nginx/roundcubemail*/ /usr/share/nginx/roundcubemail/
 chown -R nginx:nginx /usr/share/nginx/roundcubemail/
 cd /usr/share/nginx/roundcubemail/
