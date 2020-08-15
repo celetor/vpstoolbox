@@ -3339,10 +3339,10 @@ deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
 	cat > '/usr/share/nginx/roundcubemail/config/config.inc.php' << EOF
 <?php
 
-\$config['db_dsnw'] = 'mysql://roundcube:${password1}@localhost/roundcubemail';
-\$config['default_host'] = 'localhost';
+\$config['db_dsnw'] = 'mysql://roundcube:${password1}@127.0.0.1/roundcubemail';
+\$config['default_host'] = '${domain}';
 \$config['default_port'] = 143;
-\$config['smtp_server'] = 'localhost';
+\$config['smtp_server'] = '127.0.0.1';
 \$config['smtp_port'] = 25;
 \$config['support_url'] = 'https://github.com/johnrosen1/vpstoolbox';
 \$config['des_key'] = '${deskey}';
@@ -4150,9 +4150,8 @@ PS: 不支援自定义证书,仅支援全自动申请的let证书!
 #### Tips:
 
 1. 阿里云，gcp等厂商默认不开放25(包括对外访问)端口，不能发邮件，请注意。
-2. 请自行修改发件人身份为${mailuser}@${domain}。
-3. 请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all
-4. 请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD
+2. 请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all
+3. 请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD
 
 #### Related Links
 
