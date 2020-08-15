@@ -2695,7 +2695,9 @@ EOF
 fi
 sed -i 's/Restart=on-failure/Restart=always/' /lib/systemd/system/netdata.service
 systemctl daemon-reload
-systemctl restart netdata
+systemctl stop netdata
+killall netdata
+systemctl start netdata
 fi
 clear
 
@@ -3811,14 +3813,17 @@ start(){
 	set +e
 	colorEcho ${INFO} "启动(starting) trojan-gfw ing..."
 	systemctl daemon-reload
-	if [[ $install_qbt = 1 ]]; then
+	if [[ $install_qbt == 1 ]]; then
 		systemctl start qbittorrent.service
 	fi
-	if [[ $install_file = 1 ]]; then
+	if [[ $install_file == 1 ]]; then
 		systemctl start filebrowser
 	fi
-	if [[ $install_trojan = 1 ]]; then
+	if [[ $install_trojan == 1 ]]; then
 		systemctl start trojan
+		systemctl stop netdata
+		killall netdata
+		systemctl start netdata
 	fi
 }
 
@@ -4569,7 +4574,6 @@ advancedMenu() {
 		#sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
 		cd /opt/netdata/bin
 		bash netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud &>/dev/null
-		systemctl restart netdata
 		cd
 		fi
 		if [[ ${dnsmasq_install} == 1 ]]; then
