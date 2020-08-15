@@ -3274,8 +3274,8 @@ smtpd_sender_restrictions = permit_mynetworks permit_sasl_authenticated reject_u
 #   check_policy_service unix:private/policyd-spf
 milter_default_action = accept
 milter_protocol = 6
-smtpd_milters = inet:localhost:12301
-non_smtpd_milters = inet:localhost:12301
+smtpd_milters = inet:127.0.0.1:12301
+non_smtpd_milters = inet:127.0.0.1:12301
 smtp_header_checks = regexp:/etc/postfix/smtp_header_checks
 EOF
 	cat > '/etc/aliases' << EOF
@@ -3347,7 +3347,7 @@ AutoRestartRate     10/1M
 Background          yes
 DNSTimeout          5
 SignatureAlgorithm  rsa-sha256
-Socket                  inet:12301@localhost
+Socket                  inet:12301@127.0.0.1
 PidFile               /var/run/opendkim/opendkim.pid
 OversignHeaders		From
 TrustAnchorFile       /usr/share/dns/root.key
@@ -3359,7 +3359,7 @@ InternalHosts       /etc/opendkim/trusted.hosts
 EOF
 	cat > '/etc/default/opendkim' << EOF
 RUNDIR=/var/run/opendkim
-SOCKET="inet:12301@localhost"
+SOCKET="inet:12301@127.0.0.1"
 USER=opendkim
 GROUP=opendkim
 PIDFILE=\$RUNDIR/\$NAME.pid
