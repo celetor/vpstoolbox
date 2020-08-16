@@ -1705,7 +1705,6 @@ RestartSec=3s
 WantedBy=multi-user.target
 EOF
 systemctl enable rssfeed
-
 fi
 
 if [[ ${install_fail2ban} == 1 ]]; then
@@ -3831,6 +3830,9 @@ start(){
 		systemctl stop netdata
 		killall netdata
 		systemctl start netdata
+	fi
+	if [[ $install_rsshub == 1 ]]; then
+		systemctl start rssfeed
 	fi
 }
 
