@@ -3208,6 +3208,15 @@ if [[ $install_mail = 1 ]]; then
 	colorEcho ${INFO} "Install Mail Service ing"
 	apt-get install postfix -y
 	apt-get install postfix-policyd-spf-python -y
+	apt-get install opendmarc -y
+	systemctl enable opendmarc
+	sed -i 's/Socket local:\/var\/run\/opendmarc\/opendmarc.sock/Socket local:\/var\/spool\/postfix\/opendmarc\/opendmarc.sock/' /etc/opendmarc.conf
+	sed -i 's/SOCKET=local:\$RUNDIR\/opendmarc.sock/SOCKET=local:\/var\/spool\/postfix\/opendmarc\/opendmarc.sock/' /etc/default/opendmarc
+	mkdir -p /var/spool/postfix/opendmarc
+	chown opendmarc:opendmarc /var/spool/postfix/opendmarc -R
+	chmod 750 /var/spool/postfix/opendmarc/ -R
+	adduser postfix opendmarc
+	systemctl restart opendmarc
 	echo ${domain} > /etc/mailname
 	postproto="ipv4"
 	if [[ -n $myipv6 ]]; then
@@ -3267,8 +3276,8 @@ smtpd_recipient_restrictions =
    check_policy_service unix:private/policyd-spf
 milter_default_action = accept
 milter_protocol = 6
-smtpd_milters = inet:127.0.0.1:12301
-non_smtpd_milters = inet:127.0.0.1:12301
+smtpd_milters = inet:127.0.0.1:12301,local:opendmarc/opendmarc.sock
+non_smtpd_milters = inet:127.0.0.1:12301,local:opendmarc/opendmarc.sock
 smtp_header_checks = regexp:/etc/postfix/smtp_header_checks
 EOF
 	cat > '/etc/aliases' << EOF
