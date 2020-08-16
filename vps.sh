@@ -3330,6 +3330,7 @@ deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
 \$config['smtp_server'] = '127.0.0.1';
 \$config['smtp_port'] = 25;
 \$config['support_url'] = 'https://github.com/johnrosen1/vpstoolbox';
+\$config['product_name'] = 'Roundcube Webmail For VPSTOOLBOX';
 \$config['des_key'] = '${deskey}';
 \$config['ip_check'] = true;
 \$config['enable_installer'] = false;
