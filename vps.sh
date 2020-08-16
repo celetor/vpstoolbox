@@ -1614,7 +1614,7 @@ git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
 	// *******************************************
 
 	define('DB_TYPE', 'mysql');
-	define('DB_HOST', '');
+	define('DB_HOST', '127.0.0.1');
 	define('DB_USER', 'ttrss');
 	define('DB_NAME', 'ttrss');
 	define('DB_PASS', '${password1}');
