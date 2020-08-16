@@ -3260,11 +3260,12 @@ smtpd_helo_required = yes
 smtpd_helo_restrictions = permit_mynetworks permit_sasl_authenticated reject_non_fqdn_helo_hostname reject_invalid_helo_hostname reject_unknown_helo_hostname
 disable_vrfy_command = yes
 smtpd_sender_restrictions = permit_mynetworks permit_sasl_authenticated reject_unknown_sender_domain reject_unknown_reverse_client_hostname reject_unknown_client_hostname
-#smtpd_recipient_restrictions =
-#   permit_mynetworks,
-#   permit_sasl_authenticated,
-#   reject_unauth_destination,
-#   check_policy_service unix:private/policyd-spf
+policyd-spf_time_limit = 3600
+smtpd_recipient_restrictions =
+   permit_mynetworks,
+   permit_sasl_authenticated,
+   reject_unauth_destination,
+   check_policy_service unix:private/policyd-spf
 milter_default_action = accept
 milter_protocol = 6
 smtpd_milters = inet:127.0.0.1:12301
@@ -3276,6 +3277,13 @@ EOF
 postmaster:    root
 root:   ${mailuser}
 EOF
+if grep -q "policyd-spf" /etc/postfix/master.cf
+then
+:
+else
+echo "policyd-spf  unix  -       n       n       -       0       spawn" >> /etc/postfix/master.cf
+echo "    user=policyd-spf argv=/usr/bin/policyd-spf" >> /etc/postfix/master.cf
+fi
 newaliases
 echo "/^User-Agent.*Roundcube Webmail/            IGNORE" > /etc/postfix/smtp_header_checks
 postmap /etc/postfix/smtp_header_checks
