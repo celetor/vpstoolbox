@@ -3704,6 +3704,25 @@ if header :contains "X-Spam-Flag" "YES"
    stop;
 }
 EOF
+	cat > '/etc/fail2ban/filter.d/dovecot-pop3imap.conf' << EOF
+[Definition]
+failregex = (?: pop3-login|imap-login): .*(?:Authentication failure|Aborted login \(auth failed|Aborted login \(tried to use disabled|Disconnected \(auth failed|Aborted login \(\d+ authentication attempts).*rip=`<HOST>`
+EOF
+
+if grep -q "dovecot-pop3imap" /etc/fail2ban/jail.conf
+then
+:
+else
+echo "[dovecot-pop3imap]" >> /etc/fail2ban/jail.conf
+echo "enabled = true" >> /etc/fail2ban/jail.conf
+echo "filter = dovecot-pop3imap" >> /etc/fail2ban/jail.conf
+echo "action = iptables-multiport[name=dovecot-pop3imap, port="pop3,imap", protocol=tcp]" >> /etc/fail2ban/jail.conf
+echo "logpath = /var/log/mail.log" >> /etc/fail2ban/jail.conf
+echo "maxretry = 8" >> /etc/fail2ban/jail.conf
+echo "findtime = 1200" >> /etc/fail2ban/jail.conf
+echo "bantime = 1200" >> /etc/fail2ban/jail.conf
+fi
+systemctl restart fail2ban
 sievec /var/mail/SpamToJunk.sieve
 systemctl restart postfix dovecot
 fi
