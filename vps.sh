@@ -3421,6 +3421,7 @@ echo "deb https://repo.dovecot.org/ce-2.3-latest/${dist}/$(lsb_release -cs) $(ls
 apt-get update
 apt-get install dovecot-core dovecot-imapd dovecot-lmtpd dovecot-sieve -y
 adduser dovecot mail
+adduser netdata mail
 systemctl enable dovecot
 apt-get install spamassassin spamc spamass-milter -y
 adduser debian-spamd mail
