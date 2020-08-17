@@ -3206,7 +3206,7 @@ if [[ $install_mail = 1 ]]; then
 	if [[ ! -f /usr/sbin/postfix ]]; then
 	clear
 	colorEcho ${INFO} "Install Mail Service ing"
-	apt-get install postfix -y
+	apt-get install postfix postfix-pcre -y
 	apt-get install postfix-policyd-spf-python -y
 	apt-get install opendmarc -y
 	systemctl enable opendmarc
@@ -3251,7 +3251,6 @@ smtpd_sasl_type = dovecot
 smtpd_sasl_security_options = noanonymous
 smtpd_sasl_path = private/auth
 smtpd_sasl_auth_enable = yes
-smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 myhostname = ${domain}
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
@@ -3265,10 +3264,11 @@ inet_interfaces = all
 inet_protocols = ${postproto}
 message_size_limit = 52428800
 smtpd_helo_required = yes
-smtpd_helo_restrictions = permit_mynetworks permit_sasl_authenticated reject_non_fqdn_helo_hostname reject_invalid_helo_hostname reject_unknown_helo_hostname
 disable_vrfy_command = yes
-smtpd_sender_restrictions = permit_mynetworks permit_sasl_authenticated reject_unknown_sender_domain reject_unknown_reverse_client_hostname reject_unknown_client_hostname
 policyd-spf_time_limit = 3600
+smtpd_helo_restrictions = permit_mynetworks permit_sasl_authenticated reject_non_fqdn_helo_hostname reject_invalid_helo_hostname reject_unknown_helo_hostname
+smtpd_sender_restrictions = permit_mynetworks permit_sasl_authenticated reject_unknown_sender_domain reject_unknown_reverse_client_hostname reject_unknown_client_hostname
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 smtpd_recipient_restrictions =
    permit_mynetworks,
    permit_sasl_authenticated,
@@ -3276,32 +3276,187 @@ smtpd_recipient_restrictions =
    check_policy_service unix:private/policyd-spf
 milter_default_action = accept
 milter_protocol = 6
-smtpd_milters = inet:127.0.0.1:12301,local:opendmarc/opendmarc.sock
-non_smtpd_milters = inet:127.0.0.1:12301,local:opendmarc/opendmarc.sock
+smtpd_milters = inet:127.0.0.1:12301,local:opendmarc/opendmarc.sock,local:spamass/spamass.sock
+non_smtpd_milters = inet:127.0.0.1:12301,local:opendmarc/opendmarc.sock,local:spamass/spamass.sock
 smtp_header_checks = regexp:/etc/postfix/smtp_header_checks
+mailbox_transport = lmtp:unix:private/dovecot-lmtp
+smtputf8_enable = no
 EOF
 	cat > '/etc/aliases' << EOF
 # See man 5 aliases for format
 postmaster:    root
 root:   ${mailuser}
 EOF
-if grep -q "policyd-spf" /etc/postfix/master.cf
-then
-:
-else
-echo "policyd-spf  unix  -       n       n       -       0       spawn" >> /etc/postfix/master.cf
-echo "    user=policyd-spf argv=/usr/bin/policyd-spf" >> /etc/postfix/master.cf
-fi
+	cat > '/etc/postfix/master.cf' << EOF
+#
+# Postfix master process configuration file.  For details on the format
+# of the file, see the master(5) manual page (command: "man 5 master" or
+# on-line: http://www.postfix.org/master.5.html).
+#
+# Do not forget to execute "postfix reload" after editing this file.
+#
+# ==========================================================================
+# service type  private unpriv  chroot  wakeup  maxproc command + args
+#               (yes)   (yes)   (no)    (never) (100)
+# ==========================================================================
+smtp      inet  n       -       y       -       -       smtpd
+#smtp      inet  n       -       y       -       1       postscreen
+#smtpd     pass  -       -       y       -       -       smtpd
+#dnsblog   unix  -       -       y       -       0       dnsblog
+#tlsproxy  unix  -       -       y       -       0       tlsproxy
+submission inet n       -       y       -       -       smtpd
+  -o syslog_name=postfix/submission
+  -o smtpd_tls_security_level=encrypt
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_tls_auth_only=yes
+  -o smtpd_reject_unlisted_recipient=no
+  -o smtpd_recipient_restrictions=
+  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
+  -o milter_macro_daemon_name=ORIGINATING
+smtps     inet  n       -       y       -       -       smtpd
+  -o syslog_name=postfix/smtps
+  -o smtpd_tls_wrappermode=yes
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_reject_unlisted_recipient=no
+  -o smtpd_recipient_restrictions=
+  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
+  -o milter_macro_daemon_name=ORIGINATING
+#628       inet  n       -       y       -       -       qmqpd
+pickup    unix  n       -       y       60      1       pickup
+cleanup   unix  n       -       y       -       0       cleanup
+qmgr      unix  n       -       n       300     1       qmgr
+#qmgr     unix  n       -       n       300     1       oqmgr
+tlsmgr    unix  -       -       y       1000?   1       tlsmgr
+rewrite   unix  -       -       y       -       -       trivial-rewrite
+bounce    unix  -       -       y       -       0       bounce
+defer     unix  -       -       y       -       0       bounce
+trace     unix  -       -       y       -       0       bounce
+verify    unix  -       -       y       -       1       verify
+flush     unix  n       -       y       1000?   0       flush
+proxymap  unix  -       -       n       -       -       proxymap
+proxywrite unix -       -       n       -       1       proxymap
+smtp      unix  -       -       y       -       -       smtp
+relay     unix  -       -       y       -       -       smtp
+        -o syslog_name=postfix/\$service_name
+#       -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
+showq     unix  n       -       y       -       -       showq
+error     unix  -       -       y       -       -       error
+retry     unix  -       -       y       -       -       error
+discard   unix  -       -       y       -       -       discard
+local     unix  -       n       n       -       -       local
+virtual   unix  -       n       n       -       -       virtual
+lmtp      unix  -       -       y       -       -       lmtp
+anvil     unix  -       -       y       -       1       anvil
+scache    unix  -       -       y       -       1       scache
+postlog   unix-dgram n  -       n       -       1       postlogd
+#
+# ====================================================================
+# Interfaces to non-Postfix software. Be sure to examine the manual
+# pages of the non-Postfix software to find out what options it wants.
+#
+# Many of the following services use the Postfix pipe(8) delivery
+# agent.  See the pipe(8) man page for information about \${recipient}
+# and other message envelope options.
+# ====================================================================
+#
+# maildrop. See the Postfix MAILDROP_README file for details.
+# Also specify in main.cf: maildrop_destination_recipient_limit=1
+#
+maildrop  unix  -       n       n       -       -       pipe
+  flags=DRhu user=vmail argv=/usr/bin/maildrop -d \${recipient}
+#
+# ====================================================================
+#
+# Recent Cyrus versions can use the existing "lmtp" master.cf entry.
+#
+# Specify in cyrus.conf:
+#   lmtp    cmd="lmtpd -a" listen="localhost:lmtp" proto=tcp4
+#
+# Specify in main.cf one or more of the following:
+#  mailbox_transport = lmtp:inet:localhost
+#  virtual_transport = lmtp:inet:localhost
+#
+# ====================================================================
+#
+# Cyrus 2.1.5 (Amos Gouaux)
+# Also specify in main.cf: cyrus_destination_recipient_limit=1
+#
+#cyrus     unix  -       n       n       -       -       pipe
+#  user=cyrus argv=/cyrus/bin/deliver -e -r \${sender} -m \${extension} \${user}
+#
+# ====================================================================
+# Old example of delivery via Cyrus.
+#
+#old-cyrus unix  -       n       n       -       -       pipe
+#  flags=R user=cyrus argv=/cyrus/bin/deliver -e -m \${extension} \${user}
+#
+# ====================================================================
+#
+# See the Postfix UUCP_README file for configuration details.
+#
+uucp      unix  -       n       n       -       -       pipe
+  flags=Fqhu user=uucp argv=uux -r -n -z -a\$sender - \$nexthop!rmail (\$recipient)
+#
+# Other external delivery methods.
+#
+ifmail    unix  -       n       n       -       -       pipe
+  flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r \$nexthop (\$recipient)
+bsmtp     unix  -       n       n       -       -       pipe
+  flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -t\$nexthop -f\$sender \$recipient
+scalemail-backend unix	-	n	n	-	2	pipe
+  flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store \${nexthop} \${user} \${extension}
+mailman   unix  -       n       n       -       -       pipe
+  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
+  \${nexthop} \${user}
+
+policyd-spf  unix  -       n       n       -       0       spawn
+    user=policyd-spf argv=/usr/bin/policyd-spf
+EOF
 newaliases
-echo "/^User-Agent.*Roundcube Webmail/            IGNORE" > /etc/postfix/smtp_header_checks
-postmap /etc/postfix/smtp_header_checks
+echo "/^Received: .*/     IGNORE" > /etc/postfix/smtp_header_checks
+echo "/^User-Agent.*Roundcube Webmail/            IGNORE" >> /etc/postfix/smtp_header_checks
 curl https://repo.dovecot.org/DOVECOT-REPO-GPG | gpg --import
 gpg --export ED409DA1 > /etc/apt/trusted.gpg.d/dovecot.gpg
 echo "deb https://repo.dovecot.org/ce-2.3-latest/${dist}/$(lsb_release -cs) $(lsb_release -cs) main" > /etc/apt/sources.list.d/dovecot.list
 apt-get update
-apt-get install dovecot-core dovecot-imapd -y
-systemctl enable dovecot
+apt-get install dovecot-core dovecot-imapd dovecot-lmtpd dovecot-sieve -y
 adduser dovecot mail
+systemctl enable dovecot
+apt-get install spamassassin spamc spamass-milter -y
+adduser debian-spamd mail
+adduser spamass-milter mail
+systemctl enable spamassassin
+systemctl start spamassassin
+	cat > '/etc/default/spamass-milter' << EOF
+# spamass-milt startup defaults
+
+# OPTIONS are passed directly to spamass-milter.
+# man spamass-milter for details
+
+# Non-standard configuration notes:
+# See README.Debian if you use the -x option with sendmail
+# You should not pass the -d option in OPTIONS; use SOCKET for that.
+
+# Default, use the spamass-milter user as the default user, ignore
+# messages from localhost
+OPTIONS="-u spamass-milter -i 127.0.0.1"
+
+# Reject emails with spamassassin scores > 15.
+#OPTIONS="\${OPTIONS} -r 15"
+
+# Do not modify Subject:, Content-Type: or body.
+#OPTIONS="\${OPTIONS} -m"
+
+######################################
+# If /usr/sbin/postfix is executable, the following are set by
+# default. You can override them by uncommenting and changing them
+# here.
+######################################
+SOCKET="/var/spool/postfix/spamass/spamass.sock"
+SOCKETOWNER="postfix:postfix"
+SOCKETMODE="0660"
+######################################
+EOF
 cd /usr/share/nginx/
 rm -rf /usr/share/nginx/roundcubemail
 mailver=$(curl -s "https://api.github.com/repos/roundcube/roundcubemail/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
@@ -3367,6 +3522,7 @@ KeyTable           refile:/etc/opendkim/key.table
 SigningTable       refile:/etc/opendkim/signing.table
 ExternalIgnoreList  /etc/opendkim/trusted.hosts
 InternalHosts       /etc/opendkim/trusted.hosts
+Nameservers 127.0.0.1
 EOF
 	cat > '/etc/default/opendkim' << EOF
 RUNDIR=/var/run/opendkim
@@ -3400,8 +3556,9 @@ systemctl restart opendkim
 usermod -a -G dovecot netdata
 fi
 	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
+auth_username_format = %Ln
 disable_plaintext_auth = no
-auth_mechanisms = plain login
+auth_mechanisms = plain
 !include auth-system.conf.ext
 EOF
 	cat > '/etc/dovecot/conf.d/10-ssl.conf' << EOF
@@ -3409,7 +3566,7 @@ ssl = yes
 ssl_cert = </etc/certs/${domain}_ecc/fullchain.cer
 ssl_key = </etc/certs/${domain}_ecc/${domain}.key
 #ssl_dh = </usr/local/etc/trojan/dh.pem
-ssl_cipher_list = ${cipher_server}
+#ssl_cipher_list = ${cipher_server}
 ssl_min_protocol = TLSv1.2
 ssl_prefer_server_ciphers = yes
 ssl_options = no_ticket
@@ -3438,6 +3595,14 @@ service imap {
 
   # Max. number of IMAP processes (connections)
   #process_limit = 1024
+}
+
+service lmtp {
+ unix_listener /var/spool/postfix/private/dovecot-lmtp {
+   mode = 0600
+   user = postfix
+   group = postfix
+  }
 }
 
 service submission {
@@ -3512,6 +3677,34 @@ namespace inbox {
   }
 }
 EOF
+	cat > '/etc/dovecot/conf.d/15-lda.conf' << EOF
+protocol lda {
+  # Space separated list of plugins to load (default is global mail_plugins).
+  mail_plugins = \$mail_plugins sieve
+}
+EOF
+	cat > '/etc/dovecot/conf.d/20-lmtp.conf' << EOF
+protocol lmtp {
+  # Space separated list of plugins to load (default is global mail_plugins).
+  mail_plugins = \$mail_plugins sieve
+}
+EOF
+	cat > '/etc/dovecot/conf.d/90-sieve.conf' << EOF
+plugin {
+  sieve = file:~/sieve;active=~/.dovecot.sieve
+  sieve_before = /var/mail/SpamToJunk.sieve
+}
+EOF
+	cat > '/var/mail/SpamToJunk.sieve' << EOF
+require "fileinto";
+
+if header :contains "X-Spam-Flag" "YES"
+{
+   fileinto "Junk";
+   stop;
+}
+EOF
+sievec /var/mail/SpamToJunk.sieve
 systemctl restart postfix dovecot
 fi
 clear
