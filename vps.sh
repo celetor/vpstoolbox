@@ -308,6 +308,7 @@ installacme(){
 	set +e
 	curl -s https://get.acme.sh | sh
 	if [[ $? != 0 ]]; then
+		colorEcho ${ERROR} "安装acme.sh失败，请自行检查网络连接及DNS配置!"
 		colorEcho ${ERROR} "Install acme.sh fail,please check your internet availability!!!"
 		exit 1
 	fi
@@ -1207,6 +1208,8 @@ colorEcho ${INFO} "Updating system"
 	apt-get update
 	if [[ $install_status == 0 ]]; then
 		echo "nameserver 1.1.1.1" > /etc/resolv.conf
+		echo "nameserver 1.0.0.1" >> /etc/resolv.conf
+		echo "nameserver 8.8.8.8" >> /etc/resolv.conf
 		if [[ $(systemctl is-active caddy) == active ]]; then
 			systemctl stop caddy
 			systemctl disable caddy
