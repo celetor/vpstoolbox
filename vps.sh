@@ -1205,27 +1205,7 @@ openfirewall(){
 installdependency(){
 	set +e
 colorEcho ${INFO} "Updating system"
-	apt-get update
-	if [[ $install_status == 0 ]]; then
-		echo "nameserver 1.1.1.1" > /etc/resolv.conf
-		echo "nameserver 1.0.0.1" >> /etc/resolv.conf
-		echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-		if [[ $(systemctl is-active caddy) == active ]]; then
-			systemctl stop caddy
-			systemctl disable caddy
-		fi
-		if [[ $(systemctl is-active apache2) == active ]]; then
-			systemctl stop apache2
-			systemctl disable apache2
-		fi
-		if [[ $(systemctl is-active httpd) == active ]]; then
-			systemctl stop httpd
-			systemctl disable httpd
-		fi
-		#(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 80 open" && kill $(lsof -t -i:80) || echo "Moving on"
-		#(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 443 open" && kill $(lsof -t -i:443) || echo "Moving on"
-	fi
-
+apt-get update
 if [[ $install_bbr == 1 ]]; then
 	colorEcho ${INFO} "Enabling TCP-BBR boost"
 	#iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
@@ -4750,6 +4730,25 @@ advancedMenu() {
 		curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
 		fi
 		userinput
+		if [[ $install_status == 0 ]]; then
+		echo "nameserver 1.1.1.1" > /etc/resolv.conf
+		echo "nameserver 1.0.0.1" >> /etc/resolv.conf
+		echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+			if [[ $(systemctl is-active caddy) == active ]]; then
+			systemctl stop caddy
+			systemctl disable caddy
+			fi
+			if [[ $(systemctl is-active apache2) == active ]]; then
+			systemctl stop apache2
+			systemctl disable apache2
+			fi
+			if [[ $(systemctl is-active httpd) == active ]]; then
+			systemctl stop httpd
+			systemctl disable httpd
+			fi
+		#(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 80 open" && kill $(lsof -t -i:80) || echo "Moving on"
+		#(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 443 open" && kill $(lsof -t -i:443) || echo "Moving on"
+		fi
 		if [[ ${install_ddns} == 1 ]]; then
 		install_ddns
 		fi
