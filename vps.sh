@@ -4156,15 +4156,15 @@ PS: ***不支援Cloudflare CDN ❗***
 #### Hexo location
 
 {% blockquote %}
-cd /usr/share/nginx/hexo/
+cd /usr/share/nginx/hexo/source/_posts/
+{% endblockquote %}
+
+{% blockquote %}
+hexo new post title(标题)
 {% endblockquote %}
 
 {% blockquote %}
 sudo systemctl start/restart/status hexo
-{% endblockquote %}
-
-{% blockquote %}
-sudo nano /etc/nginx/conf.d/default.conf
 {% endblockquote %}
 
 #### Docs
@@ -4189,7 +4189,7 @@ sudo nano /etc/nginx/conf.d/default.conf
 - 用户名(username): **admin**
 - 密碼(password): **password**
 
-> *请自行修改初始用户名和密码！*
+> *请自行修改初始密码！*
 
 #### Related Links
 
@@ -4206,7 +4206,7 @@ sudo nano /etc/nginx/conf.d/default.conf
 
 > 简介: 简易Trojan-gfw**多用户管理面板**。
 
-PS: Quota为流量(设置为-1则等于无限流量),password为使用密码,email仅用于管理,无实际意义。
+PS: Quota为流量(设置为-1则等于无限流量),**username:password**为使用密码,email仅用于管理,无实际意义。
 
 Introduction: Trojan multi-user control panel
 
@@ -4265,13 +4265,13 @@ PS: 推荐使用**Ariang**连接(aria2没有官方web interface!)
 
 - https://$domain:443$ariapath
 - 密碼(token): **$ariapasswd**
+- **<a href="https://github.com/mayswind/AriaNg/releases" target="_blank" rel="noreferrer">AriaNG</a>**
+- <a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank" rel="noreferrer">Aria2 for Android</a>
 
 #### Related Links
-
-1. **<a href="https://github.com/mayswind/AriaNg/releases" target="_blank" rel="noreferrer">AriaNG</a>**
-2. <a href="https://github.com/aria2/aria2" target="_blank" rel="noreferrer">https://github.com/aria2/aria2</a>
-3. <a href="https://aria2.github.io/manual/en/html/index.html" target="_blank" rel="noreferrer">https://aria2.github.io/manual/en/html/index.html</a> 官方文档
-4. <a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank" rel="noreferrer">Aria2 for Android</a>
+ 
+1. <a href="https://github.com/aria2/aria2" target="_blank" rel="noreferrer">https://github.com/aria2/aria2</a>
+2. <a href="https://aria2.github.io/manual/en/html/index.html" target="_blank" rel="noreferrer">https://aria2.github.io/manual/en/html/index.html</a> 官方文档
 
 ---
 
