@@ -820,10 +820,10 @@ rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
 rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
 if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
-password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐强密码)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
-if [[ -z ${password1} ]]; then
-	password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
-	fi
+password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+#if [[ -z ${password1} ]]; then
+#	password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
+#	fi
 done
 while [[ -z ${password2} ]]; do
 password2=$(whiptail --passwordbox --nocancel "Trojan-GFW Password Two(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
@@ -842,7 +842,7 @@ if [[ -z ${password2} ]]; then
 	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 	fi
 	if [[ ${install_mail} == 1 ]]; then
-	mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername" 8 78 --title "Mail user input" 3>&1 1>&2 2>&3)
+	mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername(邮箱用户名)" 8 78 --title "Mail user input" 3>&1 1>&2 2>&3)
 	if [[ -z ${mailuser} ]]; then
 	mailuser=$(head /dev/urandom | tr -dc a-z | head -c 4 ; echo '' )
 	fi
