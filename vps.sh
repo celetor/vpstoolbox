@@ -3202,12 +3202,12 @@ if [[ $install_mail = 1 ]]; then
 	systemctl restart opendmarc
 	echo ${domain} > /etc/mailname
 	postproto="ipv4"
-	if [[ -n $myipv6 ]]; then
-		ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
-		if [[ $? -eq 0 ]]; then
-			postproto="all"
-		fi
-	fi
+	#if [[ -n $myipv6 ]]; then
+		#ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
+		#if [[ $? -eq 0 ]]; then
+		#	postproto="all"
+		#fi
+	#fi
 	cat > '/etc/postfix/main.cf' << EOF
 home_mailbox = Maildir/
 smtpd_banner = \$myhostname ESMTP \$mail_name (Debian/GNU)
@@ -3244,7 +3244,7 @@ mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 mailbox_size_limit = 0
 recipient_delimiter = +
 inet_interfaces = all
-inet_protocols = ${postproto}
+inet_protocols = all
 message_size_limit = 52428800
 smtpd_helo_required = yes
 disable_vrfy_command = yes
@@ -3405,6 +3405,7 @@ apt-get update
 apt-get install dovecot-core dovecot-imapd dovecot-lmtpd dovecot-sieve -y
 adduser dovecot mail
 adduser netdata mail
+#sed -i 's/#listen = \*, ::/listen = \*, ::/' /etc/dovecot/dovecot.conf
 systemctl enable dovecot
 apt-get install spamassassin spamc spamass-milter -y
 adduser debian-spamd mail
