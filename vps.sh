@@ -851,6 +851,9 @@ fi
 		while [[ -z $qbtpath ]]; do
 		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Nginx Path(路径)" 8 78 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
 		done
+		if [[ $(lsb_release -cs) == stretch ]]; then
+			debian10_install=1
+		fi
 	fi
 	if [[ $install_tracker == 1 ]]; then
 		while [[ -z ${trackerpath} ]]; do
