@@ -3922,6 +3922,12 @@ echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "    location /${password1}_ttrss/cache/ {" >> /etc/nginx/conf.d/default.conf
+echo "        deny all;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "    location /${password1}_ttrss/config.php {" >> /etc/nginx/conf.d/default.conf
+echo "        deny all;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_aria == 1 ]]; then
 echo "    location $ariapath {" >> /etc/nginx/conf.d/default.conf
