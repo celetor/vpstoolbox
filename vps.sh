@@ -625,37 +625,30 @@ if [[ ${install_status} == 1 ]]; then
   	fi
 fi
 
-whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 60 16 \
+whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 55 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
-"依赖" "dependence" off  \
-"1" "TCP-BBR(TCP-Turbo)" on \
-"2" "Docker" on \
-"3" "PHP" on \
-"4" "Node.js" on \
 "代理" "Proxy" off  \
-"5" "Trojan-GFW(不支援Cloudflare CDN !)" on \
-"6" "Trojan-panel(require PHP Node.js MariaDB)" off \
-"7" "Dnscrypt-proxy(Dns encryption)" on \
-"8" "RSSHUB+TT-RSS(require Docker PHP MariaDB)" on \
+"1" "Trojan-GFW BBR and Dnscrypt-proxy" on \
+"2" "RSSHUB and TT-RSS" on \
 "下载" "Download" off  \
-"9" "Qbittorrent" on \
-"10" "Bt-Tracker(require Node.js)" off \
-"11" "Aria2" on \
-"12" "Filebrowser" on \
+"3" "Qbittorrent" on \
+"4" "Aria2" on \
+"5" "Filebrowser" on \
 "状态" "Status" off  \
-"13" "Netdata(Server status monitor)" on \
+"6" "Netdata" on \
 "测速" "Speedtest" off  \
-"14" "Speedtest(require PHP)" on \
+"7" "Speedtest" on \
 "数据库" "Database" off  \
-"15" "MariaDB" on \
+"8" "MariaDB" on \
 "安全" "Security" off  \
-"16" "Fail2ban" on \
+"9" "Fail2ban" on \
 "邮件" "Mail" off  \
-"17" "Mail service(require PHP MariaDB)" off \
+"10" "Mail service" off \
 "其他" "Others" off  \
-"ddns" "DDNS(仅支援Cloudflare!)" off \
-"18" "Tor-Relay" off \
-"19" "Enable TLS1.3 only" off 2>results
+"11" "Bt-Tracker" off \
+"12" "Trojan-panel" off \
+"13" "DDNS(仅支援Cloudflare)" off \
+"14" "Tor-Relay" off 2>results
 
 while read choice
 do
@@ -664,75 +657,60 @@ do
 		advancedMenu
 		break
 		;;
-		1) 
-		install_bbr=1
-		;;
-		2)
-		install_docker=1
-		;;
-		3)
-		install_php=1
-		;;
-		4)
-		install_nodejs=1
-		;;
-		5)
+		1)
 		install_trojan=1
+		install_bbr=1
+		dnsmasq_install=1
 		install_netdata=1
 		;;
-		6) 
+		2)
+		install_rsshub=1
+		install_docker=1
+		install_php=1
+		install_mariadb=1
+		;;
+		3)
+		install_qbt=1
+		;;
+		4)
+		install_aria=1
+		;;
+		5)
+		install_file=1
+		;;
+		6)
+		install_netdata=1
+		;;
+		7)
+		install_speedtest=1
+		install_php=1
+		;;
+		8)
+		install_mariadb=1
+		;;
+		9)
+		install_fail2ban=1
+		;;
+		10)
+		install_mail=1
+		install_php=1
+		install_mariadb=1
+		;;
+		11)
+		install_tracker=1
+		install_nodejs=1
+		;;
+		12) 
 		install_tjp=1
 		install_php=1
 		install_nodejs=1
 		install_mariadb=1
 		;;
-		7) 
-		dnsmasq_install=1
-		;;
-		8)
-		install_rsshub=1
-		install_php=1
-		install_mariadb=1
-		;;
-		9)
-		install_qbt=1
-		;;
-		10)
-		install_tracker=1
-		install_nodejs=1
-		;;
-		11)
-		install_aria=1
-		;;
-		12)
-		install_file=1
-		;;
 		13)
-		install_netdata=1
-		;;
-		14)
-		install_speedtest=1
-		install_php=1
-		;;
-		15)
-		install_mariadb=1
-		;;
-		16)
-		install_fail2ban=1
-		;;
-		17)
-		install_mail=1
-		install_php=1
-		install_mariadb=1
-		;;
-		ddns)
 		install_ddns=1
 		;;
-		18)
+		14)
 		install_tor=1
-		;;
-		19) 
-		tls13only=1
 		;;
 		*)
 		;;
@@ -3192,6 +3170,7 @@ smtpd_sasl_type = dovecot
 smtpd_sasl_security_options = noanonymous
 smtpd_sasl_path = private/auth
 smtpd_sasl_auth_enable = yes
+smtpd_sasl_authenticated_header = no
 myhostname = ${domain}
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
