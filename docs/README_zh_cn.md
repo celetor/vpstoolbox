@@ -9,7 +9,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 ```
 
 流量图示(仅供参考):
-![flowchart](https://raw.githubusercontent.com/jerrypoma/trojan-gfw-script/master/vpstoolbox.png)
+![flowchart](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
 
 #### 隐私声明:
 
