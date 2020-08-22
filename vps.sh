@@ -3206,6 +3206,7 @@ smtp_header_checks = regexp:/etc/postfix/smtp_header_checks
 mailbox_transport = lmtp:unix:private/dovecot-lmtp
 smtputf8_enable = no
 tls_ssl_options = no_ticket, no_compression
+tls_preempt_cipherlist = yes
 EOF
 	cat > '/etc/aliases' << EOF
 # See man 5 aliases for format
