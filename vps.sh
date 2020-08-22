@@ -3205,6 +3205,7 @@ non_smtpd_milters = inet:127.0.0.1:12301,local:opendmarc/opendmarc.sock,local:sp
 smtp_header_checks = regexp:/etc/postfix/smtp_header_checks
 mailbox_transport = lmtp:unix:private/dovecot-lmtp
 smtputf8_enable = no
+tls_ssl_options = no_ticket, no_compression
 EOF
 	cat > '/etc/aliases' << EOF
 # See man 5 aliases for format
