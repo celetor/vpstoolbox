@@ -142,46 +142,9 @@ for ((var=2; var<=5; var++)) do
 		rm -rf "/etc/rc.d/rc${var}.d/S80aegis"
 	fi
 done
-apt-get purge sysstat exim4 chrony aliyun-assist telnet -y
+apt-get purge sysstat exim4 chrony aliyun-assist -y
 systemctl daemon-reload
-	if [[ $(lsb_release -cs) == stretch ]]; then
-		cat > '/etc/apt/sources.list' << EOF
-#------------------------------------------------------------------------------#
-#                   OFFICIAL DEBIAN REPOS                    
-#------------------------------------------------------------------------------#
-
-###### Debian Main Repos
-deb http://deb.debian.org/debian/ oldstable main contrib non-free
-#deb-src http://deb.debian.org/debian/ oldstable main contrib non-free
-
-deb http://deb.debian.org/debian/ oldstable-updates main contrib non-free
-#deb-src http://deb.debian.org/debian/ oldstable-updates main contrib non-free
-
-deb http://deb.debian.org/debian-security oldstable/updates main
-#deb-src http://deb.debian.org/debian-security oldstable/updates main
-
-deb http://ftp.debian.org/debian stretch-backports main
-#deb-src http://ftp.debian.org/debian stretch-backports main
-EOF
-fi
-	if [[ $(lsb_release -cs) == bionic ]]; then
-		cat > '/etc/apt/sources.list' << EOF
-#------------------------------------------------------------------------------#
-#                            OFFICIAL UBUNTU REPOS                             #
-#------------------------------------------------------------------------------#
-
-###### Ubuntu Main Repos
-deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
-#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
-
-###### Ubuntu Update Repos
-deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
-deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
-#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
-#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
-EOF
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
-	fi
 fi
 
 #Show simple system info 
@@ -559,9 +522,6 @@ SuccessExitStatus=0 2
 EOF
         ;;
         http)
-		if [[ $(lsb_release -cs) == stretch ]]; then
-		debian10_install=1
-		fi
 		upgradesystem
         httpissue
         ;;
@@ -781,11 +741,6 @@ done < results
 
 system_upgrade=1
 if [[ ${system_upgrade} == 1 ]]; then
-	if [[ $(lsb_release -cs) == stretch ]]; then
-		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 10(recommended)?" 8 78); then
-			debian10_install=1
-		fi
-	fi
 	if [[ $(lsb_release -cs) == jessie ]]; then
 		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 9?(recommended)" 8 78); then
 			debian9_install=1
@@ -851,9 +806,6 @@ fi
 		while [[ -z $qbtpath ]]; do
 		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Nginx Path(路径)" 8 78 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
 		done
-		if [[ $(lsb_release -cs) == stretch ]]; then
-			debian10_install=1
-		fi
 	fi
 	if [[ $install_tracker == 1 ]]; then
 		while [[ -z ${trackerpath} ]]; do
@@ -915,6 +867,9 @@ colorEcho ${INFO} "初始化中(initializing)"
 #Run apt upgrade
 upgradesystem(){
 	set +e
+if [[ $(lsb_release -cs) == stretch ]]; then
+	debian10_install=1
+fi
  if [[ $dist == ubuntu ]]; then
 	if [[ $ubuntu18_install == 1 ]]; then
 		cat > '/etc/apt/sources.list' << EOF
@@ -1147,7 +1102,7 @@ openfirewall(){
 	#udp
 	iptables -A INPUT -p udp -m udp --dport 443 -j ACCEPT &>/dev/null
 	iptables -A INPUT -p udp -m udp --dport 80 -j ACCEPT &>/dev/null
-	iptables -A OUTPUT -j ACCEPT
+	iptables -A OUTPUT -j ACCEPT &>/dev/null
 	#iptables -I FORWARD -j DROP
 	#tcp6
 	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT &>/dev/null #HTTPSv6
@@ -4787,10 +4742,6 @@ advancedMenu() {
   			dnsissue
   			else
   			httpissue=1
-  			#Debian9 Nginx issue有问题，必须使用Debian10
-  				if [[ $(lsb_release -cs) == stretch ]]; then
-				debian10_install=1
-				fi
   			fi
   		fi
 		upgradesystem
