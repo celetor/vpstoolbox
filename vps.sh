@@ -3361,6 +3361,7 @@ systemctl enable dovecot
 apt-get install spamassassin spamc spamass-milter -y
 adduser debian-spamd mail
 adduser spamass-milter mail
+sed -i 's/CRON=0/CRON=1/' /etc/default/spamassassin
 systemctl enable spamassassin
 systemctl start spamassassin
 	cat > '/etc/default/spamass-milter' << EOF
