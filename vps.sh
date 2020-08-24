@@ -1116,13 +1116,13 @@ openfirewall(){
 	fi
 	if [[ ${install_mail} == 1 ]]; then
 		iptables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT &>/dev/null
-		iptables -A INPUT -p tcp -m tcp --dport 465 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport 465 -j ACCEPT &>/dev/null
-		iptables -A INPUT -p tcp -m tcp --dport 587 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport 587 -j ACCEPT &>/dev/null
 		iptables -A INPUT -p udp -m udp --dport 25 -j ACCEPT &>/dev/null
+		iptables -A INPUT -p tcp -m tcp --dport 465 -j ACCEPT &>/dev/null
+		iptables -A INPUT -p tcp -m tcp --dport 587 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT &>/dev/null
 		ip6tables -A INPUT -p udp -m udp --dport 25 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p tcp -m tcp --dport 465 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p tcp -m tcp --dport 587 -j ACCEPT &>/dev/null
 	fi
 	if [[ ${dist} == debian ]]; then
 	apt-get install iptables-persistent -qq -y > /dev/null
@@ -3157,6 +3157,7 @@ readme_directory = no
 compatibility_level = 2
 smtpd_tls_loglevel = 1
 smtpd_tls_security_level = may
+smtpd_tls_received_header = yes
 smtpd_tls_eccert_file = /etc/certs/${domain}_ecc/fullchain.cer
 smtpd_tls_eckey_file = /etc/certs/${domain}_ecc/${domain}.key
 smtpd_use_tls=yes
@@ -3170,6 +3171,7 @@ smtp_host_lookup=dns
 smtp_tls_loglevel = 1
 smtp_tls_security_level = dane
 smtp_tls_mandatory_exclude_ciphers = aNULL
+smtp_tls_connection_reuse = yes
 smtp_tls_eccert_file = /etc/certs/${domain}_ecc/fullchain.cer
 smtp_tls_eckey_file = /etc/certs/${domain}_ecc/${domain}.key
 smtp_tls_session_cache_database = btree:\${data_directory}/smtp_scache
