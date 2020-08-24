@@ -9,7 +9,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 ```
 
 Flowchart:
-![flowchart](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow.png)
+![flowchart](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flowchart.png)
 
 #### Privacy Statement:
 
