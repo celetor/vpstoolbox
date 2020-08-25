@@ -1587,7 +1587,7 @@ git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
 	// ***********************************
 
 	define('ENABLE_REGISTRATION', false);
-	define('REG_NOTIFY_ADDRESS', 'user@your.domain.dom');
+	define('REG_NOTIFY_ADDRESS', 'root@${domain}');
 	define('REG_MAX_USERS', 10);
 
 	// **********************************
@@ -1596,7 +1596,7 @@ git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
 
 	define('SESSION_COOKIE_LIFETIME', 86400);
 	define('SMTP_FROM_NAME', 'Tiny Tiny RSS');
-	define('SMTP_FROM_ADDRESS', 'noreply@your.domain.dom');
+	define('SMTP_FROM_ADDRESS', 'noreply@${domain}');
 	define('DIGEST_SUBJECT', '[tt-rss] New headlines for last 24 hours');
 
 	// ***************************************
@@ -1604,7 +1604,7 @@ git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
 	// ***************************************
 
 	define('CHECK_FOR_UPDATES', true);
-	define('ENABLE_GZIP_OUTPUT', false);
+	define('ENABLE_GZIP_OUTPUT', true);
 	define('PLUGINS', 'auth_internal, note');
 	define('LOG_DESTINATION', 'sql');
 	define('CONFIG_VERSION', 26);
