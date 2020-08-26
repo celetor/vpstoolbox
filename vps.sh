@@ -4023,7 +4023,9 @@ installhexo(){
   sed -i 's/googleplus: true/googleplus: false/' _config.yml
   cd /usr/share/nginx/hexo
   npm i hexo@4
+  npm install hexo-generator-feed --save
     cat > '/usr/share/nginx/hexo/_config.yml' << EOF
+#title: xxx's Blog
 language: zh-tw
 url: https://${domain}
 theme: suka
@@ -4036,6 +4038,18 @@ suka_theme:
     enable: false
     line_number: true
     theme: default
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content:
+  content_limit: 140
+  content_limit_delim: ' '
+  order_by: -date
+  icon: icon.png
+  autodiscovery: true
+  template:
 EOF
 cd /usr/share/nginx/hexo/source/${password1}
 cat > "index.md" << EOF
