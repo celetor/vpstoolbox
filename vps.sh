@@ -3701,9 +3701,15 @@ server {
 		proxy_set_header Host \$http_host;
 		proxy_set_header X-Real-IP \$remote_addr;
 		proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-		http2_push /css/style.min.css;
-        http2_push /lib/spectre/spectre.min.css;
-        http2_push /lib/vanilla-lazyload/lazyload.min.js;
+		http2_push /css/main.css;
+        http2_push /lib/font-awesome/css/all.min.css;
+        http2_push /lib/anime.min.js;
+        http2_push /lib/velocity/velocity.min.js;
+        http2_push /lib/velocity/velocity.ui.min.js;
+        http2_push /js/utils.js;
+        http2_push /js/motion.js;
+        http2_push /js/schemes/muse.js;
+        http2_push /js/next-boot.js;
 	}
 	location /${password1}.png {
 		root /usr/share/nginx/html/;
