@@ -831,11 +831,11 @@ colorEcho ${INFO} "初始化中(initializing)"
  if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 	dist=ubuntu
 	apt-get update -q
-	apt-get install whiptail curl dnsutils locales lsb-release jq -y -q
+	apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
 	apt-get update -q
-	apt-get install whiptail curl dnsutils locales lsb-release jq -y -q
+	apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
 	exit 1;
@@ -948,7 +948,7 @@ installnginx(){
 deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 #deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
-	curl -fsSL https://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+	curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
 	apt-key fingerprint ABF5BD827BD9BF62
 	apt-get purge nginx -qq -y
 	apt-get update -q
@@ -1605,7 +1605,7 @@ git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
 
 	define('CHECK_FOR_UPDATES', true);
 	define('ENABLE_GZIP_OUTPUT', true);
-	define('PLUGINS', 'auth_internal, note, fever');
+	define('PLUGINS', 'auth_internal, note, fever, af_readability');
 	define('LOG_DESTINATION', 'sql');
 	define('CONFIG_VERSION', 26);
 	define('_SKIP_SELF_URL_PATH_CHECKS', true);
@@ -3701,9 +3701,15 @@ server {
 		proxy_set_header Host \$http_host;
 		proxy_set_header X-Real-IP \$remote_addr;
 		proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-		http2_push /css/style.min.css;
-        http2_push /lib/spectre/spectre.min.css;
-        http2_push /lib/vanilla-lazyload/lazyload.min.js;
+		http2_push /css/main.css;
+        http2_push /lib/font-awesome/css/all.min.css;
+        http2_push /lib/anime.min.js;
+        http2_push /lib/velocity/velocity.min.js;
+        http2_push /lib/velocity/velocity.ui.min.js;
+        http2_push /js/utils.js;
+        http2_push /js/motion.js;
+        http2_push /js/schemes/muse.js;
+        http2_push /js/next-boot.js;
 	}
 	location /${password1}.png {
 		root /usr/share/nginx/html/;
@@ -4015,44 +4021,34 @@ installhexo(){
   npm audit fix
   hexo new page ${password1}
   cd /usr/share/nginx/hexo/themes
-  wget --no-check-certificate https://github.com/SukkaW/hexo-theme-suka/archive/1.4.0.zip
-  unzip 1.4.0.zip
-  rm -rf /usr/share/nginx/hexo/themes/1.4.0.zip
-  mv hexo-theme-suka-1.4.0 suka
-  cd /usr/share/nginx/hexo/themes/suka
-  npm install --production
-  cp -i _config.example.yml _config.yml
-  sed -i 's/qq: true/qq: false/' _config.yml
-  sed -i 's/googleplus: true/googleplus: false/' _config.yml
+  git clone https://github.com/theme-next/hexo-theme-next next
   cd /usr/share/nginx/hexo
-  npm i hexo@4
   npm install hexo-generator-feed --save
+  npm i hexo-filter-nofollow --save
     cat > '/usr/share/nginx/hexo/_config.yml' << EOF
 #title: xxx's Blog
+#author: xxx
 language: zh-tw
 url: https://${domain}
-theme: suka
-suka_theme:
-  search:
-    enable: true
-    path: search.json
-    field: post # Page | Post | All. Default post
-  prism:
-    enable: false
-    line_number: true
-    theme: default
+theme: next
 feed:
   type: atom
   path: atom.xml
   limit: 20
   hub:
-  content:
+  content: true
   content_limit: 140
   content_limit_delim: ' '
   order_by: -date
   icon: icon.png
   autodiscovery: true
   template:
+nofollow:
+  enable: true
+  field: site
+  exclude:
+    - 'exclude1.com'
+    - 'exclude2.com'
 EOF
 cd /usr/share/nginx/hexo/source/${password1}
 cat > "index.md" << EOF
