@@ -1605,13 +1605,16 @@ git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
 
 	define('CHECK_FOR_UPDATES', true);
 	define('ENABLE_GZIP_OUTPUT', true);
-	define('PLUGINS', 'auth_internal, note');
+	define('PLUGINS', 'auth_internal, note, fever');
 	define('LOG_DESTINATION', 'sql');
 	define('CONFIG_VERSION', 26);
 	define('_SKIP_SELF_URL_PATH_CHECKS', true);
 EOF
 cd
 rm -rf /usr/share/nginx/tt-rss/install
+cd /usr/share/nginx/tt-rss/plugins.local/
+git clone https://github.com/DigitalDJ/tinytinyrss-fever-plugin fever
+cd
   cat > '/etc/systemd/system/rssfeed.service' << EOF
 [Unit]
 Description=ttrss_backend
@@ -4123,7 +4126,7 @@ hexo new post title(标题)
 sudo systemctl start/restart/status hexo
 {% endblockquote %}
 
-#### Docs
+#### More Docs
 
 1. <a href="https://hexo.io/zh-tw/docs/" target="_blank" rel="noreferrer">Hexo docs</a>
 2. <a href="https://www.typora.io" target="_blank" rel="noreferrer">A new way to read & write Markdown</a>
