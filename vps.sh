@@ -831,11 +831,11 @@ colorEcho ${INFO} "初始化中(initializing)"
  if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 	dist=ubuntu
 	apt-get update -q
-	apt-get install whiptail curl dnsutils locales lsb-release jq -y -q
+	apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
 	dist=debian
 	apt-get update -q
-	apt-get install whiptail curl dnsutils locales lsb-release jq -y -q
+	apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
  else
 	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
 	exit 1;
@@ -948,7 +948,7 @@ installnginx(){
 deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 #deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
-	curl -fsSL https://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+	curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
 	apt-key fingerprint ABF5BD827BD9BF62
 	apt-get purge nginx -qq -y
 	apt-get update -q
