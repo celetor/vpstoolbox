@@ -4014,6 +4014,7 @@ start(){
 installhexo(){
 	colorEcho ${INFO} "Install Hexo ing..."
   cd /usr/share/nginx
+  npm install -g npm
   npm install hexo-cli -g
   npm update
   hexo init hexo
