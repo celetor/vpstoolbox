@@ -1605,7 +1605,7 @@ git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
 
 	define('CHECK_FOR_UPDATES', true);
 	define('ENABLE_GZIP_OUTPUT', true);
-	define('PLUGINS', 'auth_internal, note, fever');
+	define('PLUGINS', 'auth_internal, note, fever, af_readability');
 	define('LOG_DESTINATION', 'sql');
 	define('CONFIG_VERSION', 26);
 	define('_SKIP_SELF_URL_PATH_CHECKS', true);
@@ -4015,44 +4015,34 @@ installhexo(){
   npm audit fix
   hexo new page ${password1}
   cd /usr/share/nginx/hexo/themes
-  wget --no-check-certificate https://github.com/SukkaW/hexo-theme-suka/archive/1.4.0.zip
-  unzip 1.4.0.zip
-  rm -rf /usr/share/nginx/hexo/themes/1.4.0.zip
-  mv hexo-theme-suka-1.4.0 suka
-  cd /usr/share/nginx/hexo/themes/suka
-  npm install --production
-  cp -i _config.example.yml _config.yml
-  sed -i 's/qq: true/qq: false/' _config.yml
-  sed -i 's/googleplus: true/googleplus: false/' _config.yml
+  git clone https://github.com/theme-next/hexo-theme-next next
   cd /usr/share/nginx/hexo
-  npm i hexo@4
   npm install hexo-generator-feed --save
+  npm i hexo-filter-nofollow --save
     cat > '/usr/share/nginx/hexo/_config.yml' << EOF
 #title: xxx's Blog
+#author: xxx
 language: zh-tw
 url: https://${domain}
-theme: suka
-suka_theme:
-  search:
-    enable: true
-    path: search.json
-    field: post # Page | Post | All. Default post
-  prism:
-    enable: false
-    line_number: true
-    theme: default
+theme: next
 feed:
   type: atom
   path: atom.xml
   limit: 20
   hub:
-  content:
+  content: true
   content_limit: 140
   content_limit_delim: ' '
   order_by: -date
   icon: icon.png
   autodiscovery: true
   template:
+nofollow:
+  enable: true
+  field: site
+  exclude:
+    - 'exclude1.com'
+    - 'exclude2.com'
 EOF
 cd /usr/share/nginx/hexo/source/${password1}
 cat > "index.md" << EOF
