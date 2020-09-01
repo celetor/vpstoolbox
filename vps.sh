@@ -4897,9 +4897,9 @@ last_date=\$(date -ud "\${tmp_last_date}" +%Y-%m-%d" "%H:%M:%S)
 day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
 echo -e "\e[40;33;1m The [${domain}] expiration date is : \${last_date} && [\${day_count} days] \e[0m"
 echo -e "-------------------------------------------------------------------------"
-echo "****************************************************************************************************"
-echo "|                                   Vps Toolbox Result                                             |"
-echo "|                     Please visit the following link to get the result                            |"
+echo "**********************************************************************************************"
+echo "|                                   Vps Toolbox Result                                       |"
+echo "|                   請訪問以下鏈接以獲得結果(Please visit the following link to get the result) |"
 echo "|                       https://$domain/${password1}/                                     |"
 echo "|                 For more info ,please run the following command                                  |"
 echo 'curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash'
