@@ -4701,6 +4701,7 @@ advancedMenu() {
 	case $Mainmenu in
 		Install/Update)
 		clear
+		userinput
 		curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
 		myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
 		localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
@@ -4708,7 +4709,6 @@ advancedMenu() {
 		if [[ -n ${myipv6} ]]; then
 		curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
 		fi
-		userinput
 		if [[ $install_status == 0 ]]; then
 		echo "nameserver 1.1.1.1" > /etc/resolv.conf
 		echo "nameserver 1.0.0.1" >> /etc/resolv.conf
@@ -4901,9 +4901,9 @@ echo "**************************************************************************
 echo "|                                   Vps Toolbox Result                                       |"
 echo "|                   請訪問以下鏈接以獲得結果(Please visit the following link to get the result) |"
 echo "|                       https://$domain/${password1}/                                     |"
-echo "|                 For more info ,please run the following command                                  |"
+echo "|                 For more info ,please run the following command                            |"
 echo 'curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash'
-echo "****************************************************************************************************"
+echo "**********************************************************************************************"
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
 		clear
