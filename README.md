@@ -1,7 +1,7 @@
 ![logo](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/logo.png)
 # VPS Toolbox
 
-VPSToolBox is a bash script that aims to setup Trojan-gfw Nginx Hexo Netdata and other powerful applications on a Linux server.
+VPSToolBox is a bash script that helps you setup Trojan-gfw Nginx Hexo Netdata and other powerful applications on a Linux server really quickly.
 
 #### How to use([中文版](https://github.com/johnrosen1/vpstoolbox/blob/master/docs/README_zh_cn.md))
 ```
