@@ -3,6 +3,8 @@
 
 超级Linux VPS工具箱，一键安装包含Hexo,TLEMP(Trojan-GFW+Linux+NGINX+MariaDB+PHP7.4),全能下载套件(Qbitttorrent-nox+Aria2c+Filebrowser),RSS套件(RSSHUB+Tiny Tiny RSS),邮箱套件(Postfix+Dovecot+Roundcube Webmail),伺服器实时监控(Netdata)等实用软件(除NGINX以及Hexo外皆为可选项)。
 
+[![Gitter](https://badges.gitter.im/vpstoolbox/community.svg)](https://gitter.im/vpstoolbox/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 #### 使用方法(請以root/sudo用戶運行)
 ```
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
