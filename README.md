@@ -47,4 +47,8 @@ Ip Information is just an indispensable part of this project, all ip information
 
 ## If you found it useful , please give a star ,thanks!
 
+## License
+
+[MIT](https://github.com/johnrosen1/vpstoolbox/blob/master/LICENSE)
+
 ***Please do not use vultr to run this project !***
