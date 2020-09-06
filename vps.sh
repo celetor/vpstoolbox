@@ -3989,20 +3989,23 @@ start(){
 	set +e
 	colorEcho ${INFO} "启动(starting) trojan-gfw ing..."
 	systemctl daemon-reload
+	if [[ $install_mariadb == 1 ]]; then
+		systemctl restart mariadb
+	fi
 	if [[ $install_qbt == 1 ]]; then
 		systemctl start qbittorrent.service
 	fi
 	if [[ $install_file == 1 ]]; then
 		systemctl start filebrowser
 	fi
+	if [[ $install_rsshub == 1 ]]; then
+		systemctl start rssfeed
+	fi
 	if [[ $install_trojan == 1 ]]; then
 		systemctl start trojan
 		systemctl stop netdata
 		killall netdata
 		systemctl start netdata
-	fi
-	if [[ $install_rsshub == 1 ]]; then
-		systemctl start rssfeed
 	fi
 }
 
