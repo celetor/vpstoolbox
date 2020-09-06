@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # VPSTOOLBOX
 
-# VPSToolBox is a bash script that aims to setup Trojan-gfw Nginx Hexo Netdata and other powerful applications on a Linux server.
+# VPSToolBox is a bash script that helps you setup Trojan-gfw Nginx Hexo Netdata and other powerful applications on a Linux server really quickly.
 
 # MIT License
 #
@@ -4806,13 +4806,13 @@ advancedMenu() {
 		fi
 		clear
 		cat > '/etc/profile.d/mymotd.sh' << EOF
-#!/bin/bash
+#!/usr/bin/env bash
 #!!! Do not change these settings unless you know what you are doing !!!
 domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
 password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
 password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
 neofetch
-echo -e "-------------------------------IP Information----------------------------"
+echo -e "----------------------IP信息(IP Information)----------------------------"
 echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ip.json")
 echo -e "city:\t\t"\$(jq -r '.city' "/root/.trojan/ip.json")
 echo -e "region:\t\t"\$(jq -r '.region' "/root/.trojan/ip.json")
@@ -4822,7 +4822,7 @@ echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ip.json")
 echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ip.json")
 echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ip.json")
 if [[ -f /root/.trojan/ipv6.json ]]; then
-echo -e "-------------------------------IPv6 Information----------------------------"
+echo -e "----------------------IPv6信息(IPv6 Information)------------------------"
 echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ipv6.json")
 echo -e "city:\t\t"\$(jq -r '.city' "/root/.trojan/ipv6.json")
 echo -e "region:\t\t"\$(jq -r '.region' "/root/.trojan/ipv6.json")
@@ -4832,7 +4832,7 @@ echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ipv6.json")
 echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ipv6.json")
 echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ipv6.json")
 fi
-echo -e "-------------------------------Service Status----------------------------"
+echo -e "----------------------服務狀態(Service Status)--------------------------"
   if [[ -f /usr/local/bin/trojan ]]; then
 echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
   fi
@@ -4887,16 +4887,16 @@ echo -e "ntpd:\t\t\t"\$(systemctl is-active ntp)
   if [[ -f /usr/bin/tor ]]; then
 echo -e "Tor:\t\t"\$(systemctl is-active tor)
   fi
-echo -e "-------------------------------Bandwith Usage----------------------------"
+echo -e "---------------------------帶寬使用(Bandwith Usage)------------------------"
 echo -e "         Receive    Transmit"
 tail -n +3 /proc/net/dev | awk '{print \$1 " " \$2 " " \$10}' | numfmt --to=iec --field=2,3
-echo -e "-------------------------------Certificate Status----------------------------"
+echo -e "---------------------------證書狀態(Certificate Status)--------------------"
 ssl_date=\$(echo |openssl s_client -connect ${domain}:443 -tls1_3 2>&1 |sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'|openssl x509 -text)
 tmp_last_date=\$(echo "\${ssl_date}" | grep 'Not After :' | awk -F' : ' '{print \$NF}')
 last_date=\$(date -ud "\${tmp_last_date}" +%Y-%m-%d" "%H:%M:%S)
 day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
 echo -e "\e[40;33;1m The [${domain}] expiration date is : \${last_date} && [\${day_count} days] \e[0m"
-echo -e "-------------------------------------------------------------------------"
+echo -e "--------------------------------------------------------------------------"
 echo "**********************************************************************************************"
 echo "|                                   Vps Toolbox Result                                       |"
 echo "|                   請訪問以下鏈接以獲得結果(Please visit the following link to get the result) |"
