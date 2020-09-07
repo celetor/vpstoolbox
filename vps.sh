@@ -4698,13 +4698,6 @@ advancedMenu() {
 		Install/Update)
 		clear
 		userinput
-		curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
-		myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
-		localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
-		myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
-		if [[ -n ${myipv6} ]]; then
-		curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
-		fi
 		if [[ $install_status == 0 ]]; then
 		echo "nameserver 1.1.1.1" > /etc/resolv.conf
 		echo "nameserver 1.0.0.1" >> /etc/resolv.conf
@@ -4721,8 +4714,6 @@ advancedMenu() {
 			systemctl stop httpd
 			systemctl disable httpd
 			fi
-		#(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 80 open" && kill $(lsof -t -i:80) || echo "Moving on"
-		#(echo >/dev/tcp/localhost/80) &>/dev/null && echo "TCP port 443 open" && kill $(lsof -t -i:443) || echo "Moving on"
 		fi
 		if [[ ${install_ddns} == 1 ]]; then
 		install_ddns
@@ -4743,6 +4734,13 @@ advancedMenu() {
     		othercert=0
     		#userinput
   			fi
+		fi
+		curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
+		myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
+		localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+		myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+		if [[ -n ${myipv6} ]]; then
+		curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
 		fi
 		#检测证书是否已有
 		if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
