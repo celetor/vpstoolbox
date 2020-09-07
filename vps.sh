@@ -3400,7 +3400,7 @@ SOCKETMODE="0660"
 ######################################
 EOF
 systemctl enable spamassassin
-systemctl start spamassassin
+systemctl restart spamassassin
 cd /usr/share/nginx/
 rm -rf /usr/share/nginx/roundcubemail
 mailver=$(curl -s "https://api.github.com/repos/roundcube/roundcubemail/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
