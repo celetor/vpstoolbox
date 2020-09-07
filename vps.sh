@@ -3369,8 +3369,6 @@ apt-get install spamassassin spamc spamass-milter -y
 adduser debian-spamd mail
 adduser spamass-milter mail
 sed -i 's/CRON=0/CRON=1/' /etc/default/spamassassin
-systemctl enable spamassassin
-systemctl start spamassassin
 	cat > '/etc/default/spamass-milter' << EOF
 # spamass-milt startup defaults
 
@@ -3401,6 +3399,8 @@ SOCKETOWNER="postfix:postfix"
 SOCKETMODE="0660"
 ######################################
 EOF
+systemctl enable spamassassin
+systemctl start spamassassin
 cd /usr/share/nginx/
 rm -rf /usr/share/nginx/roundcubemail
 mailver=$(curl -s "https://api.github.com/repos/roundcube/roundcubemail/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
