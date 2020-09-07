@@ -1117,12 +1117,16 @@ openfirewall(){
 	if [[ ${install_mail} == 1 ]]; then
 		iptables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT &>/dev/null
 		iptables -A INPUT -p udp -m udp --dport 25 -j ACCEPT &>/dev/null
+		iptables -A INPUT -p tcp -m tcp --dport 143 -j ACCEPT &>/dev/null
 		iptables -A INPUT -p tcp -m tcp --dport 465 -j ACCEPT &>/dev/null
 		iptables -A INPUT -p tcp -m tcp --dport 587 -j ACCEPT &>/dev/null
+		iptables -A INPUT -p tcp -m tcp --dport 993 -j ACCEPT &>/dev/null
 		ip6tables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT &>/dev/null
 		ip6tables -A INPUT -p udp -m udp --dport 25 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p tcp -m tcp --dport 143 -j ACCEPT &>/dev/null
 		ip6tables -A INPUT -p tcp -m tcp --dport 465 -j ACCEPT &>/dev/null
 		ip6tables -A INPUT -p tcp -m tcp --dport 587 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p tcp -m tcp --dport 993 -j ACCEPT &>/dev/null
 	fi
 	if [[ ${dist} == debian ]]; then
 	apt-get install iptables-persistent -qq -y > /dev/null
