@@ -4697,7 +4697,6 @@ advancedMenu() {
 	case $Mainmenu in
 		Install/Update)
 		clear
-		userinput
 		if [[ $install_status == 0 ]]; then
 		echo "nameserver 1.1.1.1" > /etc/resolv.conf
 		echo "nameserver 1.0.0.1" >> /etc/resolv.conf
@@ -4715,6 +4714,7 @@ advancedMenu() {
 			systemctl disable httpd
 			fi
 		fi
+		userinput
 		if [[ ${install_ddns} == 1 ]]; then
 		install_ddns
 		fi
