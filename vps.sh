@@ -24,7 +24,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.                                  
-                                     
 
 clear
 
@@ -41,10 +40,10 @@ if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
 	exit 1
 fi
 
-if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -le "400" ]]; then
-  echo Please run this script on machine with more than 400MB free ram.
-  exit 1
-fi
+#if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -le "400" ]]; then
+#  echo Please run this script on machine with more than 400MB free ram.
+#  exit 1
+#fi
 
 if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) -le "3000000" ]]; then
   echo Please run this script on machine with more than 3G free disk space.
@@ -149,18 +148,6 @@ fi
 
 #Show simple system info 
 systeminfo(){
-	#neofetch
-	#colorEcho ${INFO} "System Info"
-	#olorEcho ${INFO} "1. CPU INFO"
-	#colorEcho ${INFO} "model name: $( awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//' )"
-	#colorEcho ${INFO} "cpu cores: $( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo ) core(s)"
-	#colorEcho ${INFO} "cpu freqency: $( awk -F'[ :]' '/cpu MHz/ {print $4;exit}' /proc/cpuinfo ) MHz"
-	#colorEcho ${INFO} "2. RAM INFO"
-	#colorEcho ${INFO} "Total ram: $( free -m | awk '/Mem/ {print $2}' ) MB"
-	#colorEcho ${INFO} "3. DISK INFO"
-	#colorEcho ${INFO} "Total disk space: $( df -hPl | grep -wvE '\-|none|tmpfs|devtmpfs|by-uuid|chroot|Filesystem|udev|docker' | awk '{print $2}' )"
-	#colorEcho ${INFO} "4. OS INFO"
-	#colorEcho ${INFO} "${dist}"
 echo -e "-------------------------------System Information----------------------------"
 echo -e "Hostname:\t\t"`hostname`
 echo -e "uptime:\t\t\t"`uptime | awk '{print $3,$4}' | sed 's/,//'`
@@ -1068,12 +1055,6 @@ openfirewall(){
 	iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT &>/dev/null
 	ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT &>/dev/null
 	ip6tables -A OUTPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT &>/dev/null
-	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 -j REJECT
-	#iptables -m owner --uid-owner trojan -A OUTPUT -d 192.168.0.0/16 -j REJECT
-	#iptables -m owner --uid-owner trojan -A OUTPUT -d 10.0.0.0/8 -j REJECT
-	#iptables -m owner --uid-owner trojan -A OUTPUT --dport 53 -j ACCEPT
-	#iptables -m owner --uid-owner trojan -A OUTPUT -d 127.0.0.0/8 --dport 80 -j ACCEPT
-	#iptables -m owner --uid-owner trojan -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 	#tcp
 	iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT  &>/dev/null #HTTPS
 	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT &>/dev/null #HTTP
@@ -1656,18 +1637,8 @@ if [[ $install_nodejs == 1 ]]; then
 apt-get update
 apt-get install -q -y nodejs
 fi
-clear
 
-#if [[ ${install_openssl} == 1 ]]; then
-#	colorEcho ${INFO} "Install OPENSSL ing"
-#apt-get install git build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev pkg-config libssl-dev autoconf automake autotools-dev autopoint libtool libcppunit-dev -qq -y
-#wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz && tar -xvf openssl*.tar.gz && rm -rf openssl*.tar.gz
-#cd openssl* && ./config no-ssl2 no-ssl3 && make -j $(nproc --all) && make test && make install
-#cd ..
-#rm -rf openssl*
-#apt-get purge build-essential -y
-#apt-get autoremove -y
-#fi
+clear
 
 if [[ $install_qbt == 1 ]]; then
 	clear
@@ -2665,12 +2636,6 @@ RestartSec=1s
 [Install]
 WantedBy=multi-user.target
 EOF
-#if [[ -f /usr/local/etc/trojan/dh.pem ]] && [[ -n /usr/local/etc/trojan/dh.pem ]]; then
-    #colorEcho ${INFO} "DH已有，跳过生成。。。"
-    #else
-    #colorEcho ${INFO} "Generating DH pem"
-    #openssl dhparam -out /usr/local/etc/trojan/dh.pem 2048
-#fi
 systemctl daemon-reload
 systemctl enable trojan
 if [[ ${install_mariadb} == 1 ]]; then
@@ -3148,13 +3113,6 @@ if [[ $install_mail = 1 ]]; then
 	adduser postfix opendmarc
 	systemctl restart opendmarc
 	echo ${domain} > /etc/mailname
-	postproto="ipv4"
-	#if [[ -n $myipv6 ]]; then
-		#ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
-		#if [[ $? -eq 0 ]]; then
-		#	postproto="all"
-		#fi
-	#fi
 	cat > '/etc/postfix/main.cf' << EOF
 home_mailbox = Maildir/
 smtpd_banner = \$myhostname ESMTP \$mail_name (Debian/GNU)
