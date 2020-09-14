@@ -4060,6 +4060,7 @@ PS: ***不支援Cloudflare CDN ❗***
 3. <a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank" rel="noreferrer">windows client</a>windows客户端
 4. <a href="https://github.com/NetchX/Netch" target="_blank" rel="noreferrer">https://github.com/NetchX/Netch</a>推荐的**游戏**客户端
 5. <a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank" rel="noreferrer">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a>
+6. <a href="https://hstspreload.org/" target="_blank" rel="noreferrer">https://hstspreload.org/</a>
 
 ---
 
@@ -4083,7 +4084,7 @@ hexo new post title(标题)
 sudo systemctl start/restart/status hexo
 {% endblockquote %}
 
-#### More Docs
+#### Docs
 
 1. <a href="https://hexo.io/zh-tw/docs/" target="_blank" rel="noreferrer">Hexo docs</a>
 2. <a href="https://www.typora.io" target="_blank" rel="noreferrer">A new way to read & write Markdown</a>
