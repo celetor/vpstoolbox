@@ -51,4 +51,9 @@ Ip Information is just an indispensable part of this project, all ip information
 
 [MIT](https://github.com/johnrosen1/vpstoolbox/blob/master/LICENSE)
 
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/johnrosen1/vpstoolbox.svg)](https://starchart.cc/johnrosen1/vpstoolbox)
+
 ***Please do not use vultr to run this project !***
