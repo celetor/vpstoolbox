@@ -3669,7 +3669,7 @@ server {
 	#if (\$http_user_agent = "") { return 403; }
 	#if (\$host != "$domain") { return 404; }
 	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-	add_header X-Cache-Status $upstream_cache_status;
+	add_header X-Cache-Status \$upstream_cache_status;
 	location / {
 		proxy_pass http://127.0.0.1:4000/;
 		proxy_set_header Host \$http_host;
@@ -3728,7 +3728,7 @@ server {
 	resolver_timeout 10s;
 	server_name           $domain;
 	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-	add_header X-Cache-Status $upstream_cache_status;
+	add_header X-Cache-Status \$upstream_cache_status;
 	if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345|Go-http-client) ) { return 403; }
 	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
 	#if (\$http_user_agent = "") { return 403; }
