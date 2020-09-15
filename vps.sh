@@ -965,6 +965,8 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 systemctl enable nginx
+mkdir /usr/share/nginx/cache
+mkdir /usr/share/nginx/php_cache
 	cat > '/etc/nginx/nginx.conf' << EOF
 user nginx;
 worker_processes auto;
@@ -979,6 +981,20 @@ events {
 }
 
 http {
+
+	proxy_cache_path /usr/share/nginx/cache levels=1:2 keys_zone=my_cache:10m max_size=100m inactive=60m use_temp_path=off;
+	proxy_cache_valid 200 302 10m;
+	proxy_cache_valid 404      1m;
+	proxy_cache_bypass $http_pragma    $http_authorization    $http_cache_control;
+	proxy_cache my_cache;
+
+	fastcgi_cache_path /usr/share/nginx/php_cache levels=1:2 keys_zone=phpcache:10m max_size=100m inactive=60m use_temp_path=off;
+	fastcgi_cache_valid 200 302 10m;
+	fastcgi_cache_valid 404      1m;
+	fastcgi_cache_bypass $http_pragma    $http_authorization    $http_cache_control;
+	fastcgi_cache phpcache;
+	fastcgi_cache_key "$scheme$proxy_host$request_uri";
+
 	autoindex_exact_size off;
 	http2_push_preload on;
 	aio threads;
@@ -3653,6 +3669,7 @@ server {
 	#if (\$http_user_agent = "") { return 403; }
 	#if (\$host != "$domain") { return 404; }
 	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+	add_header X-Cache-Status $upstream_cache_status;
 	location / {
 		proxy_pass http://127.0.0.1:4000/;
 		proxy_set_header Host \$http_host;
@@ -3687,8 +3704,7 @@ server {
         #fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
-        }
-
+    }
 EOF
 	else
 	cat > '/etc/nginx/conf.d/default.conf' << EOF
@@ -3712,6 +3728,7 @@ server {
 	resolver_timeout 10s;
 	server_name           $domain;
 	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+	add_header X-Cache-Status $upstream_cache_status;
 	if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345|Go-http-client) ) { return 403; }
 	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
 	#if (\$http_user_agent = "") { return 403; }
@@ -3749,7 +3766,7 @@ server {
         #fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
-        }
+    }
 EOF
 fi
 if [[ $install_tjp == 1 ]]; then
