@@ -986,12 +986,20 @@ http {
 	proxy_cache_valid 200 302 10m;
 	proxy_cache_valid 404      1m;
 	proxy_cache_bypass \$http_pragma    \$http_authorization    \$http_cache_control;
+  proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
+  proxy_cache_revalidate on;
+  proxy_cache_background_update on;
+  proxy_cache_lock on;
 	proxy_cache my_cache;
 
 	fastcgi_cache_path /usr/share/nginx/php_cache levels=1:2 keys_zone=phpcache:10m max_size=100m inactive=60m use_temp_path=off;
 	fastcgi_cache_valid 200 302 10m;
 	fastcgi_cache_valid 404      1m;
 	fastcgi_cache_bypass \$http_pragma    \$http_authorization    \$http_cache_control;
+  fastcgi_cache_use_stale error timeout updating invalid_header http_500 http_503;
+  fastcgi_cache_revalidate on;
+  fastcgi_cache_background_update on;
+  fastcgi_cache_lock on;
 	fastcgi_cache phpcache;
 	fastcgi_cache_key "\$scheme\$proxy_host\$request_uri";
 
