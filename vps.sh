@@ -648,7 +648,7 @@ do
 		install_trojan=1
 		install_bbr=1
 		dnsmasq_install=1
-		install_netdata=1
+		#install_netdata=1
 		;;
 		2)
 		install_rsshub=1
