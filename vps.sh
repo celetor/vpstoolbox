@@ -1640,6 +1640,13 @@ RestartSec=3s
 WantedBy=multi-user.target
 EOF
 systemctl enable rssfeed
+#tt-rss themes
+mkdir /usr/share/nginx/themes/
+cd /usr/share/nginx/themes/
+git clone https://github.com/levito/tt-rss-feedly-theme.git feedly
+cd /usr/share/nginx/themes/feedly/
+cp -r feedly* /usr/share/nginx/tt-rss/themes.local
+cd
 fi
 
 if [[ ${install_fail2ban} == 1 ]]; then
