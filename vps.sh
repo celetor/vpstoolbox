@@ -3416,9 +3416,11 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost
 mysql -u root -e "flush privileges;"
 mysql -u roundcube -p"${password1}" -D roundcubemail < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
 deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
+mkdir /usr/share/nginx/pgp/
 	cat > '/usr/share/nginx/roundcubemail/config/config.inc.php' << EOF
 <?php
 
+\$config['language'] = 'zh_TW';
 \$config['db_dsnw'] = 'mysql://roundcube:${password1}@127.0.0.1/roundcubemail';
 \$config['default_host'] = '${domain}';
 \$config['default_port'] = 143;
@@ -3435,7 +3437,8 @@ deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
 // PLUGINS
 // ----------------------------------
 // List of active plugins (in plugins/ directory)
-\$config['plugins'] = array('archive','emoticons','newmail_notifier','zipdownload');
+\$config['plugins'] = array('archive','emoticons','enigma','newmail_notifier','zipdownload');
+\$config['enigma_pgp_homedir'] = '/usr/share/nginx/pgp/';
 EOF
 rm -rf /usr/share/nginx/roundcubemail/installer/
 useradd -m -s /sbin/nologin ${mailuser}
