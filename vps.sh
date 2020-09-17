@@ -3437,7 +3437,7 @@ mkdir /usr/share/nginx/pgp/
 // PLUGINS
 // ----------------------------------
 // List of active plugins (in plugins/ directory)
-\$config['plugins'] = array('archive','emoticons','enigma','newmail_notifier','zipdownload');
+\$config['plugins'] = array('archive','emoticons','enigma','markasjunk','newmail_notifier','zipdownload');
 \$config['newmail_notifier_basic'] = true;
 \$config['enigma_pgp_homedir'] = '/usr/share/nginx/pgp/';
 \$config['enigma_encryption'] = true;
