@@ -3439,6 +3439,9 @@ mkdir /usr/share/nginx/pgp/
 // List of active plugins (in plugins/ directory)
 \$config['plugins'] = array('archive','emoticons','enigma','newmail_notifier','zipdownload');
 \$config['enigma_pgp_homedir'] = '/usr/share/nginx/pgp/';
+\$config['enigma_encryption'] = true;
+\$config['enigma_signatures'] = true;
+\$config['enigma_decryption'] = true;
 EOF
 rm -rf /usr/share/nginx/roundcubemail/installer/
 useradd -m -s /sbin/nologin ${mailuser}
