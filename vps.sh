@@ -740,7 +740,7 @@ rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
 rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
 if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
-password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码,请勿添加特殊符号!)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 #if [[ -z ${password1} ]]; then
 #	password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 #	fi
@@ -1714,6 +1714,8 @@ cd /usr/share/nginx/qBittorrent/data/GeoIP/
 curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/GeoLite2-Country.mmdb
 cd
 chmod 755 /usr/share/nginx/
+chown -R nginx:nginx /usr/share/nginx/
+systemctl start qbittorrent.service
 fi
 clear
 ###########Install Bittorrent-tracker##############
