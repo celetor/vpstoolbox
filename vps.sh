@@ -1715,7 +1715,7 @@ curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/
 cd
 chmod 755 /usr/share/nginx/
 chown -R nginx:nginx /usr/share/nginx/
-systemctl start qbittorrent.service
+#systemctl start qbittorrent.service
 fi
 clear
 ###########Install Bittorrent-tracker##############
