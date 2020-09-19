@@ -1715,7 +1715,7 @@ curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/
 cd
 chmod 755 /usr/share/nginx/
 chown -R nginx:nginx /usr/share/nginx/
-#systemctl start qbittorrent.service
+systemctl start qbittorrent.service
 fi
 clear
 ###########Install Bittorrent-tracker##############
@@ -4004,7 +4004,11 @@ start(){
 		systemctl restart mariadb
 	fi
 	if [[ $install_qbt == 1 ]]; then
-		systemctl start qbittorrent.service
+		systemctl stop qbittorrent.service
+    sleep 1
+    qbtline=$(grep -n "Preferences" /usr/share/nginx/qBittorrent/config/qBittorrent.conf | cut -c1-2)
+    sed -i "${qbtline} aAdvanced\\\AnnounceToAllTrackers=true" /usr/share/nginx/qBittorrent/config/qBittorrent.conf
+    systemctl start qbittorrent.service
 	fi
 	if [[ $install_file == 1 ]]; then
 		systemctl start filebrowser
