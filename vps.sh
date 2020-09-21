@@ -309,7 +309,7 @@ EOF
   systemctl start nginx
   clear
   colorEcho ${INFO} "正式证书申请ing(test issuing) let\'s encrypt certificate"
-  ~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+  ~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain --force -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
   if [[ $? != 0 ]] && [[ $? != 2 ]]; then
   colorEcho ${ERROR} "证书申请测试失败，请检查VPS控制面板防火墙(80 443)是否打开!!!"
   colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
@@ -375,7 +375,7 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
         export CF_Email="$CF_Email"
         openfirewall
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --issue --force --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
 Description=Renew Let's Encrypt certificates using acme.sh
@@ -397,7 +397,7 @@ EOF
         export Namesilo_Key="$Namesilo_Key"
         openfirewall
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --issue --force --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
 Description=Renew Let's Encrypt certificates using acme.sh
@@ -421,7 +421,7 @@ EOF
         export Ali_Secret="$Ali_Secret"
         openfirewall
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --issue --force --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
 Description=Renew Let's Encrypt certificates using acme.sh
@@ -445,7 +445,7 @@ EOF
         export DP_Key="$DP_Key"
         openfirewall
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --issue --force --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
 Description=Renew Let's Encrypt certificates using acme.sh
@@ -469,7 +469,7 @@ EOF
         export CX_Secret="$CX_Secret"
         openfirewall
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --issue --force --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
 Description=Renew Let's Encrypt certificates using acme.sh
@@ -493,7 +493,7 @@ EOF
         export GD_Secret="$CX_Secret"
         openfirewall
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --issue --force --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
         cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
 [Unit]
 Description=Renew Let's Encrypt certificates using acme.sh
