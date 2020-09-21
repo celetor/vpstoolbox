@@ -4760,7 +4760,7 @@ advancedMenu() {
       openfirewall
       certtool -i < /etc/certs/${domain}_ecc/fullchain.cer --verify --verify-hostname=${domain}
       if [[ $? != 0 ]]; then
-        whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,启动证书覆写!!!" 8 78
+        whiptail --title "ERROR" --msgbox "无效的证书,可能过期或者域名不正确,启动证书覆写!!!" 8 78
         rm -rf /etc/certs/${domain}_ecc/fullchain.cer
         rm -rf /etc/certs/${domain}_ecc/${domain}.key
         #domain=""
