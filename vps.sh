@@ -618,7 +618,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按�
 "1" "Trojan-GFW BBR and Dnscrypt-proxy" on \
 "2" "RSSHUB and TT-RSS" on \
 "下载" "Download" off  \
-"3" "Qbittorrent" on \
+"3" "Qbittorrent" off \
 "4" "Aria2" on \
 "5" "Filebrowser" on \
 "状态" "Status" off  \
@@ -1230,7 +1230,6 @@ net.ipv4.tcp_no_metrics_save = 1
 net.ipv4.tcp_ecn = 2
 net.ipv4.tcp_ecn_fallback = 1
 net.ipv4.tcp_frto = 0
-net.ipv4.tcp_fack = 0
 ##############################
 net.ipv6.conf.all.accept_redirects = 0
 net.ipv6.conf.default.accept_redirects = 0
@@ -4755,6 +4754,21 @@ advancedMenu() {
 		curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
 		fi
 		#检测证书是否已有
+
+    if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
+      apt-get install gnutls-bin -y
+      openfirewall
+      certtool -i < /etc/certs/${domain}_ecc/fullchain.cer --verify --verify-hostname=${domain}
+      if [[ $? != 0 ]]; then
+        whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,启动证书覆写!!!" 8 78
+        rm -rf /etc/certs/${domain}_ecc/fullchain.cer
+        rm -rf /etc/certs/${domain}_ecc/${domain}.key
+        #domain=""
+        othercert=0
+        #userinput
+        fi
+    fi
+
 		if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
     	colorEcho ${INFO} "证书已有,跳过申请(skipping cert issue)"
     	else
