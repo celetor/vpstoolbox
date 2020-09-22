@@ -4939,26 +4939,11 @@ EOF
 		;;
 		Benchmark)
 		clear
-		systeminfo
-		colorEcho ${INFO} "Hardware Benchmark"
-		curl -LO --progress-bar http://cdn.geekbench.com/Geekbench-5.1.0-Linux.tar.gz && tar -xvf Geekbench-5.1.0-Linux.tar.gz && rm -rf Geekbench-5.1.0-Linux.tar.gz && cd Geekbench-5.1.0-Linux
-		./geekbench5
-		#./geekbench_x86_64
-		cd ..
-		rm -rf Geekbench-5.1.0-Linux
-		colorEcho ${INFO} "Please read the result then hit enter to proceed"
-		read var
-		colorEcho ${INFO} "Network Benchmark"
-		apt-get install gnupg apt-transport-https dirmngr -y -qq
-		INSTALL_KEY="379CE192D401AB61"
-		DEB_DISTRO=$(lsb_release -sc)
-		apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
-		echo "deb https://ookla.bintray.com/debian ${DEB_DISTRO} main" | sudo tee  /etc/apt/sources.list.d/speedtest.list
-		apt-get update -q
-		apt-get purge speedtest-cli -y -qq
-		apt-get install speedtest -y -qq
-		sh -c 'echo "YES\n" | speedtest'
-		colorEcho ${INFO} "Benchmark complete"
+		if (whiptail --title "测试模式" --yes-button "快速测试" --no-button "完整测试" --yesno "效能测试方式(fast or full)?" 8 78); then
+        curl -fsL https://ilemonra.in/LemonBenchIntl | bash -s fast
+        else
+        curl -fsL https://ilemonra.in/LemonBenchIntl | bash -s full
+    fi
 		exit 0
 		;;
 		Log)
