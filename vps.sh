@@ -762,7 +762,7 @@ if [[ -z ${password2} ]]; then
 	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 	fi
 	if [[ ${install_mail} == 1 ]]; then
-	mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername(邮箱用户名)" 8 78 --title "Mail user input" 3>&1 1>&2 2>&3)
+	mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername(邮箱用户名)" 8 78 admin --title "Mail user input" 3>&1 1>&2 2>&3)
 	if [[ -z ${mailuser} ]]; then
 	mailuser=$(head /dev/urandom | tr -dc a-z | head -c 4 ; echo '' )
 	fi
