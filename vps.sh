@@ -612,6 +612,14 @@ if [[ ${install_status} == 1 ]]; then
   	fi
 fi
 
+#if above 30g disk , then enable aria2 and filebrowser by default
+
+Download_default="off"
+
+if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) -gt "20000000" ]]; then
+  Download_default="on"
+fi
+
 whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 55 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
@@ -619,8 +627,8 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按�
 "2" "RSSHUB and TT-RSS" on \
 "下载" "Download" off  \
 "3" "Qbittorrent" off \
-"4" "Aria2" on \
-"5" "Filebrowser" on \
+"4" "Aria2" ${Download_default} \
+"5" "Filebrowser" ${Download_default} \
 "状态" "Status" off  \
 "6" "Netdata" on \
 "测速" "Speedtest" off  \
