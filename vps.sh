@@ -612,7 +612,7 @@ if [[ ${install_status} == 1 ]]; then
   	fi
 fi
 
-#if above 30g disk , then enable aria2 and filebrowser by default
+#if above 20g disk , then enable aria2 and filebrowser by default
 
 Download_default="off"
 
