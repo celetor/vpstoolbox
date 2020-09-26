@@ -615,9 +615,14 @@ fi
 #if above 20g disk , then enable aria2 and filebrowser by default
 
 Download_default="off"
+Mail_default="off"
 
 if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) -gt "20000000" ]]; then
   Download_default="on"
+fi
+
+if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -gt "2000" ]]; then
+  Mail_default="on"
 fi
 
 whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 55 16 \
@@ -638,7 +643,7 @@ whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按�
 "安全" "Security" off  \
 "9" "Fail2ban" on \
 "邮件" "Mail" off  \
-"10" "Mail service" off \
+"10" "Mail service" ${Mail_default} \
 "其他" "Others" off  \
 "11" "Bt-Tracker" off \
 "12" "Trojan-panel" off \
@@ -726,10 +731,10 @@ if [[ ${system_upgrade} == 1 ]]; then
 	fi
 fi
 
-if [[ ${install_mail} == 1 ]]; then
-whiptail --title "Warning" --msgbox "Warning!!!:邮件服务仅推荐使用根域名(only recommend root domain),不推荐使用www等前缀(no www allowed),否则后果自负!!!" 8 78
-whiptail --title "Warning" --msgbox "Warning!!!:邮件服务需要MX and PTR(reverse dns record) DNS Record,请自行添加,否则后果自负!!!" 8 78
-fi
+#if [[ ${install_mail} == 1 ]]; then
+#whiptail --title "Warning" --msgbox "Warning!!!:邮件服务仅推荐使用根域名(only recommend root domain),不推荐使用www等前缀(no www allowed),否则后果自负!!!" 8 78
+#whiptail --title "Warning" --msgbox "Warning!!!:邮件服务需要MX and PTR(reverse dns record) DNS Record,请自行添加,否则后果自负!!!" 8 78
+#fi
 
 while [[ -z ${domain} ]]; do
 domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你的域名)(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
