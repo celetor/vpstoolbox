@@ -5,6 +5,8 @@ VPSToolBox is a bash script that helps you setup Trojan-gfw Nginx Hexo Netdata a
 
 [![Gitter](https://badges.gitter.im/vpstoolbox/community.svg)](https://gitter.im/vpstoolbox/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+[Telegram chat Group](https://t.me/vpstoolbox_chat)
+
 #### How to use([中文版](https://github.com/johnrosen1/vpstoolbox/blob/master/docs/README_zh_cn.md))
 ```
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
@@ -37,7 +39,6 @@ Ip Information is just an indispensable part of this project, all ip information
 19. Fail Restart
 20. [uninstall Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
 9.  Support [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks)
-15. Support [TLS1.3 ONLY](https://wiki.openssl.org/index.php/TLS1.3)
 23. Support Full/Part Uninstall
 24. And so on...
 
