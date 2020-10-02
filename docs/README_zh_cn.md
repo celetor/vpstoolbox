@@ -5,6 +5,10 @@
 
 [![Gitter](https://badges.gitter.im/vpstoolbox/community.svg)](https://gitter.im/vpstoolbox/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+[Telegram群組](https://t.me/vpstoolbox_chat)
+
+PS: 群主日常不在線，不看群，簡單問題請自行解決，Feature request/bug等請使用GitHub issue template。
+
 #### 使用方法(請以root/sudo用戶運行)
 ```
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
