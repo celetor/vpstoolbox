@@ -837,7 +837,7 @@ colorEcho ${INFO} "初始化中(initializing)"
 	apt-get update -q
 	apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
  else
-	TERM=ansi whiptail --title "OS not SUPPORTED" --infobox "OS NOT SUPPORTED!" 8 78
+	whiptail --title "OS not supported(操作系统不支援)" --msgbox "Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)" 8 78
 	exit 1;
  fi
 }
