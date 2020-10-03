@@ -825,7 +825,7 @@ fi
 	fi
 }
 ###############OS detect####################
-osdist(){
+initialize(){
 set +e
 colorEcho ${INFO} "初始化中(initializing)"
  if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
@@ -4976,9 +4976,8 @@ EOF
 		;;
 		esac
 }
-clear
-cd
-osdist
+
+sshoptimize(){
 if grep -q "DebianBanner" /etc/ssh/sshd_config
 then
 :
@@ -5000,22 +4999,11 @@ echo "DebianBanner no" >> /etc/ssh/sshd_config
 #echo "AllowStreamLocalForwarding no" >> /etc/ssh/sshd_config
 systemctl reload sshd
 fi
-setlanguage
-if [[ -f /root/.trojan/license.json ]]; then
-	license="$( jq -r '.license' "/root/.trojan/license.json" )"
-fi
-
-if [[ $license != 1 ]]; then
-	if (whiptail --title "Accept LICENSE?" --yesno "Please read and accept the MIT License！ https://github.com/johnrosen1/vpstoolbox/blob/master/LICENSE" 8 78); then
-	cat > '/root/.trojan/license.json' << EOF
-{
-  "license": "1"
 }
-EOF
-	else
-		whiptail --title "Accept LICENSE required" --msgbox "You must read and accept the MIT License to continue !!!" 8 78
-		exit 1
-	fi
-fi
+clear
+cd
+initialize
+sshoptimize
+setlanguage
 clear
 advancedMenu
