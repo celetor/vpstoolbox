@@ -5,7 +5,7 @@ VPSToolBox is a bash script that helps you setup Trojan-gfw Nginx Hexo Netdata a
 
 [![Gitter](https://badges.gitter.im/vpstoolbox/community.svg)](https://gitter.im/vpstoolbox/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[Telegram chat Group](https://t.me/vpstoolbox_chat)
+[Chat on Telegram](https://t.me/vpstoolbox_chat)
 
 #### How to use([中文版](https://github.com/johnrosen1/vpstoolbox/blob/master/docs/README_zh_cn.md))
 ```
