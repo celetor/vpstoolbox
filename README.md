@@ -7,7 +7,7 @@ VPSToolBox is a bash script that helps you setup Trojan-gfw Nginx Hexo Netdata a
 
 [Chat on Telegram](https://t.me/vpstoolbox_chat)
 
-#### How to use([中文版](https://github.com/johnrosen1/vpstoolbox/blob/master/docs/README_zh_cn.md))
+## How to use([中文版](https://github.com/johnrosen1/vpstoolbox/blob/master/docs/README_zh_cn.md))
 ```
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 ```
@@ -42,13 +42,15 @@ Ip Information is just an indispensable part of this project, all ip information
 23. Support Full/Part Uninstall
 24. And so on...
 
-### Give it a try ! (Live Demo,no Guarantee)
+#### Give it a try ! (Live Demo,no Guarantee)
 
 [https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
 
-## If you found it useful , please give a star ,thanks!
+#### Please check project wiki for more info !
 
-## License
+#### If you found it useful , please give a star ,thanks!
+
+#### License
 
 [MIT](https://github.com/johnrosen1/vpstoolbox/blob/master/LICENSE)
 
