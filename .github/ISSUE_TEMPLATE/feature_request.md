@@ -7,16 +7,15 @@ assignees: ''
 
 ---
 
-**ls your proposed feature nessary，why?(你提议添加的功能是否有必要,为什么？)**
+<!--
+请确保 [文档](https://github.com/johnrosen1/vpstoolbox/blob/master/docs/README_zh_cn.md)中没有相关内容，并按照模版提供信息
+否则 issue 将被立即关闭
+-->
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+### 这是一个什么样的功能？
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+### 这个功能可以解决什么问题？
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+### 额外描述
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+### 这个功能是否应该作为默认安装选项出现?

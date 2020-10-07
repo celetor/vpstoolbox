@@ -2,32 +2,25 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: ''
-assignees: ''
+labels: bug
+assignees: johnrosen1
 
 ---
 
-**Is it really a bug?Please try to solve it by yourself first.（无论这是否是一个Bug,请先尝试自行解决！）**
+<!--
+请确保已阅读 [文档](https://github.com/johnrosen1/vpstoolbox/blob/master/docs/README_zh_cn.md) 内相关部分，并按照模版提供信息，否则 issue 将被立即关闭。
 
-**Non-related topics will be marked as spam and be closed immediately!（所有与本项目无关的话题都将被视为spam并被立即关闭！）**
+由于部分伺服器厂商限制CPU缘故，项目可能安装失败，该问题不是VPSTOOLBOX 所致，请勿提交 issue(严禁提交任何Vultr导致的错误的issue)。
+-->
 
-**请勿使用Vultr运行本项目,vultr导致的一切错误,本项目不负责！！！**
+- 预期是什么
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+- 实际发生了什么
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+- 你做了什么
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+| Env                | Value         |
+| ------------------ | ------------- |
+| OS                 |               |
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Additional context**
-Add any other context about the problem here.
+- 额外信息（日志、报错等）
