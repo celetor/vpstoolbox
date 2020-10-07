@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: 🐛 Bug 报告
 about: Create a report to help us improve
 title: ''
 labels: bug
