@@ -7,7 +7,7 @@
 
 [Telegram群組](https://t.me/vpstoolbox_chat)
 
-#### 使用方法(請以root/sudo用戶運行)
+## 使用方法(請以root/sudo用戶運行)
 ```
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 ```
@@ -26,9 +26,9 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 3. 请在控制面板中 **开启TCP端口 [80](https://www.speedguide.net/port.php?port=80) 以及 [443](https://www.speedguide.net/port.php?port=443)** 并 ***关闭 Cloudflare CDN !***
 4. 如果您出于某些原因需要使用自定义证书(不推荐) , 请放在 /etc/trojan/ 里面 , 不需要修改名称(证书类型需为fullchain) !
 5. 请使用一台有至少 **0.5 GB RAM** 以及 **5G 硬盘空间的VPS**. 
-6. 出于安全原因，本项目已禁止360/qq/xiaomi/wechat等垃圾国产浏览器访问最终结果页面及相关服务，请使用chrome/firefox等访问。
+6. 出于安全原因，本项目**已禁止360/qq/xiaomi/wechat等浏览器访问最终结果页面及相关服务**，请使用chrome/firefox等访问。
 
-#### 特性:
+#### 项目特性:
 
 1. 全自动安装并配置 **[NGINX Web Server](https://www.nginx.com/) 以及 Hexo**
 2. 支援所有种类的虚拟化技术，包括bare mental,kvm openvz等
@@ -44,14 +44,14 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 23. 支援完全/部分卸载
 24. And so on...
 
-### 小白向教程
+#### 新手上路
 
 [VPSTOOLBOX基础使用方法](https://github.com/johnrosen1/vpstoolbox/wiki/VPSTOOLBOX%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
 
-### Give it a try ! (Live Demo,no Guarantee)
+#### 项目Demo
 
 [https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
 
-## 如果此项目对你有用 , 请给颗star ,谢谢!
+#### 如果此项目对你有用 , 请给颗star ,谢谢!
 
 ***请勿使用Vultr运行本项目,vultr导致的一切错误,本项目不负责！！！***
