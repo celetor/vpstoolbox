@@ -48,7 +48,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 [VPSTOOLBOX基础使用方法](https://github.com/johnrosen1/vpstoolbox/wiki/VPSTOOLBOX%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
 
-#### 项目Demo
+#### 项目Demo(无保证)
 
 [https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
 
