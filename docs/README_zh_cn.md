@@ -52,6 +52,8 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 [https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
 
+#### 更多信息请自行查看Wiki !
+
 #### 如果此项目对你有用 , 请给颗star ,谢谢!
 
-***请勿使用Vultr运行本项目,vultr导致的一切错误,本项目不负责！！！***
+***请勿尝试使用Vultr运行本项目,vultr导致的一切错误,本项目不负责！！！***
