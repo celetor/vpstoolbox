@@ -346,7 +346,7 @@ EOF
 systemctl daemon-reload
 systemctl enable acme_letsencrypt.timer
 else
-whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功以及域名是否输入错误,并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开!!!Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel !!!" 8 78
+whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功以及域名是否输入错误,并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开 Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel" 8 78
 domain=""
 clear
 userinput
@@ -355,9 +355,9 @@ fi
 
 #Issue Let's Encrypt Certificate by DNS API
 dnsissue(){
-whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr !" 8 78
+whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr" 8 78
     APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
-"1" "Cloudflare(不支援免费域名!)" \
+"1" "Cloudflare(不支援免费域名)" \
 "2" "Namesilo" \
 "3" "Aliyun" \
 "4" "DNSPod.cn" \
@@ -625,7 +625,7 @@ if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -gt "2000" ]]; then
   Mail_default="on"
 fi
 
-whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)!" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose !!!" 24 55 16 \
+whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose" 24 55 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
 "1" "Trojan-GFW BBR and Dnscrypt-proxy" on \
@@ -733,7 +733,7 @@ fi
 
 #if [[ ${install_mail} == 1 ]]; then
 #whiptail --title "Warning" --msgbox "Warning!!!:邮件服务仅推荐使用根域名(only recommend root domain),不推荐使用www等前缀(no www allowed),否则后果自负!!!" 8 78
-#whiptail --title "Warning" --msgbox "Warning!!!:邮件服务需要MX and PTR(reverse dns record) DNS Record,请自行添加,否则后果自负!!!" 8 78
+#whiptail --title "Warning" --msgbox "Warning!!!:邮件服务需要MX and PTR(reverse dns record) DNS Record,请自行添加,否则后果自负!!" 8 78
 #fi
 
 while [[ -z ${domain} ]]; do
@@ -741,7 +741,7 @@ domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你�
 colorEcho ${INFO} "Checking if domain is vaild."
 host ${domain}
 if [[ $? != 0 ]]; then
-	whiptail --title "Warning" --msgbox "Warning: Invaild Domain !!!" 8 78
+	whiptail --title "Warning" --msgbox "Warning: Invaild Domain" 8 78
 	domain=""
 	clear
 fi
@@ -753,7 +753,7 @@ rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
 rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
 if [[ ${install_trojan} = 1 ]]; then
 	while [[ -z ${password1} ]]; do
-password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码,请勿添加特殊符号!)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码,请勿添加特殊符号)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
 #if [[ -z ${password1} ]]; then
 #	password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 #	fi
@@ -4644,11 +4644,11 @@ logcheck(){
 
 install_ddns(){
     while [[ -z ${domain1} ]]; do
-domain1=$(whiptail --inputbox --nocancel "Please enter your bare domain(请輸入你的二级域名,请勿添加www等前缀!)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+domain1=$(whiptail --inputbox --nocancel "Please enter your bare domain(请輸入你的二级域名,请勿添加www等前缀)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
 colorEcho ${INFO} "Checking if domain is vaild."
 host ${domain1}
 if [[ $? != 0 ]]; then
-  whiptail --title "Warning" --msgbox "Warning: Invaild Domain !!!" 8 78
+  whiptail --title "Warning" --msgbox "Warning: Invaild Domain" 8 78
   domain1=""
   clear
   exit 1
@@ -4713,7 +4713,7 @@ crontab -l | grep -q '* * * * * bash /root/.trojan/ddns.sh'  && echo 'cron exist
 }
 
 advancedMenu() {
-	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi!欢迎使用VPSTOOLBOX!使用本脚本工具箱前请先自行完成域名购买以及域名A解析等工作!" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option! 欢迎使用VPSTOOLBOX,请选择一个选项!" 14 78 5 \
+	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi,欢迎使用VPSTOOLBOX。使用本脚本工具箱前请先自行完成域名购买以及域名A解析等工作。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 78 5 \
 	"Install/Update" "安裝/更新" \
 	"Benchmark" "效能"\
 	"Log" "日志" \
@@ -4752,7 +4752,7 @@ advancedMenu() {
   		openfirewall
   		certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
   		if [[ $? != 0 ]]; then
-    		whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,启动证书覆写!!!" 8 78
+    		whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,启动证书覆写" 8 78
     		rm -rf /etc/trojan/trojan.crt
     		rm -rf /etc/trojan/trojan.key
     		#domain=""
@@ -4774,7 +4774,7 @@ advancedMenu() {
       openfirewall
       certtool -i < /etc/certs/${domain}_ecc/fullchain.cer --verify --verify-hostname=${domain}
       if [[ $? != 0 ]]; then
-        whiptail --title "ERROR" --msgbox "无效的证书,可能过期或者域名不正确,启动证书覆写!!!" 8 78
+        whiptail --title "ERROR" --msgbox "无效的证书,可能过期或者域名不正确,启动证书覆写" 8 78
         rm -rf /etc/certs/${domain}_ecc/fullchain.cer
         rm -rf /etc/certs/${domain}_ecc/${domain}.key
         #domain=""
@@ -4792,6 +4792,7 @@ advancedMenu() {
   			httpissue=1
   			fi
   		fi
+    colorEcho ${INFO} "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!"
 		upgradesystem
 		if [[ ${httpissue} == 1 ]]; then
 			httpissue
@@ -4947,7 +4948,7 @@ EOF
 		#reboot
 		#fi
 		echo "Install complete!"
-		whiptail --title "Success" --msgbox "Install Success!" 8 78
+		whiptail --title "Success" --msgbox "安装成功(Install Success)" 8 78
 		bash /etc/profile.d/mymotd.sh
 		exit 0
 		;;
@@ -4972,7 +4973,7 @@ EOF
 		exit 0
 		;;
 		Exit)
-		whiptail --title "Bash Exited" --msgbox "Goodbye!" 8 78
+		whiptail --title "Bash Exited" --msgbox "Goodbye" 8 78
 		exit 0
 		;;
 		esac
