@@ -12,6 +12,8 @@
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 ```
 
+注：本项目**可覆盖安装，无需重建伺服器/VPS !**
+
 流量图示(仅供参考):
 ![flowchart](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
 
