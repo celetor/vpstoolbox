@@ -785,14 +785,6 @@ fi
 		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Nginx Path(路径)" 8 78 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
 		done
 	fi
-	if [[ $install_tracker == 1 ]]; then
-		while [[ -z ${trackerpath} ]]; do
-		trackerpath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker Nginx Path(路径)" 8 78 /announce --title "Bittorrent-Tracker path input" 3>&1 1>&2 2>&3)
-		done
-		while [[ -z ${trackerstatuspath} ]]; do
-		trackerstatuspath=$(whiptail --inputbox --nocancel "Bittorrent-Tracker Status Nginx Path(状态路径)" 8 78 /${password1}_tracker --title "Bittorrent-Tracker status path input" 3>&1 1>&2 2>&3)
-		done
-	fi
 	if [[ ${install_aria} == 1 ]]; then
 		ariaport=$(shuf -i 13000-19000 -n 1)
 		while [[ -z ${ariapath} ]]; do
@@ -1735,21 +1727,31 @@ clear
 if [[ $install_tracker = 1 ]]; then
 clear
 colorEcho ${INFO} "Install Bittorrent-tracker ing"
-useradd -r bt_tracker --shell=/usr/sbin/nologin
-npm install -g bittorrent-tracker --quiet
-	cat > '/etc/systemd/system/tracker.service' << EOF
+apt-get install libowfat-dev make git build-essential zlib1g-dev libowfat-dev make git -y
+useradd -r opentracker --shell=/usr/sbin/nologin
+git clone git://erdgeist.org/opentracker opentracker
+cd opentracker
+sed -i 's/#FEATURES+=-DWANT_V6/FEATURES+=-DWANT_V6/' Makefile
+sed -i 's/#FEATURES+=-DWANT_IP_FROM_QUERY_STRING/FEATURES+=-DWANT_IP_FROM_QUERY_STRING/' Makefile
+sed -i 's/#FEATURES+=-DWANT_COMPRESSION_GZIP/FEATURES+=-DWANT_COMPRESSION_GZIP/' Makefile
+sed -i 's/#FEATURES+=-DWANT_IP_FROM_PROXY/FEATURES+=-DWANT_IP_FROM_PROXY/' Makefile
+sed -i 's/#FEATURES+=-DWANT_LOG_NUMWANT/FEATURES+=-DWANT_LOG_NUMWANT/' Makefile
+sed -i 's/#FEATURES+=-DWANT_SYSLOGS/FEATURES+=-DWANT_SYSLOGS/' Makefile
+make
+cp -f opentracker /usr/sbin/opentracker
+  cat > '/etc/systemd/system/tracker.service' << EOF
 [Unit]
 Description=Bittorrent-Tracker Daemon Service
-Documentation=https://github.com/webtorrent/bittorrent-tracker
+Documentation=https://erdgeist.org/arts/software/opentracker/
 Wants=network-online.target
 After=network-online.target nss-lookup.target
 
 [Service]
 Type=simple
-User=bt_tracker
-Group=bt_tracker
+User=opentracker
+Group=opentracker
 RemainAfterExit=yes
-ExecStart=/usr/bin/bittorrent-tracker --trust-proxy
+ExecStart=/usr/sbin/opentracker
 TimeoutStopSec=infinity
 LimitNOFILE=51200
 LimitNPROC=51200
@@ -1762,6 +1764,134 @@ EOF
 systemctl daemon-reload
 systemctl enable tracker
 systemctl start tracker
+cd /usr/share/nginx/
+mkdir tracker
+cd /usr/share/nginx/tracker/
+  cat > 'stat.js' << EOF
+function addDataToPage(xmlDocument, type) {
+  const torrents = xmlDocument.querySelector("torrents count_mutex").textContent;
+  const peers = xmlDocument.querySelector("peers count").textContent;
+  const seeds = xmlDocument.querySelector("seeds count").textContent;
+  const uptime = xmlDocument.querySelector("uptime").textContent;
+
+  document.getElementById("torrents" + type + "Count").textContent = torrents;
+  document.getElementById("peers" + type + "Count").textContent = peers;
+  document.getElementById("seeds" + type + "Count").textContent = seeds;
+  document.getElementById("uptime" + type).textContent = uptime;
+}
+
+function refreshData(type) {
+  const url = "https://${domain}/tracker_stats/stats?mode=everything";
+
+  fetch(url)
+    .then(response => response.text())
+    // https://stackoverflow.com/a/41009103
+    .then(xml => (new window.DOMParser()).parseFromString(xml, "application/xml"))
+    .then(xmlDocument => addDataToPage(xmlDocument, type))
+    .catch(console.error);
+}
+
+refreshData(4);
+refreshData(6);
+
+window.setInterval(function(){
+  refreshData(4);
+  refreshData(6);
+}, 1000);
+EOF
+
+  cat > 'index.html' << EOF
+
+<!doctype html>
+<html lang="zh-tw">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My opentracker</title>
+<meta name="description" content="My bittorrent tracker instance powered by opentracker">
+<link rel="stylesheet" href="/libs/normalize/normalize.css">
+<!-- <link rel="stylesheet" href="/assets/fonts.css"> -->
+
+<style>
+body {
+  margin: 20px;
+  font-family: 'Open Sans', sans-serif;
+}
+</style>
+
+</head>
+<body>
+
+
+<h1>opentracker</h1>
+<hr>
+
+<p>My <a href="https://erdgeist.org/arts/software/opentracker/">erdgeist opentracker</a> instance.</p>
+
+<a name="stats"><h3>Stats (IPv4)</h3>
+
+<ul>
+  <li>Torrents: <code id="torrents4Count"></code></li>
+  <li>Peers: <code id="peers4Count"></code></li>
+  <li>Seeds: <code id="seeds4Count"></code></li>
+
+  <li>Uptime: <code id="uptime4"></code></li>
+</ul>
+
+<p><a href="https://${domain}/tracker_stats/stats?mode=everything">everything</a> | <a href="https://${domain}/tracker_stats/stats?mode=top100">top100</a></p>
+
+<a name="stats6"><h3>Stats (IPv6)</h3>
+
+<ul>
+  <li>Torrents: <code id="torrents6Count"></code></li>
+  <li>Peers: <code id="peers6Count"></code></li>
+  <li>Seeds: <code id="seeds6Count"></code></li>
+
+  <li>Uptime: <code id="uptime6"></code></li>
+</ul>
+
+<p><a href="https://${domain}/tracker_stats/stats?mode=everything">everything</a> | <a href="https://${domain}/tracker_stats/stats?mode=top100">top100</a></p>
+
+<h3>Usage</h3>
+
+<p>Add these trackers to the tracker list of a torrent in your torrent client (such as <a href="https://tixati.com/">tixati</a>, <a href="https://www.qbittorrent.org/">qbittorrent</a>, <a href="https://www.deluge-torrent.org/">deluge</a>):</p>
+
+<pre>
+udp://${domain}:6969/announce
+</pre>
+
+<p>A plaintext HTTP version is also available, but use of it is discouraged. Please don't add both to help keep load lower on the tracker.</p>
+
+<p>Read more about trackers at <a href="https://support.tixati.com/edit%20trackers">Tixati support</a>.</p>
+
+<h3>Other trackers you may want to use</h3>
+
+<pre>
+udp://tracker.iamhansen.xyz:2000/announce
+
+udp://tracker.torrent.eu.org:451/announce
+
+udp://tracker.coppersurfer.tk:6969/announce
+</pre>
+
+<p>Other trackers can be found from <a href="https://github.com/ngosang/trackerslist">here</a>.</p>
+
+<h3>Problems?</h3>
+
+<p>You can contact me at <a href="mailto:admin@${domain}">admin@${domain}</a>.</p>
+<p>For copyright, etc., contact me at <a href="mailto:admin@${domain}">admin@${domain}</a>.</p>
+
+<hr>
+
+<a href="/">${domain}</a>
+
+<script src="./stats.js"></script>
+</body>
+</html>
+EOF
+wget https://raw.githubusercontent.com/necolas/normalize.css/master/normalize.css
+cd
 fi
 clear
 
@@ -3933,18 +4063,15 @@ echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_tracker == 1 ]]; then
-#echo "    location $trackerpath {" >> /etc/nginx/conf.d/default.conf
-#echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
-#echo "        proxy_pass http://127.0.0.1:8000/announce;" >> /etc/nginx/conf.d/default.conf
-#echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
-#echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
-#echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
-#echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-#echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
-#echo "        }" >> /etc/nginx/conf.d/default.conf
-echo "    location $trackerstatuspath {" >> /etc/nginx/conf.d/default.conf
+echo "    location /tracker/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_pass http://127.0.0.1:8000/stats;" >> /etc/nginx/conf.d/default.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "        index index.html;" >> /etc/nginx/conf.d/default.conf
+echo "        alias /usr/share/nginx/tracker/;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "    location /tracker_stats/ {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:6969/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
@@ -4713,9 +4840,9 @@ crontab -l | grep -q '* * * * * bash /root/.trojan/ddns.sh'  && echo 'cron exist
 }
 
 advancedMenu() {
-	Mainmenu=$(whiptail --clear --ok-button "吾意已決 立即安排" --backtitle "Hi,欢迎使用VPSTOOLBOX。使用本脚本工具箱前请先自行完成域名购买以及域名A解析等工作。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 78 5 \
-	"Install/Update" "安裝/更新" \
-	"Benchmark" "效能"\
+	Mainmenu=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。使用本脚本工具箱前请先自行完成域名购买以及域名A解析等工作。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 78 5 \
+	"Install/Update" "安裝/更新/覆盖安装" \
+	"Benchmark" "效能测试"\
 	"Log" "日志" \
 	"Uninstall" "卸載" \
 	"Exit" "退出" 3>&1 1>&2 2>&3)
@@ -4936,17 +5063,13 @@ echo "**************************************************************************
 echo "|                                   Vps Toolbox Result                                    |"
 echo "|               請訪問以下鏈接以獲得結果(Please visit the following link to get the result) |"
 echo "|                       https://$domain/${password1}/                                     |"
-echo "|                 For bug report or more info,please visit the following links            |"
+echo "|                             有關錯誤報告或更多信息，請訪問以下鏈接                         |"
 echo "|            https://github.com/johnrosen1/vpstoolbox or https://t.me/vpstoolbox_chat     |"
 echo "*******************************************************************************************"
 EOF
 		chmod +x /etc/profile.d/mymotd.sh
 		clear
 		echo "" > /etc/motd
-		#if (whiptail --title "Reboot" --yesno "安装成功(success)！ 重启 (reboot) 使配置生效,重新SSH连接后将自动出现结果 (to make the configuration effective)?" 8 78); then
-		#clear
-		#reboot
-		#fi
 		echo "Install complete!"
 		whiptail --title "Success" --msgbox "安装成功(Install Success)" 8 78
 		bash /etc/profile.d/mymotd.sh
