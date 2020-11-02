@@ -4840,7 +4840,7 @@ crontab -l | grep -q '* * * * * bash /root/.trojan/ddns.sh'  && echo 'cron exist
 }
 
 advancedMenu() {
-	Mainmenu=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。使用本脚本工具箱前请先自行完成域名购买以及域名A解析等工作。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 78 5 \
+	Mainmenu=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。有關錯誤報告或更多信息，請訪問以下鏈接: https://github.com/johnrosen1/vpstoolbox 或者 https://t.me/vpstoolbox_chat。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 78 5 \
 	"Install/Update" "安裝/更新/覆盖安装" \
 	"Benchmark" "效能测试"\
 	"Log" "日志" \
