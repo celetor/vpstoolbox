@@ -612,43 +612,27 @@ if [[ ${install_status} == 1 ]]; then
   	fi
 fi
 
-#if above 20g disk , then enable aria2 and filebrowser by default
-
-Download_default="off"
-Mail_default="off"
-
-if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) -gt "20000000" ]]; then
-  Download_default="on"
-fi
-
-if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -gt "2000" ]]; then
-  Mail_default="on"
-fi
-
-whiptail --clear --ok-button "吾意已決 立即執行" --backtitle "Hi,请按空格来选择(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "Please press space to choose" 24 55 16 \
+whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来自行选择。" 24 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
-"1" "Trojan-GFW BBR and Dnscrypt-proxy" on \
-"2" "RSSHUB and TT-RSS" on \
+"1" "Trojan-GFW TCP-BBR Dnscrypt-proxy and Netdata" on \
+"2" "RSSHUB and TT-RSS" off \
 "下载" "Download" off  \
 "3" "Qbittorrent" off \
-"4" "Aria2" ${Download_default} \
-"5" "Filebrowser" ${Download_default} \
-"状态" "Status" off  \
-"6" "Netdata" on \
+"4" "Aria2" off \
+"5" "Filebrowser" off \
 "测速" "Speedtest" off  \
-"7" "Speedtest" on \
+"6" "Speedtest" off \
 "数据库" "Database" off  \
-"8" "MariaDB" on \
+"7" "MariaDB" off \
 "安全" "Security" off  \
-"9" "Fail2ban" on \
+"8" "Fail2ban" off \
 "邮件" "Mail" off  \
-"10" "Mail service" ${Mail_default} \
+"9" "Mail service" off \
 "其他" "Others" off  \
-"11" "Bt-Tracker" off \
-"12" "Trojan-panel" off \
-"13" "DDNS(仅支援Cloudflare)" off \
-"14" "Tor-Relay" off 2>results
+"10" "Bt-Tracker" off \
+"11" "Trojan-panel" off \
+"12" "Tor-Relay" off 2>results
 
 while read choice
 do
@@ -661,7 +645,7 @@ do
 		install_trojan=1
 		install_bbr=1
 		dnsmasq_install=1
-		#install_netdata=1
+		install_netdata=1
 		;;
 		2)
 		install_rsshub=1
@@ -679,37 +663,30 @@ do
 		install_file=1
 		;;
 		6)
-		install_netdata=1
-		;;
-		7)
 		install_speedtest=1
 		install_php=1
 		;;
-		8)
+		7)
 		install_mariadb=1
 		;;
-		9)
+		8)
 		install_fail2ban=1
 		;;
-		10)
+		9)
 		install_mail=1
 		install_php=1
 		install_mariadb=1
 		;;
-		11)
+		10)
 		install_tracker=1
-		install_nodejs=1
 		;;
-		12) 
+		11) 
 		install_tjp=1
 		install_php=1
 		install_nodejs=1
 		install_mariadb=1
 		;;
-		13)
-		install_ddns=1
-		;;
-		14)
+		12)
 		install_tor=1
 		;;
 		*)
@@ -4286,7 +4263,7 @@ sudo systemctl start/restart/status hexo
 ---
 ### Rsshub + TT-RSS
 
-*默认安装: ✅*
+*默认安装: ❎*
 
 > 简介: RSSHUB + Tiny Tiny RSS。
 
@@ -4332,7 +4309,7 @@ Introduction: Trojan multi-user control panel
 
 ### Qbittorrent
 
-*默认安装: ✅*
+*默认安装: ❎*
 
 > 简介: 一款用于 **下载bt资源到你的VPS上** 的软件
 
@@ -4366,7 +4343,7 @@ Introduction: download resources you want to your vps(support bt only but extrem
 
 ### Aria2
 
-*默认安装: ✅*
+*默认安装: ❎*
 
 > 简介: 将任何你想下载的东西(支援http/https/ftp/bt等,不支援emule/ed2k)**下载到你的VPS**上的软件。
 
@@ -4388,7 +4365,7 @@ PS: 推荐使用**Ariang**连接(aria2没有官方web interface!)
 
 ### Filebrowser
 
-*默认安装: ✅*
+*默认安装: ❎*
 
 > 简介: 一款 **从VPS上下载资源(在aria2/qbt下载完成后)到本地网络** 的软件。
 
@@ -4411,7 +4388,7 @@ Introduction: download any resources(formaly downloaded by qbt or aria2) from yo
 
 ### Speedtest
 
-*默认安装: ✅*
+*默认安装: ❎*
 
 > 简介: 一款 **测试本地网络到VPS的延迟及带宽** 的应用。
 
@@ -4507,7 +4484,7 @@ http://$domain:8000/announce
 
 ### MariaDB
 
-*默认安装: ✅*
+*默认安装: ❎*
 
 > 简介: MariaDB 数据库。
 
