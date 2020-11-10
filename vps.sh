@@ -5106,7 +5106,7 @@ fi
 clear
 cd
 initialize
-sshoptimize
+#sshoptimize
 setlanguage
 clear
 advancedMenu
