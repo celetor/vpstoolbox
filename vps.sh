@@ -1037,20 +1037,20 @@ openfirewall(){
 	iptables -F &>/dev/null
 	ip6tables -F &>/dev/null
 	#block
-	iptables -I INPUT -s 36.110.236.68/16 -j DROP &>/dev/null
-	iptables -I INPUT -s 114.114.112.0/21 -j DROP &>/dev/null
-	iptables -I INPUT -s 1.2.4.0/24 -j DROP &>/dev/null
-	iptables -I OUTPUT -d 36.110.236.68/16 -j DROP &>/dev/null
-	iptables -I OUTPUT -d 114.114.112.0/21 -j DROP &>/dev/null
-	iptables -I OUTPUT -d 1.2.4.0/24 -j DROP &>/dev/null
-	iptables -I OUTPUT -p tcp -m tcp --dport 5222 -j DROP &>/dev/null
-	iptables -I OUTPUT -p udp -m udp --dport 5222 -j DROP &>/dev/null
-	iptables -I OUTPUT -p tcp -m tcp --dport 1723 -j DROP &>/dev/null
-	iptables -I OUTPUT -p udp -m udp --dport 1723 -j DROP &>/dev/null
-	iptables -I OUTPUT -p tcp -m tcp --dport 1701 -j DROP &>/dev/null
-	iptables -I OUTPUT -p udp -m udp --dport 1701 -j DROP &>/dev/null
-	iptables -I OUTPUT -p tcp -m tcp --dport 500 -j DROP &>/dev/null
-	iptables -I OUTPUT -p udp -m udp --dport 500 -j DROP &>/dev/null
+	#iptables -I INPUT -s 36.110.236.68/16 -j DROP &>/dev/null
+	#iptables -I INPUT -s 114.114.112.0/21 -j DROP &>/dev/null
+	#iptables -I INPUT -s 1.2.4.0/24 -j DROP &>/dev/null
+	#iptables -I OUTPUT -d 36.110.236.68/16 -j DROP &>/dev/null
+	#iptables -I OUTPUT -d 114.114.112.0/21 -j DROP &>/dev/null
+	#iptables -I OUTPUT -d 1.2.4.0/24 -j DROP &>/dev/null
+	#iptables -I OUTPUT -p tcp -m tcp --dport 5222 -j DROP &>/dev/null
+	#iptables -I OUTPUT -p udp -m udp --dport 5222 -j DROP &>/dev/null
+	#iptables -I OUTPUT -p tcp -m tcp --dport 1723 -j DROP &>/dev/null
+	#iptables -I OUTPUT -p udp -m udp --dport 1723 -j DROP &>/dev/null
+	#iptables -I OUTPUT -p tcp -m tcp --dport 1701 -j DROP &>/dev/null
+	#iptables -I OUTPUT -p udp -m udp --dport 1701 -j DROP &>/dev/null
+	#iptables -I OUTPUT -p tcp -m tcp --dport 500 -j DROP &>/dev/null
+	#iptables -I OUTPUT -p udp -m udp --dport 500 -j DROP &>/dev/null
 	#keep connected
 	iptables -A INPUT -p tcp -m tcp --tcp-flags ALL FIN,PSH,URG -j DROP &>/dev/null
 	iptables -A INPUT -p tcp -m tcp --tcp-flags SYN,FIN SYN,FIN -j DROP &>/dev/null
