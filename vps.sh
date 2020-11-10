@@ -1052,16 +1052,16 @@ openfirewall(){
 	#iptables -I OUTPUT -p tcp -m tcp --dport 500 -j DROP &>/dev/null
 	#iptables -I OUTPUT -p udp -m udp --dport 500 -j DROP &>/dev/null
 	#keep connected
-	iptables -A INPUT -p tcp -m tcp --tcp-flags ALL FIN,PSH,URG -j DROP &>/dev/null
-	iptables -A INPUT -p tcp -m tcp --tcp-flags SYN,FIN SYN,FIN -j DROP &>/dev/null
-	iptables -A INPUT -p tcp -m conntrack --ctstate NEW -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -j DROP &>/dev/null
-	iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT &>/dev/null
-	ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT &>/dev/null
+	#iptables -A INPUT -p tcp -m tcp --tcp-flags ALL FIN,PSH,URG -j DROP &>/dev/null
+	#iptables -A INPUT -p tcp -m tcp --tcp-flags SYN,FIN SYN,FIN -j DROP &>/dev/null
+	#iptables -A INPUT -p tcp -m conntrack --ctstate NEW -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -j DROP &>/dev/null
+	#iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT &>/dev/null
+	#ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT &>/dev/null
 	#icmp
-	iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT &>/dev/null
-	iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT &>/dev/null
-	ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT &>/dev/null
-	ip6tables -A OUTPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT &>/dev/null
+	#iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT &>/dev/null
+	#iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT &>/dev/null
+	#ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT &>/dev/null
+	#ip6tables -A OUTPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT &>/dev/null
 	#tcp
 	iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT  &>/dev/null #HTTPS
 	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT &>/dev/null #HTTP
@@ -1087,10 +1087,10 @@ openfirewall(){
 		ip6tables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT &>/dev/null
 	fi
 	if [[ $install_tracker == 1 ]]; then
-		iptables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport 8000 -j ACCEPT &>/dev/null
-		iptables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p udp -m udp --dport 8000 -j ACCEPT &>/dev/null
+		iptables -A INPUT -p tcp -m tcp --dport 6969 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p tcp -m tcp --dport 6969 -j ACCEPT &>/dev/null
+		iptables -A INPUT -p udp -m udp --dport 6969 -j ACCEPT &>/dev/null
+		ip6tables -A INPUT -p udp -m udp --dport 6969 -j ACCEPT &>/dev/null
 	fi
 	if [[ $install_aria == 1 ]]; then
 		iptables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT &>/dev/null
