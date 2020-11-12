@@ -21,7 +21,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 #### 隐私声明:
 
 1. 此项目使用MIT开源协议，**欢迎PR**.
-2. Ip Information is just an indispensable part of this project, all ip information comes from ipinfo.io,no spam related.
+2. 所有ip信息皆来自ipinfo.io,仅用于验证域名解析是否成功，无其他作用。
 
 #### 友情提示:
 1. 请 **以root/sudoer身份运行**(sudo -i)
