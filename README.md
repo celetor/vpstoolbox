@@ -2,7 +2,7 @@
 
 # VPSTOOLBOX
 
-超级Linux VPS脚本工具箱，**一键安装Trojan-GFW代理,Hexo博客,RSS,邮件,Qbittorrent,Aria2,Netdata等應用程式**。
+超级Linux VPS脚本工具箱，**支援一键安装Trojan-GFW代理,Hexo博客,RSS,邮件,Qbittorrent,Aria2,Netdata等應用程式**。
 
 [![Gitter](https://badges.gitter.im/vpstoolbox/community.svg)](https://gitter.im/vpstoolbox/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Join our Discord server!](https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gg/y5KUxfYZ)
