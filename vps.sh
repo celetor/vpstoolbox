@@ -31,13 +31,13 @@ set +e
 
 #System Requirement
 if [[ $(id -u) != 0 ]]; then
-	echo Please run this script as root or sudoer.
-	exit 1
+  echo Please run this script as root or sudoer.
+  exit 1
 fi
 
 if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
-	echo Please run this script on x86_64 machine.
-	exit 1
+  echo Please run this script on x86_64 machine.
+  exit 1
 fi
 
 #if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -le "400" ]]; then
@@ -77,9 +77,9 @@ rm -rf /usr/local/qcloud
 rm -rf /usr/local/telescope
 
 colorEcho(){
-	set +e
-	COLOR=$1
-	echo -e "\033[${COLOR}${@:2}\033[0m"
+  set +e
+  COLOR=$1
+  echo -e "\033[${COLOR}${@:2}\033[0m"
 }
 
 #Remove Aliyun aegis
@@ -135,11 +135,11 @@ rm -rf /usr/local/cloudmonitor
 rm -rf /usr/sbin/aliyun*
 rm -rf /sbin/ecs_mq_rps_rfs
 for ((var=2; var<=5; var++)) do
-	if [ -d "/etc/rc${var}.d/" ];then
-		rm -rf "/etc/rc${var}.d/S80aegis"
-	elif [ -d "/etc/rc.d/rc${var}.d" ];then
-		rm -rf "/etc/rc.d/rc${var}.d/S80aegis"
-	fi
+  if [ -d "/etc/rc${var}.d/" ];then
+    rm -rf "/etc/rc${var}.d/S80aegis"
+  elif [ -d "/etc/rc.d/rc${var}.d" ];then
+    rm -rf "/etc/rc.d/rc${var}.d/S80aegis"
+  fi
 done
 apt-get purge sysstat exim4 chrony aliyun-assist -y
 systemctl daemon-reload
@@ -187,21 +187,21 @@ fi
 
 #Set system language
 setlanguage(){
-	set +e
-	if [[ ! -d /root/.trojan/ ]]; then
-		mkdir /root/.trojan/
-		mkdir /etc/certs/
-	fi
-	if [[ -f /root/.trojan/language.json ]]; then
-		language="$( jq -r '.language' "/root/.trojan/language.json" )"
-	fi
-	while [[ -z $language ]]; do
-	export LANGUAGE="C.UTF-8"
-	export LANG="C.UTF-8"
-	export LC_ALL="C.UTF-8"
-	if (whiptail --title "System Language Setting" --yes-button "中文" --no-button "English" --yesno "使用中文或英文(Use Chinese or English)?" 8 78); then
-	chattr -i /etc/locale.gen
-	cat > '/etc/locale.gen' << EOF
+  set +e
+  if [[ ! -d /root/.trojan/ ]]; then
+    mkdir /root/.trojan/
+    mkdir /etc/certs/
+  fi
+  if [[ -f /root/.trojan/language.json ]]; then
+    language="$( jq -r '.language' "/root/.trojan/language.json" )"
+  fi
+  while [[ -z $language ]]; do
+  export LANGUAGE="C.UTF-8"
+  export LANG="C.UTF-8"
+  export LC_ALL="C.UTF-8"
+  if (whiptail --title "System Language Setting" --yes-button "中文" --no-button "English" --yesno "使用中文或英文(Use Chinese or English)?" 8 78); then
+  chattr -i /etc/locale.gen
+  cat > '/etc/locale.gen' << EOF
 zh_TW.UTF-8 UTF-8
 en_US.UTF-8 UTF-8
 EOF
@@ -209,20 +209,20 @@ language="cn"
 locale-gen
 update-locale
 chattr -i /etc/default/locale
-	cat > '/etc/default/locale' << EOF
+  cat > '/etc/default/locale' << EOF
 LANGUAGE="zh_TW.UTF-8"
 LANG="zh_TW.UTF-8"
 LC_ALL="zh_TW.UTF-8"
 EOF
 #apt-get install manpages-zh -y
-	cat > '/root/.trojan/language.json' << EOF
+  cat > '/root/.trojan/language.json' << EOF
 {
   "language": "$language"
 }
 EOF
-	else
-	chattr -i /etc/locale.gen
-	cat > '/etc/locale.gen' << EOF
+  else
+  chattr -i /etc/locale.gen
+  cat > '/etc/locale.gen' << EOF
 zh_TW.UTF-8 UTF-8
 en_US.UTF-8 UTF-8
 EOF
@@ -230,12 +230,12 @@ language="en"
 locale-gen
 update-locale
 chattr -i /etc/default/locale
-	cat > '/etc/default/locale' << EOF
+  cat > '/etc/default/locale' << EOF
 LANGUAGE="en_US.UTF-8"
 LANG="en_US.UTF-8"
 LC_ALL="en_US.UTF-8"
 EOF
-	cat > '/root/.trojan/language.json' << EOF
+  cat > '/root/.trojan/language.json' << EOF
 {
   "language": "$language"
 }
@@ -246,7 +246,7 @@ if [[ $language == "cn" ]]; then
 export LANGUAGE="zh_TW.UTF-8"
 export LANG="zh_TW.UTF-8"
 export LC_ALL="zh_TW.UTF-8"
-	else
+  else
 export LANGUAGE="en_US.UTF-8"
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
@@ -255,35 +255,35 @@ fi
 
 #install acme.sh
 installacme(){
-	set +e
-	curl -s https://get.acme.sh | sh
-	if [[ $? != 0 ]]; then
-		colorEcho ${ERROR} "安装acme.sh失败，请自行检查网络连接及DNS配置!"
-		colorEcho ${ERROR} "Install acme.sh fail,please check your internet availability!!!"
-		exit 1
-	fi
-	~/.acme.sh/acme.sh --upgrade --auto-upgrade
+  set +e
+  curl -s https://get.acme.sh | sh
+  if [[ $? != 0 ]]; then
+    colorEcho ${ERROR} "安装acme.sh失败，请自行检查网络连接及DNS配置!"
+    colorEcho ${ERROR} "Install acme.sh fail,please check your internet availability!!!"
+    exit 1
+  fi
+  ~/.acme.sh/acme.sh --upgrade --auto-upgrade
 }
 
 #Check if domain is resolved properly
 isresolved(){
-	if [ $# = 2 ]
-	then
-		myip2=$2
-	else
-		myip2=`curl -s http://dynamicdns.park-your-domain.com/getip`
-	fi
-		ips=(`nslookup $1 1.1.1.1 | grep -v 1.1.1.1 | grep Address | cut -d " " -f 2`)
-		for ip in "${ips[@]}"
-		do
-				if [ $ip == $myip ] || [ $ip == $myipv6 ] || [[ $ip == $localip ]]
-				then
-						return 0
-				else
-						continue
-				fi
-		done
-		return 1
+  if [ $# = 2 ]
+  then
+    myip2=$2
+  else
+    myip2=`curl -s http://dynamicdns.park-your-domain.com/getip`
+  fi
+    ips=(`nslookup $1 1.1.1.1 | grep -v 1.1.1.1 | grep Address | cut -d " " -f 2`)
+    for ip in "${ips[@]}"
+    do
+        if [ $ip == $myip ] || [ $ip == $myipv6 ] || [[ $ip == $localip ]]
+        then
+            return 0
+        else
+            continue
+        fi
+    done
+    return 1
 }
 
 #Issue Let's Encrypt Certificate by http
@@ -509,7 +509,7 @@ SuccessExitStatus=0 2
 EOF
         ;;
         http)
-		upgradesystem
+    upgradesystem
         httpissue
         ;;
         *)
@@ -558,8 +558,8 @@ cd
 
 #Set json file after installation
 prasejson(){
-	set +e
-	cat > '/root/.trojan/config.json' << EOF
+  set +e
+  cat > '/root/.trojan/config.json' << EOF
 {
   "installed": "1",
   "domain": "$domain",
@@ -579,7 +579,7 @@ EOF
 
 #Read var from json
 readconfig(){
-	domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
+  domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
     password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
     password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
     qbtpath="$( jq -r '.qbtpath' "/root/.trojan/config.json" )"
@@ -594,9 +594,9 @@ readconfig(){
 
 #User input
 userinput(){
-	set +e
+  set +e
 if [ ! -f /root/.trojan/config.json ]; then
-	cat > '/root/.trojan/config.json' << EOF
+  cat > '/root/.trojan/config.json' << EOF
 {
   "installed": "0"
 }
@@ -607,9 +607,9 @@ install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
 
 clear
 if [[ ${install_status} == 1 ]]; then
-	if (whiptail --title "Installed" --yesno "已安装，是否读取先前的配置?(Installed,read configuration?)" 8 78); then
-  		readconfig
-  	fi
+  if (whiptail --title "Installed" --yesno "已安装，是否读取先前的配置?(Installed,read configuration?)" 8 78); then
+      readconfig
+    fi
 fi
 
 whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来自行选择。" 24 65 16 \
@@ -636,76 +636,76 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择(P
 
 while read choice
 do
-	case $choice in
-		Back) 
-		advancedMenu
-		break
-		;;
-		1)
-		install_trojan=1
-		install_bbr=1
-		dnsmasq_install=1
-		install_netdata=1
-		;;
-		2)
-		install_rsshub=1
-		install_docker=1
-		install_php=1
-		install_mariadb=1
-		;;
-		3)
-		install_qbt=1
-		;;
-		4)
-		install_aria=1
-		;;
-		5)
-		install_file=1
-		;;
-		6)
-		install_speedtest=1
-		install_php=1
-		;;
-		7)
-		install_mariadb=1
-		;;
-		8)
-		install_fail2ban=1
-		;;
-		9)
-		install_mail=1
-		install_php=1
-		install_mariadb=1
-		;;
-		10)
-		install_tracker=1
-		;;
-		11) 
-		install_tjp=1
-		install_php=1
-		install_nodejs=1
-		install_mariadb=1
-		;;
-		12)
-		install_tor=1
-		;;
-		*)
-		;;
-	esac
+  case $choice in
+    Back) 
+    advancedMenu
+    break
+    ;;
+    1)
+    install_trojan=1
+    install_bbr=1
+    dnsmasq_install=1
+    install_netdata=1
+    ;;
+    2)
+    install_rsshub=1
+    install_docker=1
+    install_php=1
+    install_mariadb=1
+    ;;
+    3)
+    install_qbt=1
+    ;;
+    4)
+    install_aria=1
+    ;;
+    5)
+    install_file=1
+    ;;
+    6)
+    install_speedtest=1
+    install_php=1
+    ;;
+    7)
+    install_mariadb=1
+    ;;
+    8)
+    install_fail2ban=1
+    ;;
+    9)
+    install_mail=1
+    install_php=1
+    install_mariadb=1
+    ;;
+    10)
+    install_tracker=1
+    ;;
+    11) 
+    install_tjp=1
+    install_php=1
+    install_nodejs=1
+    install_mariadb=1
+    ;;
+    12)
+    install_tor=1
+    ;;
+    *)
+    ;;
+  esac
 done < results
 
 system_upgrade=1
 if [[ ${system_upgrade} == 1 ]]; then
-	if [[ $(lsb_release -cs) == jessie ]]; then
-		if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 9?(recommended)" 8 78); then
-			debian9_install=1
-		fi
-	fi
-	if [[ $(lsb_release -cs) == xenial ]]; then
-		if (whiptail --title "System Upgrade" --yesno "Upgrade to Ubuntu 18.04(recommended)?" 8 78); then
-			ubuntu18_install=1
-		fi
-	fi
+  if [[ $(lsb_release -cs) == jessie ]]; then
+    if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 9?(recommended)" 8 78); then
+      debian9_install=1
+    fi
+  fi
+  if [[ $(lsb_release -cs) == xenial ]]; then
+    if (whiptail --title "System Upgrade" --yesno "Upgrade to Ubuntu 18.04(recommended)?" 8 78); then
+      ubuntu18_install=1
+    fi
+  fi
 fi
 
 #if [[ ${install_mail} == 1 ]]; then
@@ -718,9 +718,9 @@ domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你�
 colorEcho ${INFO} "Checking if domain is vaild."
 host ${domain}
 if [[ $? != 0 ]]; then
-	whiptail --title "Warning" --msgbox "Warning: Invaild Domain" 8 78
-	domain=""
-	clear
+  whiptail --title "Warning" --msgbox "Warning: Invaild Domain" 8 78
+  domain=""
+  clear
 fi
 done
 clear
@@ -729,98 +729,98 @@ echo "${domain}" > /etc/hostname
 rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
 rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
 if [[ ${install_trojan} = 1 ]]; then
-	while [[ -z ${password1} ]]; do
-password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码,请勿添加特殊符号)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
-#if [[ -z ${password1} ]]; then
-#	password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
-#	fi
+  while [[ -z ${password1} ]]; do
+password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码,***请勿添加特殊符号***)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+if [[ -z ${password1} ]]; then
+password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
+fi
 done
 while [[ -z ${password2} ]]; do
 password2=$(whiptail --passwordbox --nocancel "Trojan-GFW Password Two(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password2} ]]; then
-	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
-	fi
+  password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
+  fi
 done
 fi
 if [[ ${password1} == ${password2} ]]; then
-	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
-	fi
+  password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
+  fi
 if [[ -z ${password1} ]]; then
-	password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
-	fi
+  password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
+  fi
 if [[ -z ${password2} ]]; then
-	password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
-	fi
-	if [[ ${install_mail} == 1 ]]; then
-	mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername(邮箱用户名)" 8 78 admin --title "Mail user input" 3>&1 1>&2 2>&3)
-	if [[ -z ${mailuser} ]]; then
-	mailuser=$(head /dev/urandom | tr -dc a-z | head -c 4 ; echo '' )
-	fi
+  password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
+  fi
+  if [[ ${install_mail} == 1 ]]; then
+  mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername(邮箱用户名)" 8 78 admin --title "Mail user input" 3>&1 1>&2 2>&3)
+  if [[ -z ${mailuser} ]]; then
+  mailuser=$(head /dev/urandom | tr -dc a-z | head -c 4 ; echo '' )
+  fi
 fi
-	if [[ $install_qbt = 1 ]]; then
-		while [[ -z $qbtpath ]]; do
-		qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Nginx Path(路径)" 8 78 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
-		done
-	fi
-	if [[ ${install_aria} == 1 ]]; then
-		ariaport=$(shuf -i 13000-19000 -n 1)
-		while [[ -z ${ariapath} ]]; do
-		ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Nginx Path(路径)" 8 78 /${password1}_aria2/ --title "Aria2 path input" 3>&1 1>&2 2>&3)
-		done
-		while [[ -z $ariapasswd ]]; do
-		ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token(密码)" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
-		if [[ -z ${ariapasswd} ]]; then
-		ariapasswd=$(head /dev/urandom | tr -dc 0-9 | head -c 10 ; echo '' )
-		fi
-		done
-	fi
-	if [[ ${install_file} = 1 ]]; then
-		while [[ -z ${filepath} ]]; do
-		filepath=$(whiptail --inputbox --nocancel "Filebrowser Nginx 路径" 8 78 /${password1}_file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
-		done
-	fi
-	if [[ ${install_netdata} = 1 ]]; then
-		while [[ -z ${netdatapath} ]]; do
-		netdatapath=$(whiptail --inputbox --nocancel "Netdata Nginx 路径" 8 78 /${password1}_netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
-		done
-	fi
-	if [[ ${install_tor} = 1 ]]; then
-		while [[ -z ${tor_name} ]]; do
-		tor_name=$(whiptail --inputbox --nocancel "Tor nickname" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
-		if [[ -z ${tor_name} ]]; then
-		tor_name="myrelay"
-	fi
-	done
-	fi
+  if [[ $install_qbt = 1 ]]; then
+    while [[ -z $qbtpath ]]; do
+    qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Nginx Path(路径)" 8 78 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+    done
+  fi
+  if [[ ${install_aria} == 1 ]]; then
+    ariaport=$(shuf -i 13000-19000 -n 1)
+    while [[ -z ${ariapath} ]]; do
+    ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Nginx Path(路径)" 8 78 /${password1}_aria2/ --title "Aria2 path input" 3>&1 1>&2 2>&3)
+    done
+    while [[ -z $ariapasswd ]]; do
+    ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token(密码)" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+    if [[ -z ${ariapasswd} ]]; then
+    ariapasswd=$(head /dev/urandom | tr -dc 0-9 | head -c 10 ; echo '' )
+    fi
+    done
+  fi
+  if [[ ${install_file} = 1 ]]; then
+    while [[ -z ${filepath} ]]; do
+    filepath=$(whiptail --inputbox --nocancel "Filebrowser Nginx 路径" 8 78 /${password1}_file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+    done
+  fi
+  if [[ ${install_netdata} = 1 ]]; then
+    while [[ -z ${netdatapath} ]]; do
+    netdatapath=$(whiptail --inputbox --nocancel "Netdata Nginx 路径" 8 78 /${password1}_netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
+    done
+  fi
+  if [[ ${install_tor} = 1 ]]; then
+    while [[ -z ${tor_name} ]]; do
+    tor_name=$(whiptail --inputbox --nocancel "Tor nickname" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
+    if [[ -z ${tor_name} ]]; then
+    tor_name="myrelay"
+  fi
+  done
+  fi
 }
 ###############OS detect####################
 initialize(){
 set +e
 colorEcho ${INFO} "初始化中(initializing)"
  if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
-	dist=ubuntu
-	apt-get update -q
-	apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
+  dist=ubuntu
+  apt-get update -q
+  apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
-	dist=debian
-	apt-get update -q
-	apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
+  dist=debian
+  apt-get update -q
+  apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
  else
-	whiptail --title "OS not supported(操作系统不支援)" --msgbox "Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)" 8 78
+  whiptail --title "OS not supported(操作系统不支援)" --msgbox "Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)" 8 78
   echo "OS not supported(操作系统不支援),Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)"
-	exit 1;
+  exit 1;
  fi
 }
 
 #Run apt upgrade
 upgradesystem(){
-	set +e
+  set +e
 if [[ $(lsb_release -cs) == stretch ]]; then
-	debian10_install=1
+  debian10_install=1
 fi
  if [[ $dist == ubuntu ]]; then
-	if [[ $ubuntu18_install == 1 ]]; then
-		cat > '/etc/apt/sources.list' << EOF
+  if [[ $ubuntu18_install == 1 ]]; then
+    cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
 #                            OFFICIAL UBUNTU REPOS                             #
 #------------------------------------------------------------------------------#
@@ -836,18 +836,18 @@ deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe
 #deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
 EOF
 fi
-	apt-get update --fix-missing
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y'
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
-	clear
+  apt-get update --fix-missing
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y'
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
+  clear
  elif [[ $dist == debian ]]; then
-	apt-get update --fix-missing
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
-	if [[ ${debian10_install} == 1 ]]; then
-		cat > '/etc/apt/sources.list' << EOF
+  apt-get update --fix-missing
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
+  if [[ ${debian10_install} == 1 ]]; then
+    cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
 #                   OFFICIAL DEBIAN REPOS                    
 #------------------------------------------------------------------------------#
@@ -866,8 +866,8 @@ deb http://ftp.debian.org/debian buster-backports main
 #deb-src http://ftp.debian.org/debian buster-backports main
 EOF
 fi
-	if [[ ${debian9_install} == 1 ]]; then
-		cat > '/etc/apt/sources.list' << EOF
+  if [[ ${debian9_install} == 1 ]]; then
+    cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
 #                   OFFICIAL DEBIAN REPOS                    
 #------------------------------------------------------------------------------#
@@ -886,21 +886,21 @@ deb http://ftp.debian.org/debian stretch-backports main
 #deb-src http://ftp.debian.org/debian stretch-backports main
 EOF
 fi
-	apt-get update --fix-missing
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y'
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
-	clear
+  apt-get update --fix-missing
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y'
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
+  clear
  else
-	clear
-	TERM=ansi whiptail --title "error can't upgrade system" --infobox "error can't upgrade system" 8 78
-	exit 1;
+  clear
+  TERM=ansi whiptail --title "error can't upgrade system" --infobox "error can't upgrade system" 8 78
+  exit 1;
  fi
 
 if [[ -f /etc/apt/sources.list.d/nginx.list ]]; then
-	cat > '/etc/apt/sources.list.d/nginx.list' << EOF
+  cat > '/etc/apt/sources.list.d/nginx.list' << EOF
 deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 #deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
@@ -910,21 +910,21 @@ fi
 
 #Install Nginx
 installnginx(){
-	clear
-	colorEcho ${INFO} "Install Nginx ing"
-	apt-get install gnupg2 ca-certificates lsb-release -y
-	touch /etc/apt/sources.list.d/nginx.list
-	cat > '/etc/apt/sources.list.d/nginx.list' << EOF
+  clear
+  colorEcho ${INFO} "Install Nginx ing"
+  apt-get install gnupg2 ca-certificates lsb-release -y
+  touch /etc/apt/sources.list.d/nginx.list
+  cat > '/etc/apt/sources.list.d/nginx.list' << EOF
 deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 #deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
-	curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
-	apt-key fingerprint ABF5BD827BD9BF62
-	apt-get purge nginx -qq -y
-	apt-get update -q
-	#apt-get install nginx -q -y
-	sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | apt-get install nginx -q -y'
-	cat > '/lib/systemd/system/nginx.service' << EOF
+  curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
+  apt-key fingerprint ABF5BD827BD9BF62
+  apt-get purge nginx -qq -y
+  apt-get update -q
+  #apt-get install nginx -q -y
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | apt-get install nginx -q -y'
+  cat > '/lib/systemd/system/nginx.service' << EOF
 [Unit]
 Description=The NGINX HTTP and reverse proxy server
 Before=netdata.service trojan.service
@@ -950,7 +950,7 @@ systemctl daemon-reload
 systemctl enable nginx
 mkdir /usr/share/nginx/cache
 mkdir /usr/share/nginx/php_cache
-	cat > '/etc/nginx/nginx.conf' << EOF
+  cat > '/etc/nginx/nginx.conf' << EOF
 user nginx;
 worker_processes auto;
 
@@ -958,63 +958,63 @@ error_log /var/log/nginx/error.log warn;
 pid /run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 events {
-	worker_connections 51200;
-	use epoll;
-	multi_accept on;
+  worker_connections 51200;
+  use epoll;
+  multi_accept on;
 }
 
 http {
 
-	proxy_cache_path /usr/share/nginx/cache levels=1:2 keys_zone=my_cache:10m max_size=100m inactive=60m use_temp_path=off;
-	proxy_cache_valid 200 302 10m;
-	proxy_cache_valid 404      1m;
-	proxy_cache_bypass \$http_pragma    \$http_authorization    \$http_cache_control;
+  proxy_cache_path /usr/share/nginx/cache levels=1:2 keys_zone=my_cache:10m max_size=100m inactive=60m use_temp_path=off;
+  proxy_cache_valid 200 302 10m;
+  proxy_cache_valid 404      1m;
+  proxy_cache_bypass \$http_pragma    \$http_authorization    \$http_cache_control;
   proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
   proxy_cache_revalidate on;
   proxy_cache_background_update on;
   proxy_cache_lock on;
-	proxy_cache my_cache;
+  proxy_cache my_cache;
 
-	fastcgi_cache_path /usr/share/nginx/php_cache levels=1:2 keys_zone=phpcache:10m max_size=100m inactive=60m use_temp_path=off;
-	fastcgi_cache_valid 200 302 10m;
-	fastcgi_cache_valid 404      1m;
-	fastcgi_cache_bypass \$http_pragma    \$http_authorization    \$http_cache_control;
+  fastcgi_cache_path /usr/share/nginx/php_cache levels=1:2 keys_zone=phpcache:10m max_size=100m inactive=60m use_temp_path=off;
+  fastcgi_cache_valid 200 302 10m;
+  fastcgi_cache_valid 404      1m;
+  fastcgi_cache_bypass \$http_pragma    \$http_authorization    \$http_cache_control;
   fastcgi_cache_use_stale error timeout updating invalid_header http_500 http_503;
   fastcgi_cache_revalidate on;
   fastcgi_cache_background_update on;
   fastcgi_cache_lock on;
-	fastcgi_cache phpcache;
-	fastcgi_cache_key "\$scheme\$proxy_host\$request_uri";
+  fastcgi_cache phpcache;
+  fastcgi_cache_key "\$scheme\$proxy_host\$request_uri";
 
-	autoindex_exact_size off;
-	http2_push_preload on;
-	aio threads;
-	charset UTF-8;
-	tcp_nodelay on;
-	tcp_nopush on;
-	server_tokens off;
-	
-	proxy_intercept_errors on;
-	proxy_socket_keepalive off;
-	proxy_http_version 1.1;
-	proxy_ssl_protocols TLSv1.2 TLSv1.3;
+  autoindex_exact_size off;
+  http2_push_preload on;
+  aio threads;
+  charset UTF-8;
+  tcp_nodelay on;
+  tcp_nopush on;
+  server_tokens off;
+  
+  proxy_intercept_errors on;
+  proxy_socket_keepalive off;
+  proxy_http_version 1.1;
+  proxy_ssl_protocols TLSv1.2 TLSv1.3;
 
-	include /etc/nginx/mime.types;
-	default_type application/octet-stream;
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
 
-	access_log /var/log/nginx/access.log;
+  access_log /var/log/nginx/access.log;
 
-	log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
-		'\$status \$body_bytes_sent "\$http_referer" '
-		'"\$http_user_agent" "\$http_x_forwarded_for"';
+  log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
+    '\$status \$body_bytes_sent "\$http_referer" '
+    '"\$http_user_agent" "\$http_x_forwarded_for"';
 
-	sendfile on;
-	gzip on;
-	gzip_proxied any;
-	gzip_types *;
-	gzip_comp_level 9;
+  sendfile on;
+  gzip on;
+  gzip_proxied any;
+  gzip_types *;
+  gzip_comp_level 9;
 
-	include /etc/nginx/conf.d/*.conf;
+  include /etc/nginx/conf.d/*.conf;
 }
 EOF
 clear
@@ -1024,124 +1024,124 @@ timedatectl set-ntp off
 
 #Open ports
 openfirewall(){
-	set +e
-	colorEcho ${INFO} "设置 firewall"
-	#policy
-	iptables -P INPUT ACCEPT &>/dev/null
-	iptables -P FORWARD ACCEPT &>/dev/null
-	iptables -P OUTPUT ACCEPT &>/dev/null
-	ip6tables -P INPUT ACCEPT &>/dev/null
-	ip6tables -P FORWARD ACCEPT &>/dev/null
-	ip6tables -P OUTPUT ACCEPT &>/dev/null
-	#flash
-	iptables -F &>/dev/null
-	ip6tables -F &>/dev/null
-	#block
-	#iptables -I INPUT -s 36.110.236.68/16 -j DROP &>/dev/null
-	#iptables -I INPUT -s 114.114.112.0/21 -j DROP &>/dev/null
-	#iptables -I INPUT -s 1.2.4.0/24 -j DROP &>/dev/null
-	#iptables -I OUTPUT -d 36.110.236.68/16 -j DROP &>/dev/null
-	#iptables -I OUTPUT -d 114.114.112.0/21 -j DROP &>/dev/null
-	#iptables -I OUTPUT -d 1.2.4.0/24 -j DROP &>/dev/null
-	#iptables -I OUTPUT -p tcp -m tcp --dport 5222 -j DROP &>/dev/null
-	#iptables -I OUTPUT -p udp -m udp --dport 5222 -j DROP &>/dev/null
-	#iptables -I OUTPUT -p tcp -m tcp --dport 1723 -j DROP &>/dev/null
-	#iptables -I OUTPUT -p udp -m udp --dport 1723 -j DROP &>/dev/null
-	#iptables -I OUTPUT -p tcp -m tcp --dport 1701 -j DROP &>/dev/null
-	#iptables -I OUTPUT -p udp -m udp --dport 1701 -j DROP &>/dev/null
-	#iptables -I OUTPUT -p tcp -m tcp --dport 500 -j DROP &>/dev/null
-	#iptables -I OUTPUT -p udp -m udp --dport 500 -j DROP &>/dev/null
-	#keep connected
-	#iptables -A INPUT -p tcp -m tcp --tcp-flags ALL FIN,PSH,URG -j DROP &>/dev/null
-	#iptables -A INPUT -p tcp -m tcp --tcp-flags SYN,FIN SYN,FIN -j DROP &>/dev/null
-	#iptables -A INPUT -p tcp -m conntrack --ctstate NEW -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -j DROP &>/dev/null
-	#iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT &>/dev/null
-	#ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT &>/dev/null
-	#icmp
-	#iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT &>/dev/null
-	#iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT &>/dev/null
-	#ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT &>/dev/null
-	#ip6tables -A OUTPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT &>/dev/null
-	#tcp
-	iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT  &>/dev/null #HTTPS
-	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT &>/dev/null #HTTP
-	#udp
-	iptables -A INPUT -p udp -m udp --dport 443 -j ACCEPT &>/dev/null
-	iptables -A INPUT -p udp -m udp --dport 80 -j ACCEPT &>/dev/null
-	iptables -A OUTPUT -j ACCEPT &>/dev/null
-	#iptables -I FORWARD -j DROP
-	#tcp6
-	ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT &>/dev/null #HTTPSv6
-	ip6tables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT &>/dev/null #HTTPv6
-	#udp6
-	ip6tables -A INPUT -p udp -m udp --dport 443 -j ACCEPT &>/dev/null
-	ip6tables -A INPUT -p udp -m udp --dport 80 -j ACCEPT &>/dev/null
-	ip6tables -A OUTPUT -j ACCEPT &>/dev/null
-	#ip6tables -I FORWARD -j DROP
-	if [[ $install_qbt == 1 ]]; then
-		iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 8080 -j DROP &>/dev/null
-		iptables -A INPUT ! -s 127.0.0.1 -p udp -m udp --dport 8080 -j DROP &>/dev/null
-		iptables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT &>/dev/null
-		iptables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT &>/dev/null
-	fi
-	if [[ $install_tracker == 1 ]]; then
-		iptables -A INPUT -p tcp -m tcp --dport 6969 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport 6969 -j ACCEPT &>/dev/null
-		iptables -A INPUT -p udp -m udp --dport 6969 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p udp -m udp --dport 6969 -j ACCEPT &>/dev/null
-	fi
-	if [[ $install_aria == 1 ]]; then
-		iptables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT &>/dev/null
-		iptables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT &>/dev/null
-	fi
-	if [[ $install_netdata == 1 ]]; then
-		iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 19999 -j DROP &>/dev/null
-		iptables -A INPUT ! -s 127.0.0.1 -p udp -m udp --dport 19999 -j DROP &>/dev/null
-	fi
-	if [[ ${install_mail} == 1 ]]; then
-		iptables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT &>/dev/null
-		iptables -A INPUT -p udp -m udp --dport 25 -j ACCEPT &>/dev/null
-		iptables -A INPUT -p tcp -m tcp --dport 143 -j ACCEPT &>/dev/null
-		iptables -A INPUT -p tcp -m tcp --dport 465 -j ACCEPT &>/dev/null
-		iptables -A INPUT -p tcp -m tcp --dport 587 -j ACCEPT &>/dev/null
-		iptables -A INPUT -p tcp -m tcp --dport 993 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p udp -m udp --dport 25 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport 143 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport 465 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport 587 -j ACCEPT &>/dev/null
-		ip6tables -A INPUT -p tcp -m tcp --dport 993 -j ACCEPT &>/dev/null
-	fi
-	if [[ ${dist} == debian ]]; then
-	apt-get install iptables-persistent -qq -y > /dev/null
-	iptables-save > /etc/iptables/rules.v4
-	ip6tables-save > /etc/iptables/rules.v6
+  set +e
+  colorEcho ${INFO} "设置 firewall"
+  #policy
+  iptables -P INPUT ACCEPT &>/dev/null
+  iptables -P FORWARD ACCEPT &>/dev/null
+  iptables -P OUTPUT ACCEPT &>/dev/null
+  ip6tables -P INPUT ACCEPT &>/dev/null
+  ip6tables -P FORWARD ACCEPT &>/dev/null
+  ip6tables -P OUTPUT ACCEPT &>/dev/null
+  #flash
+  iptables -F &>/dev/null
+  ip6tables -F &>/dev/null
+  #block
+  #iptables -I INPUT -s 36.110.236.68/16 -j DROP &>/dev/null
+  #iptables -I INPUT -s 114.114.112.0/21 -j DROP &>/dev/null
+  #iptables -I INPUT -s 1.2.4.0/24 -j DROP &>/dev/null
+  #iptables -I OUTPUT -d 36.110.236.68/16 -j DROP &>/dev/null
+  #iptables -I OUTPUT -d 114.114.112.0/21 -j DROP &>/dev/null
+  #iptables -I OUTPUT -d 1.2.4.0/24 -j DROP &>/dev/null
+  #iptables -I OUTPUT -p tcp -m tcp --dport 5222 -j DROP &>/dev/null
+  #iptables -I OUTPUT -p udp -m udp --dport 5222 -j DROP &>/dev/null
+  #iptables -I OUTPUT -p tcp -m tcp --dport 1723 -j DROP &>/dev/null
+  #iptables -I OUTPUT -p udp -m udp --dport 1723 -j DROP &>/dev/null
+  #iptables -I OUTPUT -p tcp -m tcp --dport 1701 -j DROP &>/dev/null
+  #iptables -I OUTPUT -p udp -m udp --dport 1701 -j DROP &>/dev/null
+  #iptables -I OUTPUT -p tcp -m tcp --dport 500 -j DROP &>/dev/null
+  #iptables -I OUTPUT -p udp -m udp --dport 500 -j DROP &>/dev/null
+  #keep connected
+  #iptables -A INPUT -p tcp -m tcp --tcp-flags ALL FIN,PSH,URG -j DROP &>/dev/null
+  #iptables -A INPUT -p tcp -m tcp --tcp-flags SYN,FIN SYN,FIN -j DROP &>/dev/null
+  #iptables -A INPUT -p tcp -m conntrack --ctstate NEW -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -j DROP &>/dev/null
+  #iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT &>/dev/null
+  #ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT &>/dev/null
+  #icmp
+  #iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT &>/dev/null
+  #iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT &>/dev/null
+  #ip6tables -A INPUT -p icmpv6 --icmpv6-type echo-request -j ACCEPT &>/dev/null
+  #ip6tables -A OUTPUT -p icmpv6 --icmpv6-type echo-reply -j ACCEPT &>/dev/null
+  #tcp
+  iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT  &>/dev/null #HTTPS
+  iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT &>/dev/null #HTTP
+  #udp
+  iptables -A INPUT -p udp -m udp --dport 443 -j ACCEPT &>/dev/null
+  iptables -A INPUT -p udp -m udp --dport 80 -j ACCEPT &>/dev/null
+  iptables -A OUTPUT -j ACCEPT &>/dev/null
+  #iptables -I FORWARD -j DROP
+  #tcp6
+  ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT &>/dev/null #HTTPSv6
+  ip6tables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT &>/dev/null #HTTPv6
+  #udp6
+  ip6tables -A INPUT -p udp -m udp --dport 443 -j ACCEPT &>/dev/null
+  ip6tables -A INPUT -p udp -m udp --dport 80 -j ACCEPT &>/dev/null
+  ip6tables -A OUTPUT -j ACCEPT &>/dev/null
+  #ip6tables -I FORWARD -j DROP
+  if [[ $install_qbt == 1 ]]; then
+    iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 8080 -j DROP &>/dev/null
+    iptables -A INPUT ! -s 127.0.0.1 -p udp -m udp --dport 8080 -j DROP &>/dev/null
+    iptables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p tcp -m tcp --dport 8999 -j ACCEPT &>/dev/null
+    iptables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p udp -m udp --dport 8999 -j ACCEPT &>/dev/null
+  fi
+  if [[ $install_tracker == 1 ]]; then
+    iptables -A INPUT -p tcp -m tcp --dport 6969 -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p tcp -m tcp --dport 6969 -j ACCEPT &>/dev/null
+    iptables -A INPUT -p udp -m udp --dport 6969 -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p udp -m udp --dport 6969 -j ACCEPT &>/dev/null
+  fi
+  if [[ $install_aria == 1 ]]; then
+    iptables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p tcp -m tcp --dport ${ariaport} -j ACCEPT &>/dev/null
+    iptables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p udp -m udp --dport ${ariaport} -j ACCEPT &>/dev/null
+  fi
+  if [[ $install_netdata == 1 ]]; then
+    iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 19999 -j DROP &>/dev/null
+    iptables -A INPUT ! -s 127.0.0.1 -p udp -m udp --dport 19999 -j DROP &>/dev/null
+  fi
+  if [[ ${install_mail} == 1 ]]; then
+    iptables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT &>/dev/null
+    iptables -A INPUT -p udp -m udp --dport 25 -j ACCEPT &>/dev/null
+    iptables -A INPUT -p tcp -m tcp --dport 143 -j ACCEPT &>/dev/null
+    iptables -A INPUT -p tcp -m tcp --dport 465 -j ACCEPT &>/dev/null
+    iptables -A INPUT -p tcp -m tcp --dport 587 -j ACCEPT &>/dev/null
+    iptables -A INPUT -p tcp -m tcp --dport 993 -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p tcp -m tcp --dport 25 -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p udp -m udp --dport 25 -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p tcp -m tcp --dport 143 -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p tcp -m tcp --dport 465 -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p tcp -m tcp --dport 587 -j ACCEPT &>/dev/null
+    ip6tables -A INPUT -p tcp -m tcp --dport 993 -j ACCEPT &>/dev/null
+  fi
+  if [[ ${dist} == debian ]]; then
+  apt-get install iptables-persistent -qq -y > /dev/null
+  iptables-save > /etc/iptables/rules.v4
+  ip6tables-save > /etc/iptables/rules.v6
  elif [[ ${dist} == ubuntu ]]; then
-	ufw allow http
-	ufw allow https
-	ufw allow ${ariaport}
-	apt-get install iptables-persistent -qq -y > /dev/null
-	iptables-save > /etc/iptables/rules.v4
-	ip6tables-save > /etc/iptables/rules.v6
+  ufw allow http
+  ufw allow https
+  ufw allow ${ariaport}
+  apt-get install iptables-persistent -qq -y > /dev/null
+  iptables-save > /etc/iptables/rules.v4
+  ip6tables-save > /etc/iptables/rules.v6
  else
-	clear
-	TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
-	exit 1;
+  clear
+  TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
+  exit 1;
  fi
 }
 ##########install dependencies#############
 installdependency(){
-	set +e
+  set +e
 colorEcho ${INFO} "Updating system"
 apt-get update
 if [[ $install_bbr == 1 ]]; then
-	colorEcho ${INFO} "Enabling TCP-BBR boost"
-	#iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
-	cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
+  colorEcho ${INFO} "Enabling TCP-BBR boost"
+  #iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
+  cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 #net.ipv4.ip_forward = 1
 #net.ipv4.conf.all.forwarding = 1
@@ -1219,8 +1219,8 @@ net.ipv6.conf.default.accept_redirects = 0
 vm.swappiness = 0
 net.ipv4.ip_unprivileged_port_start = 0
 EOF
-	sysctl --system
-	cat > '/etc/systemd/system.conf' << EOF
+  sysctl --system
+  cat > '/etc/systemd/system.conf' << EOF
 [Manager]
 #DefaultTimeoutStartSec=90s
 DefaultTimeoutStopSec=30s
@@ -1229,7 +1229,7 @@ DefaultLimitCORE=infinity
 DefaultLimitNOFILE=51200
 DefaultLimitNPROC=51200
 EOF
-		cat > '/etc/security/limits.conf' << EOF
+    cat > '/etc/security/limits.conf' << EOF
 * soft nofile 51200
 * hard nofile 51200
 * soft nproc 51200
@@ -1237,19 +1237,19 @@ EOF
 EOF
 if grep -q "ulimit" /etc/profile
 then
-	:
+  :
 else
 echo "ulimit -SHn 51200" >> /etc/profile
 echo "ulimit -SHu 51200" >> /etc/profile
 fi
 if grep -q "pam_limits.so" /etc/pam.d/common-session
 then
-	:
+  :
 else
 echo "session required pam_limits.so" >> /etc/pam.d/common-session
 fi
 systemctl daemon-reload
-	fi
+  fi
 
 clear
 colorEcho ${INFO} "Installing all necessary Software"
@@ -1324,152 +1324,152 @@ s.onupdate=function(data){ //callback to update data in UI
 s.onend=function(aborted){ //callback for test ended/aborted
     I("startStopBtn").className=""; //show start button again
     if(aborted){ //if the test was aborted, clear the UI and prepare for new test
-		initUI();
+    initUI();
     }
 }
 
 function startStop(){ //start/stop button pressed
-	if(s.getState()==3){
-		//speedtest is running, abort
-		s.abort();
-	}else{
-		//test is not running, begin
-		s.start();
-		I("startStopBtn").className="running";
-	}
+  if(s.getState()==3){
+    //speedtest is running, abort
+    s.abort();
+  }else{
+    //test is not running, begin
+    s.start();
+    I("startStopBtn").className="running";
+  }
 }
 
 //function to (re)initialize UI
 function initUI(){
-	I("dlText").textContent="";
-	I("ulText").textContent="";
-	I("pingText").textContent="";
-	I("jitText").textContent="";
-	I("ip").textContent="";
+  I("dlText").textContent="";
+  I("ulText").textContent="";
+  I("pingText").textContent="";
+  I("jitText").textContent="";
+  I("ip").textContent="";
 }
 
 function I(id){return document.getElementById(id);}
 </script>
 
 <style type="text/css">
-	html,body{
-		border:none; padding:0; margin:0;
-		background:#FFFFFF;
-		color:#202020;
-	}
-	body{
-		text-align:center;
-		font-family:"Roboto",sans-serif;
-	}
-	h1{
-		color:#404040;
-	}
-	#startStopBtn{
-		display:inline-block;
-		margin:0 auto;
-		color:#6060AA;
-		background-color:rgba(0,0,0,0);
-		border:0.15em solid #6060FF;
-		border-radius:0.3em;
-		transition:all 0.3s;
-		box-sizing:border-box;
-		width:8em; height:3em;
-		line-height:2.7em;
-		cursor:pointer;
-		box-shadow: 0 0 0 rgba(0,0,0,0.1), inset 0 0 0 rgba(0,0,0,0.1);
-	}
-	#startStopBtn:hover{
-		box-shadow: 0 0 2em rgba(0,0,0,0.1), inset 0 0 1em rgba(0,0,0,0.1);
-	}
-	#startStopBtn.running{
-		background-color:#FF3030;
-		border-color:#FF6060;
-		color:#FFFFFF;
-	}
-	#startStopBtn:before{
-		content:"Start";
-	}
-	#startStopBtn.running:before{
-		content:"Abort";
-	}
-	#test{
-		margin-top:2em;
-		margin-bottom:12em;
-	}
-	div.testArea{
-		display:inline-block;
-		width:14em;
-		height:9em;
-		position:relative;
-		box-sizing:border-box;
-	}
-	div.testName{
-		position:absolute;
-		top:0.1em; left:0;
-		width:100%;
-		font-size:1.4em;
-		z-index:9;
-	}
-	div.meterText{
-		position:absolute;
-		bottom:1.5em; left:0;
-		width:100%;
-		font-size:2.5em;
-		z-index:9;
-	}
-	#dlText{
-		color:#6060AA;
-	}
-	#ulText{
-		color:#309030;
-	}
-	#pingText,#jitText{
-		color:#AA6060;
-	}
-	div.meterText:empty:before{
-		color:#505050 !important;
-		content:"0.00";
-	}
-	div.unit{
-		position:absolute;
-		bottom:2em; left:0;
-		width:100%;
-		z-index:9;
-	}
-	div.testGroup{
-		display:inline-block;
-	}
-	@media all and (max-width:65em){
-		body{
-			font-size:1.5vw;
-		}
-	}
-	@media all and (max-width:40em){
-		body{
-			font-size:0.8em;
-		}
-		div.testGroup{
-			display:block;
-			margin: 0 auto;
-		}
-	}
-	#progressBar{
-		width:90%;
-		height:0.3em;
-		background-color:#EEEEEE;
-		position:relative;
-		display:block;
-		margin:0 auto;
-		margin-bottom:2em;
-	}
-	#progress{
-		position:absolute;
-		top:0; left:0;
-		height:100%;
-		width:0%;
-		transition: width 2s;
-		background-color:#90BBFF;
-	}
+  html,body{
+    border:none; padding:0; margin:0;
+    background:#FFFFFF;
+    color:#202020;
+  }
+  body{
+    text-align:center;
+    font-family:"Roboto",sans-serif;
+  }
+  h1{
+    color:#404040;
+  }
+  #startStopBtn{
+    display:inline-block;
+    margin:0 auto;
+    color:#6060AA;
+    background-color:rgba(0,0,0,0);
+    border:0.15em solid #6060FF;
+    border-radius:0.3em;
+    transition:all 0.3s;
+    box-sizing:border-box;
+    width:8em; height:3em;
+    line-height:2.7em;
+    cursor:pointer;
+    box-shadow: 0 0 0 rgba(0,0,0,0.1), inset 0 0 0 rgba(0,0,0,0.1);
+  }
+  #startStopBtn:hover{
+    box-shadow: 0 0 2em rgba(0,0,0,0.1), inset 0 0 1em rgba(0,0,0,0.1);
+  }
+  #startStopBtn.running{
+    background-color:#FF3030;
+    border-color:#FF6060;
+    color:#FFFFFF;
+  }
+  #startStopBtn:before{
+    content:"Start";
+  }
+  #startStopBtn.running:before{
+    content:"Abort";
+  }
+  #test{
+    margin-top:2em;
+    margin-bottom:12em;
+  }
+  div.testArea{
+    display:inline-block;
+    width:14em;
+    height:9em;
+    position:relative;
+    box-sizing:border-box;
+  }
+  div.testName{
+    position:absolute;
+    top:0.1em; left:0;
+    width:100%;
+    font-size:1.4em;
+    z-index:9;
+  }
+  div.meterText{
+    position:absolute;
+    bottom:1.5em; left:0;
+    width:100%;
+    font-size:2.5em;
+    z-index:9;
+  }
+  #dlText{
+    color:#6060AA;
+  }
+  #ulText{
+    color:#309030;
+  }
+  #pingText,#jitText{
+    color:#AA6060;
+  }
+  div.meterText:empty:before{
+    color:#505050 !important;
+    content:"0.00";
+  }
+  div.unit{
+    position:absolute;
+    bottom:2em; left:0;
+    width:100%;
+    z-index:9;
+  }
+  div.testGroup{
+    display:inline-block;
+  }
+  @media all and (max-width:65em){
+    body{
+      font-size:1.5vw;
+    }
+  }
+  @media all and (max-width:40em){
+    body{
+      font-size:0.8em;
+    }
+    div.testGroup{
+      display:block;
+      margin: 0 auto;
+    }
+  }
+  #progressBar{
+    width:90%;
+    height:0.3em;
+    background-color:#EEEEEE;
+    position:relative;
+    display:block;
+    margin:0 auto;
+    margin-bottom:2em;
+  }
+  #progress{
+    position:absolute;
+    top:0; left:0;
+    height:100%;
+    width:0%;
+    transition: width 2s;
+    background-color:#90BBFF;
+  }
 
 </style>
 </head>
@@ -1478,34 +1478,34 @@ function I(id){return document.getElementById(id);}
 <div id="startStopBtn" onclick="startStop()"></div>
 <div id="test">
     <div id="progressBar"><div id="progress"></div></div>
-	<div class="testGroup">
-		<div class="testArea">
-			<div class="testName">Download(下载速度)</div>
-			<div id="dlText" class="meterText"></div>
-			<div class="unit">Mbps</div>
-		</div>
-		<div class="testArea">
-			<div class="testName">Upload(上传速度)</div>
-			<div id="ulText" class="meterText"></div>
-			<div class="unit">Mbps</div>
-		</div>
-	</div>
-	<div class="testGroup">
-		<div class="testArea">
-			<div class="testName">Ping(延迟)</div>
-			<div id="pingText" class="meterText"></div>
-			<div class="unit">ms</div>
-		</div>
-		<div class="testArea">
-			<div class="testName">Jitter(波动)</div>
-			<div id="jitText" class="meterText"></div>
-			<div class="unit">ms</div>
-		</div>
-	</div>
-	<div id="ipArea">
-		<h2>推荐关闭代理测速 !</h2>
-		IP Address: <span id="ip"></span>
-	</div>
+  <div class="testGroup">
+    <div class="testArea">
+      <div class="testName">Download(下载速度)</div>
+      <div id="dlText" class="meterText"></div>
+      <div class="unit">Mbps</div>
+    </div>
+    <div class="testArea">
+      <div class="testName">Upload(上传速度)</div>
+      <div id="ulText" class="meterText"></div>
+      <div class="unit">Mbps</div>
+    </div>
+  </div>
+  <div class="testGroup">
+    <div class="testArea">
+      <div class="testName">Ping(延迟)</div>
+      <div id="pingText" class="meterText"></div>
+      <div class="unit">ms</div>
+    </div>
+    <div class="testArea">
+      <div class="testName">Jitter(波动)</div>
+      <div id="jitText" class="meterText"></div>
+      <div class="unit">ms</div>
+    </div>
+  </div>
+  <div id="ipArea">
+    <h2>推荐关闭代理测速 !</h2>
+    IP Address: <span id="ip"></span>
+  </div>
 </div>
 <a href="https://github.com/librespeed/speedtest">Source code</a>
 <script type="text/javascript">
@@ -1523,83 +1523,83 @@ cd /usr/share/nginx/
 git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
   cat > '/usr/share/nginx/tt-rss/config.php' << EOF
 <?php
-	// *******************************************
-	// *** Database configuration (important!) ***
-	// *******************************************
+  // *******************************************
+  // *** Database configuration (important!) ***
+  // *******************************************
 
-	define('DB_TYPE', 'mysql');
-	define('DB_HOST', '127.0.0.1');
-	define('DB_USER', 'ttrss');
-	define('DB_NAME', 'ttrss');
-	define('DB_PASS', '${password1}');
-	define('DB_PORT', '3306');
-	define('MYSQL_CHARSET', 'UTF8');
+  define('DB_TYPE', 'mysql');
+  define('DB_HOST', '127.0.0.1');
+  define('DB_USER', 'ttrss');
+  define('DB_NAME', 'ttrss');
+  define('DB_PASS', '${password1}');
+  define('DB_PORT', '3306');
+  define('MYSQL_CHARSET', 'UTF8');
 
-	// ***********************************
-	// *** Basic settings (important!) ***
-	// ***********************************
+  // ***********************************
+  // *** Basic settings (important!) ***
+  // ***********************************
 
-	define('SELF_URL_PATH', 'https://${domain}/${password1}_ttrss//');
-	define('SINGLE_USER_MODE', false);
-	define('SIMPLE_UPDATE_MODE', false);
+  define('SELF_URL_PATH', 'https://${domain}/${password1}_ttrss//');
+  define('SINGLE_USER_MODE', false);
+  define('SIMPLE_UPDATE_MODE', false);
 
-	// *****************************
-	// *** Files and directories ***
-	// *****************************
+  // *****************************
+  // *** Files and directories ***
+  // *****************************
 
-	define('PHP_EXECUTABLE', '/usr/bin/php');
-	define('LOCK_DIRECTORY', 'lock');
-	define('CACHE_DIR', 'cache');
-	define('ICONS_DIR', "feed-icons");
-	define('ICONS_URL', "feed-icons");
+  define('PHP_EXECUTABLE', '/usr/bin/php');
+  define('LOCK_DIRECTORY', 'lock');
+  define('CACHE_DIR', 'cache');
+  define('ICONS_DIR', "feed-icons");
+  define('ICONS_URL', "feed-icons");
 
-	// **********************
-	// *** Authentication ***
-	// **********************
+  // **********************
+  // *** Authentication ***
+  // **********************
 
-	define('AUTH_AUTO_CREATE', true);
-	define('AUTH_AUTO_LOGIN', true);
+  define('AUTH_AUTO_CREATE', true);
+  define('AUTH_AUTO_LOGIN', true);
 
-	// *********************
-	// *** Feed settings ***
-	// *********************
+  // *********************
+  // *** Feed settings ***
+  // *********************
 
-	define('FORCE_ARTICLE_PURGE', 0);
+  define('FORCE_ARTICLE_PURGE', 0);
 
-	// ****************************
-	// *** Sphinx search plugin ***
-	// ****************************
+  // ****************************
+  // *** Sphinx search plugin ***
+  // ****************************
 
-	define('SPHINX_SERVER', 'localhost:9312');
-	define('SPHINX_INDEX', 'ttrss, delta');
+  define('SPHINX_SERVER', 'localhost:9312');
+  define('SPHINX_INDEX', 'ttrss, delta');
 
-	// ***********************************
-	// *** Self-registrations by users ***
-	// ***********************************
+  // ***********************************
+  // *** Self-registrations by users ***
+  // ***********************************
 
-	define('ENABLE_REGISTRATION', false);
-	define('REG_NOTIFY_ADDRESS', 'root@${domain}');
-	define('REG_MAX_USERS', 10);
+  define('ENABLE_REGISTRATION', false);
+  define('REG_NOTIFY_ADDRESS', 'root@${domain}');
+  define('REG_MAX_USERS', 10);
 
-	// **********************************
-	// *** Cookies and login sessions ***
-	// **********************************
+  // **********************************
+  // *** Cookies and login sessions ***
+  // **********************************
 
-	define('SESSION_COOKIE_LIFETIME', 86400);
-	define('SMTP_FROM_NAME', 'Tiny Tiny RSS');
-	define('SMTP_FROM_ADDRESS', 'noreply@${domain}');
-	define('DIGEST_SUBJECT', '[tt-rss] New headlines for last 24 hours');
+  define('SESSION_COOKIE_LIFETIME', 86400);
+  define('SMTP_FROM_NAME', 'Tiny Tiny RSS');
+  define('SMTP_FROM_ADDRESS', 'noreply@${domain}');
+  define('DIGEST_SUBJECT', '[tt-rss] New headlines for last 24 hours');
 
-	// ***************************************
-	// *** Other settings (less important) ***
-	// ***************************************
+  // ***************************************
+  // *** Other settings (less important) ***
+  // ***************************************
 
-	define('CHECK_FOR_UPDATES', true);
-	define('ENABLE_GZIP_OUTPUT', true);
-	define('PLUGINS', 'auth_internal, note, fever, af_readability');
-	define('LOG_DESTINATION', 'sql');
-	define('CONFIG_VERSION', 26);
-	define('_SKIP_SELF_URL_PATH_CHECKS', true);
+  define('CHECK_FOR_UPDATES', true);
+  define('ENABLE_GZIP_OUTPUT', true);
+  define('PLUGINS', 'auth_internal, note, fever, af_readability');
+  define('LOG_DESTINATION', 'sql');
+  define('CONFIG_VERSION', 26);
+  define('_SKIP_SELF_URL_PATH_CHECKS', true);
 EOF
 cd
 rm -rf /usr/share/nginx/tt-rss/install
@@ -1640,12 +1640,12 @@ cipher_server="TLS_AES_128_GCM_SHA256"
 fi
 
 if [[ $install_nodejs == 1 ]]; then
-	if [[ ${dist} == debian ]]; then
-	curl -sL https://deb.nodesource.com/setup_14.x | bash -
+  if [[ ${dist} == debian ]]; then
+  curl -sL https://deb.nodesource.com/setup_14.x | bash -
  elif [[ ${dist} == ubuntu ]]; then
-	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+  curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
  else
-	echo "fail"
+  echo "fail"
  fi
 apt-get update
 apt-get install -q -y nodejs
@@ -1654,18 +1654,18 @@ fi
 clear
 
 if [[ $install_qbt == 1 ]]; then
-	clear
-	colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
-	if [[ ${dist} == debian ]]; then
-	apt-get install qbittorrent-nox -q -y
+  clear
+  colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
+  if [[ ${dist} == debian ]]; then
+  apt-get install qbittorrent-nox -q -y
  elif [[ ${dist} == ubuntu ]]; then
-	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
-	apt-get install qbittorrent-nox -q -y
+  add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
+  apt-get install qbittorrent-nox -q -y
  else
-	echo "fail"
+  echo "fail"
  fi
  #useradd -r qbittorrent --shell=/usr/sbin/nologin
-	cat > '/etc/systemd/system/qbittorrent.service' << EOF
+  cat > '/etc/systemd/system/qbittorrent.service' << EOF
 [Unit]
 Description=qBittorrent Daemon Service
 Documentation=man:qbittorrent-nox(1)
@@ -1877,7 +1877,7 @@ if [[ $install_file = 1 ]]; then
 clear
 colorEcho ${INFO} "Install Filebrowser ing"
 curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
-	cat > '/etc/systemd/system/filebrowser.service' << EOF
+  cat > '/etc/systemd/system/filebrowser.service' << EOF
 [Unit]
 Description=filebrowser browser
 Documentation=https://github.com/filebrowser/filebrowser
@@ -1907,9 +1907,9 @@ fi
 clear
 
 if [[ $install_aria = 1 ]]; then
-	#trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
-	trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/all_aria2.txt)
-	cat > '/etc/systemd/system/aria2.service' << EOF
+  #trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
+  trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/all_aria2.txt)
+  cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
 Description=Aria2c download manager
 Documentation=https://aria2.github.io/manual/en/html/index.html
@@ -1931,7 +1931,7 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
-	cat > '/etc/aria2.conf' << EOF
+  cat > '/etc/aria2.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 #Global Settings###
 daemon=true
@@ -1994,33 +1994,33 @@ bt-min-crypto-level=arc4
 bt-max-peers=0
 bt-tracker=$trackers_list
 EOF
-	if [[ ! -f /usr/local/bin/aria2c ]]; then
-	clear
-	colorEcho ${INFO} "安装aria2(Install aria2 ing)"
-	#usermod -a -G aria2 nginx
-	#useradd -r aria2 --shell=/usr/sbin/nologin
-	apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
-	curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/aria2c.xz
-	xz --decompress aria2c.xz
-	cp -f aria2c /usr/local/bin/aria2c
-	chmod +x /usr/local/bin/aria2c
-	rm -rf aria2c
-	apt-get autoremove -q -y
-	touch /var/log/aria2.log
-	touch /usr/local/bin/aria2.session
-	mkdir /usr/share/nginx/aria2/
-	chmod 755 /usr/share/nginx/aria2/
-	fi
+  if [[ ! -f /usr/local/bin/aria2c ]]; then
+  clear
+  colorEcho ${INFO} "安装aria2(Install aria2 ing)"
+  #usermod -a -G aria2 nginx
+  #useradd -r aria2 --shell=/usr/sbin/nologin
+  apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
+  curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/aria2c.xz
+  xz --decompress aria2c.xz
+  cp -f aria2c /usr/local/bin/aria2c
+  chmod +x /usr/local/bin/aria2c
+  rm -rf aria2c
+  apt-get autoremove -q -y
+  touch /var/log/aria2.log
+  touch /usr/local/bin/aria2.session
+  mkdir /usr/share/nginx/aria2/
+  chmod 755 /usr/share/nginx/aria2/
+  fi
 systemctl daemon-reload
 systemctl enable aria2
 systemctl start aria2
 fi
 
 if [[ ${dnsmasq_install} == 1 ]]; then
-	if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
-		mkdir /etc/dnscrypt-proxy/
-	fi
-	cat > '/etc/dnscrypt-proxy/blacklist.txt' << EOF
+  if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
+    mkdir /etc/dnscrypt-proxy/
+  fi
+  cat > '/etc/dnscrypt-proxy/blacklist.txt' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 ###########################
 #        Blacklist        #
@@ -2394,11 +2394,11 @@ EOF
 ipv6_true="false"
 block_ipv6="true"
 if [[ -n ${myipv6} ]]; then
-	ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
-	if [[ $? -eq 0 ]]; then
-		ipv6_true="true"
-		block_ipv6="false"
-	fi
+  ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
+  if [[ $? -eq 0 ]]; then
+    ipv6_true="true"
+    block_ipv6="false"
+  fi
 fi
     cat > '/etc/dnscrypt-proxy/dnscrypt-proxy.toml' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
@@ -2490,7 +2490,7 @@ cache_neg_max_ttl = 600
   refresh_delay = 72
   prefix = ''
 EOF
-	cat > '/etc/systemd/system/dnscrypt-proxy.service' << EOF
+  cat > '/etc/systemd/system/dnscrypt-proxy.service' << EOF
 [Unit]
 Description=DNSCrypt client proxy
 Documentation=https://github.com/DNSCrypt/dnscrypt-proxy/wiki
@@ -2521,7 +2521,7 @@ systemctl enable dnscrypt-proxy.service
 clear
 colorEcho ${INFO} "Install dnscrypt-proxy ing"
 if [[ $(systemctl is-active dnsmasq) == active ]]; then
-	systemctl disable dnsmasq
+  systemctl disable dnsmasq
 fi
 dnsver=$(curl -s "https://api.github.com/repos/DNSCrypt/dnscrypt-proxy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/${dnsver}/dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
@@ -2544,7 +2544,7 @@ if [[ $install_tor = 1 ]]; then
 clear
 colorEcho ${INFO} "Install Tor Relay ing"
 touch /etc/apt/sources.list.d/tor.list
-	cat > '/etc/apt/sources.list.d/tor.list' << EOF
+  cat > '/etc/apt/sources.list.d/tor.list' << EOF
 deb https://deb.torproject.org/torproject.org $(lsb_release -cs) main
 #deb-src https://deb.torproject.org/torproject.org $(lsb_release -cs) main
 EOF
@@ -2553,7 +2553,7 @@ gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
 apt-get update
 apt-get install deb.torproject.org-keyring tor tor-arm tor-geoipdb -q -y
 service tor stop
-	cat > '/etc/tor/torrc' << EOF
+  cat > '/etc/tor/torrc' << EOF
 SocksPort 0
 ControlPort 9051
 RunAsDaemon 1
@@ -2570,32 +2570,32 @@ systemctl restart tor@default
 fi
 
 if [[ $install_php = 1 ]]; then
-	clear
-	if [[ ! -f /usr/sbin/php-fpm7.4 ]]; then
-	colorEcho ${INFO} "Install PHP ing"
-	apt-get purge php* -y
-	mkdir /usr/log/
-	if [[ ${dist} == debian ]]; then
-		wget --no-check-certificate -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-		echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
-		apt-get update
+  clear
+  if [[ ! -f /usr/sbin/php-fpm7.4 ]]; then
+  colorEcho ${INFO} "Install PHP ing"
+  apt-get purge php* -y
+  mkdir /usr/log/
+  if [[ ${dist} == debian ]]; then
+    wget --no-check-certificate -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
+    apt-get update
  elif [[ ${dist} == ubuntu ]]; then
-		add-apt-repository ppa:ondrej/php -y
-		apt-get update
+    add-apt-repository ppa:ondrej/php -y
+    apt-get update
  else
-	echo "fail"
+  echo "fail"
  fi
-	apt-get -y install php7.4
-	systemctl disable --now apache2
-	apt-get install php7.4-fpm -y
-	apt-get install php7.4-common php7.4-mysql php7.4-ldap php7.4-xml php7.4-json php7.4-readline php7.4-xmlrpc php7.4-curl php7.4-gd php7.4-imagick php7.4-cli php7.4-dev php7.4-imap php7.4-mbstring php7.4-opcache php7.4-soap php7.4-zip php7.4-intl php7.4-bcmath -y
-	apt-get purge apache2* -y
-	sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.4/fpm/php.ini
-	cd /etc/php/7.4/
-	curl -sS https://getcomposer.org/installer -o composer-setup.php
-	php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-	cd
-	fi
+  apt-get -y install php7.4
+  systemctl disable --now apache2
+  apt-get install php7.4-fpm -y
+  apt-get install php7.4-common php7.4-mysql php7.4-ldap php7.4-xml php7.4-json php7.4-readline php7.4-xmlrpc php7.4-curl php7.4-gd php7.4-imagick php7.4-cli php7.4-dev php7.4-imap php7.4-mbstring php7.4-opcache php7.4-soap php7.4-zip php7.4-intl php7.4-bcmath -y
+  apt-get purge apache2* -y
+  sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.4/fpm/php.ini
+  cd /etc/php/7.4/
+  curl -sS https://getcomposer.org/installer -o composer-setup.php
+  php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+  cd
+  fi
 cat > '/etc/php/7.4/fpm/pool.d/www.conf' << EOF
 [www]
 
@@ -2694,27 +2694,27 @@ systemctl restart php7.4-fpm
 fi
 
 if [[ $install_netdata == 1 ]]; then
-	clear
-	colorEcho ${INFO} "Install netdata ing"
-	bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
-		cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
+  clear
+  colorEcho ${INFO} "Install netdata ing"
+  bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
+    cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
 localhost:
 
 localipv4:
   name : 'local'
   url  : 'http://127.0.0.1:81/stub_status'
 EOF
-		cat > '/opt/netdata/etc/netdata/python.d/web_log.conf' << EOF
+    cat > '/opt/netdata/etc/netdata/python.d/web_log.conf' << EOF
 nginx_log:
   name  : 'nginx_log'
   path  : '/var/log/nginx/access.log'
 EOF
-		cat > '/opt/netdata/etc/netdata/go.d/docker_engine.conf' << EOF
+    cat > '/opt/netdata/etc/netdata/go.d/docker_engine.conf' << EOF
 jobs:
   - name: local
     url : http://127.0.0.1:9323/metrics
 EOF
-		cat > '/opt/netdata/etc/netdata/go.d/x509check.conf' << EOF
+    cat > '/opt/netdata/etc/netdata/go.d/x509check.conf' << EOF
 update_every : 60
 
 jobs:
@@ -2752,24 +2752,24 @@ fi
 clear
 
 if [[ $install_trojan = 1 ]]; then
-	if [[ ! -f /usr/local/bin/trojan ]]; then
-	clear
-	colorEcho ${INFO} "Install Trojan-GFW ing"
-	#useradd -r trojan --shell=/usr/sbin/nologin
-	bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
-	systemctl daemon-reload
-	clear
-	colorEcho ${INFO} "configuring trojan-gfw"
-	setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/trojan
-	fi
-	ipv4_prefer="true"
-	if [[ -n $myipv6 ]]; then
-		ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
-		if [[ $? -eq 0 ]]; then
-			ipv4_prefer="false"
-		fi
-	fi
-	cat > '/etc/systemd/system/trojan.service' << EOF
+  if [[ ! -f /usr/local/bin/trojan ]]; then
+  clear
+  colorEcho ${INFO} "Install Trojan-GFW ing"
+  #useradd -r trojan --shell=/usr/sbin/nologin
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
+  systemctl daemon-reload
+  clear
+  colorEcho ${INFO} "configuring trojan-gfw"
+  setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/trojan
+  fi
+  ipv4_prefer="true"
+  if [[ -n $myipv6 ]]; then
+    ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
+    if [[ $? -eq 0 ]]; then
+      ipv4_prefer="false"
+    fi
+  fi
+  cat > '/etc/systemd/system/trojan.service' << EOF
 [Unit]
 Description=trojan
 Documentation=https://trojan-gfw.github.io/trojan/config https://trojan-gfw.github.io/trojan/
@@ -2793,7 +2793,7 @@ EOF
 systemctl daemon-reload
 systemctl enable trojan
 if [[ ${install_mariadb} == 1 ]]; then
-		cat > '/usr/local/etc/trojan/config.json' << EOF
+    cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
     "local_addr": "::",
@@ -2813,7 +2813,7 @@ if [[ ${install_mariadb} == 1 ]]; then
         "cipher_tls13": "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256",
         "prefer_server_cipher": true,
         "alpn": [
-        	"h2",
+          "h2",
             "http/1.1"
         ],
         "alpn_port_override": {
@@ -2847,8 +2847,8 @@ if [[ ${install_mariadb} == 1 ]]; then
     }
 }
 EOF
-	else
-		cat > '/usr/local/etc/trojan/config.json' << EOF
+  else
+    cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
     "local_addr": "::",
@@ -2868,7 +2868,7 @@ EOF
         "cipher_tls13": "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256",
         "prefer_server_cipher": true,
         "alpn": [
-        	"h2",
+          "h2",
             "http/1.1"
         ],
         "alpn_port_override": {
@@ -2905,8 +2905,8 @@ EOF
 fi
 
 if [[ ${othercert} == 1 ]]; then
-	if [[ ${install_mariadb} == 1 ]]; then
-		cat > '/usr/local/etc/trojan/config.json' << EOF
+  if [[ ${install_mariadb} == 1 ]]; then
+    cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
     "local_addr": "::",
@@ -2926,7 +2926,7 @@ if [[ ${othercert} == 1 ]]; then
         "cipher_tls13": "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256",
         "prefer_server_cipher": true,
         "alpn": [
-        	"h2",
+          "h2",
             "http/1.1"
         ],
         "alpn_port_override": {
@@ -2960,8 +2960,8 @@ if [[ ${othercert} == 1 ]]; then
     }
 }
 EOF
-		else
-		cat > '/usr/local/etc/trojan/config.json' << EOF
+    else
+    cat > '/usr/local/etc/trojan/config.json' << EOF
 {
     "run_type": "server",
     "local_addr": "::",
@@ -2981,7 +2981,7 @@ EOF
         "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
         "prefer_server_cipher": true,
         "alpn": [
-        	"h2",
+          "h2",
             "http/1.1"
         ],
         "alpn_port_override": {
@@ -3015,121 +3015,121 @@ EOF
     }
 }
 EOF
-	fi
+  fi
 fi
-	chmod -R 755 /usr/local/etc/trojan/
-	touch /usr/share/nginx/html/client1-$password1.json
-	touch /usr/share/nginx/html/client2-$password2.json
-	cat > "/usr/share/nginx/html/client1-$password1.json" << EOF
+  chmod -R 755 /usr/local/etc/trojan/
+  touch /usr/share/nginx/html/client1-$password1.json
+  touch /usr/share/nginx/html/client2-$password2.json
+  cat > "/usr/share/nginx/html/client1-$password1.json" << EOF
 {
-	"run_type": "client",
-	"local_addr": "127.0.0.1",
-	"local_port": 1080,
-	"remote_addr": "$myip",
-	"remote_port": 443,
-	"password": [
-		"$password1"
-	],
-	"log_level": 1,
-	"ssl": {
-		"verify": true,
-		"verify_hostname": true,
-		"cert": "",
-		"cipher": "$cipher_client",
-		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-		"sni": "$domain",
-		"alpn": [
-			"h2",
-			"http/1.1"
-		],
-		"reuse_session": true,
-		"session_ticket": false,
-		"curves": ""
-	},
-	"tcp": {
-		"no_delay": true,
-		"keep_alive": true,
-		"reuse_port": false,
-		"fast_open": false,
-		"fast_open_qlen": 20
-	}
+  "run_type": "client",
+  "local_addr": "127.0.0.1",
+  "local_port": 1080,
+  "remote_addr": "$myip",
+  "remote_port": 443,
+  "password": [
+    "$password1"
+  ],
+  "log_level": 1,
+  "ssl": {
+    "verify": true,
+    "verify_hostname": true,
+    "cert": "",
+    "cipher": "$cipher_client",
+    "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+    "sni": "$domain",
+    "alpn": [
+      "h2",
+      "http/1.1"
+    ],
+    "reuse_session": true,
+    "session_ticket": false,
+    "curves": ""
+  },
+  "tcp": {
+    "no_delay": true,
+    "keep_alive": true,
+    "reuse_port": false,
+    "fast_open": false,
+    "fast_open_qlen": 20
+  }
 }
 EOF
-	cat > "/usr/share/nginx/html/client2-$password2.json" << EOF
+  cat > "/usr/share/nginx/html/client2-$password2.json" << EOF
 {
-	"run_type": "client",
-	"local_addr": "127.0.0.1",
-	"local_port": 1080,
-	"remote_addr": "$myip",
-	"remote_port": 443,
-	"password": [
-		"$password2"
-	],
-	"log_level": 1,
-	"ssl": {
-		"verify": true,
-		"verify_hostname": true,
-		"cert": "",
-		"cipher": "$cipher_client",
-		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-		"sni": "$domain",
-		"alpn": [
-			"h2",
-			"http/1.1"
-		],
-		"reuse_session": true,
-		"session_ticket": false,
-		"curves": ""
-	},
-	"tcp": {
-		"no_delay": true,
-		"keep_alive": true,
-		"reuse_port": false,
-		"fast_open": false,
-		"fast_open_qlen": 20
-	}
+  "run_type": "client",
+  "local_addr": "127.0.0.1",
+  "local_port": 1080,
+  "remote_addr": "$myip",
+  "remote_port": 443,
+  "password": [
+    "$password2"
+  ],
+  "log_level": 1,
+  "ssl": {
+    "verify": true,
+    "verify_hostname": true,
+    "cert": "",
+    "cipher": "$cipher_client",
+    "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+    "sni": "$domain",
+    "alpn": [
+      "h2",
+      "http/1.1"
+    ],
+    "reuse_session": true,
+    "session_ticket": false,
+    "curves": ""
+  },
+  "tcp": {
+    "no_delay": true,
+    "keep_alive": true,
+    "reuse_port": false,
+    "fast_open": false,
+    "fast_open_qlen": 20
+  }
 }
 EOF
 if [[ -n $myipv6 ]]; then
-	touch /usr/share/nginx/html/clientv6-$password1.json
-	cat > "/usr/share/nginx/html/clientv6-$password1.json" << EOF
+  touch /usr/share/nginx/html/clientv6-$password1.json
+  cat > "/usr/share/nginx/html/clientv6-$password1.json" << EOF
 {
-	"run_type": "client",
-	"local_addr": "127.0.0.1",
-	"local_port": 1080,
-	"remote_addr": "$myipv6",
-	"remote_port": 443,
-	"password": [
-		"$password1"
-	],
-	"log_level": 1,
-	"ssl": {
-		"verify": true,
-		"verify_hostname": true,
-		"cert": "",
-		"cipher": "$cipher_client",
-		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-		"sni": "$domain",
-		"alpn": [
-			"h2",
-			"http/1.1"
-		],
-		"reuse_session": true,
-		"session_ticket": false,
-		"curves": ""
-	},
-	"tcp": {
-		"no_delay": true,
-		"keep_alive": true,
-		"reuse_port": false,
-		"fast_open": false,
-		"fast_open_qlen": 20
-	}
+  "run_type": "client",
+  "local_addr": "127.0.0.1",
+  "local_port": 1080,
+  "remote_addr": "$myipv6",
+  "remote_port": 443,
+  "password": [
+    "$password1"
+  ],
+  "log_level": 1,
+  "ssl": {
+    "verify": true,
+    "verify_hostname": true,
+    "cert": "",
+    "cipher": "$cipher_client",
+    "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+    "sni": "$domain",
+    "alpn": [
+      "h2",
+      "http/1.1"
+    ],
+    "reuse_session": true,
+    "session_ticket": false,
+    "curves": ""
+  },
+  "tcp": {
+    "no_delay": true,
+    "keep_alive": true,
+    "reuse_port": false,
+    "fast_open": false,
+    "fast_open_qlen": 20
+  }
 }
 EOF
 fi
 fi
-	clear
+  clear
 }
 ##########Install Mariadb#############
 install_mariadb(){
@@ -3252,21 +3252,21 @@ local:
 EOF
 ##############Install Mail Service###############
 if [[ $install_mail = 1 ]]; then
-	if [[ ! -f /usr/sbin/postfix ]]; then
-	clear
-	colorEcho ${INFO} "Install Mail Service ing"
-	apt-get install postfix postfix-pcre -y
-	apt-get install postfix-policyd-spf-python -y
-	apt-get install opendmarc -y
-	systemctl enable opendmarc
-	sed -i 's/Socket local:\/var\/run\/opendmarc\/opendmarc.sock/Socket local:\/var\/spool\/postfix\/opendmarc\/opendmarc.sock/' /etc/opendmarc.conf
-	sed -i 's/SOCKET=local:\$RUNDIR\/opendmarc.sock/SOCKET=local:\/var\/spool\/postfix\/opendmarc\/opendmarc.sock/' /etc/default/opendmarc
-	mkdir -p /var/spool/postfix/opendmarc
-	chown opendmarc:opendmarc /var/spool/postfix/opendmarc -R
-	chmod 750 /var/spool/postfix/opendmarc/ -R
-	adduser postfix opendmarc
-	systemctl restart opendmarc
-	echo ${domain} > /etc/mailname
+  if [[ ! -f /usr/sbin/postfix ]]; then
+  clear
+  colorEcho ${INFO} "Install Mail Service ing"
+  apt-get install postfix postfix-pcre -y
+  apt-get install postfix-policyd-spf-python -y
+  apt-get install opendmarc -y
+  systemctl enable opendmarc
+  sed -i 's/Socket local:\/var\/run\/opendmarc\/opendmarc.sock/Socket local:\/var\/spool\/postfix\/opendmarc\/opendmarc.sock/' /etc/opendmarc.conf
+  sed -i 's/SOCKET=local:\$RUNDIR\/opendmarc.sock/SOCKET=local:\/var\/spool\/postfix\/opendmarc\/opendmarc.sock/' /etc/default/opendmarc
+  mkdir -p /var/spool/postfix/opendmarc
+  chown opendmarc:opendmarc /var/spool/postfix/opendmarc -R
+  chmod 750 /var/spool/postfix/opendmarc/ -R
+  adduser postfix opendmarc
+  systemctl restart opendmarc
+  echo ${domain} > /etc/mailname
   postproto="ipv4"
   if [[ -n $myipv6 ]]; then
     ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
@@ -3274,7 +3274,7 @@ if [[ $install_mail = 1 ]]; then
      postproto="all"
     fi
   fi
-	cat > '/etc/postfix/main.cf' << EOF
+  cat > '/etc/postfix/main.cf' << EOF
 home_mailbox = Maildir/
 smtpd_banner = \$myhostname ESMTP \$mail_name (Debian/GNU)
 biff = no
@@ -3342,12 +3342,12 @@ smtputf8_enable = no
 tls_ssl_options = no_ticket, no_compression
 tls_preempt_cipherlist = yes
 EOF
-	cat > '/etc/aliases' << EOF
+  cat > '/etc/aliases' << EOF
 # See man 5 aliases for format
 postmaster:    root
 root:   ${mailuser}
 EOF
-	cat > '/etc/postfix/master.cf' << EOF
+  cat > '/etc/postfix/master.cf' << EOF
 #
 # Postfix master process configuration file.  For details on the format
 # of the file, see the master(5) manual page (command: "man 5 master" or
@@ -3463,7 +3463,7 @@ ifmail    unix  -       n       n       -       -       pipe
   flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r \$nexthop (\$recipient)
 bsmtp     unix  -       n       n       -       -       pipe
   flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -t\$nexthop -f\$sender \$recipient
-scalemail-backend unix	-	n	n	-	2	pipe
+scalemail-backend unix  - n n - 2 pipe
   flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store \${nexthop} \${user} \${extension}
 mailman   unix  -       n       n       -       -       pipe
   flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
@@ -3488,7 +3488,7 @@ apt-get install spamassassin spamc spamass-milter -y
 adduser debian-spamd mail
 adduser spamass-milter mail
 sed -i 's/CRON=0/CRON=1/' /etc/default/spamassassin
-	cat > '/etc/default/spamass-milter' << EOF
+  cat > '/etc/default/spamass-milter' << EOF
 # spamass-milt startup defaults
 
 # OPTIONS are passed directly to spamass-milter.
@@ -3540,7 +3540,7 @@ mysql -u root -e "flush privileges;"
 mysql -u roundcube -p"${password1}" -D roundcubemail < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
 deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
 mkdir /usr/share/nginx/pgp/
-	cat > '/usr/share/nginx/roundcubemail/config/config.inc.php' << EOF
+  cat > '/usr/share/nginx/roundcubemail/config/config.inc.php' << EOF
 <?php
 
 \$config['language'] = 'zh_TW';
@@ -3572,12 +3572,12 @@ useradd -m -s /sbin/nologin ${mailuser}
 echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
 gpasswd -a postfix opendkim
-	cat > '/etc/opendkim.conf' << EOF
-Syslog			yes
-UMask			007
-Canonicalization	relaxed/simple
-Mode			sv
-SubDomains		no
+  cat > '/etc/opendkim.conf' << EOF
+Syslog      yes
+UMask     007
+Canonicalization  relaxed/simple
+Mode      sv
+SubDomains    no
 AutoRestart         yes
 AutoRestartRate     10/1M
 Background          yes
@@ -3585,7 +3585,7 @@ DNSTimeout          5
 SignatureAlgorithm  rsa-sha256
 Socket                  inet:12301@127.0.0.1
 PidFile               /var/run/opendkim/opendkim.pid
-OversignHeaders		From
+OversignHeaders   From
 TrustAnchorFile       /usr/share/dns/root.key
 UserID                opendkim
 KeyTable           refile:/etc/opendkim/key.table
@@ -3594,7 +3594,7 @@ ExternalIgnoreList  /etc/opendkim/trusted.hosts
 InternalHosts       /etc/opendkim/trusted.hosts
 Nameservers 127.0.0.1
 EOF
-	cat > '/etc/default/opendkim' << EOF
+  cat > '/etc/default/opendkim' << EOF
 RUNDIR=/var/run/opendkim
 SOCKET="inet:12301@127.0.0.1"
 USER=opendkim
@@ -3608,7 +3608,7 @@ chown -R opendkim:opendkim /etc/opendkim
 chmod go-rw /etc/opendkim/keys
 echo "*@${domain}    default._domainkey.${domain}" > /etc/opendkim/signing.table
 echo "default._domainkey.${domain}     ${domain}:default:/etc/opendkim/keys/${domain}/default.private" > /etc/opendkim/key.table
-	cat > '/etc/opendkim/trusted.hosts' << EOF
+  cat > '/etc/opendkim/trusted.hosts' << EOF
 127.0.0.1
 localhost
 10.0.0.0/8
@@ -3625,13 +3625,13 @@ chown opendkim:postfix /var/spool/postfix/opendkim
 systemctl restart opendkim
 usermod -a -G dovecot netdata
 fi
-	cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
+  cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
 auth_username_format = %Ln
 disable_plaintext_auth = no
 auth_mechanisms = plain
 !include auth-system.conf.ext
 EOF
-	cat > '/etc/dovecot/conf.d/10-ssl.conf' << EOF
+  cat > '/etc/dovecot/conf.d/10-ssl.conf' << EOF
 ssl = yes
 ssl_cert = </etc/certs/${domain}_ecc/fullchain.cer
 ssl_key = </etc/certs/${domain}_ecc/${domain}.key
@@ -3641,7 +3641,7 @@ ssl_min_protocol = TLSv1.2
 ssl_prefer_server_ciphers = yes
 ssl_options = no_ticket
 EOF
-	cat > '/etc/dovecot/conf.d/10-master.conf' << EOF
+  cat > '/etc/dovecot/conf.d/10-master.conf' << EOF
 service imap-login {
   inet_listener imap {
     #port = 143
@@ -3709,7 +3709,7 @@ service stats {
   }
 }
 EOF
-	cat > '/etc/dovecot/conf.d/10-mail.conf' << EOF
+  cat > '/etc/dovecot/conf.d/10-mail.conf' << EOF
 
 mail_location = maildir:~/Maildir
 
@@ -3723,7 +3723,7 @@ protocol !indexer-worker {
   #mail_vsize_bg_after_count = 0
 }
 EOF
-	cat > '/etc/dovecot/conf.d/15-mailboxes.conf' << EOF
+  cat > '/etc/dovecot/conf.d/15-mailboxes.conf' << EOF
 namespace inbox {
   mailbox Archive {
     auto = subscribe
@@ -3747,25 +3747,25 @@ namespace inbox {
   }
 }
 EOF
-	cat > '/etc/dovecot/conf.d/15-lda.conf' << EOF
+  cat > '/etc/dovecot/conf.d/15-lda.conf' << EOF
 protocol lda {
   # Space separated list of plugins to load (default is global mail_plugins).
   mail_plugins = \$mail_plugins sieve
 }
 EOF
-	cat > '/etc/dovecot/conf.d/20-lmtp.conf' << EOF
+  cat > '/etc/dovecot/conf.d/20-lmtp.conf' << EOF
 protocol lmtp {
   # Space separated list of plugins to load (default is global mail_plugins).
   mail_plugins = \$mail_plugins sieve
 }
 EOF
-	cat > '/etc/dovecot/conf.d/90-sieve.conf' << EOF
+  cat > '/etc/dovecot/conf.d/90-sieve.conf' << EOF
 plugin {
   sieve = file:~/sieve;active=~/.dovecot.sieve
   sieve_before = /var/mail/SpamToJunk.sieve
 }
 EOF
-	cat > '/var/mail/SpamToJunk.sieve' << EOF
+  cat > '/var/mail/SpamToJunk.sieve' << EOF
 require "fileinto";
 
 if header :contains "X-Spam-Flag" "YES"
@@ -3774,7 +3774,7 @@ if header :contains "X-Spam-Flag" "YES"
    stop;
 }
 EOF
-	cat > '/etc/fail2ban/filter.d/dovecot-pop3imap.conf' << EOF
+  cat > '/etc/fail2ban/filter.d/dovecot-pop3imap.conf' << EOF
 [Definition]
 failregex = (?: pop3-login|imap-login): .*(?:Authentication failure|Aborted login \(auth failed|Aborted login \(tried to use disabled|Disconnected \(auth failed|Aborted login \(\d+ authentication attempts).*rip=`<HOST>`
 EOF
@@ -3800,35 +3800,35 @@ clear
 }
 ########Nginx config##############
 nginxtrojan(){
-	set +e
-	clear
-	colorEcho ${INFO} "配置(configing) nginx"
+  set +e
+  clear
+  colorEcho ${INFO} "配置(configing) nginx"
 rm -rf /etc/nginx/sites-available/*
 rm -rf /etc/nginx/sites-enabled/*
 rm -rf /etc/nginx/conf.d/*
 touch /etc/nginx/conf.d/default.conf
 if [[ $install_trojan == 1 ]]; then
-	cat > '/etc/nginx/conf.d/default.conf' << EOF
+  cat > '/etc/nginx/conf.d/default.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 server {
-	listen 127.0.0.1:80;
-	listen 127.0.0.1:82 http2;
-	server_name $domain;
-	resolver 127.0.0.1;
-	resolver_timeout 10s;
-	if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345|Go-http-client) ) { return 403; }
-	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
-	#if (\$http_user_agent = "") { return 403; }
-	#if (\$host != "$domain") { return 404; }
-	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-	add_header X-Cache-Status \$upstream_cache_status;
-	location / {
-		proxy_pass http://127.0.0.1:4000/;
-		proxy_set_header Host \$http_host;
-		proxy_set_header X-Real-IP \$remote_addr;
-		proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-		#error_page 404  /404.html;
-		http2_push /css/main.css;
+  listen 127.0.0.1:80;
+  listen 127.0.0.1:82 http2;
+  server_name $domain;
+  resolver 127.0.0.1;
+  resolver_timeout 10s;
+  if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345|Go-http-client) ) { return 403; }
+  #if (\$http_user_agent ~* (wget|curl) ) { return 403; }
+  #if (\$http_user_agent = "") { return 403; }
+  #if (\$host != "$domain") { return 404; }
+  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+  add_header X-Cache-Status \$upstream_cache_status;
+  location / {
+    proxy_pass http://127.0.0.1:4000/;
+    proxy_set_header Host \$http_host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    #error_page 404  /404.html;
+    http2_push /css/main.css;
         http2_push /lib/font-awesome/css/all.min.css;
         http2_push /lib/anime.min.js;
         http2_push /lib/velocity/velocity.min.js;
@@ -3837,19 +3837,19 @@ server {
         http2_push /js/motion.js;
         http2_push /js/schemes/muse.js;
         http2_push /js/next-boot.js;
-	}
-	location /${password1}.png {
-		root /usr/share/nginx/html/;
-	}
-	location /${password2}.png {
-		root /usr/share/nginx/html/;
-	}
-	location /client1-${password1}.json {
-		root /usr/share/nginx/html/;
-	}
-	location /client2-${password2}.json {
-		root /usr/share/nginx/html/;
-	}
+  }
+  location /${password1}.png {
+    root /usr/share/nginx/html/;
+  }
+  location /${password2}.png {
+    root /usr/share/nginx/html/;
+  }
+  location /client1-${password1}.json {
+    root /usr/share/nginx/html/;
+  }
+  location /client2-${password2}.json {
+    root /usr/share/nginx/html/;
+  }
     location ~ \.php\$ {
         fastcgi_split_path_info ^(.+\.php)(/.+)\$;
         fastcgi_param SCRIPT_FILENAME \$request_filename;
@@ -3858,39 +3858,39 @@ server {
         fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
     }
 EOF
-	else
-	cat > '/etc/nginx/conf.d/default.conf' << EOF
+  else
+  cat > '/etc/nginx/conf.d/default.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 server {
-	listen 443 ssl http2;
-	listen [::]:443 ssl http2;
-	ssl_certificate       /etc/certs/${domain}_ecc/fullchain.cer;
-	ssl_certificate_key   /etc/certs/${domain}_ecc/${domain}.key;
-	ssl_protocols         TLSv1.3 TLSv1.2;
-	ssl_ciphers $cipher_server;
-	ssl_prefer_server_ciphers on;
-	ssl_early_data on;
-	ssl_session_cache   shared:SSL:40m;
-	ssl_session_timeout 1d;
-	ssl_session_tickets off;
-	#ssl_stapling on;
-	#ssl_stapling_verify on;
-	#ssl_dhparam /etc/nginx/nginx.pem;
-	#resolver 127.0.0.1;
-	resolver_timeout 10s;
-	server_name           $domain;
-	add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-	add_header X-Cache-Status \$upstream_cache_status;
-	if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345|Go-http-client) ) { return 403; }
-	#if (\$http_user_agent ~* (wget|curl) ) { return 403; }
-	#if (\$http_user_agent = "") { return 403; }
-	#if (\$host != "$domain") { return 404; }
-	location / {
-		proxy_pass http://127.0.0.1:4000/;
-		proxy_set_header Host \$http_host;
-		proxy_set_header X-Real-IP \$remote_addr;
-		proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-		http2_push /css/main.css;
+  listen 443 ssl http2;
+  listen [::]:443 ssl http2;
+  ssl_certificate       /etc/certs/${domain}_ecc/fullchain.cer;
+  ssl_certificate_key   /etc/certs/${domain}_ecc/${domain}.key;
+  ssl_protocols         TLSv1.3 TLSv1.2;
+  ssl_ciphers $cipher_server;
+  ssl_prefer_server_ciphers on;
+  ssl_early_data on;
+  ssl_session_cache   shared:SSL:40m;
+  ssl_session_timeout 1d;
+  ssl_session_tickets off;
+  #ssl_stapling on;
+  #ssl_stapling_verify on;
+  #ssl_dhparam /etc/nginx/nginx.pem;
+  #resolver 127.0.0.1;
+  resolver_timeout 10s;
+  server_name           $domain;
+  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+  add_header X-Cache-Status \$upstream_cache_status;
+  if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345|Go-http-client) ) { return 403; }
+  #if (\$http_user_agent ~* (wget|curl) ) { return 403; }
+  #if (\$http_user_agent = "") { return 403; }
+  #if (\$host != "$domain") { return 404; }
+  location / {
+    proxy_pass http://127.0.0.1:4000/;
+    proxy_set_header Host \$http_host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    http2_push /css/main.css;
         http2_push /lib/font-awesome/css/all.min.css;
         http2_push /lib/anime.min.js;
         http2_push /lib/velocity/velocity.min.js;
@@ -3899,19 +3899,19 @@ server {
         http2_push /js/motion.js;
         http2_push /js/schemes/muse.js;
         http2_push /js/next-boot.js;
-	}
-	location /${password1}.png {
-		root /usr/share/nginx/html/;
-	}
-	location /${password2}.png {
-		root /usr/share/nginx/html/;
-	}
-	location /client1-${password1}.json {
-		root /usr/share/nginx/html/;
-	}
-	location /client2-${password2}.json {
-		root /usr/share/nginx/html/;
-	}
+  }
+  location /${password1}.png {
+    root /usr/share/nginx/html/;
+  }
+  location /${password2}.png {
+    root /usr/share/nginx/html/;
+  }
+  location /client1-${password1}.json {
+    root /usr/share/nginx/html/;
+  }
+  location /client2-${password2}.json {
+    root /usr/share/nginx/html/;
+  }
     location ~ \.php\$ {
         fastcgi_split_path_info ^(.+\.php)(/.+)\$;
         fastcgi_param SCRIPT_FILENAME \$request_filename;
@@ -4115,35 +4115,35 @@ systemctl restart nginx
 }
 
 start(){
-	set +e
-	colorEcho ${INFO} "启动(starting) trojan-gfw ing..."
-	systemctl daemon-reload
-	if [[ $install_mariadb == 1 ]]; then
-		systemctl restart mariadb
-	fi
-	if [[ $install_qbt == 1 ]]; then
-		systemctl stop qbittorrent.service
+  set +e
+  colorEcho ${INFO} "启动(starting) trojan-gfw ing..."
+  systemctl daemon-reload
+  if [[ $install_mariadb == 1 ]]; then
+    systemctl restart mariadb
+  fi
+  if [[ $install_qbt == 1 ]]; then
+    systemctl stop qbittorrent.service
     sleep 1
     qbtline=$(grep -n "Preferences" /usr/share/nginx/qBittorrent/config/qBittorrent.conf | cut -c1-2)
     sed -i "${qbtline} aAdvanced\\\AnnounceToAllTrackers=true" /usr/share/nginx/qBittorrent/config/qBittorrent.conf
     systemctl start qbittorrent.service
-	fi
-	if [[ $install_file == 1 ]]; then
-		systemctl start filebrowser
-	fi
-	if [[ $install_rsshub == 1 ]]; then
-		systemctl start rssfeed
-	fi
-	if [[ $install_trojan == 1 ]]; then
-		systemctl start trojan
-		systemctl stop netdata
-		killall netdata
-		systemctl start netdata
-	fi
+  fi
+  if [[ $install_file == 1 ]]; then
+    systemctl start filebrowser
+  fi
+  if [[ $install_rsshub == 1 ]]; then
+    systemctl start rssfeed
+  fi
+  if [[ $install_trojan == 1 ]]; then
+    systemctl start trojan
+    systemctl stop netdata
+    killall netdata
+    systemctl start netdata
+  fi
 }
 
 installhexo(){
-	colorEcho ${INFO} "Install Hexo ing..."
+  colorEcho ${INFO} "Install Hexo ing..."
   cd /usr/share/nginx
   npm install -g npm
   npm install hexo-cli -g
@@ -4523,181 +4523,181 @@ systemctl start hexo
 }
 
 sharelink(){
-	set +e
-	cd
-	clear
-	if [[ $install_trojan = 1 ]]; then
-		curl -LO --progress-bar https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py
-		chmod +x trojan-url.py
-	cat > "/usr/share/nginx/client1.json" << EOF
+  set +e
+  cd
+  clear
+  if [[ $install_trojan = 1 ]]; then
+    curl -LO --progress-bar https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py
+    chmod +x trojan-url.py
+  cat > "/usr/share/nginx/client1.json" << EOF
 {
-	"run_type": "client",
-	"local_addr": "127.0.0.1",
-	"local_port": 1080,
-	"remote_addr": "$domain",
-	"remote_port": 443,
-	"password": [
-		"$password1"
-	],
-	"log_level": 1,
-	"ssl": {
-		"verify": true,
-		"verify_hostname": true,
-		"cert": "",
-		"cipher": "$cipher_client",
-		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-		"sni": "",
-		"alpn": [
-			"h2",
-			"http/1.1"
-		],
-		"reuse_session": true,
-		"session_ticket": false,
-		"curves": ""
-	},
-	"tcp": {
-		"no_delay": true,
-		"keep_alive": true,
-		"reuse_port": false,
-		"fast_open": false,
-		"fast_open_qlen": 20
-	}
+  "run_type": "client",
+  "local_addr": "127.0.0.1",
+  "local_port": 1080,
+  "remote_addr": "$domain",
+  "remote_port": 443,
+  "password": [
+    "$password1"
+  ],
+  "log_level": 1,
+  "ssl": {
+    "verify": true,
+    "verify_hostname": true,
+    "cert": "",
+    "cipher": "$cipher_client",
+    "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+    "sni": "",
+    "alpn": [
+      "h2",
+      "http/1.1"
+    ],
+    "reuse_session": true,
+    "session_ticket": false,
+    "curves": ""
+  },
+  "tcp": {
+    "no_delay": true,
+    "keep_alive": true,
+    "reuse_port": false,
+    "fast_open": false,
+    "fast_open_qlen": 20
+  }
 }
 EOF
-	cat > "/usr/share/nginx/client2.json" << EOF
+  cat > "/usr/share/nginx/client2.json" << EOF
 {
-	"run_type": "client",
-	"local_addr": "127.0.0.1",
-	"local_port": 1080,
-	"remote_addr": "$domain",
-	"remote_port": 443,
-	"password": [
-		"$password2"
-	],
-	"log_level": 1,
-	"ssl": {
-		"verify": true,
-		"verify_hostname": true,
-		"cert": "",
-		"cipher": "$cipher_client",
-		"cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-		"sni": "",
-		"alpn": [
-			"h2",
-			"http/1.1"
-		],
-		"reuse_session": true,
-		"session_ticket": false,
-		"curves": ""
-	},
-	"tcp": {
-		"no_delay": true,
-		"keep_alive": true,
-		"reuse_port": false,
-		"fast_open": false,
-		"fast_open_qlen": 20
-	}
+  "run_type": "client",
+  "local_addr": "127.0.0.1",
+  "local_port": 1080,
+  "remote_addr": "$domain",
+  "remote_port": 443,
+  "password": [
+    "$password2"
+  ],
+  "log_level": 1,
+  "ssl": {
+    "verify": true,
+    "verify_hostname": true,
+    "cert": "",
+    "cipher": "$cipher_client",
+    "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+    "sni": "",
+    "alpn": [
+      "h2",
+      "http/1.1"
+    ],
+    "reuse_session": true,
+    "session_ticket": false,
+    "curves": ""
+  },
+  "tcp": {
+    "no_delay": true,
+    "keep_alive": true,
+    "reuse_port": false,
+    "fast_open": false,
+    "fast_open_qlen": 20
+  }
 }
 EOF
-	./trojan-url.py -q -i /usr/share/nginx/client1.json -o /usr/share/nginx/html/$password1.png
-	./trojan-url.py -q -i /usr/share/nginx/client2.json -o /usr/share/nginx/html/$password2.png
-	rm /usr/share/nginx/client1.json
-	rm /usr/share/nginx/client2.json
-	rm -rf trojan-url.py
-	fi
+  ./trojan-url.py -q -i /usr/share/nginx/client1.json -o /usr/share/nginx/html/$password1.png
+  ./trojan-url.py -q -i /usr/share/nginx/client2.json -o /usr/share/nginx/html/$password2.png
+  rm /usr/share/nginx/client1.json
+  rm /usr/share/nginx/client2.json
+  rm -rf trojan-url.py
+  fi
 }
 
 uninstall(){
-	set +e
-	cd
-	if [[ -f /usr/local/bin/trojan ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) trojan?" 8 78); then
-		systemctl stop trojan
-		systemctl disable trojan
-		rm -rf /etc/systemd/system/trojan*
-		rm -rf /usr/local/etc/trojan/*
-		rm -rf /root/.trojan/autoupdate.sh
-		fi
-	fi
-	if [[ -f /usr/sbin/nginx ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) nginx?" 8 78); then
-		systemctl stop nginx
-		systemctl disable nginx
-		apt-get -y remove nginx
-		rm -rf /etc/apt/sources.list.d/nginx.list
-		rm -rf /usr/share/nginx/html/
-		fi
-	fi
-	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) dnscrypt-proxy?" 8 78); then
-			systemctl stop dnscrypt-proxy
-			systemctl disable dnscrypt-proxy
-			rm -rf /usr/sbin/dnscrypt-proxy
-			rm /etc/systemd/system/dnscrypt-proxy.service
-			echo "nameserver 1.1.1.1" > /etc/resolv.conf
-			iptables -t nat -F
-		fi
-	fi
-	if [[ -f /usr/bin/qbittorrent-nox ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) qbittorrent?" 8 78); then
-		systemctl stop qbittorrent
-		systemctl disable qbittorrent
-		apt-get -y remove qbittorrent-nox
-		rm /etc/systemd/system/qbittorrent.service
-		fi
-	fi
-	if [[ -f /usr/bin/bittorrent-tracker ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) bittorrent-tracker?" 8 78); then
-		systemctl stop tracker
-		systemctl disable tracker
-		rm -rf /usr/bin/bittorrent-tracker
-		rm /etc/systemd/system/tracker.service
-		fi
-	fi
-	if [[ -f /usr/local/bin/aria2c ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) aria2?" 8 78); then
-		systemctl stop aria
-		systemctl disable aria
-		rm -rf /etc/aria.conf
-		rm -rf /usr/local/bin/aria2c
-		rm /etc/systemd/system/aria2.service
-		fi
-	fi
-	if [[ -f /usr/local/bin/filebrowser ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) filebrowser?" 8 78); then
-		systemctl stop filebrowser
-		systemctl disable filebrowser
-		rm /usr/local/bin/filebrowser
-		rm /etc/systemd/system/filebrowser.service
-		fi
-	fi
-	if [[ -f /usr/bin/tor ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) tor?" 8 78); then
-		systemctl stop tor
-		systemctl disable tor
-		systemctl stop tor@default
-		apt-get -y remove tor
-		rm -rf /etc/apt/sources.list.d/tor.list
-		fi
-	fi
-	if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
-		if (whiptail --title "api" --yesno "卸载 (uninstall) Netdata?" 8 78); then
-		systemctl stop netdata
-		systemctl disable netdata
-		fi
-	fi
-	if (whiptail --title "api" --yesno "卸载 (uninstall) acme.sh?" 8 78); then
-		~/.acme.sh/acme.sh --uninstall
-	fi
-	rm -rf /root/.trojan/
-	apt-get update
-	systemctl daemon-reload
-	colorEcho ${INFO} "卸载完成"
+  set +e
+  cd
+  if [[ -f /usr/local/bin/trojan ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) trojan?" 8 78); then
+    systemctl stop trojan
+    systemctl disable trojan
+    rm -rf /etc/systemd/system/trojan*
+    rm -rf /usr/local/etc/trojan/*
+    rm -rf /root/.trojan/autoupdate.sh
+    fi
+  fi
+  if [[ -f /usr/sbin/nginx ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) nginx?" 8 78); then
+    systemctl stop nginx
+    systemctl disable nginx
+    apt-get -y remove nginx
+    rm -rf /etc/apt/sources.list.d/nginx.list
+    rm -rf /usr/share/nginx/html/
+    fi
+  fi
+  if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) dnscrypt-proxy?" 8 78); then
+      systemctl stop dnscrypt-proxy
+      systemctl disable dnscrypt-proxy
+      rm -rf /usr/sbin/dnscrypt-proxy
+      rm /etc/systemd/system/dnscrypt-proxy.service
+      echo "nameserver 1.1.1.1" > /etc/resolv.conf
+      iptables -t nat -F
+    fi
+  fi
+  if [[ -f /usr/bin/qbittorrent-nox ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) qbittorrent?" 8 78); then
+    systemctl stop qbittorrent
+    systemctl disable qbittorrent
+    apt-get -y remove qbittorrent-nox
+    rm /etc/systemd/system/qbittorrent.service
+    fi
+  fi
+  if [[ -f /usr/bin/bittorrent-tracker ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) bittorrent-tracker?" 8 78); then
+    systemctl stop tracker
+    systemctl disable tracker
+    rm -rf /usr/bin/bittorrent-tracker
+    rm /etc/systemd/system/tracker.service
+    fi
+  fi
+  if [[ -f /usr/local/bin/aria2c ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) aria2?" 8 78); then
+    systemctl stop aria
+    systemctl disable aria
+    rm -rf /etc/aria.conf
+    rm -rf /usr/local/bin/aria2c
+    rm /etc/systemd/system/aria2.service
+    fi
+  fi
+  if [[ -f /usr/local/bin/filebrowser ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) filebrowser?" 8 78); then
+    systemctl stop filebrowser
+    systemctl disable filebrowser
+    rm /usr/local/bin/filebrowser
+    rm /etc/systemd/system/filebrowser.service
+    fi
+  fi
+  if [[ -f /usr/bin/tor ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) tor?" 8 78); then
+    systemctl stop tor
+    systemctl disable tor
+    systemctl stop tor@default
+    apt-get -y remove tor
+    rm -rf /etc/apt/sources.list.d/tor.list
+    fi
+  fi
+  if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) Netdata?" 8 78); then
+    systemctl stop netdata
+    systemctl disable netdata
+    fi
+  fi
+  if (whiptail --title "api" --yesno "卸载 (uninstall) acme.sh?" 8 78); then
+    ~/.acme.sh/acme.sh --uninstall
+  fi
+  rm -rf /root/.trojan/
+  apt-get update
+  systemctl daemon-reload
+  colorEcho ${INFO} "卸载完成"
 }
 
 autoupdate(){
-	set +e
-	if [[ $install_trojan == 1 ]]; then
+  set +e
+  if [[ $install_trojan == 1 ]]; then
 cat > '/root/.trojan/autoupdate.sh' << EOF
 #!/bin/bash
 apt-get update
@@ -4705,7 +4705,7 @@ apt-get upgrade -y
 trojanversion=\$(curl -fsSL https://api.github.com/repos/trojan-gfw/trojan/releases/latest | grep tag_name | sed -E 's/.*"v(.*)".*/\1/')
 /usr/local/bin/trojan -v &> /root/.trojan/trojan_version.txt
 if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
-   	echo "no update required" >> /root/.trojan/update.log
+    echo "no update required" >> /root/.trojan/update.log
     else
     echo "update required" >> /root/.trojan/update.log
     wget -q https://github.com/trojan-gfw/trojan/releases/download/v\$trojanversion/trojan-\$trojanversion-linux-amd64.tar.xz
@@ -4722,29 +4722,29 @@ fi
 EOF
 touch /root/.trojan/update.log
 crontab -l | grep -q '0 0 1 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 0 1 * * bash /root/.trojan/autoupdate.sh" | crontab
-	fi
+  fi
 }
 
 logcheck(){
-	set +e
-	readconfig
-	clear
-	if [[ -f /usr/local/bin/trojan ]]; then
-		colorEcho ${INFO} "Trojan Log"
-		journalctl -a -u trojan.service
-		less /root/.trojan/update.log
-	fi
-	if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
-		colorEcho ${INFO} "dnscrypt-proxy Log"
-		journalctl -a -u dnscrypt-proxy.service
-	fi
-	if [[ -f /usr/local/bin/aria2c ]]; then
-		colorEcho ${INFO} "Aria2 Log"
-		less /var/log/aria2.log
-	fi
-	colorEcho ${INFO} "Nginx Log"
-	less /var/log/nginx/error.log
-	less /var/log/nginx/access.log
+  set +e
+  readconfig
+  clear
+  if [[ -f /usr/local/bin/trojan ]]; then
+    colorEcho ${INFO} "Trojan Log"
+    journalctl -a -u trojan.service
+    less /root/.trojan/update.log
+  fi
+  if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
+    colorEcho ${INFO} "dnscrypt-proxy Log"
+    journalctl -a -u dnscrypt-proxy.service
+  fi
+  if [[ -f /usr/local/bin/aria2c ]]; then
+    colorEcho ${INFO} "Aria2 Log"
+    less /var/log/aria2.log
+  fi
+  colorEcho ${INFO} "Nginx Log"
+  less /var/log/nginx/error.log
+  less /var/log/nginx/access.log
 }
 
 install_ddns(){
@@ -4818,61 +4818,61 @@ crontab -l | grep -q '* * * * * bash /root/.trojan/ddns.sh'  && echo 'cron exist
 }
 
 advancedMenu() {
-	Mainmenu=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。有關錯誤報告或更多信息，請訪問以下鏈接: https://github.com/johnrosen1/vpstoolbox 或者 https://t.me/vpstoolbox_chat。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 78 5 \
-	"Install/Update" "安裝/更新/覆盖安装" \
-	"Benchmark" "效能测试"\
-	"Log" "日志" \
-	"Uninstall" "卸載" \
-	"Exit" "退出" 3>&1 1>&2 2>&3)
-	case $Mainmenu in
-		Install/Update)
-		clear
-		if [[ $install_status == 0 ]]; then
-		echo "nameserver 1.1.1.1" > /etc/resolv.conf
-		echo "nameserver 1.0.0.1" >> /etc/resolv.conf
-		echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-			if [[ $(systemctl is-active caddy) == active ]]; then
-			systemctl stop caddy
-			systemctl disable caddy
-			fi
-			if [[ $(systemctl is-active apache2) == active ]]; then
-			systemctl stop apache2
-			systemctl disable apache2
-			fi
-			if [[ $(systemctl is-active httpd) == active ]]; then
-			systemctl stop httpd
-			systemctl disable httpd
-			fi
-		fi
-		userinput
-		if [[ ${install_ddns} == 1 ]]; then
-		install_ddns
-		fi
-		#检测是否为自定义证书
-		if [ -f /etc/trojan/*.crt ] && [ -f /etc/trojan/*.key ]; then
-  		othercert=1
-  		cp /etc/trojan/*.crt /etc/trojan/trojan.crt
-  		cp /etc/trojan/*.key /etc/trojan/trojan.key
-  		apt-get install gnutls-bin -y
-  		openfirewall
-  		certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
-  		if [[ $? != 0 ]]; then
-    		whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,启动证书覆写" 8 78
-    		rm -rf /etc/trojan/trojan.crt
-    		rm -rf /etc/trojan/trojan.key
-    		#domain=""
-    		othercert=0
-    		#userinput
-  			fi
-		fi
-		curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
-		myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
-		localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
-		myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
-		if [[ -n ${myipv6} ]]; then
-		curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
-		fi
-		#检测证书是否已有
+  Mainmenu=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。有關錯誤報告或更多信息，請訪問以下鏈接: https://github.com/johnrosen1/vpstoolbox 或者 https://t.me/vpstoolbox_chat。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 78 5 \
+  "Install/Update" "安裝/更新/覆盖安装" \
+  "Benchmark" "效能测试"\
+  "Log" "日志" \
+  "Uninstall" "卸載" \
+  "Exit" "退出" 3>&1 1>&2 2>&3)
+  case $Mainmenu in
+    Install/Update)
+    clear
+    if [[ $install_status == 0 ]]; then
+    echo "nameserver 1.1.1.1" > /etc/resolv.conf
+    echo "nameserver 1.0.0.1" >> /etc/resolv.conf
+    echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+      if [[ $(systemctl is-active caddy) == active ]]; then
+      systemctl stop caddy
+      systemctl disable caddy
+      fi
+      if [[ $(systemctl is-active apache2) == active ]]; then
+      systemctl stop apache2
+      systemctl disable apache2
+      fi
+      if [[ $(systemctl is-active httpd) == active ]]; then
+      systemctl stop httpd
+      systemctl disable httpd
+      fi
+    fi
+    userinput
+    if [[ ${install_ddns} == 1 ]]; then
+    install_ddns
+    fi
+    #检测是否为自定义证书
+    if [ -f /etc/trojan/*.crt ] && [ -f /etc/trojan/*.key ]; then
+      othercert=1
+      cp /etc/trojan/*.crt /etc/trojan/trojan.crt
+      cp /etc/trojan/*.key /etc/trojan/trojan.key
+      apt-get install gnutls-bin -y
+      openfirewall
+      certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
+      if [[ $? != 0 ]]; then
+        whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,启动证书覆写" 8 78
+        rm -rf /etc/trojan/trojan.crt
+        rm -rf /etc/trojan/trojan.key
+        #domain=""
+        othercert=0
+        #userinput
+        fi
+    fi
+    curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
+    myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
+    localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+    myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
+    if [[ -n ${myipv6} ]]; then
+    curl -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
+    fi
+    #检测证书是否已有
 
     if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
       apt-get install gnutls-bin -y
@@ -4888,64 +4888,64 @@ advancedMenu() {
         fi
     fi
 
-		if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
-    	colorEcho ${INFO} "证书已有,跳过申请(skipping cert issue)"
-    	else
-  			if (whiptail --title "Issue TLS Cert" --yes-button "DNS API申请" --no-button "HTTP申请" --yesno "使用 (use) API/HTTP申请证书(to issue certificate)?" 8 78); then
-  			dnsissue
-  			else
-  			httpissue=1
-  			fi
-  		fi
+    if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
+      colorEcho ${INFO} "证书已有,跳过申请(skipping cert issue)"
+      else
+        if (whiptail --title "Issue TLS Cert" --yes-button "DNS API申请" --no-button "HTTP申请" --yesno "使用 (use) API/HTTP申请证书(to issue certificate)?" 8 78); then
+        dnsissue
+        else
+        httpissue=1
+        fi
+      fi
     colorEcho ${INFO} "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!"
-		upgradesystem
-		if [[ ${httpissue} == 1 ]]; then
-			httpissue
-		fi
-		systeminfo
-		installdependency
-		if [[ $install_mariadb == 1 ]]; then
-			install_mariadb
-		fi
-		if [[ ${install_tjp} == 1 ]]; then
-		install_tjp
-		fi
-		installhexo
-		nginxtrojan
-		start
-		sharelink
-		rm results
-		prasejson
-		autoupdate
-		apt-get purge python-pil python3-qrcode -q -y
-		apt-get autoremove -y
-		if [[ $install_netdata = 1 ]]; then
-		#wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
-		#sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
-		cd /opt/netdata/bin
-		bash netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud &>/dev/null
-		cd
-		fi
-		if [[ ${dnsmasq_install} == 1 ]]; then
-			if [[ ${dist} = ubuntu ]]; then
-	 			systemctl stop systemd-resolved
-	 			systemctl disable systemd-resolved
- 			fi
-			if [[ $(systemctl is-active dnsmasq) == active ]]; then
-				systemctl stop dnsmasq
-			fi
-		rm /etc/resolv.conf
-		touch /etc/resolv.conf
-		echo "nameserver 127.0.0.1" > '/etc/resolv.conf'
-		echo "" >> /etc/hosts
-		echo "$(jq -r '.ip' "/root/.trojan/ip.json") ${domain}" >> /etc/hosts
-		systemctl start dnscrypt-proxy
-		#iptables -t nat -I OUTPUT ! -d 127.0.0.1/32 -p udp -m udp --dport 53 -j DNAT --to 127.0.0.1:53
-		#ip6tables -t nat -I OUTPUT ! -d ::1 -p udp -m udp --dport 53 -j DNAT --to [::1]:53
-		iptables-save > /etc/iptables/rules.v4
-		fi
-		clear
-		cat > '/etc/profile.d/mymotd.sh' << EOF
+    upgradesystem
+    if [[ ${httpissue} == 1 ]]; then
+      httpissue
+    fi
+    systeminfo
+    installdependency
+    if [[ $install_mariadb == 1 ]]; then
+      install_mariadb
+    fi
+    if [[ ${install_tjp} == 1 ]]; then
+    install_tjp
+    fi
+    installhexo
+    nginxtrojan
+    start
+    sharelink
+    rm results
+    prasejson
+    autoupdate
+    apt-get purge python-pil python3-qrcode -q -y
+    apt-get autoremove -y
+    if [[ $install_netdata = 1 ]]; then
+    #wget -O /opt/netdata/etc/netdata/netdata.conf http://127.0.0.1:19999/netdata.conf
+    #sed -i 's/# bind to = \*/bind to = 127.0.0.1/g' /opt/netdata/etc/netdata/netdata.conf
+    cd /opt/netdata/bin
+    bash netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud &>/dev/null
+    cd
+    fi
+    if [[ ${dnsmasq_install} == 1 ]]; then
+      if [[ ${dist} = ubuntu ]]; then
+        systemctl stop systemd-resolved
+        systemctl disable systemd-resolved
+      fi
+      if [[ $(systemctl is-active dnsmasq) == active ]]; then
+        systemctl stop dnsmasq
+      fi
+    rm /etc/resolv.conf
+    touch /etc/resolv.conf
+    echo "nameserver 127.0.0.1" > '/etc/resolv.conf'
+    echo "" >> /etc/hosts
+    echo "$(jq -r '.ip' "/root/.trojan/ip.json") ${domain}" >> /etc/hosts
+    systemctl start dnscrypt-proxy
+    #iptables -t nat -I OUTPUT ! -d 127.0.0.1/32 -p udp -m udp --dport 53 -j DNAT --to 127.0.0.1:53
+    #ip6tables -t nat -I OUTPUT ! -d ::1 -p udp -m udp --dport 53 -j DNAT --to [::1]:53
+    iptables-save > /etc/iptables/rules.v4
+    fi
+    clear
+    cat > '/etc/profile.d/mymotd.sh' << EOF
 #!/usr/bin/env bash
 #!!! Do not change these settings unless you know what you are doing !!!
 domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
@@ -5045,39 +5045,39 @@ echo "|                             有關錯誤報告或更多信息，請訪�
 echo "|            https://github.com/johnrosen1/vpstoolbox or https://t.me/vpstoolbox_chat     |"
 echo "*******************************************************************************************"
 EOF
-		chmod +x /etc/profile.d/mymotd.sh
-		clear
-		echo "" > /etc/motd
-		echo "Install complete!"
-		whiptail --title "Success" --msgbox "安装成功(Install Success)" 8 78
-		bash /etc/profile.d/mymotd.sh
-		exit 0
-		;;
-		Benchmark)
-		clear
-		if (whiptail --title "测试模式" --yes-button "快速测试" --no-button "完整测试" --yesno "效能测试方式(fast or full)?" 8 78); then
+    chmod +x /etc/profile.d/mymotd.sh
+    clear
+    echo "" > /etc/motd
+    echo "Install complete!"
+    whiptail --title "Success" --msgbox "安装成功(Install Success)" 8 78
+    bash /etc/profile.d/mymotd.sh
+    exit 0
+    ;;
+    Benchmark)
+    clear
+    if (whiptail --title "测试模式" --yes-button "快速测试" --no-button "完整测试" --yesno "效能测试方式(fast or full)?" 8 78); then
         curl -fsL https://ilemonra.in/LemonBenchIntl | bash -s fast
         else
         curl -fsL https://ilemonra.in/LemonBenchIntl | bash -s full
     fi
-		exit 0
-		;;
-		Log)
-		clear
-		logcheck
-		exit 0
-		;;
-		Uninstall)
-		clear
-		uninstall
-		colorEcho ${SUCCESS} "Remove complete"
-		exit 0
-		;;
-		Exit)
-		whiptail --title "Bash Exited" --msgbox "Goodbye" 8 78
-		exit 0
-		;;
-		esac
+    exit 0
+    ;;
+    Log)
+    clear
+    logcheck
+    exit 0
+    ;;
+    Uninstall)
+    clear
+    uninstall
+    colorEcho ${SUCCESS} "Remove complete"
+    exit 0
+    ;;
+    Exit)
+    whiptail --title "Bash Exited" --msgbox "Goodbye" 8 78
+    exit 0
+    ;;
+    esac
 }
 
 sshoptimize(){
