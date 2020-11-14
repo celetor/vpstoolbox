@@ -2412,16 +2412,16 @@ doh_servers = true
 require_dnssec = false
 require_nolog = true
 require_nofilter = true
-disabled_server_names = ['cisco', 'cisco-ipv6', 'cisco-familyshield']
+#disabled_server_names = ['cisco', 'cisco-ipv6', 'cisco-familyshield']
 force_tcp = false
 timeout = 5000
 keepalive = 30
 lb_estimator = true
-log_level = 0
+log_level = 2
 use_syslog = true
 #log_file = '/var/log/dnscrypt-proxy/dnscrypt-proxy.log'
-cert_refresh_delay = 720
-tls_disable_session_tickets = true
+cert_refresh_delay = 86400
+tls_disable_session_tickets = false
 #tls_cipher_suite = [4865]
 fallback_resolvers = ['1.1.1.1:53', '8.8.8.8:53']
 ignore_system_dns = true
@@ -2461,9 +2461,9 @@ cache_neg_max_ttl = 600
   #file = '/var/log/dnscrypt-proxy/query.log'
   format = 'tsv'
 
-[blacklist]
+#[blacklist]
 
-  blacklist_file = '/etc/dnscrypt-proxy/blacklist.txt'
+  #blacklist_file = '/etc/dnscrypt-proxy/blacklist.txt'
 
 [sources]
 
