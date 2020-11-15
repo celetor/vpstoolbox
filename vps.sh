@@ -3815,7 +3815,7 @@ server {
   server_name $domain;
   resolver 127.0.0.1;
   resolver_timeout 10s;
-  if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345|Go-http-client) ) { return 403; }
+  #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|Maxthon|TheWorld|UC|OPPO|baidu|Sogou|2345|) ) { return 403; }
   #if (\$http_user_agent ~* (wget|curl) ) { return 403; }
   #if (\$http_user_agent = "") { return 403; }
   #if (\$host != "$domain") { return 404; }
