@@ -13,7 +13,12 @@
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 ```
 
-注：本项目**可覆盖安装，无需重建伺服器/VPS !**
+#### 重要提示:
+1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
+1. 请 **以root/sudoer身份运行**(sudo -i)
+2. 请 **[先购买一个域名](https://www.namesilo.com/?rid=685fb47qi)** 并 **[完成DNS解析](https://dnschecker.org/)**!
+3. 请在控制面板中 **开启所有端口**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 Cloudflare CDN !***
+4. 如安装失败请自行加入TG群组反馈或者开issue,但请**务必附上错误的步骤，截图，OS版本等信息**。
 
 流量图示(仅供参考):
 ![flowchart](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
@@ -22,11 +27,6 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 1. 此项目使用MIT开源协议，**欢迎PR**.
 2. 所有ip信息皆来自ipinfo.io,仅用于验证域名解析是否成功，无其他作用。
-
-#### 重要提示:
-1. 请 **以root/sudoer身份运行**(sudo -i)
-2. 请 **[先购买一个域名](https://www.namesilo.com/?rid=685fb47qi)** 并 **[完成DNS解析](https://dnschecker.org/)**!
-3. 请在控制面板中 **开启所有端口**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 Cloudflare CDN !***
 
 #### 项目特性:
 
@@ -71,17 +71,17 @@ VPSToolBox is a bash script that helps you setup Trojan-gfw Nginx Hexo Netdata a
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 ```
 
+#### Important Reminder:
+1. Please **Run as root**(sudo -i)
+2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this program!
+3. Please **turn off your firewall for best performance(full-cone nat) and turn off Cloudflare CDN** in your control panel before running this program!
+
 Flowchart:
 ![flowchart](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flowchart.png)
 
 #### Privacy Statement:
 
 Ip Information is just an indispensable part of this project, all ip information comes from ipinfo.io,no spam related.
-
-#### Important Reminder:
-1. Please **Run as root**(sudo -i)
-2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this program!
-3. Please **turn off your firewall for best performance(full-cone nat) and turn off Cloudflare CDN** in your control panel before running this program!
 
 #### Features:
 
