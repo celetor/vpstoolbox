@@ -23,13 +23,10 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 1. 此项目使用MIT开源协议，**欢迎PR**.
 2. 所有ip信息皆来自ipinfo.io,仅用于验证域名解析是否成功，无其他作用。
 
-#### 友情提示:
+#### 重要提示:
 1. 请 **以root/sudoer身份运行**(sudo -i)
 2. 请 **[先购买一个域名](https://www.namesilo.com/?rid=685fb47qi)** 并 **[完成DNS解析](https://dnschecker.org/)**!
-3. 请在控制面板中 **开启TCP端口 [80](https://www.speedguide.net/port.php?port=80) 以及 [443](https://www.speedguide.net/port.php?port=443)** 并 ***关闭 Cloudflare CDN !***
-4. 如果您出于某些原因需要使用自定义证书(不推荐) , 请放在 /etc/trojan/ 里面 , 不需要修改名称(证书类型需为fullchain) !
-5. 请使用一台有至少 **0.5 GB RAM** 以及 **5G 硬盘空间的VPS**. 
-6. 出于安全原因，本项目**已禁止360/qq/xiaomi/wechat等浏览器访问最终结果页面及相关服务(403 forbidden)**，请使用chrome/firefox等访问。
+3. 请在控制面板中 **开启所有端口**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 Cloudflare CDN !***
 
 #### 项目特性:
 
@@ -81,12 +78,10 @@ Flowchart:
 
 Ip Information is just an indispensable part of this project, all ip information comes from ipinfo.io,no spam related.
 
-#### Friendly Reminder:
+#### Important Reminder:
 1. Please **Run as root**(sudo -i)
 2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this program!
-3. Please **Open Tcp port [80](https://www.speedguide.net/port.php?port=80) and [443](https://www.speedguide.net/port.php?port=443) and turn off Cloudflare CDN** in your control panel before running this program!
-4. For customized certificate , please put it in /etc/trojan/ , no name change required !
-5. Please use a VPS with more than **0.5 GB RAM** and at least **5G FREE DISK SPACE**. 
+3. Please **turn off your firewall for best performance(full-cone nat) and turn off Cloudflare CDN** in your control panel before running this program!
 
 #### Features:
 
