@@ -15,6 +15,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 #### 重要提示:
 1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
+4. **仅支援 [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)**
 1. 请 **以root/sudoer身份运行**(sudo -i)
 2. 请 **[先购买一个域名](https://www.namesilo.com/?rid=685fb47qi)** 并 **[完成DNS解析](https://dnschecker.org/)**!
 3. 请在控制面板中 **开启所有端口**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 Cloudflare CDN !***
@@ -34,7 +35,6 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 2. 支援所有种类的虚拟化技术，包括bare mental,kvm openvz等
 20. 支援全自动安装并配置 **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [Speedtest](https://github.com/librespeed/speedtest) [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) [Trojan-panel](https://github.com/trojan-gfw/trojan-panel) Postfix Dovecot Roundcube-Webmail等**
 3. 全自动签发,续签,重启服务 [let's encrypt 证书](https://letsencrypt.org/)
-4. **仅支援 [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)**
 17. [完整的IPV6支援](https://en.wikipedia.org/wiki/IPv6)
 17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
 18. [全自动时间较准](https://www.freedesktop.org/software/systemd/man/timedatectl.html)
@@ -72,6 +72,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 ```
 
 #### Important Reminder:
+4. **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)**
 1. Please **Run as root**(sudo -i)
 2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this program!
 3. Please **turn off your firewall for best performance(full-cone nat) and turn off Cloudflare CDN** in your control panel before running this program!
@@ -89,7 +90,6 @@ Ip Information is just an indispensable part of this project, all ip information
 2. Support all kinds of virtualization including kvm openvz and so on.
 20. Support Auto install and config **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) [Speedtest](https://github.com/librespeed/speedtest) [Trojan-panel](https://github.com/trojan-gfw/trojan-panel) Postfix Dovecot Roundcube-Webmail**
 3. Auto issue and renew [let's encrypt certificate](https://letsencrypt.org/) and auto reload Trojan-GFW after renewal
-4. **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)**
 17. [Full IPv6 Support](https://en.wikipedia.org/wiki/IPv6)
 17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
 18. [time sync](https://www.freedesktop.org/software/systemd/man/timedatectl.html)
