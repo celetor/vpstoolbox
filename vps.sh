@@ -4235,8 +4235,8 @@ PS: ***不支援Cloudflare CDN ❗***
 2. <a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank" rel="noreferrer">ios client</a>苹果客户端
 3. <a href="https://github.com/trojan-gfw/trojan/releases/latest" target="_blank" rel="noreferrer">windows client</a>windows客户端
 4. <a href="https://github.com/NetchX/Netch" target="_blank" rel="noreferrer">https://github.com/NetchX/Netch</a>推荐的**游戏**客户端
-5. <a href="https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms" target="_blank" rel="noreferrer">https://github.com/trojan-gfw/trojan/wiki/Mobile-Platforms</a>
-6. <a href="https://hstspreload.org/" target="_blank" rel="noreferrer">https://hstspreload.org/</a>
+5. <a href="https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif" target="_blank" rel="noreferrer">Proxy SwitchyOmega</a>
+6. <a href="https://github.com/gfwlist/gfwlist/blob/master/gfwlist.txt" target="_blank" rel="noreferrer">Gfwlist(请配合SwichyOmega食用)</a>
 
 ---
 
