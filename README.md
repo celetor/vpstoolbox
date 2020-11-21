@@ -15,7 +15,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 #### 重要提示:
 1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
-4. **仅支援 [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)**
+4. **仅支援 [Debian8+](https://www.debian.org/) [Ubuntu14+](https://ubuntu.com/)**
 1. 请 **以root/sudoer身份运行**(sudo -i)
 2. 请 **[先购买一个域名](https://www.namesilo.com/?rid=685fb47qi)** 并 **[完成DNS解析](https://dnschecker.org/)**!
 3. 请在控制面板中 **开启所有端口**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 Cloudflare CDN !***
@@ -72,7 +72,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 ```
 
 #### Important Reminder:
-4. **Support [Debian](https://www.debian.org/) [Ubuntu](https://ubuntu.com/)**
+4. **Support [Debian8+](https://www.debian.org/) [Ubuntu14+](https://ubuntu.com/)**
 1. Please **Run as root**(sudo -i)
 2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this program!
 3. Please **turn off your firewall for best performance(full-cone nat) and turn off Cloudflare CDN** in your control panel before running this program!
