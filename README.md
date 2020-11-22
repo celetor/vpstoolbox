@@ -18,7 +18,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 4. **仅支援 [Debian8+](https://www.debian.org/) [Ubuntu14+](https://ubuntu.com/)**
 1. 请 **以root/sudoer身份运行**(sudo -i)
 2. 请 **[先购买一个域名](https://www.namesilo.com/?rid=685fb47qi)** 并 **[完成DNS解析](https://dnschecker.org/)**!
-3. 请在控制面板中 **开启所有端口**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 包括但不限于 Cloudflare 之类的 CDN !***
+3. 请在控制面板中 **开启所有端口**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 Cloudflare 之类的 CDN !***
 4. 如安装失败请自行加入TG群组反馈或者开issue,但请**务必附上错误的步骤，截图，OS版本等信息**。
 
 流量图示(仅供参考):
