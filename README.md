@@ -18,7 +18,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 4. **仅支援 [Debian8+](https://www.debian.org/) [Ubuntu14+](https://ubuntu.com/)**
 1. 请 **以root/sudoer身份运行**(sudo -i)
 2. 请 **[先购买一个域名](https://www.namesilo.com/?rid=685fb47qi)** 并 **[完成DNS解析](https://dnschecker.org/)**!
-3. 请在控制面板中 **开启所有端口**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 Cloudflare CDN !***
+3. 请在控制面板中 **开启所有端口**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 包括但不限于 Cloudflare 之类的 CDN !***
 4. 如安装失败请自行加入TG群组反馈或者开issue,但请**务必附上错误的步骤，截图，OS版本等信息**。
 
 流量图示(仅供参考):
@@ -39,7 +39,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
 18. [全自动时间较准](https://www.freedesktop.org/software/systemd/man/timedatectl.html)
 19. 全自动服务掉线重启(systemd auto-failrestart)
-20. [全自动检测并卸载阿里云监控](https://www.johnrosen1.com/ali-iso/)
+20. 全自动检测并卸载阿里云监控
 9.  支援 [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks)
 23. 支援完全/部分卸载
 24. And so on...
@@ -94,7 +94,7 @@ Ip Information is just an indispensable part of this project, all ip information
 17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
 18. [time sync](https://www.freedesktop.org/software/systemd/man/timedatectl.html)
 19. Fail Restart
-20. [uninstall Aliyun Aegis](https://www.johnrosen1.com/ali-iso/)
+20. uninstall Aliyun Aegis
 9.  Support [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks)
 23. Support Full/Part Uninstall
 24. And so on...
