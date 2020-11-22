@@ -2748,11 +2748,6 @@ local_tcp:
  control_port: 9051
 EOF
 fi
-sed -i 's/Restart=on-failure/Restart=always/' /lib/systemd/system/netdata.service
-systemctl daemon-reload
-systemctl stop netdata
-killall netdata
-systemctl start netdata
 fi
 clear
 
@@ -2760,7 +2755,6 @@ if [[ $install_trojan = 1 ]]; then
   if [[ ! -f /usr/local/bin/trojan ]]; then
   clear
   colorEcho ${INFO} "Install Trojan-GFW ing"
-  #useradd -r trojan --shell=/usr/sbin/nologin
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
   systemctl daemon-reload
   clear
