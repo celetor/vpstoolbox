@@ -714,7 +714,7 @@ fi
 #fi
 
 while [[ -z ${domain} ]]; do
-domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你的域名)(请先完成A/AAAA解析 https://dnschecker.org/)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你的域名)(请先完成A/AAAA解析 https://dnschecker.org/)" 8 68 --title "Domain input" 3>&1 1>&2 2>&3)
 colorEcho ${INFO} "Checking if domain is vaild."
 host ${domain}
 if [[ $? != 0 ]]; then
@@ -730,13 +730,13 @@ rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
 rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
 if [[ ${install_trojan} = 1 ]]; then
   while [[ -z ${password1} ]]; do
-password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码,***请勿添加特殊符号***)" 8 78 --title "password1 input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码,***请勿添加特殊符号***)" 8 68 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password1} ]]; then
 password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 fi
 done
 while [[ -z ${password2} ]]; do
-password2=$(whiptail --passwordbox --nocancel "Trojan-GFW Password Two(若不確定，請直接回車，会随机生成)" 8 78 --title "password2 input" 3>&1 1>&2 2>&3)
+password2=$(whiptail --passwordbox --nocancel "Trojan-GFW Password Two(若不確定，請直接回車，会随机生成)" 8 68 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password2} ]]; then
   password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
   fi
@@ -752,23 +752,23 @@ if [[ -z ${password2} ]]; then
   password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
   fi
   if [[ ${install_mail} == 1 ]]; then
-  mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername(邮箱用户名)" 8 78 admin --title "Mail user input" 3>&1 1>&2 2>&3)
+  mailuser=$(whiptail --inputbox --nocancel "Please enter your desired mailusername(邮箱用户名)" 8 68 admin --title "Mail user input" 3>&1 1>&2 2>&3)
   if [[ -z ${mailuser} ]]; then
   mailuser=$(head /dev/urandom | tr -dc a-z | head -c 4 ; echo '' )
   fi
 fi
   if [[ $install_qbt = 1 ]]; then
     while [[ -z $qbtpath ]]; do
-    qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Nginx Path(路径)" 8 78 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+    qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Nginx Path(路径)" 8 68 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
     done
   fi
   if [[ ${install_aria} == 1 ]]; then
     ariaport=$(shuf -i 13000-19000 -n 1)
     while [[ -z ${ariapath} ]]; do
-    ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Nginx Path(路径)" 8 78 /${password1}_aria2/ --title "Aria2 path input" 3>&1 1>&2 2>&3)
+    ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Nginx Path(路径)" 8 68 /${password1}_aria2/ --title "Aria2 path input" 3>&1 1>&2 2>&3)
     done
     while [[ -z $ariapasswd ]]; do
-    ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token(密码)" 8 78 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
+    ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token(密码)" 8 68 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
     if [[ -z ${ariapasswd} ]]; then
     ariapasswd=$(head /dev/urandom | tr -dc 0-9 | head -c 10 ; echo '' )
     fi
@@ -776,17 +776,17 @@ fi
   fi
   if [[ ${install_file} = 1 ]]; then
     while [[ -z ${filepath} ]]; do
-    filepath=$(whiptail --inputbox --nocancel "Filebrowser Nginx 路径" 8 78 /${password1}_file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+    filepath=$(whiptail --inputbox --nocancel "Filebrowser Nginx 路径" 8 68 /${password1}_file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
     done
   fi
   if [[ ${install_netdata} = 1 ]]; then
     while [[ -z ${netdatapath} ]]; do
-    netdatapath=$(whiptail --inputbox --nocancel "Netdata Nginx 路径" 8 78 /${password1}_netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
+    netdatapath=$(whiptail --inputbox --nocancel "Netdata Nginx 路径" 8 68 /${password1}_netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
     done
   fi
   if [[ ${install_tor} = 1 ]]; then
     while [[ -z ${tor_name} ]]; do
-    tor_name=$(whiptail --inputbox --nocancel "Tor nickname" 8 78 --title "tor nickname input" 3>&1 1>&2 2>&3)
+    tor_name=$(whiptail --inputbox --nocancel "Tor nickname" 8 68 --title "tor nickname input" 3>&1 1>&2 2>&3)
     if [[ -z ${tor_name} ]]; then
     tor_name="myrelay"
   fi
