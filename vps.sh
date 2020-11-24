@@ -289,9 +289,6 @@ isresolved(){
 #Issue Let's Encrypt Certificate by http
 httpissue(){
 openfirewall
-#if isresolved $domain
-  #then
-  #http_issue=1
   installacme
   installnginx
   rm -rf /etc/nginx/sites-available/*
@@ -318,7 +315,7 @@ EOF
   fi
   clear
   colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
-  ~/.acme.sh/acme.sh --issue --test --nginx --cert-home /etc/certs -d $domain --force -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+  ~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain --force -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
   if [[ $? != 0 ]] && [[ $? != 2 ]]; then
   colorEcho ${ERROR} "证书申请失败，请检查VPS控制面板防火墙(80 443)是否打开,DNS是否解析完成!!!"
   colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
@@ -354,12 +351,6 @@ WantedBy=timers.target
 EOF
 systemctl daemon-reload
 systemctl enable acme_letsencrypt.timer
-#else
-#whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功以及域名是否输入错误,并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开 Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel" 8 78
-#domain=""
-#clear
-#userinput
-#fi
 }
 
 #Issue Let's Encrypt Certificate by DNS API
