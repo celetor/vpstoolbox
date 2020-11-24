@@ -17,7 +17,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
 4. **仅支援 [Debian8+](https://www.debian.org/) [Ubuntu14+](https://ubuntu.com/)**
 1. 请 **以root/sudoer身份运行**(sudo -i)
-2. 请 **[先购买/白嫖一个域名或者使用二级域名](https://www.namesilo.com/?rid=685fb47qi)** 并 **[完成DNS A解析,即将域名指向IP](https://dnschecker.org/)**(namesilo最慢需要15min生效)!
+2. 请 **先[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)一个域名或者使用二级域名** 并 **[完成DNS A解析,即将域名指向IP](https://dnschecker.org/)**(namesilo最慢需要15min生效)!
 3. 请在控制面板中 **开启所有端口**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 Cloudflare 之类的 CDN !***
 2. API申请证书和HTTP申请证书区别不大,推荐HTTP申请(需A解析生效),无需输入API等信息。
 4. 如安装失败请自行加入TG群组反馈或者开issue,但请**务必附上错误的步骤，截图，OS版本等信息**。
