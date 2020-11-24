@@ -4890,10 +4890,10 @@ advancedMenu() {
     if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
       colorEcho ${INFO} "证书已有,跳过申请(skipping cert issue)"
       else
-        if (whiptail --title "Issue TLS Cert" --yes-button "DNS API申请" --no-button "HTTP申请" --yesno "使用 (use) API/HTTP申请证书(to issue certificate)?" 8 78); then
-        dnsissue
-        else
+        if (whiptail --title "Issue TLS Cert" --yes-button "HTTP申请" --no-button "DNS API申请" --yesno "使用 (use) API/HTTP申请证书(to issue certificate)?" 8 78); then
         httpissue=1
+        else
+        dnsissue
         fi
       fi
     colorEcho ${INFO} "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!"
