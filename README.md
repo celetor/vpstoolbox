@@ -48,10 +48,6 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 [VPSTOOLBOX基础使用方法](https://github.com/johnrosen1/vpstoolbox/wiki/VPSTOOLBOX%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
 
-#### 项目Demo(无保证)
-
-[https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
-
 #### 更多信息请自行查看Wiki !
 
 #### 如果此项目对你有用 , 请给颗star ,谢谢!
@@ -98,10 +94,6 @@ Ip Information is just an indispensable part of this project, all ip information
 9.  Support [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks)
 23. Support Full/Part Uninstall
 24. And so on...
-
-#### Give it a try ! (Live Demo,no Guarantee)
-
-[https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
 
 #### Please check project wiki for more info !
 
