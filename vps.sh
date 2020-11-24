@@ -289,9 +289,9 @@ isresolved(){
 #Issue Let's Encrypt Certificate by http
 httpissue(){
 openfirewall
-if isresolved $domain
-  then
-  http_issue=1
+#if isresolved $domain
+  #then
+  #http_issue=1
   installacme
   installnginx
   rm -rf /etc/nginx/sites-available/*
@@ -308,14 +308,22 @@ server {
 EOF
   systemctl start nginx
   clear
-  colorEcho ${INFO} "正式证书申请ing(test issuing) let\'s encrypt certificate"
-  ~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain --force -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+  colorEcho ${INFO} "測試证书申请ing(test issuing) let\'s encrypt certificate"
+  ~/.acme.sh/acme.sh --issue --test --nginx --cert-home /etc/certs -d $domain --force -k ec-256 --log
   if [[ $? != 0 ]] && [[ $? != 2 ]]; then
-  colorEcho ${ERROR} "证书申请测试失败，请检查VPS控制面板防火墙(80 443)是否打开!!!"
+  colorEcho ${ERROR} "測試证书申请失败，请检查VPS控制面板防火墙(80 443)是否打开,DNS是否解析完成!!!"
   colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
   colorEcho ${ERROR} "Cert issue fail,Pleae Open port 80 443 on VPS panel !!!"
   exit 1
   fi
+  clear
+  colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
+  ~/.acme.sh/acme.sh --issue --test --nginx --cert-home /etc/certs -d $domain --force -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+  if [[ $? != 0 ]] && [[ $? != 2 ]]; then
+  colorEcho ${ERROR} "证书申请失败，请检查VPS控制面板防火墙(80 443)是否打开,DNS是否解析完成!!!"
+  colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
+  colorEcho ${ERROR} "Cert issue fail,Pleae Open port 80 443 on VPS panel !!!"
+  exit 1
   chmod +r /etc/certs/${domain}_ecc/fullchain.cer
   chmod +r /etc/certs/${domain}_ecc/${domain}.key
   cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
@@ -345,12 +353,12 @@ WantedBy=timers.target
 EOF
 systemctl daemon-reload
 systemctl enable acme_letsencrypt.timer
-else
-whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功以及域名是否输入错误,并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开 Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel" 8 78
-domain=""
-clear
-userinput
-fi
+#else
+#whiptail --title "Domain verification fail" --msgbox --scrolltext "域名解析验证失败，请自行验证解析是否成功以及域名是否输入错误,并且请关闭Cloudfalare CDN并检查VPS控制面板防火墙(80 443)是否打开 Domain verification fail,Pleae turn off Cloudflare CDN and Open port 80 443 on VPS panel" 8 78
+#domain=""
+#clear
+#userinput
+#fi
 }
 
 #Issue Let's Encrypt Certificate by DNS API
