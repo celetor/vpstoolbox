@@ -5043,7 +5043,7 @@ echo "|                       https://$domain/${password1}/                     
 echo "|                             有關錯誤報告或更多信息，請訪問以下鏈接                         |"
 echo "|            https://github.com/johnrosen1/vpstoolbox or https://t.me/vpstoolbox_chat     |"
 echo "|                             如果您想要关闭本报告，请使用以下命令                           |"
-echo "|           chmod -x /etc/profile.d/mymotd.sh 再次启用 chmod +x /etc/profile.d/mymotd.sh   |"
+echo "|    mv /etc/profile.d/mymotd.sh /etc/ 再次启用 mv /etc/mymotd.sh /etc/profile.d/mymotd.sh   |"
 echo "*******************************************************************************************"
 EOF
     chmod +x /etc/profile.d/mymotd.sh
