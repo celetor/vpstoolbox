@@ -324,6 +324,7 @@ EOF
   colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
   colorEcho ${ERROR} "Cert issue fail,Pleae Open port 80 443 on VPS panel !!!"
   exit 1
+  fi
   chmod +r /etc/certs/${domain}_ecc/fullchain.cer
   chmod +r /etc/certs/${domain}_ecc/${domain}.key
   cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
