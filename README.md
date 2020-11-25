@@ -29,7 +29,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 [項目**郵件**服務Demo](https://trojan-gfw.xyz/vpstoolbox_webmail/) 用戶名 admin 密碼 vpstoolbox
 
-[項目**Tiny Tiny Rss**服務Demo](https://trojan-gfw.xyz/vpstoolbox_ttrss/) 用戶名 admin 密碼 password 註：需**桌面端**訪問。
+[項目**Tiny Tiny Rss**服務Demo](https://trojan-gfw.xyz/vpstoolbox_ttrss/) 用戶名 admin 密碼 vpstoolbox 註：需**桌面端**訪問。
 
 [项目Bittorrent-tracker服务Demo](https://trojan-gfw.xyz/tracker/)
 
