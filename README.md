@@ -22,6 +22,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 4. 除Trojan-gfw相關軟件外皆為可選項，請自行選擇需要的軟件。
 2. API申请证书和HTTP申请证书区别不大,推荐HTTP申请(需A解析生效),无需输入API等信息。
 4. 如安装失败请自行加入TG群组反馈或者开issue,但请**务必附上错误的步骤，截图，OS版本等信息**。
+5. 证书续签目前使用crontab,如有问题,欢迎反馈 !
 
 #### 项目Demo(Debian10+namesilo購買的域名+完整安裝)
 
