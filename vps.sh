@@ -4752,6 +4752,17 @@ advancedMenu() {
         othercert=0
         #userinput
         fi
+        crontab -l | grep acme.sh
+        if [[ $? != 0 ]]; then
+        colorEcho ${INFO} "CRON(证书续签模块)缺失,添加中..."
+        #write out current crontab
+        crontab -l > mycron
+        #echo new cron into cron file
+        echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+        #install new cron file
+        crontab mycron
+        rm mycron        
+        fi
     fi
 
     if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
