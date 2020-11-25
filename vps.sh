@@ -1729,7 +1729,7 @@ systemctl start tracker
 cd /usr/share/nginx/
 mkdir tracker
 cd /usr/share/nginx/tracker/
-  cat > 'stat.js' << EOF
+  cat > 'stats.js' << EOF
 function addDataToPage(xmlDocument, type) {
   const torrents = xmlDocument.querySelector("torrents count_mutex").textContent;
   const peers = xmlDocument.querySelector("peers count").textContent;
