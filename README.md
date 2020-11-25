@@ -25,11 +25,11 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 #### 项目Demo(Debian10+namesilo購買的域名+完整安裝)
 
-[項目結果生成Demo](https://trojan-gfw.xyz/vpstoolbox/)
+[項目**結果**生成Demo](https://trojan-gfw.xyz/vpstoolbox/)
 
-[項目郵件服務Demo](https://trojan-gfw.xyz/vpstoolbox_webmail/) 用戶名 admin 密碼 vpstoolbox
+[項目**郵件**服務Demo](https://trojan-gfw.xyz/vpstoolbox_webmail/) 用戶名 admin 密碼 vpstoolbox
 
-[項目Tiny Tiny Rss服務Demo](https://trojan-gfw.xyz/vpstoolbox_ttrss/) 用戶名 admin 密碼 password 註：需**桌面端**訪問。
+[項目**Tiny Tiny Rss**服務Demo](https://trojan-gfw.xyz/vpstoolbox_ttrss/) 用戶名 admin 密碼 password 註：需**桌面端**訪問。
 
 [项目Bittorrent-tracker服务Demo](https://trojan-gfw.xyz/tracker/)
 
