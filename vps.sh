@@ -527,7 +527,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择(P
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
 "1" "Trojan-GFW TCP-BBR Dnscrypt-proxy and Netdata" on \
-"2" "RSSHUB and TT-RSS(RSS阅读器+RSS生成器)" off \
+"2" "RSSHUB and TT-RSS(RSS生成器+RSS阅读器)" off \
 "下载" "Download" off  \
 "3" "Qbittorrent增强版(可全自动屏蔽吸血行为)" off \
 "4" "Aria2" off \
