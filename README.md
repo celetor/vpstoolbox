@@ -31,6 +31,8 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 [項目Tiny Tiny Rss服務Demo](https://trojan-gfw.xyz/vpstoolbox_ttrss/) 用戶名 admin 密碼 password 註：需**桌面端**訪問。
 
+[项目Bittorrent-tracker服务Demo](https://trojan-gfw.xyz/tracker/)
+
 參看更多，請詳閱上述中的 項目結果生成Demo 。
 
 流量图示(仅供参考):
