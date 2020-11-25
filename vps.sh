@@ -4401,10 +4401,6 @@ udp://$domain:6969/announce
 1. 请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。
 2. 请记得将此Tracker分享给你的朋友们。
 
-#### Related Links
-
-1. <a href="https://github.com/webtorrent/bittorrent-tracker" target="_blank" rel="noreferrer">https://github.com/webtorrent/bittorrent-tracker</a>
-
 ---
 
 ### MariaDB
