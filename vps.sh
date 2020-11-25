@@ -303,33 +303,13 @@ EOF
   fi
   chmod +r /etc/certs/${domain}_ecc/fullchain.cer
   chmod +r /etc/certs/${domain}_ecc/${domain}.key
-  cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
-  cat > '/etc/systemd/system/acme_letsencrypt.timer' << EOF
-[Unit]
-Description=Daily renewal of Let's Encrypt's certificates
-
-[Timer]
-OnCalendar=daily
-RandomizedDelaySec=1h
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-EOF
-systemctl daemon-reload
-systemctl enable acme_letsencrypt.timer
+#write out current crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
 }
 
 #Issue Let's Encrypt Certificate by DNS API
