@@ -335,19 +335,13 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
+#write out current crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
         ;;
         2)
         while [[ -z $Namesilo_Key ]]; do
@@ -357,19 +351,13 @@ EOF
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
+#write out current crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
         ;;
         3)
         while [[ -z $Ali_Key ]] || [[ -z $Ali_Secret ]]; do
@@ -381,19 +369,13 @@ EOF
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
+#write out current crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns_ali --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
         ;;
         4)
         while [[ -z $DP_Id ]] || [[ -z $DP_Key ]]; do
@@ -405,19 +387,13 @@ EOF
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
+#write out current crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
         ;;
         5)
         while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
@@ -429,19 +405,13 @@ EOF
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
+#write out current crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
         ;;
         6)
         while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
@@ -453,19 +423,13 @@ EOF
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-        cat > '/etc/systemd/system/acme_letsencrypt.service' << EOF
-[Unit]
-Description=Renew Let's Encrypt certificates using acme.sh
-After=network-online.target
-
-[Service]
-Type=oneshot
-# Directory where the acme.sh script resides.
-Environment="HOME=/root/"
-ExecStart=/root/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-# acme.sh returns 2 when renewal is skipped (i.e. certs up to date)
-SuccessExitStatus=0 2
-EOF
+#write out current crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
         ;;
         http)
     upgradesystem
@@ -474,18 +438,6 @@ EOF
         *)
         ;;
     esac
-  cat > '/etc/systemd/system/acme_letsencrypt.timer' << EOF
-[Unit]
-Description=Daily renewal of Let's Encrypt's certificates
-
-[Timer]
-OnCalendar=daily
-RandomizedDelaySec=1h
-Persistent=true
-
-[Install]
-WantedBy=timers.target
-EOF
 
 if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
     :
