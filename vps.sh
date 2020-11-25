@@ -265,27 +265,6 @@ installacme(){
   ~/.acme.sh/acme.sh --upgrade --auto-upgrade
 }
 
-#Check if domain is resolved properly
-isresolved(){
-  if [ $# = 2 ]
-  then
-    myip2=$2
-  else
-    myip2=`curl -s http://dynamicdns.park-your-domain.com/getip`
-  fi
-    ips=(`nslookup $1 1.1.1.1 | grep -v 1.1.1.1 | grep Address | cut -d " " -f 2`)
-    for ip in "${ips[@]}"
-    do
-        if [ $ip == $myip ] || [ $ip == $myipv6 ] || [[ $ip == $localip ]]
-        then
-            return 0
-        else
-            continue
-        fi
-    done
-    return 1
-}
-
 #Issue Let's Encrypt Certificate by http
 httpissue(){
 openfirewall
@@ -1875,6 +1854,7 @@ udp://tracker.coppersurfer.tk:6969/announce
 EOF
 wget https://raw.githubusercontent.com/necolas/normalize.css/master/normalize.css
 cd
+rm -rf opentracker
 fi
 clear
 
@@ -4464,11 +4444,11 @@ PS: 不支援自定义证书,仅支援全自动申请的let证书!
 
 #### Bittorrent-trackers
 
-http://$domain:8000/announce
+udp://$domain:6969/announce
 
 #### Info link
 
-<a href="https://$domain:443$trackerstatuspath" target="_blank" rel="noreferrer">https://$domain:443$trackerstatuspath</a>
+<a href="https://$domain/tracker/" target="_blank" rel="noreferrer">https://$domain/tracker/</a>
 
 #### Tips:
 
