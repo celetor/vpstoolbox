@@ -527,23 +527,23 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择(P
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
 "1" "Trojan-GFW TCP-BBR Dnscrypt-proxy and Netdata" on \
-"2" "RSSHUB and TT-RSS" off \
+"2" "RSSHUB and TT-RSS(RSS阅读器+RSS生成器)" off \
 "下载" "Download" off  \
-"3" "Qbittorrent" off \
+"3" "Qbittorrent增强版(可全自动屏蔽吸血行为)" off \
 "4" "Aria2" off \
-"5" "Filebrowser" off \
+"5" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" off \
 "测速" "Speedtest" off  \
-"6" "Speedtest" off \
+"6" "Speedtest(测试本地网络到VPS的延迟及带宽)" off \
 "数据库" "Database" off  \
-"7" "MariaDB" off \
+"7" "MariaDB(数据库)" off \
 "安全" "Security" off  \
-"8" "Fail2ban" off \
+"8" "Fail2ban(防SSH爆破用)" off \
 "邮件" "Mail" off  \
-"9" "Mail service" off \
+"9" "Mail service(邮箱服务,需2g+内存)" off \
 "其他" "Others" off  \
-"10" "Bt-Tracker" off \
-"11" "Trojan-panel" off \
-"12" "Tor-Relay" off 2>results
+"10" "Bt-Tracker(Bittorrent-tracker服务)" off \
+"11" "Trojan-panel(已停止维护，请勿选中)" off \
+"12" "Tor-Relay(已停止维护，请勿选中)" off 2>results
 
 while read choice
 do
@@ -1526,11 +1526,16 @@ clear
 if [[ $install_qbt == 1 ]]; then
   clear
   colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
+  apt remove qbittorrent-nox -y
   if [[ ${dist} == debian ]]; then
-  apt-get install qbittorrent-nox -q -y
+echo 'deb http://download.opensuse.org/repositories/home:/nikoneko:/qbittorrent-nightly/Debian_10/ /' | sudo tee /etc/apt/sources.list.d/home:nikoneko:qbittorrent-nightly.list
+curl -fsSL https://download.opensuse.org/repositories/home:nikoneko:qbittorrent-nightly/Debian_10/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_nikoneko_qbittorrent-nightly.gpg > /dev/null
+apt-get update
+apt-get install qbittorrent-enhanced-nox -y
  elif [[ ${dist} == ubuntu ]]; then
-  add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
-  apt-get install qbittorrent-nox -q -y
+  add-apt-repository ppa:poplite/qbittorrent-enhanced -y
+  apt-get update
+  apt-get install qbittorrent-enhanced-nox -y
  else
   echo "fail"
  fi
@@ -1538,7 +1543,7 @@ if [[ $install_qbt == 1 ]]; then
   cat > '/etc/systemd/system/qbittorrent.service' << EOF
 [Unit]
 Description=qBittorrent Daemon Service
-Documentation=man:qbittorrent-nox(1)
+Documentation=https://github.com/c0re100/qBittorrent-Enhanced-Edition
 Wants=network-online.target
 After=network-online.target nss-lookup.target
 
