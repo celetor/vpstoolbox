@@ -199,7 +199,7 @@ setlanguage(){
   export LANGUAGE="C.UTF-8"
   export LANG="C.UTF-8"
   export LC_ALL="C.UTF-8"
-  if (whiptail --title "System Language Setting" --yes-button "中文" --no-button "English" --yesno "使用中文或英文(Use Chinese or English)?" 8 78); then
+  if (whiptail --title "System Language Setting" --yes-button "中文" --no-button "English" --yesno "使用中文或英文(Use Chinese or English)?" 8 68); then
   chattr -i /etc/locale.gen
   cat > '/etc/locale.gen' << EOF
 zh_TW.UTF-8 UTF-8
@@ -314,8 +314,8 @@ rm mycron
 
 #Issue Let's Encrypt Certificate by DNS API
 dnsissue(){
-whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr" 8 78
-    APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 78 6 \
+whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr" 8 68
+    APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 68 6 \
 "1" "Cloudflare(不支援免费域名)" \
 "2" "Namesilo" \
 "3" "Aliyun" \
@@ -327,8 +327,8 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
     case $APIOPTION in
         1)
         while [[ -z ${CF_Key} ]] || [[ -z ${CF_Email} ]]; do
-        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF Global Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
-        CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF Global Key併按回車" 8 68 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 68 --title "CF_Key input" 3>&1 1>&2 2>&3)
         done
         export CF_Key="$CF_Key"
         export CF_Email="$CF_Email"
@@ -345,7 +345,7 @@ rm mycron
         ;;
         2)
         while [[ -z $Namesilo_Key ]]; do
-        Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 78 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
+        Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 68 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
         done
         export Namesilo_Key="$Namesilo_Key"
         openfirewall
@@ -361,8 +361,8 @@ rm mycron
         ;;
         3)
         while [[ -z $Ali_Key ]] || [[ -z $Ali_Secret ]]; do
-        Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 78 --title "Ali_Key input" 3>&1 1>&2 2>&3)
-        Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 78 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
+        Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 68 --title "Ali_Key input" 3>&1 1>&2 2>&3)
+        Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 68 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
         done
         export Ali_Key="$Ali_Key"
         export Ali_Secret="$Ali_Secret"
@@ -379,8 +379,8 @@ rm mycron
         ;;
         4)
         while [[ -z $DP_Id ]] || [[ -z $DP_Key ]]; do
-        DP_Id=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Id併按回車" 8 78 --title "DP_Id input" 3>&1 1>&2 2>&3)
-        DP_Key=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Key併按回車" 8 78 --title "DP_Key input" 3>&1 1>&2 2>&3)
+        DP_Id=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Id併按回車" 8 68 --title "DP_Id input" 3>&1 1>&2 2>&3)
+        DP_Key=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Key併按回車" 8 68 --title "DP_Key input" 3>&1 1>&2 2>&3)
         done
         export DP_Id="$DP_Id"
         export DP_Key="$DP_Key"
@@ -397,8 +397,8 @@ rm mycron
         ;;
         5)
         while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
-        CX_Key=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Key併按回車" 8 78 --title "CX_Key input" 3>&1 1>&2 2>&3)
-        CX_Secret=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Secret併按回車" 8 78 --title "CX_Secret input" 3>&1 1>&2 2>&3)
+        CX_Key=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Key併按回車" 8 68 --title "CX_Key input" 3>&1 1>&2 2>&3)
+        CX_Secret=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Secret併按回車" 8 68 --title "CX_Secret input" 3>&1 1>&2 2>&3)
         done
         export CX_Key="$CX_Key"
         export CX_Secret="$CX_Secret"
@@ -415,8 +415,8 @@ rm mycron
         ;;
         6)
         while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
-        CX_Key=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Key" 8 78 --title "GD_Key input" 3>&1 1>&2 2>&3)
-        CX_Secret=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Secret" 8 78 --title "GD_Secret input" 3>&1 1>&2 2>&3)
+        CX_Key=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Key" 8 68 --title "GD_Key input" 3>&1 1>&2 2>&3)
+        CX_Secret=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Secret" 8 68 --title "GD_Secret input" 3>&1 1>&2 2>&3)
         done
         export GD_Key="$CX_Key"
         export GD_Secret="$CX_Secret"
@@ -518,12 +518,12 @@ install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
 
 clear
 if [[ ${install_status} == 1 ]]; then
-  if (whiptail --title "Installed" --yesno "已安装，是否读取先前的配置?(Installed,read configuration?)" 8 78); then
+  if (whiptail --title "Installed" --yesno "已安装，是否读取先前的配置?(Installed,read configuration?)" 8 68); then
       readconfig
     fi
 fi
 
-whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来自行选择。" 24 65 16 \
+whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择需要安装/更新的软件(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来选择需要安装/更新的软件。" 24 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
 "1" "Trojan-GFW TCP-BBR Dnscrypt-proxy and Netdata" on \
@@ -541,6 +541,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择(P
 "邮件" "Mail" off  \
 "9" "Mail service(邮箱服务,需2g+内存)" off \
 "其他" "Others" off  \
+"13" "Qbt原版(除PT站指明要求,请勿选中)" off \
 "10" "Bt-Tracker(Bittorrent-tracker服务)" off \
 "11" "Trojan-panel(已停止维护，请勿选中)" off \
 "12" "Tor-Relay(已停止维护，请勿选中)" off 2>results
@@ -600,6 +601,9 @@ do
     12)
     install_tor=1
     ;;
+    13)
+    install_qbt_origin=1
+    ;;
     *)
     ;;
   esac
@@ -608,20 +612,20 @@ done < results
 system_upgrade=1
 if [[ ${system_upgrade} == 1 ]]; then
   if [[ $(lsb_release -cs) == jessie ]]; then
-    if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 9?(recommended)" 8 78); then
+    if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 9?(recommended)" 8 68); then
       debian9_install=1
     fi
   fi
   if [[ $(lsb_release -cs) == xenial ]]; then
-    if (whiptail --title "System Upgrade" --yesno "Upgrade to Ubuntu 18.04(recommended)?" 8 78); then
+    if (whiptail --title "System Upgrade" --yesno "Upgrade to Ubuntu 18.04(recommended)?" 8 68); then
       ubuntu18_install=1
     fi
   fi
 fi
 
 #if [[ ${install_mail} == 1 ]]; then
-#whiptail --title "Warning" --msgbox "Warning!!!:邮件服务仅推荐使用根域名(only recommend root domain),不推荐使用www等前缀(no www allowed),否则后果自负!!!" 8 78
-#whiptail --title "Warning" --msgbox "Warning!!!:邮件服务需要MX and PTR(reverse dns record) DNS Record,请自行添加,否则后果自负!!" 8 78
+#whiptail --title "Warning" --msgbox "Warning!!!:邮件服务仅推荐使用根域名(only recommend root domain),不推荐使用www等前缀(no www allowed),否则后果自负!!!" 8 68
+#whiptail --title "Warning" --msgbox "Warning!!!:邮件服务需要MX and PTR(reverse dns record) DNS Record,请自行添加,否则后果自负!!" 8 68
 #fi
 
 while [[ -z ${domain} ]]; do
@@ -629,7 +633,7 @@ domain=$(whiptail --inputbox --nocancel "Please enter your domain(请輸入你�
 colorEcho ${INFO} "Checking if domain is vaild."
 host ${domain}
 if [[ $? != 0 ]]; then
-  whiptail --title "Warning" --msgbox "Warning: Invaild Domain" 8 78
+  whiptail --title "Warning" --msgbox "Warning: Invaild Domain" 8 68
   domain=""
   clear
 fi
@@ -717,7 +721,7 @@ colorEcho ${INFO} "初始化中(initializing)"
   apt-get update -q
   apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
  else
-  whiptail --title "OS not supported(操作系统不支援)" --msgbox "Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)" 8 78
+  whiptail --title "OS not supported(操作系统不支援)" --msgbox "Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)" 8 68
   echo "OS not supported(操作系统不支援),Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)"
   exit 1;
  fi
@@ -806,7 +810,7 @@ fi
   clear
  else
   clear
-  TERM=ansi whiptail --title "error can't upgrade system" --infobox "error can't upgrade system" 8 78
+  TERM=ansi whiptail --title "error can't upgrade system" --infobox "error can't upgrade system" 8 68
   exit 1;
  fi
 
@@ -994,7 +998,7 @@ openfirewall(){
   ip6tables-save > /etc/iptables/rules.v6
  else
   clear
-  TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 78
+  TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 68
   exit 1;
  fi
 }
@@ -1525,7 +1529,7 @@ clear
 
 if [[ $install_qbt == 1 ]]; then
   clear
-  colorEcho ${INFO} "安装Qbittorrent(Install Qbittorrent ing)"
+  colorEcho ${INFO} "安装增强版Qbittorrent(Install Qbittorrent ing)"
   apt remove qbittorrent-nox -y
   if [[ ${dist} == debian ]]; then
 echo 'deb http://download.opensuse.org/repositories/home:/nikoneko:/qbittorrent-nightly/Debian_10/ /' | sudo tee /etc/apt/sources.list.d/home:nikoneko:qbittorrent-nightly.list
@@ -1536,6 +1540,56 @@ apt-get install qbittorrent-enhanced-nox -y
   add-apt-repository ppa:poplite/qbittorrent-enhanced -y
   apt-get update
   apt-get install qbittorrent-enhanced-nox -y
+ else
+  echo "fail"
+ fi
+ #useradd -r qbittorrent --shell=/usr/sbin/nologin
+  cat > '/etc/systemd/system/qbittorrent.service' << EOF
+[Unit]
+Description=qBittorrent Daemon Service
+Documentation=https://github.com/c0re100/qBittorrent-Enhanced-Edition
+Wants=network-online.target
+After=network-online.target nss-lookup.target
+
+[Service]
+Type=simple
+User=root
+RemainAfterExit=yes
+ExecStart=/usr/bin/qbittorrent-nox --profile=/usr/share/nginx/
+TimeoutStopSec=infinity
+LimitNOFILE=51200
+LimitNPROC=51200
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl enable qbittorrent.service
+mkdir /usr/share/nginx/qBittorrent/
+mkdir /usr/share/nginx/qBittorrent/downloads/
+mkdir /usr/share/nginx/qBittorrent/data/
+mkdir /usr/share/nginx/qBittorrent/data/GeoIP/
+cd /usr/share/nginx/qBittorrent/data/GeoIP/
+curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/GeoLite2-Country.mmdb
+cd
+chmod 755 /usr/share/nginx/
+chown -R nginx:nginx /usr/share/nginx/
+systemctl start qbittorrent.service
+fi
+clear
+###################################################
+if [[ $install_qbt_origin == 1 ]]; then
+  clear
+  colorEcho ${INFO} "安装原版Qbittorrent(Install Qbittorrent ing)"
+  if [[ ${dist} == debian ]]; then
+  apt-get update
+  apt-get install qbittorrent-nox -y
+ elif [[ ${dist} == ubuntu ]]; then
+  add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
+  apt-get update
+  apt-get install qbittorrent-nox -y
  else
   echo "fail"
  fi
@@ -4482,7 +4536,7 @@ uninstall(){
   set +e
   cd
   if [[ -f /usr/local/bin/trojan ]]; then
-    if (whiptail --title "api" --yesno "卸载 (uninstall) trojan?" 8 78); then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) trojan?" 8 68); then
     systemctl stop trojan
     systemctl disable trojan
     rm -rf /etc/systemd/system/trojan*
@@ -4491,7 +4545,7 @@ uninstall(){
     fi
   fi
   if [[ -f /usr/sbin/nginx ]]; then
-    if (whiptail --title "api" --yesno "卸载 (uninstall) nginx?" 8 78); then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) nginx?" 8 68); then
     systemctl stop nginx
     systemctl disable nginx
     apt-get -y remove nginx
@@ -4500,7 +4554,7 @@ uninstall(){
     fi
   fi
   if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
-    if (whiptail --title "api" --yesno "卸载 (uninstall) dnscrypt-proxy?" 8 78); then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) dnscrypt-proxy?" 8 68); then
       systemctl stop dnscrypt-proxy
       systemctl disable dnscrypt-proxy
       rm -rf /usr/sbin/dnscrypt-proxy
@@ -4510,7 +4564,7 @@ uninstall(){
     fi
   fi
   if [[ -f /usr/bin/qbittorrent-nox ]]; then
-    if (whiptail --title "api" --yesno "卸载 (uninstall) qbittorrent?" 8 78); then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) qbittorrent?" 8 68); then
     systemctl stop qbittorrent
     systemctl disable qbittorrent
     apt-get -y remove qbittorrent-nox
@@ -4518,7 +4572,7 @@ uninstall(){
     fi
   fi
   if [[ -f /usr/bin/bittorrent-tracker ]]; then
-    if (whiptail --title "api" --yesno "卸载 (uninstall) bittorrent-tracker?" 8 78); then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) bittorrent-tracker?" 8 68); then
     systemctl stop tracker
     systemctl disable tracker
     rm -rf /usr/bin/bittorrent-tracker
@@ -4526,7 +4580,7 @@ uninstall(){
     fi
   fi
   if [[ -f /usr/local/bin/aria2c ]]; then
-    if (whiptail --title "api" --yesno "卸载 (uninstall) aria2?" 8 78); then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) aria2?" 8 68); then
     systemctl stop aria
     systemctl disable aria
     rm -rf /etc/aria.conf
@@ -4535,7 +4589,7 @@ uninstall(){
     fi
   fi
   if [[ -f /usr/local/bin/filebrowser ]]; then
-    if (whiptail --title "api" --yesno "卸载 (uninstall) filebrowser?" 8 78); then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) filebrowser?" 8 68); then
     systemctl stop filebrowser
     systemctl disable filebrowser
     rm /usr/local/bin/filebrowser
@@ -4543,7 +4597,7 @@ uninstall(){
     fi
   fi
   if [[ -f /usr/bin/tor ]]; then
-    if (whiptail --title "api" --yesno "卸载 (uninstall) tor?" 8 78); then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) tor?" 8 68); then
     systemctl stop tor
     systemctl disable tor
     systemctl stop tor@default
@@ -4552,12 +4606,12 @@ uninstall(){
     fi
   fi
   if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
-    if (whiptail --title "api" --yesno "卸载 (uninstall) Netdata?" 8 78); then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) Netdata?" 8 68); then
     systemctl stop netdata
     systemctl disable netdata
     fi
   fi
-  if (whiptail --title "api" --yesno "卸载 (uninstall) acme.sh?" 8 78); then
+  if (whiptail --title "api" --yesno "卸载 (uninstall) acme.sh?" 8 68); then
     ~/.acme.sh/acme.sh --uninstall
   fi
   rm -rf /root/.trojan/
@@ -4620,19 +4674,19 @@ logcheck(){
 
 install_ddns(){
     while [[ -z ${domain1} ]]; do
-domain1=$(whiptail --inputbox --nocancel "Please enter your bare domain(请輸入你的二级域名,请勿添加www等前缀)" 8 78 --title "Domain input" 3>&1 1>&2 2>&3)
+domain1=$(whiptail --inputbox --nocancel "Please enter your bare domain(请輸入你的二级域名,请勿添加www等前缀)" 8 68 --title "Domain input" 3>&1 1>&2 2>&3)
 colorEcho ${INFO} "Checking if domain is vaild."
 host ${domain1}
 if [[ $? != 0 ]]; then
-  whiptail --title "Warning" --msgbox "Warning: Invaild Domain" 8 78
+  whiptail --title "Warning" --msgbox "Warning: Invaild Domain" 8 68
   domain1=""
   clear
   exit 1
 fi
 done
   while [[ -z ${CF_Key} ]] || [[ -z ${CF_Email} ]]; do
-    CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF Global Key併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
-    CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 78 --title "CF_Key input" 3>&1 1>&2 2>&3)
+    CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF Global Key併按回車" 8 68 --title "CF_Key input" 3>&1 1>&2 2>&3)
+    CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 68 --title "CF_Key input" 3>&1 1>&2 2>&3)
   done
     cloudflare_auth_key="$CF_Key"
     cloudflare_auth_email="$CF_Email"
@@ -4689,7 +4743,7 @@ crontab -l | grep -q '* * * * * bash /root/.trojan/ddns.sh'  && echo 'cron exist
 }
 
 advancedMenu() {
-  Mainmenu=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。有關錯誤報告或更多信息，請訪問以下鏈接: https://github.com/johnrosen1/vpstoolbox 或者 https://t.me/vpstoolbox_chat。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 78 5 \
+  Mainmenu=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。有關錯誤報告或更多信息，請訪問以下鏈接: https://github.com/johnrosen1/vpstoolbox 或者 https://t.me/vpstoolbox_chat。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 68 5 \
   "Install/Update" "安裝/更新/覆盖安装" \
   "Benchmark" "效能测试"\
   "Log" "日志" \
@@ -4728,7 +4782,7 @@ advancedMenu() {
       openfirewall
       certtool -i < /etc/trojan/trojan.crt --verify --verify-hostname=${domain}
       if [[ $? != 0 ]]; then
-        whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,启动证书覆写" 8 78
+        whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,启动证书覆写" 8 68
         rm -rf /etc/trojan/trojan.crt
         rm -rf /etc/trojan/trojan.key
         #domain=""
@@ -4750,7 +4804,7 @@ advancedMenu() {
       openfirewall
       certtool -i < /etc/certs/${domain}_ecc/fullchain.cer --verify --verify-hostname=${domain}
       if [[ $? != 0 ]]; then
-        whiptail --title "ERROR" --msgbox "无效的证书,可能过期或者域名不正确,启动证书覆写" 8 78
+        whiptail --title "ERROR" --msgbox "无效的证书,可能过期或者域名不正确,启动证书覆写" 8 68
         rm -rf /etc/certs/${domain}_ecc/fullchain.cer
         rm -rf /etc/certs/${domain}_ecc/${domain}.key
         #domain=""
@@ -4773,7 +4827,7 @@ advancedMenu() {
     if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]] || [[ ${othercert} == 1 ]]; then
       colorEcho ${INFO} "证书已有,跳过申请(skipping cert issue)"
       else
-        if (whiptail --title "Issue TLS Cert" --yes-button "HTTP申请" --no-button "DNS API申请" --yesno "使用 (use) API/HTTP申请证书(to issue certificate)?" 8 78); then
+        if (whiptail --title "Issue TLS Cert" --yes-button "HTTP申请" --no-button "DNS API申请" --yesno "使用 (use) API/HTTP申请证书(to issue certificate)?" 8 68); then
         httpissue=1
         else
         dnsissue
@@ -4933,13 +4987,13 @@ EOF
     clear
     echo "" > /etc/motd
     echo "Install complete!"
-    whiptail --title "Success" --msgbox "安装成功(Install Success)" 8 78
+    whiptail --title "Success" --msgbox "安装成功(Install Success)" 8 68
     bash /etc/profile.d/mymotd.sh
     exit 0
     ;;
     Benchmark)
     clear
-    if (whiptail --title "测试模式" --yes-button "快速测试" --no-button "完整测试" --yesno "效能测试方式(fast or full)?" 8 78); then
+    if (whiptail --title "测试模式" --yes-button "快速测试" --no-button "完整测试" --yesno "效能测试方式(fast or full)?" 8 68); then
         curl -fsL https://ilemonra.in/LemonBenchIntl | bash -s fast
         else
         curl -fsL https://ilemonra.in/LemonBenchIntl | bash -s full
@@ -4958,7 +5012,7 @@ EOF
     exit 0
     ;;
     Exit)
-    whiptail --title "Bash Exited" --msgbox "Goodbye" 8 78
+    whiptail --title "Bash Exited" --msgbox "Goodbye" 8 68
     exit 0
     ;;
     esac
