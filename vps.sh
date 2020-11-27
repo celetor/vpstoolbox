@@ -827,7 +827,9 @@ fi
 installnginx(){
   clear
   colorEcho ${INFO} "Install Nginx ing"
-  apt-get install gnupg2 ca-certificates lsb-release -y
+  apt-get install ca-certificates lsb-release -y
+  apt-get install gnupg gnupg2 -y
+  apt-get install gpg-agent -y
   touch /etc/apt/sources.list.d/nginx.list
   cat > '/etc/apt/sources.list.d/nginx.list' << EOF
 deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
