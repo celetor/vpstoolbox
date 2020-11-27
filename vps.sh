@@ -4090,6 +4090,7 @@ installhexo(){
 language: zh-tw
 url: https://${domain}
 theme: next
+post_asset_folder: true
 feed:
   type: atom
   path: atom.xml
