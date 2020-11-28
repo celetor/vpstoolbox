@@ -268,6 +268,7 @@ installacme(){
 #Issue Let's Encrypt Certificate by http
 httpissue(){
 openfirewall
+  http_issue=1
   installacme
   installnginx
   rm -rf /etc/nginx/sites-available/*
