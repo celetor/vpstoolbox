@@ -4412,7 +4412,7 @@ RestartSec=1s
 WantedBy=multi-user.target
 EOF
 systemctl enable hexo
-systemctl start hexo
+systemctl restart hexo
 }
 
 sharelink(){
