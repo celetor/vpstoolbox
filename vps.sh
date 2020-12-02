@@ -541,7 +541,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择�
 "8" "Fail2ban(防SSH爆破用)" off \
 "邮件" "Mail" off  \
 "9" "Mail service(邮箱服务,需2g+内存)" off \
-"其他" "Others" off  \
+"其他" "以下选项请勿选中,除非必要(Others)" off  \
 "13" "Qbt原版(除PT站指明要求,请勿选中)" off \
 "10" "Bt-Tracker(Bittorrent-tracker服务)" off \
 "11" "Trojan-panel(已停止维护，请勿选中)" off \
