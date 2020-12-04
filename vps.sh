@@ -2457,6 +2457,7 @@ fi
 if [[ $(systemctl is-active systemd-resolved) == active ]]; then
   systemctl stop systemd-resolved
   systemctl disable systemd-resolved
+  chattr -i /etc/resolvconf.conf
   echo "nameserver 1.1.1.1" > /etc/resolv.conf
   echo "nameserver 1.0.0.1" >> /etc/resolv.conf
   echo "nameserver 8.8.8.8" >> /etc/resolv.conf  
