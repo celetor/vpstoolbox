@@ -2454,6 +2454,13 @@ colorEcho ${INFO} "Install dnscrypt-proxy ing"
 if [[ $(systemctl is-active dnsmasq) == active ]]; then
   systemctl disable dnsmasq
 fi
+if [[ $(systemctl is-active systemd-resolved) == active ]]; then
+  systemctl stop systemd-resolved
+  systemctl disable systemd-resolved
+  echo "nameserver 1.1.1.1" > /etc/resolv.conf
+  echo "nameserver 1.0.0.1" >> /etc/resolv.conf
+  echo "nameserver 8.8.8.8" >> /etc/resolv.conf  
+fi
 dnsver=$(curl -s "https://api.github.com/repos/DNSCrypt/dnscrypt-proxy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/${dnsver}/dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
 tar -xvf dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
