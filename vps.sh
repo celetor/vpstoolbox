@@ -23,7 +23,9 @@
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.                                  
+# SOFTWARE.
+
+#如果你在使用VPSToolBox时遇到任何问题,请仔细阅读README.md/code或者**通过 [Telegram](https://t.me/vpstoolbox_chat)请求支援** !                                  
 
 clear
 
@@ -528,7 +530,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择�
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
 "1" "Trojan-GFW TCP-BBR Dnscrypt-proxy and Netdata" on \
-"2" "RSSHUB and TT-RSS(RSS生成器+RSS阅读器)" off \
+"2" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" off \
 "下载" "Download" off  \
 "3" "Qbittorrent增强版(可全自动屏蔽吸血行为)" off \
 "4" "Aria2" off \
@@ -1533,19 +1535,15 @@ clear
 if [[ $install_qbt == 1 ]]; then
   clear
   colorEcho ${INFO} "安装增强版Qbittorrent(Install Qbittorrent ing)"
-  apt remove qbittorrent-nox -y
-  if [[ ${dist} == debian ]]; then
-echo 'deb http://download.opensuse.org/repositories/home:/nikoneko:/qbittorrent-nightly/Debian_10/ /' | sudo tee /etc/apt/sources.list.d/home:nikoneko:qbittorrent-nightly.list
-curl -fsSL https://download.opensuse.org/repositories/home:nikoneko:qbittorrent-nightly/Debian_10/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_nikoneko_qbittorrent-nightly.gpg > /dev/null
-apt-get update
-apt-get install qbittorrent-enhanced-nox -y
- elif [[ ${dist} == ubuntu ]]; then
-  add-apt-repository ppa:poplite/qbittorrent-enhanced -y
-  apt-get update
-  apt-get install qbittorrent-enhanced-nox -y
- else
-  echo "fail"
- fi
+  apt-get remove qbittorrent-nox -y
+  cd
+  mkdir qbt
+  cd qbt
+  wget https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases/download/release-4.3.1.11/qbittorrent-nox_linux_x64_static.zip
+  unzip qbittorrent-nox_linux_x64_static.zip
+  cp -f qbittorrent-nox /usr/bin/
+  cd
+  rm -rf qbt
  #useradd -r qbittorrent --shell=/usr/sbin/nologin
   cat > '/etc/systemd/system/qbittorrent.service' << EOF
 [Unit]
@@ -4015,13 +4013,13 @@ start(){
   if [[ $install_mariadb == 1 ]]; then
     systemctl restart mariadb
   fi
-  if [[ $install_qbt == 1 ]]; then
-    systemctl stop qbittorrent.service
-    sleep 1
-    qbtline=$(grep -n "Preferences" /usr/share/nginx/qBittorrent/config/qBittorrent.conf | cut -c1-2)
-    sed -i "${qbtline} aAdvanced\\\AnnounceToAllTrackers=true" /usr/share/nginx/qBittorrent/config/qBittorrent.conf
-    systemctl start qbittorrent.service
-  fi
+  #if [[ $install_qbt == 1 ]]; then
+  #  systemctl stop qbittorrent.service
+  #  sleep 1
+  #  qbtline=$(grep -n "Preferences" /usr/share/nginx/qBittorrent/config/qBittorrent.conf | cut -c1-2)
+  #  sed -i "${qbtline} aAdvanced\\\AnnounceToAllTrackers=true" /usr/share/nginx/qBittorrent/config/qBittorrent.conf
+  #  systemctl start qbittorrent.service
+  #fi
   if [[ $install_file == 1 ]]; then
     systemctl start filebrowser
   fi
