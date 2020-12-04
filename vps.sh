@@ -717,12 +717,12 @@ set +e
 colorEcho ${INFO} "初始化中(initializing)"
  if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
   dist=ubuntu
-  apt-get update -q
-  apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
+  apt-get update
+  apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
   dist=debian
   apt-get update -q
-  apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y -q
+  apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y
  else
   whiptail --title "OS not supported(操作系统不支援)" --msgbox "Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)" 8 68
   echo "OS not supported(操作系统不支援),Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)"
@@ -841,9 +841,9 @@ EOF
   curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
   apt-key fingerprint ABF5BD827BD9BF62
   apt-get purge nginx -qq -y
-  apt-get update -q
+  apt-get update
   #apt-get install nginx -q -y
-  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | apt-get install nginx -q -y'
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | apt-get install nginx -y'
   cat > '/lib/systemd/system/nginx.service' << EOF
 [Unit]
 Description=The NGINX HTTP and reverse proxy server
@@ -991,14 +991,14 @@ openfirewall(){
     ip6tables -A INPUT -p tcp -m tcp --dport 993 -j ACCEPT &>/dev/null
   fi
   if [[ ${dist} == debian ]]; then
-  apt-get install iptables-persistent -qq -y > /dev/null
+  apt-get install iptables-persistent -y > /dev/null
   iptables-save > /etc/iptables/rules.v4
   ip6tables-save > /etc/iptables/rules.v6
  elif [[ ${dist} == ubuntu ]]; then
   ufw allow http
   ufw allow https
   ufw allow ${ariaport}
-  apt-get install iptables-persistent -qq -y > /dev/null
+  apt-get install iptables-persistent -y > /dev/null
   iptables-save > /etc/iptables/rules.v4
   ip6tables-save > /etc/iptables/rules.v6
  else
