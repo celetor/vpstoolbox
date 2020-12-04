@@ -1168,8 +1168,8 @@ if [[ $install_docker == 1 ]]; then
   "experimental" : true
 }
 EOF
-fi
 systemctl restart docker
+fi
 
 #Install Speedtest
 if [[ ${install_speedtest} == 1 ]]; then
