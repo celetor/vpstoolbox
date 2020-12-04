@@ -59,10 +59,6 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 23. 支援完全/部分卸载
 24. And so on...
 
-#### 新手上路
-
-[VPSTOOLBOX基础使用方法](https://github.com/johnrosen1/vpstoolbox/wiki/VPSTOOLBOX%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
-
 #### 更多信息请自行查看Wiki !
 
 #### 如果此项目对你有用 , 请给颗star ,谢谢!
