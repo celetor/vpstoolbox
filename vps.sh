@@ -1983,7 +1983,6 @@ systemctl enable dnscrypt-proxy.service
 clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Dnscrypt-proxy中..." 7 68
 colorEcho ${INFO} "Install dnscrypt-proxy ing"
-cp /etc/resolv.conf /etc/resolv.conf.bak
 if [[ $(systemctl is-active dnsmasq) == active ]]; then
   systemctl disable dnsmasq
 fi
@@ -4268,6 +4267,7 @@ advancedMenu() {
     Install/Update)
     clear
     if [[ $install_status == 0 ]]; then
+    cp /etc/resolv.conf /etc/resolv.conf.bak1
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     echo "nameserver 1.0.0.1" >> /etc/resolv.conf
     echo "nameserver 8.8.8.8" >> /etc/resolv.conf
