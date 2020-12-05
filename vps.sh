@@ -519,8 +519,6 @@ if [ ! -f /root/.trojan/config.json ]; then
 EOF
 fi
 
-install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
-
 clear
 if [[ ${install_status} == 1 ]]; then
   if (whiptail --title "Installed" --yesno "已安装，是否读取先前的配置?(Installed,read configuration?)" 8 68); then
@@ -4266,6 +4264,7 @@ advancedMenu() {
   case $Mainmenu in
     Install/Update)
     clear
+    install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
     if [[ $install_status == 0 ]]; then
     cp /etc/resolv.conf /etc/resolv.conf.bak1
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
