@@ -4265,7 +4265,7 @@ advancedMenu() {
     Install/Update)
     clear
     install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
-    if [[ $install_status == 0 ]]; then
+    if [[ $install_status != 1 ]]; then
     cp /etc/resolv.conf /etc/resolv.conf.bak1
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     echo "nameserver 1.0.0.1" >> /etc/resolv.conf
