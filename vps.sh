@@ -86,6 +86,7 @@ colorEcho(){
 
 #Remove Aliyun aegis
 if [[ -f /etc/init.d/aegis ]] || [[ -f /etc/systemd/system/aliyun.service ]]; then
+  TERM=ansi whiptail --title "阿里云监控卸载" --infobox "检测到阿里云恶意监控服务，开始卸载..." 7 68
 colorEcho ${INFO} "Uninstall Aliyun aegis ing"
 iptables -I INPUT -s 140.205.201.0/28 -j DROP &>/dev/null
 iptables -I INPUT -s 140.205.201.16/29 -j DROP &>/dev/null
@@ -452,6 +453,7 @@ if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}
 
 #Install Trojan-panel
 install_tjp(){
+  TERM=ansi whiptail --title "安装中" --infobox "安装Trojan-panel中..." 7 68
   colorEcho ${INFO} "Install Trojan-panel ing"
 cd /usr/share/nginx/
 git clone https://github.com/trojan-gfw/trojan-panel.git
@@ -633,6 +635,7 @@ fi
 
 while [[ -z ${domain} ]]; do
 domain=$(whiptail --inputbox --nocancel "请輸入你的域名,例如 example.com(请先完成A/AAAA解析) | Please enter your domain" 8 68 --title "Domain input" 3>&1 1>&2 2>&3)
+TERM=ansi whiptail --title "检测中" --infobox "检测域名是否合法中..." 7 68
 colorEcho ${INFO} "Checking if domain is vaild."
 host ${domain}
 if [[ $? != 0 ]]; then
@@ -714,16 +717,22 @@ fi
 ###############OS detect####################
 initialize(){
 set +e
-colorEcho ${INFO} "初始化中(initializing)"
+TERM=ansi whiptail --title "初始化中(initializing)" --infobox "初始化中...(initializing)" 7 68
 if [[ -f /etc/sysctl.d/60-disable-ipv6.conf ]]; then
   mv /etc/sysctl.d/60-disable-ipv6.conf /etc/sysctl.d/60-disable-ipv6.conf.bak
 fi
 if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
   dist=ubuntu
+  enablebbr
+  if [[ -f /etc/sysctl.d/60-disable-ipv6.conf.bak ]]; then
+    sed -i 's/#//g' /etc/netplan/01-netcfg.yaml
+    netplan apply
+  fi
   apt-get update
   apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
   dist=debian
+  enablebbr
   apt-get update -q
   apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y
  else
@@ -832,6 +841,7 @@ fi
 #Install Nginx
 installnginx(){
   clear
+  TERM=ansi whiptail --title "安装中" --infobox "安装NGINX中..." 7 68
   colorEcho ${INFO} "Install Nginx ing"
   apt-get install ca-certificates lsb-release -y
   apt-get install gnupg gnupg2 -y
@@ -948,6 +958,7 @@ timedatectl set-ntp off
 #Open ports
 openfirewall(){
   set +e
+  TERM=ansi whiptail --title "配置中" --infobox "配置防火墙中..." 7 68
   colorEcho ${INFO} "设置 firewall"
   #policy
   iptables -P INPUT ACCEPT &>/dev/null
@@ -1013,126 +1024,9 @@ openfirewall(){
 ##########install dependencies#############
 installdependency(){
   set +e
+  TERM=ansi whiptail --title "安装中" --infobox "安装所有必备软件中..." 7 68
 colorEcho ${INFO} "Updating system"
 apt-get update
-if [[ $install_bbr == 1 ]]; then
-  colorEcho ${INFO} "Enabling TCP-BBR boost"
-  #iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
-  cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
-#!!! Do not change these settings unless you know what you are doing !!!
-#net.ipv4.ip_forward = 1
-#net.ipv4.conf.all.forwarding = 1
-#net.ipv4.conf.default.forwarding = 1
-################################
-#net.ipv6.conf.all.forwarding = 1
-#net.ipv6.conf.default.forwarding = 1
-#net.ipv6.conf.lo.forwarding = 1
-################################
-net.ipv6.conf.all.disable_ipv6 = 0
-net.ipv6.conf.default.disable_ipv6 = 0
-net.ipv6.conf.lo.disable_ipv6 = 0
-################################
-net.ipv6.conf.all.accept_ra = 2
-net.ipv6.conf.default.accept_ra = 2
-################################
-net.core.netdev_max_backlog = 100000
-net.core.netdev_budget = 50000
-net.core.netdev_budget_usecs = 5000
-#fs.file-max = 51200
-net.core.rmem_max = 67108864
-net.core.wmem_max = 67108864
-net.core.rmem_default = 65536
-net.core.wmem_default = 65536
-net.core.somaxconn = 10000
-################################
-net.ipv4.icmp_echo_ignore_all = 0
-net.ipv4.icmp_echo_ignore_broadcasts = 1
-net.ipv4.icmp_ignore_bogus_error_responses = 1
-net.ipv4.conf.all.accept_redirects = 0
-net.ipv4.conf.default.accept_redirects = 0
-net.ipv4.conf.all.secure_redirects = 0
-net.ipv4.conf.default.secure_redirects = 0
-net.ipv4.conf.all.send_redirects = 0
-net.ipv4.conf.default.send_redirects = 0
-net.ipv4.conf.default.rp_filter = 1
-net.ipv4.conf.all.rp_filter = 1
-net.ipv4.tcp_keepalive_time = 1200
-net.ipv4.tcp_keepalive_intvl = 15
-net.ipv4.tcp_keepalive_probes = 5
-net.ipv4.tcp_synack_retries = 2
-net.ipv4.tcp_syncookies = 1
-net.ipv4.tcp_rfc1337 = 1
-net.ipv4.tcp_timestamps = 1
-net.ipv4.tcp_tw_recycle = 0
-net.ipv4.tcp_tw_reuse = 1
-net.ipv4.tcp_fin_timeout = 15
-net.ipv4.ip_local_port_range = 10000 65000
-net.ipv4.tcp_max_tw_buckets = 2000000
-net.ipv4.tcp_fastopen = 3
-net.ipv4.tcp_rmem = 4096 87380 67108864
-net.ipv4.tcp_wmem = 4096 65536 67108864
-net.ipv4.udp_rmem_min = 8192
-net.ipv4.udp_wmem_min = 8192
-net.ipv4.tcp_mtu_probing = 0
-##############################
-net.ipv4.conf.all.arp_ignore = 2
-net.ipv4.conf.default.arp_ignore = 2
-net.ipv4.conf.all.arp_announce = 2
-net.ipv4.conf.default.arp_announce = 2
-##############################
-net.ipv4.tcp_autocorking = 0
-net.ipv4.tcp_slow_start_after_idle = 0
-net.ipv4.tcp_max_syn_backlog = 30000
-net.core.default_qdisc = fq
-net.ipv4.tcp_congestion_control = bbr
-net.ipv4.tcp_notsent_lowat = 16384
-net.ipv4.tcp_no_metrics_save = 1
-net.ipv4.tcp_ecn = 2
-net.ipv4.tcp_ecn_fallback = 1
-net.ipv4.tcp_frto = 0
-##############################
-net.ipv6.conf.all.accept_redirects = 0
-net.ipv6.conf.default.accept_redirects = 0
-vm.swappiness = 1
-net.ipv4.neigh.default.gc_thresh3=8192
-net.ipv4.neigh.default.gc_thresh2=4096
-net.ipv4.neigh.default.gc_thresh1=2048
-net.ipv6.neigh.default.gc_thresh3=8192
-net.ipv6.neigh.default.gc_thresh2=4096
-net.ipv6.neigh.default.gc_thresh1=2048
-EOF
-  sysctl --system
-  cat > '/etc/systemd/system.conf' << EOF
-[Manager]
-#DefaultTimeoutStartSec=90s
-DefaultTimeoutStopSec=30s
-#DefaultRestartSec=100ms
-DefaultLimitCORE=infinity
-DefaultLimitNOFILE=51200
-DefaultLimitNPROC=51200
-EOF
-    cat > '/etc/security/limits.conf' << EOF
-* soft nofile 51200
-* hard nofile 51200
-* soft nproc 51200
-* hard nproc 51200
-EOF
-if grep -q "ulimit" /etc/profile
-then
-  :
-else
-echo "ulimit -SHn 51200" >> /etc/profile
-echo "ulimit -SHu 51200" >> /etc/profile
-fi
-if grep -q "pam_limits.so" /etc/pam.d/common-session
-then
-  :
-else
-echo "session required pam_limits.so" >> /etc/pam.d/common-session
-fi
-systemctl daemon-reload
-  fi
-
 clear
 colorEcho ${INFO} "Installing all necessary Software"
 apt-get install sudo git curl xz-utils wget apt-transport-https gnupg lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less haveged neofetch -q -y
@@ -1147,6 +1041,7 @@ fi
 #Install docker
 if [[ $install_docker == 1 ]]; then
   clear
+  TERM=ansi whiptail --title "安装中" --infobox "安装Docker中..." 7 68
   colorEcho ${INFO} "安装Docker(Install Docker ing)"
   if [[ ${dist} == debian ]]; then
   apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
@@ -1537,6 +1432,7 @@ clear
 
 if [[ $install_qbt == 1 ]]; then
   clear
+  TERM=ansi whiptail --title "安装中" --infobox "安装Qbt加强版中..." 7 68
   colorEcho ${INFO} "安装增强版Qbittorrent(Install Qbittorrent ing)"
   apt-get remove qbittorrent-nox -y
   cd
@@ -1586,6 +1482,7 @@ clear
 ###################################################
 if [[ $install_qbt_origin == 1 ]]; then
   clear
+  TERM=ansi whiptail --title "安装中" --infobox "安装Qbt原版中..." 7 68
   colorEcho ${INFO} "安装原版Qbittorrent(Install Qbittorrent ing)"
   if [[ ${dist} == debian ]]; then
   apt-get update
@@ -1636,6 +1533,7 @@ clear
 ###########Install Bittorrent-tracker##############
 if [[ $install_tracker = 1 ]]; then
 clear
+TERM=ansi whiptail --title "安装中" --infobox "安装Bittorrent-tracker中" 7 68
 colorEcho ${INFO} "Install Bittorrent-tracker ing"
 apt-get install libowfat-dev make git build-essential zlib1g-dev libowfat-dev make git -y
 useradd -r opentracker --shell=/usr/sbin/nologin
@@ -1809,6 +1707,7 @@ clear
 
 if [[ $install_file = 1 ]]; then
 clear
+TERM=ansi whiptail --title "安装中" --infobox "安装Filebrowser中..." 7 68
 colorEcho ${INFO} "Install Filebrowser ing"
 curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
   cat > '/etc/systemd/system/filebrowser.service' << EOF
@@ -1841,6 +1740,7 @@ fi
 clear
 
 if [[ $install_aria = 1 ]]; then
+  TERM=ansi whiptail --title "安装中" --infobox "安装Aria2中..." 7 68
   #trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
   trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/all_aria2.txt)
   cat > '/etc/systemd/system/aria2.service' << EOF
@@ -1930,7 +1830,6 @@ bt-tracker=$trackers_list
 EOF
   if [[ ! -f /usr/local/bin/aria2c ]]; then
   clear
-  colorEcho ${INFO} "安装aria2(Install aria2 ing)"
   #usermod -a -G aria2 nginx
   #useradd -r aria2 --shell=/usr/sbin/nologin
   apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
@@ -2082,7 +1981,9 @@ EOF
 systemctl daemon-reload
 systemctl enable dnscrypt-proxy.service
 clear
+TERM=ansi whiptail --title "安装中" --infobox "安装Dnscrypt-proxy中..." 7 68
 colorEcho ${INFO} "Install dnscrypt-proxy ing"
+cp /etc/resolv.conf /etc/resolv.conf.bak
 if [[ $(systemctl is-active dnsmasq) == active ]]; then
   systemctl disable dnsmasq
 fi
@@ -2113,6 +2014,7 @@ clear
 
 if [[ $install_tor = 1 ]]; then
 clear
+TERM=ansi whiptail --title "安装中" --infobox "安装Tor relay中..." 7 68
 colorEcho ${INFO} "Install Tor Relay ing"
 touch /etc/apt/sources.list.d/tor.list
   cat > '/etc/apt/sources.list.d/tor.list' << EOF
@@ -2143,6 +2045,7 @@ fi
 if [[ $install_php = 1 ]]; then
   clear
   if [[ ! -f /usr/sbin/php-fpm7.4 ]]; then
+TERM=ansi whiptail --title "安装中" --infobox "安装PHP中..." 7 68
   colorEcho ${INFO} "Install PHP ing"
   apt-get purge php* -y
   mkdir /usr/log/
@@ -2237,6 +2140,7 @@ fi
 
 if [[ $install_netdata == 1 ]]; then
   clear
+TERM=ansi whiptail --title "安装中" --infobox "安装Netdata中..." 7 68
   colorEcho ${INFO} "Install netdata ing"
   bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
     cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
@@ -2288,6 +2192,7 @@ clear
 if [[ $install_trojan = 1 ]]; then
   if [[ ! -f /usr/local/bin/trojan ]]; then
   clear
+TERM=ansi whiptail --title "安装中" --infobox "安装Trojan中..." 7 68
   colorEcho ${INFO} "Install Trojan-GFW ing"
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
   systemctl daemon-reload
@@ -2786,6 +2691,7 @@ EOF
 if [[ $install_mail = 1 ]]; then
   if [[ ! -f /usr/sbin/postfix ]]; then
   clear
+TERM=ansi whiptail --title "安装中" --infobox "安装邮件服务中..." 7 68
   colorEcho ${INFO} "Install Mail Service ing"
   apt-get install postfix postfix-pcre -y
   apt-get install postfix-policyd-spf-python -y
@@ -3334,6 +3240,7 @@ clear
 nginxtrojan(){
   set +e
   clear
+TERM=ansi whiptail --title "安装中" --infobox "配置NGINX中..." 7 68
   colorEcho ${INFO} "配置(configing) nginx"
 rm -rf /etc/nginx/sites-available/*
 rm -rf /etc/nginx/sites-enabled/*
@@ -3648,6 +3555,7 @@ systemctl restart nginx
 
 start(){
   set +e
+TERM=ansi whiptail --title "安装中" --infobox "启动Trojan-gfw中..." 7 68
   colorEcho ${INFO} "启动(starting) trojan-gfw ing..."
   systemctl daemon-reload
   if [[ $install_mariadb == 1 ]]; then
@@ -3675,6 +3583,7 @@ start(){
 }
 
 installhexo(){
+TERM=ansi whiptail --title "安装中" --infobox "安装Hexo中..." 7 68
   colorEcho ${INFO} "Install Hexo ing..."
   cd /usr/share/nginx
   npm install -g npm
@@ -4439,6 +4348,7 @@ advancedMenu() {
         dnsissue
         fi
       fi
+    TERM=ansi whiptail --title "开始安装" --infobox "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!" 7 68
     colorEcho ${INFO} "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!"
     upgradesystem
     if [[ ${httpissue} == 1 ]]; then
@@ -4645,6 +4555,127 @@ echo "" >> /etc/ssh/sshd_config
 echo "DebianBanner no" >> /etc/ssh/sshd_config
 #echo "AllowStreamLocalForwarding no" >> /etc/ssh/sshd_config
 systemctl reload sshd
+fi
+}
+
+enablebbr(){
+if [[ $install_bbr == 1 ]]; then
+  TERM=ansi whiptail --title "初始化中" --infobox "启动BBR中..." 7 68
+  colorEcho ${INFO} "Enabling TCP-BBR boost"
+  #iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
+  cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
+#!!! Do not change these settings unless you know what you are doing !!!
+#net.ipv4.ip_forward = 1
+#net.ipv4.conf.all.forwarding = 1
+#net.ipv4.conf.default.forwarding = 1
+################################
+#net.ipv6.conf.all.forwarding = 1
+#net.ipv6.conf.default.forwarding = 1
+#net.ipv6.conf.lo.forwarding = 1
+################################
+net.ipv6.conf.all.disable_ipv6 = 0
+net.ipv6.conf.default.disable_ipv6 = 0
+net.ipv6.conf.lo.disable_ipv6 = 0
+################################
+net.ipv6.conf.all.accept_ra = 2
+net.ipv6.conf.default.accept_ra = 2
+################################
+net.core.netdev_max_backlog = 100000
+net.core.netdev_budget = 50000
+net.core.netdev_budget_usecs = 5000
+#fs.file-max = 51200
+net.core.rmem_max = 67108864
+net.core.wmem_max = 67108864
+net.core.rmem_default = 65536
+net.core.wmem_default = 65536
+net.core.somaxconn = 10000
+################################
+net.ipv4.icmp_echo_ignore_all = 0
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv4.icmp_ignore_bogus_error_responses = 1
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+net.ipv4.conf.all.secure_redirects = 0
+net.ipv4.conf.default.secure_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.tcp_keepalive_intvl = 15
+net.ipv4.tcp_keepalive_probes = 5
+net.ipv4.tcp_synack_retries = 2
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_rfc1337 = 1
+net.ipv4.tcp_timestamps = 1
+net.ipv4.tcp_tw_recycle = 0
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_fin_timeout = 15
+net.ipv4.ip_local_port_range = 10000 65000
+net.ipv4.tcp_max_tw_buckets = 2000000
+net.ipv4.tcp_fastopen = 3
+net.ipv4.tcp_rmem = 4096 87380 67108864
+net.ipv4.tcp_wmem = 4096 65536 67108864
+net.ipv4.udp_rmem_min = 8192
+net.ipv4.udp_wmem_min = 8192
+net.ipv4.tcp_mtu_probing = 0
+##############################
+net.ipv4.conf.all.arp_ignore = 2
+net.ipv4.conf.default.arp_ignore = 2
+net.ipv4.conf.all.arp_announce = 2
+net.ipv4.conf.default.arp_announce = 2
+##############################
+net.ipv4.tcp_autocorking = 0
+net.ipv4.tcp_slow_start_after_idle = 0
+net.ipv4.tcp_max_syn_backlog = 30000
+net.core.default_qdisc = fq
+net.ipv4.tcp_congestion_control = bbr
+net.ipv4.tcp_notsent_lowat = 16384
+net.ipv4.tcp_no_metrics_save = 1
+net.ipv4.tcp_ecn = 2
+net.ipv4.tcp_ecn_fallback = 1
+net.ipv4.tcp_frto = 0
+##############################
+net.ipv6.conf.all.accept_redirects = 0
+net.ipv6.conf.default.accept_redirects = 0
+vm.swappiness = 1
+net.ipv4.neigh.default.gc_thresh3=8192
+net.ipv4.neigh.default.gc_thresh2=4096
+net.ipv4.neigh.default.gc_thresh1=2048
+net.ipv6.neigh.default.gc_thresh3=8192
+net.ipv6.neigh.default.gc_thresh2=4096
+net.ipv6.neigh.default.gc_thresh1=2048
+EOF
+  sysctl --system
+  cat > '/etc/systemd/system.conf' << EOF
+[Manager]
+#DefaultTimeoutStartSec=90s
+DefaultTimeoutStopSec=30s
+#DefaultRestartSec=100ms
+DefaultLimitCORE=infinity
+DefaultLimitNOFILE=51200
+DefaultLimitNPROC=51200
+EOF
+    cat > '/etc/security/limits.conf' << EOF
+* soft nofile 51200
+* hard nofile 51200
+* soft nproc 51200
+* hard nproc 51200
+EOF
+if grep -q "ulimit" /etc/profile
+then
+  :
+else
+echo "ulimit -SHn 51200" >> /etc/profile
+echo "ulimit -SHu 51200" >> /etc/profile
+fi
+if grep -q "pam_limits.so" /etc/pam.d/common-session
+then
+  :
+else
+echo "session required pam_limits.so" >> /etc/pam.d/common-session
+fi
+systemctl daemon-reload
 fi
 }
 clear
