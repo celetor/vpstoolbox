@@ -4339,7 +4339,7 @@ advancedMenu() {
         #write out current crontab
         crontab -l > mycron
         #echo new cron into cron file
-        echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+        echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
         #install new cron file
         crontab mycron
         rm mycron        
