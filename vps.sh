@@ -69,14 +69,17 @@ cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-E
 install_bbr=1
 install_nodejs=1
 
+if [[ -d /usr/local/qcloud ]]; then
+  #disable tencent cloud process
+  rm -rf /usr/local/sa
+  rm -rf /usr/local/agenttools
+  rm -rf /usr/local/qcloud
+  #disable huawei cloud process
+  rm -rf /usr/local/telescope
+fi
+
 #Disable cloud-init
 rm -rf /lib/systemd/system/cloud*
-#disable tencent cloud process
-rm -rf /usr/local/sa
-rm -rf /usr/local/agenttools
-rm -rf /usr/local/qcloud
-#disable huawei cloud process
-rm -rf /usr/local/telescope
 
 colorEcho(){
   set +e
@@ -310,7 +313,7 @@ EOF
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -342,7 +345,7 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --dns dns_cf --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -358,7 +361,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --dns dns_namesilo --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -376,7 +379,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns_ali --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --dns_ali --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -394,7 +397,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --dns dns_dp --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -412,7 +415,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --dns dns_cx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -430,7 +433,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --dns dns_gd --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -4158,7 +4161,12 @@ if cat /root/.trojan/trojan_version.txt | grep \$trojanversion > /dev/null; then
 fi
 EOF
 touch /root/.trojan/update.log
-crontab -l | grep -q '0 0 1 * * bash /root/.trojan/autoupdate.sh'  && echo 'cron exists' || echo "0 0 1 * * bash /root/.trojan/autoupdate.sh" | crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "0 0 1 * * bash /root/.trojan/autoupdate.sh" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
   fi
 }
 
