@@ -513,15 +513,7 @@ readconfig(){
 
 #User input
 userinput(){
-  set +e
-if [ ! -f /root/.trojan/config.json ]; then
-  cat > '/root/.trojan/config.json' << EOF
-{
-  "installed": "0"
-}
-EOF
-fi
-
+set +e
 clear
 if [[ ${install_status} == 1 ]]; then
   if (whiptail --title "Installed" --yesno "已安装，是否读取先前的配置?(Installed,read configuration?)" 8 68); then
