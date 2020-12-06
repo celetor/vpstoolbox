@@ -849,7 +849,12 @@ EOF
   apt-get purge nginx -qq -y
   apt-get update
   #apt-get install nginx -q -y
-  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | apt-get install nginx -y'
+  sh -c 'echo "y\n\ny\ny\ny\n" | apt-get install nginx -y'
+  id -u nginx
+if [[ $? != 0 ]]; then
+useradd -r nginx --shell=/usr/sbin/nologin
+apt-get install nginx -y
+fi
   cat > '/lib/systemd/system/nginx.service' << EOF
 [Unit]
 Description=The NGINX HTTP and reverse proxy server
