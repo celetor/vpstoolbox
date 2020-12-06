@@ -3286,8 +3286,8 @@ if [[ $install_trojan == 1 ]]; then
   cat > '/etc/nginx/conf.d/default.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 server {
-  listen 127.0.0.1:80;
-  listen 127.0.0.1:82 http2;
+  listen 127.0.0.1:80 fastopen=20 reuseport;
+  listen 127.0.0.1:82 http2 fastopen=20 reuseport;
   server_name $domain;
   resolver 127.0.0.1;
   resolver_timeout 10s;
@@ -3337,8 +3337,8 @@ EOF
   cat > '/etc/nginx/conf.d/default.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 server {
-  listen 443 ssl http2;
-  listen [::]:443 ssl http2;
+  listen 443 ssl http2 fastopen=20 reuseport;
+  listen [::]:443 ssl http2 fastopen=20 reuseport;
   ssl_certificate       /etc/certs/${domain}_ecc/fullchain.cer;
   ssl_certificate_key   /etc/certs/${domain}_ecc/${domain}.key;
   ssl_protocols         TLSv1.3 TLSv1.2;
@@ -3551,8 +3551,8 @@ fi
 echo "}" >> /etc/nginx/conf.d/default.conf
 echo "" >> /etc/nginx/conf.d/default.conf
 echo "server {" >> /etc/nginx/conf.d/default.conf
-echo "    listen 80;" >> /etc/nginx/conf.d/default.conf
-echo "    listen [::]:80;" >> /etc/nginx/conf.d/default.conf
+echo "    listen 80 fastopen=20 reuseport;" >> /etc/nginx/conf.d/default.conf
+echo "    listen [::]:80 fastopen=20 reuseport;" >> /etc/nginx/conf.d/default.conf
 echo "    server_name $domain;" >> /etc/nginx/conf.d/default.conf
 echo "    if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345) ) { return 403; }" >> /etc/nginx/conf.d/default.conf
 echo "    return 301 https://$domain\$request_uri;" >> /etc/nginx/conf.d/default.conf
@@ -3566,7 +3566,7 @@ echo "    return 404;" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 if [[ $install_netdata == 1 ]]; then
 echo "server { #For Netdata only !" >> /etc/nginx/conf.d/default.conf
-echo "    listen 127.0.0.1:81;" >> /etc/nginx/conf.d/default.conf
+echo "    listen 127.0.0.1:81 fastopen=20 reuseport;" >> /etc/nginx/conf.d/default.conf
 echo "    location /stub_status {" >> /etc/nginx/conf.d/default.conf
 echo "    access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "    stub_status;" >> /etc/nginx/conf.d/default.conf
