@@ -313,7 +313,7 @@ EOF
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --ecc --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -345,7 +345,7 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --ecc --dns dns_cf --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -361,7 +361,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --ecc --dns dns_namesilo --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -379,7 +379,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --ecc --dns_ali --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -397,7 +397,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --ecc --dns dns_dp --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -415,7 +415,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --ecc --dns dns_cx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -433,7 +433,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --ecc --dns dns_gd --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -4339,7 +4339,7 @@ advancedMenu() {
         #write out current crontab
         crontab -l > mycron
         #echo new cron into cron file
-        echo "0 0 * * 0 /root/.acme.sh/acme.sh --renew --ecc --nginx --cert-home /etc/certs -d ${domain} -k ec-256 --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+        echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
         #install new cron file
         crontab mycron
         rm mycron        
