@@ -1287,8 +1287,47 @@ EOF
 fi
 
 if [[ ${install_rsshub} == 1 ]]; then
-docker pull diygod/rsshub
-docker run -d --restart unless-stopped --name rsshub -p 127.0.0.1:1200:1200 diygod/rsshub
+cd
+curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+  cat > 'docker-compose.yml' << EOF
+version: '3'
+
+services:
+    rsshub:
+        image: diygod/rsshub
+        restart: always
+        ports:
+            - '127.0.0.1:1200:1200'
+        environment:
+            NODE_ENV: production
+            CACHE_TYPE: redis
+            REDIS_URL: 'redis://redis:6379/'
+            PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'
+        depends_on:
+            - redis
+            - browserless
+
+    browserless:
+        image: browserless/chrome
+        restart: always
+        ports:
+            - '127.0.0.1:3000:3000'
+
+    redis:
+        image: redis:alpine
+        restart: always
+        ports:
+            - '127.0.0.1:6379:6379'
+        volumes:
+            - redis-data:/data
+
+volumes:
+    redis-data:
+EOF
+docker volume create redis-data
+docker-compose up -d
+
 cd /usr/share/nginx/
 git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
   cat > '/usr/share/nginx/tt-rss/config.php' << EOF
@@ -1906,7 +1945,7 @@ cache_neg_max_ttl = 600
 
 #[local_doh]
 #
-#listen_addresses = ['127.0.0.1:3000']
+#listen_addresses = ['127.0.0.1:3001']
 #path = "/dns-query"
 #cert_file = "/etc/certs/${domain}_ecc/fullchain.cer"
 #cert_key_file = "/etc/certs/${domain}_ecc/${domain}.key"
@@ -3390,7 +3429,7 @@ if [[ $dnsmasq_install == 1 ]]; then
 echo "    #location /dns-query {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
-echo "        #proxy_pass https://127.0.0.1:3000/dns-query;" >> /etc/nginx/conf.d/default.conf
+echo "        #proxy_pass https://127.0.0.1:3001/dns-query;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
