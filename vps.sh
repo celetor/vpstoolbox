@@ -294,19 +294,27 @@ EOF
   colorEcho ${INFO} "測試证书申请ing(test issuing) let\'s encrypt certificate"
   ~/.acme.sh/acme.sh --issue --test --nginx --cert-home /etc/certs -d $domain --force -k ec-256 --log
   if [[ $? != 0 ]] && [[ $? != 2 ]]; then
-  colorEcho ${ERROR} "測試证书申请失败，请检查VPS控制面板防火墙(80 443)是否打开,DNS是否解析完成!!!"
+  colorEcho ${ERROR} "測試证书申请失败，请**检查VPS控制面板防火墙是否完全关闭**,DNS是否解析完成!!!"
   colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
-  colorEcho ${ERROR} "Cert issue fail,Pleae Open port 80 443 on VPS panel !!!"
+  colorEcho ${ERROR} "Cert issue fail,Pleae Open all ports on VPS panel !!!"
   exit 1
   fi
   clear
   colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
   ~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain --force -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
   if [[ $? != 0 ]] && [[ $? != 2 ]]; then
-  colorEcho ${ERROR} "证书申请失败，请检查VPS控制面板防火墙(80 443)是否打开,DNS是否解析完成!!!"
+  colorEcho ${ERROR} "证书申请失败，请**检查VPS控制面板防火墙是否完全关闭**,DNS是否解析完成!!!"
   colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
-  colorEcho ${ERROR} "Cert issue fail,Pleae Open port 80 443 on VPS panel !!!"
+  colorEcho ${ERROR} "Cert issue fail,Pleae Open all ports on VPS panel !!!"
   exit 1
+  fi
+  if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
+    :
+    else
+    colorEcho ${ERROR} "证书申请失败，请**检查VPS控制面板防火墙是否完全关闭**,DNS是否解析完成!!!"
+    colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
+    colorEcho ${ERROR} "Cert issue fail,Pleae Open all ports on VPS panel !!!"
+    exit 1
   fi
   chmod +r /etc/certs/${domain}_ecc/fullchain.cer
   chmod +r /etc/certs/${domain}_ecc/${domain}.key
@@ -726,7 +734,7 @@ if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
   dist=debian
   enablebbr
-  apt-get update -q
+  apt-get update
   apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y
  else
   whiptail --title "OS not supported(操作系统不支援)" --msgbox "Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)" 8 68
