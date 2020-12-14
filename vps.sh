@@ -42,10 +42,10 @@ if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
   exit 1
 fi
 
-#if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -le "400" ]]; then
-#  echo Please run this script on machine with more than 400MB free ram.
-#  exit 1
-#fi
+if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -le "100" ]]; then
+  echo Please run this script on machine with more than 100MB free ram.
+  exit 1
+fi
 
 if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) -le "3000000" ]]; then
   echo Please run this script on machine with more than 3G free disk space.
