@@ -15,6 +15,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 #### 重要提示:
 1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
+2. Trojan-GFW**不支援Cloudflare CDN**,请勿开启!
 4. **仅支援 [Debian8+](https://www.debian.org/) [Ubuntu14+](https://ubuntu.com/)**
 1. 请 **以root/sudoer身份运行**(sudo -i)
 2. 请 **先[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)一个域名或者使用二级域名** 并 **[完成DNS A解析,即将域名指向IP](https://dnschecker.org/)**(namesilo最慢需要15min生效)!
@@ -81,10 +82,11 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 #### Important Reminder:
 4. **Support [Debian8+](https://www.debian.org/) [Ubuntu14+](https://ubuntu.com/)**
 1. Please **Run as root**(sudo -i)
+3. Trojan-GFW **does not support Cloudflare CDN**,please do not enable!
 2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)** before running this program!
 3. Please **turn off your firewall for best performance(full-cone nat) and turn off Cloudflare CDN** in your control panel before running this program!
 
-#### 项目Demo(无保证)
+#### Project Demo(no ganuarteen)
 
 [https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
 
