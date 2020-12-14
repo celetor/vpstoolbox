@@ -483,7 +483,7 @@ chown -R nginx:nginx /usr/share/nginx/
 cd
 }
 
-#Set json file after installation
+#Set json file before and after installation
 prasejson(){
   set +e
   cat > '/root/.trojan/config.json' << EOF
@@ -498,7 +498,17 @@ prasejson(){
   "ariapath": "$ariapath",
   "ariapasswd": "$ariapasswd",
   "filepath": "$filepath",
-  "netdatapath": "$netdatapath",
+  "check_trojan": "$check_trojan",
+  "check_rss": "$check_rss",
+  "check_qbt": "$check_qbt",
+  "check_aria": "$check_aria",
+  "check_file": "$check_file",
+  "check_speed": "$check_speed",
+  "check_mariadb": "$check_mariadb",
+  "check_fail2ban": "$check_fail2ban",
+  "check_mail": "$check_mail",
+  "check_qbt_origin": "$check_qbt_origin",
+  "check_tracker": "$check_tracker",
   "tor_name": "$tor_name"
 }
 EOF
@@ -507,16 +517,27 @@ EOF
 #Read var from json
 readconfig(){
   domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
-    password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
-    password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
-    qbtpath="$( jq -r '.qbtpath' "/root/.trojan/config.json" )"
-    trackerpath="$( jq -r '.trackerpath' "/root/.trojan/config.json" )"
-    trackerstatuspath="$( jq -r '.username' "/root/.trojan/config.json" )"
-    ariapath="$( jq -r '.ariapath' "/root/.trojan/config.json" )"
-    ariapasswd="$( jq -r '.ariapasswd' "/root/.trojan/config.json" )"
-    filepath="$( jq -r '.filepath' "/root/.trojan/config.json" )"
-    netdatapath="$( jq -r '.netdatapath' "/root/.trojan/config.json" )"
-    tor_name="$( jq -r '.tor_name' "/root/.trojan/config.json" )"  
+  password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
+  password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
+  qbtpath="$( jq -r '.qbtpath' "/root/.trojan/config.json" )"
+  trackerpath="$( jq -r '.trackerpath' "/root/.trojan/config.json" )"
+  trackerstatuspath="$( jq -r '.username' "/root/.trojan/config.json" )"
+  ariapath="$( jq -r '.ariapath' "/root/.trojan/config.json" )"
+  ariapasswd="$( jq -r '.ariapasswd' "/root/.trojan/config.json" )"
+  filepath="$( jq -r '.filepath' "/root/.trojan/config.json" )"
+  netdatapath="$( jq -r '.netdatapath' "/root/.trojan/config.json" )"
+  tor_name="$( jq -r '.tor_name' "/root/.trojan/config.json" )"
+  check_trojan="$( jq -r '.check_trojan' "/root/.trojan/config.json" )"
+  check_rss="$( jq -r '.check_rss' "/root/.trojan/config.json" )"
+  check_qbt="$( jq -r '.check_qbt' "/root/.trojan/config.json" )"
+  check_aria="$( jq -r '.check_aria' "/root/.trojan/config.json" )"
+  check_file="$( jq -r '.check_file' "/root/.trojan/config.json" )"
+  check_speed="$( jq -r '.check_speed' "/root/.trojan/config.json" )"
+  check_mariadb="$( jq -r '.check_mariadb' "/root/.trojan/config.json" )"
+  check_fail2ban="$( jq -r '.check_fail2ban' "/root/.trojan/config.json" )"
+  check_mail="$( jq -r '.check_mail' "/root/.trojan/config.json" )"
+  check_qbt_origin="$( jq -r '.check_qbt_origin' "/root/.trojan/config.json" )"
+  check_tracker="$( jq -r '.check_tracker' "/root/.trojan/config.json" )"
 }
 
 #User input
@@ -524,7 +545,7 @@ userinput(){
 set +e
 clear
 if [[ ${install_status} == 1 ]]; then
-  if (whiptail --title "Installed" --yesno "已安装，是否读取先前的配置?(Installed,read configuration?)" 8 68); then
+  if (whiptail --title "Installed" --yes-button "读取" --no-button "修改" --yesno "检测到现有配置，读取/修改现有配置?(Installed,read configuration?)" 8 68); then
       readconfig
     fi
 fi
@@ -533,22 +554,22 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择�
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
 "1" "Trojan-GFW TCP-BBR Dnscrypt-proxy and Netdata" on \
-"2" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" off \
+"2" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "下载" "Download" off  \
-"3" "Qbittorrent增强版(可全自动屏蔽吸血行为)" off \
-"4" "Aria2" off \
-"5" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" off \
+"3" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
+"4" "Aria2" ${check_aria} \
+"5" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
 "测速" "Speedtest" off  \
-"6" "Speedtest(测试本地网络到VPS的延迟及带宽)" off \
+"6" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
 "数据库" "Database" off  \
-"7" "MariaDB(数据库)" off \
+"7" "MariaDB(数据库)" ${check_mariadb} \
 "安全" "Security" off  \
-"8" "Fail2ban(防SSH爆破用)" off \
+"8" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
 "邮件" "Mail" off  \
-"9" "Mail service(邮箱服务,需2g+内存)" off \
+"9" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
 "其他" "以下选项请勿选中,除非必要(Others)" off  \
-"13" "Qbt原版(除PT站指明要求,请勿选中)" off \
-"10" "Bt-Tracker(Bittorrent-tracker服务)" off \
+"13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
+"10" "Bt-Tracker(Bittorrent-tracker服务)" ${check_tracker} \
 "11" "Trojan-panel(已停止维护，请勿选中)" off \
 "12" "Tor-Relay(已停止维护，请勿选中)" off 2>results
 
@@ -566,36 +587,45 @@ do
     install_netdata=1
     ;;
     2)
+    check_rss="on"
     install_rsshub=1
     install_docker=1
     install_php=1
     install_mariadb=1
     ;;
     3)
+    check_qbt="on"
     install_qbt=1
     ;;
     4)
+    check_aria="on"
     install_aria=1
     ;;
     5)
+    check_file="on"
     install_file=1
     ;;
     6)
+    check_speed="on"
     install_speedtest=1
     install_php=1
     ;;
     7)
+    check_mariadb="on"
     install_mariadb=1
     ;;
     8)
+    check_fail2ban="on"
     install_fail2ban=1
     ;;
     9)
+    check_mail="on"
     install_mail=1
     install_php=1
     install_mariadb=1
     ;;
     10)
+    check_tracker="on"
     install_tracker=1
     ;;
     11) 
@@ -608,6 +638,7 @@ do
     install_tor=1
     ;;
     13)
+    check_qbt_origin="on"
     install_qbt_origin=1
     ;;
     *)
@@ -4323,6 +4354,19 @@ advancedMenu() {
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     echo "nameserver 1.0.0.1" >> /etc/resolv.conf
     echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+    #predefine install options
+      check_trojan="on"
+      check_rss="off"
+      check_qbt="off"
+      check_aria="off"
+      check_file="off"
+      check_speed="off"
+      check_mariadb="off"
+      check_fail2ban="off"
+      check_mail="off"
+      check_qbt_origin="off"
+      check_tracker="off"
+      prasejson
       if [[ $(systemctl is-active caddy) == active ]]; then
       systemctl stop caddy
       systemctl disable caddy
@@ -4337,6 +4381,7 @@ advancedMenu() {
       fi
     fi
     userinput
+    prasejson
     if [[ ${install_ddns} == 1 ]]; then
     install_ddns
     fi
