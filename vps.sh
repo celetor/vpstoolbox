@@ -289,7 +289,7 @@ server {
   root   /usr/share/nginx/html;
 }
 EOF
-  systemctl start nginx
+  systemctl restart nginx
   clear
   colorEcho ${INFO} "測試证书申请ing(test issuing) let\'s encrypt certificate"
   ~/.acme.sh/acme.sh --issue --test --nginx --cert-home /etc/certs -d $domain --force -k ec-256 --log
@@ -1552,7 +1552,7 @@ curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/
 cd
 chmod 755 /usr/share/nginx/
 chown -R nginx:nginx /usr/share/nginx/
-systemctl start qbittorrent.service
+systemctl restart qbittorrent.service
 fi
 clear
 ###################################################
@@ -1603,7 +1603,7 @@ curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/
 cd
 chmod 755 /usr/share/nginx/
 chown -R nginx:nginx /usr/share/nginx/
-systemctl start qbittorrent.service
+systemctl restart qbittorrent.service
 fi
 clear
 ###########Install Bittorrent-tracker##############
@@ -1648,7 +1648,7 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 systemctl enable tracker
-systemctl start tracker
+systemctl restart tracker
 cd /usr/share/nginx/
 mkdir tracker
 cd /usr/share/nginx/tracker/
@@ -1922,7 +1922,7 @@ EOF
   fi
 systemctl daemon-reload
 systemctl enable aria2
-systemctl start aria2
+systemctl restart aria2
 fi
 
 if [[ ${dnsmasq_install} == 1 ]]; then
@@ -3642,19 +3642,19 @@ TERM=ansi whiptail --title "安装中" --infobox "启动Trojan-gfw中..." 7 68
   #  sleep 1
   #  qbtline=$(grep -n "Preferences" /usr/share/nginx/qBittorrent/config/qBittorrent.conf | cut -c1-2)
   #  sed -i "${qbtline} aAdvanced\\\AnnounceToAllTrackers=true" /usr/share/nginx/qBittorrent/config/qBittorrent.conf
-  #  systemctl start qbittorrent.service
+  #  systemctl restart qbittorrent.service
   #fi
   if [[ $install_file == 1 ]]; then
-    systemctl start filebrowser
+    systemctl restart filebrowser
   fi
   if [[ $install_rsshub == 1 ]]; then
-    systemctl start rssfeed
+    systemctl restart rssfeed
   fi
   if [[ $install_trojan == 1 ]]; then
-    systemctl start trojan
+    systemctl restart trojan
     systemctl stop netdata
     killall netdata
-    systemctl start netdata
+    systemctl restart netdata
   fi
 }
 
@@ -4488,7 +4488,7 @@ advancedMenu() {
     echo "nameserver 127.0.0.1" > '/etc/resolv.conf'
     echo "" >> /etc/hosts
     echo "$(jq -r '.ip' "/root/.trojan/ip.json") ${domain}" >> /etc/hosts
-    systemctl start dnscrypt-proxy
+    systemctl restart dnscrypt-proxy
     #iptables -t nat -I OUTPUT ! -d 127.0.0.1/32 -p udp -m udp --dport 53 -j DNAT --to 127.0.0.1:53
     #ip6tables -t nat -I OUTPUT ! -d ::1 -p udp -m udp --dport 53 -j DNAT --to [::1]:53
     iptables-save > /etc/iptables/rules.v4
