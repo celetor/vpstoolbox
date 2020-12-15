@@ -1494,9 +1494,9 @@ fi
 
 if [[ $install_nodejs == 1 ]]; then
   if [[ ${dist} == debian ]]; then
-  curl -sL https://deb.nodesource.com/setup_14.x | bash -
+  curl -sL https://deb.nodesource.com/setup_15.x | bash -
  elif [[ ${dist} == ubuntu ]]; then
-  curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+  curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
  else
   echo "fail"
  fi
