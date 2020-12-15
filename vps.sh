@@ -33,28 +33,48 @@ set +e
 
 #System Requirement
 if [[ $(id -u) != 0 ]]; then
-  echo Please run this script as root or sudoer.
+  echo -e "请使用root或者sudo用户运行,Please run this script as root or sudoer."
   exit 1
 fi
 
 if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
-  echo Please run this script on x86_64 machine.
+  echo -e "本程式仅适用于x86_64机器,Please run this script on x86_64 machine."
   exit 1
 fi
 
 if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -le "100" ]]; then
-  echo Please run this script on machine with more than 100MB free ram.
+  echo -e "本程式需要至少100MB记忆体才能正常运作,Please run this script on machine with more than 100MB total ram."
   exit 1
 fi
 
 if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) -le "3000000" ]]; then
-  echo Please run this script on machine with more than 3G free disk space.
+  echo -e "本程式需要至少3GB磁碟空间才能正常运作,Please run this script on machine with more than 3G free disk space."
   exit 1
 fi
 
 #Do not show user interface for apt
 export DEBIAN_FRONTEND=noninteractive
 
+# ----------------------------------
+# Colors
+# ----------------------------------
+NOCOLOR='\033[0m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+LIGHTGRAY='\033[0;37m'
+DARKGRAY='\033[1;30m'
+LIGHTRED='\033[1;31m'
+LIGHTGREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+LIGHTBLUE='\033[1;34m'
+LIGHTPURPLE='\033[1;35m'
+LIGHTCYAN='\033[1;36m'
+WHITE='\033[1;37m'
+###Legacy Defined Colors
 ERROR="31m"      # Error message
 SUCCESS="32m"    # Success message
 WARNING="33m"   # Warning message
@@ -65,7 +85,7 @@ LINK="92m"     # Share Link Message
 cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
 cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
 
-#Predefined install
+#Predefined install,do not change!!!
 install_bbr=1
 install_nodejs=1
 
@@ -2143,7 +2163,7 @@ TERM=ansi whiptail --title "安装中" --infobox "安装PHP中..." 7 68
   sed -i "s/;opcache.enable=1/opcache.enable=1/" /etc/php/7.4/fpm/php.ini
   cd /etc/php/7.4/
   curl -sS https://getcomposer.org/installer -o composer-setup.php
-  php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+  php composer-setup.php --install-dir=/usr/local/bin --filename=composer --force
   cd
   fi
 cat > '/etc/php/7.4/fpm/pool.d/www.conf' << EOF
@@ -4497,31 +4517,56 @@ advancedMenu() {
     cat > '/etc/profile.d/mymotd.sh' << EOF
 #!/usr/bin/env bash
 #!!! Do not change these settings unless you know what you are doing !!!
+bold=\$(tput bold)
+normal=\$(tput sgr0)
+# ----------------------------------
+# Colors
+# ----------------------------------
+NOCOLOR='\033[0m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+LIGHTGRAY='\033[0;37m'
+DARKGRAY='\033[1;30m'
+LIGHTRED='\033[1;31m'
+LIGHTGREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+LIGHTBLUE='\033[1;34m'
+LIGHTPURPLE='\033[1;35m'
+LIGHTCYAN='\033[1;36m'
+WHITE='\033[1;37m'
+###
 domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
 password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
 password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
 neofetch
-echo -e "----------------------IP信息(IP Information)----------------------------"
+echo -e "--- 如果您想要关闭本报告，请使用以下命令"
+echo -e "--- mv /etc/profile.d/mymotd.sh /etc/"
+echo -e "--- 再次启用 mv /etc/mymotd.sh /etc/profile.d/mymotd.sh"
+echo -e "--- \${BLUE}IP信息(IP Information)\${NOCOLOR} ---"
 echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ip.json")
 echo -e "city:\t\t"\$(jq -r '.city' "/root/.trojan/ip.json")
 echo -e "region:\t\t"\$(jq -r '.region' "/root/.trojan/ip.json")
 echo -e "country:\t"\$(jq -r '.country' "/root/.trojan/ip.json")
-echo -e "loc:\t\t"\$(jq -r '.loc' "/root/.trojan/ip.json")
+#echo -e "loc:\t\t"\$(jq -r '.loc' "/root/.trojan/ip.json")
 echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ip.json")
-echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ip.json")
+#echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ip.json")
 echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ip.json")
 if [[ -f /root/.trojan/ipv6.json ]]; then
-echo -e "----------------------IPv6信息(IPv6 Information)------------------------"
+echo -e "--- \${BLUE}IPv6信息(IPv6 Information)\${NOCOLOR} ---"
 echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ipv6.json")
 echo -e "city:\t\t"\$(jq -r '.city' "/root/.trojan/ipv6.json")
 echo -e "region:\t\t"\$(jq -r '.region' "/root/.trojan/ipv6.json")
 echo -e "country:\t"\$(jq -r '.country' "/root/.trojan/ipv6.json")
-echo -e "loc:\t\t"\$(jq -r '.loc' "/root/.trojan/ipv6.json")
+#echo -e "loc:\t\t"\$(jq -r '.loc' "/root/.trojan/ipv6.json")
 echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ipv6.json")
-echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ipv6.json")
+#echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ipv6.json")
 echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ipv6.json")
 fi
-echo -e "----------------------服務狀態(Service Status)--------------------------"
+echo -e "--- \${BLUE}服務狀態(Service Status)\${NOCOLOR} ---"
   if [[ -f /usr/local/bin/trojan ]]; then
 echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
   fi
@@ -4537,7 +4582,7 @@ echo -e "Dnscrypt-proxy:\t\t"\$(systemctl is-active dnscrypt-proxy)
   if [[ -f /usr/bin/qbittorrent-nox ]]; then
 echo -e "Qbittorrent:\t\t"\$(systemctl is-active qbittorrent)
   fi
-  if [[ -f /usr/bin/bittorrent-tracker ]]; then
+  if [[ -f /usr/sbin/opentracker ]]; then
 echo -e "Bittorrent-tracker:\t"\$(systemctl is-active tracker)
   fi
   if [[ -f /usr/local/bin/aria2c ]]; then
@@ -4576,25 +4621,27 @@ echo -e "ntpd:\t\t\t"\$(systemctl is-active ntp)
   if [[ -f /usr/bin/tor ]]; then
 echo -e "Tor:\t\t"\$(systemctl is-active tor)
   fi
-echo -e "---------------------------帶寬使用(Bandwith Usage)------------------------"
-echo -e "         Receive    Transmit"
+echo -e "--- \${BLUE}帶寬使用(Bandwith Usage)\${NOCOLOR} ---"
+echo -e "         接收(Receive)    发送(Transmit)"
 tail -n +3 /proc/net/dev | awk '{print \$1 " " \$2 " " \$10}' | numfmt --to=iec --field=2,3
-#echo -e "---------------------------證書狀態(Certificate Status)--------------------"
+#echo -e "--- \${GREEN}證書狀態(Certificate Status)\${NOCOLOR} ---"
 #ssl_date=\$(echo |openssl s_client -connect ${domain}:443 -tls1_3 2>&1 |sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'|openssl x509 -text)
 #tmp_last_date=\$(echo "\${ssl_date}" | grep 'Not After :' | awk -F' : ' '{print \$NF}')
 #last_date=\$(date -ud "\${tmp_last_date}" +%Y-%m-%d" "%H:%M:%S)
 #day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
 #echo -e "\e[40;33;1m The [${domain}] expiration date is : \${last_date} && [\${day_count} days] \e[0m"
 #echo -e "--------------------------------------------------------------------------"
-echo "*******************************************************************************************"
-echo "|                                   Vps Toolbox Result                                    |"
-echo "|               請訪問以下鏈接以獲得結果(Please visit the following link to get the result) |"
-echo "|                       https://$domain/${password1}/                                     |"
-echo "|                             有關錯誤報告或更多信息，請訪問以下鏈接                         |"
-echo "|            https://github.com/johnrosen1/vpstoolbox or https://t.me/vpstoolbox_chat     |"
-echo "|                             如果您想要关闭本报告，请使用以下命令                           |"
-echo "|    mv /etc/profile.d/mymotd.sh /etc/ 再次启用 mv /etc/mymotd.sh /etc/profile.d/mymotd.sh   |"
-echo "*******************************************************************************************"
+echo -e "--- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
+###
+echo -e "    \${YELLOW}trojan://$password1@$domain:443\${NOCOLOR}"
+echo -e "    \${YELLOW}trojan://$password2@$domain:443\${NOCOLOR}"
+###
+echo -e "--- 請\${bold}訪問以下鏈接\${normal}以獲得更多详细結果(Please visit the following link to get more info) "
+echo -e "    \${YELLOW}https://$domain/${password1}/\${NOCOLOR}"
+echo -e "--- 有關錯誤報告或更多信息，請訪問以下鏈接"
+echo -e "--- https://github.com/johnrosen1/vpstoolbox"
+echo -e "--- \${YELLOW}https://t.me/vpstoolbox_chat\${NOCOLOR}"
+echo -e "*********************"
 EOF
     chmod +x /etc/profile.d/mymotd.sh
     clear
