@@ -520,6 +520,7 @@ prasejson(){
   "ariapasswd": "$ariapasswd",
   "filepath": "$filepath",
   "check_trojan": "$check_trojan",
+  "check_dns": "$check_dns",
   "check_rss": "$check_rss",
   "check_qbt": "$check_qbt",
   "check_aria": "$check_aria",
@@ -549,6 +550,7 @@ readconfig(){
   netdatapath="$( jq -r '.netdatapath' "/root/.trojan/config.json" )"
   tor_name="$( jq -r '.tor_name' "/root/.trojan/config.json" )"
   check_trojan="$( jq -r '.check_trojan' "/root/.trojan/config.json" )"
+  check_dns="$( jq -r '.check_dns' "/root/.trojan/config.json" )"
   check_rss="$( jq -r '.check_rss' "/root/.trojan/config.json" )"
   check_qbt="$( jq -r '.check_qbt' "/root/.trojan/config.json" )"
   check_aria="$( jq -r '.check_aria' "/root/.trojan/config.json" )"
@@ -574,7 +576,8 @@ fi
 whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择需要安装/更新的软件(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来选择需要安装/更新的软件。" 24 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
-"1" "Trojan-GFW TCP-BBR Dnscrypt-proxy and Netdata" on \
+"1" "Trojan-GFW TCP-BBR and Netdata" on \
+"dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
 "2" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "下载" "Download" off  \
 "3" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
@@ -604,8 +607,10 @@ do
     1)
     install_trojan=1
     install_bbr=1
-    dnsmasq_install=1
     install_netdata=1
+    ;;
+    dns)
+    dnsmasq_install=1
     ;;
     2)
     check_rss="on"
@@ -4314,6 +4319,7 @@ advancedMenu() {
     echo "nameserver 8.8.8.8" >> /etc/resolv.conf
     #predefine install options
       check_trojan="on"
+      check_dns="off"
       check_rss="off"
       check_qbt="off"
       check_aria="off"
