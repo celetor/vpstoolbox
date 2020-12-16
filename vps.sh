@@ -569,8 +569,21 @@ set +e
 clear
 if [[ ${install_status} == 1 ]]; then
   if (whiptail --title "Installed" --yes-button "读取" --no-button "修改" --yesno "检测到现有配置，读取/修改现有配置?(Installed,read configuration?)" 8 68); then
-      readconfig
-    fi
+    readconfig
+    else
+    check_trojan="on"
+    check_dns="off"
+    check_rss="off"
+    check_qbt="off"
+    check_aria="off"
+    check_file="off"
+    check_speed="off"
+    check_mariadb="off"
+    check_fail2ban="off"
+    check_mail="off"
+    check_qbt_origin="off"
+    check_tracker="off"
+  fi
 fi
 
 whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择需要安装/更新的软件(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来选择需要安装/更新的软件。" 24 65 16 \
