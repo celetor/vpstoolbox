@@ -586,6 +586,43 @@ if [[ ${install_status} == 1 ]]; then
   fi
 fi
 
+if [[ -z ${check_trojan} ]]; then
+  check_trojan="on"
+fi
+if [[ -z ${check_dns} ]]; then
+  check_dns="off"
+fi
+if [[ -z ${check_rss} ]]; then
+  check_rss="off"
+fi
+if [[ -z ${check_qbt} ]]; then
+  check_qbt="off"
+fi
+if [[ -z ${check_aria} ]]; then
+  check_aria="off"
+fi
+if [[ -z ${check_file} ]]; then
+  check_file="off"
+fi
+if [[ -z ${check_speed} ]]; then
+  check_speed="off"
+fi
+if [[ -z ${check_mariadb} ]]; then
+  check_mariadb="off"
+fi
+if [[ -z ${check_fail2ban} ]]; then
+  check_fail2ban="off"
+fi
+if [[ -z ${check_mail} ]]; then
+  check_mail="off"
+fi
+if [[ -z ${check_qbt_origin} ]]; then
+  check_qbt_origin="off"
+fi
+if [[ -z ${check_tracker} ]]; then
+  check_tracker="off"
+fi
+
 whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择需要安装/更新的软件(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来选择需要安装/更新的软件。" 24 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
