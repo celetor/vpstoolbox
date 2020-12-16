@@ -1366,7 +1366,7 @@ services:
         environment:
             NODE_ENV: production
             CACHE_TYPE: redis
-            REDIS_URL: 'redis://redis:6379/'
+            REDIS_URL: 'redis://redis:6380/'
             PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'
         depends_on:
             - redis
@@ -1382,7 +1382,7 @@ services:
         image: redis:alpine
         restart: always
         ports:
-            - '127.0.0.1:6379:6379'
+            - '127.0.0.1:6380:6380'
         volumes:
             - redis-data:/data
 
@@ -2157,10 +2157,11 @@ TERM=ansi whiptail --title "安装中" --infobox "安装PHP中..." 7 68
   apt-get -y install php7.4
   systemctl disable --now apache2
   apt-get install php7.4-fpm -y
-  apt-get install php7.4-apc php7.4-common php7.4-mysql php7.4-ldap php7.4-xml php7.4-json php7.4-readline php7.4-xmlrpc php7.4-curl php7.4-gd php7.4-imagick php7.4-cli php7.4-dev php7.4-imap php7.4-mbstring php7.4-opcache php7.4-soap php7.4-zip php7.4-intl php7.4-bcmath -y
+  apt-get install php7.4-gmp php7.4-common php7.4-mysql php7.4-ldap php7.4-xml php7.4-json php7.4-readline php7.4-xmlrpc php7.4-curl php7.4-gd php7.4-imagick php7.4-cli php7.4-dev php7.4-imap php7.4-mbstring php7.4-opcache php7.4-soap php7.4-zip php7.4-intl php7.4-bcmath -y
   apt-get purge apache2* -y
   sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.4/fpm/php.ini
   sed -i "s/;opcache.enable=1/opcache.enable=1/" /etc/php/7.4/fpm/php.ini
+  sed -i "s/memory_limit = 128M/memory_limit = 1024M/" /etc/php/7.4/fpm/php.ini
   cd /etc/php/7.4/
   curl -sS https://getcomposer.org/installer -o composer-setup.php
   php composer-setup.php --install-dir=/usr/local/bin --filename=composer --force
@@ -4438,7 +4439,7 @@ advancedMenu() {
       if [[ $? != 0 ]]; then
         whiptail --title "ERROR" --msgbox "无效的证书,可能过期或者域名不正确,启动证书覆写" 8 68
         rm -rf /etc/certs/${domain}_ecc/fullchain.cer
-        rm -rf /etc/certs/${domain}_ecc/${domain}.key
+        #rm -rf /etc/certs/${domain}_ecc/${domain}.key
         #domain=""
         othercert=0
         #userinput
