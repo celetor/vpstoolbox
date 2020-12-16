@@ -88,6 +88,7 @@ cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-E
 #Predefined install,do not change!!!
 install_bbr=1
 install_nodejs=1
+install_trojan=1
 
 if [[ -d /usr/local/qcloud ]]; then
   #disable tencent cloud process
@@ -3343,7 +3344,6 @@ rm -rf /etc/nginx/sites-available/*
 rm -rf /etc/nginx/sites-enabled/*
 rm -rf /etc/nginx/conf.d/*
 touch /etc/nginx/conf.d/default.conf
-if [[ $install_trojan == 1 ]]; then
   cat > '/etc/nginx/conf.d/default.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 server {
@@ -3394,69 +3394,6 @@ server {
         fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
     }
 EOF
-  else
-  cat > '/etc/nginx/conf.d/default.conf' << EOF
-#!!! Do not change these settings unless you know what you are doing !!!
-server {
-  listen 443 ssl http2 fastopen=20 reuseport;
-  listen [::]:443 ssl http2 fastopen=20 reuseport;
-  ssl_certificate       /etc/certs/${domain}_ecc/fullchain.cer;
-  ssl_certificate_key   /etc/certs/${domain}_ecc/${domain}.key;
-  ssl_protocols         TLSv1.3 TLSv1.2;
-  ssl_ciphers $cipher_server;
-  ssl_prefer_server_ciphers on;
-  ssl_early_data on;
-  ssl_session_cache   shared:SSL:40m;
-  ssl_session_timeout 1d;
-  ssl_session_tickets off;
-  #ssl_stapling on;
-  #ssl_stapling_verify on;
-  #ssl_dhparam /etc/nginx/nginx.pem;
-  #resolver 127.0.0.1;
-  resolver_timeout 10s;
-  server_name           $domain;
-  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-  add_header X-Cache-Status \$upstream_cache_status;
-  if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345|Go-http-client) ) { return 403; }
-  #if (\$http_user_agent ~* (wget|curl) ) { return 403; }
-  #if (\$http_user_agent = "") { return 403; }
-  #if (\$host != "$domain") { return 404; }
-  location / {
-    proxy_pass http://127.0.0.1:4000/;
-    proxy_set_header Host \$http_host;
-    proxy_set_header X-Real-IP \$remote_addr;
-    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-    http2_push /css/main.css;
-        http2_push /lib/font-awesome/css/all.min.css;
-        http2_push /lib/anime.min.js;
-        http2_push /lib/velocity/velocity.min.js;
-        http2_push /lib/velocity/velocity.ui.min.js;
-        http2_push /js/utils.js;
-        http2_push /js/motion.js;
-        http2_push /js/schemes/muse.js;
-        http2_push /js/next-boot.js;
-  }
-  location /${password1}.png {
-    root /usr/share/nginx/html/;
-  }
-  location /${password2}.png {
-    root /usr/share/nginx/html/;
-  }
-  location /client1-${password1}.json {
-    root /usr/share/nginx/html/;
-  }
-  location /client2-${password2}.json {
-    root /usr/share/nginx/html/;
-  }
-    location ~ \.php\$ {
-        fastcgi_split_path_info ^(.+\.php)(/.+)\$;
-        fastcgi_param SCRIPT_FILENAME \$request_filename;
-        #fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
-    }
-EOF
-fi
 if [[ $install_tjp == 1 ]]; then
 echo "    location /${password1}_config/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
