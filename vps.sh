@@ -539,8 +539,8 @@ EOF
 #Read var from json
 readconfig(){
   domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
-  password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
   password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
+  password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
   qbtpath="$( jq -r '.qbtpath' "/root/.trojan/config.json" )"
   trackerpath="$( jq -r '.trackerpath' "/root/.trojan/config.json" )"
   trackerstatuspath="$( jq -r '.username' "/root/.trojan/config.json" )"
@@ -626,7 +626,8 @@ fi
 whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择需要安装/更新的软件(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来选择需要安装/更新的软件。" 24 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
-"1" "Trojan-GFW TCP-BBR and Netdata" on \
+"1" "Trojan-GFW+TCP-BBR" on \
+"net" "Netdata" on \
 "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
 "2" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "下载" "Download" off  \
@@ -657,10 +658,12 @@ do
     1)
     install_trojan=1
     install_bbr=1
-    install_netdata=1
     ;;
     dns)
     dnsmasq_install=1
+    ;;
+    net)
+    install_netdata=1
     ;;
     2)
     check_rss="on"
