@@ -4052,6 +4052,25 @@ WantedBy=multi-user.target
 EOF
 systemctl enable hexo
 systemctl restart hexo
+if [[ $(systemctl is-active hexo) != "active" ]]; then
+    cat > '/etc/systemd/system/hexo.service' << EOF
+[Unit]
+Description=Hexo Server Service
+Documentation=https://hexo.io/zh-tw/docs/
+After=network.target
+
+[Service]
+WorkingDirectory=/usr/share/nginx/hexo
+ExecStart=/usr/local/bin/hexo server -i 127.0.0.1
+Restart=on-failure
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl restart hexo
+fi
 }
 
 sharelink(){
