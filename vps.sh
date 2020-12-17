@@ -173,6 +173,142 @@ systemctl daemon-reload
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 fi
 
+installredis(){
+  cd
+  wget https://github.com/redis/redis/archive/6.0.9.zip
+  unzip 6.0.9.zip
+  rm 6.0.9.zip
+  cd redis-6.0.9
+  apt-get install libsystemd-dev -y
+  make USE_SYSTEMD=yes -j $(nproc --all)
+  #make test
+  make install
+  chmod +x /usr/local/bin/redis-server
+  chmod +x /usr/local/bin/redis-cli
+  useradd -m -s /sbin/nologin redis
+  groupadd redis
+  usermod -a -G redis redis
+  usermod -a -G redis nginx
+  mkdir /var/lib/redis
+  mkdir /var/log/redis/
+  mkdir /etc/redis
+  chown -R redis:redis /var/lib/redis
+  chown -R redis:redis /etc/redis
+  chown -R redis:redis /var/log/redis
+  cat > '/etc/systemd/system/redis.service' << EOF
+[Unit]
+Description=Advanced key-value store
+After=network.target
+Documentation=http://redis.io/documentation, man:redis-server(1)
+
+[Service]
+Type=notify
+ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
+ExecStop=/usr/local/bin/redis-cli shutdown
+TimeoutStopSec=0
+Restart=always
+User=redis
+Group=redis
+RuntimeDirectory=redis
+RuntimeDirectoryMode=2755
+
+UMask=007
+PrivateTmp=yes
+LimitNOFILE=65535
+PrivateDevices=yes
+ProtectHome=yes
+ReadOnlyDirectories=/
+ReadWriteDirectories=-/var/lib/redis
+ReadWriteDirectories=-/var/log/redis
+ReadWriteDirectories=-/var/run/redis
+
+NoNewPrivileges=true
+CapabilityBoundingSet=CAP_SETGID CAP_SETUID CAP_SYS_RESOURCE
+MemoryDenyWriteExecute=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+ProtectSystem=full
+ReadWriteDirectories=-/etc/redis
+
+[Install]
+WantedBy=multi-user.target
+Alias=redis.service
+EOF
+systemctl daemon-reload
+  cat > '/etc/redis/redis.conf' << EOF
+bind 127.0.0.1 ::1
+protected-mode no
+port 6379
+tcp-backlog 511
+unixsocket /var/run/redis/redis.sock
+unixsocketperm 775
+timeout 0
+tcp-keepalive 300
+daemonize no
+supervised systemd
+loglevel notice
+logfile /var/log/redis/redis-server.log
+databases 16
+always-show-logo yes
+save 900 1
+save 300 10
+save 60 10000
+stop-writes-on-bgsave-error yes
+rdbcompression yes
+rdbchecksum yes
+dbfilename dump.rdb
+dir /var/lib/redis
+replica-serve-stale-data yes
+replica-read-only yes
+repl-diskless-sync no
+repl-diskless-sync-delay 5
+repl-disable-tcp-nodelay no
+replica-priority 100
+lazyfree-lazy-eviction no
+lazyfree-lazy-expire no
+lazyfree-lazy-server-del no
+replica-lazy-flush no
+appendonly no
+appendfilename "appendonly.aof"
+appendfsync everysec
+no-appendfsync-on-rewrite no
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+aof-load-truncated yes
+aof-use-rdb-preamble yes
+lua-time-limit 5000
+slowlog-log-slower-than 10000
+slowlog-max-len 128
+latency-monitor-threshold 0
+notify-keyspace-events ""
+hash-max-ziplist-entries 512
+hash-max-ziplist-value 64
+list-max-ziplist-size -2
+list-compress-depth 0
+set-max-intset-entries 512
+zset-max-ziplist-entries 128
+zset-max-ziplist-value 64
+hll-sparse-max-bytes 3000
+stream-node-max-bytes 4096
+stream-node-max-entries 100
+activerehashing yes
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit replica 256mb 64mb 60
+client-output-buffer-limit pubsub 32mb 8mb 60
+hz 10
+dynamic-hz yes
+aof-rewrite-incremental-fsync yes
+rdb-save-incremental-fsync yes
+EOF
+systemctl restart redis
+systemctl enable redis
+}
+
 #Show simple system info 
 systeminfo(){
 echo -e "-------------------------------System Information----------------------------"
@@ -637,7 +773,8 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择�
 "测速" "Speedtest" off  \
 "6" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
 "数据库" "Database" off  \
-"7" "MariaDB(数据库)" ${check_mariadb} \
+"7" "MariaDB数据库" ${check_mariadb} \
+"redis" "Redis缓存数据库" off \
 "安全" "Security" off  \
 "8" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
 "邮件" "Mail" off  \
@@ -664,6 +801,9 @@ do
     ;;
     net)
     install_netdata=1
+    ;;
+    redis)
+    install_redis=1
     ;;
     2)
     check_rss="on"
@@ -4492,6 +4632,9 @@ advancedMenu() {
     if [[ $install_mariadb == 1 ]]; then
       install_mariadb
     fi
+    if [[ $install_redis == 1 ]]; then
+      installredis
+    fi
     if [[ ${install_tjp} == 1 ]]; then
     install_tjp
     fi
@@ -4729,9 +4872,9 @@ if [[ $install_bbr == 1 ]]; then
 #net.ipv4.conf.all.forwarding = 1
 #net.ipv4.conf.default.forwarding = 1
 ################################
-#net.ipv6.conf.all.forwarding = 1
-#net.ipv6.conf.default.forwarding = 1
-#net.ipv6.conf.lo.forwarding = 1
+net.ipv6.conf.all.forwarding = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.lo.forwarding = 1
 ################################
 net.ipv6.conf.all.disable_ipv6 = 0
 net.ipv6.conf.default.disable_ipv6 = 0
@@ -4768,7 +4911,6 @@ net.ipv4.tcp_synack_retries = 2
 net.ipv4.tcp_syncookies = 0
 net.ipv4.tcp_rfc1337 = 0
 net.ipv4.tcp_timestamps = 1
-net.ipv4.tcp_tw_recycle = 0
 net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_fin_timeout = 15
 net.ipv4.ip_local_port_range = 10000 65000
