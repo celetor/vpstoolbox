@@ -478,7 +478,7 @@ EOF
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -510,7 +510,7 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -526,7 +526,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -544,7 +544,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -562,7 +562,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -580,7 +580,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -598,7 +598,7 @@ rm mycron
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -4416,7 +4416,7 @@ EOF
 touch /root/.trojan/update.log
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 0 1 * * bash /root/.trojan/autoupdate.sh" >> mycron
+echo "0 0 1 * * bash /root/.trojan/autoupdate.sh >> /root/.trojan/update.log 2>&1" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
@@ -4594,11 +4594,11 @@ advancedMenu() {
       openfirewall
       certtool -i < /etc/certs/${domain}_ecc/fullchain.cer --verify --verify-hostname=${domain}
       if [[ $? != 0 ]]; then
-        whiptail --title "ERROR" --msgbox "无效的证书,可能过期或者域名不正确,启动证书覆写" 8 68
-        rm -rf /etc/certs/${domain}_ecc/fullchain.cer
+        whiptail --title "ERROR" --msgbox "无效的证书,可能过期或者域名不正确,启动证书续签程序" 8 68
+        /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1
+        #rm -rf /etc/certs/${domain}_ecc/fullchain.cer
         #rm -rf /etc/certs/${domain}_ecc/${domain}.key
         #domain=""
-        othercert=0
         #userinput
         fi
         crontab -l | grep acme.sh
@@ -4607,7 +4607,7 @@ advancedMenu() {
         #write out current crontab
         crontab -l > mycron
         #echo new cron into cron file
-        echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true'" >> mycron
+        echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
         #install new cron file
         crontab mycron
         rm mycron        
