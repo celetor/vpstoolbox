@@ -2366,6 +2366,13 @@ TERM=ansi whiptail --title "安装中" --infobox "安装PHP中..." 7 68
   sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 2T/" /etc/php/7.4/fpm/php.ini
   sed -i "s/post_max_size = 8M/post_max_size = 0/" /etc/php/7.4/fpm/php.ini
   sed -i "s/memory_limit = 128M/memory_limit = 1024M/" /etc/php/7.4/fpm/php.ini
+  if grep -q "env[PATH]" /etc/php/7.4/fpm/php-fpm.conf
+    then
+    :
+    else
+    echo "" >> /etc/php/7.4/fpm/php-fpm.conf
+    echo "env[PATH] = /usr/local/bin:/usr/bin:/bin:/usr/local/php/bin" >> /etc/php/7.4/fpm/php-fpm.conf
+  fi
   cd /etc/php/7.4/
   curl -sS https://getcomposer.org/installer -o composer-setup.php
   php composer-setup.php --install-dir=/usr/local/bin --filename=composer --force
@@ -2443,6 +2450,7 @@ if [[ $install_netdata == 1 ]]; then
 TERM=ansi whiptail --title "安装中" --infobox "安装Netdata中..." 7 68
   colorEcho ${INFO} "Install netdata ing"
   bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --allow-duplicate-install
+  sed -i "s/SEND_EMAIL=\"YES\"/SEND_EMAIL=\"NO\"/" /opt/netdata/etc/netdata/health_alarm_notify.conf
     cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
 localhost:
 
