@@ -2440,7 +2440,7 @@ if [[ $install_netdata == 1 ]]; then
   clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Netdata中..." 7 68
   colorEcho ${INFO} "Install netdata ing"
-  bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait
+  bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --reinstall --allow-duplicate-install
     cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
 localhost:
 
