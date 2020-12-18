@@ -325,7 +325,7 @@ installnextcloud(){
   cd /usr/share/nginx/nextcloud/config
   cat > "autoconfig.php" << EOF
 <?php
-$AUTOCONFIG = array(
+\$AUTOCONFIG = array(
   "dbtype"        => "mysql",
   "dbname"        => "nextcloud",
   "dbuser"        => "nextcloud",
@@ -338,7 +338,7 @@ $AUTOCONFIG = array(
 );
 EOF
 cd /etc/nginx/conf.d/
-  cat > "nextcloud.conf" << EOF
+  cat > 'nextcloud.conf' << EOF
     location /.well-known {
         rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
         rewrite ^/\.well-known/host-meta        /nextcloud/public.php?service=host-meta         last;
@@ -352,7 +352,7 @@ cd /etc/nginx/conf.d/
     location = /.well-known/caldav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
 
     location ^~ /nextcloud {
-        alias /usr/share/nginx/nextcloud/;
+        root /usr/share/nginx/;
         client_max_body_size 0;
         fastcgi_buffers 64 4K;
         add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
