@@ -309,6 +309,120 @@ systemctl restart redis
 systemctl enable redis
 }
 
+installnextcloud(){
+  apt-get install php7.4-redis -y
+  mysql -u root -e "CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+  mysql -u root -e "create user 'nextcloud'@'localhost' IDENTIFIED BY '${password1}';"
+  mysql -u root -e "GRANT ALL PRIVILEGES ON nextcloud.* to nextcloud@'localhost';"
+  mysql -u root -e "flush privileges;"
+  cd /usr/share/nginx
+  wget https://github.com/nextcloud/server/releases/download/v20.0.4/nextcloud-20.0.4.zip
+  unzip nextcloud*
+  rm nextcloud*.zip
+  mkdir /usr/share/nginx/nextcloud_data
+  cd /usr/share/nginx/nextcloud/config
+  cat > "autoconfig.php" << EOF
+<?php
+$AUTOCONFIG = array(
+  "dbtype"        => "mysql",
+  "dbname"        => "nextcloud",
+  "dbuser"        => "nextcloud",
+  "dbpass"        => "${password1}",
+  "dbhost"        => "localhost:/run/mysqld/mysqld.sock",
+  "dbtableprefix" => "",
+  "adminlogin"    => "admin",
+  "adminpass"     => "${password1}",
+  "directory"     => "/usr/share/nginx/nextcloud_data",
+);
+EOF
+cd
+  cat > "/etc/nginx/conf.d/nextcloud.conf" << EOF
+    location /.well-known {
+        rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
+        rewrite ^/\.well-known/host-meta        /nextcloud/public.php?service=host-meta         last;
+        rewrite ^/\.well-known/webfinger        /nextcloud/public.php?service=webfinger         last;
+        rewrite ^/\.well-known/nodeinfo         /nextcloud/public.php?service=nodeinfo          last;
+
+        try_files \$uri \$uri/ =404;
+    }
+
+    location = /.well-known/carddav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
+    location = /.well-known/caldav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
+
+    location ^~ /nextcloud {
+        client_max_body_size 0;
+        fastcgi_buffers 64 4K;
+        add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
+        add_header Referrer-Policy                      "no-referrer"   always;
+        add_header X-Content-Type-Options               "nosniff"       always;
+        add_header X-Download-Options                   "noopen"        always;
+        add_header X-Frame-Options                      "SAMEORIGIN"    always;
+        add_header X-Permitted-Cross-Domain-Policies    "none"          always;
+        add_header X-Robots-Tag                         "none"          always;
+        add_header X-XSS-Protection                     "1; mode=block" always;
+        fastcgi_hide_header X-Powered-By;
+        index index.php index.html /nextcloud/index.php\$request_uri;
+
+        expires 1m;
+
+        location = /nextcloud {
+            if ( \$http_user_agent ~ ^DavClnt ) {
+                return 302 /nextcloud/remote.php/webdav/\$is_args\$args;
+            }
+        }
+
+        location ~ ^/nextcloud/(?:build|tests|config|lib|3rdparty|templates|data)(?:\$|/)    { return 404; }
+        location ~ ^/nextcloud/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }
+
+        location ~ \.php(?:\$|/) {
+            fastcgi_split_path_info ^(.+?\.php)(/.*)\$;
+            set \$path_info \$fastcgi_path_info;
+
+            try_files \$fastcgi_script_name =404;
+
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME \$document_root$fastcgi_script_name;
+            fastcgi_param PATH_INFO \$path_info;
+            fastcgi_param HTTPS on;
+
+            fastcgi_param modHeadersAvailable true;
+            fastcgi_param front_controller_active true;
+            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+
+            fastcgi_intercept_errors on;
+            fastcgi_request_buffering off;
+        }
+
+        location ~ \.(?:css|js|svg|gif)\$ {
+            try_files $uri /nextcloud/index.php\$request_uri;
+            expires 6M;
+            access_log off;
+        }
+
+        location ~ \.woff2?\$ {
+            try_files \$uri /nextcloud/index.php\$request_uri;
+            expires 7d;
+            access_log off;
+        }
+
+        location /nextcloud {
+            try_files \$uri \$uri/ /nextcloud/index.php\$request_uri;
+        }
+    }
+EOF
+  chown -R nginx:nginx /usr/share/nginx/
+  chown -R nginx:nginx /etc/nginx/
+  crontab -l > mycron
+  #echo new cron into cron file
+  echo "*/5 * * * * sudo -u nginx php -f /usr/share/nginx/nextcloud/cron.php --define apc.enable_cli=1 >> /usr/share/nginx/nextcloud/log/crontab.log 2>&1" >> mycron
+  #install new cron file
+  crontab mycron
+  rm mycron
+  #chmod +x occ
+  #sudo -u nginx ./occ db:add-missing-indices
+  #sudo -u nginx ./occ db:convert-filecache-bigint
+}
+
 #Show simple system info 
 systeminfo(){
 echo -e "-------------------------------System Information----------------------------"
@@ -767,6 +881,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择�
 "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
 "2" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "下载" "Download" off  \
+"nextcloud" "Nextcloud(dev)" off \
 "3" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
 "4" "Aria2" ${check_aria} \
 "5" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
@@ -801,6 +916,9 @@ do
     ;;
     net)
     install_netdata=1
+    ;;
+    nextcloud)
+    install_nextcloud=1
     ;;
     redis)
     install_redis=1
@@ -1203,7 +1321,7 @@ http {
   gzip_types *;
   gzip_comp_level 9;
 
-  include /etc/nginx/conf.d/*.conf;
+  include /etc/nginx/conf.d/default.conf;
 }
 EOF
 clear
@@ -3612,6 +3730,9 @@ server {
         fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
     }
 EOF
+if [[ $install_nextcloud == 1 ]]; then
+echo "    include /etc/nginx/conf.d/nextcloud.conf;" >> /etc/nginx/conf.d/default.conf
+fi
 if [[ $install_tjp == 1 ]]; then
 echo "    location /${password1}_config/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
@@ -4529,7 +4650,7 @@ curl -s -X PUT "https://api.cloudflare.com/client/v6/zones/$zoneid/dns_records/$
 fi
 EOF
 
-crontab -l | grep -q '* * * * * bash /root/.trojan/ddns.sh'  && echo 'cron exists' || echo "* * * * * bash /root/.trojan/ddns.sh" | crontab
+#crontab -l | grep -q '* * * * * bash /root/.trojan/ddns.sh'  && echo 'cron exists' || echo "* * * * * bash /root/.trojan/ddns.sh" | crontab
 
 }
 
@@ -4654,6 +4775,9 @@ advancedMenu() {
     fi
     if [[ $install_redis == 1 ]]; then
       installredis
+    fi
+    if [[ $install_nextcloud == 1 ]]; then
+      installnextcloud
     fi
     if [[ ${install_tjp} == 1 ]]; then
     install_tjp
