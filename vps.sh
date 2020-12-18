@@ -175,6 +175,7 @@ fi
 
 installredis(){
   cd
+  TERM=ansi whiptail --title "安装中" --infobox "安装redis中..." 7 68
   wget https://github.com/redis/redis/archive/6.0.9.zip
   unzip 6.0.9.zip
   rm 6.0.9.zip
@@ -310,6 +311,7 @@ systemctl enable redis
 }
 
 installnextcloud(){
+  TERM=ansi whiptail --title "安装中" --infobox "安装nextcloud中..." 7 68
   apt-get install php7.4-redis -y
   mysql -u root -e "CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
   mysql -u root -e "create user 'nextcloud'@'localhost' IDENTIFIED BY '${password1}';"
@@ -335,8 +337,8 @@ $AUTOCONFIG = array(
   "directory"     => "/usr/share/nginx/nextcloud_data",
 );
 EOF
-cd
-  cat > "/etc/nginx/conf.d/nextcloud.conf" << EOF
+cd /etc/nginx/conf.d/
+  cat > "nextcloud.conf" << EOF
     location /.well-known {
         rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
         rewrite ^/\.well-known/host-meta        /nextcloud/public.php?service=host-meta         last;
@@ -350,6 +352,7 @@ cd
     location = /.well-known/caldav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
 
     location ^~ /nextcloud {
+        alias /usr/share/nginx/nextcloud/;
         client_max_body_size 0;
         fastcgi_buffers 64 4K;
         add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
@@ -381,7 +384,7 @@ cd
             try_files \$fastcgi_script_name =404;
 
             include fastcgi_params;
-            fastcgi_param SCRIPT_FILENAME \$document_root$fastcgi_script_name;
+            fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
             fastcgi_param PATH_INFO \$path_info;
             fastcgi_param HTTPS on;
 
@@ -394,7 +397,7 @@ cd
         }
 
         location ~ \.(?:css|js|svg|gif)\$ {
-            try_files $uri /nextcloud/index.php\$request_uri;
+            try_files \$uri /nextcloud/index.php\$request_uri;
             expires 6M;
             access_log off;
         }
@@ -410,6 +413,7 @@ cd
         }
     }
 EOF
+cd
   chown -R nginx:nginx /usr/share/nginx/
   chown -R nginx:nginx /etc/nginx/
   crontab -l > mycron
@@ -919,6 +923,9 @@ do
     ;;
     nextcloud)
     install_nextcloud=1
+    install_php=1
+    install_mariadb=1
+    install_redis=1
     ;;
     redis)
     install_redis=1
