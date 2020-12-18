@@ -2363,6 +2363,8 @@ TERM=ansi whiptail --title "安装中" --infobox "安装PHP中..." 7 68
   sed -i "s/;opcache.validate_timestamps=1/opcache.validate_timestamps=0/" /etc/php/7.4/fpm/php.ini
   sed -i "s/;opcache.save_comments=1/opcache.save_comments=1/" /etc/php/7.4/fpm/php.ini
   sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=0/" /etc/php/7.4/fpm/php.ini
+  sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 2T/" /etc/php/7.4/fpm/php.ini
+  sed -i "s/post_max_size = 8M/post_max_size = 0/" /etc/php/7.4/fpm/php.ini
   sed -i "s/memory_limit = 128M/memory_limit = 1024M/" /etc/php/7.4/fpm/php.ini
   cd /etc/php/7.4/
   curl -sS https://getcomposer.org/installer -o composer-setup.php
