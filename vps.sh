@@ -2358,7 +2358,7 @@ TERM=ansi whiptail --title "安装中" --infobox "安装PHP中..." 7 68
   apt-get install php7.4-fpm -y
   apt-get install php7.4-gmp php7.4-common php7.4-mysql php7.4-ldap php7.4-xml php7.4-json php7.4-readline php7.4-xmlrpc php7.4-curl php7.4-gd php7.4-imagick php7.4-cli php7.4-dev php7.4-imap php7.4-mbstring php7.4-opcache php7.4-soap php7.4-zip php7.4-intl php7.4-bcmath -y
   apt-get purge apache2* -y
-  sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.4/fpm/php.ini
+  sed -i "s/;date.timezone.*/date.timezone = Asia\/Hong_Kong/" /etc/php/7.4/fpm/php.ini
   sed -i "s/;opcache.enable=1/opcache.enable=1/" /etc/php/7.4/fpm/php.ini
   sed -i "s/;opcache.validate_timestamps=1/opcache.validate_timestamps=0/" /etc/php/7.4/fpm/php.ini
   sed -i "s/;opcache.save_comments=1/opcache.save_comments=1/" /etc/php/7.4/fpm/php.ini
