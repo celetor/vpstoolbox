@@ -25,7 +25,39 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 4. 如安装失败请自行加入TG群组反馈或者开issue,但请**务必附上错误的步骤，截图，OS版本等信息**。
 5. 证书续签目前使用crontab,如有问题,欢迎反馈 !
 
-#### 项目Demo(Debian10+namesilo購買的域名+完整安裝)
+#### Nextcloud优化方法
+
+1. 开启Memcache
+在```/usr/share/nginx/nextcloud/config/config.php```中添加以下几行(请添加在中间，非开头或末尾)
+
+```
+'memcache.local' => '\\OC\\Memcache\\APCu',
+  'memcache.distributed' => '\\OC\\Memcache\\Redis',
+  'filelocking.enabled' => true,
+  'memcache.locking' => '\\OC\Memcache\\Redis',
+  'redis' => 
+  array (
+    'host' => '/var/run/redis/redis.sock',
+    'port' => 0,
+    'timeout' => 0.0,
+  ),
+```
+
+2. 优化索引
+
+运行以下几行
+
+```
+cd /usr/share/nginx/nextcloud/
+sudo -u nginx ./occ db:add-missing-indices
+sudo -u nginx ./occ db:convert-filecache-bigint
+```
+
+3. 更换后台进程方式为cron
+
+Nextcloud设定-->基本设定-->改为cron(伺服器端已配置完成，无需任何手动配置)
+
+#### 项目Demo(Debian10+namesilo購買的域名+完整安裝,更新不同步,咕咕咕)
 
 [項目**結果**生成Demo](https://trojan-gfw.xyz/vpstoolbox/)
 
