@@ -710,6 +710,7 @@ prasejson(){
   "check_mail": "$check_mail",
   "check_qbt_origin": "$check_qbt_origin",
   "check_tracker": "$check_tracker",
+  "check_cloud": "$check_cloud",
   "tor_name": "$tor_name"
 }
 EOF
@@ -740,6 +741,7 @@ readconfig(){
   check_mail="$( jq -r '.check_mail' "/root/.trojan/config.json" )"
   check_qbt_origin="$( jq -r '.check_qbt_origin' "/root/.trojan/config.json" )"
   check_tracker="$( jq -r '.check_tracker' "/root/.trojan/config.json" )"
+  check_cloud="$( jq -r '.check_cloud' "/root/.trojan/config.json" )"
 }
 
 #User input
@@ -762,6 +764,7 @@ if [[ ${install_status} == 1 ]]; then
     check_mail="off"
     check_qbt_origin="off"
     check_tracker="off"
+    check_cloud="off"
   fi
 fi
 
@@ -801,6 +804,9 @@ fi
 if [[ -z ${check_tracker} ]]; then
   check_tracker="off"
 fi
+if [[ -z ${check_cloud} ]]; then
+  check_cloud="off"
+fi
 
 whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择需要安装/更新的软件(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来选择需要安装/更新的软件。" 24 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
@@ -810,7 +816,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择�
 "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
 "2" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "下载" "Download" off  \
-"nextcloud" "Nextcloud(dev)" off \
+"nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
 "3" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
 "4" "Aria2" ${check_aria} \
 "5" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
@@ -4709,6 +4715,7 @@ advancedMenu() {
       check_mail="off"
       check_qbt_origin="off"
       check_tracker="off"
+      check_cloud="off"
       prasejson
       if [[ $(systemctl is-active caddy) == active ]]; then
       systemctl stop caddy
