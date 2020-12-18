@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # VPSTOOLBOX
 
-# VPSToolBox is a bash script that helps you setup Trojan-gfw Nginx Hexo Netdata and other powerful applications on a Linux server really quickly.
+# 一键安装Trojan-GFW代理,Hexo博客,Nextcloud等應用程式.
+# One click install Trojan-gfw Hexo Nextcloud and so on.
 
 # MIT License
 #
@@ -175,6 +176,7 @@ fi
 
 installredis(){
   cd
+  TERM=ansi whiptail --title "安装中" --infobox "安装redis中..." 7 68
   wget https://github.com/redis/redis/archive/6.0.9.zip
   unzip 6.0.9.zip
   rm 6.0.9.zip
@@ -307,6 +309,47 @@ rdb-save-incremental-fsync yes
 EOF
 systemctl restart redis
 systemctl enable redis
+}
+
+installnextcloud(){
+  TERM=ansi whiptail --title "安装中" --infobox "安装nextcloud中..." 7 68
+  apt-get install php7.4-redis -y
+  mysql -u root -e "CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+  mysql -u root -e "create user 'nextcloud'@'localhost' IDENTIFIED BY '${password1}';"
+  mysql -u root -e "GRANT ALL PRIVILEGES ON nextcloud.* to nextcloud@'localhost';"
+  mysql -u root -e "flush privileges;"
+  cd /usr/share/nginx
+  wget https://github.com/nextcloud/server/releases/download/v20.0.4/nextcloud-20.0.4.zip
+  unzip nextcloud*
+  rm nextcloud*.zip
+  mkdir /usr/share/nginx/nextcloud_data
+  mkdir /usr/share/nginx/nextcloud/log/
+  cd /usr/share/nginx/nextcloud/config
+  cat > "autoconfig.php" << EOF
+<?php
+\$AUTOCONFIG = array(
+  "dbtype"        => "mysql",
+  "dbname"        => "nextcloud",
+  "dbuser"        => "nextcloud",
+  "dbpass"        => "${password1}",
+  "dbhost"        => "localhost:/run/mysqld/mysqld.sock",
+  "dbtableprefix" => "",
+  "adminlogin"    => "admin",
+  "adminpass"     => "${password1}",
+  "directory"     => "/usr/share/nginx/nextcloud_data",
+);
+EOF
+  chown -R nginx:nginx /usr/share/nginx/
+  chown -R nginx:nginx /etc/nginx/
+  crontab -l > mycron
+  #echo new cron into cron file
+  echo "*/5 * * * * sudo -u nginx php -f /usr/share/nginx/nextcloud/cron.php >> /usr/share/nginx/nextcloud/log/crontab.log 2>&1" >> mycron
+  #install new cron file
+  crontab mycron
+  rm mycron
+  chmod +x /usr/share/nginx/nextcloud/occ
+  #sudo -u nginx ./occ db:add-missing-indices
+  #sudo -u nginx ./occ db:convert-filecache-bigint
 }
 
 #Show simple system info 
@@ -667,6 +710,7 @@ prasejson(){
   "check_mail": "$check_mail",
   "check_qbt_origin": "$check_qbt_origin",
   "check_tracker": "$check_tracker",
+  "check_cloud": "$check_cloud",
   "tor_name": "$tor_name"
 }
 EOF
@@ -697,6 +741,7 @@ readconfig(){
   check_mail="$( jq -r '.check_mail' "/root/.trojan/config.json" )"
   check_qbt_origin="$( jq -r '.check_qbt_origin' "/root/.trojan/config.json" )"
   check_tracker="$( jq -r '.check_tracker' "/root/.trojan/config.json" )"
+  check_cloud="$( jq -r '.check_cloud' "/root/.trojan/config.json" )"
 }
 
 #User input
@@ -719,6 +764,7 @@ if [[ ${install_status} == 1 ]]; then
     check_mail="off"
     check_qbt_origin="off"
     check_tracker="off"
+    check_cloud="off"
   fi
 fi
 
@@ -758,6 +804,9 @@ fi
 if [[ -z ${check_tracker} ]]; then
   check_tracker="off"
 fi
+if [[ -z ${check_cloud} ]]; then
+  check_cloud="off"
+fi
 
 whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择需要安装/更新的软件(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来选择需要安装/更新的软件。" 24 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
@@ -767,6 +816,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择�
 "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
 "2" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "下载" "Download" off  \
+"nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
 "3" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
 "4" "Aria2" ${check_aria} \
 "5" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
@@ -801,6 +851,12 @@ do
     ;;
     net)
     install_netdata=1
+    ;;
+    nextcloud)
+    install_nextcloud=1
+    install_php=1
+    install_mariadb=1
+    install_redis=1
     ;;
     redis)
     install_redis=1
@@ -1203,7 +1259,7 @@ http {
   gzip_types *;
   gzip_comp_level 9;
 
-  include /etc/nginx/conf.d/*.conf;
+  include /etc/nginx/conf.d/default.conf;
 }
 EOF
 clear
@@ -2379,6 +2435,13 @@ TERM=ansi whiptail --title "安装中" --infobox "安装PHP中..." 7 68
     else
     echo "" >> /etc/php/7.4/fpm/php-fpm.conf
     echo "env[PATH] = /usr/local/bin:/usr/bin:/bin:/usr/local/php/bin" >> /etc/php/7.4/fpm/php-fpm.conf
+  fi
+  if grep -q "apc.enabled_cli=1" /etc/php/7.4/cli/conf.d/20-apcu.ini
+    then
+    :
+    else
+    echo "" >> /etc/php/7.4/cli/conf.d/20-apcu.ini
+    echo "apc.enabled_cli=1" >> /etc/php/7.4/cli/conf.d/20-apcu.ini
   fi
   cd /etc/php/7.4/
   curl -sS https://getcomposer.org/installer -o composer-setup.php
@@ -3612,6 +3675,84 @@ server {
         fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
     }
 EOF
+if [[ $install_nextcloud == 1 ]]; then
+echo "    include /etc/nginx/conf.d/nextcloud.conf;" >> /etc/nginx/conf.d/default.conf
+cat > '/etc/nginx/conf.d/nextcloud.conf' << EOF
+    location /.well-known {
+        rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
+        rewrite ^/\.well-known/host-meta        /nextcloud/public.php?service=host-meta         last;
+        rewrite ^/\.well-known/webfinger        /nextcloud/public.php?service=webfinger         last;
+        rewrite ^/\.well-known/nodeinfo         /nextcloud/public.php?service=nodeinfo          last;
+
+        try_files \$uri \$uri/ =404;
+    }
+
+    location = /.well-known/carddav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
+    location = /.well-known/caldav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
+
+    location ^~ /nextcloud/ {
+        root /usr/share/nginx/;
+        client_max_body_size 0;
+        fastcgi_buffers 64 4K;
+        add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
+        add_header Referrer-Policy                      "no-referrer"   always;
+        add_header X-Content-Type-Options               "nosniff"       always;
+        add_header X-Download-Options                   "noopen"        always;
+        add_header X-Frame-Options                      "SAMEORIGIN"    always;
+        add_header X-Permitted-Cross-Domain-Policies    "none"          always;
+        add_header X-Robots-Tag                         "none"          always;
+        add_header X-XSS-Protection                     "1; mode=block" always;
+        fastcgi_hide_header X-Powered-By;
+        index index.php index.html /nextcloud/index.php\$request_uri;
+
+        expires 1m;
+
+        location = /nextcloud/ {
+            if ( \$http_user_agent ~ ^DavClnt ) {
+                return 302 /nextcloud/remote.php/webdav/\$is_args\$args;
+            }
+        }
+
+        location ~ ^/nextcloud/(?:build|tests|config|lib|3rdparty|templates|data)(?:\$|/)    { return 404; }
+        location ~ ^/nextcloud/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }
+
+        location ~ \.php(?:\$|/) {
+            fastcgi_split_path_info ^(.+?\.php)(/.*)\$;
+            set \$path_info \$fastcgi_path_info;
+
+            try_files \$fastcgi_script_name =404;
+
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+            fastcgi_param PATH_INFO \$path_info;
+            fastcgi_param HTTPS on;
+
+            fastcgi_param modHeadersAvailable true;
+            fastcgi_param front_controller_active true;
+            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+
+            fastcgi_intercept_errors on;
+            fastcgi_request_buffering off;
+        }
+
+        location ~ \.(?:css|js|svg|gif)\$ {
+            try_files \$uri /nextcloud/index.php\$request_uri;
+            expires 6M;
+            access_log off;
+        }
+
+        location ~ \.woff2?\$ {
+            try_files \$uri /nextcloud/index.php\$request_uri;
+            expires 7d;
+            access_log off;
+        }
+
+        location /nextcloud/ {
+            try_files \$uri \$uri/ /nextcloud/index.php\$request_uri;
+        }
+    }
+EOF
+fi
 if [[ $install_tjp == 1 ]]; then
 echo "    location /${password1}_config/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
@@ -3924,6 +4065,18 @@ PS: ***不支援Cloudflare CDN ❗***
 4. <a href="https://github.com/NetchX/Netch" target="_blank" rel="noreferrer">https://github.com/NetchX/Netch</a>推荐的**游戏**客户端
 5. <a href="https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif" target="_blank" rel="noreferrer">Proxy SwitchyOmega</a>
 6. <a href="https://github.com/gfwlist/gfwlist/blob/master/gfwlist.txt" target="_blank" rel="noreferrer">Gfwlist(请配合SwichyOmega食用)</a>
+
+---
+
+### Nextcloud
+
+*默认安装: ❎*
+
+<a href="https://$domain/nextcloud/" target="_blank" rel="noreferrer">https://$domain/nextcloud/</a>
+- 用户名(username): **admin**
+- 密碼(password): **${password1}**
+
+PS: 推荐自行参考GitHub相关内容修正Nextcloud配置文件。
 
 ---
 
@@ -4529,7 +4682,7 @@ curl -s -X PUT "https://api.cloudflare.com/client/v6/zones/$zoneid/dns_records/$
 fi
 EOF
 
-crontab -l | grep -q '* * * * * bash /root/.trojan/ddns.sh'  && echo 'cron exists' || echo "* * * * * bash /root/.trojan/ddns.sh" | crontab
+#crontab -l | grep -q '* * * * * bash /root/.trojan/ddns.sh'  && echo 'cron exists' || echo "* * * * * bash /root/.trojan/ddns.sh" | crontab
 
 }
 
@@ -4562,6 +4715,7 @@ advancedMenu() {
       check_mail="off"
       check_qbt_origin="off"
       check_tracker="off"
+      check_cloud="off"
       prasejson
       if [[ $(systemctl is-active caddy) == active ]]; then
       systemctl stop caddy
@@ -4655,6 +4809,9 @@ advancedMenu() {
     if [[ $install_redis == 1 ]]; then
       installredis
     fi
+    if [[ $install_nextcloud == 1 ]]; then
+      installnextcloud
+    fi
     if [[ ${install_tjp} == 1 ]]; then
     install_tjp
     fi
@@ -4722,10 +4879,10 @@ domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
 password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
 password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
 neofetch
-echo -e "--- 如果您想要关闭本报告，请使用以下命令"
-echo -e "--- mv /etc/profile.d/mymotd.sh /etc/"
-echo -e "--- 再次启用 mv /etc/mymotd.sh /etc/profile.d/mymotd.sh"
-echo -e "--- \${BLUE}IP信息(IP Information)\${NOCOLOR} ---"
+echo -e " --- 如果您想要关闭本报告，请使用以下命令"
+echo -e " --- mv /etc/profile.d/mymotd.sh /etc/"
+echo -e " --- 再次启用 mv /etc/mymotd.sh /etc/profile.d/mymotd.sh"
+echo -e " --- \${BLUE}IP信息(IP Information)\${NOCOLOR} ---"
 echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ip.json")
 echo -e "city:\t\t"\$(jq -r '.city' "/root/.trojan/ip.json")
 echo -e "region:\t\t"\$(jq -r '.region' "/root/.trojan/ip.json")
@@ -4735,7 +4892,7 @@ echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ip.json")
 #echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ip.json")
 echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ip.json")
 if [[ -f /root/.trojan/ipv6.json ]]; then
-echo -e "--- \${BLUE}IPv6信息(IPv6 Information)\${NOCOLOR} ---"
+echo -e " --- \${BLUE}IPv6信息(IPv6 Information)\${NOCOLOR} ---"
 echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ipv6.json")
 echo -e "city:\t\t"\$(jq -r '.city' "/root/.trojan/ipv6.json")
 echo -e "region:\t\t"\$(jq -r '.region' "/root/.trojan/ipv6.json")
@@ -4745,7 +4902,7 @@ echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ipv6.json")
 #echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ipv6.json")
 echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ipv6.json")
 fi
-echo -e "--- \${BLUE}服務狀態(Service Status)\${NOCOLOR} ---"
+echo -e " --- \${BLUE}服務狀態(Service Status)\${NOCOLOR} ---"
   if [[ -f /usr/local/bin/trojan ]]; then
 echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
   fi
@@ -4800,26 +4957,32 @@ echo -e "ntpd:\t\t\t"\$(systemctl is-active ntp)
   if [[ -f /usr/bin/tor ]]; then
 echo -e "Tor:\t\t"\$(systemctl is-active tor)
   fi
-echo -e "--- \${BLUE}帶寬使用(Bandwith Usage)\${NOCOLOR} ---"
+echo -e " --- \${BLUE}帶寬使用(Bandwith Usage)\${NOCOLOR} ---"
 echo -e "         接收(Receive)    发送(Transmit)"
 tail -n +3 /proc/net/dev | awk '{print \$1 " " \$2 " " \$10}' | numfmt --to=iec --field=2,3
-#echo -e "--- \${GREEN}證書狀態(Certificate Status)\${NOCOLOR} ---"
+#echo -e " --- \${GREEN}證書狀態(Certificate Status)\${NOCOLOR} ---"
 #ssl_date=\$(echo |openssl s_client -connect ${domain}:443 -tls1_3 2>&1 |sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'|openssl x509 -text)
 #tmp_last_date=\$(echo "\${ssl_date}" | grep 'Not After :' | awk -F' : ' '{print \$NF}')
 #last_date=\$(date -ud "\${tmp_last_date}" +%Y-%m-%d" "%H:%M:%S)
 #day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
 #echo -e "\e[40;33;1m The [${domain}] expiration date is : \${last_date} && [\${day_count} days] \e[0m"
 #echo -e "--------------------------------------------------------------------------"
-echo -e "--- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
+echo -e " --- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
 ###
 echo -e "    \${YELLOW}trojan://$password1@$domain:443\${NOCOLOR}"
 echo -e "    \${YELLOW}trojan://$password2@$domain:443\${NOCOLOR}"
 ###
-echo -e "--- 請\${bold}訪問以下鏈接\${normal}以獲得更多详细結果(Please visit the following link to get more info) "
+echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Trojan links) ---"
+###
+echo -e "    \${YELLOW}https://$domain/nextcloud/\${NOCOLOR}"
+echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
+echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
+###
+echo -e " --- 請\${bold}訪問以下鏈接\${normal}以獲得更多详细結果(Please visit the following link to get more info) "
 echo -e "    \${YELLOW}https://$domain/${password1}/\${NOCOLOR}"
-echo -e "--- 有關錯誤報告或更多信息，請訪問以下鏈接"
-echo -e "--- https://github.com/johnrosen1/vpstoolbox"
-echo -e "--- \${YELLOW}https://t.me/vpstoolbox_chat\${NOCOLOR}"
+echo -e " --- 有關錯誤報告或更多信息，請訪問以下鏈接"
+echo -e " --- https://github.com/johnrosen1/vpstoolbox"
+echo -e " --- \${YELLOW}https://t.me/vpstoolbox_chat\${NOCOLOR}"
 echo -e "*********************"
 EOF
     chmod +x /etc/profile.d/mymotd.sh
