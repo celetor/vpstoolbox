@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # VPSTOOLBOX
 
-# VPSToolBox is a bash script that helps you setup Trojan-gfw Nginx Hexo Netdata and other powerful applications on a Linux server really quickly.
+# 一键安装Trojan-GFW代理,Hexo博客,Nextcloud等應用程式.
+# One click install Trojan-gfw Hexo Nextcloud and so on.
 
 # MIT License
 #
