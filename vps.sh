@@ -322,6 +322,7 @@ installnextcloud(){
   unzip nextcloud*
   rm nextcloud*.zip
   mkdir /usr/share/nginx/nextcloud_data
+  mkdir /usr/share/nginx/nextcloud/log/
   cd /usr/share/nginx/nextcloud/config
   cat > "autoconfig.php" << EOF
 <?php
@@ -337,92 +338,15 @@ installnextcloud(){
   "directory"     => "/usr/share/nginx/nextcloud_data",
 );
 EOF
-cd /etc/nginx/conf.d/
-  cat > 'nextcloud.conf' << EOF
-    location /.well-known {
-        rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
-        rewrite ^/\.well-known/host-meta        /nextcloud/public.php?service=host-meta         last;
-        rewrite ^/\.well-known/webfinger        /nextcloud/public.php?service=webfinger         last;
-        rewrite ^/\.well-known/nodeinfo         /nextcloud/public.php?service=nodeinfo          last;
-
-        try_files \$uri \$uri/ =404;
-    }
-
-    location = /.well-known/carddav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
-    location = /.well-known/caldav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
-
-    location ^~ /nextcloud {
-        root /usr/share/nginx/;
-        client_max_body_size 0;
-        fastcgi_buffers 64 4K;
-        add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
-        add_header Referrer-Policy                      "no-referrer"   always;
-        add_header X-Content-Type-Options               "nosniff"       always;
-        add_header X-Download-Options                   "noopen"        always;
-        add_header X-Frame-Options                      "SAMEORIGIN"    always;
-        add_header X-Permitted-Cross-Domain-Policies    "none"          always;
-        add_header X-Robots-Tag                         "none"          always;
-        add_header X-XSS-Protection                     "1; mode=block" always;
-        fastcgi_hide_header X-Powered-By;
-        index index.php index.html /nextcloud/index.php\$request_uri;
-
-        expires 1m;
-
-        location = /nextcloud {
-            if ( \$http_user_agent ~ ^DavClnt ) {
-                return 302 /nextcloud/remote.php/webdav/\$is_args\$args;
-            }
-        }
-
-        location ~ ^/nextcloud/(?:build|tests|config|lib|3rdparty|templates|data)(?:\$|/)    { return 404; }
-        location ~ ^/nextcloud/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }
-
-        location ~ \.php(?:\$|/) {
-            fastcgi_split_path_info ^(.+?\.php)(/.*)\$;
-            set \$path_info \$fastcgi_path_info;
-
-            try_files \$fastcgi_script_name =404;
-
-            include fastcgi_params;
-            fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-            fastcgi_param PATH_INFO \$path_info;
-            fastcgi_param HTTPS on;
-
-            fastcgi_param modHeadersAvailable true;
-            fastcgi_param front_controller_active true;
-            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
-
-            fastcgi_intercept_errors on;
-            fastcgi_request_buffering off;
-        }
-
-        location ~ \.(?:css|js|svg|gif)\$ {
-            try_files \$uri /nextcloud/index.php\$request_uri;
-            expires 6M;
-            access_log off;
-        }
-
-        location ~ \.woff2?\$ {
-            try_files \$uri /nextcloud/index.php\$request_uri;
-            expires 7d;
-            access_log off;
-        }
-
-        location /nextcloud {
-            try_files \$uri \$uri/ /nextcloud/index.php\$request_uri;
-        }
-    }
-EOF
-cd
   chown -R nginx:nginx /usr/share/nginx/
   chown -R nginx:nginx /etc/nginx/
   crontab -l > mycron
   #echo new cron into cron file
-  echo "*/5 * * * * sudo -u nginx php -f /usr/share/nginx/nextcloud/cron.php --define apc.enable_cli=1 >> /usr/share/nginx/nextcloud/log/crontab.log 2>&1" >> mycron
+  echo "*/5 * * * * sudo -u nginx php -f /usr/share/nginx/nextcloud/cron.php >> /usr/share/nginx/nextcloud/log/crontab.log 2>&1" >> mycron
   #install new cron file
   crontab mycron
   rm mycron
-  #chmod +x occ
+  chmod +x /usr/share/nginx/nextcloud/occ
   #sudo -u nginx ./occ db:add-missing-indices
   #sudo -u nginx ./occ db:convert-filecache-bigint
 }
@@ -2505,6 +2429,13 @@ TERM=ansi whiptail --title "安装中" --infobox "安装PHP中..." 7 68
     echo "" >> /etc/php/7.4/fpm/php-fpm.conf
     echo "env[PATH] = /usr/local/bin:/usr/bin:/bin:/usr/local/php/bin" >> /etc/php/7.4/fpm/php-fpm.conf
   fi
+  if grep -q "apc.enabled_cli=1" /etc/php/7.4/cli/conf.d/20-apcu.ini
+    then
+    :
+    else
+    echo "" >> /etc/php/7.4/cli/conf.d/20-apcu.ini
+    echo "apc.enabled_cli=1" >> /etc/php/7.4/cli/conf.d/20-apcu.ini
+  fi
   cd /etc/php/7.4/
   curl -sS https://getcomposer.org/installer -o composer-setup.php
   php composer-setup.php --install-dir=/usr/local/bin --filename=composer --force
@@ -3739,6 +3670,81 @@ server {
 EOF
 if [[ $install_nextcloud == 1 ]]; then
 echo "    include /etc/nginx/conf.d/nextcloud.conf;" >> /etc/nginx/conf.d/default.conf
+cat > '/etc/nginx/conf.d/nextcloud.conf' << EOF
+    location /.well-known {
+        rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
+        rewrite ^/\.well-known/host-meta        /nextcloud/public.php?service=host-meta         last;
+        rewrite ^/\.well-known/webfinger        /nextcloud/public.php?service=webfinger         last;
+        rewrite ^/\.well-known/nodeinfo         /nextcloud/public.php?service=nodeinfo          last;
+
+        try_files \$uri \$uri/ =404;
+    }
+
+    location = /.well-known/carddav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
+    location = /.well-known/caldav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
+
+    location ^~ /nextcloud/ {
+        root /usr/share/nginx/;
+        client_max_body_size 0;
+        fastcgi_buffers 64 4K;
+        add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
+        add_header Referrer-Policy                      "no-referrer"   always;
+        add_header X-Content-Type-Options               "nosniff"       always;
+        add_header X-Download-Options                   "noopen"        always;
+        add_header X-Frame-Options                      "SAMEORIGIN"    always;
+        add_header X-Permitted-Cross-Domain-Policies    "none"          always;
+        add_header X-Robots-Tag                         "none"          always;
+        add_header X-XSS-Protection                     "1; mode=block" always;
+        fastcgi_hide_header X-Powered-By;
+        index index.php index.html /nextcloud/index.php\$request_uri;
+
+        expires 1m;
+
+        location = /nextcloud/ {
+            if ( \$http_user_agent ~ ^DavClnt ) {
+                return 302 /nextcloud/remote.php/webdav/\$is_args\$args;
+            }
+        }
+
+        location ~ ^/nextcloud/(?:build|tests|config|lib|3rdparty|templates|data)(?:\$|/)    { return 404; }
+        location ~ ^/nextcloud/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }
+
+        location ~ \.php(?:\$|/) {
+            fastcgi_split_path_info ^(.+?\.php)(/.*)\$;
+            set \$path_info \$fastcgi_path_info;
+
+            try_files \$fastcgi_script_name =404;
+
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+            fastcgi_param PATH_INFO \$path_info;
+            fastcgi_param HTTPS on;
+
+            fastcgi_param modHeadersAvailable true;
+            fastcgi_param front_controller_active true;
+            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+
+            fastcgi_intercept_errors on;
+            fastcgi_request_buffering off;
+        }
+
+        location ~ \.(?:css|js|svg|gif)\$ {
+            try_files \$uri /nextcloud/index.php\$request_uri;
+            expires 6M;
+            access_log off;
+        }
+
+        location ~ \.woff2?\$ {
+            try_files \$uri /nextcloud/index.php\$request_uri;
+            expires 7d;
+            access_log off;
+        }
+
+        location /nextcloud/ {
+            try_files \$uri \$uri/ /nextcloud/index.php\$request_uri;
+        }
+    }
+EOF
 fi
 if [[ $install_tjp == 1 ]]; then
 echo "    location /${password1}_config/ {" >> /etc/nginx/conf.d/default.conf
@@ -4853,10 +4859,10 @@ domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
 password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
 password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
 neofetch
-echo -e "--- 如果您想要关闭本报告，请使用以下命令"
-echo -e "--- mv /etc/profile.d/mymotd.sh /etc/"
-echo -e "--- 再次启用 mv /etc/mymotd.sh /etc/profile.d/mymotd.sh"
-echo -e "--- \${BLUE}IP信息(IP Information)\${NOCOLOR} ---"
+echo -e " --- 如果您想要关闭本报告，请使用以下命令"
+echo -e " --- mv /etc/profile.d/mymotd.sh /etc/"
+echo -e " --- 再次启用 mv /etc/mymotd.sh /etc/profile.d/mymotd.sh"
+echo -e " --- \${BLUE}IP信息(IP Information)\${NOCOLOR} ---"
 echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ip.json")
 echo -e "city:\t\t"\$(jq -r '.city' "/root/.trojan/ip.json")
 echo -e "region:\t\t"\$(jq -r '.region' "/root/.trojan/ip.json")
@@ -4866,7 +4872,7 @@ echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ip.json")
 #echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ip.json")
 echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ip.json")
 if [[ -f /root/.trojan/ipv6.json ]]; then
-echo -e "--- \${BLUE}IPv6信息(IPv6 Information)\${NOCOLOR} ---"
+echo -e " --- \${BLUE}IPv6信息(IPv6 Information)\${NOCOLOR} ---"
 echo -e "ip:\t\t"\$(jq -r '.ip' "/root/.trojan/ipv6.json")
 echo -e "city:\t\t"\$(jq -r '.city' "/root/.trojan/ipv6.json")
 echo -e "region:\t\t"\$(jq -r '.region' "/root/.trojan/ipv6.json")
@@ -4876,7 +4882,7 @@ echo -e "org:\t\t"\$(jq -r '.org' "/root/.trojan/ipv6.json")
 #echo -e "postal:\t\t"\$(jq -r '.postal' "/root/.trojan/ipv6.json")
 echo -e "timezone:\t"\$(jq -r '.timezone' "/root/.trojan/ipv6.json")
 fi
-echo -e "--- \${BLUE}服務狀態(Service Status)\${NOCOLOR} ---"
+echo -e " --- \${BLUE}服務狀態(Service Status)\${NOCOLOR} ---"
   if [[ -f /usr/local/bin/trojan ]]; then
 echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
   fi
@@ -4931,26 +4937,26 @@ echo -e "ntpd:\t\t\t"\$(systemctl is-active ntp)
   if [[ -f /usr/bin/tor ]]; then
 echo -e "Tor:\t\t"\$(systemctl is-active tor)
   fi
-echo -e "--- \${BLUE}帶寬使用(Bandwith Usage)\${NOCOLOR} ---"
+echo -e " --- \${BLUE}帶寬使用(Bandwith Usage)\${NOCOLOR} ---"
 echo -e "         接收(Receive)    发送(Transmit)"
 tail -n +3 /proc/net/dev | awk '{print \$1 " " \$2 " " \$10}' | numfmt --to=iec --field=2,3
-#echo -e "--- \${GREEN}證書狀態(Certificate Status)\${NOCOLOR} ---"
+#echo -e " --- \${GREEN}證書狀態(Certificate Status)\${NOCOLOR} ---"
 #ssl_date=\$(echo |openssl s_client -connect ${domain}:443 -tls1_3 2>&1 |sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'|openssl x509 -text)
 #tmp_last_date=\$(echo "\${ssl_date}" | grep 'Not After :' | awk -F' : ' '{print \$NF}')
 #last_date=\$(date -ud "\${tmp_last_date}" +%Y-%m-%d" "%H:%M:%S)
 #day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
 #echo -e "\e[40;33;1m The [${domain}] expiration date is : \${last_date} && [\${day_count} days] \e[0m"
 #echo -e "--------------------------------------------------------------------------"
-echo -e "--- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
+echo -e " --- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
 ###
 echo -e "    \${YELLOW}trojan://$password1@$domain:443\${NOCOLOR}"
 echo -e "    \${YELLOW}trojan://$password2@$domain:443\${NOCOLOR}"
 ###
-echo -e "--- 請\${bold}訪問以下鏈接\${normal}以獲得更多详细結果(Please visit the following link to get more info) "
+echo -e " --- 請\${bold}訪問以下鏈接\${normal}以獲得更多详细結果(Please visit the following link to get more info) "
 echo -e "    \${YELLOW}https://$domain/${password1}/\${NOCOLOR}"
-echo -e "--- 有關錯誤報告或更多信息，請訪問以下鏈接"
-echo -e "--- https://github.com/johnrosen1/vpstoolbox"
-echo -e "--- \${YELLOW}https://t.me/vpstoolbox_chat\${NOCOLOR}"
+echo -e " --- 有關錯誤報告或更多信息，請訪問以下鏈接"
+echo -e " --- https://github.com/johnrosen1/vpstoolbox"
+echo -e " --- \${YELLOW}https://t.me/vpstoolbox_chat\${NOCOLOR}"
 echo -e "*********************"
 EOF
     chmod +x /etc/profile.d/mymotd.sh
