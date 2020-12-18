@@ -4061,6 +4061,18 @@ PS: ***不支援Cloudflare CDN ❗***
 
 ---
 
+### Nextcloud
+
+*默认安装: ❎*
+
+<a href="https://$domain/nextcloud/" target="_blank" rel="noreferrer">https://$domain/nextcloud/</a>
+- 用户名(username): **admin**
+- 密碼(password): **${password1}**
+
+PS: 推荐自行参考GitHub相关内容修正Nextcloud配置文件。
+
+---
+
 ### Hexo
 
 *默认安装: ✅*
@@ -4951,6 +4963,10 @@ echo -e " --- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
 ###
 echo -e "    \${YELLOW}trojan://$password1@$domain:443\${NOCOLOR}"
 echo -e "    \${YELLOW}trojan://$password2@$domain:443\${NOCOLOR}"
+###
+echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Trojan links) ---"
+###
+echo -e "    \${YELLOW}https://$domain/nextcloud/\${NOCOLOR}"
 ###
 echo -e " --- 請\${bold}訪問以下鏈接\${normal}以獲得更多详细結果(Please visit the following link to get more info) "
 echo -e "    \${YELLOW}https://$domain/${password1}/\${NOCOLOR}"
