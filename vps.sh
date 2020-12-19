@@ -323,7 +323,6 @@ installnextcloud(){
   unzip nextcloud*
   rm nextcloud*.zip
   mkdir /usr/share/nginx/nextcloud_data
-  mkdir /usr/share/nginx/nextcloud/log/
   cd /usr/share/nginx/nextcloud/config
   cat > "autoconfig.php" << EOF
 <?php
@@ -343,7 +342,7 @@ EOF
   chown -R nginx:nginx /etc/nginx/
   crontab -l > mycron
   #echo new cron into cron file
-  echo "*/5 * * * * sudo -u nginx php -f /usr/share/nginx/nextcloud/cron.php >> /usr/share/nginx/nextcloud/log/crontab.log 2>&1" >> mycron
+  echo "*/5 * * * * sudo -u nginx php -f /usr/share/nginx/nextcloud/cron.php >> /var/log/nginx/nextcloud.log 2>&1" >> mycron
   #install new cron file
   crontab mycron
   rm mycron
