@@ -3385,6 +3385,7 @@ mkdir /usr/share/nginx/pgp/
 \$config['enigma_encryption'] = true;
 \$config['enigma_signatures'] = true;
 \$config['enigma_decryption'] = true;
+\$config['enigma_sign_all'] = true;
 EOF
 rm -rf /usr/share/nginx/roundcubemail/installer/
 useradd -m -s /sbin/nologin ${mailuser}
