@@ -248,7 +248,7 @@ protected-mode no
 port 6379
 tcp-backlog 511
 unixsocket /var/run/redis/redis.sock
-unixsocketperm 775
+unixsocketperm 770
 timeout 0
 tcp-keepalive 300
 daemonize no
