@@ -2394,8 +2394,7 @@ fi
 
 if [[ $install_php = 1 ]]; then
   clear
-  if [[ ! -f /usr/sbin/php-fpm7.4 ]]; then
-TERM=ansi whiptail --title "安装中" --infobox "安装PHP中..." 7 68
+  TERM=ansi whiptail --title "安装中" --infobox "安装PHP中..." 7 68
   colorEcho ${INFO} "Install PHP ing"
   apt-get purge php* -y
   mkdir /usr/log/
@@ -2447,7 +2446,6 @@ TERM=ansi whiptail --title "安装中" --infobox "安装PHP中..." 7 68
   curl -sS https://getcomposer.org/installer -o composer-setup.php
   php composer-setup.php --install-dir=/usr/local/bin --filename=composer --force
   cd
-  fi
 cat > '/etc/php/7.4/fpm/pool.d/www.conf' << EOF
 [www]
 
