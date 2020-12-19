@@ -2521,6 +2521,10 @@ TERM=ansi whiptail --title "安装中" --infobox "安装Netdata中..." 7 68
   colorEcho ${INFO} "Install netdata ing"
   bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --allow-duplicate-install
   sed -i "s/SEND_EMAIL=\"YES\"/SEND_EMAIL=\"NO\"/" /opt/netdata/etc/netdata/health_alarm_notify.conf
+  sed -i "s/Restart=on-failure/Restart=always/" /lib/systemd/system/netdata.service
+  systemctl daemon-reload
+  systemctl stop netdata
+  killall netdata
     cat > '/opt/netdata/etc/netdata/python.d/nginx.conf' << EOF
 localhost:
 
@@ -2564,6 +2568,7 @@ local_tcp:
  control_port: 9051
 EOF
 fi
+systemctl restart netdata
 fi
 clear
 
@@ -3969,9 +3974,6 @@ TERM=ansi whiptail --title "安装中" --infobox "启动Trojan-gfw中..." 7 68
   fi
   if [[ $install_trojan == 1 ]]; then
     systemctl restart trojan
-    systemctl stop netdata
-    killall netdata
-    systemctl restart netdata
   fi
 }
 
@@ -5033,7 +5035,7 @@ sed -i 's/#TCPKeepAlive yes/TCPKeepAlive yes/' /etc/ssh/sshd_config
 sed -i 's/#PermitTunnel no/PermitTunnel no/' /etc/ssh/sshd_config
 sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config
 sed -i 's/#GatewayPorts no/GatewayPorts no/' /etc/ssh/sshd_config
-sed -i 's/#StrictModes yes/StrictModes yes/' /etc/ssh/sshd_config
+#sed -i 's/#StrictModes yes/StrictModes yes/' /etc/ssh/sshd_config
 sed -i 's/#AllowAgentForwarding yes/AllowAgentForwarding no/' /etc/ssh/sshd_config
 sed -i 's/#AllowTcpForwarding yes/AllowTcpForwarding no/' /etc/ssh/sshd_config
 echo "" >> /etc/ssh/sshd_config
