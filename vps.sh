@@ -5051,6 +5051,7 @@ if [[ $install_bbr == 1 ]]; then
   TERM=ansi whiptail --title "初始化中" --infobox "启动BBR中..." 7 68
   colorEcho ${INFO} "Enabling TCP-BBR boost"
   #iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
+  modprobe ip_conntrack
   cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 #net.ipv4.ip_forward = 1
