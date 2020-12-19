@@ -3690,8 +3690,8 @@ cat > '/etc/nginx/conf.d/nextcloud.conf' << EOF
         try_files \$uri \$uri/ =404;
     }
 
-    location = /.well-known/carddav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
-    location = /.well-known/caldav { return 301 \$scheme://\$host:443/nextcloud/remote.php/dav; }
+    location = /.well-known/carddav { return 301 https://\$host:443/nextcloud/remote.php/dav; }
+    location = /.well-known/caldav { return 301 https://\$host:443/nextcloud/remote.php/dav; }
 
     location ^~ /nextcloud/ {
         root /usr/share/nginx/;
