@@ -319,7 +319,9 @@ installnextcloud(){
   mysql -u root -e "GRANT ALL PRIVILEGES ON nextcloud.* to nextcloud@'localhost';"
   mysql -u root -e "flush privileges;"
   cd /usr/share/nginx
-  wget https://github.com/nextcloud/server/releases/download/v20.0.4/nextcloud-20.0.4.zip
+  cloudver=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+  cloudver1=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-20)
+  wget https://github.com/nextcloud/server/releases/download/${cloudver}/nextcloud-${cloudver1}.zip
   unzip nextcloud*
   rm nextcloud*.zip
   mkdir /usr/share/nginx/nextcloud_data
