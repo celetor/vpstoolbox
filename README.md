@@ -57,7 +57,7 @@ sudo -u nginx ./occ db:convert-filecache-bigint
 
 Nextcloud设定-->基本设定-->改为cron(伺服器端已配置完成，无需任何手动配置)
 
-#### 项目Demo(Debian10+namesilo購買的域名+完整安裝,更新不同步,咕咕咕)
+#### 项目Demo,机器垃圾，响应缓慢是正常的(Debian10+namesilo購買的域名+完整安裝,更新不同步,咕咕咕)
 
 [項目**結果**生成Demo](https://trojan-gfw.xyz/vpstoolbox/)
 
