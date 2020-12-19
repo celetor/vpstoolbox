@@ -5133,6 +5133,8 @@ net.ipv4.neigh.default.gc_thresh1=2048
 net.ipv6.neigh.default.gc_thresh3=8192
 net.ipv6.neigh.default.gc_thresh2=4096
 net.ipv6.neigh.default.gc_thresh1=2048
+net.netfilter.nf_conntrack_max = 262144
+net.nf_conntrack_max = 262144
 EOF
   sysctl --system
   echo madvise > /sys/kernel/mm/transparent_hugepage/enabled
