@@ -31,7 +31,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 在```/usr/share/nginx/nextcloud/config/config.php```中添加以下几行(请添加在中间，非开头或末尾)
 
 ```
-'memcache.local' => '\\OC\\Memcache\\APCu',
+  'memcache.local' => '\\OC\\Memcache\\APCu',
   'memcache.distributed' => '\\OC\\Memcache\\Redis',
   'filelocking.enabled' => true,
   'memcache.locking' => '\\OC\Memcache\\Redis',
@@ -56,6 +56,11 @@ sudo -u nginx ./occ db:convert-filecache-bigint
 3. 更换后台进程方式为cron
 
 Nextcloud设定-->基本设定-->改为cron(伺服器端已配置完成，无需任何手动配置)
+
+4. 重启服务使配置生效
+```
+systemctl restart php7.4-fpm
+```
 
 #### 项目Demo,机器垃圾，响应缓慢是正常的(Debian10+namesilo購買的域名+完整安裝,更新不同步,咕咕咕)
 
