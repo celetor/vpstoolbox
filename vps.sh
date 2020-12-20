@@ -3984,6 +3984,7 @@ TERM=ansi whiptail --title "安装中" --infobox "启动Trojan-gfw中..." 7 68
   fi
   if [[ $install_trojan == 1 ]]; then
     systemctl restart trojan
+    systemctl restart netdata
   fi
 }
 
