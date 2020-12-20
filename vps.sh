@@ -5086,8 +5086,8 @@ net.core.netdev_budget_usecs = 5000
 #fs.file-max = 51200
 net.core.rmem_max = 67108864
 net.core.wmem_max = 67108864
-net.core.rmem_default = 65536
-net.core.wmem_default = 65536
+net.core.rmem_default = 67108864
+net.core.wmem_default = 67108864
 net.core.somaxconn = 10000
 ################################
 net.ipv4.icmp_echo_ignore_all = 0
