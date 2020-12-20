@@ -178,10 +178,11 @@ installredis(){
   set +e
   cd
   TERM=ansi whiptail --title "安装中" --infobox "安装redis中..." 7 68
-  curl -LO https://github.com/redis/redis/archive/6.0.9.zip
-  unzip -o 6.0.9.zip
-  rm 6.0.9.zip
-  cd redis-6.0.9
+  redisver=$(curl -s "https://api.github.com/repos/redis/redis/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+  curl -LO https://github.com/redis/redis/archive/${redisver}.zip
+  unzip -o ${redisver}.zip
+  rm ${redisver}.zip
+  cd redis-${redisver}
   apt-get install libsystemd-dev pkg-config -y
   make USE_SYSTEMD=yes -j $(nproc --all)
   #make test
