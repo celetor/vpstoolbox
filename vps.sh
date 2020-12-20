@@ -175,13 +175,14 @@ echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 fi
 
 installredis(){
+  set +e
   cd
   TERM=ansi whiptail --title "安装中" --infobox "安装redis中..." 7 68
-  wget https://github.com/redis/redis/archive/6.0.9.zip
-  unzip 6.0.9.zip
+  curl -LO https://github.com/redis/redis/archive/6.0.9.zip
+  unzip -o 6.0.9.zip
   rm 6.0.9.zip
   cd redis-6.0.9
-  apt-get install libsystemd-dev -y
+  apt-get install libsystemd-dev pkg-config -y
   make USE_SYSTEMD=yes -j $(nproc --all)
   #make test
   make install
@@ -191,6 +192,7 @@ installredis(){
   groupadd redis
   usermod -a -G redis redis
   usermod -a -G redis nginx
+  usermod -a -G redis netdata
   mkdir /var/lib/redis
   mkdir /var/log/redis/
   mkdir /etc/redis
@@ -245,7 +247,7 @@ systemctl daemon-reload
   cat > '/etc/redis/redis.conf' << EOF
 bind 127.0.0.1 ::1
 protected-mode no
-port 6379
+port 0
 tcp-backlog 511
 unixsocket /var/run/redis/redis.sock
 unixsocketperm 770
@@ -312,6 +314,7 @@ systemctl enable redis
 }
 
 installnextcloud(){
+  set +e
   TERM=ansi whiptail --title "安装中" --infobox "安装nextcloud中..." 7 68
   apt-get install php7.4-redis -y
   mysql -u root -e "CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
@@ -322,7 +325,7 @@ installnextcloud(){
   cloudver=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
   cloudver1=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-20)
   wget https://github.com/nextcloud/server/releases/download/${cloudver}/nextcloud-${cloudver1}.zip
-  unzip nextcloud*
+  unzip -o nextcloud*
   rm nextcloud*.zip
   mkdir /usr/share/nginx/nextcloud_data
   cd /usr/share/nginx/nextcloud/config
@@ -1791,7 +1794,7 @@ if [[ $install_qbt == 1 ]]; then
   mkdir qbt
   cd qbt
   wget https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases/download/release-4.3.1.11/qbittorrent-nox_linux_x64_static.zip
-  unzip qbittorrent-nox_linux_x64_static.zip
+  unzip -o qbittorrent-nox_linux_x64_static.zip
   cp -f qbittorrent-nox /usr/bin/
   cd
   rm -rf qbt
@@ -2567,6 +2570,13 @@ local_tcp:
  control_port: 9051
 EOF
 fi
+if [[ ${install_redis} == 1 ]]; then
+cat > '/opt/netdata/etc/netdata/python.d/redis.conf' << EOF
+socket:
+  name     : 'local'
+  socket   : '/var/run/redis/redis.sock'
+EOF
+fi
 systemctl restart netdata
 fi
 clear
@@ -3060,7 +3070,6 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON ttrss.* to ttrss@'localhost';"
 mysql -u root -e "flush privileges;"
 mysql -u ttrss -p"${password1}" -D ttrss < /usr/share/nginx/tt-rss/schema/ttrss_schema_mysql.sql
 fi
-
     cat > '/opt/netdata/etc/netdata/python.d/mysql.conf' << EOF
 update_every : 10
 priority     : 90100
