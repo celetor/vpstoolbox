@@ -8,7 +8,7 @@
 [![Join our Discord server!](https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gg/y5KUxfYZ)
 [TG群组](https://t.me/vpstoolbox_chat)
 
-## 使用方法(請以root/sudo用戶運行)
+## 使用方法(請以root/sudo用戶運行,仅推荐Debian10系统)
 ```
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 ```
@@ -16,7 +16,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 #### 重要提示:
 1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
 2. Trojan-GFW**不支援Cloudflare CDN**,请勿开启!
-4. **仅支援 [Debian8+](https://www.debian.org/) [Ubuntu14+](https://ubuntu.com/)**
+4. **仅支援 [Debian9+](https://www.debian.org/) [Ubuntu16+](https://ubuntu.com/)**
 1. 请 **以root/sudoer身份运行**(sudo -i)
 2. 请 **先[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)一个域名或者使用二级域名** 并 **[完成DNS A解析,即将域名指向IP](https://dnschecker.org/)**(ipv6地址请添加AAAA解析,namesilo最慢需要15min生效)!
 3. 请在控制面板中 **完全关闭VPS防火墙(即开放所有端口)**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 Cloudflare 之类的 CDN !***
