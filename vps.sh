@@ -3742,7 +3742,7 @@ cat > '/etc/nginx/conf.d/nextcloud.conf' << EOF
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$request_filename;
             fastcgi_param PATH_INFO \$path_info;
-            fastcgi_param HTTPS on;
+            #fastcgi_param HTTPS on;
 
             fastcgi_param modHeadersAvailable true;
             fastcgi_param front_controller_active true;
