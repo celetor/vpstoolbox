@@ -3693,6 +3693,7 @@ server {
     }
 EOF
 if [[ $install_nextcloud == 1 ]]; then
+mkdir /usr/share/nginx/tmp/
 echo "    include /etc/nginx/conf.d/nextcloud.conf;" >> /etc/nginx/conf.d/default.conf
 cat > '/etc/nginx/conf.d/nextcloud.conf' << EOF
     location /.well-known {
@@ -3709,6 +3710,7 @@ cat > '/etc/nginx/conf.d/nextcloud.conf' << EOF
 
     location ^~ /nextcloud/ {
         root /usr/share/nginx/;
+        client_body_temp_path /usr/share/nginx/tmp/ 1 2;
         client_max_body_size 0;
         fastcgi_buffers 64 4K;
         add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
@@ -3750,6 +3752,7 @@ cat > '/etc/nginx/conf.d/nextcloud.conf' << EOF
 
             fastcgi_intercept_errors on;
             fastcgi_request_buffering off;
+            fastcgi_read_timeout 600s;
         }
 
         location ~ \.(?:css|js|svg|gif)\$ {
