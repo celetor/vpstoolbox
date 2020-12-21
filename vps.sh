@@ -1326,6 +1326,7 @@ openfirewall(){
   iptables-save > /etc/iptables/rules.v4
   ip6tables-save > /etc/iptables/rules.v6
  elif [[ ${dist} == ubuntu ]]; then
+  ufw disable
   ufw allow http
   ufw allow https
   ufw allow ${ariaport}
@@ -1337,6 +1338,7 @@ openfirewall(){
   TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 68
   exit 1;
  fi
+ apt-get install nftables -y
 }
 ##########install dependencies#############
 installdependency(){
