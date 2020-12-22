@@ -1321,23 +1321,6 @@ openfirewall(){
     ip6tables -A INPUT -p tcp -m tcp --dport 587 -j ACCEPT &>/dev/null
     ip6tables -A INPUT -p tcp -m tcp --dport 993 -j ACCEPT &>/dev/null
   fi
-  if [[ ${dist} == debian ]]; then
-  apt-get install iptables-persistent -y > /dev/null
-  iptables-save > /etc/iptables/rules.v4
-  ip6tables-save > /etc/iptables/rules.v6
- elif [[ ${dist} == ubuntu ]]; then
-  ufw disable
-  ufw allow http
-  ufw allow https
-  ufw allow ${ariaport}
-  apt-get install iptables-persistent -y > /dev/null
-  iptables-save > /etc/iptables/rules.v4
-  ip6tables-save > /etc/iptables/rules.v6
- else
-  clear
-  TERM=ansi whiptail --title "error can't install iptables-persistent" --infobox "error can't install iptables-persistent" 8 68
-  exit 1;
- fi
  apt-get install nftables -y
 }
 ##########install dependencies#############
