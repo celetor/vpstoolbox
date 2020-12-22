@@ -1322,6 +1322,7 @@ openfirewall(){
     ip6tables -A INPUT -p tcp -m tcp --dport 993 -j ACCEPT &>/dev/null
   fi
  apt-get install nftables -y
+ systemctl enable nftables.service
 }
 ##########install dependencies#############
 installdependency(){
