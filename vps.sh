@@ -2236,6 +2236,7 @@ force_tcp = false
 timeout = 5000
 keepalive = 30
 lb_estimator = true
+lb_strategy = 'ph'
 log_level = 2
 use_syslog = true
 #log_file = '/var/log/dnscrypt-proxy/dnscrypt-proxy.log'
