@@ -3723,7 +3723,7 @@ cat > '/etc/nginx/conf.d/nextcloud.conf' << EOF
         add_header X-Permitted-Cross-Domain-Policies    "none"          always;
         add_header X-Robots-Tag                         "none"          always;
         add_header X-XSS-Protection                     "1; mode=block" always;
-        fastcgi_hide_header X-Powered-By;
+        #fastcgi_hide_header X-Powered-By;
         index index.php index.html /nextcloud/index.php\$request_uri;
 
         expires 1m;
@@ -5072,6 +5072,7 @@ if [[ $install_bbr == 1 ]]; then
   modprobe ip_conntrack
   cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
+#net.ipv4.conf.all.route_localnet=1
 #net.ipv4.ip_forward = 1
 #net.ipv4.conf.all.forwarding = 1
 #net.ipv4.conf.default.forwarding = 1
