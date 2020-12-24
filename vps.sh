@@ -716,6 +716,7 @@ prasejson(){
   "check_qbt_origin": "$check_qbt_origin",
   "check_tracker": "$check_tracker",
   "check_cloud": "$check_cloud",
+  "fastopen": "${fastopen}",
   "tor_name": "$tor_name"
 }
 EOF
@@ -747,6 +748,7 @@ readconfig(){
   check_qbt_origin="$( jq -r '.check_qbt_origin' "/root/.trojan/config.json" )"
   check_tracker="$( jq -r '.check_tracker' "/root/.trojan/config.json" )"
   check_cloud="$( jq -r '.check_cloud' "/root/.trojan/config.json" )"
+  fastopen="$( jq -r '.fastopen' "/root/.trojan/config.json" )"
 }
 
 #User input
@@ -770,6 +772,7 @@ if [[ ${install_status} == 1 ]]; then
     check_qbt_origin="off"
     check_tracker="off"
     check_cloud="off"
+    fastopen="on"
   fi
 fi
 
@@ -812,11 +815,15 @@ fi
 if [[ -z ${check_cloud} ]]; then
   check_cloud="off"
 fi
+if [[ -z ${fastopen} ]]; then
+  fastopen="on"
+fi
 
 whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择需要安装/更新的软件(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来选择需要安装/更新的软件。" 24 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
 "1" "Trojan-GFW+TCP-BBR" on \
+"fast" "TCP Fastopen" ${fastopen} \
 "net" "Netdata" on \
 "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
 "2" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
@@ -853,6 +860,9 @@ do
     ;;
     dns)
     dnsmasq_install=1
+    ;;
+    fast)
+    tcp_fastopen="on"
     ;;
     net)
     install_netdata=1
@@ -925,6 +935,10 @@ do
     ;;
   esac
 done < results
+
+if [[ -z ${tcp_fastopen} ]]; then
+  tcp_fastopen="off"
+fi
 
 system_upgrade=1
 if [[ ${system_upgrade} == 1 ]]; then
@@ -2224,7 +2238,7 @@ lb_estimator = true
 log_level = 2
 use_syslog = true
 #log_file = '/var/log/dnscrypt-proxy/dnscrypt-proxy.log'
-cert_refresh_delay = 86400
+cert_refresh_delay = 1440
 tls_disable_session_tickets = false
 #tls_cipher_suite = [4865]
 fallback_resolvers = ['1.1.1.1:53', '8.8.8.8:53']
@@ -2277,12 +2291,14 @@ cache_neg_max_ttl = 600
   urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md']
   cache_file = 'public-resolvers.md'
   minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 12
   prefix = ''
 
   [sources.'opennic']
   urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/opennic.md', 'https://download.dnscrypt.info/dnscrypt-resolvers/v3/opennic.md']
   cache_file = 'opennic.md'
   minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 12
   prefix = ''
 
   ## Anonymized DNS relays
@@ -2291,7 +2307,7 @@ cache_neg_max_ttl = 600
   urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md', 'https://download.dnscrypt.info/resolvers-list/v3/relays.md']
   cache_file = 'relays.md'
   minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
-  refresh_delay = 72
+  refresh_delay = 12
   prefix = ''
 EOF
   cat > '/etc/systemd/system/dnscrypt-proxy.service' << EOF
@@ -2647,7 +2663,7 @@ if [[ ${install_mariadb} == 1 ]]; then
         "no_delay": true,
         "keep_alive": true,
         "reuse_port": false,
-        "fast_open": false,
+        "fast_open": ${tcp_fastopen},
         "fast_open_qlen": 20
     },
     "mysql": {
@@ -2702,7 +2718,7 @@ EOF
         "no_delay": true,
         "keep_alive": true,
         "reuse_port": false,
-        "fast_open": false,
+        "fast_open": ${tcp_fastopen},
         "fast_open_qlen": 20
     },
     "mysql": {
@@ -2760,7 +2776,7 @@ if [[ ${othercert} == 1 ]]; then
         "no_delay": true,
         "keep_alive": true,
         "reuse_port": false,
-        "fast_open": false,
+        "fast_open": ${tcp_fastopen},
         "fast_open_qlen": 20
     },
     "mysql": {
@@ -2815,7 +2831,7 @@ EOF
         "no_delay": true,
         "keep_alive": true,
         "reuse_port": false,
-        "fast_open": false,
+        "fast_open": ${tcp_fastopen},
         "fast_open_qlen": 20
     },
     "mysql": {
@@ -2866,7 +2882,7 @@ fi
     "no_delay": true,
     "keep_alive": true,
     "reuse_port": false,
-    "fast_open": false,
+    "fast_open": ${tcp_fastopen},
     "fast_open_qlen": 20
   }
 }
@@ -2901,7 +2917,7 @@ EOF
     "no_delay": true,
     "keep_alive": true,
     "reuse_port": false,
-    "fast_open": false,
+    "fast_open": ${tcp_fastopen},
     "fast_open_qlen": 20
   }
 }
@@ -2938,7 +2954,7 @@ if [[ -n $myipv6 ]]; then
     "no_delay": true,
     "keep_alive": true,
     "reuse_port": false,
-    "fast_open": false,
+    "fast_open": ${tcp_fastopen},
     "fast_open_qlen": 20
   }
 }
