@@ -862,7 +862,7 @@ do
     dnsmasq_install=1
     ;;
     fast)
-    tcp_fastopen="on"
+    tcp_fastopen="true"
     ;;
     net)
     install_netdata=1
@@ -937,7 +937,7 @@ do
 done < results
 
 if [[ -z ${tcp_fastopen} ]]; then
-  tcp_fastopen="off"
+  tcp_fastopen="false"
 fi
 
 system_upgrade=1
