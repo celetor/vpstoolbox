@@ -51,9 +51,10 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 cd /usr/share/nginx/nextcloud/
 sudo -u nginx ./occ db:add-missing-indices
 sudo -u nginx ./occ db:convert-filecache-bigint
+cd
 ```
 
-3. 更换后台进程方式为cron
+3. 切换后台进程方式为cron(好像nextcloud会自己切换,如未切换请手动切换)
 
 Nextcloud设定-->基本设定-->改为cron(伺服器端已配置完成，无需任何手动配置)
 
