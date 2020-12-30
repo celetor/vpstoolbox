@@ -1795,7 +1795,7 @@ if [[ $install_qbt == 1 ]]; then
   mkdir qbt
   cd qbt
   qbtver=$(curl -s "https://api.github.com/repos/c0re100/qBittorrent-Enhanced-Edition/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-  wget https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases/download/${qbtver}/qbittorrent-nox_linux_x64_static.zip
+  wget https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases/download/${qbtver}/qbittorrent-nox_x86_64-linux-musl_static.zip
   unzip -o qbittorrent-nox_linux_x64_static.zip
   cp -f qbittorrent-nox /usr/bin/
   cd
