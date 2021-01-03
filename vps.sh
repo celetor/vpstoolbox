@@ -1768,10 +1768,6 @@ if [[ ${install_fail2ban} == 1 ]]; then
 apt-get install fail2ban -y
 fi
 
-if [[ $tls13only == 1 ]]; then
-cipher_server="TLS_AES_128_GCM_SHA256"
-fi
-
 if [[ $install_nodejs == 1 ]]; then
   if [[ ${dist} == debian ]]; then
   curl -sL https://deb.nodesource.com/setup_15.x | bash -
@@ -4637,76 +4633,6 @@ logcheck(){
   colorEcho ${INFO} "Nginx Log"
   less /var/log/nginx/error.log
   less /var/log/nginx/access.log
-}
-
-install_ddns(){
-    while [[ -z ${domain1} ]]; do
-domain1=$(whiptail --inputbox --nocancel "Please enter your bare domain(请輸入你的二级域名,请勿添加www等前缀)" 8 68 --title "Domain input" 3>&1 1>&2 2>&3)
-colorEcho ${INFO} "Checking if domain is vaild."
-host ${domain1}
-if [[ $? != 0 ]]; then
-  whiptail --title "Warning" --msgbox "Warning: Invaild Domain" 8 68
-  domain1=""
-  clear
-  exit 1
-fi
-done
-  while [[ -z ${CF_Key} ]] || [[ -z ${CF_Email} ]]; do
-    CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF Global Key併按回車" 8 68 --title "CF_Key input" 3>&1 1>&2 2>&3)
-    CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 68 --title "CF_Key input" 3>&1 1>&2 2>&3)
-  done
-    cloudflare_auth_key="$CF_Key"
-    cloudflare_auth_email="$CF_Email"
-    zone=${domain1}
-    dnsrecord=${domain}
-    zoneid=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones?name=$zone&status=active" \
-  -H "X-Auth-Email: $cloudflare_auth_email" \
-  -H "X-Auth-Key: $cloudflare_auth_key" \
-  -H "Content-Type: application/json" | jq -r '{"result"}[] | .[0] | .id')
-
-    dnsrecordid=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/$zoneid/dns_records?type=A&name=$dnsrecord" \
-  -H "X-Auth-Email: $cloudflare_auth_email" \
-  -H "X-Auth-Key: $cloudflare_auth_key" \
-  -H "Content-Type: application/json" | jq -r '{"result"}[] | .[0] | .id') 
-
-  dnsrecordidv6=$(curl -s -X GET "https://api.cloudflare.com/client/v6/zones/$zoneid/dns_records?type=AAAA&name=$dnsrecord" \
-  -H "X-Auth-Email: $cloudflare_auth_email" \
-  -H "X-Auth-Key: $cloudflare_auth_key" \
-  -H "Content-Type: application/json" | jq -r '{"result"}[] | .[0] | .id') 
-  cat > '/root/.trojan/ddns.sh' << EOF
-#!/bin/bash
-
-# Get the current external IP address
-ip=\$(curl -s -X GET https://checkip.amazonaws.com)
-
-ipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
-
-
-echo "Current IP is \$ip" >> /root/.trojan/ddns.log
-
-if host $dnsrecord 1.1.1.1 | grep "has address" | grep "\$ip"; then
-  echo "$dnsrecord is currently set to $ip; no changes needed" >> /root/.trojan/ddns.log
-  exit 0
-fi
-
-# update the record
-curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/$zoneid/dns_records/$dnsrecordid" \
-  -H "X-Auth-Email: $cloudflare_auth_email" \
-  -H "X-Auth-Key: $cloudflare_auth_key" \
-  -H "Content-Type: application/json" \
-  --data "{\"type\":\"A\",\"name\":\"$dnsrecord\",\"content\":\"$ip\",\"ttl\":1,\"proxied\":false}" | jq
-
-if [[ -n ${ipv6} ]]; then
-curl -s -X PUT "https://api.cloudflare.com/client/v6/zones/$zoneid/dns_records/$dnsrecordidv6" \
-  -H "X-Auth-Email: $cloudflare_auth_email" \
-  -H "X-Auth-Key: $cloudflare_auth_key" \
-  -H "Content-Type: application/json" \
-  --data "{\"type\":\"AAAA\",\"name\":\"$dnsrecord\",\"content\":\"$ipv6\",\"ttl\":1,\"proxied\":false}" | jq
-fi
-EOF
-
-#crontab -l | grep -q '* * * * * bash /root/.trojan/ddns.sh'  && echo 'cron exists' || echo "* * * * * bash /root/.trojan/ddns.sh" | crontab
-
 }
 
 advancedMenu() {
