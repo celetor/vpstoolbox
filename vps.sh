@@ -1618,7 +1618,8 @@ npm install --production
 touch .env
 cat > '.env' << EOF
 CACHE_TYPE=redis
-REDIS_URL=redis://127.0.0.1:6379/
+#REDIS_URL=redis://127.0.0.1:6379/
+REDIS_URL=/var/run/redis/redis.sock
 CACHE_EXPIRE=600
 LISTEN_INADDR_ANY=0
 EOF
