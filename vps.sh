@@ -248,7 +248,7 @@ systemctl daemon-reload
   cat > '/etc/redis/redis.conf' << EOF
 bind 127.0.0.1 ::1
 protected-mode no
-port 0
+port 6379
 tcp-backlog 511
 unixsocket /var/run/redis/redis.sock
 unixsocketperm 770
@@ -879,7 +879,7 @@ do
     2)
     check_rss="on"
     install_rsshub=1
-    install_docker=1
+    install_redis=1
     install_php=1
     install_mariadb=1
     ;;
@@ -1611,46 +1611,37 @@ EOF
 fi
 
 if [[ ${install_rsshub} == 1 ]]; then
-cd
-curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-  cat > 'docker-compose.yml' << EOF
-version: '3'
-
-services:
-    rsshub:
-        image: diygod/rsshub
-        restart: always
-        ports:
-            - '127.0.0.1:1200:1200'
-        environment:
-            NODE_ENV: production
-            CACHE_TYPE: redis
-            REDIS_URL: 'redis://redis:6380/'
-            PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'
-        depends_on:
-            - redis
-            - browserless
-
-    browserless:
-        image: browserless/chrome
-        restart: always
-        ports:
-            - '127.0.0.1:3000:3000'
-
-    redis:
-        image: redis:alpine
-        restart: always
-        ports:
-            - '127.0.0.1:6380:6380'
-        volumes:
-            - redis-data:/data
-
-volumes:
-    redis-data:
+cd /usr/share/nginx/
+git clone https://github.com/DIYgod/RSSHub.git
+cd /usr/share/nginx/RSSHub
+npm install --production
+touch .env
+cat > '.env' << EOF
+CACHE_TYPE=redis
+REDIS_URL=redis://127.0.0.1:6379/
+CACHE_EXPIRE=600
+LISTEN_INADDR_ANY=0
 EOF
-docker volume create redis-data
-docker-compose up -d
+
+cat > '/etc/systemd/system/rsshub.service' << EOF
+[Unit]
+Description=Rsshub
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/usr/share/nginx/RSSHub
+ExecStart=/bin/bash -c 'npm start'
+Restart=on-failure
+LimitNOFILE=51200
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl enable rsshub
 
 cd /usr/share/nginx/
 git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
@@ -3986,6 +3977,7 @@ TERM=ansi whiptail --title "安装中" --infobox "启动Trojan-gfw中..." 7 68
     systemctl restart filebrowser
   fi
   if [[ $install_rsshub == 1 ]]; then
+    systemctl restart rsshub
     systemctl restart rssfeed
   fi
   if [[ $install_trojan == 1 ]]; then
