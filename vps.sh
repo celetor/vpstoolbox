@@ -3857,6 +3857,9 @@ echo "        fastcgi_split_path_info ^(.+\.php)(/.+)\$;" >> /etc/nginx/conf.d/d
 echo "        include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_param HTTPS on;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_param modHeadersAvailable true;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_param front_controller_active true;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
