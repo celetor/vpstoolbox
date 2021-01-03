@@ -1627,6 +1627,7 @@ EOF
 cat > '/etc/systemd/system/rsshub.service' << EOF
 [Unit]
 Description=Rsshub
+Documentation=https://docs.rsshub.app/
 After=network.target
 Wants=network.target
 
