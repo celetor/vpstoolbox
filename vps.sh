@@ -3968,13 +3968,6 @@ TERM=ansi whiptail --title "安装中" --infobox "启动Trojan-gfw中..." 7 68
   if [[ $install_mariadb == 1 ]]; then
     systemctl restart mariadb
   fi
-  #if [[ $install_qbt == 1 ]]; then
-  #  systemctl stop qbittorrent.service
-  #  sleep 1
-  #  qbtline=$(grep -n "Preferences" /usr/share/nginx/qBittorrent/config/qBittorrent.conf | cut -c1-2)
-  #  sed -i "${qbtline} aAdvanced\\\AnnounceToAllTrackers=true" /usr/share/nginx/qBittorrent/config/qBittorrent.conf
-  #  systemctl restart qbittorrent.service
-  #fi
   if [[ $install_file == 1 ]]; then
     systemctl restart filebrowser
   fi
