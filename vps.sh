@@ -347,9 +347,7 @@ EOF
   chown -R nginx:nginx /usr/share/nginx/
   chown -R nginx:nginx /etc/nginx/
   crontab -l > mycron
-  #echo new cron into cron file
   echo "*/5 * * * * sudo -u nginx php -f /usr/share/nginx/nextcloud/cron.php >> /var/log/nginx/nextcloud.log 2>&1" >> mycron
-  #install new cron file
   crontab mycron
   rm mycron
   chmod +x /usr/share/nginx/nextcloud/occ
@@ -523,11 +521,8 @@ EOF
   fi
   chmod +r /etc/certs/${domain}_ecc/fullchain.cer
   chmod +r /etc/certs/${domain}_ecc/${domain}.key
-#write out current crontab
 crontab -l > mycron
-#echo new cron into cron file
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
-#install new cron file
 crontab mycron
 rm mycron
 }
@@ -555,11 +550,8 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-#write out current crontab
 crontab -l > mycron
-#echo new cron into cron file
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
-#install new cron file
 crontab mycron
 rm mycron
         ;;
@@ -571,11 +563,8 @@ rm mycron
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-#write out current crontab
 crontab -l > mycron
-#echo new cron into cron file
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
-#install new cron file
 crontab mycron
 rm mycron
         ;;
@@ -589,11 +578,8 @@ rm mycron
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-#write out current crontab
 crontab -l > mycron
-#echo new cron into cron file
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
-#install new cron file
 crontab mycron
 rm mycron
         ;;
@@ -607,11 +593,8 @@ rm mycron
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-#write out current crontab
 crontab -l > mycron
-#echo new cron into cron file
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
-#install new cron file
 crontab mycron
 rm mycron
         ;;
@@ -625,11 +608,8 @@ rm mycron
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-#write out current crontab
 crontab -l > mycron
-#echo new cron into cron file
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
-#install new cron file
 crontab mycron
 rm mycron
         ;;
@@ -643,11 +623,8 @@ rm mycron
         openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-#write out current crontab
 crontab -l > mycron
-#echo new cron into cron file
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
-#install new cron file
 crontab mycron
 rm mycron
         ;;
@@ -2087,7 +2064,6 @@ clear
 
 if [[ $install_aria = 1 ]]; then
   TERM=ansi whiptail --title "安装中" --infobox "安装Aria2中..." 7 68
-  #trackers_list=$(wget -qO- https://trackerslist.com/all.txt |awk NF|sed ":a;N;s/\n/,/g;ta")
   trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/all_aria2.txt)
   cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
@@ -2176,8 +2152,6 @@ bt-tracker=$trackers_list
 EOF
   if [[ ! -f /usr/local/bin/aria2c ]]; then
   clear
-  #usermod -a -G aria2 nginx
-  #useradd -r aria2 --shell=/usr/sbin/nologin
   apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
   curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/aria2c.xz
   xz --decompress aria2c.xz
@@ -3305,7 +3279,6 @@ apt-get update
 apt-get install dovecot-core dovecot-imapd dovecot-lmtpd dovecot-sieve -y
 adduser dovecot mail
 adduser netdata mail
-#sed -i 's/#listen = \*, ::/listen = \*, ::/' /etc/dovecot/dovecot.conf
 systemctl enable dovecot
 apt-get install spamassassin spamc spamass-milter -y
 adduser debian-spamd mail
@@ -4592,9 +4565,7 @@ fi
 EOF
 touch /root/.trojan/update.log
 crontab -l > mycron
-#echo new cron into cron file
 echo "0 0 1 * * bash /root/.trojan/autoupdate.sh >> /root/.trojan/update.log 2>&1" >> mycron
-#install new cron file
 crontab mycron
 rm mycron
   fi
@@ -4683,9 +4654,7 @@ advancedMenu() {
         whiptail --title "ERROR" --msgbox "无效的自定义证书,可能为自签,过期或者域名不正确,启动证书覆写" 8 68
         rm -rf /etc/trojan/trojan.crt
         rm -rf /etc/trojan/trojan.key
-        #domain=""
         othercert=0
-        #userinput
         fi
     fi
     curl -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
@@ -4704,19 +4673,12 @@ advancedMenu() {
       if [[ $? != 0 ]]; then
         whiptail --title "ERROR" --msgbox "无效的证书,可能过期或者域名不正确,启动证书续签程序" 8 68
         /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1
-        #rm -rf /etc/certs/${domain}_ecc/fullchain.cer
-        #rm -rf /etc/certs/${domain}_ecc/${domain}.key
-        #domain=""
-        #userinput
         fi
         crontab -l | grep acme.sh
         if [[ $? != 0 ]]; then
         colorEcho ${INFO} "CRON(证书续签模块)缺失,添加中..."
-        #write out current crontab
         crontab -l > mycron
-        #echo new cron into cron file
         echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl reload trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
-        #install new cron file
         crontab mycron
         rm mycron        
         fi
@@ -4984,7 +4946,6 @@ enablebbr(){
 if [[ $install_bbr == 1 ]]; then
   TERM=ansi whiptail --title "初始化中" --infobox "启动BBR中..." 7 68
   colorEcho ${INFO} "Enabling TCP-BBR boost"
-  #iii=$(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}' | cut -c2-999)
   modprobe ip_conntrack
   cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
