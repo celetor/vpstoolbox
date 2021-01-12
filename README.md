@@ -63,31 +63,18 @@ Nextcloud设定-->基本设定-->改为cron(伺服器端已配置完成，无需
 systemctl restart php7.4-fpm
 ```
 
-#### 项目Demo,机器垃圾，响应缓慢是正常的(Debian10+namesilo購買的域名+完整安裝,更新不同步,咕咕咕)
-
-[項目**結果**生成Demo](https://trojan-gfw.xyz/vpstoolbox/)
-
-[項目**郵件**服務Demo](https://trojan-gfw.xyz/vpstoolbox_webmail/) 用戶名 admin 密碼 vpstoolbox
-
-[項目**Tiny Tiny Rss**服務Demo](https://trojan-gfw.xyz/vpstoolbox_ttrss/) 用戶名 admin 密碼 vpstoolbox 註：需**桌面端**訪問。
-
-[项目Bittorrent-tracker服务Demo](https://trojan-gfw.xyz/tracker/)
-
-參看更多，請詳閱上述中的 項目結果生成Demo 。
-
-流量图示(仅供参考):
-![flowchart](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
-
 #### 隐私声明:
 
 1. 此项目使用MIT开源协议，**欢迎PR**.
-2. 所有ip信息皆来自ipinfo.io,仅用于验证域名解析是否成功，无其他作用。
+2. 所有ip信息皆来自ipinfo.io,仅用于显示结果，无其他作用。
+3. 项目Demo倒闭了,请自行搭建,谢谢!
+4. 请勿提出任何关于Vultr的issue或者问题,那个垃圾厂商出的问题与本项目无关!
 
 #### 项目特性:
 
 1. 全自动安装并配置 **[NGINX](https://www.nginx.com/) 以及 Hexo**
 2. 支援所有种类的虚拟化技术，包括bare mental,kvm openvz等
-20. 支援全自动安装并配置 **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [Speedtest](https://github.com/librespeed/speedtest) [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) [Trojan-panel](https://github.com/trojan-gfw/trojan-panel) Postfix Dovecot Roundcube-Webmail等**
+20. 支援全自动安装并配置 **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent增强版](https://github.com/c0re100/qBittorrent-Enhanced-Edition) [Bittorrent-Tracker](https://erdgeist.org/arts/software/opentracker/) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [Speedtest](https://github.com/librespeed/speedtest) [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) [Trojan-panel](https://github.com/trojan-gfw/trojan-panel) Postfix Dovecot Roundcube-Webmail等**
 3. 全自动签发,续签,重启服务 [let's encrypt 证书](https://letsencrypt.org/)
 17. [完整的IPV6支援](https://en.wikipedia.org/wiki/IPv6)
 17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
@@ -97,8 +84,6 @@ systemctl restart php7.4-fpm
 9.  支援 [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks)
 23. 支援完全/部分卸载
 24. And so on...
-
-#### 更多信息请自行查看Wiki !
 
 #### 如果此项目对你有用 , 请给颗star ,谢谢!
 
