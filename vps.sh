@@ -185,7 +185,6 @@ installredis(){
   cd redis-${redisver}
   apt-get install libsystemd-dev pkg-config -y
   make USE_SYSTEMD=yes -j $(nproc --all)
-  #make test
   make install
   chmod +x /usr/local/bin/redis-server
   chmod +x /usr/local/bin/redis-cli
@@ -1766,7 +1765,6 @@ if [[ $install_qbt == 1 ]]; then
   cp -f qbittorrent-nox /usr/bin/
   cd
   rm -rf qbt
- #useradd -r qbittorrent --shell=/usr/sbin/nologin
   cat > '/etc/systemd/system/qbittorrent.service' << EOF
 [Unit]
 Description=qBittorrent Daemon Service
@@ -2380,19 +2378,19 @@ if [[ $install_php = 1 ]]; then
  else
   echo "fail"
  fi
-  apt-get -y install php7.4
-  systemctl disable --now apache2
   apt-get install php7.4-fpm -y
   apt-get install php7.4-apcu php7.4-gmp php7.4-common php7.4-mysql php7.4-ldap php7.4-xml php7.4-json php7.4-readline php7.4-xmlrpc php7.4-curl php7.4-gd php7.4-imagick php7.4-cli php7.4-dev php7.4-imap php7.4-mbstring php7.4-opcache php7.4-soap php7.4-zip php7.4-intl php7.4-bcmath -y
   apt-get purge apache2* -y
   sed -i "s/;date.timezone.*/date.timezone = Asia\/Hong_Kong/" /etc/php/7.4/fpm/php.ini
   sed -i "s/;opcache.enable=1/opcache.enable=1/" /etc/php/7.4/fpm/php.ini
-  sed -i "s/;opcache.validate_timestamps=1/opcache.validate_timestamps=0/" /etc/php/7.4/fpm/php.ini
   sed -i "s/;opcache.save_comments=1/opcache.save_comments=1/" /etc/php/7.4/fpm/php.ini
-  sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=0/" /etc/php/7.4/fpm/php.ini
+  sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=1/" /etc/php/7.4/fpm/php.ini
   sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 2000G/" /etc/php/7.4/fpm/php.ini
   sed -i "s/post_max_size = 8M/post_max_size = 0/" /etc/php/7.4/fpm/php.ini
   sed -i "s/memory_limit = 128M/memory_limit = 1024M/" /etc/php/7.4/fpm/php.ini
+  sed -i "s/;opcache.memory_consumption=128/opcache.memory_consumption=192/" /etc/php/7.4/fpm/php.ini
+  sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/" /etc/php/7.4/fpm/php.ini
+  sed -i "s/;opcache.interned_strings_buffer=8/opcache.interned_strings_buffer=16/" /etc/php/7.4/fpm/php.ini
   if grep -q "opcache.fast_shutdown" /etc/php/7.4/fpm/php.ini
     then
     :
