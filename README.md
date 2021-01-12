@@ -109,10 +109,6 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)**(A for ipv4,AAAA for ipv6) before running this program!
 3. Please **turn off your firewall for best performance(full-cone nat) and turn off Cloudflare CDN** in your control panel before running this program!
 
-#### Project Demo(no ganuarteen)
-
-[https://trojan-gfw.xyz/vpstoolbox/](https://trojan-gfw.xyz/vpstoolbox/)
-
 Flowchart:
 ![flowchart](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flowchart.png)
 
