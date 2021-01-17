@@ -4864,16 +4864,19 @@ tail -n +3 /proc/net/dev | awk '{print \$1 " " \$2 " " \$10}' | numfmt --to=iec 
 #echo -e "\e[40;33;1m The [${domain}] expiration date is : \${last_date} && [\${day_count} days] \e[0m"
 #echo -e "--------------------------------------------------------------------------"
 echo -e " --- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
+echo -e " --- 请在VPS控制面板上彻底禁用防火墙(firewall)以达到最佳效果(allow all ports) ---"
 ###
 echo -e "    \${YELLOW}trojan://$password1@$domain:443\${NOCOLOR}"
 echo -e "    \${YELLOW}trojan://$password2@$domain:443\${NOCOLOR}"
 ###
+if [[ -d /usr/share/nginx/nextcloud/ ]]; then
 echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Trojan links) ---"
 ###
 echo -e "    \${YELLOW}https://$domain/nextcloud/\${NOCOLOR}"
 echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 ###
+fi
 echo -e " --- 請\${bold}訪問以下鏈接\${normal}以獲得更多详细結果(Please visit the following link to get more info) "
 echo -e "    \${YELLOW}https://$domain/${password1}/\${NOCOLOR}"
 echo -e " --- 有關錯誤報告或更多信息，請訪問以下鏈接"
