@@ -174,6 +174,39 @@ systemctl daemon-reload
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 fi
 
+installstunserver(){
+  set +e
+  cd
+  TERM=ansi whiptail --title "安装中" --infobox "安装stunserver中..." 7 68
+  apt-get install libboost-all-dev -y
+  git clone https://github.com/jselbie/stunserver
+  cd stunserver
+  make
+  cp stunserver /usr/sbin
+    cat > '/etc/systemd/system/stunserver.service' << EOF
+[Unit]
+Description=stunserver
+Documentation=https://github.com/jselbie/stunserver
+After=network.target network-online.target nss-lookup.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/stunserver --ddp --verbosity 1
+ExecReload=/bin/kill -HUP \$MAINPID
+LimitNOFILE=51200
+Restart=on-failure
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl restart stunserver
+systemctl enable stunserver
+cd
+rm -rf stunserver
+}
+
+
 installredis(){
   set +e
   cd
@@ -749,6 +782,7 @@ if [[ ${install_status} == 1 ]]; then
     check_tracker="off"
     check_cloud="off"
     fastopen="on"
+    stun="off"
   fi
 fi
 
@@ -794,14 +828,18 @@ fi
 if [[ -z ${fastopen} ]]; then
   fastopen="on"
 fi
+if [[ -z ${stun} ]]; then
+  stun="off"
+fi
 
-whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格来选择需要安装/更新的软件(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格来选择需要安装/更新的软件。" 24 65 16 \
+whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 24 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "代理" "Proxy" off  \
-"1" "Trojan-GFW+TCP-BBR" on \
+"1" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
 "fast" "TCP Fastopen" ${fastopen} \
-"net" "Netdata" on \
+"stun" "stunserver(用于测试nat类型)" ${stun} \
 "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
+"net" "Netdata(监测伺服器运行状态)" on \
 "2" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "下载" "Download" off  \
 "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
@@ -833,6 +871,9 @@ do
     1)
     install_trojan=1
     install_bbr=1
+    ;;
+    stun)
+    install_stun="1"
     ;;
     dns)
     dnsmasq_install=1
@@ -4707,6 +4748,9 @@ advancedMenu() {
     fi
     if [[ $install_nextcloud == 1 ]]; then
       installnextcloud
+    fi
+    if [[ ${install_stun} == 1 ]]; then
+    installstunserver
     fi
     if [[ ${install_tjp} == 1 ]]; then
     install_tjp
