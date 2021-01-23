@@ -926,8 +926,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "其他" "以下选项请勿选中,除非必要(Others)" off  \
 "13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
 "10" "Bt-Tracker(Bittorrent-tracker服务)" ${check_tracker} \
-"11" "Trojan-panel(已停止维护，请勿选中)" off \
-"12" "Tor-Relay(已停止维护，请勿选中)" off 2>results
+"11" "Tor-Relay(已停止维护，请勿选中)" off 2>results
 
 while read choice
 do
@@ -4366,20 +4365,6 @@ Please edit /etc/mysql/my.cnf and restart mariadb if you need remote access !
 
 ---
 
-### Trojan-panel(不保证可用性)
-
-*默认安装: ❎*
-
-> 简介: 简易Trojan-gfw**多用户管理面板**。
-
-PS: Quota为流量(设置为-1则等于无限流量),**username:password**为使用密码,email仅用于管理,无实际意义。
-
-Introduction: Trojan multi-user control panel
-
-<a href="https://$domain/${password1}_config/" target="_blank" rel="noreferrer">https://$domain/${password1}_config/</a>
-
----
-
 ### 相关链接
 
 ##### Qbt相关链接
@@ -4425,11 +4410,6 @@ Introduction: Trojan multi-user control panel
 
 1. <a href="https://www.mail-tester.com/" target="_blank" rel="noreferrer">https://www.mail-tester.com/</a>
 2. <a href="https://lala.im/6838.html" target="_blank" rel="noreferrer">Debian10使用Postfix+Dovecot+Roundcube搭建邮件服务器</a>(仅供参考!)
-
-##### Trojan-panel相关链接
-
-1. <a href="https://trojan-tutor.github.io/2019/06/08/p43.html#more" target="_blank" rel="noreferrer">Trojan-Panel配置</a>(仅供参考 !)
-2. <a href="https://github.com/trojan-gfw/trojan-panel" target="_blank" rel="noreferrer">https://github.com/trojan-gfw/trojan-panel</a>
 EOF
 
 cd

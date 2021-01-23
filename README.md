@@ -74,7 +74,7 @@ systemctl restart php7.4-fpm
 
 1. 全自动安装并配置 **[NGINX](https://www.nginx.com/) 以及 Hexo**
 2. 支援所有种类的虚拟化技术，包括bare mental,kvm openvz等
-20. 支援全自动安装并配置 **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent增强版](https://github.com/c0re100/qBittorrent-Enhanced-Edition) [Bittorrent-Tracker](https://erdgeist.org/arts/software/opentracker/) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [Speedtest](https://github.com/librespeed/speedtest) [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) [Trojan-panel](https://github.com/trojan-gfw/trojan-panel) Postfix Dovecot Roundcube-Webmail等**
+20. 支援全自动安装并配置 **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent增强版](https://github.com/c0re100/qBittorrent-Enhanced-Edition) [Bittorrent-Tracker](https://erdgeist.org/arts/software/opentracker/) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [Speedtest](https://github.com/librespeed/speedtest) [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) Postfix Dovecot Roundcube-Webmail等**
 3. 全自动签发,续签,重启服务 [let's encrypt 证书](https://letsencrypt.org/)
 17. [完整的IPV6支援](https://en.wikipedia.org/wiki/IPv6)
 17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
@@ -120,7 +120,7 @@ Ip Information is just an indispensable part of this project, all ip information
 
 1. Auto install and config **[NGINX](https://www.nginx.com/)**
 2. Support all kinds of virtualization including kvm openvz and so on.
-20. Support Auto install and config **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) [Speedtest](https://github.com/librespeed/speedtest) [Trojan-panel](https://github.com/trojan-gfw/trojan-panel) Postfix Dovecot Roundcube-Webmail**
+20. Support Auto install and config **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) [Speedtest](https://github.com/librespeed/speedtest) Postfix Dovecot Roundcube-Webmail**
 3. Auto issue and renew [let's encrypt certificate](https://letsencrypt.org/) and auto reload Trojan-GFW after renewal
 17. [Full IPv6 Support](https://en.wikipedia.org/wiki/IPv6)
 17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
@@ -131,14 +131,13 @@ Ip Information is just an indispensable part of this project, all ip information
 23. Support Full/Part Uninstall
 24. And so on...
 
-#### Please check project wiki for more info !
-
 #### If you found it useful , please give a star ,thanks!
 
 #### License
 
 [MIT](https://github.com/johnrosen1/vpstoolbox/blob/master/LICENSE)
 
+#### 本项目不对Vultr机器造成的任何问题负责,this project does not responsible for any problems caused by vulrt machines !
 
 ## Stargazers over time
 
