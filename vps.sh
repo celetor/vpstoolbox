@@ -90,6 +90,7 @@ cipher_client="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-E
 install_bbr=1
 install_nodejs=1
 install_trojan=1
+trojanport="443"
 
 if [[ -d /usr/local/qcloud ]]; then
   #disable tencent cloud process
@@ -793,6 +794,7 @@ prasejson(){
   "check_qbt_origin": "$check_qbt_origin",
   "check_tracker": "$check_tracker",
   "check_cloud": "$check_cloud",
+  "check_tor": "$check_tor",
   "fastopen": "${fastopen}",
   "tor_name": "$tor_name"
 }
@@ -825,6 +827,7 @@ readconfig(){
   check_qbt_origin="$( jq -r '.check_qbt_origin' "/root/.trojan/config.json" )"
   check_tracker="$( jq -r '.check_tracker' "/root/.trojan/config.json" )"
   check_cloud="$( jq -r '.check_cloud' "/root/.trojan/config.json" )"
+  check_tor="$( jq -r '.check_tor' "/root/.trojan/config.json" )"
   fastopen="$( jq -r '.fastopen' "/root/.trojan/config.json" )"
 }
 
@@ -849,6 +852,7 @@ if [[ ${install_status} == 1 ]]; then
     check_qbt_origin="off"
     check_tracker="off"
     check_cloud="off"
+    check_tor="off"
     fastopen="on"
     stun="off"
   fi
@@ -893,6 +897,9 @@ fi
 if [[ -z ${check_cloud} ]]; then
   check_cloud="off"
 fi
+if [[ -z ${check_tor} ]]; then
+  check_tor="off"
+fi
 if [[ -z ${fastopen} ]]; then
   fastopen="on"
 fi
@@ -905,6 +912,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "代理" "Proxy" off  \
 "1" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
 "fast" "TCP Fastopen" ${fastopen} \
+"tor" "自建onion网站" ${check_tor} \
 "stun" "stunserver(用于测试nat类型)" ${stun} \
 "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
 "net" "Netdata(监测伺服器运行状态)" on \
@@ -924,9 +932,10 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "邮件" "Mail" off  \
 "9" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
 "其他" "以下选项请勿选中,除非必要(Others)" off  \
+"port" "自定义Trojan端口(除nat机器外请勿选中)" ${check_qbt_origin} \
 "13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
 "10" "Bt-Tracker(Bittorrent-tracker服务)" ${check_tracker} \
-"11" "Tor-Relay(已停止维护，请勿选中)" off 2>results
+"test-only" "test-only" off 2>results
 
 while read choice
 do
@@ -1008,20 +1017,26 @@ do
     install_nodejs=1
     install_mariadb=1
     ;;
-    12)
+    tor)
     install_tor=1
     ;;
     13)
     check_qbt_origin="on"
     install_qbt_origin=1
     ;;
+    port)
+    trojan_other_port=1
+    ;;
     *)
     ;;
   esac
 done < results
 
-if [[ -z ${tcp_fastopen} ]]; then
-  tcp_fastopen="false"
+if [[ ${trojan_other_port} == 1 ]]; then
+  trojanport=$(whiptail --inputbox --nocancel "Trojan-GFW 端口(若不確定，請直接回車)" 8 68 443 --title "port input" 3>&1 1>&2 2>&3)
+  if [[ -z ${trojanport} ]]; then
+  trojanport="443"
+  fi
 fi
 
 system_upgrade=1
@@ -1114,14 +1129,6 @@ fi
     while [[ -z ${netdatapath} ]]; do
     netdatapath=$(whiptail --inputbox --nocancel "Netdata Nginx 路径" 8 68 /${password1}_netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
     done
-  fi
-  if [[ ${install_tor} = 1 ]]; then
-    while [[ -z ${tor_name} ]]; do
-    tor_name=$(whiptail --inputbox --nocancel "Tor nickname" 8 68 --title "tor nickname input" 3>&1 1>&2 2>&3)
-    if [[ -z ${tor_name} ]]; then
-    tor_name="myrelay"
-  fi
-  done
   fi
 }
 ###############OS detect####################
@@ -2452,21 +2459,25 @@ EOF
 curl https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
 gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
 apt-get update
-apt-get install deb.torproject.org-keyring tor tor-arm tor-geoipdb -q -y
-service tor stop
+apt-get install tor tor-geoipdb nyx -y
+apt-get install python-stem -y
+ipv4_prefer_1="0"
+if [[ -n $myipv6 ]]; then
+    ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
+    if [[ $? -eq 0 ]]; then
+      ipv4_prefer_1="1"
+    fi
+fi
   cat > '/etc/tor/torrc' << EOF
-SocksPort 0
-ControlPort 9051
-RunAsDaemon 1
-ORPort 9001
-#ORPort [$myipv6]:9001
-Nickname $tor_name
-ContactInfo $domain [tor-relay.co]
-Log notice file /var/log/tor/notices.log
-DirPort 9030
-#ExitPolicy reject6 *:*, reject *:*
+ClientPreferIPv6ORPort ${ipv4_prefer_1}
+ControlPort 127.0.0.1:9051
+CookieAuthentication 0
+HiddenServiceDir /var/lib/tor/hidden_service/
+HiddenServiceVersion 3
+HiddenServicePort 80 127.0.0.1:8888
+HiddenServicePort 443 127.0.0.1:443
 EOF
-service tor start
+torhostname=$(cat /var/lib/tor/hidden_service/hostname)
 systemctl restart tor@default
 fi
 
@@ -2700,9 +2711,9 @@ if [[ ${install_mariadb} == 1 ]]; then
 {
     "run_type": "server",
     "local_addr": "::",
-    "local_port": 443,
+    "local_port": ${trojanport},
     "remote_addr": "127.0.0.1",
-    "remote_port": 80,
+    "remote_port": 8888,
     "password": [
         "$password1",
         "$password2"
@@ -2755,9 +2766,9 @@ EOF
 {
     "run_type": "server",
     "local_addr": "::",
-    "local_port": 443,
+    "local_port": ${trojanport},
     "remote_addr": "127.0.0.1",
-    "remote_port": 80,
+    "remote_port": 8888,
     "password": [
         "$password1",
         "$password2"
@@ -2813,9 +2824,9 @@ if [[ ${othercert} == 1 ]]; then
 {
     "run_type": "server",
     "local_addr": "::",
-    "local_port": 443,
+    "local_port": ${trojanport},
     "remote_addr": "127.0.0.1",
-    "remote_port": 80,
+    "remote_port": 8888,
     "password": [
         "$password1",
         "$password2"
@@ -2868,9 +2879,9 @@ EOF
 {
     "run_type": "server",
     "local_addr": "::",
-    "local_port": 443,
+    "local_port": ${trojanport},
     "remote_addr": "127.0.0.1",
-    "remote_port": 80,
+    "remote_port": 8888,
     "password": [
         "$password1",
         "$password2"
@@ -2929,7 +2940,7 @@ fi
   "local_addr": "127.0.0.1",
   "local_port": 1080,
   "remote_addr": "$myip",
-  "remote_port": 443,
+  "remote_port": ${trojanport},
   "password": [
     "$password1"
   ],
@@ -2964,7 +2975,7 @@ EOF
   "local_addr": "127.0.0.1",
   "local_port": 1080,
   "remote_addr": "$myip",
-  "remote_port": 443,
+  "remote_port": ${trojanport},
   "password": [
     "$password2"
   ],
@@ -3001,7 +3012,7 @@ if [[ -n $myipv6 ]]; then
   "local_addr": "127.0.0.1",
   "local_port": 1080,
   "remote_addr": "$myipv6",
-  "remote_port": 443,
+  "remote_port": ${trojanport},
   "password": [
     "$password1"
   ],
@@ -3715,7 +3726,7 @@ touch /etc/nginx/conf.d/default.conf
   cat > '/etc/nginx/conf.d/default.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 server {
-  listen 127.0.0.1:80 fastopen=20 reuseport;
+  listen 127.0.0.1:8888 fastopen=20 reuseport;
   listen 127.0.0.1:82 http2 fastopen=20 reuseport;
   server_name $domain;
   resolver 127.0.0.1;
@@ -3873,6 +3884,7 @@ echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
 echo "        include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_param HTTPS on;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
@@ -3899,6 +3911,7 @@ echo "        http2_push /${password1}_speedtest/speedtest.js;" >> /etc/nginx/co
 echo "        http2_push /${password1}_speedtest/favicon.ico;" >> /etc/nginx/conf.d/default.conf
 echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_split_path_info ^(.+\.php)(/.+)\$;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_param HTTPS on;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
 echo "        include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_pass   unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
@@ -4295,6 +4308,18 @@ Introduction: test download and upload speed from vps to your local network.
 
 ---
 
+### Tor Service
+
+*默认安装: ❎*
+
+> 简介: 自建的onion站点。
+
+> Introduction: self-build onion site.
+
+${torhostname}
+
+---
+
 ### Mail Service
 
 *默认安装: ❎*
@@ -4465,7 +4490,7 @@ sharelink(){
   "local_addr": "127.0.0.1",
   "local_port": 1080,
   "remote_addr": "$domain",
-  "remote_port": 443,
+  "remote_port": ${trojanport},
   "password": [
     "$password1"
   ],
@@ -4500,7 +4525,7 @@ EOF
   "local_addr": "127.0.0.1",
   "local_port": 1080,
   "remote_addr": "$domain",
-  "remote_port": 443,
+  "remote_port": ${trojanport},
   "password": [
     "$password2"
   ],
@@ -4958,8 +4983,8 @@ tail -n +3 /proc/net/dev | awk '{print \$1 " " \$2 " " \$10}' | numfmt --to=iec 
 echo -e " --- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
 echo -e " --- 请在VPS控制面板上彻底禁用防火墙(firewall)以达到最佳效果(allow all ports) ---"
 ###
-echo -e "    \${YELLOW}trojan://$password1@$domain:443\${NOCOLOR}"
-echo -e "    \${YELLOW}trojan://$password2@$domain:443\${NOCOLOR}"
+echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
+echo -e "    \${YELLOW}trojan://$password2@$domain:${trojanport}\${NOCOLOR}"
 ###
 if [[ -d /usr/share/nginx/nextcloud/ ]]; then
 echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Trojan links) ---"
