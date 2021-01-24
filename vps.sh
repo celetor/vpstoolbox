@@ -4987,12 +4987,16 @@ echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
 echo -e "    \${YELLOW}trojan://$password2@$domain:${trojanport}\${NOCOLOR}"
 ###
 if [[ -d /usr/share/nginx/nextcloud/ ]]; then
-echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Trojan links) ---"
+echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Nextcloud links) ---"
 ###
 echo -e "    \${YELLOW}https://$domain/nextcloud/\${NOCOLOR}"
 echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 ###
+fi
+if [[ -f /usr/bin/tor ]]; then
+echo -e " --- \${BLUE}Onion快速链接\${NOCOLOR}(onion link) ---"
+echo -e "${torhostname}"
 fi
 echo -e " --- 請\${bold}訪問以下鏈接\${normal}以獲得更多详细結果(Please visit the following link to get more info) "
 echo -e "    \${YELLOW}https://$domain/${password1}/\${NOCOLOR}"
