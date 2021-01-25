@@ -2460,6 +2460,7 @@ if [[ -n $myipv6 ]]; then
     fi
 fi
   cat > '/etc/tor/torrc' << EOF
+ClientUseIPv6 ${ipv4_prefer_1}
 ClientPreferIPv6ORPort ${ipv4_prefer_1}
 ControlPort 127.0.0.1:9051
 CookieAuthentication 0
