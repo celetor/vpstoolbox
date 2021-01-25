@@ -595,15 +595,6 @@ server {
 EOF
   systemctl restart nginx
   clear
-  colorEcho ${INFO} "測試证书申请ing(test issuing) let\'s encrypt certificate"
-  ~/.acme.sh/acme.sh --issue --test --nginx --cert-home /etc/certs -d $domain --force -k ec-256 --log
-  if [[ $? != 0 ]] && [[ $? != 2 ]]; then
-  colorEcho ${ERROR} "測試证书申请失败，请**检查VPS控制面板防火墙是否完全关闭**,DNS是否解析完成!!!"
-  colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
-  colorEcho ${ERROR} "Cert issue fail,Pleae Open all ports on VPS panel !!!"
-  exit 1
-  fi
-  clear
   colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
   ~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain --force -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
   if [[ $? != 0 ]] && [[ $? != 2 ]]; then
