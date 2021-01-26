@@ -738,6 +738,11 @@ verify = true
 # outbound.length = 2
 # outbound.quantity = 3
 
+[ntcp2]
+
+enabled = true
+published = true
+
 [persist]
 ## Save peer profiles on disk (default: true)
 # profiles = true
