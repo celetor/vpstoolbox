@@ -651,7 +651,7 @@ enabled = true
 
 [bob]
 ## Uncomment and set to 'true' to enable BOB command channel
-# enabled = false
+enabled = true
 ## Address and port service will listen on
 # address = 127.0.0.1
 # port = 2827
@@ -665,12 +665,12 @@ enabled = true
 
 [i2pcontrol]
 ## Uncomment and set to 'true' to enable I2PControl protocol
-# enabled = false
+enabled = on
 ## Address and port service will listen on
 # address = 127.0.0.1
 # port = 7650
 ## Authentication password. "itoopie" by default
-# password = itoopie
+password = ${password1}
 
 [precomputation]
 ## Enable or disable elgamal precomputation table
