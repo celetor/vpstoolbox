@@ -495,6 +495,277 @@ echo -e "timezone:\t"$(jq -r '.timezone' "/root/.trojan/ipv6.json")
 fi
 }
 
+#install i2pd
+install_i2pd(){
+  if [[ ${dist} == debian ]]; then
+wget -q -O - https://repo.i2pd.xyz/.help/add_repo | sudo bash -s -
+apt-get update
+apt-get install i2pd -y
+ elif [[ ${dist} == ubuntu ]]; then
+  add-apt-repository ppa:purplei2p/i2pd -y
+  apt-get update
+  apt-get install i2pd -y
+ else
+  echo "fail"
+ fi
+  cat > '/etc/i2pd/i2pd.conf' << EOF
+## Configuration file for a typical i2pd user
+## See https://i2pd.readthedocs.io/en/latest/user-guide/configuration/
+## for more options you can use in this file.
+
+## Lines that begin with "## " try to explain what's going on. Lines
+## that begin with just "#" are disabled commands: you can enable them
+## by removing the "#" symbol.
+
+## Tunnels config file
+## Default: ~/.i2pd/tunnels.conf or /var/lib/i2pd/tunnels.conf
+# tunconf = /var/lib/i2pd/tunnels.conf
+
+## Tunnels config files path
+## Use that path to store separated tunnels in different config files.
+## Default: ~/.i2pd/tunnels.d or /var/lib/i2pd/tunnels.d
+# tunnelsdir = /var/lib/i2pd/tunnels.d
+
+## Where to write pidfile (default: i2pd.pid, not used in Windows)
+# pidfile = /run/i2pd.pid
+
+## Logging configuration section
+## By default logs go to stdout with level 'info' and higher
+##
+## Logs destination (valid values: stdout, file, syslog)
+##  * stdout - print log entries to stdout
+##  * file - log entries to a file
+##  * syslog - use syslog, see man 3 syslog
+# log = file
+## Path to logfile (default - autodetect)
+# logfile = /var/log/i2pd/i2pd.log
+## Log messages above this level (debug, info, *warn, error, none)
+## If you set it to none, logging will be disabled
+# loglevel = warn
+## Write full CLF-formatted date and time to log (default: write only time)
+# logclftime = true
+
+## Daemon mode. Router will go to background after start
+# daemon = true
+
+## Specify a family, router belongs to (default - none)
+# family =
+
+## External IP address to listen for connections
+## By default i2pd sets IP automatically
+# host = 1.2.3.4
+
+## Port to listen for connections
+## By default i2pd picks random port. You MUST pick a random number too,
+## don't just uncomment this
+# port = 4567
+
+## Enable communication through ipv4
+ipv4 = true
+## Enable communication through ipv6
+ipv6 = false
+
+## Network interface to bind to
+# ifname =
+## You can specify different interfaces for IPv4 and IPv6
+# ifname4 = 
+# ifname6 = 
+
+## Enable NTCP transport (default = true)
+# ntcp = true
+## If you run i2pd behind a proxy server, you can only use NTCP transport with ntcpproxy option 
+## Should be http://address:port or socks://address:port
+# ntcpproxy = http://127.0.0.1:8118
+## Enable SSU transport (default = true)
+# ssu = true
+
+## Should we assume we are behind NAT? (false only in MeshNet)
+# nat = true
+
+## Bandwidth configuration
+## L limit bandwidth to 32KBs/sec, O - to 256KBs/sec, P - to 2048KBs/sec,
+## X - unlimited
+## Default is X for floodfill, L for regular node
+# bandwidth = L
+## Max % of bandwidth limit for transit. 0-100. 100 by default
+# share = 100
+
+## Router will not accept transit tunnels, disabling transit traffic completely
+## (default = false)
+# notransit = true
+
+## Router will be floodfill
+floodfill = true
+
+[http]
+## Web Console settings
+## Uncomment and set to 'false' to disable Web Console
+# enabled = true
+## Address and port service will listen on
+address = 0.0.0.0
+port = 7070
+strictheaders = false
+## Path to web console, default "/"
+webroot = /${password1}_i2p/
+## Uncomment following lines to enable Web Console authentication 
+# auth = true
+# user = i2pd
+# pass = changeme
+
+[httpproxy]
+## Uncomment and set to 'false' to disable HTTP Proxy
+# enabled = true
+## Address and port service will listen on
+address = 127.0.0.1
+port = 4444
+## Optional keys file for proxy local destination
+# keys = http-proxy-keys.dat
+## Enable address helper for adding .i2p domains with "jump URLs" (default: true)
+# addresshelper = true
+## Address of a proxy server inside I2P, which is used to visit regular Internet
+outproxy = http://false.i2p
+## httpproxy section also accepts I2CP parameters, like "inbound.length" etc.
+
+[socksproxy]
+## Uncomment and set to 'false' to disable SOCKS Proxy
+# enabled = true
+## Address and port service will listen on
+address = 127.0.0.1
+port = 4447
+## Optional keys file for proxy local destination
+# keys = socks-proxy-keys.dat
+## Socks outproxy. Example below is set to use Tor for all connections except i2p
+## Uncomment and set to 'true' to enable using of SOCKS outproxy
+# outproxy.enabled = false
+## Address and port of outproxy
+# outproxy = 127.0.0.1
+# outproxyport = 9050
+## socksproxy section also accepts I2CP parameters, like "inbound.length" etc.
+
+[sam]
+## Uncomment and set to 'true' to enable SAM Bridge
+enabled = true
+## Address and port service will listen on
+# address = 127.0.0.1
+# port = 7656
+
+[bob]
+## Uncomment and set to 'true' to enable BOB command channel
+# enabled = false
+## Address and port service will listen on
+# address = 127.0.0.1
+# port = 2827
+
+[i2cp]
+## Uncomment and set to 'true' to enable I2CP protocol
+enabled = true
+## Address and port service will listen on
+# address = 127.0.0.1
+# port = 7654
+
+[i2pcontrol]
+## Uncomment and set to 'true' to enable I2PControl protocol
+# enabled = false
+## Address and port service will listen on
+# address = 127.0.0.1
+# port = 7650
+## Authentication password. "itoopie" by default
+# password = itoopie
+
+[precomputation]
+## Enable or disable elgamal precomputation table
+## By default, enabled on i386 hosts
+# elgamal = true
+
+[upnp]
+## Enable or disable UPnP: automatic port forwarding (enabled by default in WINDOWS, ANDROID)
+enabled = true
+## Name i2pd appears in UPnP forwardings list (default = I2Pd)
+# name = I2Pd
+
+[reseed]
+## Options for bootstrapping into I2P network, aka reseeding
+## Enable or disable reseed data verification.
+verify = true
+## URLs to request reseed data from, separated by comma
+## Default: "mainline" I2P Network reseeds
+# urls = https://reseed.i2p-projekt.de/,https://i2p.mooo.com/netDb/,https://netdb.i2p2.no/
+## Path to local reseed data file (.su3) for manual reseeding
+# file = /path/to/i2pseeds.su3
+## or HTTPS URL to reseed from
+# file = https://legit-website.com/i2pseeds.su3
+## Path to local ZIP file or HTTPS URL to reseed from
+# zipfile = /path/to/netDb.zip
+## If you run i2pd behind a proxy server, set proxy server for reseeding here
+## Should be http://address:port or socks://address:port
+# proxy = http://127.0.0.1:8118
+## Minimum number of known routers, below which i2pd triggers reseeding. 25 by default
+# threshold = 25
+
+[addressbook]
+## AddressBook subscription URL for initial setup
+## Default: inr.i2p at "mainline" I2P Network
+# defaulturl = http://joajgazyztfssty4w2on5oaqksz6tqoxbduy553y34mf4byv6gpq.b32.i2p/export/alive-hosts.txt
+## Optional subscriptions URLs, separated by comma
+# subscriptions = http://inr.i2p/export/alive-hosts.txt,http://stats.i2p/cgi-bin/newhosts.txt,http://rus.i2p/hosts.txt
+
+[limits]
+## Maximum active transit sessions (default:2500)
+# transittunnels = 2500
+## Limit number of open file descriptors (0 - use system limit)  
+# openfiles = 0
+## Maximum size of corefile in Kb (0 - use system limit) 
+# coresize = 0
+## Threshold to start probabalistic backoff with ntcp sessions (0 - use system limit) 
+# ntcpsoft = 0
+## Maximum number of ntcp sessions (0 - use system limit) 
+# ntcphard = 0
+
+[trust]
+## Enable explicit trust options. false by default
+# enabled = true
+## Make direct I2P connections only to routers in specified Family.
+# family = MyFamily
+## Make direct I2P connections only to routers specified here. Comma separated list of base64 identities.
+# routers = 
+## Should we hide our router from other routers? false by default
+# hidden = true
+
+[exploratory]
+## Exploratory tunnels settings with default values
+# inbound.length = 2 
+# inbound.quantity = 3
+# outbound.length = 2
+# outbound.quantity = 3
+
+[persist]
+## Save peer profiles on disk (default: true)
+# profiles = true
+
+[cpuext]
+## Use CPU AES-NI instructions set when work with cryptography when available (default: true)
+# aesni = true
+## Use CPU AVX instructions set when work with cryptography when available (default: true)
+# avx = true
+## Force usage of CPU instructions set, even if they not found
+## DO NOT TOUCH that option if you really don't know what are you doing!
+# force = false
+EOF
+if [[ -n $myipv6 ]]; then
+    ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
+    if [[ $? -eq 0 ]]; then
+      sed -i 's/ipv6 = false/ipv6 = true/g' /etc/i2pd/i2pd.conf
+    fi
+fi
+    cat > '/etc/i2pd/tunnels.conf.d/mywebsite.conf' << EOF
+[my-website]
+type = http
+host = 127.0.0.1
+port = 8888
+keys = my-website.dat
+EOF
+}
+
 #Set system language
 setlanguage(){
   set +e
@@ -597,12 +868,6 @@ EOF
   clear
   colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
   ~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
-  if [[ $? != 0 ]] && [[ $? != 2 ]]; then
-  colorEcho ${ERROR} "证书申请失败，请**检查VPS控制面板防火墙是否完全关闭**,DNS是否解析完成!!!"
-  colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
-  colorEcho ${ERROR} "Cert issue fail,Pleae Open all ports on VPS panel !!!"
-  exit 1
-  fi
   if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
     :
     else
@@ -786,6 +1051,7 @@ prasejson(){
   "check_tracker": "$check_tracker",
   "check_cloud": "$check_cloud",
   "check_tor": "$check_tor",
+  "check_i2p": "$check_i2p",
   "fastopen": "${fastopen}",
   "tor_name": "$tor_name"
 }
@@ -819,6 +1085,7 @@ readconfig(){
   check_tracker="$( jq -r '.check_tracker' "/root/.trojan/config.json" )"
   check_cloud="$( jq -r '.check_cloud' "/root/.trojan/config.json" )"
   check_tor="$( jq -r '.check_tor' "/root/.trojan/config.json" )"
+  check_i2p="$( jq -r '.check_i2p' "/root/.trojan/config.json" )"
   fastopen="$( jq -r '.fastopen' "/root/.trojan/config.json" )"
 }
 
@@ -891,6 +1158,9 @@ fi
 if [[ -z ${check_tor} ]]; then
   check_tor="off"
 fi
+if [[ -z ${check_i2p} ]]; then
+  check_i2p="off"
+fi
 if [[ -z ${fastopen} ]]; then
   fastopen="on"
 fi
@@ -904,6 +1174,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "1" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
 "fast" "TCP Fastopen" ${fastopen} \
 "tor" "自建onion网站" ${check_tor} \
+"i2p" "自建i2p网站" ${check_i2p} \
 "stun" "stunserver(用于测试nat类型)" ${stun} \
 "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
 "net" "Netdata(监测伺服器运行状态)" on \
@@ -1010,6 +1281,9 @@ do
     ;;
     tor)
     install_tor=1
+    ;;
+    i2p)
+    install_i2p=1
     ;;
     13)
     check_qbt_origin="on"
@@ -3718,8 +3992,8 @@ touch /etc/nginx/conf.d/default.conf
   cat > '/etc/nginx/conf.d/default.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 server {
-  listen 127.0.0.1:8888 fastopen=20 reuseport;
-  listen 127.0.0.1:82 http2 fastopen=20 reuseport;
+  listen 127.0.0.1:8888 fastopen=20 reuseport default_server;
+  listen 127.0.0.1:82 http2 fastopen=20 reuseport default_server;
   server_name $domain;
   resolver 127.0.0.1;
   resolver_timeout 10s;
@@ -3970,6 +4244,13 @@ echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> 
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
+if [[ $install_i2p == 1 ]]; then
+echo "    location /${password1}_i2p/ {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:7070/;" >> /etc/nginx/conf.d/default.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+fi
 if [[ $install_tracker == 1 ]]; then
 echo "    location /tracker/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
@@ -3983,6 +4264,11 @@ echo "        proxy_pass http://127.0.0.1:6969/;" >> /etc/nginx/conf.d/default.c
 echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "    location ~ ^/announce$ {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:6969;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_netdata == 1 ]]; then
@@ -4013,12 +4299,6 @@ echo "    if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Max
 echo "    return 301 https://$domain\$request_uri;" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 echo "" >> /etc/nginx/conf.d/default.conf
-echo "server {" >> /etc/nginx/conf.d/default.conf
-echo "    listen 80 default_server;" >> /etc/nginx/conf.d/default.conf
-echo "    listen [::]:80 default_server;" >> /etc/nginx/conf.d/default.conf
-echo "    server_name _;" >> /etc/nginx/conf.d/default.conf
-echo "    return 404;" >> /etc/nginx/conf.d/default.conf
-echo "}" >> /etc/nginx/conf.d/default.conf
 if [[ $install_netdata == 1 ]]; then
 echo "server { #For Netdata only !" >> /etc/nginx/conf.d/default.conf
 echo "    listen 127.0.0.1:81 fastopen=20 reuseport;" >> /etc/nginx/conf.d/default.conf
@@ -4309,6 +4589,18 @@ Introduction: test download and upload speed from vps to your local network.
 > Introduction: self-build onion site.
 
 ${torhostname}
+
+---
+
+### i2p Service
+
+*默认安装: ❎*
+
+> 简介: 自建的i2p站点。
+
+> Introduction: self-build onion site.
+
+- <a href="https://$domain:443/${password1}_i2p/" target="_blank" rel="noreferrer">https://$domain/${password1}_i2p/</a>
 
 ---
 
@@ -4814,6 +5106,9 @@ advancedMenu() {
     if [[ $install_nextcloud == 1 ]]; then
       installnextcloud
     fi
+    if [[ $install_i2p == 1 ]]; then
+      install_i2pd
+    fi
     if [[ ${install_stun} == 1 ]]; then
     installstunserver
     fi
@@ -4950,17 +5245,14 @@ echo -e "Dovecot:\t\t"\$(systemctl is-active dovecot)
   if [[ -f /usr/sbin/postfix ]]; then
 echo -e "Postfix:\t\t"\$(systemctl is-active postfix)
   fi
-  if [[ -f /usr/sbin/sshd ]]; then
-echo -e "sshd:\t\t\t"\$(systemctl is-active sshd)
-  fi
   if [[ -f /usr/bin/fail2ban-server ]]; then
 echo -e "Fail2ban:\t\t"\$(systemctl is-active fail2ban)
   fi
-  if [[ -f /usr/sbin/ntpd ]]; then
-echo -e "ntpd:\t\t\t"\$(systemctl is-active ntp)
-  fi
   if [[ -f /usr/bin/tor ]]; then
 echo -e "Tor:\t\t"\$(systemctl is-active tor)
+  fi
+  if [[ -f /usr/sbin/i2pd ]]; then
+echo -e "i2p:\t\t"\$(systemctl is-active i2pd)
   fi
 echo -e " --- \${BLUE}帶寬使用(Bandwith Usage)\${NOCOLOR} ---"
 echo -e "         接收(Receive)    发送(Transmit)"
