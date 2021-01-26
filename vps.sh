@@ -541,7 +541,7 @@ apt-get install i2pd -y
 # logfile = /var/log/i2pd/i2pd.log
 ## Log messages above this level (debug, info, *warn, error, none)
 ## If you set it to none, logging will be disabled
-# loglevel = warn
+loglevel = error
 ## Write full CLF-formatted date and time to log (default: write only time)
 # logclftime = true
 
