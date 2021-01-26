@@ -761,9 +761,10 @@ fi
 [my-website]
 type = http
 host = 127.0.0.1
-port = 8888
+port = 80
 keys = my-website.dat
 EOF
+systemctl restart i2pd
 }
 
 #Set system language
@@ -3992,9 +3993,10 @@ touch /etc/nginx/conf.d/default.conf
   cat > '/etc/nginx/conf.d/default.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 server {
+  listen 127.0.0.1:80 fastopen=20 reuseport default_server;
   listen 127.0.0.1:8888 fastopen=20 reuseport default_server;
   listen 127.0.0.1:82 http2 fastopen=20 reuseport default_server;
-  server_name $domain;
+  server_name $domain _;
   resolver 127.0.0.1;
   resolver_timeout 10s;
   #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|Maxthon|TheWorld|UC|OPPO|baidu|Sogou|2345|) ) { return 403; }
