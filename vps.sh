@@ -4395,6 +4395,9 @@ nofollow:
     - 'exclude2.com'
 EOF
 cd /usr/share/nginx/hexo/source/${password1}
+if [[ -f index.md ]]; then
+  rm index.md
+fi
 cat > "index.md" << EOF
 ---
 title: VPS Toolbox Result
