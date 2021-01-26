@@ -586,7 +586,7 @@ ipv6 = false
 ## L limit bandwidth to 32KBs/sec, O - to 256KBs/sec, P - to 2048KBs/sec,
 ## X - unlimited
 ## Default is X for floodfill, L for regular node
-# bandwidth = L
+bandwidth = X
 ## Max % of bandwidth limit for transit. 0-100. 100 by default
 # share = 100
 
