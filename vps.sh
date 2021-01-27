@@ -281,7 +281,7 @@ installredis(){
   cd
   TERM=ansi whiptail --title "安装中" --infobox "安装redis中..." 7 68
   redisver=$(curl -s "https://api.github.com/repos/redis/redis/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-  if [[ -d /usr/share/nginx/nextcloud/ ]]; then
+  if [[ -f /usr/local/bin/redis-server ]]; then
     TERM=ansi whiptail --title "安装中" --infobox "更新redis中..." 7 68
     curl -LO https://github.com/redis/redis/archive/${redisver}.zip
     unzip -o ${redisver}.zip
