@@ -3478,13 +3478,6 @@ TERM=ansi whiptail --title "安装中" --infobox "安装邮件服务中..." 7 68
   adduser postfix opendmarc
   systemctl restart opendmarc
   echo ${domain} > /etc/mailname
-  postproto="ipv4"
-  if [[ -n $myipv6 ]]; then
-    ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
-    if [[ $? -eq 0 ]]; then
-     postproto="all"
-    fi
-  fi
   cat > '/etc/postfix/main.cf' << EOF
 home_mailbox = Maildir/
 smtpd_banner = \$myhostname ESMTP \$mail_name (Debian/GNU)
@@ -3530,7 +3523,7 @@ mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 ${myip}/32
 mailbox_size_limit = 0
 recipient_delimiter = +
 inet_interfaces = all
-inet_protocols = ${postproto}
+inet_protocols = ipv4, ipv6
 message_size_limit = 52428800
 smtpd_helo_required = yes
 disable_vrfy_command = yes
