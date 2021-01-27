@@ -5038,6 +5038,10 @@ advancedMenu() {
     echo "nameserver 1.1.1.1" >> /etc/resolv.conf
     echo "nameserver 1.0.0.1" >> /etc/resolv.conf
     echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+    echo "nameserver 1.1.1.1" >> /etc/resolvconf/resolv.conf.d/base
+    echo "nameserver 1.0.0.1" >> /etc/resolvconf/resolv.conf.d/base
+    echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/base
+    resolvconf -u
     #predefine install options
       check_trojan="on"
       check_dns="off"
