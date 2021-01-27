@@ -1015,6 +1015,7 @@ cd /usr/share/nginx/
 git clone https://github.com/trojan-gfw/trojan-panel.git
 chown -R nginx:nginx /usr/share/nginx/trojan-panel
 cd trojan-panel
+export COMPOSER_ALLOW_SUPERUSER=1
 composer install
 npm install
 npm audit fix
@@ -1044,6 +1045,7 @@ prasejson(){
   "ariapasswd": "$ariapasswd",
   "filepath": "$filepath",
   "check_trojan": "$check_trojan",
+  "check_tjp": "$check_tjp",
   "check_dns": "$check_dns",
   "check_rss": "$check_rss",
   "check_qbt": "$check_qbt",
@@ -1078,6 +1080,7 @@ readconfig(){
   netdatapath="$( jq -r '.netdatapath' "/root/.trojan/config.json" )"
   tor_name="$( jq -r '.tor_name' "/root/.trojan/config.json" )"
   check_trojan="$( jq -r '.check_trojan' "/root/.trojan/config.json" )"
+  check_tjp="$( jq -r '.check_tjp' "/root/.trojan/config.json" )"
   check_dns="$( jq -r '.check_dns' "/root/.trojan/config.json" )"
   check_rss="$( jq -r '.check_rss' "/root/.trojan/config.json" )"
   check_qbt="$( jq -r '.check_qbt' "/root/.trojan/config.json" )"
@@ -1104,6 +1107,7 @@ if [[ ${install_status} == 1 ]]; then
     readconfig
     else
     check_trojan="on"
+    check_tjp="off"
     check_dns="off"
     check_rss="off"
     check_qbt="off"
@@ -1167,6 +1171,9 @@ fi
 if [[ -z ${check_i2p} ]]; then
   check_i2p="off"
 fi
+if [[ -z ${check_tjp} ]]; then
+  check_tjp="off"
+fi
 if [[ -z ${fastopen} ]]; then
   fastopen="on"
 fi
@@ -1174,35 +1181,30 @@ if [[ -z ${stun} ]]; then
   stun="off"
 fi
 
-whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件(Please press space to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 24 65 16 \
+whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 24 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
-"代理" "Proxy" off  \
-"1" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
+"trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
+"net" "Netdata(监测伺服器运行状态)" on \
 "fast" "TCP Fastopen" ${fastopen} \
-"tor" "自建onion网站" ${check_tor} \
+"tjp" "Trojan-panel" ${check_tjp} \
+"nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
+"rss" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
+"mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
+"qbt" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
+"aria" "Aria2下载器" ${check_aria} \
+"file" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
+"speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
+"fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
 "i2p" "自建i2p网站" ${check_i2p} \
+"tor" "自建onion网站" ${check_tor} \
 "stun" "stunserver(用于测试nat类型)" ${stun} \
 "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
-"net" "Netdata(监测伺服器运行状态)" on \
-"2" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
-"下载" "Download" off  \
-"nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
-"3" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
-"4" "Aria2" ${check_aria} \
-"5" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
-"测速" "Speedtest" off  \
-"6" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
-"数据库" "Database" off  \
 "7" "MariaDB数据库" ${check_mariadb} \
 "redis" "Redis缓存数据库" off \
-"安全" "Security" off  \
-"8" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
-"邮件" "Mail" off  \
-"9" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
 "其他" "以下选项请勿选中,除非必要(Others)" off  \
 "port" "自定义Trojan端口(除nat机器外请勿选中)" ${check_qbt_origin} \
-"13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
 "10" "Bt-Tracker(Bittorrent-tracker服务)" ${check_tracker} \
+"13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
 "test-only" "test-only" off 2>results
 
 while read choice
@@ -1212,7 +1214,7 @@ do
     advancedMenu
     break
     ;;
-    1)
+    trojan)
     install_trojan=1
     install_bbr=1
     ;;
@@ -1224,6 +1226,11 @@ do
     ;;
     fast)
     tcp_fastopen="true"
+    ;;
+    tjp)
+    install_tjp=1
+    install_php=1
+    install_mariadb=1
     ;;
     net)
     install_netdata=1
@@ -1237,26 +1244,26 @@ do
     redis)
     install_redis=1
     ;;
-    2)
+    rss)
     check_rss="on"
     install_rsshub=1
     install_redis=1
     install_php=1
     install_mariadb=1
     ;;
-    3)
+    qbt)
     check_qbt="on"
     install_qbt=1
     ;;
-    4)
+    aria)
     check_aria="on"
     install_aria=1
     ;;
-    5)
+    file)
     check_file="on"
     install_file=1
     ;;
-    6)
+    speed)
     check_speed="on"
     install_speedtest=1
     install_php=1
@@ -1265,11 +1272,11 @@ do
     check_mariadb="on"
     install_mariadb=1
     ;;
-    8)
+    fail2ban)
     check_fail2ban="on"
     install_fail2ban=1
     ;;
-    9)
+    mail)
     check_mail="on"
     install_mail=1
     install_php=1
@@ -4128,12 +4135,12 @@ cat > '/etc/nginx/conf.d/nextcloud.conf' << EOF
 EOF
 fi
 if [[ $install_tjp == 1 ]]; then
-echo "    location /${password1}_config/ {" >> /etc/nginx/conf.d/default.conf
+echo "    location /config/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
-echo "        http2_push /${password1}_config/css/app.css;" >> /etc/nginx/conf.d/default.conf
-echo "        http2_push /${password1}_config/js/app.js;" >> /etc/nginx/conf.d/default.conf
+echo "        #http2_push /${password1}_config/css/app.css;" >> /etc/nginx/conf.d/default.conf
+echo "        #http2_push /${password1}_config/js/app.js;" >> /etc/nginx/conf.d/default.conf
 echo "        alias /usr/share/nginx/trojan-panel/public/;" >> /etc/nginx/conf.d/default.conf
 echo "        try_files \$uri \$uri/ @config;" >> /etc/nginx/conf.d/default.conf
 echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
@@ -4144,7 +4151,7 @@ echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/c
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        location @config {" >> /etc/nginx/conf.d/default.conf
-echo "        rewrite /${password1}_config/(.*)\$ /${password1}_config/index.php?/\$1 last;" >> /etc/nginx/conf.d/default.conf
+echo "        rewrite /config/(.*)\$ /config/index.php?/\$1 last;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_mail == 1 ]]; then
@@ -5286,6 +5293,14 @@ echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Nextcloud links) ---"
 echo -e "    \${YELLOW}https://$domain/nextcloud/\${NOCOLOR}"
 echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
+###
+fi
+if [[ -d /usr/share/nginx/trojan-panel/ ]]; then
+echo -e " --- \${BLUE}Trojan-panel快速链接\${NOCOLOR}(Trojan-panel links) ---"
+###
+echo -e "    \${YELLOW}https://$domain/config/\${NOCOLOR}"
+#echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
+#echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 ###
 fi
 if [[ -f /usr/bin/tor ]]; then
