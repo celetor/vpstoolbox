@@ -4154,7 +4154,7 @@ EOF
 fi
 if [[ $install_tjp == 1 ]]; then
 echo "    location /config/ {" >> /etc/nginx/conf.d/default.conf
-echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        expires -1;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
 echo "        #http2_push /${password1}_config/css/app.css;" >> /etc/nginx/conf.d/default.conf
@@ -4162,14 +4162,19 @@ echo "        #http2_push /${password1}_config/js/app.js;" >> /etc/nginx/conf.d/
 echo "        alias /usr/share/nginx/trojan-panel/public/;" >> /etc/nginx/conf.d/default.conf
 echo "        try_files \$uri \$uri/ @config;" >> /etc/nginx/conf.d/default.conf
 echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_split_path_info ^(.+\.php)(/.+)\$;" >> /etc/nginx/conf.d/default.conf
 echo "        include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
+echo "        fastcgi_param HTTPS on;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        location @config {" >> /etc/nginx/conf.d/default.conf
 echo "        rewrite /config/(.*)\$ /config/index.php?/\$1 last;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "    location /config {" >> /etc/nginx/conf.d/default.conf
+echo "        return 301 https://${domain}/config/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_mail == 1 ]]; then

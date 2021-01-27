@@ -30,7 +30,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - Trojan-panel默认不安装,请**手动选中**以执行安装程序。
 - 进入生成的url,**首次注册的用户为管理员(admin)**。
 - 用户需联系管理员(admin)申请流量(**设置为-1为不限流量**)。
-- 客户端配置文件中的密码填写在Panel注册的用户信息："Username:Password"。
+- 客户端配置文件中的密码为用户注册在Panel时填入的：```Username:Password```(**中间的```:```不能漏!**)。
 
 #### Nextcloud优化方法
 
