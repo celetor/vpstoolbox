@@ -183,8 +183,8 @@ installstunserver(){
   git clone https://github.com/jselbie/stunserver
   cd stunserver
   make
-  cp stunserver /usr/sbin
-  cp stunclient /usr/sbin
+  cp -f stunserver /usr/sbin
+  cp -f stunclient /usr/sbin
     cat > '/etc/systemd/system/stunserver.service' << EOF
 [Unit]
 Description=stunserver
@@ -281,6 +281,16 @@ installredis(){
   cd
   TERM=ansi whiptail --title "安装中" --infobox "安装redis中..." 7 68
   redisver=$(curl -s "https://api.github.com/repos/redis/redis/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+  if [[ -d /usr/share/nginx/nextcloud/ ]]; then
+    TERM=ansi whiptail --title "安装中" --infobox "更新redis中..." 7 68
+    curl -LO https://github.com/redis/redis/archive/${redisver}.zip
+    unzip -o ${redisver}.zip
+    rm ${redisver}.zip
+    cd redis-${redisver}
+    apt-get install libsystemd-dev pkg-config -y
+    make USE_SYSTEMD=yes -j $(nproc --all)
+    make install
+  else
   curl -LO https://github.com/redis/redis/archive/${redisver}.zip
   unzip -o ${redisver}.zip
   rm ${redisver}.zip
@@ -346,6 +356,7 @@ WantedBy=multi-user.target
 Alias=redis.service
 EOF
 systemctl daemon-reload
+fi
   cat > '/etc/redis/redis.conf' << EOF
 bind 127.0.0.1 ::1
 protected-mode no
@@ -1331,14 +1342,10 @@ fi
 system_upgrade=1
 if [[ ${system_upgrade} == 1 ]]; then
   if [[ $(lsb_release -cs) == jessie ]]; then
-    if (whiptail --title "System Upgrade" --yesno "Upgrade to Debian 9?(recommended)" 8 68); then
       debian9_install=1
-    fi
   fi
   if [[ $(lsb_release -cs) == xenial ]]; then
-    if (whiptail --title "System Upgrade" --yesno "Upgrade to Ubuntu 18.04(recommended)?" 8 68); then
       ubuntu18_install=1
-    fi
   fi
 fi
 
@@ -2165,7 +2172,7 @@ if [[ $install_qbt == 1 ]]; then
   cd qbt
   qbtver=$(curl -s "https://api.github.com/repos/c0re100/qBittorrent-Enhanced-Edition/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
   wget https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases/download/${qbtver}/qbittorrent-nox_x86_64-linux-musl_static.zip
-  unzip -o qbittorrent-nox_linux_x64_static.zip
+  unzip -o qbittorrent*.zip
   cp -f qbittorrent-nox /usr/bin/
   cd
   rm -rf qbt
