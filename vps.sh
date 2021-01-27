@@ -2722,7 +2722,7 @@ if [[ $(systemctl is-active systemd-resolved) == active ]]; then
   systemctl stop systemd-resolved
   systemctl disable systemd-resolved
   chattr -i /etc/resolvconf.conf
-  echo "nameserver 1.1.1.1" > /etc/resolv.conf
+  echo "nameserver 1.1.1.1" >> /etc/resolv.conf
   echo "nameserver 1.0.0.1" >> /etc/resolv.conf
   echo "nameserver 8.8.8.8" >> /etc/resolv.conf  
 fi
@@ -4906,7 +4906,7 @@ uninstall(){
       systemctl disable dnscrypt-proxy
       rm -rf /usr/sbin/dnscrypt-proxy
       rm /etc/systemd/system/dnscrypt-proxy.service
-      echo "nameserver 1.1.1.1" > /etc/resolv.conf
+      echo "nameserver 1.1.1.1" >> /etc/resolv.conf
       iptables -t nat -F
     fi
   fi
@@ -5035,7 +5035,7 @@ advancedMenu() {
     install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
     if [[ $install_status != 1 ]]; then
     cp /etc/resolv.conf /etc/resolv.conf.bak1
-    echo "nameserver 1.1.1.1" > /etc/resolv.conf
+    echo "nameserver 1.1.1.1" >> /etc/resolv.conf
     echo "nameserver 1.0.0.1" >> /etc/resolv.conf
     echo "nameserver 8.8.8.8" >> /etc/resolv.conf
     #predefine install options
