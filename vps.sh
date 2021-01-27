@@ -419,13 +419,20 @@ installnextcloud(){
   set +e
   TERM=ansi whiptail --title "安装中" --infobox "安装nextcloud中..." 7 68
   apt-get install php7.4-redis -y
+  cd /usr/share/nginx
+  cloudver=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+  cloudver1=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-20)
+  if [[ -d /usr/share/nginx/nextcloud/ ]]; then
+    TERM=ansi whiptail --title "安装中" --infobox "更新nextcloud中..." 7 68
+    wget https://github.com/nextcloud/server/releases/download/${cloudver}/nextcloud-${cloudver1}.zip
+    unzip -o nextcloud*
+    rm nextcloud*.zip
+    cd
+  else
   mysql -u root -e "CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
   mysql -u root -e "create user 'nextcloud'@'localhost' IDENTIFIED BY '${password1}';"
   mysql -u root -e "GRANT ALL PRIVILEGES ON nextcloud.* to nextcloud@'localhost';"
   mysql -u root -e "flush privileges;"
-  cd /usr/share/nginx
-  cloudver=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-  cloudver1=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-20)
   wget https://github.com/nextcloud/server/releases/download/${cloudver}/nextcloud-${cloudver1}.zip
   unzip -o nextcloud*
   rm nextcloud*.zip
@@ -448,12 +455,16 @@ EOF
   chown -R nginx:nginx /usr/share/nginx/
   chown -R nginx:nginx /etc/nginx/
   crontab -l > mycron
-  echo "*/5 * * * * sudo -u nginx php -f /usr/share/nginx/nextcloud/cron.php >> /var/log/nginx/nextcloud.log 2>&1" >> mycron
+  echo "*/5 * * * * sudo -u nginx php -f /usr/share/nginx/nextcloud/cron.php" >> mycron
   crontab mycron
   rm mycron
   chmod +x /usr/share/nginx/nextcloud/occ
+  cd
   #sudo -u nginx ./occ db:add-missing-indices
   #sudo -u nginx ./occ db:convert-filecache-bigint
+fi
+  
+
 }
 
 #Show simple system info 
