@@ -727,9 +727,9 @@ verify = true
 [addressbook]
 ## AddressBook subscription URL for initial setup
 ## Default: inr.i2p at "mainline" I2P Network
-# defaulturl = http://joajgazyztfssty4w2on5oaqksz6tqoxbduy553y34mf4byv6gpq.b32.i2p/export/alive-hosts.txt
+defaulturl = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.i2p/hosts.txt
 ## Optional subscriptions URLs, separated by comma
-# subscriptions = http://inr.i2p/export/alive-hosts.txt,http://stats.i2p/cgi-bin/newhosts.txt,http://rus.i2p/hosts.txt
+subscriptions = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.i2p/alive-hosts.txt,http://stats.i2p/cgi-bin/newhosts.txt,http://rus.i2p/hosts.txt
 
 [limits]
 ## Maximum active transit sessions (default:2500)
