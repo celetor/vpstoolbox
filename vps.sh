@@ -585,7 +585,7 @@ loglevel = error
 ## Enable communication through ipv4
 ipv4 = true
 ## Enable communication through ipv6
-ipv6 = false
+ipv6 = true
 
 ## Network interface to bind to
 # ifname =
@@ -778,12 +778,6 @@ published = true
 ## DO NOT TOUCH that option if you really don't know what are you doing!
 # force = false
 EOF
-if [[ -n $myipv6 ]]; then
-    ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
-    if [[ $? -eq 0 ]]; then
-      sed -i 's/ipv6 = false/ipv6 = true/g' /etc/i2pd/i2pd.conf
-    fi
-fi
     cat > '/etc/i2pd/tunnels.conf.d/mywebsite.conf' << EOF
 [my-website]
 type = http
