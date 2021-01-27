@@ -16,6 +16,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 #### 重要提示:
 1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
 2. Trojan-GFW**不支援Cloudflare CDN**,请勿开启!
+3. Trojan-panel默认不安装,请手动选中以执行安装程序。
 4. **仅支援 [Debian9+](https://www.debian.org/) [Ubuntu16+](https://ubuntu.com/)**
 1. 请 **以root/sudoer身份运行**(sudo -i)
 2. 请 **先[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)一个域名或者使用二级域名** 并 **[完成DNS A解析,即将域名指向IP](https://dnschecker.org/)**(ipv6地址请添加AAAA解析,namesilo最慢需要15min生效)!
@@ -24,6 +25,12 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 2. API申请证书和HTTP申请证书区别不大,推荐HTTP申请(需A解析生效),无需输入API等信息。
 4. 如安装失败请自行加入TG群组反馈或者开issue,但请**务必附上错误的步骤，截图，OS版本等信息**。
 5. 证书续签目前使用crontab,如有问题,欢迎反馈 !
+
+#### Trojan-panel使用方法
+
+- 进入生成的url,**首次注册的用户为管理员(admin)**。
+- 用户需联系管理员(admin)申请流量。
+- 客户端配置文件中的密码填写在Panel注册的用户信息："Username:Password"。
 
 #### Nextcloud优化方法
 
