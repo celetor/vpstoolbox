@@ -92,6 +92,9 @@ install_nodejs=1
 install_trojan=1
 trojanport="443"
 
+#predefined env,do not change!!!
+export COMPOSER_ALLOW_SUPERUSER=1
+
 if [[ -d /usr/local/qcloud ]]; then
   #disable tencent cloud process
   rm -rf /usr/local/sa
@@ -474,8 +477,6 @@ EOF
   #sudo -u nginx ./occ db:add-missing-indices
   #sudo -u nginx ./occ db:convert-filecache-bigint
 fi
-  
-
 }
 
 #Show simple system info 
@@ -1031,7 +1032,6 @@ cd /usr/share/nginx/
 git clone https://github.com/trojan-gfw/trojan-panel.git
 chown -R nginx:nginx /usr/share/nginx/trojan-panel
 cd trojan-panel
-export COMPOSER_ALLOW_SUPERUSER=1
 composer install
 npm install
 npm audit fix
@@ -3523,22 +3523,24 @@ smtpd_helo_required = yes
 disable_vrfy_command = yes
 policyd-spf_time_limit = 3600
 smtpd_helo_restrictions = permit_mynetworks permit_sasl_authenticated reject_non_fqdn_helo_hostname reject_invalid_helo_hostname reject_unknown_helo_hostname
-smtpd_sender_restrictions = permit_mynetworks permit_sasl_authenticated reject_unknown_sender_domain reject_unknown_reverse_client_hostname reject_unknown_client_hostname
+smtpd_sender_restrictions = permit_mynetworks permit_sasl_authenticated reject_unknown_sender_domain reject_unknown_client_hostname
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-smtpd_recipient_restrictions =
-   permit_mynetworks,
-   permit_sasl_authenticated,
-   reject_unauth_destination,
-   check_policy_service unix:private/policyd-spf
+smtpd_recipient_restrictions = permit_mynetworks,permit_sasl_authenticated,reject_unauth_destination,check_policy_service unix:private/policyd-spf
 milter_default_action = accept
 milter_protocol = 6
-smtpd_milters = inet:127.0.0.1:12301,local:opendmarc/opendmarc.sock,local:spamass/spamass.sock
-non_smtpd_milters = inet:127.0.0.1:12301,local:opendmarc/opendmarc.sock,local:spamass/spamass.sock
+smtpd_milters = local:opendkim/opendkim.sock,local:opendmarc/opendmarc.sock,local:spamass/spamass.sock
+non_smtpd_milters = local:opendkim/opendkim.sock,local:opendmarc/opendmarc.sock,local:spamass/spamass.sock
 smtp_header_checks = regexp:/etc/postfix/smtp_header_checks
 mailbox_transport = lmtp:unix:private/dovecot-lmtp
 smtputf8_enable = no
 tls_ssl_options = no_ticket, no_compression
 tls_preempt_cipherlist = yes
+postscreen_access_list = permit_mynetworks cidr:/etc/postfix/postscreen_access.cidr
+postscreen_blacklist_action = drop
+EOF
+  cat > '/etc/postfix/postscreen_access.cidr' << EOF
+#permit my own IP addresses.
+${myip}/32             permit
 EOF
   cat > '/etc/aliases' << EOF
 # See man 5 aliases for format
@@ -3558,10 +3560,10 @@ EOF
 #               (yes)   (yes)   (no)    (never) (100)
 # ==========================================================================
 smtp      inet  n       -       y       -       -       smtpd
-#smtp      inet  n       -       y       -       1       postscreen
-#smtpd     pass  -       -       y       -       -       smtpd
-#dnsblog   unix  -       -       y       -       0       dnsblog
-#tlsproxy  unix  -       -       y       -       0       tlsproxy
+smtp      inet  n       -       y       -       1       postscreen
+smtpd     pass  -       -       y       -       -       smtpd
+dnsblog   unix  -       -       y       -       0       dnsblog
+tlsproxy  unix  -       -       y       -       0       tlsproxy
 submission inet n       -       y       -       -       smtpd
   -o syslog_name=postfix/submission
   -o smtpd_tls_security_level=encrypt
@@ -3700,7 +3702,7 @@ sed -i 's/CRON=0/CRON=1/' /etc/default/spamassassin
 OPTIONS="-u spamass-milter -i 127.0.0.1"
 
 # Reject emails with spamassassin scores > 15.
-#OPTIONS="\${OPTIONS} -r 15"
+OPTIONS="\${OPTIONS} -r 8"
 
 # Do not modify Subject:, Content-Type: or body.
 #OPTIONS="\${OPTIONS} -m"
@@ -3718,30 +3720,45 @@ EOF
 systemctl enable spamassassin
 systemctl restart spamassassin
 cd /usr/share/nginx/
-rm -rf /usr/share/nginx/roundcubemail
 mailver=$(curl -s "https://api.github.com/repos/roundcube/roundcubemail/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-wget --no-check-certificate https://github.com/roundcube/roundcubemail/releases/download/${mailver}/roundcubemail-${mailver}-complete.tar.gz
-tar -xvf roundcubemail-${mailver}-complete.tar.gz
-rm -rf roundcubemail-${mailver}-complete.tar.gz
-mv /usr/share/nginx/roundcubemail*/ /usr/share/nginx/roundcubemail/
-chown -R nginx:nginx /usr/share/nginx/roundcubemail/
-cd /usr/share/nginx/roundcubemail/
-curl -s https://getcomposer.org/installer | php
-cp -f composer.json-dist composer.json
-php composer.phar install --no-dev
-cd
-mysql -u root -e "CREATE DATABASE roundcubemail DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql -u root -e "CREATE USER roundcube@localhost IDENTIFIED BY '${password1}';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost;"
-mysql -u root -e "flush privileges;"
-mysql -u roundcube -p"${password1}" -D roundcubemail < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
-deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
+if [[ -d /usr/share/nginx/roundcubemail ]]; then
+    TERM=ansi whiptail --title "安装中" --infobox "更新roundcube中..." 7 68
+    wget --no-check-certificate https://github.com/roundcube/roundcubemail/releases/download/${mailver}/roundcubemail-${mailver}-complete.tar.gz
+    tar -xvf roundcubemail*.tar.gz
+    rm -rf roundcubemail*.tar.gz
+    cd /usr/share/nginx/roundcubemail-1.*/bin/
+    ./installto.sh /usr/share/nginx/roundcubemail
+    cd /usr/share/nginx/
+    rm -rf /usr/share/nginx/roundcubemail-1.*
+    cd /usr/share/nginx/roundcubemail
+    php /usr/local/bin/composer update --no-dev
+    chown -R nginx:nginx /usr/share/nginx/roundcubemail/
+    rm -rf /usr/share/nginx/roundcubemail/installer/
+  else
+    wget --no-check-certificate https://github.com/roundcube/roundcubemail/releases/download/${mailver}/roundcubemail-${mailver}-complete.tar.gz
+    tar -xvf roundcubemail-${mailver}-complete.tar.gz
+    rm -rf roundcubemail-${mailver}-complete.tar.gz
+    mv /usr/share/nginx/roundcubemail*/ /usr/share/nginx/roundcubemail/
+    chown -R nginx:nginx /usr/share/nginx/roundcubemail/
+    cd /usr/share/nginx/roundcubemail/
+    curl -s https://getcomposer.org/installer | php
+    cp -f composer.json-dist composer.json
+    php /usr/local/bin/composer update --no-dev
+    rm -rf /usr/share/nginx/roundcubemail/installer/
+    cd
+    mysql -u root -e "CREATE DATABASE roundcubemail DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    mysql -u root -e "CREATE USER roundcube@localhost IDENTIFIED BY '${password1}';"
+    mysql -u root -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost;"
+    mysql -u root -e "flush privileges;"
+    mysql -u roundcube -p"${password1}" -D roundcubemail < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql  
+fi
 mkdir /usr/share/nginx/pgp/
+deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
   cat > '/usr/share/nginx/roundcubemail/config/config.inc.php' << EOF
 <?php
 
 \$config['language'] = 'zh_TW';
-\$config['db_dsnw'] = 'mysql://roundcube:${password1}@127.0.0.1/roundcubemail';
+\$config['db_dsnw'] = 'mysql://roundcube:${password1}@unix(/run/mysqld/mysqld.sock)/roundcubemail';
 \$config['default_host'] = '${domain}';
 \$config['default_port'] = 143;
 \$config['smtp_server'] = '127.0.0.1';
@@ -3766,7 +3783,6 @@ mkdir /usr/share/nginx/pgp/
 \$config['enigma_decryption'] = true;
 \$config['enigma_sign_all'] = true;
 EOF
-rm -rf /usr/share/nginx/roundcubemail/installer/
 useradd -m -s /sbin/nologin ${mailuser}
 echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
@@ -3782,7 +3798,7 @@ AutoRestartRate     10/1M
 Background          yes
 DNSTimeout          5
 SignatureAlgorithm  rsa-sha256
-Socket                  inet:12301@127.0.0.1
+Socket    local:/var/spool/postfix/opendkim/opendkim.sock
 PidFile               /var/run/opendkim/opendkim.pid
 OversignHeaders   From
 TrustAnchorFile       /usr/share/dns/root.key
@@ -3795,7 +3811,7 @@ Nameservers 127.0.0.1
 EOF
   cat > '/etc/default/opendkim' << EOF
 RUNDIR=/var/run/opendkim
-SOCKET="inet:12301@127.0.0.1"
+SOCKET="local:/var/spool/postfix/opendkim/opendkim.sock"
 USER=opendkim
 GROUP=opendkim
 PIDFILE=\$RUNDIR/\$NAME.pid
@@ -3823,6 +3839,7 @@ mkdir /var/spool/postfix/opendkim/
 chown opendkim:postfix /var/spool/postfix/opendkim
 systemctl restart opendkim
 usermod -a -G dovecot netdata
+usermod -a -G mail postfix
 fi
   cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
 auth_username_format = %Ln
@@ -3955,7 +3972,7 @@ EOF
   cat > '/etc/dovecot/conf.d/20-lmtp.conf' << EOF
 protocol lmtp {
   # Space separated list of plugins to load (default is global mail_plugins).
-  mail_plugins = \$mail_plugins sieve
+  mail_plugins = \$mail_plugins quota sieve
 }
 EOF
   cat > '/etc/dovecot/conf.d/90-sieve.conf' << EOF
