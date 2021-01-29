@@ -118,11 +118,11 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 #### How to use Trojan-panel
 
--Trojan-panel is not installed by default, please **manually select** to execute the installer.
--Enter the generated url, **The user who registered for the first time is the administrator (admin)**.
--Users need to contact the administrator (admin) to apply for traffic (**Set to -1 for unlimited traffic**).
--The password in the client configuration file is filled in when the user registers in the Panel: ```Username:Password``` (**The middle ```:``` can't be missed!**).
--If the error ```File not found. ``` appears, just refresh the page.
+- Trojan-panel is not installed by default, please **manually select** to execute the installer.
+- Enter the generated url, **The user who registered for the first time is the administrator (admin)**.
+- Users need to contact the administrator (admin) to apply for traffic (**Set to -1 for unlimited traffic**).
+- The password in the client configuration file is filled in when the user registers in the Panel: ```Username:Password``` (**The middle ```:``` can't be missed!**).
+- If the error ```File not found. ``` appears, just refresh the page.
 
 ---
 
