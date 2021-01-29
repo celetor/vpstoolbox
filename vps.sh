@@ -4010,6 +4010,7 @@ echo "bantime = 1200" >> /etc/fail2ban/jail.conf
 fi
 systemctl restart fail2ban
 sievec /var/mail/SpamToJunk.sieve
+chown -R mail:mail /var/mail/*
 systemctl restart postfix dovecot
 fi
 clear
