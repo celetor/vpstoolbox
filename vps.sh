@@ -2168,6 +2168,7 @@ if [[ $install_qbt == 1 ]]; then
   wget https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases/download/${qbtver}/qbittorrent-nox_x86_64-linux-musl_static.zip
   unzip -o qbittorrent*.zip
   cp -f qbittorrent-nox /usr/bin/
+  chmod +x /usr/bin/qbittorrent-nox
   cd
   rm -rf qbt
   cat > '/etc/systemd/system/qbittorrent.service' << EOF
