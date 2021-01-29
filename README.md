@@ -31,7 +31,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - 进入生成的url,**首次注册的用户为管理员(admin)**。
 - 用户需联系管理员(admin)申请流量(**设置为-1为不限流量**)。
 - 客户端配置文件中的密码为用户注册在Panel时填入的：```Username:Password```(**中间的```:```不能漏!**)。
-- 若出现```File not found. ```错误,刷新即可。
+- 若出现```File not found. ```错误,刷新页面即可。
 
 #### Nextcloud优化方法
 
@@ -76,7 +76,6 @@ systemctl restart php7.4-fpm
 1. 此项目使用MIT开源协议，**欢迎PR**.
 2. 所有ip信息皆来自ipinfo.io,仅用于显示结果，无其他作用。
 3. 项目Demo倒闭了,请自行搭建,谢谢!
-4. 请勿提出任何关于Vultr的issue或者问题,那个垃圾厂商出的问题与本项目无关!
 
 #### 项目特性:
 
@@ -116,6 +115,16 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 3. Trojan-GFW **does not support Cloudflare CDN**,please do not enable!
 2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)**(A for ipv4,AAAA for ipv6) before running this program!
 3. Please **turn off your firewall for best performance(full-cone nat) and turn off Cloudflare CDN** in your control panel before running this program!
+
+#### How to use Trojan-panel
+
+-Trojan-panel is not installed by default, please **manually select** to execute the installer.
+-Enter the generated url, **The user who registered for the first time is the administrator (admin)**.
+-Users need to contact the administrator (admin) to apply for traffic (**Set to -1 for unlimited traffic**).
+-The password in the client configuration file is filled in when the user registers in the Panel: ```Username:Password``` (**The middle ```:``` can't be missed!**).
+-If the error ```File not found. ``` appears, just refresh the page.
+
+---
 
 Flowchart:
 ![flowchart](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flowchart.png)
