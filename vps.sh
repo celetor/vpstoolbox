@@ -91,6 +91,7 @@ install_bbr=1
 install_nodejs=1
 install_trojan=1
 trojanport="443"
+tcp_fastopen="false"
 
 #predefined env,do not change!!!
 export COMPOSER_ALLOW_SUPERUSER=1
