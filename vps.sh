@@ -2027,7 +2027,13 @@ EOF
 systemctl enable rsshub
 
 cd /usr/share/nginx/
-git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
+if [[ -d /usr/share/nginx/tt-rss/ ]]; then
+    TERM=ansi whiptail --title "安装中" --infobox "更新tt-rss中..." 7 68
+    cd /usr/share/nginx/tt-rss/
+    git pull
+  else
+    TERM=ansi whiptail --title "安装中" --infobox "安装tt-rss中..." 7 68
+    git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
   cat > '/usr/share/nginx/tt-rss/config.php' << EOF
 <?php
   // *******************************************
@@ -2136,6 +2142,7 @@ git clone https://github.com/levito/tt-rss-feedly-theme.git feedly
 cd /usr/share/nginx/themes/feedly/
 cp -r feedly* /usr/share/nginx/tt-rss/themes.local
 cd
+  fi
 fi
 
 if [[ ${install_fail2ban} == 1 ]]; then
@@ -5351,7 +5358,7 @@ EOF
     clear
     echo "" > /etc/motd
     echo "Install complete!"
-    whiptail --title "Success" --msgbox "安装成功(Install Success)" 8 68
+    whiptail --title "Success" --msgbox "安装成功(Install Success),欢迎使用VPSTOOLBOX !" 8 68
     bash /etc/profile.d/mymotd.sh
     exit 0
     ;;
