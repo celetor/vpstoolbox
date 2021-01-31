@@ -1998,9 +1998,12 @@ if [[ -d /usr/share/nginx/RSSHub ]]; then
     TERM=ansi whiptail --title "安装中" --infobox "更新rsshub中..." 7 68
     cd /usr/share/nginx/RSSHub
     git pull
+    npm update
+    npm install --production
   else
     git clone https://github.com/DIYgod/RSSHub.git
     cd /usr/share/nginx/RSSHub
+    npm update
     npm install --production
     touch .env
 cat > '.env' << EOF
