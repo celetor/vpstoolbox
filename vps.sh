@@ -1248,6 +1248,7 @@ do
     install_tjp=1
     install_php=1
     install_mariadb=1
+    install_redis=1
     ;;
     net)
     install_netdata=1
