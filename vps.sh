@@ -1040,6 +1040,7 @@ cp .env.example .env
 php artisan key:generate
 sed -i "s/example.com/${domain}/;" /usr/share/nginx/trojan-panel/.env
 sed -i "s/DB_PASSWORD=/DB_PASSWORD=${password1}/;" /usr/share/nginx/trojan-panel/.env
+#sed -i "s/MAIL_PORT=2525/MAIL_PORT=25/;" /usr/share/nginx/trojan-panel/.env
 clear
 php artisan migrate --force
 chown -R nginx:nginx /usr/share/nginx/
@@ -3867,10 +3868,9 @@ auth_mechanisms = plain
 !include auth-system.conf.ext
 EOF
   cat > '/etc/dovecot/conf.d/10-ssl.conf' << EOF
-ssl = yes
+ssl = required
 ssl_cert = </etc/certs/${domain}_ecc/fullchain.cer
 ssl_key = </etc/certs/${domain}_ecc/${domain}.key
-#ssl_dh = </usr/local/etc/trojan/dh.pem
 #ssl_cipher_list = ${cipher_server}
 ssl_min_protocol = TLSv1.2
 ssl_prefer_server_ciphers = yes
