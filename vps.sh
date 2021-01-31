@@ -1994,10 +1994,15 @@ fi
 
 if [[ ${install_rsshub} == 1 ]]; then
 cd /usr/share/nginx/
-git clone https://github.com/DIYgod/RSSHub.git
-cd /usr/share/nginx/RSSHub
-npm install --production
-touch .env
+if [[ -d /usr/share/nginx/RSSHub ]]; then
+    TERM=ansi whiptail --title "安装中" --infobox "更新nextcloud中..." 7 68
+    cd /usr/share/nginx/RSSHub
+    git pull
+  else
+    git clone https://github.com/DIYgod/RSSHub.git
+    cd /usr/share/nginx/RSSHub
+    npm install --production
+    touch .env
 cat > '.env' << EOF
 CACHE_TYPE=redis
 #REDIS_URL=redis://127.0.0.1:6379/
@@ -2026,6 +2031,7 @@ Group=root
 WantedBy=multi-user.target
 EOF
 systemctl enable rsshub
+fi
 
 cd /usr/share/nginx/
 if [[ -d /usr/share/nginx/tt-rss/ ]]; then
