@@ -1995,7 +1995,7 @@ fi
 if [[ ${install_rsshub} == 1 ]]; then
 cd /usr/share/nginx/
 if [[ -d /usr/share/nginx/RSSHub ]]; then
-    TERM=ansi whiptail --title "安装中" --infobox "更新nextcloud中..." 7 68
+    TERM=ansi whiptail --title "安装中" --infobox "更新rsshub中..." 7 68
     cd /usr/share/nginx/RSSHub
     git pull
   else
