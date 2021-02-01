@@ -3514,7 +3514,7 @@ smtp_dns_support_level=dnssec
 smtp_host_lookup = native
 smtp_tls_loglevel = 1
 smtp_tls_security_level = dane
-smtp_tls_mandatory_exclude_ciphers = aNULL
+smtp_tls_mandatory_exclude_ciphers = aNULL, ECDHE-ECDSA-AES256-SHA384, ECDHE-ECDSA-AES128-SHA256, ECDHE-ECDSA-CAMELLIA256-SHA384, ECDHE-ECDSA-AES256-SHA, ECDHE-ECDSA-CAMELLIA128-SHA256, ECDHE-ECDSA-AES128-SHA
 smtp_tls_connection_reuse = no
 smtp_tls_eccert_file = /etc/certs/${domain}_ecc/fullchain.cer
 smtp_tls_eckey_file = /etc/certs/${domain}_ecc/${domain}.key
@@ -3555,6 +3555,7 @@ mailbox_transport = lmtp:unix:private/dovecot-lmtp
 smtputf8_enable = no
 tls_ssl_options = no_ticket, no_compression
 tls_preempt_cipherlist = yes
+smtpd_tls_auth_only = no
 postscreen_access_list = permit_mynetworks cidr:/etc/postfix/postscreen_access.cidr
 postscreen_blacklist_action = drop
 EOF
@@ -5513,6 +5514,7 @@ net.ipv4.neigh.default.gc_thresh1=2048
 net.ipv6.neigh.default.gc_thresh3=8192
 net.ipv6.neigh.default.gc_thresh2=4096
 net.ipv6.neigh.default.gc_thresh1=2048
+net.ipv4.tcp_max_syn_backlog = 262144
 net.netfilter.nf_conntrack_max = 262144
 net.nf_conntrack_max = 262144
 EOF
