@@ -1,39 +1,109 @@
-![logo](https://raw.githubusercontent.com/johnrosen1/trojan-gfw-script/master/logo.png)
-
-# VPSTOOLBOX
-
-**一键安装Trojan-GFW代理,Hexo博客,Nextcloud等應用程式**。
+# ![VPSToolBox](logo.png)
 
 [![Gitter](https://badges.gitter.im/vpstoolbox/community.svg)](https://gitter.im/vpstoolbox/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Join our Discord server!](https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gg/y5KUxfYZ)
 [TG群组](https://t.me/vpstoolbox_chat)
 
-## 使用方法(請以root/sudo用戶運行,仅推荐Debian10系统)
-```
+一键安装Trojan-GFW代理,Hexo博客,Nextcloud等應用程式。
+
+## 安装
+
+```bash
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 ```
 
-#### 重要提示:
+> 注: 仅推荐**Debian10**系统。
+
+## 使用
+
+1. 请以 **root/sudoer** 身份运行(sudo -i)
+2. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成DNS A解析](https://dnschecker.org/)**,即将域名指向你的VPS IP,(ipv6地址请添加AAAA解析,namesilo最慢需要15min生效)!
+3. 请在VPS控制面板中 **完全关闭VPS防火墙(即开放所有端口)**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 **关闭 Cloudflare CDN** !
+4. API申请证书和HTTP申请证书区别不大,推荐HTTP申请(需A解析生效),无需输入API等信息。
+
+## 支援的软件
+
+> 打勾的为启用默认安装的,其余请手动选中以安装。
+
+- [x] [Trojan-gfw](https://github.com/trojan-gfw/trojan)
+- [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
+- [x] [Nginx](https://github.com/nginx/nginx)
+- [x] [Hexo Blog](https://github.com/hexojs/hexo)
+- [x] [Netdata](https://github.com/netdata/netdata)
+- [x] [Tcp-BBR and tcp_fastopen](https://zh.wikipedia.org/wiki/TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6#TCP_BBR)
+- [x] [IPv6](https://zh.wikipedia.org/wiki/IPv6)
+- [ ] [Trojan-panel](https://github.com/trojan-gfw/trojan-panel)
+- [ ] [Nextcloud](https://github.com/nextcloud/server)
+- [ ] [RSSHub](https://github.com/DIYgod/RSSHub) + [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)
+- [ ] Mail Service
+- [ ] [Qbittorrent_enhanced_version](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
+- [ ] [Aria2](https://github.com/aria2/aria2)
+- [ ] [Filebrowser](https://github.com/filebrowser/filebrowser)
+- [ ] [Opentracker](https://erdgeist.org/arts/software/opentracker/)
+- [ ] [Librespeed](https://github.com/librespeed/speedtest)
+- [ ] [Fail2ban](https://github.com/fail2ban/fail2ban)
+- [ ] [i2pd](https://github.com/PurpleI2P/i2pd)
+- [ ] [Tor](https://www.torproject.org/)
+- [ ] [stun-server](https://github.com/jselbie/stunserver)
+- [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
+- [ ] [MariaDB](https://github.com/MariaDB/server)
+- [ ] [Redis-server](https://github.com/redis/redis)
+- [ ] Non standard https port support
+- [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
+
+> 欢迎PR/issue更多软件。
+
+## 支援的Linux发行版
+
+> 打勾的为测试过的,保证可用性,未打勾的表示理论上支援但未测试。
+
+- [x] Debian10
+- [ ] Debian9
+- [ ] Debian8
+- [ ] Ubuntu 20.xx
+- [ ] Ubuntu 18.xx
+- [ ] Ubuntu 16.xx
+
+## 项目实现
+
+使用```100% bash shell```实现。
+
+## 重要提示
+
 1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
 2. Trojan-GFW**不支援Cloudflare CDN**,请勿开启!
-4. **仅支援 [Debian9+](https://www.debian.org/) [Ubuntu16+](https://ubuntu.com/)**
-1. 请 **以root/sudoer身份运行**(sudo -i)
-2. 请 **先[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)一个域名或者使用二级域名** 并 **[完成DNS A解析,即将域名指向IP](https://dnschecker.org/)**(ipv6地址请添加AAAA解析,namesilo最慢需要15min生效)!
-3. 请在控制面板中 **完全关闭VPS防火墙(即开放所有端口)**(Trojan-gfw支援fullcone-nat但需服务器开启所有端口才能使用) 并 ***关闭 Cloudflare 之类的 CDN !***
-4. 除Trojan-gfw相關軟件外皆為可選項，請自行選擇需要的軟件。
-2. API申请证书和HTTP申请证书区别不大,推荐HTTP申请(需A解析生效),无需输入API等信息。
-4. 如安装失败请自行加入TG群组反馈或者开issue,但请**务必附上错误的步骤，截图，OS版本等信息**。
-5. 证书续签目前使用crontab,如有问题,欢迎反馈 !
+3. 证书续签目前使用crontab,如有问题,欢迎反馈 !
+4. 本项目不对Vultr机器造成的任何问题负责,this project does not responsible for any problems caused by vultr machines !
 
-#### Trojan-panel使用方法
+## Bug反馈以及Feature request
+
+- [x] [Github Issue](https://github.com/johnrosen1/vpstoolbox/issues)
+- [x] [TG群组](https://t.me/vpstoolbox_chat)
+- [x] [TG私聊](https://t.me/johnrosen)
+
+注： 
+
+1. 其他的反馈方式我大概率看不见。
+2. 除非你有能说服我的理由或者直接提pr,否则**不接受代理软件支援请求**(比如wireguard之类的)。
+3. 无论发生什么请**务必附上复现错误的步骤，截图，OS发行版等信息**,否则我不可能能够提供任何帮助。
+4. **私聊请直奔主题**,请勿询问 *域名怎么买?* 这种小白向问题,大家的时间都是有限的,谢谢配合。
+
+## Code Quality
+
+本项目我个人从学习bash开始就写起的项目,可能有诸多不合理之处,不建议作为直接教材学习。
+
+## Trojan-panel使用方法
 
 - Trojan-panel默认不安装,请**手动选中**以执行安装程序。
 - 进入生成的url,**首次注册的用户为管理员(admin)**。
 - 用户需联系管理员(admin)申请流量(**设置为-1为不限流量**)。
 - 客户端配置文件中的密码为用户注册在Panel时填入的：```Username:Password```(**中间的```:```不能漏!**)。
 - 若出现```File not found. ```错误,刷新页面即可。
+- 更多请看[Trojan-panel使用方法](https://johnrosen1.com/2021/02/01/trojan-panel/)
 
-#### Nextcloud优化方法
+## Nextcloud优化方法
+
+> 由于Nextcloud自身限制,无法全自动添加redis配置,请手动配置。
 
 1. 开启Memcache
 在```/usr/share/nginx/nextcloud/config/config.php```中添加以下几行(请添加在中间，非开头或末尾)
@@ -71,91 +141,31 @@ Nextcloud设定-->基本设定-->改为cron(伺服器端已配置完成，无需
 systemctl restart php7.4-fpm
 ```
 
-#### 隐私声明:
-
-1. 此项目使用MIT开源协议，**欢迎PR**.
-2. 所有ip信息皆来自ipinfo.io,仅用于显示结果，无其他作用。
-3. 项目Demo倒闭了,请自行搭建,谢谢!
-
-#### 项目特性:
-
-1. 全自动安装并配置 **[NGINX](https://www.nginx.com/) 以及 Hexo**
-2. 支援所有种类的虚拟化技术，包括bare mental,kvm openvz等
-20. 支援全自动安装并配置 **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent增强版](https://github.com/c0re100/qBittorrent-Enhanced-Edition) [Bittorrent-Tracker](https://erdgeist.org/arts/software/opentracker/) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [Speedtest](https://github.com/librespeed/speedtest) [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) Postfix Dovecot Roundcube-Webmail等**
-3. 全自动签发,续签,重启服务 [let's encrypt 证书](https://letsencrypt.org/)
-17. [完整的IPV6支援](https://en.wikipedia.org/wiki/IPv6)
-17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
-18. [全自动时间较准](https://www.freedesktop.org/software/systemd/man/timedatectl.html)
-19. 全自动服务掉线重启(systemd auto-failrestart)
-20. 全自动检测并卸载阿里云监控
-9.  支援 [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks)
-23. 支援完全/部分卸载
-24. And so on...
-
-#### 如果此项目对你有用 , 请给颗star ,谢谢!
-
-* * *
-
-# VPSTOOLBOX
-
-One click install Trojan-gfw Hexo Nextcloud and so on.
-
-[![Gitter](https://badges.gitter.im/vpstoolbox/community.svg)](https://gitter.im/vpstoolbox/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Join our Discord server!](https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gg/y5KUxfYZ)
-[Chat on Telegram](https://t.me/vpstoolbox_chat)
-
-## How to use
-```
-apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
-```
-
-#### Important Reminder:
-4. **Support [Debian8+](https://www.debian.org/) [Ubuntu14+](https://ubuntu.com/)**
-1. Please **Run as root**(sudo -i)
-3. Trojan-GFW **does not support Cloudflare CDN**,please do not enable!
-2. Please **[Purchase a domain](https://www.namesilo.com/?rid=685fb47qi)** and **[finish a dns resolve](https://dnschecker.org/)**(A for ipv4,AAAA for ipv6) before running this program!
-3. Please **turn off your firewall for best performance(full-cone nat) and turn off Cloudflare CDN** in your control panel before running this program!
-
-#### How to use Trojan-panel
-
-- Trojan-panel is not installed by default, please **manually select** to execute the installer.
-- Enter the generated url, **The user who registered for the first time is the administrator (admin)**.
-- Users need to contact the administrator (admin) to apply for traffic (**Set to -1 for unlimited traffic**).
-- The password in the client configuration file is filled in when the user registers in the Panel: ```Username:Password``` (**The middle ```:``` can't be missed!**).
-- If the error ```File not found. ``` appears, just refresh the page.
-
----
-
-Flowchart:
-![flowchart](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flowchart.png)
-
-#### Privacy Statement:
-
-Ip Information is just an indispensable part of this project, all ip information comes from ipinfo.io,no spam related.
-
-#### Features:
-
-1. Auto install and config **[NGINX](https://www.nginx.com/)**
-2. Support all kinds of virtualization including kvm openvz and so on.
-20. Support Auto install and config **[Trojan-GFW](https://github.com/trojan-gfw/trojan) [Hexo](https://hexo.io/zh-tw/docs/) [Dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) [Qbittorrent](https://www.qbittorrent.org/) [Bittorrent-Tracker](https://github.com/webtorrent/bittorrent-tracker) [Aria2](https://github.com/aria2/aria2) [Filebrowser](https://github.com/filebrowser/filebrowser) [Netdata](https://github.com/netdata/netdata) [MariaDB](https://mariadb.org/) [PHP](https://www.php.net/) RSSHUB [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss) Fail2ban [TOR](https://famicoman.com/2018/01/03/configuring-and-monitoring-a-tor-middle-relay/) [Speedtest](https://github.com/librespeed/speedtest) Postfix Dovecot Roundcube-Webmail**
-3. Auto issue and renew [let's encrypt certificate](https://letsencrypt.org/) and auto reload Trojan-GFW after renewal
-17. [Full IPv6 Support](https://en.wikipedia.org/wiki/IPv6)
-17. [Full HTTP/2 Support](https://en.wikipedia.org/wiki/HTTP/2)
-18. [time sync](https://www.freedesktop.org/software/systemd/man/timedatectl.html)
-19. Fail Restart
-20. uninstall Aliyun Aegis
-9.  Support [TCP Turbo](https://github.com/shadowsocks/shadowsocks/wiki/Optimizing-Shadowsocks)
-23. Support Full/Part Uninstall
-24. And so on...
-
-#### If you found it useful , please give a star ,thanks!
-
-#### License
-
-[MIT](https://github.com/johnrosen1/vpstoolbox/blob/master/LICENSE)
-
-#### 本项目不对Vultr机器造成的任何问题负责,this project does not responsible for any problems caused by vulrt machines !
-
-## Stargazers over time
+## 如果本项目帮助到了你,请给颗star并帮忙推广,谢谢!
 
 [![Stargazers over time](https://starchart.cc/johnrosen1/vpstoolbox.svg)](https://starchart.cc/johnrosen1/vpstoolbox)
+
+## 執照
+
+MIT License
+
+Copyright (c) 2019-2021 johnrosen1
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
