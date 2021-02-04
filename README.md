@@ -23,33 +23,45 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 ## 支援的软件
 
-> 打勾的为启用默认安装的,其余请手动选中以安装。
+> 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅为参考。
 
-- [x] [Trojan-gfw](https://github.com/trojan-gfw/trojan)
-- [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
-- [x] [Nginx](https://github.com/nginx/nginx)
-- [x] [Hexo Blog](https://github.com/hexojs/hexo)
-- [x] [Netdata](https://github.com/netdata/netdata)
-- [x] [Tcp-BBR and tcp_fastopen](https://zh.wikipedia.org/wiki/TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6#TCP_BBR)
-- [x] [IPv6](https://zh.wikipedia.org/wiki/IPv6)
-- [ ] [Trojan-panel](https://github.com/trojan-gfw/trojan-panel)
-- [ ] [Nextcloud](https://github.com/nextcloud/server)
-- [ ] [RSSHub](https://github.com/DIYgod/RSSHub) + [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)
-- [ ] Mail Service
-- [ ] [Qbittorrent_enhanced_version](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
-- [ ] [Aria2](https://github.com/aria2/aria2)
-- [ ] [Filebrowser](https://github.com/filebrowser/filebrowser)
-- [ ] [Opentracker](https://erdgeist.org/arts/software/opentracker/)
-- [ ] [Librespeed](https://github.com/librespeed/speedtest)
-- [ ] [Fail2ban](https://github.com/fail2ban/fail2ban)
-- [ ] [i2pd](https://github.com/PurpleI2P/i2pd)
-- [ ] [Tor](https://www.torproject.org/)
-- [ ] [stun-server](https://github.com/jselbie/stunserver)
-- [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
-- [ ] [MariaDB](https://github.com/MariaDB/server)
-- [ ] [Redis-server](https://github.com/redis/redis)
-- [ ] Non standard https port support
-- [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
+- 代理
+  - [x] [Trojan-gfw](https://github.com/trojan-gfw/trojan)
+  - [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
+  - [ ] [Trojan-panel](https://github.com/trojan-gfw/trojan-panel)
+- 系统
+  - [x] [IPv6](https://zh.wikipedia.org/wiki/IPv6)
+  - [x] [Tcp-BBR and tcp_fastopen](https://zh.wikipedia.org/wiki/TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6#TCP_BBR)
+  - [x] [Netdata](https://github.com/netdata/netdata)
+- 博客
+  - [x] [Nginx](https://github.com/nginx/nginx)
+  - [x] [Hexo Blog](https://github.com/hexojs/hexo)
+- 下载
+  - [ ] [Qbittorrent_enhanced_version](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
+  - [ ] [Aria2](https://github.com/aria2/aria2)
+  - [ ] [Filebrowser](https://github.com/filebrowser/filebrowser)
+- 网盘
+  - [ ] [Nextcloud](https://github.com/nextcloud/server)
+- RSS
+  - [ ] [RSSHub](https://github.com/DIYgod/RSSHub) + [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)
+- 邮箱
+  - [ ] [Mail Service](https://johnrosen1.com/2020/08/27/mail1/)
+- 测速
+  - [ ] [Librespeed](https://github.com/librespeed/speedtest)
+- 安全
+  - [ ] [Fail2ban](https://github.com/fail2ban/fail2ban)
+- 数据库
+  - [ ] [MariaDB](https://github.com/MariaDB/server)
+  - [ ] [Redis-server](https://github.com/redis/redis)
+  - [ ] [MongoDB](https://github.com/mongodb/mongo)
+- 其他
+  - [ ] [Opentracker](https://erdgeist.org/arts/software/opentracker/)
+  - [ ] [i2pd](https://github.com/PurpleI2P/i2pd)
+  - [ ] [Tor](https://www.torproject.org/)
+  - [ ] [stun-server](https://github.com/jselbie/stunserver)
+  - [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
+  - [ ] Non standard https port support
+  - [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
 
 > 欢迎PR/issue更多软件。
 
@@ -140,6 +152,18 @@ Nextcloud设定-->基本设定-->改为cron(伺服器端已配置完成，无需
 ```
 systemctl restart php7.4-fpm
 ```
+
+## 邮箱服务(Mail Service)使用条件
+
+1. 一台有**独立公网IPv4**的非中国大陆VPS/伺服器且**25/80/143/443/465/587/993等TCP端口必须能正常使用**。
+> *阿里云，Google cloud platform,vultr等厂商皆不满足此项要求*。
+2. 伺服器/VPS必须拥有大于等于 **2GB RAM 以及 30GB Storage**(SSD最好).
+3. 一个付费域名(推荐[Namesilo](https://www.namesilo.com/?rid=685fb47qi)),.com/.xyz/.moe等后缀无所谓。
+4. 你的伺服器或VPS厂商必须支援**rDNS(PTR) record**(除非你希望你的邮件被列为spam)。
+5. 你的伺服器或者VPS的ip必须不在各种邮件黑名单里面(否则你发的所有邮件都会被列为spam)。
+6. 本项目暂不支援Postfixadmin,LDAP等企业级服务。
+
+> 由于邮箱服务的特殊性,仅推荐有需求的人使用。
 
 ## 如果本项目帮助到了你,请给颗star并帮忙推广,谢谢!
 
