@@ -4810,7 +4810,6 @@ EOF
 systemctl daemon-reload
 systemctl enable hexo
 systemctl restart hexo
-fi
 }
 
 sharelink(){
