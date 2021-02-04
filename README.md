@@ -46,6 +46,8 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
   - [ ] [RSSHub](https://github.com/DIYgod/RSSHub) + [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)
 - 邮箱
   - [ ] [Mail Service](https://johnrosen1.com/2020/08/27/mail1/)
+- 通讯
+  - [ ] [RocketChat](https://github.com/RocketChat/Rocket.Chat)
 - 测速
   - [ ] [Librespeed](https://github.com/librespeed/speedtest)
 - 安全
@@ -55,6 +57,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
   - [ ] [Redis-server](https://github.com/redis/redis)
   - [ ] [MongoDB](https://github.com/mongodb/mongo)
 - 其他
+  - [ ] [Docker](https://www.docker.com/)
   - [ ] [Opentracker](https://erdgeist.org/arts/software/opentracker/)
   - [ ] [i2pd](https://github.com/PurpleI2P/i2pd)
   - [ ] [Tor](https://www.torproject.org/)

@@ -179,6 +179,114 @@ systemctl daemon-reload
 echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 fi
 
+install_rocketchat(){
+    cat > 'docker-compose.yml' << EOF
+version: '2'
+
+services:
+  rocketchat:
+    image: rocketchat/rocket.chat:latest
+    command: >
+      bash -c
+        "for i in `seq 1 30`; do
+          node main.js &&
+          s=$$? && break || s=$$?;
+          echo \"Tried $$i times. Waiting 5 secs...\";
+          sleep 5;
+        done; (exit $$s)"
+    restart: always
+    volumes:
+      - ./uploads:/app/uploads
+    environment:
+      - ROOT_URL=https://${domain}/rocketchat
+      - Accounts_UseDNSDomainCheck=False
+      - MONGO_URL=mongodb://mongo:27017/rocketchat
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+      - MAIL_URL=smtp://127.0.0.1
+#       - HTTP_PROXY=http://proxy.domain.com
+#       - HTTPS_PROXY=http://proxy.domain.com
+    depends_on:
+      - mongo
+    ports:
+      - 127.0.0.1:3000:3000
+    labels:
+      - "traefik.backend=rocketchat"
+      - "traefik.frontend.rule=Host: ${domain}"
+
+  mongo:
+    image: mongo:4.0
+    restart: always
+    volumes:
+     - ./data/db:/data/db
+     #- ./data/dump:/dump
+    command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
+    labels:
+      - "traefik.enable=false"
+
+  # this container's job is just run the command to initialize the replica set.
+  # it will run the command and remove himself (it will not stay running)
+  mongo-init-replica:
+    image: mongo:4.0
+    command: >
+      bash -c
+        "for i in `seq 1 30`; do
+          mongo mongo/rocketchat --eval \"
+            rs.initiate({
+              _id: 'rs0',
+              members: [ { _id: 0, host: 'localhost:27017' } ]})\" &&
+          s=$$? && break || s=$$?;
+          echo \"Tried $$i times. Waiting 5 secs...\";
+          sleep 5;
+        done; (exit $$s)"
+    depends_on:
+      - mongo
+
+  # hubot, the popular chatbot (add the bot user first and change the password before starting this image)
+  hubot:
+    image: rocketchat/hubot-rocketchat:latest
+    restart: always
+    environment:
+      - ROCKETCHAT_URL=rocketchat:3000
+      - ROCKETCHAT_ROOM=GENERAL
+      - ROCKETCHAT_USER=bot
+      - ROCKETCHAT_PASSWORD=botpassword
+      - BOT_NAME=bot
+  # you can add more scripts as you'd like here, they need to be installable by npm
+      - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics
+    depends_on:
+      - rocketchat
+    labels:
+      - "traefik.enable=false"
+    volumes:
+      - ./scripts:/home/hubot/scripts
+  # this is used to expose the hubot port for notifications on the host on port 3001, e.g. for hubot-jenkins-notifier
+    ports:
+      - 127.0.0.1:3001:8080
+
+  #traefik:
+  #  image: traefik:latest
+  #  restart: always
+  #  command: >
+  #    traefik
+  #     --docker
+  #     --acme=true
+  #     --acme.domains='your.domain.tld'
+  #     --acme.email='your@email.tld'
+  #     --acme.entrypoint=https
+  #     --acme.storagefile=acme.json
+  #     --defaultentrypoints=http
+  #     --defaultentrypoints=https
+  #     --entryPoints='Name:http Address::80 Redirect.EntryPoint:https'
+  #     --entryPoints='Name:https Address::443 TLS.Certificates:'
+  #  ports:
+  #    - 80:80
+  #    - 443:443
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock
+EOF
+docker-compose up -d
+}
+
 installstunserver(){
   set +e
   cd
@@ -1124,6 +1232,7 @@ readconfig(){
   check_tracker="$( jq -r '.check_tracker' "/root/.trojan/config.json" )"
   check_cloud="$( jq -r '.check_cloud' "/root/.trojan/config.json" )"
   check_tor="$( jq -r '.check_tor' "/root/.trojan/config.json" )"
+  check_chat="$( jq -r '.check_chat' "/root/.trojan/config.json" )"
   check_i2p="$( jq -r '.check_i2p' "/root/.trojan/config.json" )"
   fastopen="$( jq -r '.fastopen' "/root/.trojan/config.json" )"
 }
@@ -1151,6 +1260,7 @@ if [[ ${install_status} == 1 ]]; then
     check_tracker="off"
     check_cloud="off"
     check_tor="off"
+    check_chat="off"
     fastopen="on"
     stun="off"
   fi
@@ -1164,6 +1274,9 @@ if [[ -z ${check_dns} ]]; then
 fi
 if [[ -z ${check_rss} ]]; then
   check_rss="off"
+fi
+if [[ -z ${check_chat} ]]; then
+  check_chat="off"
 fi
 if [[ -z ${check_qbt} ]]; then
   check_qbt="off"
@@ -1220,6 +1333,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
 "rss" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
+"chat" "Rocket Chat" ${check_chat} \
 "qbt" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
 "aria" "Aria2下载器" ${check_aria} \
 "file" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
@@ -1256,6 +1370,9 @@ do
     ;;
     fast)
     tcp_fastopen="true"
+    ;;
+    chat)
+    install_chat=1
     ;;
     tjp)
     install_tjp=1
@@ -2014,11 +2131,13 @@ if [[ -d /usr/share/nginx/RSSHub ]]; then
     git pull
     npm update
     npm install --production
+    npm prune
   else
     git clone https://github.com/DIYgod/RSSHub.git
     cd /usr/share/nginx/RSSHub
     npm update
     npm install --production
+    npm prune
     touch .env
 cat > '.env' << EOF
 CACHE_TYPE=redis
@@ -4207,6 +4326,32 @@ echo "    location /config {" >> /etc/nginx/conf.d/default.conf
 echo "        return 301 https://${domain}/config/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
+if [[ $install_chat == 1 ]]; then
+echo "    location /rocketchat {" >> /etc/nginx/conf.d/default.conf
+echo "        expires -1;" >> /etc/nginx/conf.d/default.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_no_cache 1;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_cache_bypass 1;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forward-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Nginx-Proxy true;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:3000/rocketchat;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "        location /file-upload/ {" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:3000/rocketchat/file-upload/;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "        location /avatar/ {" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:3000/rocketchat/avatar/;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "        location /home {" >> /etc/nginx/conf.d/default.conf
+echo "        return 301 https://${domain}/rocketchat/home/;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+fi
 if [[ $install_mail == 1 ]]; then
 echo "    location /${password1}_webmail/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
@@ -4422,6 +4567,7 @@ TERM=ansi whiptail --title "安装中" --infobox "安装Hexo中..." 7 68
   hexo init hexo
   cd /usr/share/nginx/hexo
   npm audit fix
+  npm prune
   hexo new page ${password1}
   cd /usr/share/nginx/hexo/themes
   git clone https://github.com/theme-next/hexo-theme-next next
@@ -4647,6 +4793,18 @@ Introduction: test download and upload speed from vps to your local network.
 #### Netdata
 
 - <a href="https://$domain:443$netdatapath" target="_blank" rel="noreferrer">https://${domain}${netdatapath}</a>
+
+---
+
+### Rocket Chat
+
+*默认安装: ❎*
+
+> 简介: 聊天应用。
+
+Introduction: just like discord.
+
+- <a href="https://$domain:443/rocketchat/" target="_blank" rel="noreferrer">https://$domain/rocketchat/</a>
 
 ---
 
@@ -5169,6 +5327,9 @@ advancedMenu() {
     fi
     if [[ ${install_tjp} == 1 ]]; then
     install_tjp
+    fi
+    if [[ ${install_chat} == 1 ]]; then
+    install_rocketchat
     fi
     installhexo
     nginxtrojan
