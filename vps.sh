@@ -560,7 +560,7 @@ apt-get install i2pd -y
 ##  * stdout - print log entries to stdout
 ##  * file - log entries to a file
 ##  * syslog - use syslog, see man 3 syslog
-# log = file
+log = syslog
 ## Path to logfile (default - autodetect)
 # logfile = /var/log/i2pd/i2pd.log
 ## Log messages above this level (debug, info, *warn, error, none)
@@ -675,7 +675,7 @@ enabled = true
 
 [bob]
 ## Uncomment and set to 'true' to enable BOB command channel
-enabled = true
+# enabled = true
 ## Address and port service will listen on
 # address = 127.0.0.1
 # port = 2827
@@ -689,7 +689,7 @@ enabled = true
 
 [i2pcontrol]
 ## Uncomment and set to 'true' to enable I2PControl protocol
-enabled = on
+# enabled = on
 ## Address and port service will listen on
 # address = 127.0.0.1
 # port = 7650
@@ -758,9 +758,9 @@ subscriptions = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.
 [exploratory]
 ## Exploratory tunnels settings with default values
 # inbound.length = 2 
-# inbound.quantity = 3
+inbound.quantity = 6
 # outbound.length = 2
-# outbound.quantity = 3
+outbound.quantity = 6
 
 [ntcp2]
 
@@ -4088,13 +4088,6 @@ server {
   location /client2-${password2}.json {
     root /usr/share/nginx/html/;
   }
-    location ~ \.php\$ {
-        fastcgi_split_path_info ^(.+\.php)(/.+)\$;
-        fastcgi_param SCRIPT_FILENAME \$request_filename;
-        #fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
-    }
 EOF
 if [[ $install_nextcloud == 1 ]]; then
 mkdir /usr/share/nginx/tmp/
