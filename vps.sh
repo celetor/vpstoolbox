@@ -279,6 +279,18 @@ cd
 rm -rf stunserver
 }
 
+install_mongodb(){
+  apt-get install gnupg -y
+  wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+    cat > '/etc/apt/sources.list.d/mongodb-org-4.4.list' << EOF
+deb http://repo.mongodb.org/apt/debian $(lsb_release -cs)/mongodb-org/4.4 main
+EOF
+  apt-get update
+  apt-get install -y mongodb-org
+  apt-get install -y python-pymongo
+  systemctl start mongod
+  systemctl enable mongod
+}
 
 installredis(){
   set +e
@@ -4778,9 +4790,8 @@ Please edit /etc/mysql/my.cnf and restart mariadb if you need remote access !
 1. <a href="https://www.mail-tester.com/" target="_blank" rel="noreferrer">https://www.mail-tester.com/</a>
 2. <a href="https://lala.im/6838.html" target="_blank" rel="noreferrer">Debian10使用Postfix+Dovecot+Roundcube搭建邮件服务器</a>(仅供参考!)
 EOF
-
 cd
-
+hexo_location=$(which hexo)
     cat > '/etc/systemd/system/hexo.service' << EOF
 [Unit]
 Description=Hexo Server Service
@@ -4789,25 +4800,7 @@ After=network.target
 
 [Service]
 WorkingDirectory=/usr/share/nginx/hexo
-ExecStart=/usr/bin/hexo server -i 127.0.0.1
-Restart=on-failure
-RestartSec=1s
-
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl enable hexo
-systemctl restart hexo
-if [[ $(systemctl is-active hexo) != "active" ]]; then
-    cat > '/etc/systemd/system/hexo.service' << EOF
-[Unit]
-Description=Hexo Server Service
-Documentation=https://hexo.io/zh-tw/docs/
-After=network.target
-
-[Service]
-WorkingDirectory=/usr/share/nginx/hexo
-ExecStart=/usr/local/bin/hexo server -i 127.0.0.1
+ExecStart=${hexo_location} server -i 127.0.0.1
 Restart=on-failure
 RestartSec=1s
 
@@ -4815,6 +4808,7 @@ RestartSec=1s
 WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
+systemctl enable hexo
 systemctl restart hexo
 fi
 }
