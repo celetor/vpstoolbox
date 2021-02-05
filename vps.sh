@@ -803,6 +803,7 @@ enabled = true
 [i2cp]
 ## Uncomment and set to 'true' to enable I2CP protocol
 enabled = true
+singlethread = false
 ## Address and port service will listen on
 # address = 127.0.0.1
 # port = 7654
