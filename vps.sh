@@ -877,9 +877,9 @@ subscriptions = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.
 
 [exploratory]
 ## Exploratory tunnels settings with default values
-# inbound.length = 2 
+inbound.length = 2 
 inbound.quantity = 6
-# outbound.length = 2
+outbound.length = 2
 outbound.quantity = 6
 
 [ntcp2]
@@ -906,6 +906,32 @@ type = http
 host = 127.0.0.1
 port = 80
 keys = my-website.dat
+EOF
+    cat > '/etc/i2pd/tunnels.conf.d/ssh.conf' << EOF
+[SSH-SERVER]
+type = server
+host = 127.0.0.1
+port = 22
+inbound.length = 1
+outbound.length = 1
+inbound.quantity = 6
+outbound.quantity = 6
+inbound.backupQuantity = 3
+outbound.backupQuantity = 3
+keys = ssh-in.dat
+EOF
+    cat > '/etc/i2pd/tunnels.conf.d/proxy.conf' << EOF
+[PROXY-SERVER]
+type = server
+host = 127.0.0.1
+port = 1024
+inbound.length = 1
+outbound.length = 1
+inbound.quantity = 6
+outbound.quantity = 6
+inbound.backupQuantity = 3
+outbound.backupQuantity = 3
+keys = ssh-in.dat
 EOF
 systemctl restart i2pd
 }
