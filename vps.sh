@@ -1373,6 +1373,7 @@ do
     ;;
     chat)
     install_chat=1
+    install_docker=1
     ;;
     tjp)
     install_tjp=1
