@@ -56,11 +56,12 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
   - [ ] [MariaDB](https://github.com/MariaDB/server)
   - [ ] [Redis-server](https://github.com/redis/redis)
   - [ ] [MongoDB](https://github.com/mongodb/mongo)
+- 暗网
+  - [ ] [i2pd](https://github.com/PurpleI2P/i2pd)
+  - [ ] [Tor](https://www.torproject.org/)
 - 其他
   - [ ] [Docker](https://www.docker.com/)
   - [ ] [Opentracker](https://erdgeist.org/arts/software/opentracker/)
-  - [ ] [i2pd](https://github.com/PurpleI2P/i2pd)
-  - [ ] [Tor](https://www.torproject.org/)
   - [ ] [stun-server](https://github.com/jselbie/stunserver)
   - [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
   - [ ] Non standard https port support

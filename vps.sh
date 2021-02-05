@@ -1528,13 +1528,13 @@ if [[ -z ${password2} ]]; then
 fi
   if [[ $install_qbt = 1 ]]; then
     while [[ -z $qbtpath ]]; do
-    qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Nginx Path(路径)" 8 68 /${password1}_qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
+    qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Nginx Path(路径)" 8 68 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
     done
   fi
   if [[ ${install_aria} == 1 ]]; then
     ariaport=$(shuf -i 13000-19000 -n 1)
     while [[ -z ${ariapath} ]]; do
-    ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Nginx Path(路径)" 8 68 /${password1}_aria2/ --title "Aria2 path input" 3>&1 1>&2 2>&3)
+    ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Nginx Path(路径)" 8 68 /aria2/ --title "Aria2 path input" 3>&1 1>&2 2>&3)
     done
     while [[ -z $ariapasswd ]]; do
     ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token(密码)" 8 68 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
@@ -1545,7 +1545,7 @@ fi
   fi
   if [[ ${install_file} = 1 ]]; then
     while [[ -z ${filepath} ]]; do
-    filepath=$(whiptail --inputbox --nocancel "Filebrowser Nginx 路径" 8 68 /${password1}_file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
+    filepath=$(whiptail --inputbox --nocancel "Filebrowser Nginx 路径" 8 68 /file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
     done
   fi
   if [[ ${install_netdata} = 1 ]]; then
@@ -4349,6 +4349,9 @@ echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        location /avatar/ {" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:3000/rocketchat/avatar/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "        location /assets/ {" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:3000/rocketchat/assets/;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        location /home {" >> /etc/nginx/conf.d/default.conf
 echo "        return 301 https://${domain}/rocketchat/home/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
@@ -4407,7 +4410,7 @@ echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.c
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-echo "    location /${password1}_ttrss/ {" >> /etc/nginx/conf.d/default.conf
+echo "    location /ttrss/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
@@ -4705,7 +4708,7 @@ hexo g && hexo d
 
 #### Tiny Tiny RSS
 
-- <a href="https://$domain/${password1}_ttrss/" target="_blank" rel="noreferrer">https://$domain/${password1}_ttrss/</a>
+- <a href="https://$domain/ttrss/" target="_blank" rel="noreferrer">https://$domain/${password1}_ttrss/</a>
 - 用户名(username): **admin**
 - 密碼(password): **password**
 
