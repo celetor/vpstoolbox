@@ -878,9 +878,9 @@ subscriptions = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.
 
 [exploratory]
 ## Exploratory tunnels settings with default values
-inbound.length = 2 
+inbound.length = 3
 inbound.quantity = 6
-outbound.length = 2
+outbound.length = 3
 outbound.quantity = 6
 
 [ntcp2]
