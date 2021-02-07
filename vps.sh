@@ -856,7 +856,7 @@ subscriptions = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.
 
 [limits]
 ## Maximum active transit sessions (default:2500)
-transittunnels = 250000
+transittunnels = 65535
 ## Limit number of open file descriptors (0 - use system limit)  
 # openfiles = 0
 ## Maximum size of corefile in Kb (0 - use system limit) 
