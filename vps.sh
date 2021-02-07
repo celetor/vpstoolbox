@@ -852,11 +852,11 @@ verify = true
 ## Default: inr.i2p at "mainline" I2P Network
 defaulturl = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.i2p/hosts.txt
 ## Optional subscriptions URLs, separated by comma
-subscriptions = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.i2p/alive-hosts.txt,http://kqypgjpjwrphnzebod5ev3ts2vtii6e5tntrg4rnfijqc7rypldq.b32.i2p/cgi-bin/newhosts.txt,http://gh6655arkncnbrzq5tmq4xpn36734d4tdza6flbw5xppye2dt6ga.b32.i2p/hosts.txt
+subscriptions = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.i2p/alive-hosts.txt,http://kqypgjpjwrphnzebod5ev3ts2vtii6e5tntrg4rnfijqc7rypldq.b32.i2p/cgi-bin/newhosts.txt,http://gh6655arkncnbrzq5tmq4xpn36734d4tdza6flbw5xppye2dt6ga.b32.i2p/hosts.txt,http://udhdrtrcetjm5sxzskjyr5ztpeszydbh4dpl3pl4utgqqw2v4jna.b32.i2p/hosts.txt,http://rus.i2p/hosts.txt
 
 [limits]
 ## Maximum active transit sessions (default:2500)
-# transittunnels = 2500
+transittunnels = 250000
 ## Limit number of open file descriptors (0 - use system limit)  
 # openfiles = 0
 ## Maximum size of corefile in Kb (0 - use system limit) 
