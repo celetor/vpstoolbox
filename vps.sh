@@ -716,15 +716,15 @@ ipv6 = true
 # ifname6 = 
 
 ## Enable NTCP transport (default = true)
-# ntcp = true
+ntcp = true
 ## If you run i2pd behind a proxy server, you can only use NTCP transport with ntcpproxy option 
 ## Should be http://address:port or socks://address:port
 # ntcpproxy = http://127.0.0.1:8118
 ## Enable SSU transport (default = true)
-# ssu = true
+ssu = true
 
 ## Should we assume we are behind NAT? (false only in MeshNet)
-# nat = true
+nat = false
 
 ## Bandwidth configuration
 ## L limit bandwidth to 32KBs/sec, O - to 256KBs/sec, P - to 2048KBs/sec,
@@ -934,6 +934,39 @@ inbound.backupQuantity = 3
 outbound.backupQuantity = 3
 keys = ssh-in.dat
 EOF
+    cat > '/lib/systemd/system/i2pd.service' << EOF
+[Unit]
+Description=I2P Router written in C++
+Documentation=man:i2pd(1) https://i2pd.readthedocs.io/en/latest/
+After=network.target
+
+[Service]
+User=i2pd
+Group=i2pd
+#RuntimeDirectory=i2pd
+#RuntimeDirectoryMode=0700
+#LogsDirectory=i2pd
+#LogsDirectoryMode=0700
+Type=forking
+ExecStart=/usr/sbin/i2pd --conf=/etc/i2pd/i2pd.conf --tunconf=/etc/i2pd/tunnels.conf --tunnelsdir=/etc/i2pd/tunnels.conf.d --pidfile=/run/i2pd/i2pd.pid --logfile=/var/log/i2pd/i2pd.log --daemon --service
+ExecReload=/bin/sh -c "kill -HUP $MAINPID"
+PIDFile=/run/i2pd/i2pd.pid
+
+KillSignal=SIGQUIT
+# If you have the patience waiting 10 min on restarting/stopping it, uncomment this.
+# i2pd stops accepting new tunnels and waits ~10 min while old ones do not die.
+#KillSignal=SIGINT
+#TimeoutStopSec=10m
+
+LimitNOFILE=51200
+LimitNPROC=51200
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+/lib/systemd/system/i2pd.service
 systemctl restart i2pd
 }
 
@@ -2223,7 +2256,7 @@ if [[ -d /usr/share/nginx/tt-rss/ ]]; then
   // *** Basic settings (important!) ***
   // ***********************************
 
-  define('SELF_URL_PATH', 'https://${domain}/${password1}_ttrss//');
+  define('SELF_URL_PATH', 'https://${domain}/ttrss//');
   define('SINGLE_USER_MODE', false);
   define('SIMPLE_UPDATE_MODE', false);
 
