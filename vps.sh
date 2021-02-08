@@ -702,7 +702,7 @@ loglevel = error
 ## Port to listen for connections
 ## By default i2pd picks random port. You MUST pick a random number too,
 ## don't just uncomment this
-port = 15895
+port = 9000
 
 ## Enable communication through ipv4
 ipv4 = true
@@ -788,7 +788,8 @@ port = 4447
 
 [sam]
 ## Uncomment and set to 'true' to enable SAM Bridge
-enabled = true
+enabled = false
+singlethread = false
 ## Address and port service will listen on
 # address = 127.0.0.1
 # port = 7656
@@ -879,9 +880,9 @@ transittunnels = 65535
 [exploratory]
 ## Exploratory tunnels settings with default values
 inbound.length = 3
-inbound.quantity = 6
+inbound.quantity = 16
 outbound.length = 3
-outbound.quantity = 6
+outbound.quantity = 16
 
 [ntcp2]
 
@@ -1397,6 +1398,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "qbt" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
 "aria" "Aria2下载器" ${check_aria} \
 "file" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
+##
 "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
 "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
 "i2p" "自建i2p网站" ${check_i2p} \
