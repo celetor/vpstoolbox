@@ -966,7 +966,7 @@ RestartSec=3s
 [Install]
 WantedBy=multi-user.target
 EOF
-/lib/systemd/system/i2pd.service
+systemctl daemon-reload
 systemctl restart i2pd
 }
 
