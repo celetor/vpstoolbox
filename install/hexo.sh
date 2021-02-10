@@ -99,6 +99,17 @@ PS: ***不支援Cloudflare CDN ❗***
 
 ---
 
+### Shadowsocks-rust
+
+*默认安装: ❎*
+
+ss://aes-128-gcm:${password1}@${domain}:8388#iplc-only
+ss://$(echo "aes-128-gcm:${password1}@${domain}:8388" | base64)#iplc-only
+
+PS: 推荐自行参考GitHub相关内容修正Nextcloud配置文件。
+
+---
+
 ### Nextcloud
 
 *默认安装: ❎*

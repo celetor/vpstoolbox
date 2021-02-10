@@ -90,7 +90,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
 2. Trojan-GFW**不支援Cloudflare CDN**,请勿开启!
 3. 证书续签目前使用crontab,如有问题,欢迎反馈 !
-4. 本项目不对Vultr机器造成的任何问题负责,this project does not responsible for any problems caused by vultr machines !
+4. 本项目不对Vultr机器造成的任何问题负责,this project is not responsible for any problems caused by Vultr machines !
 
 ## 贡献
 
