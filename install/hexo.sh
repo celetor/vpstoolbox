@@ -291,7 +291,7 @@ PS: 不支援自定义证书,仅支援全自动申请的let证书!
 
 #### Roundcube Webmail
 
-- <a href="https://${domain}/${password1}_webmail/" target="_blank" rel="noreferrer">Roundcube Webmail</a>
+- <a href="https://${domain}/mail/" target="_blank" rel="noreferrer">Roundcube Webmail</a>
 - 用户名(username): **${mailuser}**
 - 密碼(password): **${password1}**
 - 收件地址: **${mailuser}@${domain}**

@@ -34,4 +34,11 @@ systemctl restart filebrowser
 mkdir /etc/filebrowser/
 touch /etc/filebrowser/database.db
 chmod -R 755 /etc/filebrowser/
+cat > '/etc/nginx/conf.d/filebrowser.conf' << EOF
+location ${filepath} {
+	#access_log off;
+	proxy_pass http://127.0.0.1:8081/;
+	client_max_body_size 0;
+}
+EOF
 }

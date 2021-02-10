@@ -274,7 +274,7 @@ resolvconf -u
 fi
 clear
 }
-###############OS detect####################
+
 initialize(){
 set +e
 TERM=ansi whiptail --title "初始化中(initializing)" --infobox "初始化中...(initializing)" 7 68
@@ -345,10 +345,8 @@ fi
 ##########install dependencies#############
 install_base(){
 set +e
-TERM=ansi whiptail --title "安装中" --infobox "安装所有必备软件中..." 7 68
-colorEcho ${INFO} "Updating system"
+TERM=ansi whiptail --title "安装中" --infobox "安装基础软件中..." 7 68
 apt-get update
-clear
 colorEcho ${INFO} "Installing all necessary Software"
 apt-get install sudo git curl xz-utils wget apt-transport-https gnupg lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less haveged neofetch -q -y
 apt-get install python3-qrcode python-dnspython -q -y
@@ -370,6 +368,11 @@ install_moudles(){
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/hexo.sh
   source hexo.sh
   install_hexo
+  if [[ ${install_ss_rust} == 1 ]]; then
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/ss-rust.sh
+  source ss-rust.sh
+  install_ss_rust
+  fi
   if [[ ${install_aria} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/aria.sh
   source aria.sh

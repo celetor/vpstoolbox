@@ -27,9 +27,6 @@ server {
   add_header X-Cache-Status \$upstream_cache_status;
   location / {
     proxy_pass http://127.0.0.1:4000/;
-    proxy_set_header Host \$http_host;
-    proxy_set_header X-Real-IP \$remote_addr;
-    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
     #error_page 404  /404.html;
     http2_push /css/main.css;
         http2_push /lib/font-awesome/css/all.min.css;
@@ -90,9 +87,6 @@ echo "        proxy_no_cache 1;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_cache_bypass 1;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_http_version 1.1;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forward-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Nginx-Proxy true;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:3000/rocketchat;" >> /etc/nginx/conf.d/default.conf
@@ -112,7 +106,7 @@ echo "        return 301 https://${domain}/rocketchat/home/;" >> /etc/nginx/conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_mail == 1 ]]; then
-echo "    location /${password1}_webmail/ {" >> /etc/nginx/conf.d/default.conf
+echo "    location /mail/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
@@ -133,9 +127,6 @@ echo "        #proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_pass https://127.0.0.1:3001/dns-query;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
-echo "        #proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
-echo "        #proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        #proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        #error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
 echo "        #}" >> /etc/nginx/conf.d/default.conf
 fi
@@ -161,9 +152,6 @@ echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:1200/;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location /ttrss/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
@@ -193,9 +181,6 @@ echo "    location $ariapath {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:6800/jsonrpc;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_qbt == 1 ]]; then
@@ -206,40 +191,27 @@ echo "        proxy_set_header        X-Forwarded-Host        \$http_host;" >> /
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_file == 1 ]]; then
-echo "    location $filepath {" >> /etc/nginx/conf.d/default.conf
-echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_pass http://127.0.0.1:8081/;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
-echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
-echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "    include /etc/nginx/conf.d/filebrowser.conf;" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_i2p == 1 ]]; then
 echo "    location /${password1}_i2p/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:7070/;" >> /etc/nginx/conf.d/default.conf
-echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_tracker == 1 ]]; then
 echo "    location /tracker/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
-echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        index index.html;" >> /etc/nginx/conf.d/default.conf
 echo "        alias /usr/share/nginx/tracker/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location /tracker_stats/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:6969/;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location ~ ^/announce$ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:6969;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_netdata == 1 ]]; then
