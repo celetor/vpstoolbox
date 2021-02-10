@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
 
-## System升级模组 System upgrade moudle
+## 系统升级模组 System upgrade moudle
 
 upgrade_system(){
+  set +e
   if [[ $(lsb_release -cs) == jessie ]]; then
       debian9_install=1
   fi
+
   if [[ $(lsb_release -cs) == xenial ]]; then
       ubuntu18_install=1
   fi
-  set +e
+  
 if [[ $(lsb_release -cs) == stretch ]]; then
   debian10_install=1
 fi
+
  if [[ $dist == ubuntu ]]; then
   if [[ $ubuntu18_install == 1 ]]; then
     cat > '/etc/apt/sources.list' << EOF
