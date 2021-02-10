@@ -2,7 +2,7 @@
 
 ## Redis-server模组 Redis-server moudle
 
-installredis(){
+install_redis(){
   set +e
   cd
   TERM=ansi whiptail --title "安装中" --infobox "安装redis中..." 7 68

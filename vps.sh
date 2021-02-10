@@ -364,14 +364,16 @@ clear
 ## 安装具体软件
 install_moudles(){
   # Src url : https://github.com/johnrosen1/vpstoolbox/blob/dev/install/
+  ## Install Mariadb
+  if [[ ${install_mariadb} == 1 ]]; then
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/mariadb.sh
+  source mariadb.sh
+  install_mariadb
+  fi
   ## Install bbr
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/bbr.sh
   source bbr.sh
   install_bbr
-  ## Install Trojan-gfw
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/trojan.sh
-  source trojan.sh
-  install_trojan
   ## Install Nodejs
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nodejs.sh
   source nodejs.sh
@@ -419,11 +421,6 @@ install_moudles(){
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/mail.sh
   source mail.sh
   install_mail
-  fi
-  if [[ ${install_mariadb} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/mariadb.sh
-  source mariadb.sh
-  install_mariadb
   fi
   if [[ ${install_mongodb} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/mongodb.sh
@@ -495,6 +492,10 @@ install_moudles(){
   source netdata.sh
   install_netdata
   fi
+  ## Install Trojan-gfw
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/trojan.sh
+  source trojan.sh
+  install_trojan
 }
 
 ## 主菜单

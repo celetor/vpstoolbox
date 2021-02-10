@@ -2,7 +2,8 @@
 
 ## opentracker模组 opentracker moudle
 
-TERM=ansi whiptail --title "安装中" --infobox "安装Bittorrent-tracker中" 7 68
+install_tracker(){
+  TERM=ansi whiptail --title "安装中" --infobox "安装Bittorrent-tracker中" 7 68
 colorEcho ${INFO} "Install Bittorrent-tracker ing"
 apt-get install libowfat-dev make git build-essential zlib1g-dev libowfat-dev make git -y
 useradd -r opentracker --shell=/usr/sbin/nologin
@@ -171,3 +172,4 @@ EOF
 wget https://raw.githubusercontent.com/necolas/normalize.css/master/normalize.css
 cd
 rm -rf opentracker
+}
