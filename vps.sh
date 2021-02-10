@@ -102,7 +102,7 @@ fi
 
 ## 卸载阿里云云盾
 if [[ -d /usr/local/aegis ]]; then
-curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/uninstall-aegis.sh
+curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/uninstall-aegis.sh
 source uninstall-aegis.sh
 uninstall_aegis
 fi
@@ -363,137 +363,137 @@ clear
 
 ## 安装具体软件
 install_moudles(){
-  # Src url : https://github.com/johnrosen1/vpstoolbox/blob/dev/install/
+  # Src url : https://github.com/johnrosen1/vpstoolbox/blob/master/install/
   ## Install Mariadb
   if [[ ${install_mariadb} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/mariadb.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/mariadb.sh
   source mariadb.sh
   install_mariadb
   fi
   ## Install bbr
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/bbr.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/bbr.sh
   source bbr.sh
   install_bbr
   ## Install Nodejs
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nodejs.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nodejs.sh
   source nodejs.sh
   install_nodejs
   ## Install Hexo
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/hexo.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/hexo.sh
   source hexo.sh
   install_hexo
   if [[ ${install_ss_rust} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/ss-rust.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/ss-rust.sh
   source ss-rust.sh
   install_ss_rust
   fi
   if [[ ${install_aria} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/aria.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/aria.sh
   source aria.sh
   install_aria
   fi
   if [[ ${install_dnscrypt} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/dnscrypt.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/dnscrypt.sh
   source dnscrypt.sh
   install_dnscrypt
   fi
   if [[ ${install_docker} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/docker.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/docker.sh
   source docker.sh
   install_docker
   fi
   if [[ ${install_fail2ban} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/fail2ban.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/fail2ban.sh
   source fail2ban.sh
   install_fail2ban
   fi
   if [[ ${install_filebrowser} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/filebrowser.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/filebrowser.sh
   source filebrowser.sh
   install_filebrowser
   fi
   if [[ ${install_i2pd} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/i2pd.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/i2pd.sh
   source i2pd.sh
   install_i2pd
   fi
   if [[ ${install_mail} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/mail.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/mail.sh
   source mail.sh
   install_mail
   fi
   if [[ ${install_mongodb} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/mongodb.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/mongodb.sh
   source mongodb.sh
   install_mongodb
   fi
   if [[ ${install_nextcloud} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nextcloud.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nextcloud.sh
   source nextcloud.sh
   install_nextcloud
   fi
   if [[ ${install_php} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/php.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/php.sh
   source php.sh
   install_php
   fi
   if [[ ${install_qbt_o} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/qbt_origin.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/qbt_origin.sh
   source qbt_origin.sh
   install_qbt_o
   fi
   if [[ ${install_qbt_e} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/qbt.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/qbt.sh
   source qbt.sh
   install_qbt_e
   fi
   if [[ ${install_redis} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/redis.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/redis.sh
   source redis.sh
   install_redis
   fi
   if [[ ${install_rocketchat} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/rocketchat.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/rocketchat.sh
   source rocketchat.sh
   install_rocketchat
   fi
   if [[ ${install_rss} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/rss.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/rss.sh
   source rss.sh
   install_rss
   fi
   if [[ ${install_speedtest} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/speedtest.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/speedtest.sh
   source speedtest.sh
   install_speedtest
   fi
   if [[ ${install_stun} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/stun.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/stun.sh
   source stun.sh
   install_stun
   fi
   if [[ ${install_tor} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/tor.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/tor.sh
   source tor.sh
   install_tor
   fi
   if [[ ${install_tracker} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/tracker.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/tracker.sh
   source tracker.sh
   install_tracker
   fi
   if [[ ${install_trojan_panel} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/trojan-panel.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/trojan-panel.sh
   source hexo.sh
   install_hexo
   fi
   if [[ ${install_netdata} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/netdata.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/netdata.sh
   source netdata.sh
   install_netdata
   fi
   ## Install Trojan-gfw
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/trojan.sh
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/trojan.sh
   source trojan.sh
   install_trojan
 }
@@ -511,31 +511,31 @@ MasterMenu() {
     ## 初始化安装
     install_initial
     ## 用户输入
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/userinput.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/userinput.sh
     source userinput.sh
     userinput_standard
     ## 检测证书是否已有
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/detectcert.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/detectcert.sh
     source detectcert.sh
     detectcert
     ## 开始安装
     TERM=ansi whiptail --title "开始安装" --infobox "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!" 7 68
     colorEcho ${INFO} "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!"
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/system-upgrade.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/system-upgrade.sh
     source system-upgrade.sh
     upgrade_system
     ## 基础软件安装
     install_base
     ## 开启防火墙
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/firewall.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/firewall.sh
     source firewall.sh
     openfirewall
     ## NGINX安装
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nginx.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nginx.sh
     source nginx.sh
     install_nginx
     ## 证书签发
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/issuecert.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/issuecert.sh
     source issuecert.sh
     ## HTTP证书签发
     if [[ ${httpissue} == 1 ]]; then
@@ -547,12 +547,12 @@ MasterMenu() {
     fi
     ## 具体软件安装
     install_moudles
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nginx-config.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nginx-config.sh
     source nginx-config.sh
     nginx_config
     clean_env
     ## 输出结果
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/output.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/output.sh
     source output.sh
     prase_output
     exit 0
@@ -562,31 +562,31 @@ MasterMenu() {
     ## 初始化安装
     install_initial
     ## 用户输入
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/userinput.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/userinput.sh
     source userinput.sh
     userinput_full
     ## 检测证书是否已有
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/detectcert.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/detectcert.sh
     source detectcert.sh
     detectcert
     ## 开始安装
     TERM=ansi whiptail --title "开始安装" --infobox "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!" 7 68
     colorEcho ${INFO} "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!"
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/system-upgrade.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/system-upgrade.sh
     source system-upgrade.sh
     upgrade_system
     ## 基础软件安装
     install_base
     ## 开启防火墙
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/firewall.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/firewall.sh
     source firewall.sh
     openfirewall
     ## NGINX安装
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nginx.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nginx.sh
     source nginx.sh
     install_nginx
     ## 证书签发
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/issuecert.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/issuecert.sh
     source issuecert.sh
     ## HTTP证书签发
     if [[ ${httpissue} == 1 ]]; then
@@ -598,12 +598,12 @@ MasterMenu() {
     fi
     ## 具体软件安装
     install_moudles
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nginx-config.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nginx-config.sh
     source nginx-config.sh
     nginx_config
     clean_env
     ## 输出结果
-    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/output.sh
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/output.sh
     source output.sh
     prase_output
     exit 0
