@@ -90,6 +90,7 @@ install_trojan=1
 trojanport="443"
 tcp_fastopen="false"
 
+## 卸载腾讯云云盾
 if [[ -d /usr/local/qcloud ]]; then
   #disable tencent cloud process
   rm -rf /usr/local/sa
@@ -99,6 +100,7 @@ if [[ -d /usr/local/qcloud ]]; then
   rm -rf /usr/local/telescope
 fi
 
+## 卸载阿里云云盾
 if [[ -d /usr/local/aegis ]]; then
 curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/uninstall-aegis.sh
 source uninstall-aegis.sh
@@ -114,7 +116,7 @@ colorEcho(){
   echo -e "\033[${COLOR}${@:2}\033[0m"
 }
 
-#Set system language
+#设置系统语言
 setlanguage(){
   set +e
   if [[ ! -d /root/.trojan/ ]]; then
@@ -182,6 +184,7 @@ export LC_ALL="en_US.UTF-8"
 fi
 }
 
+## 写入配置文件
 prasejson(){
   set +e
   cat > '/root/.trojan/config.json' << EOF
@@ -218,6 +221,7 @@ prasejson(){
 EOF
 }
 
+## 读取配置文件
 readconfig(){
   domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
   password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
@@ -250,6 +254,7 @@ readconfig(){
   fastopen="$( jq -r '.fastopen' "/root/.trojan/config.json" )"
 }
 
+## 清理apt以及模块化的.sh文件等
 clean_env(){
 prasejson
 apt-get purge python-pil python3-qrcode -q -y
@@ -270,9 +275,12 @@ systemctl restart dnscrypt-proxy
 echo "nameserver 127.0.0.1" > /etc/resolvconf/resolv.conf.d/base
 resolvconf -u
 fi
+cd
+rm -rf *.sh
 clear
 }
 
+## 检测系统是否支援
 initialize(){
 set +e
 TERM=ansi whiptail --title "初始化中(initializing)" --infobox "初始化中...(initializing)" 7 68
@@ -298,6 +306,7 @@ if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
 fi
 }
 
+## 初始化安装
 install_initial(){
 clear
 install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
@@ -340,6 +349,7 @@ if [[ ${myip} != ${localip} ]]; then
 fi
 }
 
+## 安装基础软件
 install_base(){
 set +e
 TERM=ansi whiptail --title "安装中" --infobox "安装基础软件中..." 7 68
@@ -351,6 +361,7 @@ sh -c 'echo "y\n\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -
 clear
 }
 
+## 安装具体软件
 install_moudles(){
   # Src url : https://github.com/johnrosen1/vpstoolbox/blob/dev/install/
   ## Install bbr
@@ -486,6 +497,7 @@ install_moudles(){
   fi
 }
 
+## 主菜单
 MasterMenu() {
   Mainmenu=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。有關錯誤報告或更多信息，請訪問以下鏈接: https://github.com/johnrosen1/vpstoolbox 或者 https://t.me/vpstoolbox_chat。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 68 5 \
   "Install_standard" "基础安裝(仅基础+代理相关软件)" \
