@@ -28,6 +28,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - 代理
   - [x] [Trojan-gfw](https://github.com/trojan-gfw/trojan)
   - [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
+  - [ ] [Shadowsocks-rust](https://github.com/shadowsocks/shadowsocks-rust)
   - [ ] [Trojan-panel](https://github.com/trojan-gfw/trojan-panel)
 - 系统
   - [x] [IPv6](https://zh.wikipedia.org/wiki/IPv6)
@@ -91,6 +92,15 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 3. 证书续签目前使用crontab,如有问题,欢迎反馈 !
 4. 本项目不对Vultr机器造成的任何问题负责,this project does not responsible for any problems caused by vultr machines !
 
+## 贡献
+
+1. **Fork**本项目
+2. **Clone**到你自己的机器
+3. **Commit** 修改
+4. **Push** 到你自己的Fork
+5. 提交**Pull request**
+6. PR要求请看**[pr要求](https://github.com/johnrosen1/vpstoolbox/tree/dev/install)**
+
 ## Bug反馈以及Feature request
 
 - [x] [Github Issue](https://github.com/johnrosen1/vpstoolbox/issues)
@@ -106,7 +116,8 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 ## Code Quality
 
-本项目我个人从学习bash开始就写起的项目,可能有诸多不合理之处,不建议作为直接教材学习。
+1. 本项目实现了**模块化**
+2. 本项目我个人从学习bash开始就写起的项目,可能有诸多不合理之处,不建议作为直接教材学习。
 
 ## Trojan-panel使用方法
 
@@ -169,12 +180,18 @@ systemctl restart php7.4-fpm
 
 > 由于邮箱服务的特殊性,仅推荐有需求的人使用。
 
+## Debug相关
+
+1. 本项目主要采用systemd+docker-compose启动服务。
+2. 具体的懒得写了,```systemctl```查看运行状态,有问题记得反馈即可。
+
 ## 如果本项目帮助到了你,请给颗star并帮忙推广,谢谢!
 
 [![Stargazers over time](https://starchart.cc/johnrosen1/vpstoolbox.svg)](https://starchart.cc/johnrosen1/vpstoolbox)
 
 ## 執照
 
+```
 MIT License
 
 Copyright (c) 2019-2021 johnrosen1
@@ -196,4 +213,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
+```
