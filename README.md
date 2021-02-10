@@ -98,6 +98,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 3. **Commit** 修改
 4. **Push** 到你自己的Fork
 5. 提交**Pull request**
+6. PR要求请看**[pr要求](https://github.com/johnrosen1/vpstoolbox/tree/dev/install)**
 
 ## Bug反馈以及Feature request
 
@@ -114,7 +115,8 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 ## Code Quality
 
-本项目我个人从学习bash开始就写起的项目,可能有诸多不合理之处,不建议作为直接教材学习。
+1. 本项目实现了**模块化**
+2. 本项目我个人从学习bash开始就写起的项目,可能有诸多不合理之处,不建议作为直接教材学习。
 
 ## Trojan-panel使用方法
 
@@ -176,6 +178,11 @@ systemctl restart php7.4-fpm
 6. 本项目暂不支援Postfixadmin,LDAP等企业级服务。
 
 > 由于邮箱服务的特殊性,仅推荐有需求的人使用。
+
+## Debug相关
+
+1. 本项目主要采用systemd+docker-compose启动服务。
+2. 具体的懒得写了,```systemctl```查看运行状态,有问题记得反馈即可。
 
 ## 如果本项目帮助到了你,请给颗star并帮忙推广,谢谢!
 

@@ -44,6 +44,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "net" "Netdata(监测伺服器运行状态)" on \
 "fast" "TCP Fastopen" ${fastopen} \
 "tjp" "Trojan-panel" ${check_tjp} \
+"ss" "shadowsocks-rust(dev,仅推荐用于iplc落地,不推荐直接使用)" off \
 "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
 "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
 "port" "自定义Trojan端口(除nat机器外请勿选中)" off \
@@ -59,6 +60,9 @@ do
     trojan)
     install_trojan=1
     install_bbr=1
+    ;;
+    ss)
+    install_ss_rust=1
     ;;
     stun)
     install_stun="1"
@@ -278,6 +282,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "net" "Netdata(监测伺服器运行状态)" on \
 "fast" "TCP Fastopen" ${fastopen} \
 "tjp" "Trojan-panel" ${check_tjp} \
+"ss" "shadowsocks-rust(dev,仅推荐用于iplc落地,不推荐直接使用)" off \
 "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
 "rss" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
@@ -309,6 +314,9 @@ do
     trojan)
     install_trojan=1
     install_bbr=1
+    ;;
+    ss)
+    install_ss_rust=1
     ;;
     stun)
     install_stun="1"
