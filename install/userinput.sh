@@ -38,7 +38,7 @@ if [[ -z ${fastopen} ]]; then
   fastopen="on"
 fi
 
-whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 20 65 16 \
+whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 24 65 12 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
 "net" "Netdata(监测伺服器运行状态)" on \

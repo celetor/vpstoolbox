@@ -513,6 +513,10 @@ MasterMenu() {
     upgrade_system
     ## 基础软件安装
     install_base
+    ## 开启防火墙
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/firewall.sh
+    source firewall.sh
+    openfirewall
     ## NGINX安装
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nginx.sh
     source nginx.sh
@@ -558,6 +562,17 @@ MasterMenu() {
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/system-upgrade.sh
     source system-upgrade.sh
     upgrade_system
+    ## 基础软件安装
+    install_base
+    ## 开启防火墙
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/firewall.sh
+    source firewall.sh
+    openfirewall
+    ## NGINX安装
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nginx.sh
+    source nginx.sh
+    install_nginx
+    ## 证书签发
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/issuecert.sh
     source issuecert.sh
     ## HTTP证书签发
@@ -568,8 +583,6 @@ MasterMenu() {
     if [[ ${dnsissue} == 1 ]]; then
       dns_issue
     fi
-    ## 基础软件安装
-    install_base
     ## 具体软件安装
     install_moudles
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nginx-config.sh

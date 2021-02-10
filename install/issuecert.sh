@@ -14,7 +14,6 @@ installacme(){
 }
 
 http_issue(){
-openfirewall
 installacme
 installnginx
 rm -rf /etc/nginx/sites-available/*
@@ -68,7 +67,6 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
         done
         export CF_Key="$CF_Key"
         export CF_Email="$CF_Email"
-        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
@@ -81,7 +79,6 @@ rm mycron
         Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 68 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
         done
         export Namesilo_Key="$Namesilo_Key"
-        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
@@ -96,7 +93,6 @@ rm mycron
         done
         export Ali_Key="$Ali_Key"
         export Ali_Secret="$Ali_Secret"
-        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
@@ -111,7 +107,6 @@ rm mycron
         done
         export DP_Id="$DP_Id"
         export DP_Key="$DP_Key"
-        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
@@ -126,7 +121,6 @@ rm mycron
         done
         export CX_Key="$CX_Key"
         export CX_Secret="$CX_Secret"
-        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
@@ -141,7 +135,6 @@ rm mycron
         done
         export GD_Key="$CX_Key"
         export GD_Secret="$CX_Secret"
-        openfirewall
         installacme
         ~/.acme.sh/acme.sh --issue --force --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --force --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
