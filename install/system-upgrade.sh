@@ -43,7 +43,7 @@ fi
   clear
  elif [[ $dist == debian ]]; then
   apt-get update --fix-missing
-  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
+  sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -y'
   if [[ ${debian10_install} == 1 ]]; then
     cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
