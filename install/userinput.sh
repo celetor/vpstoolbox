@@ -53,7 +53,7 @@ while read choice
 do
   case $choice in
     Back) 
-    advancedMenu
+    MasterMenu
     break
     ;;
     trojan)
@@ -64,7 +64,7 @@ do
     install_stun="1"
     ;;
     dns)
-    dnsmasq_install=1
+    install_dnscrypt=1
     ;;
     fast)
     tcp_fastopen="true"
@@ -303,7 +303,7 @@ while read choice
 do
   case $choice in
     Back) 
-    advancedMenu
+    MasterMenu
     break
     ;;
     trojan)
@@ -314,7 +314,7 @@ do
     install_stun="1"
     ;;
     dns)
-    dnsmasq_install=1
+    install_dnscrypt=1
     ;;
     fast)
     tcp_fastopen="true"

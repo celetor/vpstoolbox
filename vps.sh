@@ -182,7 +182,6 @@ export LC_ALL="en_US.UTF-8"
 fi
 }
 
-#Set json file before and after installation
 prasejson(){
   set +e
   cat > '/root/.trojan/config.json' << EOF
@@ -219,7 +218,6 @@ prasejson(){
 EOF
 }
 
-#Read var from json
 readconfig(){
   domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
   password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
@@ -342,7 +340,6 @@ if [[ ${myip} != ${localip} ]]; then
 fi
 }
 
-##########install dependencies#############
 install_base(){
 set +e
 TERM=ansi whiptail --title "安装中" --infobox "安装基础软件中..." 7 68
@@ -364,6 +361,10 @@ install_moudles(){
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/trojan.sh
   source trojan.sh
   install_trojan
+  ## Install Nodejs
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nodejs.sh
+  source nodejs.sh
+  install_nodejs
   ## Install Hexo
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/hexo.sh
   source hexo.sh
@@ -428,15 +429,15 @@ install_moudles(){
   source php.sh
   install_php
   fi
-  if [[ ${install_qbt_e} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/qbt.sh
-  source qbt.sh
-  install_qbt_e
-  fi
   if [[ ${install_qbt_o} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/qbt_origin.sh
   source qbt_origin.sh
   install_qbt_o
+  fi
+  if [[ ${install_qbt_e} == 1 ]]; then
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/qbt.sh
+  source qbt.sh
+  install_qbt_e
   fi
   if [[ ${install_redis} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/redis.sh
@@ -487,11 +488,12 @@ install_moudles(){
 
 MasterMenu() {
   Mainmenu=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。有關錯誤報告或更多信息，請訪問以下鏈接: https://github.com/johnrosen1/vpstoolbox 或者 https://t.me/vpstoolbox_chat。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 68 5 \
-  "Install_standard" "标准安裝(仅代理相关)" \
+  "Install_standard" "基础安裝(仅基础+代理相关软件)" \
   "Install_extend" "扩展安装(完整软件列表)" \
   "Benchmark" "效能测试"\
   "Exit" "退出" 3>&1 1>&2 2>&3)
   case $Mainmenu in
+    ## 基础标准安装
     Install_standard)
     ## 初始化安装
     install_initial
@@ -533,6 +535,7 @@ MasterMenu() {
     prase_output
     exit 0
     ;;
+    ## 扩展安装
     Install_extend)
     ## 初始化安装
     install_initial
