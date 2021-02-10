@@ -38,13 +38,13 @@ if [[ -z ${fastopen} ]]; then
   fastopen="on"
 fi
 
-whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 24 65 16 \
+whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 20 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
 "net" "Netdata(监测伺服器运行状态)" on \
 "fast" "TCP Fastopen" ${fastopen} \
 "tjp" "Trojan-panel" ${check_tjp} \
-"ss" "shadowsocks-rust(dev,仅推荐用于iplc落地,不推荐直接使用)" off \
+"ss" "shadowsocks-rust(仅推荐用于iplc落地,不推荐直接使用)" off \
 "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
 "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
 "port" "自定义Trojan端口(除nat机器外请勿选中)" off \
@@ -282,7 +282,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "net" "Netdata(监测伺服器运行状态)" on \
 "fast" "TCP Fastopen" ${fastopen} \
 "tjp" "Trojan-panel" ${check_tjp} \
-"ss" "shadowsocks-rust(dev,仅推荐用于iplc落地,不推荐直接使用)" off \
+"ss" "shadowsocks-rust(仅推荐用于iplc落地,不推荐直接使用)" off \
 "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
 "rss" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
