@@ -506,7 +506,50 @@ MasterMenu() {
     ## 开始安装
     TERM=ansi whiptail --title "开始安装" --infobox "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!" 7 68
     colorEcho ${INFO} "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!"
-    upgradesystem
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/system-upgrade.sh
+    source system-upgrade.sh
+    upgrade_system
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/issuecert.sh
+    source issuecert.sh
+    ## HTTP证书签发
+    if [[ ${httpissue} == 1 ]]; then
+      http_issue
+    fi
+    ## DNS API证书签发
+    if [[ ${dnsissue} == 1 ]]; then
+      dns_issue
+    fi
+    ## 基础软件安装
+    install_base
+    ## 具体软件安装
+    install_moudles
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/nginx-config.sh
+    source nginx-config.sh
+    nginx_config
+    clean_env
+    ## 输出结果
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/output.sh
+    source output.sh
+    prase_output
+    exit 0
+    ;;
+    Install_extend)
+    ## 初始化安装
+    install_initial
+    ## 用户输入
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/userinput.sh
+    source userinput.sh
+    userinput_full
+    ## 检测证书是否已有
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/detectcert.sh
+    source detectcert.sh
+    detectcert
+    ## 开始安装
+    TERM=ansi whiptail --title "开始安装" --infobox "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!" 7 68
+    colorEcho ${INFO} "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!"
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/system-upgrade.sh
+    source system-upgrade.sh
+    upgrade_system
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/dev/install/issuecert.sh
     source issuecert.sh
     ## HTTP证书签发

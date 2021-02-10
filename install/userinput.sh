@@ -12,21 +12,10 @@ if [[ ${install_status} == 1 ]]; then
     check_trojan="on"
     check_tjp="off"
     check_dns="off"
-    check_rss="off"
-    check_qbt="off"
-    check_aria="off"
     check_file="off"
     check_speed="off"
-    check_mariadb="off"
     check_fail2ban="off"
-    check_mail="off"
-    check_qbt_origin="off"
-    check_tracker="off"
-    check_cloud="off"
-    check_tor="off"
-    check_chat="off"
     fastopen="on"
-    stun="off"
   fi
 fi
 
@@ -36,56 +25,17 @@ fi
 if [[ -z ${check_dns} ]]; then
   check_dns="off"
 fi
-if [[ -z ${check_rss} ]]; then
-  check_rss="off"
-fi
-if [[ -z ${check_chat} ]]; then
-  check_chat="off"
-fi
-if [[ -z ${check_qbt} ]]; then
-  check_qbt="off"
-fi
-if [[ -z ${check_aria} ]]; then
-  check_aria="off"
-fi
-if [[ -z ${check_file} ]]; then
-  check_file="off"
-fi
 if [[ -z ${check_speed} ]]; then
   check_speed="off"
 fi
-if [[ -z ${check_mariadb} ]]; then
-  check_mariadb="off"
-fi
 if [[ -z ${check_fail2ban} ]]; then
   check_fail2ban="off"
-fi
-if [[ -z ${check_mail} ]]; then
-  check_mail="off"
-fi
-if [[ -z ${check_qbt_origin} ]]; then
-  check_qbt_origin="off"
-fi
-if [[ -z ${check_tracker} ]]; then
-  check_tracker="off"
-fi
-if [[ -z ${check_cloud} ]]; then
-  check_cloud="off"
-fi
-if [[ -z ${check_tor} ]]; then
-  check_tor="off"
-fi
-if [[ -z ${check_i2p} ]]; then
-  check_i2p="off"
 fi
 if [[ -z ${check_tjp} ]]; then
   check_tjp="off"
 fi
 if [[ -z ${fastopen} ]]; then
   fastopen="on"
-fi
-if [[ -z ${stun} ]]; then
-  stun="off"
 fi
 
 whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 24 65 16 \
@@ -96,7 +46,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "tjp" "Trojan-panel" ${check_tjp} \
 "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
 "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
-"port" "自定义Trojan端口(除nat机器外请勿选中)" ${check_qbt_origin} \
+"port" "自定义Trojan端口(除nat机器外请勿选中)" off \
 "test-only" "test-only" off 2>results
 
 while read choice
@@ -119,10 +69,6 @@ do
     fast)
     tcp_fastopen="true"
     ;;
-    chat)
-    install_chat=1
-    install_docker=1
-    ;;
     tjp)
     install_trojan_panel=1
     install_php=1
@@ -132,72 +78,20 @@ do
     net)
     install_netdata=1
     ;;
-    nextcloud)
-    install_nextcloud=1
-    install_php=1
-    install_mariadb=1
-    install_redis=1
-    ;;
-    redis)
-    install_redis=1
-    ;;
-    rss)
-    check_rss="on"
-    install_rsshub=1
-    install_redis=1
-    install_php=1
-    install_mariadb=1
-    ;;
-    qbt)
-    check_qbt="on"
-    install_qbt=1
-    ;;
-    aria)
-    check_aria="on"
-    install_aria=1
-    ;;
-    file)
-    check_file="on"
-    install_file=1
-    ;;
     speed)
     check_speed="on"
     install_speedtest=1
     install_php=1
     ;;
-    7)
-    check_mariadb="on"
-    install_mariadb=1
-    ;;
     fail2ban)
     check_fail2ban="on"
     install_fail2ban=1
-    ;;
-    mail)
-    check_mail="on"
-    install_mail=1
-    install_php=1
-    install_mariadb=1
-    ;;
-    10)
-    check_tracker="on"
-    install_tracker=1
     ;;
     11) 
     install_tjp=1
     install_php=1
     install_nodejs=1
     install_mariadb=1
-    ;;
-    tor)
-    install_tor=1
-    ;;
-    i2p)
-    install_i2p=1
-    ;;
-    13)
-    check_qbt_origin="on"
-    install_qbt_origin=1
     ;;
     port)
     trojan_other_port=1
@@ -213,16 +107,6 @@ if [[ ${trojan_other_port} == 1 ]]; then
   trojanport=$(whiptail --inputbox --nocancel "Trojan-GFW 端口(若不確定，請直接回車)" 8 68 443 --title "port input" 3>&1 1>&2 2>&3)
   if [[ -z ${trojanport} ]]; then
   trojanport="443"
-  fi
-fi
-
-system_upgrade=1
-if [[ ${system_upgrade} == 1 ]]; then
-  if [[ $(lsb_release -cs) == jessie ]]; then
-      debian9_install=1
-  fi
-  if [[ $(lsb_release -cs) == xenial ]]; then
-      ubuntu18_install=1
   fi
 fi
 
