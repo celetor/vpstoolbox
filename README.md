@@ -99,7 +99,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 3. **Commit** 修改
 4. **Push** 到你自己的Fork
 5. 提交**Pull request**
-6. PR要求请看**[pr要求](https://github.com/johnrosen1/vpstoolbox/tree/dev/install)**
+6. PR要求请看[**pr要求**](https://github.com/johnrosen1/vpstoolbox/tree/dev/install)
 
 ## Bug反馈以及Feature request
 
