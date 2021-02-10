@@ -100,8 +100,8 @@ tail -n +3 /proc/net/dev | awk '{print \$1 " " \$2 " " \$10}' | numfmt --to=iec 
 echo -e " --- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
 echo -e " --- 请在VPS控制面板上彻底禁用防火墙(firewall)以达到最佳效果(allow all ports) ---"
 ###
-echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
 echo -e "    \${YELLOW}trojan://$password2@$domain:${trojanport}\${NOCOLOR}"
+echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
 ###
 if [[ -d /usr/share/nginx/nextcloud/ ]]; then
 echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Nextcloud links) ---"
@@ -115,13 +115,11 @@ if [[ -d /usr/share/nginx/trojan-panel/ ]]; then
 echo -e " --- \${BLUE}Trojan-panel快速链接\${NOCOLOR}(Trojan-panel links) ---"
 ###
 echo -e "    \${YELLOW}https://$domain/config/\${NOCOLOR}"
-#echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
-#echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 ###
 fi
 if [[ -f /usr/bin/tor ]]; then
 echo -e " --- \${BLUE}Onion快速链接\${NOCOLOR}(onion link) ---"
-echo -e "${torhostname}"
+echo -e "\$(cat /var/lib/tor/hidden_service/hostname)"
 fi
 echo -e " --- 請\${bold}訪問以下鏈接\${normal}以獲得更多详细結果(Please visit the following link to get more info) "
 echo -e "    \${YELLOW}https://$domain/${password1}/\${NOCOLOR}"
@@ -130,4 +128,9 @@ echo -e " --- https://github.com/johnrosen1/vpstoolbox"
 echo -e " --- \${YELLOW}https://t.me/vpstoolbox_chat\${NOCOLOR}"
 echo -e "*********************"
 EOF
+chmod +x /etc/profile.d/mymotd.sh
+echo "" > /etc/motd
+echo "Install complete!"
+whiptail --title "Success" --msgbox "安装成功(Install Success),欢迎使用VPSTOOLBOX !" 8 68
+bash /etc/profile.d/mymotd.sh
 }

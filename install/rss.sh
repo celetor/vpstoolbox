@@ -2,6 +2,7 @@
 
 ## RSS模组 RSS moudle
 
+install_rss(){
 cd /usr/share/nginx/
 if [[ -d /usr/share/nginx/RSSHub ]]; then
     TERM=ansi whiptail --title "安装中" --infobox "更新rsshub中..." 7 68
@@ -164,3 +165,5 @@ cd /usr/share/nginx/themes/feedly/
 cp -r feedly* /usr/share/nginx/tt-rss/themes.local
 cd
 fi
+}
+

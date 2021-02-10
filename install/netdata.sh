@@ -17,7 +17,7 @@ localhost:
 
 localipv4:
   name : 'local'
-  url  : 'http://127.0.0.1:81/stub_status'
+  url  : 'http://127.0.0.1:83/stub_status'
 EOF
   cat > '/opt/netdata/etc/netdata/python.d/web_log.conf' << EOF
 nginx_log:
@@ -40,7 +40,7 @@ EOF
 if [[ ${install_php} == 1 ]]; then
 cat > '/opt/netdata/etc/netdata/python.d/phpfpm.conf' << EOF
 local:
-  url     : 'http://127.0.0.1:81/status?full&json'
+  url     : 'http://127.0.0.1:83/status?full&json'
 EOF
 fi
 if [[ ${install_tor} == 1 ]]; then

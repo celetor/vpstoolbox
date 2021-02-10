@@ -2,7 +2,9 @@
 
 ## NGINX模组 NGINX moudle
 
-installnginx(){
+## 基础模组
+
+install_nginx(){
   clear
   TERM=ansi whiptail --title "安装中" --infobox "安装NGINX中..." 7 68
   colorEcho ${INFO} "Install Nginx ing"

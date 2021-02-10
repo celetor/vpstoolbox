@@ -2,7 +2,7 @@
 
 ## BBR模组 BBR moudle
 
-enablebbr(){
+install_bbr(){
 if [[ $install_bbr == 1 ]]; then
   TERM=ansi whiptail --title "初始化中" --infobox "启动BBR中..." 7 68
   colorEcho ${INFO} "Enabling TCP-BBR boost"

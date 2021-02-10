@@ -2,15 +2,25 @@
 
 ## 证书申请模组 Let's encrypt moudle
 
-httpissue(){
+installacme(){
+  set +e
+  curl -s https://get.acme.sh | sh
+  if [[ $? != 0 ]]; then
+    colorEcho ${ERROR} "安装acme.sh失败，请自行检查网络连接及DNS配置!"
+    colorEcho ${ERROR} "Install acme.sh fail,please check your internet availability!!!"
+    exit 1
+  fi
+  ~/.acme.sh/acme.sh --upgrade --auto-upgrade
+}
+
+http_issue(){
 openfirewall
-  http_issue=1
-  installacme
-  installnginx
-  rm -rf /etc/nginx/sites-available/*
-  rm -rf /etc/nginx/sites-enabled/*
-  rm -rf /etc/nginx/conf.d/*
-  touch /etc/nginx/conf.d/default.conf
+installacme
+installnginx
+rm -rf /etc/nginx/sites-available/*
+rm -rf /etc/nginx/sites-enabled/*
+rm -rf /etc/nginx/conf.d/*
+touch /etc/nginx/conf.d/default.conf
   cat > '/etc/nginx/conf.d/default.conf' << EOF
 server {
   listen       80;
@@ -39,7 +49,7 @@ crontab mycron
 rm mycron
 }
 
-dnsissue(){
+dns_issue(){
 whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr" 8 68
     APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 68 6 \
 "1" "Cloudflare(不支援免费域名)" \

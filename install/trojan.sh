@@ -52,7 +52,7 @@ if [[ ${install_mariadb} == 1 ]]; then
     "local_addr": "::",
     "local_port": ${trojanport},
     "remote_addr": "127.0.0.1",
-    "remote_port": 8888,
+    "remote_port": 81,
     "password": [
         "$password1",
         "$password2"
@@ -107,7 +107,7 @@ EOF
     "local_addr": "::",
     "local_port": ${trojanport},
     "remote_addr": "127.0.0.1",
-    "remote_port": 8888,
+    "remote_port": 81,
     "password": [
         "$password1",
         "$password2"
@@ -345,5 +345,6 @@ EOF
 rm /usr/share/nginx/client1.json
 rm /usr/share/nginx/client2.json
 rm -rf trojan-url.py
+systemctl restart trojan
 }
 
