@@ -91,6 +91,14 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 3. 证书续签目前使用crontab,如有问题,欢迎反馈 !
 4. 本项目不对Vultr机器造成的任何问题负责,this project does not responsible for any problems caused by vultr machines !
 
+## 贡献
+
+1. **Fork**本项目
+2. **Clone**到你自己的机器
+3. **Commit** 修改
+4. **Push** 到你自己的Fork
+5. 提交**Pull request**
+
 ## Bug反馈以及Feature request
 
 - [x] [Github Issue](https://github.com/johnrosen1/vpstoolbox/issues)
@@ -175,6 +183,7 @@ systemctl restart php7.4-fpm
 
 ## 執照
 
+```
 MIT License
 
 Copyright (c) 2019-2021 johnrosen1
@@ -196,4 +205,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
+```
