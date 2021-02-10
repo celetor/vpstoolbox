@@ -28,6 +28,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - 代理
   - [x] [Trojan-gfw](https://github.com/trojan-gfw/trojan)
   - [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
+  - [ ] [Shadowsocks-rust](https://github.com/shadowsocks/shadowsocks-rust)
   - [ ] [Trojan-panel](https://github.com/trojan-gfw/trojan-panel)
 - 系统
   - [x] [IPv6](https://zh.wikipedia.org/wiki/IPv6)
