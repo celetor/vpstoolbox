@@ -42,7 +42,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "ss" "shadowsocks-rust" ${check_ss} \
 "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
 "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
-"dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
+"dns" "Dnscrypt-proxy(Doh)" ${check_dns} \
 "port" "自定义Trojan端口(除nat机器外请勿选中)" off \
 "test-only" "test-only" off 2>results
 
@@ -58,18 +58,18 @@ do
     install_bbr=1
     ;;
     ss)
+    check_ss="on"
     install_ss_rust=1
     ;;
-    stun)
-    install_stun="1"
-    ;;
     dns)
+    check_dns="on"
     install_dnscrypt=1
     ;;
     fast)
     tcp_fastopen="true"
     ;;
     tjp)
+    check_tjp="off"
     install_trojan_panel=1
     install_php=1
     install_mariadb=1
@@ -286,12 +286,14 @@ do
     install_bbr=1
     ;;
     ss)
+    check_ss="on"
     install_ss_rust=1
     ;;
     stun)
     install_stun="1"
     ;;
     dns)
+    check_dns="on"
     install_dnscrypt=1
     ;;
     fast)
@@ -302,6 +304,7 @@ do
     install_docker=1
     ;;
     tjp)
+    check_tjp="on"
     install_trojan_panel=1
     install_php=1
     install_mariadb=1
@@ -328,7 +331,7 @@ do
     ;;
     qbt)
     check_qbt="on"
-    install_qbt=1
+    install_qbt_e=1
     ;;
     aria)
     check_aria="on"
@@ -357,6 +360,9 @@ do
     install_php=1
     install_mariadb=1
     ;;
+    stun)
+    install_stun="1"
+    ;;
     10)
     check_tracker="on"
     install_tracker=1
@@ -375,7 +381,7 @@ do
     ;;
     13)
     check_qbt_origin="on"
-    install_qbt_origin=1
+    install_qbt_o=1
     ;;
     port)
     trojan_other_port=1
