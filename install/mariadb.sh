@@ -76,12 +76,6 @@ mysql -u root -e "create user 'trojan'@'localhost' IDENTIFIED BY '${password1}';
 mysql -u root -e "GRANT ALL PRIVILEGES ON trojan.* to trojan@'localhost';"
 mysql -u root -e "flush privileges;"
 
-    cat > '/opt/netdata/etc/netdata/python.d/mysql.conf' << EOF
-update_every : 10
-priority     : 90100
-
-local:
-  user     : 'netdata'
-  update_every : 1
-EOF
+systemctl daemon-reload
+systemctl restart mariadb
 }
