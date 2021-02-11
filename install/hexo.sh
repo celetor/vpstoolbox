@@ -248,7 +248,7 @@ Introduction: test download and upload speed from vps to your local network.
 
 #### Netdata
 
-- <a href="https://$domain:443$netdatapath" target="_blank" rel="noreferrer">https://${domain}${netdatapath}</a>
+- <a href="https://$domain:443/${password1}_netdata/" target="_blank" rel="noreferrer">https://${domain}/${password1}_netdata/</a>
 
 ---
 
@@ -272,7 +272,7 @@ Introduction: just like discord.
 
 > Introduction: self-build onion site.
 
-${torhostname}
+$(cat /var/lib/tor/hidden_service/hostname)
 
 ---
 
@@ -303,8 +303,8 @@ PS: 不支援自定义证书,仅支援全自动申请的let证书!
 #### Roundcube Webmail
 
 - <a href="https://${domain}/mail/" target="_blank" rel="noreferrer">Roundcube Webmail</a>
-- 用户名(username): **${mailuser}**
-- 密碼(password): **${password1}**
+- 用户名(username): ${mailuser}
+- 密碼(password): ${password1}
 - 收件地址: **${mailuser}@${domain}**
 
 #### Tips:
