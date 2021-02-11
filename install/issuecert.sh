@@ -15,7 +15,6 @@ installacme(){
 
 http_issue(){
 installacme
-installnginx
 rm -rf /etc/nginx/sites-available/*
 rm -rf /etc/nginx/sites-enabled/*
 rm -rf /etc/nginx/conf.d/*

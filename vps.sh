@@ -382,6 +382,11 @@ install_moudles(){
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/hexo.sh
   source hexo.sh
   install_hexo
+  if [[ ${install_php} == 1 ]]; then
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/php.sh
+  source php.sh
+  install_php
+  fi
   if [[ ${install_ss_rust} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/ss-rust.sh
   source ss-rust.sh
@@ -432,11 +437,6 @@ install_moudles(){
   source nextcloud.sh
   install_nextcloud
   fi
-  if [[ ${install_php} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/php.sh
-  source php.sh
-  install_php
-  fi
   if [[ ${install_qbt_o} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/qbt_origin.sh
   source qbt_origin.sh
@@ -484,8 +484,8 @@ install_moudles(){
   fi
   if [[ ${install_trojan_panel} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/trojan-panel.sh
-  source hexo.sh
-  install_hexo
+  source trojan-panel.sh
+  install_tjp
   fi
   if [[ ${install_netdata} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/netdata.sh
