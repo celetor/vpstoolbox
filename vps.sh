@@ -395,9 +395,9 @@ install_moudles(){
   install_ss_rust
   fi
   if [[ ${install_aria} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/aria.sh
-  source aria.sh
-  install_aria
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/aria2.sh
+  source aria2.sh
+  install_aria2
   fi
   if [[ ${install_dnscrypt} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/dnscrypt.sh

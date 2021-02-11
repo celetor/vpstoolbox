@@ -216,7 +216,7 @@ Introduction: download any resources(formaly downloaded by qbt or aria2) from yo
 
 #### Filebrowser
 
-- <a href="https://$domain:443$filepath" target="_blank" rel="noreferrer">https://$domain$filepath</a>
+- <a href="https://$domain:443/file/" target="_blank" rel="noreferrer">https://$domain/file/</a>
 - 用户名(username): **admin**
 - 密碼(token): **admin**
 

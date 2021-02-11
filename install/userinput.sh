@@ -173,11 +173,6 @@ fi
     fi
     done
   fi
-  if [[ ${install_file} = 1 ]]; then
-    while [[ -z ${filepath} ]]; do
-    filepath=$(whiptail --inputbox --nocancel "Filebrowser Nginx 路径" 8 68 /file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
-    done
-  fi
 }
 
 userinput_full(){
@@ -470,11 +465,6 @@ fi
     if [[ -z ${ariapasswd} ]]; then
     ariapasswd=$(head /dev/urandom | tr -dc 0-9 | head -c 10 ; echo '' )
     fi
-    done
-  fi
-  if [[ ${install_file} = 1 ]]; then
-    while [[ -z ${filepath} ]]; do
-    filepath=$(whiptail --inputbox --nocancel "Filebrowser Nginx 路径" 8 68 /file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
     done
   fi
 }
