@@ -63,7 +63,6 @@ socket:
 EOF
 fi
 systemctl restart netdata
-fi
 clear
 }
 
