@@ -53,6 +53,83 @@ server {
 EOF
 if [[ $install_nextcloud == 1 ]]; then
 echo "    include /etc/nginx/conf.d/nextcloud.conf;" >> /etc/nginx/conf.d/default.conf
+cat << EOF > /etc/nginx/conf.d/nextcloud.conf
+    location /.well-known {
+        rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
+        rewrite ^/\.well-known/host-meta        /nextcloud/public.php?service=host-meta         last;
+        rewrite ^/\.well-known/webfinger        /nextcloud/public.php?service=webfinger         last;
+        rewrite ^/\.well-known/nodeinfo         /nextcloud/public.php?service=nodeinfo          last;
+
+        try_files \$uri \$uri/ =404;
+    }
+
+    location = /.well-known/carddav { return 301 https://\$host:443/nextcloud/remote.php/dav; }
+    location = /.well-known/caldav { return 301 https://\$host:443/nextcloud/remote.php/dav; }
+
+    location ^~ /nextcloud/ {
+        root /usr/share/nginx/;
+        client_body_temp_path /usr/share/nginx/tmp/ 1 2;
+        client_max_body_size 0;
+        fastcgi_buffers 64 4K;
+        add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
+        add_header Referrer-Policy                      "no-referrer"   always;
+        add_header X-Content-Type-Options               "nosniff"       always;
+        add_header X-Download-Options                   "noopen"        always;
+        add_header X-Frame-Options                      "SAMEORIGIN"    always;
+        add_header X-Permitted-Cross-Domain-Policies    "none"          always;
+        add_header X-Robots-Tag                         "none"          always;
+        add_header X-XSS-Protection                     "1; mode=block" always;
+        #fastcgi_hide_header X-Powered-By;
+        index index.php index.html /nextcloud/index.php\$request_uri;
+
+        expires 1m;
+
+        location = /nextcloud/ {
+            if ( \$http_user_agent ~ ^DavClnt ) {
+                return 302 /nextcloud/remote.php/webdav/\$is_args\$args;
+            }
+        }
+
+        location ~ ^/nextcloud/(?:build|tests|config|lib|3rdparty|templates|data)(?:\$|/)    { return 404; }
+        location ~ ^/nextcloud/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }
+
+        location ~ \.php(?:\$|/) {
+            fastcgi_split_path_info ^(.+?\.php)(/.*)\$;
+            set \$path_info \$fastcgi_path_info;
+
+            try_files \$fastcgi_script_name =404;
+
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME \$request_filename;
+            fastcgi_param PATH_INFO \$path_info;
+            fastcgi_param HTTPS on;
+
+            fastcgi_param modHeadersAvailable true;
+            fastcgi_param front_controller_active true;
+            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+
+            fastcgi_intercept_errors on;
+            fastcgi_request_buffering off;
+            fastcgi_read_timeout 600s;
+        }
+
+        location ~ \.(?:css|js|svg|gif)\$ {
+            try_files \$uri /nextcloud/index.php\$request_uri;
+            expires 6M;
+            access_log off;
+        }
+
+        location ~ \.woff2?\$ {
+            try_files \$uri /nextcloud/index.php\$request_uri;
+            expires 7d;
+            access_log off;
+        }
+
+        location /nextcloud/ {
+            try_files \$uri \$uri/ /nextcloud/index.php\$request_uri;
+        }
+    }
+EOF
 fi
 if [[ $install_trojan_panel == 1 ]]; then
 echo "    location /config/ {" >> /etc/nginx/conf.d/default.conf
@@ -192,6 +269,13 @@ echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_filebrowser == 1 ]]; then
 echo "    include /etc/nginx/conf.d/filebrowser.conf;" >> /etc/nginx/conf.d/default.conf
+cat > '/etc/nginx/conf.d/filebrowser.conf' << EOF
+location /file/ {
+  #access_log off;
+  proxy_pass http://127.0.0.1:8081/;
+  client_max_body_size 0;
+}
+EOF
 fi
 if [[ $install_i2pd == 1 ]]; then
 echo "    location /${password1}_i2p/ {" >> /etc/nginx/conf.d/default.conf
