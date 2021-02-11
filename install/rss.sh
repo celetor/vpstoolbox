@@ -56,6 +56,11 @@ if [[ -d /usr/share/nginx/tt-rss/ ]]; then
   else
     TERM=ansi whiptail --title "安装中" --infobox "安装tt-rss中..." 7 68
     git clone https://git.tt-rss.org/fox/tt-rss.git tt-rss
+    mysql -u root -e "CREATE DATABASE ttrss CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    mysql -u root -e "create user 'ttrss'@'localhost' IDENTIFIED BY '${password1}';"
+    mysql -u root -e "GRANT ALL PRIVILEGES ON ttrss.* to ttrss@'localhost';"
+    mysql -u root -e "flush privileges;"
+    mysql -u ttrss -p"${password1}" -D ttrss < /usr/share/nginx/tt-rss/schema/ttrss_schema_mysql.sql
   cat > '/usr/share/nginx/tt-rss/config.php' << EOF
 <?php
   // *******************************************
