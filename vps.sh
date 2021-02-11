@@ -215,6 +215,7 @@ prasejson(){
   "check_cloud": "$check_cloud",
   "check_tor": "$check_tor",
   "check_i2p": "$check_i2p",
+  "check_ss": "$check_ss",
   "fastopen": "${fastopen}",
   "tor_name": "$tor_name"
 }
@@ -251,6 +252,7 @@ readconfig(){
   check_tor="$( jq -r '.check_tor' "/root/.trojan/config.json" )"
   check_chat="$( jq -r '.check_chat' "/root/.trojan/config.json" )"
   check_i2p="$( jq -r '.check_i2p' "/root/.trojan/config.json" )"
+  check_ss="$( jq -r '.check_ss' "/root/.trojan/config.json" )"
   fastopen="$( jq -r '.fastopen' "/root/.trojan/config.json" )"
 }
 

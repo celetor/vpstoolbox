@@ -8,14 +8,6 @@ clear
 if [[ ${install_status} == 1 ]]; then
   if (whiptail --title "Installed" --yes-button "读取" --no-button "修改" --yesno "检测到现有配置，读取/修改现有配置?(Installed,read configuration?)" 8 68); then
     readconfig
-    else
-    check_trojan="on"
-    check_tjp="off"
-    check_dns="off"
-    check_file="off"
-    check_speed="off"
-    check_fail2ban="off"
-    fastopen="on"
   fi
 fi
 
@@ -34,17 +26,20 @@ fi
 if [[ -z ${check_tjp} ]]; then
   check_tjp="off"
 fi
+if [[ -z ${check_ss} ]]; then
+  check_ss="off"
+fi
 if [[ -z ${fastopen} ]]; then
   fastopen="on"
 fi
 
-whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 24 65 12 \
+whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 18 65 10 \
 "Back" "返回上级菜单(Back to main menu)" off \
 "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
 "net" "Netdata(监测伺服器运行状态)" on \
 "fast" "TCP Fastopen" ${fastopen} \
 "tjp" "Trojan-panel" ${check_tjp} \
-"ss" "shadowsocks-rust" off \
+"ss" "shadowsocks-rust" ${check_ss} \
 "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
 "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
 "port" "自定义Trojan端口(除nat机器外请勿选中)" off \
@@ -269,6 +264,9 @@ fi
 if [[ -z ${check_tjp} ]]; then
   check_tjp="off"
 fi
+if [[ -z ${check_ss} ]]; then
+  check_ss="off"
+fi
 if [[ -z ${fastopen} ]]; then
   fastopen="on"
 fi
@@ -282,7 +280,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "net" "Netdata(监测伺服器运行状态)" on \
 "fast" "TCP Fastopen" ${fastopen} \
 "tjp" "Trojan-panel" ${check_tjp} \
-"ss" "shadowsocks-rust" off \
+"ss" "shadowsocks-rust" ${check_ss} \
 "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
 "rss" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
