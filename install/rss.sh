@@ -46,6 +46,7 @@ Group=root
 WantedBy=multi-user.target
 EOF
 systemctl enable rsshub
+systemctl restart rsshub
 fi
 
 cd /usr/share/nginx/
@@ -162,6 +163,7 @@ RestartSec=3s
 WantedBy=multi-user.target
 EOF
 systemctl enable rssfeed
+systemctl restart rssfeed
 #tt-rss themes
 mkdir /usr/share/nginx/themes/
 cd /usr/share/nginx/themes/

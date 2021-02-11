@@ -42,6 +42,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "ss" "shadowsocks-rust" ${check_ss} \
 "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
 "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
+"dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
 "port" "自定义Trojan端口(除nat机器外请勿选中)" off \
 "test-only" "test-only" off 2>results
 

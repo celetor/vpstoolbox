@@ -264,7 +264,7 @@ apt-get autoremove -y
 cd /opt/netdata/bin
 bash netdata-claim.sh -token=llFcKa-42N035f4WxUYZ5VhSnKLBYQR9Se6HIrtXysmjkMBHiLCuiHfb9aEJmXk0hy6V_pZyKMEz_QN30o2s7_OsS7sKEhhUTQGfjW0KAG5ahWhbnCvX8b_PW_U-256otbL5CkM -rooms=38e38830-7b2c-4c34-a4c7-54cacbe6dbb9 -url=https://app.netdata.cloud &>/dev/null
 cd
-if [[ ${dnsmasq_install} == 1 ]]; then
+if [[ ${install_dnscrypt} == 1 ]]; then
   if [[ ${dist} = ubuntu ]]; then
     systemctl stop systemd-resolved
     systemctl disable systemd-resolved
