@@ -53,7 +53,9 @@ fi
 
 mkdir /usr/share/nginx/tmp/
 
-cat > '/etc/nginx/conf.d/nextcloud.conf' << EOF
+cd /etc/nginx/conf.d/
+
+cat > 'nextcloud.conf' << EOF
     location /.well-known {
         rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
         rewrite ^/\.well-known/host-meta        /nextcloud/public.php?service=host-meta         last;
@@ -130,4 +132,5 @@ cat > '/etc/nginx/conf.d/nextcloud.conf' << EOF
         }
     }
 EOF
+cd
 }
