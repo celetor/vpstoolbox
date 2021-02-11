@@ -87,7 +87,7 @@ do
     install_fail2ban=1
     ;;
     11) 
-    install_tjp=1
+    install_trojan_panel=1
     install_php=1
     install_nodejs=1
     install_mariadb=1
@@ -176,11 +176,6 @@ fi
   if [[ ${install_file} = 1 ]]; then
     while [[ -z ${filepath} ]]; do
     filepath=$(whiptail --inputbox --nocancel "Filebrowser Nginx 路径" 8 68 /file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
-    done
-  fi
-  if [[ ${install_netdata} = 1 ]]; then
-    while [[ -z ${netdatapath} ]]; do
-    netdatapath=$(whiptail --inputbox --nocancel "Netdata Nginx 路径" 8 68 /${password1}_netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
     done
   fi
 }
@@ -311,7 +306,7 @@ do
     install_docker=1
     ;;
     tjp)
-    install_tjp=1
+    install_trojan_panel=1
     install_php=1
     install_mariadb=1
     install_redis=1
@@ -371,7 +366,7 @@ do
     install_tracker=1
     ;;
     11) 
-    install_tjp=1
+    install_trojan_panel=1
     install_php=1
     install_nodejs=1
     install_mariadb=1
@@ -480,11 +475,6 @@ fi
   if [[ ${install_file} = 1 ]]; then
     while [[ -z ${filepath} ]]; do
     filepath=$(whiptail --inputbox --nocancel "Filebrowser Nginx 路径" 8 68 /file/ --title "Filebrowser path input" 3>&1 1>&2 2>&3)
-    done
-  fi
-  if [[ ${install_netdata} = 1 ]]; then
-    while [[ -z ${netdatapath} ]]; do
-    netdatapath=$(whiptail --inputbox --nocancel "Netdata Nginx 路径" 8 68 /${password1}_netdata/ --title "Netdata path input" 3>&1 1>&2 2>&3)
     done
   fi
 }

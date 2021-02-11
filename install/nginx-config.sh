@@ -54,7 +54,7 @@ EOF
 if [[ $install_nextcloud == 1 ]]; then
 echo "    include /etc/nginx/conf.d/nextcloud.conf;" >> /etc/nginx/conf.d/default.conf
 fi
-if [[ $install_tjp == 1 ]]; then
+if [[ $install_trojan_panel == 1 ]]; then
 echo "    location /config/ {" >> /etc/nginx/conf.d/default.conf
 echo "        expires -1;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
@@ -120,7 +120,7 @@ echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/c
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
-if [[ $dnsmasq_install == 1 ]]; then
+if [[ $install_dnscrypt == 1 ]]; then
 echo "    #location /dns-query {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
@@ -215,7 +215,7 @@ echo "        proxy_pass http://127.0.0.1:6969;" >> /etc/nginx/conf.d/default.co
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_netdata == 1 ]]; then
-echo "    location ~ $netdatapath(?<ndpath>.*) {" >> /etc/nginx/conf.d/default.conf
+echo "    location ~ /${password1}_netdata/(?<ndpath>.*) {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_cache off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
