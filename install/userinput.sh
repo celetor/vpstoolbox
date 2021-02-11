@@ -191,25 +191,6 @@ clear
 if [[ ${install_status} == 1 ]]; then
   if (whiptail --title "Installed" --yes-button "读取" --no-button "修改" --yesno "检测到现有配置，读取/修改现有配置?(Installed,read configuration?)" 8 68); then
     readconfig
-    else
-    check_trojan="on"
-    check_tjp="off"
-    check_dns="off"
-    check_rss="off"
-    check_qbt="off"
-    check_aria="off"
-    check_file="off"
-    check_speed="off"
-    check_mariadb="off"
-    check_fail2ban="off"
-    check_mail="off"
-    check_qbt_origin="off"
-    check_tracker="off"
-    check_cloud="off"
-    check_tor="off"
-    check_chat="off"
-    fastopen="on"
-    stun="off"
   fi
 fi
 
