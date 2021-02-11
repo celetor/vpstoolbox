@@ -79,7 +79,7 @@ echo "    location /config {" >> /etc/nginx/conf.d/default.conf
 echo "        return 301 https://${domain}/config/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
-if [[ $install_chat == 1 ]]; then
+if [[ $install_rocketchat == 1 ]]; then
 echo "    location /rocketchat {" >> /etc/nginx/conf.d/default.conf
 echo "        expires -1;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
@@ -169,10 +169,10 @@ echo "        fastcgi_param front_controller_active true;" >> /etc/nginx/conf.d/
 echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-echo "    location /${password1}_ttrss/cache/ {" >> /etc/nginx/conf.d/default.conf
+echo "    location /ttrss/cache/ {" >> /etc/nginx/conf.d/default.conf
 echo "        deny all;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-echo "    location /${password1}_ttrss/config.php {" >> /etc/nginx/conf.d/default.conf
+echo "    location /ttrss/config.php {" >> /etc/nginx/conf.d/default.conf
 echo "        deny all;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
@@ -190,10 +190,10 @@ echo "        proxy_pass              http://127.0.0.1:8080/;" >> /etc/nginx/con
 echo "        proxy_set_header        X-Forwarded-Host        \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
-if [[ $install_file == 1 ]]; then
+if [[ $install_filebrowser == 1 ]]; then
 echo "    include /etc/nginx/conf.d/filebrowser.conf;" >> /etc/nginx/conf.d/default.conf
 fi
-if [[ $install_i2p == 1 ]]; then
+if [[ $install_i2pd == 1 ]]; then
 echo "    location /${password1}_i2p/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:7070/;" >> /etc/nginx/conf.d/default.conf

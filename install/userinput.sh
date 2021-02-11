@@ -302,7 +302,7 @@ do
     tcp_fastopen="true"
     ;;
     chat)
-    install_chat=1
+    install_rocketchat=1
     install_docker=1
     ;;
     tjp)
@@ -325,7 +325,7 @@ do
     ;;
     rss)
     check_rss="on"
-    install_rsshub=1
+    install_rss=1
     install_redis=1
     install_php=1
     install_mariadb=1
@@ -340,7 +340,7 @@ do
     ;;
     file)
     check_file="on"
-    install_file=1
+    install_filebrowser=1
     ;;
     speed)
     check_speed="on"
@@ -375,7 +375,7 @@ do
     install_tor=1
     ;;
     i2p)
-    install_i2p=1
+    install_i2pd=1
     ;;
     13)
     check_qbt_origin="on"
