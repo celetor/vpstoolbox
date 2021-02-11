@@ -11,8 +11,6 @@ install_ss_rust(){
 {
     "server": "::",
     "server_port": 8388,
-    "local_port": 1080,
-    "local_address": "127.0.0.1",
     "password": "${password1}",
     "timeout": 300,
     "method": "aes-128-gcm"
@@ -28,7 +26,7 @@ After=network.target
 User=root
 Group=root
 RemainAfterExit=yes
-ExecStart=/usr/sbin/ssserver -c /etc/ss-rust/config.json
+ExecStart=/usr/sbin/ssserver -U -c /etc/ss-rust/config.json
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
 LimitNOFILE=51200
@@ -39,5 +37,6 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
+systemctl daemon-reload
 systemctl restart ssserver
 }
