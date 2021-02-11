@@ -260,7 +260,7 @@ echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:6800/jsonrpc;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
-if [[ $install_qbt == 1 ]]; then
+if [[ $install_qbt_e == 1 ]] || [[ $install_qbt_o == 1 ]]; then
 echo "    location $qbtpath {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass              http://127.0.0.1:8080/;" >> /etc/nginx/conf.d/default.conf
