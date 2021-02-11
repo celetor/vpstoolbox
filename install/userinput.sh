@@ -69,7 +69,7 @@ do
     tcp_fastopen="true"
     ;;
     tjp)
-    check_tjp="off"
+    check_tjp="on"
     install_trojan_panel=1
     install_php=1
     install_mariadb=1
