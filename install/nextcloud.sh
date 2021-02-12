@@ -6,6 +6,7 @@ install_nextcloud(){
   set +e
   TERM=ansi whiptail --title "安装中" --infobox "安装nextcloud中..." 7 68
   apt-get install php7.4-redis -y
+  apt-get install smbclient -y
   cd /usr/share/nginx
   cloudver=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
   cloudver1=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-20)
