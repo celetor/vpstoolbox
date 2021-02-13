@@ -199,12 +199,12 @@ Introduction: download resources you want to your vps(support bt only but extrem
 
 - <a href="https://$domain:443/ariang/" target="_blank" rel="noreferrer">https://$domain/ariang/</a>
 
-> 系统设定-->rpc-->填入下方内容即可。
+> 系统设定-->rpc-->填入下方内容(端口修改为443,填入Aria2 RPC金钥)即可。
 
 #### Aria2
 
 - https://$domain:443$ariapath
-- 密碼(token): **$ariapasswd**
+- 密碼(Aria2 RPC金钥,token): **$ariapasswd**
 - <a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank" rel="noreferrer">Aria2 for Android</a>
 
 ---
