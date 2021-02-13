@@ -239,6 +239,9 @@ fi
 if [[ -z ${check_ss} ]]; then
   check_ss="off"
 fi
+if [[ -z ${check_rclone} ]]; then
+  check_rclone="off"
+fi
 if [[ -z ${fastopen} ]]; then
   fastopen="on"
 fi
@@ -259,6 +262,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "chat" "Rocket Chat" ${check_chat} \
 "qbt" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
 "aria" "Aria2下载器" ${check_aria} \
+"rclone" "Rclone" ${check_rclone} \
 "file" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
 "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
 "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
@@ -336,6 +340,10 @@ do
     aria)
     check_aria="on"
     install_aria=1
+    ;;
+    rclone)
+    check_rclone="on"
+    install_rclone=1
     ;;
     file)
     check_file="on"

@@ -216,6 +216,7 @@ prasejson(){
   "check_tor": "$check_tor",
   "check_i2p": "$check_i2p",
   "check_ss": "$check_ss",
+  "check_rclone": "$check_rclone",
   "fastopen": "${fastopen}",
   "tor_name": "$tor_name"
 }
@@ -253,6 +254,7 @@ readconfig(){
   check_chat="$( jq -r '.check_chat' "/root/.trojan/config.json" )"
   check_i2p="$( jq -r '.check_i2p' "/root/.trojan/config.json" )"
   check_ss="$( jq -r '.check_ss' "/root/.trojan/config.json" )"
+  check_rclone="$( jq -r '.check_rclone' "/root/.trojan/config.json" )"
   fastopen="$( jq -r '.fastopen' "/root/.trojan/config.json" )"
 }
 
@@ -488,6 +490,11 @@ install_moudles(){
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/trojan-panel.sh
   source trojan-panel.sh
   install_tjp
+  fi
+  if [[ ${install_rclone} == 1 ]]; then
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/rclone.sh
+  source rclone.sh
+  install_rclone
   fi
   if [[ ${install_netdata} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/netdata.sh
