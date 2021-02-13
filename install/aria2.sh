@@ -28,10 +28,6 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
-TERM=ansi whiptail --title "安装中" --infobox "拉取全自动Aria2上传脚本中..." 7 68
-cd /etc/aria2/
-curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/autoupload.sh
-chmod +x /etc/aria2/autoupload.sh
   cat > '/etc/aria2/aria2.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 #Upload Settings###
@@ -122,5 +118,9 @@ curl -LO https://github.com/mayswind/AriaNg/releases/download/1.1.7/AriaNg-1.1.7
 unzip *
 rm -rf *.zip
 cd
+TERM=ansi whiptail --title "安装中" --infobox "拉取全自动Aria2上传脚本中..." 7 68
+cd /etc/aria2/
+curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/autoupload.sh
+chmod +x /etc/aria2/autoupload.sh
 }
 
