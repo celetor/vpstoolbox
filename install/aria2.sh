@@ -31,10 +31,11 @@ EOF
 TERM=ansi whiptail --title "安装中" --infobox "拉取全自动Aria2上传脚本中..." 7 68
 cd /etc/aria2/
 curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/autoupload.sh
+chmod +x /etc/aria2/autoupload.sh
   cat > '/etc/aria2/aria2.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 #Upload Settings###
-#on-download-complete=bash /etc/aria2/autoupload.sh
+#on-download-complete=/etc/aria2/autoupload.sh
 #Global Settings###
 daemon=true
 async-dns=true
