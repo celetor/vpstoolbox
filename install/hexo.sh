@@ -195,13 +195,16 @@ Introduction: download resources you want to your vps(support bt only but extrem
 
 > 简介: 将任何你想下载的东西(支援http/https/ftp/bt等,不支援emule/ed2k)**下载到你的VPS**上的软件。
 
-PS: 推荐使用**Ariang**连接(aria2没有官方web interface!)
+#### AriaNG
+
+- <a href="https://$domain:443/ariang/" target="_blank" rel="noreferrer">https://$domain/ariang/</a>
+
+> 系统设定-->rpc-->填入下方内容即可。
 
 #### Aria2
 
 - https://$domain:443$ariapath
 - 密碼(token): **$ariapasswd**
-- **<a href="https://github.com/mayswind/AriaNg/releases" target="_blank" rel="noreferrer">AriaNG</a>**
 - <a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank" rel="noreferrer">Aria2 for Android</a>
 
 ---
@@ -383,6 +386,7 @@ Please edit /etc/mysql/my.cnf and restart mariadb if you need remote access !
 
 1. <a href="https://github.com/aria2/aria2" target="_blank" rel="noreferrer">https://github.com/aria2/aria2</a>
 2. <a href="https://aria2.github.io/manual/en/html/index.html" target="_blank" rel="noreferrer">https://aria2.github.io/manual/en/html/index.html</a> 官方文档
+3. <a href="https://github.com/mayswind/AriaNg/releases" target="_blank" rel="noreferrer">AriaNG</a>
 
 ##### Filebrowser相关链接
 
