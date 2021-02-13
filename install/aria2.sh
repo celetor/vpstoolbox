@@ -5,6 +5,7 @@
 install_aria2(){
 TERM=ansi whiptail --title "安装中" --infobox "安装Aria2中..." 7 68
 trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/all_aria2.txt)
+mkdir /etc/aria2/
   cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
 Description=Aria2c download manager
@@ -16,7 +17,7 @@ After=network.target
 Type=forking
 User=root
 RemainAfterExit=yes
-ExecStart=/usr/local/bin/aria2c --conf-path=/etc/aria2.conf
+ExecStart=/usr/local/bin/aria2c --conf-path=/etc/aria2/aria2.conf
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
 LimitNOFILE=51200
@@ -27,8 +28,13 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
-  cat > '/etc/aria2.conf' << EOF
+TERM=ansi whiptail --title "安装中" --infobox "拉取全自动Aria2上传脚本中..." 7 68
+cd /etc/aria2/
+curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/autoupload.sh
+  cat > '/etc/aria2/aria2.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
+#Upload Settings###
+#on-download-complete=bash /etc/aria2/autoupload.sh
 #Global Settings###
 daemon=true
 async-dns=true
@@ -55,7 +61,7 @@ content-disposition-default-utf8=true
 enable-http-keep-alive=true
 http-accept-gzip=true
 min-split-size=10M
-max-connection-per-server=16
+max-connection-per-server=16 ## 16线程限制已解除,但不推荐使用大于16
 lowest-speed-limit=0
 disable-ipv6=false
 max-tries=0
@@ -90,22 +96,21 @@ bt-min-crypto-level=arc4
 bt-max-peers=0
 bt-tracker=$trackers_list
 EOF
-  if [[ ! -f /usr/local/bin/aria2c ]]; then
-  clear
-  apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
-  curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/aria2c.xz
-  xz --decompress aria2c.xz
-  cp -f aria2c /usr/local/bin/aria2c
-  chmod +x /usr/local/bin/aria2c
-  rm -rf aria2c
-  apt-get autoremove -q -y
-  touch /var/log/aria2.log
-  touch /usr/local/bin/aria2.session
-  mkdir /usr/share/nginx/aria2/
-  chmod 755 /usr/share/nginx/aria2/
-  fi
+clear
+apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
+curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/aria2c.xz
+xz --decompress aria2c.xz
+cp -f aria2c /usr/local/bin/aria2c
+chmod +x /usr/local/bin/aria2c
+rm -rf aria2c
+apt-get autoremove -q -y
+touch /var/log/aria2.log
+touch /usr/local/bin/aria2.session
+mkdir /usr/share/nginx/aria2/
+chmod 755 /usr/share/nginx/aria2/
 systemctl daemon-reload
 systemctl enable aria2
 systemctl restart aria2
+cd
 }
 
