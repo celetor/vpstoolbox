@@ -45,14 +45,6 @@ policy_default_delete_file_size="50"
 
 policy_default_path="/aria2_downloaded/"
 
-## 检测screen命令是否可用
-
-which screen
-
-if [[ $? != 0 ]]; then
-	apt-get install -y screen
-fi
-
 ## 检测rclone命令是否可用
 
 which rclone
