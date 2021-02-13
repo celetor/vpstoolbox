@@ -259,6 +259,12 @@ echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:6800/jsonrpc;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "    location /ariang/ {" >> /etc/nginx/conf.d/default.conf
+echo "        expires -1;" >> /etc/nginx/conf.d/default.conf
+echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "        index index.html;" >> /etc/nginx/conf.d/default.conf
+echo "        alias /usr/share/nginx/ariang/;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_qbt_e == 1 ]] || [[ $install_qbt_o == 1 ]]; then
 echo "    location $qbtpath {" >> /etc/nginx/conf.d/default.conf

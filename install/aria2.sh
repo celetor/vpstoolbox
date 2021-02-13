@@ -61,7 +61,7 @@ content-disposition-default-utf8=true
 enable-http-keep-alive=true
 http-accept-gzip=true
 min-split-size=10M
-max-connection-per-server=16 ## 16线程限制已解除,但不推荐使用大于16
+max-connection-per-server=16
 lowest-speed-limit=0
 disable-ipv6=false
 max-tries=0
@@ -111,6 +111,15 @@ chmod 755 /usr/share/nginx/aria2/
 systemctl daemon-reload
 systemctl enable aria2
 systemctl restart aria2
+cd
+## 安装 AriaNG
+if [[ ! -d /usr/share/nginx/ariang ]]; then
+  mkdir /usr/share/nginx/ariang
+fi
+cd /usr/share/nginx/ariang
+curl -LO https://github.com/mayswind/AriaNg/releases/download/1.1.7/AriaNg-1.1.7.zip
+unzip *
+rm -rf *.zip
 cd
 }
 
