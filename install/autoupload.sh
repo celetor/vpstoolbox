@@ -9,7 +9,7 @@ url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
-## 使用方法: aria2c --on-download-complete autoupload.sh http://example.org/file.iso
+## 使用方法: aria2c --on-download-complete /etc/aria2/autoupload.sh http://example.org/file.iso
 
 ## 注：bt下载做种完成后(可以手动停止做种)才会执行上传命令。
 
@@ -22,7 +22,7 @@ github_url="https://github.com/johnrosen1/vpstoolbox"
 
 file_path=$3 ## 文件路径
 file_folder=${file_path%/*} ## 文件夹路径
-file_folder_size=$(du -hs ${file_folder} | cut -f 1) ## 文件夹大小
+file_folder_size=$(du -hs ${file_folder} | sed "s/\..*//g") ## 文件夹大小
 file_num=$2 ## 文件数量
 gid=$1 ##gid
 rclone_name="onedrive" ## rclone config时设置的名称,```rclone listremotes --long```查看
