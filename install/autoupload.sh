@@ -15,6 +15,34 @@ github_url="https://github.com/johnrosen1/vpstoolbox"
 
 ## Rclone请自行配置
 
+## 获取环境变量
+
+## aria2 passes 3 arguments to specified command when it is executed. These arguments are: GID, the number of files and file path. For HTTP, FTP, and SFTP downloads, usually the number of files is 1. BitTorrent download can contain multiple files. If number of files is more than one, file path is first one.
+## 多文件(指新建了文件夹)的话默认路径是第一个文件的路径。
+
+file_path=$3 ## 文件路径
+file_folder=${file_path%/*} ## 文件夹路径
+file_folder_size=$(du -hs ${file_folder} | cut -f 1) ## 文件夹大小
+file_num=$2 ## 文件数量
+gid=$1 ##gid
+rclone_name="onedrive" ## rclone config时设置的名称,```rclone listremotes --long```查看
+
+## 设置默认策略,可用策略为保留下载档案(```keep```),删除下载档案(```delete```)
+
+policy_default="keep"
+
+## 设置保留的磁盘空间大小,低于此下限默认上传并删除档案(默认10GB)。
+
+policy_preserved_disk_size="10"
+
+## 设置默认上传并删除的已下载档案大小,高于此上限默认上传并删除档案(默认50GB)。
+
+policy_default_delete_file_size="50"
+
+## 设置默认的远程储存目录(默认为```/aria2_downloaded/```)
+
+policy_default_path="/aria2_downloaded/"
+
 ## 检测screen命令是否可用
 
 which screen
@@ -47,34 +75,6 @@ if [[ ! -d /var/log/rclone ]]; then
 	mkdir /var/log/rclone
 	touch /var/log/rcloneupload.log
 fi
-
-## 设置默认策略,可用策略为保留下载档案(```keep```),删除下载档案(```delete```)
-
-policy_default="keep"
-
-## 设置保留的磁盘空间大小,低于此下限默认上传并删除档案(默认10GB)。
-
-policy_preserved_disk_size="10"
-
-## 设置默认上传并删除的已下载档案大小,高于此上限默认上传并删除档案(默认50GB)。
-
-policy_default_delete_file_size="50"
-
-## 设置默认的远程储存目录(默认为```/aria2_downloaded/```)
-
-policy_default_path="/aria2_downloaded/"
-
-## 获取环境变量
-
-## aria2 passes 3 arguments to specified command when it is executed. These arguments are: GID, the number of files and file path. For HTTP, FTP, and SFTP downloads, usually the number of files is 1. BitTorrent download can contain multiple files. If number of files is more than one, file path is first one.
-## 多文件(指新建了文件夹)的话默认路径是第一个文件的路径。
-
-file_path=$3 ## 文件路径
-file_folder=${file_path%/*} ## 文件夹路径
-file_folder_size=$(du -hs ${file_folder} | cut -f 1) ## 文件夹大小
-file_num=$2 ## 文件数量
-gid=$1 ##gid
-rclone_name="onedrive" ## rclone config时设置的名称,```rclone listremotes --long```查看
 
 ## 获取剩余磁盘空间
 
