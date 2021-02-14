@@ -134,11 +134,9 @@ EOF
 fi
 if [[ $install_typecho == 1 ]]; then
 echo "    #location / {" >> /etc/nginx/conf.d/default.conf
-echo "    #    expires -1;" >> /etc/nginx/conf.d/default.conf
 echo "    #    client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "    #    index index.php index.html;" >> /etc/nginx/conf.d/default.conf
 echo "    #    root /usr/share/nginx/typecho/;" >> /etc/nginx/conf.d/default.conf
-echo "    #    try_files \$uri \$uri/ @config;" >> /etc/nginx/conf.d/default.conf
 echo "    #    location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
 echo "    #    fastcgi_split_path_info ^(.+\.php)(/.+)\$;" >> /etc/nginx/conf.d/default.conf
 echo "    #    include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
