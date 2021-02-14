@@ -53,6 +53,7 @@ server {
 EOF
 if [[ $install_nextcloud == 1 ]]; then
 echo "    include /etc/nginx/conf.d/nextcloud.conf;" >> /etc/nginx/conf.d/default.conf
+touch /etc/nginx/conf.d/nextcloud.conf
 cat << EOF > /etc/nginx/conf.d/nextcloud.conf
     location /.well-known {
         rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
