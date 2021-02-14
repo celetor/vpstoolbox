@@ -267,7 +267,7 @@ echo "        alias /usr/share/nginx/ariang/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_qbt_e == 1 ]] || [[ $install_qbt_o == 1 ]]; then
-echo "    location $qbtpath {" >> /etc/nginx/conf.d/default.conf
+echo "    location /qbt/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass              http://127.0.0.1:8080/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header        X-Forwarded-Host        \$http_host;" >> /etc/nginx/conf.d/default.conf
@@ -275,6 +275,7 @@ echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_filebrowser == 1 ]]; then
 echo "    include /etc/nginx/conf.d/filebrowser.conf;" >> /etc/nginx/conf.d/default.conf
+touch /etc/nginx/conf.d/filebrowser.conf
 cat > '/etc/nginx/conf.d/filebrowser.conf' << EOF
 location /file/ {
   #access_log off;

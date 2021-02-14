@@ -176,7 +176,7 @@ hexo g && hexo d
 
 Introduction: download resources you want to your vps(support bt only but extremely fast)
 
-- <a href="https://$domain$qbtpath" target="_blank" rel="noreferrer">https://$domain$qbtpath</a>
+- <a href="https://$domain/qbt/" target="_blank" rel="noreferrer">https://$domain/qbt/</a>
 - 用户名(username): admin
 - 密碼(password): adminadmin
 
