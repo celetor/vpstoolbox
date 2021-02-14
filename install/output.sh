@@ -3,6 +3,7 @@
 ## OUTPUT模组 Tor moudle
 
 prase_output(){
+clear
 	cat > '/etc/profile.d/mymotd.sh' << EOF
 #!/usr/bin/env bash
 #!!! Do not change these settings unless you know what you are doing !!!
