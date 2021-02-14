@@ -37,6 +37,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - 博客
   - [x] [Nginx](https://github.com/nginx/nginx)
   - [x] [Hexo Blog](https://github.com/hexojs/hexo)
+  - [ ] [Typecho](https://typecho.org/)
 - 下载
   - [ ] [Qbittorrent_enhanced_version](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
   - [ ] [Aria2](https://github.com/aria2/aria2)

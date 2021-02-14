@@ -237,6 +237,9 @@ fi
 if [[ -z ${check_rclone} ]]; then
   check_rclone="off"
 fi
+if [[ -z ${check_echo} ]]; then
+  check_echo="off"
+fi
 if [[ -z ${fastopen} ]]; then
   fastopen="on"
 fi
@@ -251,6 +254,7 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "fast" "TCP Fastopen" ${fastopen} \
 "tjp" "Trojan-panel" ${check_tjp} \
 "ss" "shadowsocks-rust" ${check_ss} \
+"typecho" "Typecho" ${check_echo} \
 "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
 "rss" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
@@ -287,6 +291,12 @@ do
     ss)
     check_ss="on"
     install_ss_rust=1
+    ;;
+    typecho)
+    install_php=1
+    install_mariadb=1
+    check_echo="on"
+    install_typecho=1
     ;;
     stun)
     install_stun="1"

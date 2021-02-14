@@ -132,6 +132,23 @@ cat << EOF > /etc/nginx/conf.d/nextcloud.conf
     }
 EOF
 fi
+if [[ $install_typecho == 1 ]]; then
+echo "    #location / {" >> /etc/nginx/conf.d/default.conf
+echo "    #    expires -1;" >> /etc/nginx/conf.d/default.conf
+echo "    #    client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
+echo "    #    index index.php index.html;" >> /etc/nginx/conf.d/default.conf
+echo "    #    root /usr/share/nginx/typecho/;" >> /etc/nginx/conf.d/default.conf
+echo "    #    try_files \$uri \$uri/ @config;" >> /etc/nginx/conf.d/default.conf
+echo "    #    location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
+echo "    #    fastcgi_split_path_info ^(.+\.php)(/.+)\$;" >> /etc/nginx/conf.d/default.conf
+echo "    #    include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
+echo "    #    fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
+echo "    #    fastcgi_param HTTPS on;" >> /etc/nginx/conf.d/default.conf
+echo "    #    fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
+echo "    #    fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
+echo "    #    }" >> /etc/nginx/conf.d/default.conf
+echo "    #    }" >> /etc/nginx/conf.d/default.conf
+fi
 if [[ $install_trojan_panel == 1 ]]; then
 echo "    location /config/ {" >> /etc/nginx/conf.d/default.conf
 echo "        expires -1;" >> /etc/nginx/conf.d/default.conf

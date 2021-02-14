@@ -148,6 +148,14 @@ hexo g && hexo d
 2. <a href="https://www.typora.io" target="_blank" rel="noreferrer">A new way to read & write Markdown</a>
 
 ---
+
+## Typecho
+
+*默认安装: ❎*
+
+请自行注释掉*/etc/nginx/conf.d/default.conf*中的Hexo部分并去掉Typecho的注释以启用Typecho。
+
+---
 ### Rsshub + TT-RSS
 
 *默认安装: ❎*
