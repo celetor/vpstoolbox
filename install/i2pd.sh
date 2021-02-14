@@ -64,7 +64,7 @@ loglevel = error
 ## Port to listen for connections
 ## By default i2pd picks random port. You MUST pick a random number too,
 ## don't just uncomment this
-port = 9000
+# port = 9000
 
 ## Enable communication through ipv4
 ipv4 = true
