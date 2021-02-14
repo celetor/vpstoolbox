@@ -452,11 +452,6 @@ if [[ -z ${password2} ]]; then
   mailuser=$(head /dev/urandom | tr -dc a-z | head -c 4 ; echo '' )
   fi
 fi
-  if [[ $install_qbt = 1 ]]; then
-    while [[ -z $qbtpath ]]; do
-    qbtpath=$(whiptail --inputbox --nocancel "Qbittorrent Nginx Path(路径)" 8 68 /qbt/ --title "Qbittorrent path input" 3>&1 1>&2 2>&3)
-    done
-  fi
   if [[ ${install_aria} == 1 ]]; then
     ariaport=$(shuf -i 13000-19000 -n 1)
     while [[ -z ${ariapath} ]]; do
