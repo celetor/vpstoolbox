@@ -150,7 +150,7 @@ hexo g && hexo d
 
 ---
 
-## Typecho
+### Typecho
 
 *默认安装: ❎*
 
