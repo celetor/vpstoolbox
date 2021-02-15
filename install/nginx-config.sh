@@ -147,6 +147,15 @@ echo "    #    fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/
 echo "    #    }" >> /etc/nginx/conf.d/default.conf
 echo "    #    }" >> /etc/nginx/conf.d/default.conf
 fi
+if [[ $install_jellyfin == 1 ]]; then
+echo "    location /jellyfin/ {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:8096/jellyfin/;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
+fi
 if [[ $install_trojan_panel == 1 ]]; then
 echo "    location /config/ {" >> /etc/nginx/conf.d/default.conf
 echo "        expires -1;" >> /etc/nginx/conf.d/default.conf

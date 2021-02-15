@@ -403,6 +403,11 @@ install_moudles(){
   source aria2.sh
   install_aria2
   fi
+  if [[ ${install_jellyfin} == 1 ]]; then
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/jellyfin.sh
+  source jellyfin.sh
+  install_jellyfin
+  fi
   if [[ ${install_dnscrypt} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/dnscrypt.sh
   source dnscrypt.sh

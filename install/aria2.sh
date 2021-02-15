@@ -5,6 +5,7 @@
 install_aria2(){
 TERM=ansi whiptail --title "安装中" --infobox "安装Aria2中..." 7 68
 trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/all_aria2.txt)
+ariaport=$(shuf -i 13000-19000 -n 1)
 mkdir /etc/aria2/
   cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
