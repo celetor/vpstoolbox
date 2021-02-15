@@ -388,7 +388,6 @@ chown opendkim:postfix /var/spool/postfix/opendkim
 systemctl restart opendkim
 usermod -a -G dovecot netdata
 usermod -a -G mail postfix
-fi
   cat > '/etc/dovecot/conf.d/10-auth.conf' << EOF
 auth_username_format = %Ln
 disable_plaintext_auth = no
