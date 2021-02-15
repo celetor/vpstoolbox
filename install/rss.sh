@@ -3,6 +3,7 @@
 ## RSS模组 RSS moudle
 
 install_rss(){
+set +e
 cd /usr/share/nginx/
 if [[ -d /usr/share/nginx/RSSHub ]]; then
     TERM=ansi whiptail --title "安装中" --infobox "更新rsshub中..." 7 68

@@ -3,6 +3,7 @@
 ## typecho模组 typecho moudle
 
 install_typecho(){
+	set +e
 	cd /usr/share/nginx/
 	curl -LO https://typecho.org/downloads/1.1-17.10.30-release.tar.gz
 	tar -xvf *.tar.gz

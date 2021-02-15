@@ -3,6 +3,7 @@
 ## Fail2ban模组 Fail2ban moudle
 
 install_fail2ban(){
+set +e
 apt-get install fail2ban -y
 if grep -q "DebianBanner" /etc/ssh/sshd_config
 then

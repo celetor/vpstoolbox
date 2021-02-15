@@ -3,8 +3,9 @@
 ## Trojan-panel模组 Trojan-panel moudle
 
 install_tjp(){
-  TERM=ansi whiptail --title "安装中" --infobox "安装Trojan-panel中..." 7 68
-  colorEcho ${INFO} "Install Trojan-panel ing"
+set +e
+TERM=ansi whiptail --title "安装中" --infobox "安装Trojan-panel中..." 7 68
+colorEcho ${INFO} "Install Trojan-panel ing"
 cd /usr/share/nginx/
 git clone https://github.com/trojan-gfw/trojan-panel.git
 chown -R nginx:nginx /usr/share/nginx/trojan-panel

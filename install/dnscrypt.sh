@@ -3,6 +3,7 @@
 ## Dnscrypt-proxy模组 Dnscrypt-proxy moudle
 
 install_dnscrypt(){
+  set +e
   if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
     mkdir /etc/dnscrypt-proxy/
   fi

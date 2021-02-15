@@ -3,6 +3,7 @@
 ## 证书检测模组 Cert detect moudle
 
 detectcert(){
+    set +e
 if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
     apt-get install gnutls-bin -y
     openfirewall

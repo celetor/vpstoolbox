@@ -2,6 +2,8 @@
 
 ## Aria2全自动上传Onedrive(可以为GD等)模组 Aria2 Auto upload to Onedrive/Google Drive moudle
 
+set +e
+
 #---Author Info---
 ver="1.0.0"
 Author="johnrosen1"
@@ -20,14 +22,14 @@ github_url="https://github.com/johnrosen1/vpstoolbox"
 ## aria2 passes 3 arguments to specified command when it is executed. These arguments are: GID, the number of files and file path. For HTTP, FTP, and SFTP downloads, usually the number of files is 1. BitTorrent download can contain multiple files. If number of files is more than one, file path is first one.
 ## 多文件(指新建了文件夹)的话默认路径是第一个文件的路径。
 
+rclone_name="onedrive" ## rclone config时设置的名称,```rclone listremotes --long```查看
 file_path=$3 ## 文件路径
-echo ${file_path}
+#echo ${file_path}
 file_folder=${file_path%/*} ## 文件夹路径
-echo ${file_folder}
+#echo ${file_folder}
 file_folder_size=$(du -hs ${file_folder} | sed "s/\..*//g") ## 文件夹大小
 file_num=$2 ## 文件数量
 gid=$1 ##gid
-rclone_name="onedrive" ## rclone config时设置的名称,```rclone listremotes --long```查看
 
 ## 设置默认策略,可用策略为保留下载档案(```keep```),删除下载档案(```delete```)
 
@@ -87,29 +89,29 @@ fi
 
 upload_onedrive(){
 	if [[ ${file_num} -lt 1 ]]; then
-		echo "${gid} 文件数量小于1,可能下载失败" &>> /var/log/rclone/upload.log
+		echo "[${gid}] 文件数量小于1,可能下载失败" &>> /var/log/rclone/upload.log
 		exit 1;
 	fi
 	if [[ ${file_num} -gt 1 ]]; then
 		## 如默认策略为删除,则强制删除已下载档案。
 		if [[ ${policy_default} == "delete" ]] || [[ ${file_folder_size} -gt ${policy_default_delete_file_size} ]]; then
-			echo "${gid} 文件数量大于1,可能为bt下载,检测到默认策略为删除,上传档案并删除" &>> /var/log/rclone/upload.log
+			echo "[${gid}] 文件数量大于1,可能为bt下载,检测到默认策略为删除,上传档案并删除" &>> /var/log/rclone/upload.log
 			rclone copy -v ${file_folder} ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log && rm -rf ${file_folder}
 			exit 0;
 		fi
 		## 新建screen上传文件
-		echo "${gid} 文件数量大于1,可能为bt下载,默认保留文件并上传" &>> /var/log/rclone/upload.log
+		echo "[${gid}] 文件数量大于1,可能为bt下载,默认保留文件并上传" &>> /var/log/rclone/upload.log
 		rclone copy -v ${file_folder} ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log
 		exit 0;
 	fi
 	## 如默认策略为删除,则强制删除已下载档案。
 	if [[ ${policy_default} == "delete" ]] || [[ ${file_folder_size} -gt ${policy_default_delete_file_size} ]]; then
-		echo "${gid} 文件数量等于1,可能为http(s)/ftp(s)下载,检测到默认策略为删除,上传档案并删除" &>> /var/log/rclone/upload.log
+		echo "[${gid}] 文件数量等于1,可能为http(s)/ftp(s)下载,检测到默认策略为删除,上传档案并删除" &>> /var/log/rclone/upload.log
 		rclone copy -v ${file_path} ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log && rm -rf ${file_path}
 		exit 0;
 	fi
 	## 新建screen上传文件
-		echo "${gid} 文件数量等于1,可能为http(s)/ftp(s)下载,默认保留文件并上传" &>> /var/log/rclone/upload.log
+		echo "[${gid}] 文件数量等于1,可能为http(s)/ftp(s)下载,默认保留文件并上传" &>> /var/log/rclone/upload.log
 		rclone copy -v ${file_path} ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log
 		exit 0;
 }

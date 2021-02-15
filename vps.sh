@@ -276,7 +276,7 @@ if [[ ${install_dnscrypt} == 1 ]]; then
 if [[ $(systemctl is-active dnsmasq) == active ]]; then
     systemctl stop dnsmasq
 fi
-echo "nameserver 127.0.0.1" > '/etc/resolv.conf'
+echo "nameserver 127.0.0.1" > /etc/resolv.conf
 systemctl restart dnscrypt-proxy
 echo "nameserver 127.0.0.1" > /etc/resolvconf/resolv.conf.d/base
 resolvconf -u

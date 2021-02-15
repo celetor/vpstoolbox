@@ -3,6 +3,7 @@
 ## Netdata模组 Netdata moudle
 
 install_netdata(){
+set +e
 clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Netdata中..." 7 68
 colorEcho ${INFO} "Install netdata ing"

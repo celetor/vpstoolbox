@@ -3,6 +3,7 @@
 ## mariadb模组 mariadb moudle
 
 install_mariadb(){
+	set +e
   curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
   apt-get install mariadb-server -y
   apt-get install python-mysqldb -y

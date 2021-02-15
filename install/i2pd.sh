@@ -3,6 +3,7 @@
 ## i2pd模组 i2pd moudle
 
 install_i2pd(){
+  set +e
   if [[ ${dist} == debian ]]; then
 wget -q -O - https://repo.i2pd.xyz/.help/add_repo | sudo bash -s -
 apt-get update

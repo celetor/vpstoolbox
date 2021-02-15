@@ -3,6 +3,7 @@
 ## Node.js模组 Node.js moudle
 
 install_nodejs(){
+	set +e
 if [[ ${dist} == debian ]]; then
   curl -sL https://deb.nodesource.com/setup_15.x | bash -
  elif [[ ${dist} == ubuntu ]]; then

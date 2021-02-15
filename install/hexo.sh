@@ -3,6 +3,7 @@
 ## Hexo模组 Hexo moudle
 
 install_hexo(){
+set +e
 TERM=ansi whiptail --title "安装中" --infobox "安装Hexo中..." 7 68
   colorEcho ${INFO} "Install Hexo ing..."
   cd /usr/share/nginx

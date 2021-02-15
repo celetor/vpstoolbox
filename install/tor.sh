@@ -5,6 +5,7 @@
 ## 仅用于.onion建站
 
 install_tor(){
+set +e
 clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Tor relay中..." 7 68
 colorEcho ${INFO} "Install Tor Relay ing"
