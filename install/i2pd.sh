@@ -102,7 +102,7 @@ bandwidth = X
 # notransit = true
 
 ## Router will be floodfill
-floodfill = true
+# floodfill = true
 
 [http]
 ## Web Console settings
