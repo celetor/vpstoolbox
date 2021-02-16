@@ -11,7 +11,9 @@ url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
-## 使用方法: aria2c --on-download-complete /etc/aria2/autoupload.sh http://example.org/file.iso
+## Aria2使用方法: aria2c --on-download-complete /etc/aria2/autoupload.sh http://example.org/file.iso 或者 on-download-complete=/etc/aria2/autoupload.sh
+## Qbittorrent-nox使用方法: bash /etc/aria2/autoupload.sh %N %C %F
+## 通用使用方法: bash /etc/aria2/autoupload.sh \$gid \$file_num \$file_path
 
 ## 注：bt下载做种完成后(可以手动停止做种)才会执行上传命令。
 
