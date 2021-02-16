@@ -331,6 +331,7 @@ RestartSec=3s
 WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
+systemctl enable i2pd
 systemctl restart i2pd
 cd /etc/i2pd/
 depend="libboost-chrono-dev \
