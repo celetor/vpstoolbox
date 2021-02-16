@@ -38,5 +38,6 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
+systemctl enable ssserver
 systemctl restart ssserver
 }

@@ -332,4 +332,18 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 systemctl restart i2pd
+cd /etc/i2pd/
+depend="libboost-chrono-dev \
+    libboost-date-time-dev \
+    libboost-filesystem-dev \
+    libboost-program-options-dev \
+    libboost-system-dev \
+    libboost-thread-dev \
+    libssl-dev \
+    zlib1g-dev"
+apt-get install -y $depend
+git clone --recursive https://github.com/purplei2p/i2pd-tools
+cd /etc/i2pd/i2pd-tools
+make
+cd
 }
