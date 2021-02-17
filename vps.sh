@@ -351,7 +351,7 @@ localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'
 myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 
 if [[ ${myip} != ${localip} ]]; then
-  whiptail --title "Warning" --msgbox "本机ip与公网ip不一致,可能为阿里云或者动态ip。" 8 68
+  whiptail --title "Warning" --msgbox "本机ip与公网ip不一致,可能为阿里云,gcp,azure或者动态ip。" 8 68
 fi
 }
 
