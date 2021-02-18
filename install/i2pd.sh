@@ -132,9 +132,9 @@ port = 4444
 ## Address of a proxy server inside I2P, which is used to visit regular Internet
 outproxy = http://false.i2p
 ## httpproxy section also accepts I2CP parameters, like "inbound.length" etc.
-inbound.length = 3
+inbound.length = 2
 inbound.quantity = 16
-outbound.length = 3
+outbound.length = 2
 outbound.quantity = 16
 
 [socksproxy]
@@ -152,9 +152,9 @@ port = 4447
 # outproxy = 127.0.0.1
 # outproxyport = 9050
 ## socksproxy section also accepts I2CP parameters, like "inbound.length" etc.
-inbound.length = 3
+inbound.length = 2
 inbound.quantity = 16
-outbound.length = 3
+outbound.length = 2
 outbound.quantity = 16
 
 [sam]
