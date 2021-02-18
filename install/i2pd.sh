@@ -79,7 +79,7 @@ ipv6 = true
 # ifname6 = 
 
 ## Enable NTCP transport (default = true)
-ntcp = true
+# ntcp = true
 ## If you run i2pd behind a proxy server, you can only use NTCP transport with ntcpproxy option 
 ## Should be http://address:port or socks://address:port
 # ntcpproxy = http://127.0.0.1:8118
@@ -132,6 +132,10 @@ port = 4444
 ## Address of a proxy server inside I2P, which is used to visit regular Internet
 outproxy = http://false.i2p
 ## httpproxy section also accepts I2CP parameters, like "inbound.length" etc.
+inbound.length = 3
+inbound.quantity = 16
+outbound.length = 3
+outbound.quantity = 16
 
 [socksproxy]
 ## Uncomment and set to 'false' to disable SOCKS Proxy
@@ -148,11 +152,15 @@ port = 4447
 # outproxy = 127.0.0.1
 # outproxyport = 9050
 ## socksproxy section also accepts I2CP parameters, like "inbound.length" etc.
+inbound.length = 3
+inbound.quantity = 16
+outbound.length = 3
+outbound.quantity = 16
 
 [sam]
 ## Uncomment and set to 'true' to enable SAM Bridge
-enabled = false
-singlethread = false
+# enabled = true
+# singlethread = false
 ## Address and port service will listen on
 # address = 127.0.0.1
 # port = 7656
@@ -179,7 +187,7 @@ singlethread = false
 # address = 127.0.0.1
 # port = 7650
 ## Authentication password. "itoopie" by default
-password = ${password1}
+# password = ${password1}
 
 [precomputation]
 ## Enable or disable elgamal precomputation table
@@ -270,6 +278,12 @@ EOF
 type = http
 host = 127.0.0.1
 port = 80
+inbound.length = 1
+outbound.length = 1
+inbound.quantity = 16
+outbound.quantity = 16
+inbound.backupQuantity = 3
+outbound.backupQuantity = 3
 keys = my-website.dat
 EOF
     cat > '/etc/i2pd/tunnels.conf.d/ssh.conf' << EOF
@@ -279,8 +293,8 @@ host = 127.0.0.1
 port = 22
 inbound.length = 1
 outbound.length = 1
-inbound.quantity = 6
-outbound.quantity = 6
+inbound.quantity = 16
+outbound.quantity = 16
 inbound.backupQuantity = 3
 outbound.backupQuantity = 3
 keys = ssh-in.dat
@@ -289,11 +303,11 @@ EOF
 [PROXY-SERVER]
 type = server
 host = 127.0.0.1
-port = 1024
+port = 8388
 inbound.length = 1
 outbound.length = 1
-inbound.quantity = 6
-outbound.quantity = 6
+inbound.quantity = 16
+outbound.quantity = 16
 inbound.backupQuantity = 3
 outbound.backupQuantity = 3
 keys = ssh-in.dat
