@@ -312,6 +312,9 @@ inbound.backupQuantity = 3
 outbound.backupQuantity = 3
 keys = ssh-in.dat
 EOF
+cd /etc/i2pd/tunnels.conf.d
+curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/conf/tg-mtproxy.conf
+cd
     cat > '/lib/systemd/system/i2pd.service' << EOF
 [Unit]
 Description=I2P Router written in C++
