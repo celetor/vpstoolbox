@@ -2,6 +2,15 @@
 
 ## Socat模组 Socat moudle
 
+set +e
+
+#---Author Info---
+ver="1.0.0"
+Author="johnrosen1"
+url="https://johnrosen1.com/"
+github_url="https://github.com/johnrosen1/vpstoolbox"
+#-----------------
+
 ## 仅用于流量转发
 
 ## 远程ip
