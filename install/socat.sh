@@ -4,8 +4,11 @@
 
 ## 仅用于流量转发
 
+## 远程ip
 remoteip="1.1.1."
+## 远程端口
 remoteport="8388"
+## 本地端口
 localport="12345"
 
 install_socat(){
