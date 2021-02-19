@@ -76,6 +76,24 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 > 欢迎PR/issue更多软件。
 
+## 尚未添加/整合/测试的软件
+
+> 欢迎PR/request。
+
+- 影音
+
+- [ ] [Jackett](https://github.com/Jackett/Jackett)
+- [ ] [Radarr](https://github.com/Radarr/Radarr)
+- [ ] [Lidarr](https://github.com/lidarr/Lidarr)
+- [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
+- [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
+
+- 通讯
+
+-[ ] [insp ircd](https://github.com/inspircd/inspircd) irc伺服器
+
+更多的在路上了,咕咕咕。
+
 ## 支援的Linux发行版
 
 > 打勾的为测试过的,保证可用性,未打勾的表示理论上支援但未测试。
@@ -190,6 +208,12 @@ systemctl restart php7.4-fpm
 
 1. 本项目主要采用systemd+docker-compose启动服务。
 2. 具体的懒得写了,```systemctl```查看运行状态,有问题记得反馈即可。
+
+## 流量示意图
+
+> 可能不完整,仅供参考。
+
+![https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
 
 ## 如果本项目帮助到了你,请给颗star并帮忙推广,谢谢!
 
