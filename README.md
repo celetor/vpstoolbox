@@ -47,7 +47,10 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - 网盘
   - [ ] [Nextcloud](https://github.com/nextcloud/server)
 - RSS
-  - [ ] [RSSHub](https://github.com/DIYgod/RSSHub) + [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)
+  - [ ] [RSSHub](https://github.com/DIYgod/RSSHub)
+  - [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)
+- 影音(待完善)
+  - [ ] [JellyFin](https://github.com/jellyfin/jellyfin)
 - 邮箱
   - [ ] [Mail Service](https://johnrosen1.com/2020/08/27/mail1/)
 - 通讯
