@@ -90,7 +90,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 - 通讯
 
--[ ] [insp ircd](https://github.com/inspircd/inspircd)
+- [ ] [insp ircd](https://github.com/inspircd/inspircd) IRC伺服器
 
 更多的在路上了,咕咕咕。
 
