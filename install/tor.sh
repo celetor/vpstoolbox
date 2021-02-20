@@ -34,8 +34,10 @@ CookieAuthentication 0
 HardwareAccel 1
 HiddenServiceDir /var/lib/tor/hidden_service/
 HiddenServiceVersion 3
-HiddenServicePort 80 127.0.0.1:8888
+HiddenServicePort 80 127.0.0.1:81
 HiddenServicePort 443 127.0.0.1:443
+#DirPort auto
+#ORPort auto
 EOF
 torhostname=$(cat /var/lib/tor/hidden_service/hostname)
 systemctl restart tor@default
