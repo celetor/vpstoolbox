@@ -38,6 +38,12 @@ HiddenServicePort 80 127.0.0.1:81
 HiddenServicePort 443 127.0.0.1:443
 #DirPort auto
 #ORPort auto
+#ORPort [${myipv6}]:9001
+#SafeLogging 0
+#Log info
+#IPv6Exit ${ipv4_prefer_1}
+#ExitRelay 1
+#ContactInfo xxx@example.com
 EOF
 torhostname=$(cat /var/lib/tor/hidden_service/hostname)
 systemctl restart tor@default
