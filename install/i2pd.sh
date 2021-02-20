@@ -87,7 +87,7 @@ ipv6 = true
 ssu = true
 
 ## Should we assume we are behind NAT? (false only in MeshNet)
-nat = false
+nat = true
 
 ## Bandwidth configuration
 ## L limit bandwidth to 32KBs/sec, O - to 256KBs/sec, P - to 2048KBs/sec,
@@ -132,10 +132,10 @@ port = 4444
 ## Address of a proxy server inside I2P, which is used to visit regular Internet
 outproxy = http://false.i2p
 ## httpproxy section also accepts I2CP parameters, like "inbound.length" etc.
-inbound.length = 2
-inbound.quantity = 16
-outbound.length = 2
-outbound.quantity = 16
+#inbound.length = 2
+#inbound.quantity = 16
+#outbound.length = 2
+#outbound.quantity = 16
 
 [socksproxy]
 ## Uncomment and set to 'false' to disable SOCKS Proxy
@@ -147,15 +147,15 @@ port = 4447
 # keys = socks-proxy-keys.dat
 ## Socks outproxy. Example below is set to use Tor for all connections except i2p
 ## Uncomment and set to 'true' to enable using of SOCKS outproxy
-outproxy.enabled = true
+# outproxy.enabled = true
 ## Address and port of outproxy
-outproxy = 127.0.0.1
-outproxyport = 9050
+# outproxy = 127.0.0.1
+# outproxyport = 9050
 ## socksproxy section also accepts I2CP parameters, like "inbound.length" etc.
-inbound.length = 2
-inbound.quantity = 16
-outbound.length = 2
-outbound.quantity = 16
+# inbound.length = 2
+# inbound.quantity = 16
+# outbound.length = 2
+# outbound.quantity = 16
 
 [sam]
 ## Uncomment and set to 'true' to enable SAM Bridge
@@ -175,7 +175,7 @@ outbound.quantity = 16
 [i2cp]
 ## Uncomment and set to 'true' to enable I2CP protocol
 enabled = true
-singlethread = false
+# singlethread = false
 ## Address and port service will listen on
 # address = 127.0.0.1
 # port = 7654
@@ -222,9 +222,9 @@ verify = true
 [addressbook]
 ## AddressBook subscription URL for initial setup
 ## Default: inr.i2p at "mainline" I2P Network
-defaulturl = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.i2p/hosts.txt
+# defaulturl = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.i2p/hosts.txt
 ## Optional subscriptions URLs, separated by comma
-subscriptions = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.i2p/alive-hosts.txt,http://kqypgjpjwrphnzebod5ev3ts2vtii6e5tntrg4rnfijqc7rypldq.b32.i2p/cgi-bin/newhosts.txt,http://gh6655arkncnbrzq5tmq4xpn36734d4tdza6flbw5xppye2dt6ga.b32.i2p/hosts.txt,http://udhdrtrcetjm5sxzskjyr5ztpeszydbh4dpl3pl4utgqqw2v4jna.b32.i2p/hosts.txt,http://rus.i2p/hosts.txt
+# subscriptions = http://xk6ypey2az23vtdkitjxvanlshztmjs2ekd6sp77m4obszf6ocfq.b32.i2p/alive-hosts.txt,http://kqypgjpjwrphnzebod5ev3ts2vtii6e5tntrg4rnfijqc7rypldq.b32.i2p/cgi-bin/newhosts.txt,http://gh6655arkncnbrzq5tmq4xpn36734d4tdza6flbw5xppye2dt6ga.b32.i2p/hosts.txt,http://udhdrtrcetjm5sxzskjyr5ztpeszydbh4dpl3pl4utgqqw2v4jna.b32.i2p/hosts.txt,http://rus.i2p/hosts.txt
 
 [limits]
 ## Maximum active transit sessions (default:2500)
@@ -250,10 +250,10 @@ transittunnels = 65535
 
 [exploratory]
 ## Exploratory tunnels settings with default values
-inbound.length = 3
-inbound.quantity = 16
-outbound.length = 3
-outbound.quantity = 16
+# inbound.length = 3
+# inbound.quantity = 16
+# outbound.length = 3
+# outbound.quantity = 16
 
 [ntcp2]
 
@@ -262,7 +262,7 @@ published = true
 
 [persist]
 ## Save peer profiles on disk (default: true)
-# profiles = true
+profiles = true
 
 [cpuext]
 ## Use CPU AES-NI instructions set when work with cryptography when available (default: true)
@@ -280,10 +280,8 @@ host = 127.0.0.1
 port = 80
 inbound.length = 1
 outbound.length = 1
-inbound.quantity = 16
-outbound.quantity = 16
-inbound.backupQuantity = 3
-outbound.backupQuantity = 3
+#inbound.quantity = 16
+#outbound.quantity = 16
 keys = my-website.dat
 EOF
     cat > '/etc/i2pd/tunnels.conf.d/ssh.conf' << EOF
@@ -293,10 +291,8 @@ host = 127.0.0.1
 port = 22
 inbound.length = 1
 outbound.length = 1
-inbound.quantity = 16
-outbound.quantity = 16
-inbound.backupQuantity = 3
-outbound.backupQuantity = 3
+#inbound.quantity = 16
+#outbound.quantity = 16
 keys = ssh-in.dat
 EOF
     cat > '/etc/i2pd/tunnels.conf.d/proxy.conf' << EOF
@@ -306,10 +302,8 @@ host = 127.0.0.1
 port = 8388
 inbound.length = 1
 outbound.length = 1
-inbound.quantity = 16
-outbound.quantity = 16
-inbound.backupQuantity = 3
-outbound.backupQuantity = 3
+#inbound.quantity = 16
+#outbound.quantity = 16
 keys = ssh-in.dat
 EOF
 cd /etc/i2pd/tunnels.conf.d
