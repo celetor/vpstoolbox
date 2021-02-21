@@ -2,6 +2,13 @@
 
 ## Aria2模组 Aria2 moudle
 
+#---Author Info---
+ver="1.0.0"
+Author="johnrosen1"
+url="https://johnrosen1.com/"
+github_url="https://github.com/johnrosen1/vpstoolbox"
+#-----------------
+
 install_aria2(){
 TERM=ansi whiptail --title "安装中" --infobox "安装Aria2中..." 7 68
 trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/all_aria2.txt)

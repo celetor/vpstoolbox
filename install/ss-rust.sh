@@ -2,6 +2,13 @@
 
 ## SS rust模组 SS rust moudle
 
+#---Author Info---
+ver="1.0.0"
+Author="johnrosen1"
+url="https://johnrosen1.com/"
+github_url="https://github.com/johnrosen1/vpstoolbox"
+#-----------------
+
 install_ss_rust(){
 	curl -LO https://github.com/shadowsocks/shadowsocks-rust/releases/download/v1.8.23/shadowsocks-v1.8.23.x86_64-unknown-linux-gnu.tar.xz
 	tar -xvf shadowsocks*
