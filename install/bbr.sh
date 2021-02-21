@@ -3,7 +3,6 @@
 ## BBR模组 BBR moudle
 
 install_bbr(){
-if [[ $install_bbr == 1 ]]; then
   TERM=ansi whiptail --title "初始化中" --infobox "启动BBR中..." 7 68
   colorEcho ${INFO} "Enabling TCP-BBR boost"
   modprobe ip_conntrack
@@ -126,5 +125,4 @@ else
 echo "session required pam_limits.so" >> /etc/pam.d/common-session
 fi
 systemctl daemon-reload
-fi
 }
