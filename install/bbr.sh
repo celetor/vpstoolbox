@@ -101,6 +101,7 @@ net.ipv4.tcp_max_syn_backlog = 262144
 net.netfilter.nf_conntrack_max = 262144
 net.nf_conntrack_max = 262144
 EOF
+  sysctl -p
   sysctl --system
   echo madvise > /sys/kernel/mm/transparent_hugepage/enabled
   cat > '/etc/systemd/system.conf' << EOF
@@ -113,8 +114,8 @@ DefaultLimitNOFILE=51200
 DefaultLimitNPROC=51200
 EOF
     cat > '/etc/security/limits.conf' << EOF
-* soft nofile 51200
-* hard nofile 51200
+* soft nofile 65535
+* hard nofile 65535
 * soft nproc 51200
 * hard nproc 51200
 EOF
@@ -122,8 +123,8 @@ if grep -q "ulimit" /etc/profile
 then
   :
 else
-echo "ulimit -SHn 51200" >> /etc/profile
-echo "ulimit -SHu 51200" >> /etc/profile
+echo "ulimit -SHn 65535" >> /etc/profile
+echo "ulimit -SHu 65535" >> /etc/profile
 fi
 if grep -q "pam_limits.so" /etc/pam.d/common-session
 then

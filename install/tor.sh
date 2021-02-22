@@ -36,6 +36,7 @@ HiddenServiceDir /var/lib/tor/hidden_service/
 HiddenServiceVersion 3
 HiddenServicePort 80 127.0.0.1:81
 HiddenServicePort 443 127.0.0.1:443
+#Nickname name
 #DirPort auto
 #ORPort auto
 #ORPort [${myipv6}]:9001
