@@ -219,6 +219,12 @@ systemctl restart php7.4-fpm
 
 [![Stargazers over time](https://starchart.cc/johnrosen1/vpstoolbox.svg)](https://starchart.cc/johnrosen1/vpstoolbox)
 
+## 捐赠
+
+BTC: `bc1qtcmu8fc0fv9ksedh38msdvfaqdga5s2u8fmsy6`
+
+> 你的捐赠对我而言是最大的帮助,但请不要勉强。
+
 ## 執照
 
 ```
