@@ -20,8 +20,7 @@ RemainAfterExit=yes
 ExecStart=/usr/local/bin/filebrowser -r /usr/share/nginx/ -d /etc/filebrowser/database.db -b /file/ -p 8081
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
-LimitNOFILE=51200
-LimitNPROC=51200
+LimitNOFILE=65536
 RestartSec=3s
 Restart=on-failure
 

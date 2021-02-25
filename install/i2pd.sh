@@ -7,7 +7,10 @@ install_i2pd(){
   if [[ ${dist} == debian ]]; then
 wget -q -O - https://repo.i2pd.xyz/.help/add_repo | sudo bash -s -
 apt-get update
-apt-get install i2pd -y
+apt-get install libminiupnpc17 -y
+curl -LO https://github.com/PurpleI2P/i2pd/releases/download/2.36.0/i2pd_2.36.0-1buster1_amd64.deb
+dpkg -i i2pd_2.36.0-1buster1_amd64.deb
+#apt-get install i2pd -y
  elif [[ ${dist} == ubuntu ]]; then
   add-apt-repository ppa:purplei2p/i2pd -y
   apt-get update
@@ -333,8 +336,7 @@ KillSignal=SIGQUIT
 #KillSignal=SIGINT
 #TimeoutStopSec=10m
 
-LimitNOFILE=51200
-LimitNPROC=51200
+LimitNOFILE=65536
 Restart=on-failure
 RestartSec=3s
 
@@ -357,5 +359,32 @@ apt-get install -y $depend
 git clone --recursive https://github.com/purplei2p/i2pd-tools
 cd /etc/i2pd/i2pd-tools
 make
+cd /etc/i2pd/
+curl -LO https://github.com/majestrate/XD/releases/download/v0.3.4/XD-0.3.4-linux-amd64
+mv XD-0.3.4-linux-amd64 XD
+cp XD XD-cli
+  cat > '/etc/systemd/system/xd.service' << EOF
+[Unit]
+Description=Standalone I2P BitTorrent Client
+Documentation=https://github.com/majestrate/XD/releases
+Requires=network.target
+After=network.target
+
+[Service]
+User=root
+RemainAfterExit=yes
+ExecStart=/etc/i2pd/XD /etc/i2pd/torrents.ini
+ExecReload=/usr/bin/kill -HUP \$MAINPID
+ExecStop=/usr/bin/kill -s STOP \$MAINPID
+LimitNOFILE=65536
+RestartSec=3s
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl enable xd
+systemctl restart xd
 cd
 }

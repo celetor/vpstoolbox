@@ -111,13 +111,13 @@ DefaultTimeoutStopSec=30s
 #DefaultRestartSec=100ms
 DefaultLimitCORE=infinity
 DefaultLimitNOFILE=65535
-DefaultLimitNPROC=51200
+DefaultLimitNPROC=65535
 EOF
     cat > '/etc/security/limits.conf' << EOF
 * soft nofile 65535
 * hard nofile 65535
-* soft nproc 51200
-* hard nproc 51200
+* soft nproc 65535
+* hard nproc 65535
 EOF
 if grep -q "ulimit" /etc/profile
 then

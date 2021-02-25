@@ -31,8 +31,7 @@ User=root
 RemainAfterExit=yes
 ExecStart=/usr/bin/qbittorrent-nox --profile=/usr/share/nginx/
 TimeoutStopSec=infinity
-LimitNOFILE=51200
-LimitNPROC=51200
+LimitNOFILE=65536
 Restart=on-failure
 RestartSec=3s
 

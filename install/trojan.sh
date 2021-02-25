@@ -43,7 +43,7 @@ CPUSchedulingPolicy=rr
 CPUSchedulingPriority=99
 ExecStart=/usr/local/bin/trojan /usr/local/etc/trojan/config.json
 ExecReload=/bin/kill -HUP \$MAINPID
-LimitNOFILE=51200
+LimitNOFILE=65536
 Restart=on-failure
 RestartSec=1s
 

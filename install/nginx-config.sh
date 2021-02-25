@@ -226,7 +226,7 @@ if [[ $install_dnscrypt == 1 ]]; then
 echo "    location /dns-query {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_pass https://127.0.0.1:3001/dns-query;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:3000;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
 echo "        #error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf

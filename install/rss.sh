@@ -39,7 +39,7 @@ Type=simple
 WorkingDirectory=/usr/share/nginx/RSSHub
 ExecStart=/bin/bash -c 'npm start'
 Restart=on-failure
-LimitNOFILE=51200
+LimitNOFILE=65536
 User=root
 Group=root
 

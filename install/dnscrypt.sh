@@ -66,13 +66,6 @@ cache_max_ttl = 86400
 cache_neg_min_ttl = 60
 cache_neg_max_ttl = 600
 
-#[local_doh]
-#
-#listen_addresses = ['127.0.0.1:3001']
-#path = "/dns-query"
-#cert_file = "/etc/certs/${domain}_ecc/fullchain.cer"
-#cert_key_file = "/etc/certs/${domain}_ecc/${domain}.key"
-
 [query_log]
 
   #file = '/var/log/dnscrypt-proxy/query.log'
@@ -127,8 +120,7 @@ ProtectKernelModules=yes
 CacheDirectory=dnscrypt-proxy
 LogsDirectory=dnscrypt-proxy
 RuntimeDirectory=dnscrypt-proxy
-LimitNOFILE=51200
-LimitNPROC=51200
+LimitNOFILE=65536
 Restart=on-failure
 RestartSec=3s
 
@@ -167,4 +159,29 @@ wget --no-check-certificate -P /etc/dnscrypt-proxy/ https://raw.githubuserconten
 wget --no-check-certificate -P /etc/dnscrypt-proxy/ https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md -q --show-progress
 chmod -R 755 /etc/dnscrypt-proxy/
 clear
+cd /etc/dnscrypt-proxy/
+  cat > '/etc/systemd/system/doh.service' << EOF
+[Unit]
+Description=Doh Server
+Documentation=https://github.com/jedisct1/doh-server
+Requires=network.target
+After=network.target
+
+[Service]
+User=root
+RemainAfterExit=yes
+ExecStart=/usr/bin/doh-proxy
+ExecReload=/usr/bin/kill -HUP \$MAINPID
+ExecStop=/usr/bin/kill -s STOP \$MAINPID
+LimitNOFILE=65536
+LimitNPROC=51200
+RestartSec=3s
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl start doh
+systemctl enable doh
+cd
 }

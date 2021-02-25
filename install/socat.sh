@@ -35,8 +35,7 @@ User=root
 RemainAfterExit=yes
 ExecStart=ExecStart=/usr/bin/socat -u TCP4-LISTEN:${localport},reuseaddr,fork TCP4:${remoteip}:${remoteport}
 TimeoutStopSec=infinity
-LimitNOFILE=51200
-LimitNPROC=51200
+LimitNOFILE=65536
 Restart=on-failure
 RestartSec=3s
 
@@ -56,8 +55,7 @@ User=root
 RemainAfterExit=yes
 ExecStart=ExecStart=/usr/bin/socat -u UDP4-LISTEN:${localport},reuseaddr,fork UDP4:${remoteip}:${remoteport}
 TimeoutStopSec=infinity
-LimitNOFILE=51200
-LimitNPROC=51200
+LimitNOFILE=65536
 Restart=on-failure
 RestartSec=3s
 
