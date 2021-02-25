@@ -28,8 +28,7 @@ RemainAfterExit=yes
 ExecStart=/usr/local/bin/aria2c --conf-path=/etc/aria2/aria2.conf
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
-LimitNOFILE=51200
-LimitNPROC=51200
+LimitNOFILE=65536
 RestartSec=3s
 Restart=on-failure
 
