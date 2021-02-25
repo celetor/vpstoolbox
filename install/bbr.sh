@@ -15,10 +15,10 @@ install_bbr(){
   modprobe ip_conntrack
   cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
-#net.ipv4.conf.all.route_localnet=1
-#net.ipv4.ip_forward = 1
-#net.ipv4.conf.all.forwarding = 1
-#net.ipv4.conf.default.forwarding = 1
+net.ipv4.conf.all.route_localnet=1
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.forwarding = 1
+net.ipv4.conf.default.forwarding = 1
 ################################
 net.ipv6.conf.all.forwarding = 1
 net.ipv6.conf.default.forwarding = 1
