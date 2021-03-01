@@ -13,6 +13,8 @@ install_bbr(){
   TERM=ansi whiptail --title "初始化中" --infobox "启动BBR中..." 7 68
   colorEcho ${INFO} "Enabling TCP-BBR boost"
   modprobe ip_conntrack
+  systemctl disable apparmor
+  systemctl stop apparmor
   cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 net.ipv4.conf.all.route_localnet=1
