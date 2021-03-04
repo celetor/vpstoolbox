@@ -82,7 +82,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 - 系统
 
-- [ ] [BBRv2]
+- [ ] [BBRv2](https://github.com/google/bbr/tree/v2alpha)
 
 - 影音
 
