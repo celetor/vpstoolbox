@@ -80,6 +80,10 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 > 欢迎PR/request。
 
+- 系统
+
+- [ ] [BBRv2]
+
 - 影音
 
 - [ ] [Jackett](https://github.com/Jackett/Jackett)
