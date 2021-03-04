@@ -1,7 +1,5 @@
 # ![VPSToolBox](logo.png)
 
-[![Gitter](https://badges.gitter.im/vpstoolbox/community.svg)](https://gitter.im/vpstoolbox/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Join our Discord server!](https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gg/y5KUxfYZ)
 [TG群组](https://t.me/vpstoolbox_chat)
 
 一键安装Trojan-GFW代理,Hexo博客,Nextcloud等應用程式。
