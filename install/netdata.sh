@@ -15,7 +15,7 @@ clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Netdata中..." 7 68
 colorEcho ${INFO} "Install netdata ing"
 bash <(curl -Ss https://my-netdata.io/kickstart-static64.sh) --dont-wait --allow-duplicate-install
-sed -i "s/SEND_EMAIL=\"YES\"/SEND_EMAIL=\"NO\"/" /opt/netdata/etc/netdata/health_alarm_notify.conf
+sed -i "s/SEND_EMAIL=\"YES\"/SEND_EMAIL=\"NO\"/" /opt/netdata/usr/lib/netdata/conf.d/health_alarm_notify.conf
 sed -i "s/Restart=on-failure/Restart=always/" /lib/systemd/system/netdata.service
 systemctl daemon-reload
 systemctl stop netdata
