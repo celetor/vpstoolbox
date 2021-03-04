@@ -398,7 +398,7 @@ EOF
 ssl = required
 ssl_cert = </etc/certs/${domain}_ecc/fullchain.cer
 ssl_key = </etc/certs/${domain}_ecc/${domain}.key
-ssl_cipher_list = ${cipher_server}
+#ssl_cipher_list = ${cipher_server}
 ssl_min_protocol = TLSv1.2
 ssl_prefer_server_ciphers = yes
 ssl_options = no_ticket
