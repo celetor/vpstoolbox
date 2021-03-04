@@ -6,7 +6,7 @@
 
 一键安装Trojan-GFW代理,Hexo博客,Nextcloud等應用程式。
 
-## 安装
+## 一键命令
 
 ```bash
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
@@ -14,7 +14,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 > 注: 仅推荐**Debian10**系统。
 
-## 使用
+## 使用要点
 
 1. 请以 **root/sudoer** 身份运行(sudo -i)
 2. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成DNS A解析](https://dnschecker.org/)**,即将域名指向你的VPS IP,(ipv6地址请添加AAAA解析,namesilo最慢需要15min生效)!
