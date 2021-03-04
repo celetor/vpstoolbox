@@ -498,10 +498,12 @@ namespace inbox {
   mailbox Junk {
     auto = subscribe
     special_use = \Junk
+    autoexpunge = 60d
   }
   mailbox Trash {
     auto = subscribe
     special_use = \Trash
+    autoexpunge = 60d
   }
   mailbox Sent {
     auto = subscribe
