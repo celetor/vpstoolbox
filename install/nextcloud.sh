@@ -43,7 +43,7 @@ EOF
   chown -R nginx:nginx /usr/share/nginx/
   chown -R nginx:nginx /etc/nginx/
   crontab -l > mycron
-  echo "*/5 * * * * sudo -u nginx php -f /usr/share/nginx/nextcloud/cron.php" >> mycron
+  echo "*/5 * * * * sudo -u nginx php -f /usr/share/nginx/nextcloud/cron.php &> /dev/null" >> mycron
   crontab mycron
   rm mycron
   chmod +x /usr/share/nginx/nextcloud/occ
