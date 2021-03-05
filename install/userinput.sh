@@ -313,9 +313,7 @@ do
     rss)
     check_rss="on"
     install_rss=1
-    install_redis=1
-    install_php=1
-    install_mariadb=1
+    install_docker=1
     ;;
     qbt)
     check_qbt="on"
