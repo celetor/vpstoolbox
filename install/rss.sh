@@ -65,86 +65,18 @@ if [[ -d /usr/share/nginx/tt-rss/ ]]; then
     mysql -u root -e "create user 'ttrss'@'localhost' IDENTIFIED BY '${password1}';"
     mysql -u root -e "GRANT ALL PRIVILEGES ON ttrss.* to ttrss@'localhost';"
     mysql -u root -e "flush privileges;"
-    mysql -u ttrss -p"${password1}" -D ttrss < /usr/share/nginx/tt-rss/schema/ttrss_schema_mysql.sql
+    mysql -u ttrss -p"${password1}" -D ttrss < /usr/share/nginx/tt-rss/sql/mysql/mysql.sql
   cat > '/usr/share/nginx/tt-rss/config.php' << EOF
 <?php
-  // *******************************************
-  // *** Database configuration (important!) ***
-  // *******************************************
+    putenv('TTRSS_DB_TYPE=pgsql'); // pgsql or mysql
+    putenv('TTRSS_DB_HOST=127.0.0.1');
+    putenv('TTRSS_SELF_URL_PATH=https://${domain}/ttrss/');
+    putenv('TTRSS_DB_USER=ttrss');
+    putenv('TTRSS_DB_NAME=ttrss');
+    putenv('TTRSS_DB_PASS=${password1}');
+    putenv('TTRSS_DB_PORT=3306'); // usually 5432 for PostgreSQL, 3306 for MySQL
+    putenv('TTRSS_MYSQL_CHARSET=UTF-8');
 
-  define('DB_TYPE', 'mysql');
-  define('DB_HOST', '127.0.0.1');
-  define('DB_USER', 'ttrss');
-  define('DB_NAME', 'ttrss');
-  define('DB_PASS', '${password1}');
-  define('DB_PORT', '3306');
-  define('MYSQL_CHARSET', 'UTF8');
-
-  // ***********************************
-  // *** Basic settings (important!) ***
-  // ***********************************
-
-  define('SELF_URL_PATH', 'https://${domain}/ttrss//');
-  define('SINGLE_USER_MODE', false);
-  define('SIMPLE_UPDATE_MODE', false);
-
-  // *****************************
-  // *** Files and directories ***
-  // *****************************
-
-  define('PHP_EXECUTABLE', '/usr/bin/php');
-  define('LOCK_DIRECTORY', 'lock');
-  define('CACHE_DIR', 'cache');
-  define('ICONS_DIR', "feed-icons");
-  define('ICONS_URL', "feed-icons");
-
-  // **********************
-  // *** Authentication ***
-  // **********************
-
-  define('AUTH_AUTO_CREATE', true);
-  define('AUTH_AUTO_LOGIN', true);
-
-  // *********************
-  // *** Feed settings ***
-  // *********************
-
-  define('FORCE_ARTICLE_PURGE', 0);
-
-  // ****************************
-  // *** Sphinx search plugin ***
-  // ****************************
-
-  define('SPHINX_SERVER', 'localhost:9312');
-  define('SPHINX_INDEX', 'ttrss, delta');
-
-  // ***********************************
-  // *** Self-registrations by users ***
-  // ***********************************
-
-  define('ENABLE_REGISTRATION', false);
-  define('REG_NOTIFY_ADDRESS', 'root@${domain}');
-  define('REG_MAX_USERS', 10);
-
-  // **********************************
-  // *** Cookies and login sessions ***
-  // **********************************
-
-  define('SESSION_COOKIE_LIFETIME', 86400);
-  define('SMTP_FROM_NAME', 'Tiny Tiny RSS');
-  define('SMTP_FROM_ADDRESS', 'noreply@${domain}');
-  define('DIGEST_SUBJECT', '[tt-rss] New headlines for last 24 hours');
-
-  // ***************************************
-  // *** Other settings (less important) ***
-  // ***************************************
-
-  define('CHECK_FOR_UPDATES', true);
-  define('ENABLE_GZIP_OUTPUT', true);
-  define('PLUGINS', 'auth_internal, note, fever, af_readability');
-  define('LOG_DESTINATION', 'sql');
-  define('CONFIG_VERSION', 26);
-  define('_SKIP_SELF_URL_PATH_CHECKS', true);
 EOF
 cd
 #rm -rf /usr/share/nginx/tt-rss/install
