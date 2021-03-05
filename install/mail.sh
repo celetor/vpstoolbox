@@ -83,8 +83,8 @@ smtputf8_enable = no
 tls_ssl_options = no_ticket, no_compression
 tls_preempt_cipherlist = yes
 smtpd_tls_auth_only = no
-postscreen_access_list = permit_mynetworks cidr:/etc/postfix/postscreen_access.cidr
-postscreen_blacklist_action = drop
+#postscreen_access_list = permit_mynetworks cidr:/etc/postfix/postscreen_access.cidr
+#postscreen_blacklist_action = drop
 EOF
   cat > '/etc/postfix/postscreen_access.cidr' << EOF
 #permit my own IP addresses.
@@ -108,7 +108,7 @@ EOF
 #               (yes)   (yes)   (no)    (never) (100)
 # ==========================================================================
 smtp      inet  n       -       y       -       -       smtpd
-smtp      inet  n       -       y       -       1       postscreen
+#smtp      inet  n       -       y       -       1       postscreen
 smtpd     pass  -       -       y       -       -       smtpd
 dnsblog   unix  -       -       y       -       0       dnsblog
 tlsproxy  unix  -       -       y       -       0       tlsproxy
