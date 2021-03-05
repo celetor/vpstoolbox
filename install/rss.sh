@@ -65,7 +65,7 @@ if [[ -d /usr/share/nginx/tt-rss/ ]]; then
     mysql -u root -e "create user 'ttrss'@'localhost' IDENTIFIED BY '${password1}';"
     mysql -u root -e "GRANT ALL PRIVILEGES ON ttrss.* to ttrss@'localhost';"
     mysql -u root -e "flush privileges;"
-    mysql -u ttrss -p"${password1}" -D ttrss < /usr/share/nginx/tt-rss/sql/mysql/mysql.sql
+    mysql -u ttrss -p"${password1}" -D ttrss < /usr/share/nginx/tt-rss/sql/mysql/schema.sql
   cat > '/usr/share/nginx/tt-rss/config.php' << EOF
 <?php
     putenv('TTRSS_DB_TYPE=pgsql'); // pgsql or mysql
