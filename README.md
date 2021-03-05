@@ -145,6 +145,10 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 1. 本项目实现了**模块化**
 2. 本项目我个人从学习bash开始就写起的项目,可能有诸多不合理之处,不建议作为直接教材学习。
 
+## Rclone以及全自动上传脚本使用方法
+
+**[Aria2+Rclone+Onedrive实现全自动化下载](https://johnrosen1.com/2021/02/14/onedrive/)**
+
 ## Trojan-panel使用方法
 
 - Trojan-panel默认不安装,请**手动选中**以执行安装程序。
