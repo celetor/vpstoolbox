@@ -150,4 +150,7 @@ rdb-save-incremental-fsync yes
 EOF
 systemctl restart redis
 systemctl enable redis
+cd
+rm -rf redis*
+cd
 }
