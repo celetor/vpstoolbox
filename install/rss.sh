@@ -144,7 +144,7 @@ if [[ -d /usr/share/nginx/tt-rss/ ]]; then
   define('_SKIP_SELF_URL_PATH_CHECKS', true);
 EOF
 cd
-rm -rf /usr/share/nginx/tt-rss/install
+#rm -rf /usr/share/nginx/tt-rss/install
 cd /usr/share/nginx/tt-rss/plugins.local/
 git clone https://github.com/DigitalDJ/tinytinyrss-fever-plugin fever
 cd
