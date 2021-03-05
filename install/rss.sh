@@ -68,7 +68,7 @@ if [[ -d /usr/share/nginx/tt-rss/ ]]; then
     mysql -u ttrss -p"${password1}" -D ttrss < /usr/share/nginx/tt-rss/sql/mysql/schema.sql
   cat > '/usr/share/nginx/tt-rss/config.php' << EOF
 <?php
-    putenv('TTRSS_DB_TYPE=pgsql'); // pgsql or mysql
+    putenv('TTRSS_DB_TYPE=mysql'); // pgsql or mysql
     putenv('TTRSS_DB_HOST=127.0.0.1');
     putenv('TTRSS_SELF_URL_PATH=https://${domain}/ttrss/');
     putenv('TTRSS_DB_USER=ttrss');
