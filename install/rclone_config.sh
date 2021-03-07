@@ -66,7 +66,7 @@ config_rclone_onedrive() {
   echo -e "请在你自己的电脑上运行以下命令(windows)"
   echo -e "rclone authorize \"onedrive\" -- \"${client_id}\" \"${client_secret}\""
   echo "按下回车键以继续"
-  read -p "Press enter to continue"
+  read -n 1 -r -s -p $'Press enter to continue...\n'
 
   access_token=$(whiptail --inputbox --nocancel "请输入 access_token" 8 68 --title "access_token input" 3>&1 1>&2 2>&3)
   if [[ -z ${access_token} ]]; then
