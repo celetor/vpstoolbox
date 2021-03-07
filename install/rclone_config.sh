@@ -23,9 +23,11 @@ config_rclone_onedrive() {
   	apt-get install fuse -y
   fi
 
-  TERM=ansi whiptail --title "开始配置 Rclone onedrive" --infobox "开始配置 Rclone onedrive" 7 68
+  if [[ ! -f /usr/bin/jq ]]; then
+  	apt-get install jq -y
+  fi
 
-  apt-get install jq -y
+  TERM=ansi whiptail --title "开始配置 Rclone onedrive" --infobox "开始配置 Rclone onedrive" 7 68
 
   Region=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "请选择 onedrive region" --title "onedrive region选择" --menu --nocancel "请选择 onedrive region" 14 68 5 \
   "global" "Microsoft Cloud Global" \
