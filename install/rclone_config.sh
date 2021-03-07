@@ -61,10 +61,10 @@ config_rclone_onedrive() {
   client_secret="pKo_ySmLfjM-zNo36v.a2TwC95S-OTT9_B"
   fi
 
-  whiptail --title "Oauth2授权命令(Windows)" --msgbox ".\rclone authorize "onedrive" -- ${client_id} ${client_secret}" 8 68
+  whiptail --title "Oauth2授权命令(Windows)" --msgbox "rclone authorize \"onedrive\" -- \"${client_id}\" \"${client_secret}\"" 8 68
 
   echo -e "请在你自己的电脑上运行以下命令(windows)"
-  echo -e ".\rclone authorize "onedrive" -- ${client_id} ${client_secret}"
+  echo -e "rclone authorize \"onedrive\" -- \"${client_id}\" \"${client_secret}\""
   echo "按下回车以继续"
   read
 
