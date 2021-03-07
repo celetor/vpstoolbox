@@ -73,20 +73,20 @@ config_rclone_onedrive() {
   access_token=$(whiptail --inputbox --nocancel "请输入 access_token" 8 68 --title "access_token input" 3>&1 1>&2 2>&3)
   fi
 
-  echo "${access_token}" | jq > access.json
+  echo "${access_token}" > access.json
 
   access_token_real="$( jq -r '.access_token' "access.json" )"
   echo "调用access token: ${access_token_real}"
 
-  https://login.live.com/oauth20_authorize.srf?client_id=64110a82-a430-4cd0-9c83-5f671764424f&scope=onedrive.readwrite
+  curl -H "Authorization: Bearer ${access_token_real}" https://graph.microsoft.com/v1.0/me/drives > info.json
 
-  curl -H "Authorization: Bearer ${access_token_real}" https://graph.microsoft.com/v1.0/me/drives | jq > info.json
+  drive_id="$( jq -r '.value[] | .id' "info.json" )"
+  drive_type="$( jq -r '.value[] | .driveType' "info.json" )"
 
-  drive_id="$( jq -r '.id' "info.json" )"
-  drive_type="$( jq -r '.driveType' "info.json" )"
+mkdir /root/.config/rclone/
+touch /root/.config/rclone/rclone.conf
 
   ## 写入Onedrive配置
-
   cat > '/root/.config/rclone/rclone.conf' << EOF
 [${rname}]
 type = onedrive
