@@ -17,8 +17,8 @@ deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 #deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
   curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
-  apt-key fingerprint ABF5BD827BD9BF62
-  apt-get purge nginx -qq -y
+  #apt-key fingerprint ABF5BD827BD9BF62
+  #apt-get purge nginx -qq -y
   apt-get update
   #apt-get install nginx -q -y
   sh -c 'echo "y\n\ny\ny\ny\n" | apt-get install nginx -y'
