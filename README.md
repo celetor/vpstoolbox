@@ -40,10 +40,11 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
   - [ ] [Qbittorrent_enhanced_version](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
   - [ ] [Aria2](https://github.com/aria2/aria2)
   - [ ] [AriaNG](https://github.com/mayswind/AriaNg/)
-  - [ ] [Rclone](https://github.com/rclone/rclone)
-  - [ ] [Filebrowser](https://github.com/filebrowser/filebrowser)
 - 网盘
   - [ ] [Nextcloud](https://github.com/nextcloud/server)
+  - [ ] [Rclone](https://github.com/rclone/rclone)
+  - [ ] [Filebrowser](https://github.com/filebrowser/filebrowser)
+  - [ ] [Onedrive](https://johnrosen1.com/2021/02/14/onedrive/)
 - RSS
   - [ ] [RSSHub](https://github.com/DIYgod/RSSHub)
   - [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)
