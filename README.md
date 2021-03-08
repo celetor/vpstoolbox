@@ -232,6 +232,12 @@ BTC: `bc1qtcmu8fc0fv9ksedh38msdvfaqdga5s2u8fmsy6`
 
 > 你的捐赠对我而言是最大的帮助,但请不要勉强。
 
+## 恰饭
+
+注 : 无可用性或SLA保证
+
+[https://cp.v2tun.com/aff.php?aff=233](https://cp.v2tun.com/aff.php?aff=233)
+
 ## 執照
 
 ```
