@@ -222,10 +222,6 @@ systemctl restart php7.4-fpm
 
 ![https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
 
-## 如果本项目帮助到了你,请给颗star并帮忙推广,谢谢!
-
-[![Stargazers over time](https://starchart.cc/johnrosen1/vpstoolbox.svg)](https://starchart.cc/johnrosen1/vpstoolbox)
-
 ## 捐赠
 
 BTC: `bc1qtcmu8fc0fv9ksedh38msdvfaqdga5s2u8fmsy6`
@@ -263,3 +259,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## 如果本项目帮助到了你,请给颗star并帮忙推广,谢谢!
+
+[![Stargazers over time](https://starchart.cc/johnrosen1/vpstoolbox.svg)](https://starchart.cc/johnrosen1/vpstoolbox)
