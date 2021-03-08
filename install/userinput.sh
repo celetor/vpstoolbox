@@ -223,29 +223,36 @@ fi
 
 whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 24 65 16 \
 "Back" "返回上级菜单(Back to main menu)" off \
+"基础" "基础" off \
 "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
 "net" "Netdata(监测伺服器运行状态)" on \
 "fast" "TCP Fastopen" ${fastopen} \
 "tjp" "Trojan-panel" ${check_tjp} \
 "ss" "shadowsocks-rust" ${check_ss} \
-"typecho" "Typecho" ${check_echo} \
+"speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
+"网盘" "网盘" off \
 "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
 "rss" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
+"rclone" "Rclone" ${check_rclone} \
+"onedrive" "Rclone Onedrive" ${check_rclone} \
+"下载" "下载" off \
 "chat" "Rocket Chat" ${check_chat} \
 "qbt" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
 "aria" "Aria2下载器" ${check_aria} \
-"rclone" "Rclone" ${check_rclone} \
 "file" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
+"影音" "影音" off \
 "jellyfin" "Jellyfin" off \
-"speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
+"安全" "安全" off \
 "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
+"其他" "以下选项请勿选中,除非必要(Others)" off  \
 "i2p" "自建i2p网站" ${check_i2p} \
 "tor" "自建onion网站" ${check_tor} \
 "stun" "stunserver(用于测试nat类型)" ${stun} \
 "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
 "7" "MariaDB数据库" ${check_mariadb} \
 "redis" "Redis缓存数据库" off \
+"typecho" "Typecho" ${check_echo} \
 "其他" "以下选项请勿选中,除非必要(Others)" off  \
 "port" "自定义Trojan端口(除nat机器外请勿选中)" ${check_qbt_origin} \
 "10" "Bt-Tracker(Bittorrent-tracker服务)" ${check_tracker} \
@@ -272,6 +279,9 @@ do
     install_mariadb=1
     check_echo="on"
     install_typecho=1
+    ;;
+    onedrive)
+    install_onedrive=1
     ;;
     stun)
     install_stun="1"

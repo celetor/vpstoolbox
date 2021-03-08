@@ -508,6 +508,9 @@ install_moudles(){
   source typecho.sh
   install_typecho
   fi
+  if [[ ${install_onedrive} == 1 ]]; then
+  curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/rclone_config.sh | sudo bash
+  fi
   if [[ ${install_netdata} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/netdata.sh
   source netdata.sh
