@@ -63,6 +63,6 @@ for ((var=2; var<=5; var++)) do
 done
 apt-get purge sysstat exim4 chrony aliyun-assist -y
 systemctl daemon-reload
-echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
+#echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 }
 
