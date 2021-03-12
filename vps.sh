@@ -318,13 +318,13 @@ clear
 install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
 if [[ $install_status != 1 ]]; then
   cp /etc/resolv.conf /etc/resolv.conf.bak1
-  echo "nameserver 1.1.1.1" >> /etc/resolv.conf
-  echo "nameserver 1.0.0.1" >> /etc/resolv.conf
-  echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-  echo "nameserver 1.1.1.1" >> /etc/resolvconf/resolv.conf.d/base
-  echo "nameserver 1.0.0.1" >> /etc/resolvconf/resolv.conf.d/base
-  echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/base
-  resolvconf -u
+  #echo "nameserver 1.1.1.1" >> /etc/resolv.conf
+  #echo "nameserver 1.0.0.1" >> /etc/resolv.conf
+  #echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+  #echo "nameserver 1.1.1.1" >> /etc/resolvconf/resolv.conf.d/base
+  #echo "nameserver 1.0.0.1" >> /etc/resolvconf/resolv.conf.d/base
+  #echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/base
+  #resolvconf -u
   prasejson
   if [[ $(systemctl is-active caddy) == active ]]; then
       systemctl stop caddy
