@@ -43,16 +43,6 @@ if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
   exit 1
 fi
 
-if [[ $(free -m  | grep Mem | awk '{print $2}' 2> /dev/null) -le "100" ]]; then
-  echo -e "本程式需要至少100MB记忆体才能正常运作,Please run this script on machine with more than 100MB total ram."
-  exit 1
-fi
-
-if [[ $(df $PWD | awk '/[0-9]%/{print $(NF-2)}' 2> /dev/null) -le "3000000" ]]; then
-  echo -e "本程式需要至少3GB磁碟空间才能正常运作,Please run this script on machine with more than 3G free disk space."
-  exit 1
-fi
-
 ## Predefined env
 export DEBIAN_FRONTEND=noninteractive
 export COMPOSER_ALLOW_SUPERUSER=1
