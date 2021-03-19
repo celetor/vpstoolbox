@@ -54,6 +54,7 @@ rm -rf /usr/local/aegis
 rm -rf /usr/local/cloudmonitor
 rm -rf /usr/sbin/aliyun*
 rm -rf /sbin/ecs_mq_rps_rfs
+rm -rf /usr/local/share/assist-daemon
 for ((var=2; var<=5; var++)) do
   if [ -d "/etc/rc${var}.d/" ];then
     rm -rf "/etc/rc${var}.d/S80aegis"
