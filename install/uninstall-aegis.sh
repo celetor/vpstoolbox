@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Tor模组 Tor moudle
+## 阿里云云盾卸载模组 Uninstall Aliyun-aegis moudle
 
 uninstall_aegis(){
 TERM=ansi whiptail --title "阿里云监控卸载" --infobox "检测到阿里云恶意监控服务，开始卸载..." 7 68

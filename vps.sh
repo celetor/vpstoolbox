@@ -32,20 +32,15 @@ clear
 
 set +e
 
+## Predefined env
+export DEBIAN_FRONTEND=noninteractive
+export COMPOSER_ALLOW_SUPERUSER=1
+
 #System Requirement
 if [[ $(id -u) != 0 ]]; then
   echo -e "请使用root或者sudo用户运行,Please run this script as root or sudoer."
   exit 1
 fi
-
-if [[ $(uname -m 2> /dev/null) != x86_64 ]]; then
-  echo -e "本程式仅适用于x86_64机器,Please run this script on x86_64 machine."
-  exit 1
-fi
-
-## Predefined env
-export DEBIAN_FRONTEND=noninteractive
-export COMPOSER_ALLOW_SUPERUSER=1
 
 # ----------------------------------
 # Colors

@@ -42,7 +42,6 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "ss" "shadowsocks-rust" ${check_ss} \
 "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
 "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
-"dns" "Dnscrypt-proxy(Doh)" ${check_dns} \
 "port" "自定义Trojan端口(除nat机器外请勿选中)" off \
 "test-only" "test-only" off 2>results
 
@@ -60,10 +59,6 @@ do
     ss)
     check_ss="on"
     install_ss_rust=1
-    ;;
-    dns)
-    check_dns="on"
-    install_dnscrypt=1
     ;;
     fast)
     tcp_fastopen="true"
@@ -86,12 +81,6 @@ do
     fail2ban)
     check_fail2ban="on"
     install_fail2ban=1
-    ;;
-    11) 
-    install_trojan_panel=1
-    install_php=1
-    install_nodejs=1
-    install_mariadb=1
     ;;
     port)
     trojan_other_port=1
@@ -118,8 +107,8 @@ hostnamectl set-hostname ${domain}
 echo "${domain}" > /etc/hostname
 rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
 rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
-echo "" >> /etc/hosts
-echo "$(jq -r '.ip' "/root/.trojan/ip.json") ${domain}" >> /etc/hosts
+#echo "" >> /etc/hosts
+#echo "$(jq -r '.ip' "/root/.trojan/ip.json") ${domain}" >> /etc/hosts
 if [[ ${install_trojan} = 1 ]]; then
   while [[ -z ${password1} ]]; do
 password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码,***请勿添加特殊符号***)" 8 68 --title "password1 input" 3>&1 1>&2 2>&3)
@@ -418,8 +407,8 @@ hostnamectl set-hostname ${domain}
 echo "${domain}" > /etc/hostname
 rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
 rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
-echo "" >> /etc/hosts
-echo "$(jq -r '.ip' "/root/.trojan/ip.json") ${domain}" >> /etc/hosts
+#echo "" >> /etc/hosts
+#echo "$(jq -r '.ip' "/root/.trojan/ip.json") ${domain}" >> /etc/hosts
 if [[ ${install_trojan} = 1 ]]; then
   while [[ -z ${password1} ]]; do
 password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码,***请勿添加特殊符号***)" 8 68 --title "password1 input" 3>&1 1>&2 2>&3)
