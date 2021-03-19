@@ -509,6 +509,7 @@ MasterMenu() {
   "Install_standard" "基础安裝(仅基础+代理相关软件)" \
   "Install_extend" "扩展安装(完整软件列表)" \
   "Benchmark" "效能测试"\
+  "Uninstall" "卸载"\
   "Exit" "退出" 3>&1 1>&2 2>&3)
   case $Mainmenu in
     ## 基础标准安装
@@ -625,6 +626,12 @@ MasterMenu() {
     ;;
     Exit)
     whiptail --title "Bash Exited" --msgbox "Goodbye" 8 68
+    exit 0
+    ;;
+    Uninstall)
+    curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/uninstall.sh
+    source uninstall.sh
+    uninstall
     exit 0
     ;;
     esac
