@@ -111,13 +111,13 @@ rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
 #echo "$(jq -r '.ip' "/root/.trojan/ip.json") ${domain}" >> /etc/hosts
 if [[ ${install_trojan} = 1 ]]; then
   while [[ -z ${password1} ]]; do
-password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码,***请勿添加特殊符号***)" 8 68 --title "password1 input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "Trojan-GFW 密码一 (推荐自定义密码,***请勿添加特殊符号***)" 8 68 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password1} ]]; then
 password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 fi
 done
 while [[ -z ${password2} ]]; do
-password2=$(whiptail --passwordbox --nocancel "Trojan-GFW Password Two(若不確定，請直接回車，会随机生成)" 8 68 --title "password2 input" 3>&1 1>&2 2>&3)
+password2=$(whiptail --passwordbox --nocancel "Trojan-GFW 密码二 (若不確定，請直接回車，会随机生成)" 8 68 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password2} ]]; then
   password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
   fi
@@ -411,13 +411,13 @@ rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
 #echo "$(jq -r '.ip' "/root/.trojan/ip.json") ${domain}" >> /etc/hosts
 if [[ ${install_trojan} = 1 ]]; then
   while [[ -z ${password1} ]]; do
-password1=$(whiptail --passwordbox --nocancel "Trojan-GFW Password One(推荐自定义密码,***请勿添加特殊符号***)" 8 68 --title "password1 input" 3>&1 1>&2 2>&3)
+password1=$(whiptail --passwordbox --nocancel "Trojan-GFW 密码一 (推荐自定义密码,***请勿添加特殊符号***)" 8 68 --title "password1 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password1} ]]; then
 password1=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
 fi
 done
 while [[ -z ${password2} ]]; do
-password2=$(whiptail --passwordbox --nocancel "Trojan-GFW Password Two(若不確定，請直接回車，会随机生成)" 8 68 --title "password2 input" 3>&1 1>&2 2>&3)
+password2=$(whiptail --passwordbox --nocancel "Trojan-GFW 密码二 (若不確定，請直接回車，会随机生成)" 8 68 --title "password2 input" 3>&1 1>&2 2>&3)
 if [[ -z ${password2} ]]; then
   password2=$(head /dev/urandom | tr -dc a-z0-9 | head -c 9 ; echo '' )
   fi
