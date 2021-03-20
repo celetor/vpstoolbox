@@ -428,6 +428,9 @@ Please edit /etc/mysql/my.cnf and restart mariadb if you need remote access !
 1. <a href="https://www.mail-tester.com/" target="_blank" rel="noreferrer">https://www.mail-tester.com/</a>
 2. <a href="https://lala.im/6838.html" target="_blank" rel="noreferrer">Debian10使用Postfix+Dovecot+Roundcube搭建邮件服务器</a>(仅供参考!)
 EOF
+cd /usr/share/nginx/hexo/
+hexo g
+hexo d
 cd
 hexo_location=$(which hexo)
     cat > '/etc/systemd/system/hexo.service' << EOF
