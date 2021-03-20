@@ -120,15 +120,12 @@ EOF
     cat > '/etc/security/limits.conf' << EOF
 * soft nofile 65535
 * hard nofile 65535
-* soft nproc 65535
-* hard nproc 65535
 EOF
 if grep -q "ulimit" /etc/profile
 then
   :
 else
 echo "ulimit -SHn 65535" >> /etc/profile
-echo "ulimit -SHu 65535" >> /etc/profile
 fi
 if grep -q "pam_limits.so" /etc/pam.d/common-session
 then
