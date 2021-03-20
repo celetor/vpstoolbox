@@ -115,7 +115,6 @@ DefaultTimeoutStopSec=30s
 #DefaultRestartSec=100ms
 DefaultLimitCORE=infinity
 DefaultLimitNOFILE=65535
-DefaultLimitNPROC=65535
 EOF
     cat > '/etc/security/limits.conf' << EOF
 * soft nofile 65535
