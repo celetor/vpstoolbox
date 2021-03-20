@@ -17,7 +17,7 @@ server {
   listen 127.0.0.1:81 fastopen=20 reuseport default_server;
   listen 127.0.0.1:82 http2 fastopen=20 reuseport default_server;
   server_name $domain _;
-  resolver 127.0.0.1;
+  #resolver 127.0.0.1;
   resolver_timeout 10s;
   #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|Maxthon|TheWorld|UC|OPPO|baidu|Sogou|2345|) ) { return 403; }
   #if (\$http_user_agent ~* (wget|curl) ) { return 403; }
