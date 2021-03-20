@@ -224,17 +224,18 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "rss" "RSSHUB + TT-RSS(RSS生成器+RSS阅读器)" ${check_rss} \
 "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
 "rclone" "Rclone" ${check_rclone} \
+"aria" "Aria2下载器" ${check_aria} \
 "onedrive" "Rclone Onedrive" ${check_rclone} \
 "下载" "下载" off \
-"chat" "Rocket Chat" ${check_chat} \
 "qbt" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
-"aria" "Aria2下载器" ${check_aria} \
 "file" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
 "影音" "影音" off \
 "jellyfin" "Jellyfin" off \
+"通讯" "通讯" off \
+"chat" "Rocket Chat" ${check_chat} \
 "安全" "安全" off \
 "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
-"其他" "以下选项请勿选中,除非必要(Others)" off  \
+"其他" "其他软件及选项" off  \
 "i2p" "自建i2p网站" ${check_i2p} \
 "tor" "自建onion网站" ${check_tor} \
 "stun" "stunserver(用于测试nat类型)" ${stun} \
@@ -242,7 +243,6 @@ whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方�
 "7" "MariaDB数据库" ${check_mariadb} \
 "redis" "Redis缓存数据库" off \
 "typecho" "Typecho" ${check_echo} \
-"其他" "以下选项请勿选中,除非必要(Others)" off  \
 "port" "自定义Trojan端口(除nat机器外请勿选中)" ${check_qbt_origin} \
 "10" "Bt-Tracker(Bittorrent-tracker服务)" ${check_tracker} \
 "13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
