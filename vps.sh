@@ -613,6 +613,7 @@ MasterMenu() {
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/output.sh
     source output.sh
     prase_output
+    rm output.sh
     exit 0
     ;;
     Benchmark)
