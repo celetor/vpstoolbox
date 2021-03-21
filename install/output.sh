@@ -102,8 +102,8 @@ tail -n +3 /proc/net/dev | awk '{print \$1 " " \$2 " " \$10}' | numfmt --to=iec 
 echo -e " --- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
 echo -e " --- 请在VPS控制面板上彻底禁用防火墙(firewall)以达到最佳效果(allow all ports) ---"
 ###
-echo -e "    \${YELLOW}trojan://$password2@$domain:${trojanport}\${NOCOLOR}"
 echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
+echo -e "    \${YELLOW}trojan://$password2@$domain:${trojanport}\${NOCOLOR}"
 ###
 if [[ -d /usr/share/nginx/nextcloud/ ]]; then
 echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Nextcloud links) ---"
