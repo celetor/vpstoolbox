@@ -225,6 +225,7 @@ systemctl restart php7.4-fpm
 ## 捐赠
 
 BTC: `bc1qtcmu8fc0fv9ksedh38msdvfaqdga5s2u8fmsy6`
+ETH: `0xCF7fEA475C6108288a655845D7C7dAb3192fF6b7`
 
 > 你的捐赠对我而言是最大的帮助,但请不要勉强。
 
