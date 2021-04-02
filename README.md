@@ -228,6 +228,8 @@ BTC: `bc1qtcmu8fc0fv9ksedh38msdvfaqdga5s2u8fmsy6`
 
 ETH: `0xCF7fEA475C6108288a655845D7C7dAb3192fF6b7`
 
+XMR: `44SvLHrTMWcY1r3eJQhkBbB94AkGzBBz5W7B3123RsfPBcfYHriVt1NVLaG6t6P1LRc4XtoDhBy2YTe4hjubQ3QrN9uRPDq`
+
 > 你的捐赠对我而言是最大的帮助,但请不要勉强。
 
 ## 恰饭
