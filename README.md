@@ -97,6 +97,22 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 更多的在路上了,咕咕咕。
 
+## 捐赠
+
+> 捐赠能增加新功能咕出来的速度,但请量力而行。
+
+BTC: `bc1qkkpe9rt9vn52yymfjv3q5trgyanz9np3q0tnly`
+
+ETH: `0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16`
+
+LTC: `ltc1qct6d83gzht8mft2ld8qgnv90a0nssz003jew84`
+
+TRX: `TUb3VHFKHhs8pnFshkiuu9qVNKQANj6wEn`
+
+USDT-ERC20: `0xDB727C0Ad234a24573bE074Fa02550aAeaBd545C`
+
+XMR: `44SvLHrTMWcY1r3eJQhkBbB94AkGzBBz5W7B3123RsfPBcfYHriVt1NVLaG6t6P1LRc4XtoDhBy2YTe4hjubQ3QrN9uRPDq`
+
 ## 支援的Linux发行版
 
 > 打勾的为测试过的,保证可用性,未打勾的表示理论上支援但未测试。
@@ -221,18 +237,6 @@ systemctl restart php7.4-fpm
 > 可能不完整,仅供参考。
 
 ![https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
-
-## 捐赠
-
-BTC: `bc1qtcmu8fc0fv9ksedh38msdvfaqdga5s2u8fmsy6`
-
-ETH: `0xCF7fEA475C6108288a655845D7C7dAb3192fF6b7`
-
-USDT-ERC20: `0xDB727C0Ad234a24573bE074Fa02550aAeaBd545C`
-
-XMR: `44SvLHrTMWcY1r3eJQhkBbB94AkGzBBz5W7B3123RsfPBcfYHriVt1NVLaG6t6P1LRc4XtoDhBy2YTe4hjubQ3QrN9uRPDq`
-
-> 你的捐赠对我而言是最大的帮助,但请不要勉强。
 
 ## 恰饭
 
