@@ -2,7 +2,7 @@
 
 [TG群组](https://t.me/vpstoolbox_chat)
 
-一键安装Trojan-GFW代理,Hexo博客,Nextcloud等應用程式。
+最强一键脚本,一键安装Trojan-GFW代理,Hexo博客,Nextcloud等應用程式。
 
 ## 一键命令
 
