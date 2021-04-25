@@ -166,6 +166,8 @@ XMR: `44SvLHrTMWcY1r3eJQhkBbB94AkGzBBz5W7B3123RsfPBcfYHriVt1NVLaG6t6P1LRc4XtoDhB
 
 ## 自建 Chia 节点命令
 
+Chia 项目地址: [https://github.com/Chia-Network/chia-blockchain/tree/main](https://github.com/Chia-Network/chia-blockchain/tree/main)
+
 `curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/chia.sh | sudo bash`
 
 ## Rclone 以及全自动上传脚本使用方法
