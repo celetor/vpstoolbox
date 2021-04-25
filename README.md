@@ -1,8 +1,8 @@
 # ![VPSToolBox](logo.png)
 
-[TG群组](https://t.me/vpstoolbox_chat)
+[TG 群组](https://t.me/vpstoolbox_chat)
 
-最强一键脚本,一键安装Trojan-GFW代理,Hexo博客,Nextcloud等應用程式。
+最强一键脚本,一键安装 Trojan-GFW 代理,Hexo 博客,Nextcloud 等應用程式。
 
 ## 一键命令
 
@@ -15,9 +15,9 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 ## 使用要点
 
 1. 请以 **root/sudoer** 身份运行(sudo -i)
-2. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成DNS A解析](https://dnschecker.org/)**,即将域名指向你的VPS IP,(ipv6地址请添加AAAA解析,namesilo最慢需要15min生效)!
-3. 请在VPS控制面板中 **完全关闭VPS防火墙(即开放所有端口)**(Trojan-gfw以及Shadowsocks-rust皆支援fullcone-nat但需服务器开启所有端口才能使用) 并 **关闭 Cloudflare CDN** !
-4. API申请证书和HTTP申请证书区别不大,推荐HTTP申请(需A解析生效),无需输入API等信息。
+2. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**,即将域名指向你的 VPS IP,(ipv6 地址请添加 AAAA 解析,namesilo 最慢需要 15min 生效)!
+3. 请在 VPS 控制面板中 **完全关闭 VPS 防火墙(即开放所有端口)**(Trojan-gfw 以及 Shadowsocks-rust 皆支援 fullcone-nat 但需服务器开启所有端口才能使用) 并 **关闭 Cloudflare CDN** !
+4. API 申请证书和 HTTP 申请证书区别不大,推荐 HTTP 申请(需 A 解析生效),无需输入 API 等信息。
 
 ## 支援的软件
 
@@ -73,11 +73,11 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
   - [ ] Non standard https port support
   - [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
 
-> 欢迎PR/issue更多软件。
+> 欢迎 PR/issue 更多软件。
 
 ## 尚未添加/整合/测试的软件
 
-> 欢迎PR/request。
+> 欢迎 PR/request。
 
 - 系统
 
@@ -93,13 +93,13 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 - 通讯
 
-- [ ] [insp ircd](https://github.com/inspircd/inspircd) IRC伺服器
+- [ ] [insp ircd](https://github.com/inspircd/inspircd) IRC 伺服器
 
 更多的在路上了,咕咕咕。
 
 ## 捐赠
 
-**[买币就上Okex](https://www.okex.win/join/4802028)**
+**[买币就上 Okex](https://www.okex.win/join/4802028)**
 
 > 捐赠能增加新功能咕出来的速度,但请量力而行。
 
@@ -115,7 +115,7 @@ USDT-ERC20: `0xDB727C0Ad234a24573bE074Fa02550aAeaBd545C`
 
 XMR: `44SvLHrTMWcY1r3eJQhkBbB94AkGzBBz5W7B3123RsfPBcfYHriVt1NVLaG6t6P1LRc4XtoDhBy2YTe4hjubQ3QrN9uRPDq`
 
-## 支援的Linux发行版
+## 支援的 Linux 发行版
 
 > 打勾的为测试过的,保证可用性,未打勾的表示理论上支援但未测试。
 
@@ -128,68 +128,72 @@ XMR: `44SvLHrTMWcY1r3eJQhkBbB94AkGzBBz5W7B3123RsfPBcfYHriVt1NVLaG6t6P1LRc4XtoDhB
 
 ## 项目实现
 
-使用```100% bash shell```实现。
+使用`100% bash shell`实现。
 
 ## 重要提示
 
 1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
-2. Trojan-GFW**不支援Cloudflare CDN**,请勿开启!
-3. 证书续签目前使用crontab,如有问题,欢迎反馈 !
-4. 本项目不对Vultr机器造成的任何问题负责,this project is not responsible for any problems caused by Vultr machines !
+2. Trojan-GFW**不支援 Cloudflare CDN**,请勿开启!
+3. 证书续签目前使用 crontab,如有问题,欢迎反馈 !
+4. 本项目不对 Vultr 机器造成的任何问题负责,this project is not responsible for any problems caused by Vultr machines !
 
 ## 贡献
 
 1. **Fork**本项目
 2. **Clone**到你自己的机器
 3. **Commit** 修改
-4. **Push** 到你自己的Fork
+4. **Push** 到你自己的 Fork
 5. 提交**Pull request**
-6. PR要求请看[**pr要求**](https://github.com/johnrosen1/vpstoolbox/tree/dev/install)
+6. PR 要求请看[**pr 要求**](https://github.com/johnrosen1/vpstoolbox/tree/dev/install)
 
-## Bug反馈以及Feature request
+## Bug 反馈以及 Feature request
 
 - [x] [Github Issue](https://github.com/johnrosen1/vpstoolbox/issues)
-- [x] [TG群组](https://t.me/vpstoolbox_chat)
-- [x] [TG私聊](https://t.me/johnrosen)
+- [x] [TG 群组](https://t.me/vpstoolbox_chat)
+- [x] [TG 私聊](https://t.me/johnrosen)
 
-注： 
+注：
 
 1. 其他的反馈方式我大概率看不见。
-2. 除非你有能说服我的理由或者直接提pr,否则**不接受代理软件支援请求**(比如wireguard之类的)。
-3. 无论发生什么请**务必附上复现错误的步骤，截图，OS发行版等信息**,否则我不可能能够提供任何帮助。
-4. **私聊请直奔主题**,请勿询问 *域名怎么买?* 这种小白向问题,大家的时间都是有限的,谢谢配合。
+2. 除非你有能说服我的理由或者直接提 pr,否则**不接受代理软件支援请求**(比如 wireguard 之类的)。
+3. 无论发生什么请**务必附上复现错误的步骤，截图，OS 发行版等信息**,否则我不可能能够提供任何帮助。
+4. **私聊请直奔主题**,请勿询问 _域名怎么买?_ 这种小白向问题,大家的时间都是有限的,谢谢配合。
 
 ## Code Quality
 
 1. 本项目实现了**模块化**
-2. 本项目我个人从学习bash开始就写起的项目,可能有诸多不合理之处,不建议作为直接教材学习。
+2. 本项目我个人从学习 bash 开始就写起的项目,可能有诸多不合理之处,不建议作为直接教材学习。
 
-## Rclone以及全自动上传脚本使用方法
+## 自建 Chia 节点命令
 
-**[Aria2+Rclone+Onedrive实现全自动化下载](https://johnrosen1.com/2021/02/14/onedrive/)**
+`curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/chia.sh | sudo bash`
 
-## Trojan-panel使用方法
+## Rclone 以及全自动上传脚本使用方法
 
-- Trojan-panel默认不安装,请**手动选中**以执行安装程序。
-- 进入生成的url,**首次注册的用户为管理员(admin)**。
-- 用户需联系管理员(admin)申请流量(**设置为-1为不限流量**)。
-- 客户端配置文件中的密码为用户注册在Panel时填入的：```Username:Password```(**中间的```:```不能漏!**)。
-- 若出现```File not found. ```错误,刷新页面即可。
-- 更多请看[Trojan-panel使用方法](https://johnrosen1.com/2021/02/01/trojan-panel/)
+**[Aria2+Rclone+Onedrive 实现全自动化下载](https://johnrosen1.com/2021/02/14/onedrive/)**
 
-## Nextcloud优化方法
+## Trojan-panel 使用方法
 
-> 由于Nextcloud自身限制,无法全自动添加redis配置,请手动配置。
+- Trojan-panel 默认不安装,请**手动选中**以执行安装程序。
+- 进入生成的 url,**首次注册的用户为管理员(admin)**。
+- 用户需联系管理员(admin)申请流量(**设置为-1 为不限流量**)。
+- 客户端配置文件中的密码为用户注册在 Panel 时填入的：`Username:Password`(**中间的`:`不能漏!**)。
+- 若出现`File not found. `错误,刷新页面即可。
+- 更多请看[Trojan-panel 使用方法](https://johnrosen1.com/2021/02/01/trojan-panel/)
 
-1. 开启Memcache
-在```/usr/share/nginx/nextcloud/config/config.php```中添加以下几行(请添加在中间，非开头或末尾)
+## Nextcloud 优化方法
+
+> 由于 Nextcloud 自身限制,无法全自动添加 redis 配置,请手动配置。
+
+1. 开启 Memcache
+   在`/usr/share/nginx/nextcloud/config/config.php`中添加以下几行(请添加在中间，非开头或末尾)
 
 ```
   'memcache.local' => '\\OC\\Memcache\\APCu',
   'memcache.distributed' => '\\OC\\Memcache\\Redis',
   'filelocking.enabled' => true,
   'memcache.locking' => '\\OC\Memcache\\Redis',
-  'redis' => 
+  'redis' =>
   array (
     'host' => '/var/run/redis/redis.sock',
     'port' => 0,
@@ -208,31 +212,32 @@ sudo -u nginx ./occ db:convert-filecache-bigint
 cd
 ```
 
-3. 切换后台进程方式为cron(好像nextcloud会自己切换,如未切换请手动切换)
+3. 切换后台进程方式为 cron(好像 nextcloud 会自己切换,如未切换请手动切换)
 
-Nextcloud设定-->基本设定-->改为cron(伺服器端已配置完成，无需任何手动配置)
+Nextcloud 设定-->基本设定-->改为 cron(伺服器端已配置完成，无需任何手动配置)
 
 4. 重启服务使配置生效
+
 ```
 systemctl restart php7.4-fpm
 ```
 
 ## 邮箱服务(Mail Service)使用条件
 
-1. 一台有**独立公网IPv4**的非中国大陆VPS/伺服器且**25/80/143/443/465/587/993等TCP端口必须能正常使用**。
-> *阿里云，Google cloud platform,vultr等厂商皆不满足此项要求*。
-2. 伺服器/VPS必须拥有大于等于 **2GB RAM 以及 30GB Storage**(SSD最好).
-3. 一个付费域名(推荐[Namesilo](https://www.namesilo.com/?rid=685fb47qi)),.com/.xyz/.moe等后缀无所谓。
-4. 你的伺服器或VPS厂商必须支援**rDNS(PTR) record**(除非你希望你的邮件被列为spam)。
-5. 你的伺服器或者VPS的ip必须不在各种邮件黑名单里面(否则你发的所有邮件都会被列为spam)。
-6. 本项目暂不支援Postfixadmin,LDAP等企业级服务。
+1. 一台有**独立公网 IPv4**的非中国大陆 VPS/伺服器且**25/80/143/443/465/587/993 等 TCP 端口必须能正常使用**。
+   > _阿里云，Google cloud platform,vultr 等厂商皆不满足此项要求_。
+2. 伺服器/VPS 必须拥有大于等于 **2GB RAM 以及 30GB Storage**(SSD 最好).
+3. 一个付费域名(推荐[Namesilo](https://www.namesilo.com/?rid=685fb47qi)),.com/.xyz/.moe 等后缀无所谓。
+4. 你的伺服器或 VPS 厂商必须支援**rDNS(PTR) record**(除非你希望你的邮件被列为 spam)。
+5. 你的伺服器或者 VPS 的 ip 必须不在各种邮件黑名单里面(否则你发的所有邮件都会被列为 spam)。
+6. 本项目暂不支援 Postfixadmin,LDAP 等企业级服务。
 
 > 由于邮箱服务的特殊性,仅推荐有需求的人使用。
 
-## Debug相关
+## Debug 相关
 
-1. 本项目主要采用systemd+docker-compose启动服务。
-2. 具体的懒得写了,```systemctl```查看运行状态,有问题记得反馈即可。
+1. 本项目主要采用 systemd+docker-compose 启动服务。
+2. 具体的懒得写了,`systemctl`查看运行状态,有问题记得反馈即可。
 
 ## 流量示意图
 
@@ -242,7 +247,7 @@ systemctl restart php7.4-fpm
 
 ## 恰饭
 
-注 : 无可用性或SLA保证
+注 : 无可用性或 SLA 保证
 
 [https://cp.v2tun.com/aff.php?aff=233](https://cp.v2tun.com/aff.php?aff=233)
 
@@ -272,6 +277,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## 如果本项目帮助到了你,请给颗star并帮忙推广,谢谢!
+## 如果本项目帮助到了你,请给颗 star 并帮忙推广,谢谢!
 
 [![Stargazers over time](https://starchart.cc/johnrosen1/vpstoolbox.svg)](https://starchart.cc/johnrosen1/vpstoolbox)
