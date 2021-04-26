@@ -72,6 +72,8 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
   - [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
   - [ ] Non standard https port support
   - [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
+- 区块链
+  - [ ] [Chia](https://github.com/Chia-Network/chia-blockchain/tree/main)
 
 > 欢迎 PR/issue 更多软件。
 
