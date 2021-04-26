@@ -18,5 +18,6 @@ install_chia() {
     chia init
     chia keys generate
     chia start node
+    echo -e "Chia Full node installation success"
 }
 install_chia
