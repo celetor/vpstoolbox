@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Monerod Full node模组 Monerod Full nodemoudle
+## Monerod 完整节点模组 Monerod Full nodemoudle
 
 #---Author Info---
 ver="1.0.0"

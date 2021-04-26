@@ -74,6 +74,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
   - [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
 - 区块链
   - [ ] [Chia](https://github.com/Chia-Network/chia-blockchain/tree/main)
+  - [ ] [Monero](https://github.com/monero-project/monero-gui)
 
 > 欢迎 PR/issue 更多软件。
 
@@ -171,6 +172,12 @@ XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6
 Chia 项目地址: [https://github.com/Chia-Network/chia-blockchain/tree/main](https://github.com/Chia-Network/chia-blockchain/tree/main)
 
 `curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/chia.sh | sudo bash`
+
+## 自建 Monero 节点命令
+
+Monero 项目地址: [https://github.com/monero-project/monero-gui](https://github.com/monero-project/monero-gui)
+
+`curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/monerod.sh | sudo bash`
 
 ## Rclone 以及全自动上传脚本使用方法
 

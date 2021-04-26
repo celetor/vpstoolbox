@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Chia Fullnode模组 Chia Fullnode moudle
+## Chia 完整节点模组 Chia Fullnode moudle
 
 #---Author Info---
 ver="1.0.0"
