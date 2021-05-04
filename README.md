@@ -175,6 +175,8 @@ Chia 项目地址: [https://github.com/Chia-Network/chia-blockchain/tree/main](h
 
 ## 自建 Monero 节点命令
 
+注：需要至少 `100GB` 空闲空间。
+
 Monero 项目地址: [https://github.com/monero-project/monero-gui](https://github.com/monero-project/monero-gui)
 
 `curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/monerod.sh | sudo bash`
