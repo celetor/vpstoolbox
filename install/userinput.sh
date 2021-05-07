@@ -103,8 +103,8 @@ while [[ -z ${domain} ]]; do
 domain=$(whiptail --inputbox --nocancel "请輸入你的域名,例如 example.com(请先完成A/AAAA解析) | Please enter your domain" 8 68 --title "Domain input" 3>&1 1>&2 2>&3)
 done
 clear
-hostnamectl set-hostname ${domain}
-echo "${domain}" > /etc/hostname
+#hostnamectl set-hostname ${domain}
+#echo "${domain}" > /etc/hostname
 rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
 rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
 #echo "" >> /etc/hosts
@@ -403,8 +403,8 @@ while [[ -z ${domain} ]]; do
 domain=$(whiptail --inputbox --nocancel "请輸入你的域名,例如 example.com(请先完成A/AAAA解析) | Please enter your domain" 8 68 --title "Domain input" 3>&1 1>&2 2>&3)
 done
 clear
-hostnamectl set-hostname ${domain}
-echo "${domain}" > /etc/hostname
+#hostnamectl set-hostname ${domain}
+#echo "${domain}" > /etc/hostname
 rm -rf /etc/dhcp/dhclient.d/google_hostname.sh
 rm -rf /etc/dhcp/dhclient-exit-hooks.d/google_set_hostname
 #echo "" >> /etc/hosts
