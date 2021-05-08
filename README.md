@@ -102,6 +102,8 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 ## 捐赠
 
+![https://www.okex.win/join/4802028](images/Image.jpg)
+
 **[买币就上 Okex](https://www.okex.win/join/4802028)**
 
 > 捐赠能增加新功能咕出来的速度,但请量力而行。
