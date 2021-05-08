@@ -102,7 +102,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 ## 捐赠
 
-![https://www.okex.win/join/4802028](images/Image.jpg)
+[![新手福利](images/Image.jpg)](https://www.okex.win/join/4802028)
 
 **[买币就上 Okex](https://www.okex.win/join/4802028)**
 
