@@ -149,14 +149,12 @@ XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6
 
 - [x] [Github Issue](https://github.com/johnrosen1/vpstoolbox/issues)
 - [x] [TG 群组](https://t.me/vpstoolbox_chat)
-- [x] [TG 私聊](https://t.me/johnrosen)
 
 注：
 
 1. 其他的反馈方式我大概率看不见。
 2. 除非你有能说服我的理由或者直接提 pr,否则**不接受代理软件支援请求**(比如 wireguard 之类的)。
 3. 无论发生什么请**务必附上复现错误的步骤，截图，OS 发行版等信息**,否则我不可能能够提供任何帮助。
-4. **私聊请直奔主题**,请勿询问 _域名怎么买?_ 这种小白向问题,大家的时间都是有限的,谢谢配合。
 
 ## Code Quality
 
@@ -221,7 +219,7 @@ sudo -u nginx ./occ db:convert-filecache-bigint
 cd
 ```
 
-3. 切换后台进程方式为 cron(好像 nextcloud 会自己切换,如未切换请手动切换)
+3. 切换后台进程方式为 cron(Nextcloud 会自己切换,如未切换请手动切换)
 
 Nextcloud 设定-->基本设定-->改为 cron(伺服器端已配置完成，无需任何手动配置)
 
