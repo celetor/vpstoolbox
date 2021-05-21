@@ -112,12 +112,6 @@ BTC: `bc1qkkpe9rt9vn52yymfjv3q5trgyanz9np3q0tnly`
 
 ETH: `0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16`
 
-LTC: `ltc1qct6d83gzht8mft2ld8qgnv90a0nssz003jew84`
-
-TRX: `TUb3VHFKHhs8pnFshkiuu9qVNKQANj6wEn`
-
-USDT-ERC20: `0xDB727C0Ad234a24573bE074Fa02550aAeaBd545C`
-
 XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6pWK1BQ77wjk5eKUu9NNid`
 
 ## 支援的 Linux 发行版
@@ -125,10 +119,10 @@ XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6
 > 打勾的为测试过的,保证可用性,未打勾的表示理论上支援但未测试。
 
 - [x] Debian10
-- [ ] Debian9
+- [x] Debian9
 - [ ] Debian8
-- [ ] Ubuntu 20.xx
-- [ ] Ubuntu 18.xx
+- [x] Ubuntu 20.xx
+- [x] Ubuntu 18.xx
 - [ ] Ubuntu 16.xx
 
 ## 项目实现
