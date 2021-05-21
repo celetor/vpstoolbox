@@ -346,45 +346,18 @@ EOF
 systemctl daemon-reload
 systemctl enable i2pd
 systemctl restart i2pd
-cd /etc/i2pd/
-depend="libboost-chrono-dev \
-    libboost-date-time-dev \
-    libboost-filesystem-dev \
-    libboost-program-options-dev \
-    libboost-system-dev \
-    libboost-thread-dev \
-    libssl-dev \
-    zlib1g-dev"
-apt-get install -y $depend
-git clone --recursive https://github.com/purplei2p/i2pd-tools
-cd /etc/i2pd/i2pd-tools
-make
-cd /etc/i2pd/
-curl -LO https://github.com/majestrate/XD/releases/download/v0.3.4/XD-0.3.4-linux-amd64
-mv XD-0.3.4-linux-amd64 XD
-cp XD XD-cli
-  cat > '/etc/systemd/system/xd.service' << EOF
-[Unit]
-Description=Standalone I2P BitTorrent Client
-Documentation=https://github.com/majestrate/XD/releases
-Requires=network.target
-After=network.target
-
-[Service]
-User=root
-RemainAfterExit=yes
-ExecStart=/etc/i2pd/XD /etc/i2pd/torrents.ini
-ExecReload=/usr/bin/kill -HUP \$MAINPID
-ExecStop=/usr/bin/kill -s STOP \$MAINPID
-LimitNOFILE=65536
-RestartSec=3s
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable xd
-systemctl restart xd
+#cd /etc/i2pd/
+#depend="libboost-chrono-dev \
+#    libboost-date-time-dev \
+#    libboost-filesystem-dev \
+#    libboost-program-options-dev \
+#    libboost-system-dev \
+#    libboost-thread-dev \
+#    libssl-dev \
+#    zlib1g-dev"
+#apt-get install -y $depend
+#git clone --recursive https://github.com/purplei2p/i2pd-tools
+#cd /etc/i2pd/i2pd-tools
+#make
 cd
 }
