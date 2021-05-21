@@ -56,7 +56,11 @@ fi
 cd /usr/share/nginx/
 if [[ -d /usr/share/nginx/tt-rss/ ]]; then
     TERM=ansi whiptail --title "安装中" --infobox "更新tt-rss中..." 7 68
-    echo "dev ing"
+    #echo "dev ing"
+    git clone https://git.tt-rss.org/fox/ttrss-docker-compose.git ttrss-docker
+    cd ttrss-docker
+    git checkout static-dockerhub
+    docker-compose pull && docker-compose up -d
   else
     echo "dev ing"
 fi
