@@ -259,18 +259,8 @@ echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location /ttrss/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
-echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
-echo "        alias /usr/share/nginx/tt-rss/;" >> /etc/nginx/conf.d/default.conf
-echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_split_path_info ^(.+\.php)(/.+)\$;" >> /etc/nginx/conf.d/default.conf
-echo "        include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_pass unix:/run/php/php7.4-fpm.sock;" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_param HTTPS on;" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_param modHeadersAvailable true;" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_param front_controller_active true;" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
-echo "        }" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:8280/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location /ttrss/cache/ {" >> /etc/nginx/conf.d/default.conf
 echo "        deny all;" >> /etc/nginx/conf.d/default.conf
