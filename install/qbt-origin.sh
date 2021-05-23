@@ -12,7 +12,6 @@ if [[ ${dist} == debian ]]; then
   apt-get install qbittorrent-nox -y
  elif [[ ${dist} == ubuntu ]]; then
   add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
-  apt-get update
   apt-get install qbittorrent-nox -y
  else
   echo "fail"
