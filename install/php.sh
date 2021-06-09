@@ -119,6 +119,6 @@ php_admin_value[error_log] = /var/log/fpm-php.www.log
 php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 32M
 EOF
-touch /var/log/fpm-php.www.log
+#touch /var/log/fpm-php.www.log
 systemctl restart php7.4-fpm
 }
