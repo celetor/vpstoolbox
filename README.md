@@ -151,12 +151,6 @@ XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6
 1. 本项目实现了**模块化**
 2. 本项目我个人从学习 bash 开始就写起的项目,可能有诸多不合理之处,不建议作为直接教材学习。
 
-## 自建 Chia 节点命令
-
-Chia 项目地址: [https://github.com/Chia-Network/chia-blockchain/tree/main](https://github.com/Chia-Network/chia-blockchain/tree/main)
-
-`curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/chia.sh | sudo bash`
-
 ## 自建 Monero 节点命令
 
 注：需要至少 `100GB` 空闲空间。
