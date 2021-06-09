@@ -82,10 +82,6 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 > 欢迎 PR/request。
 
-- 系统
-
-- [ ] [BBRv2](https://github.com/google/bbr/tree/v2alpha)
-
 - 影音
 
 - [ ] [Jackett](https://github.com/Jackett/Jackett)
@@ -94,15 +90,9 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
 - [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
 
-- 通讯
-
-- [ ] [insp ircd](https://github.com/inspircd/inspircd) IRC 伺服器
-
 更多的在路上了,咕咕咕。
 
 ## 捐赠
-
-[![新手福利](images/Image.jpg)](https://www.okex.win/join/4802028)
 
 **[买币就上 Okex](https://www.okex.win/join/4802028)**
 
