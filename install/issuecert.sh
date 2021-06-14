@@ -31,7 +31,7 @@ EOF
   systemctl restart nginx
   clear
   colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
-  ~/.acme.sh/acme.sh --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl restart trojan postfix dovecot nginx || true"
+  ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl restart trojan postfix dovecot nginx || true"
   if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
     :
     else
@@ -69,7 +69,7 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
         export CF_Key="$CF_Key"
         export CF_Email="$CF_Email"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt --issue --dns dns_cf --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl restart trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 crontab mycron
@@ -81,7 +81,7 @@ rm mycron
         done
         export Namesilo_Key="$Namesilo_Key"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt --issue --dns dns_namesilo --cert-home /etc/certs --dnssleep 1800 -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl restart trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 crontab mycron
@@ -95,7 +95,7 @@ rm mycron
         export Ali_Key="$Ali_Key"
         export Ali_Secret="$Ali_Secret"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt --issue --dns dns_ali --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl restart trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 crontab mycron
@@ -109,7 +109,7 @@ rm mycron
         export DP_Id="$DP_Id"
         export DP_Key="$DP_Key"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt --issue --dns dns_dp --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl restart trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 crontab mycron
@@ -123,7 +123,7 @@ rm mycron
         export CX_Key="$CX_Key"
         export CX_Secret="$CX_Secret"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt --issue --dns dns_cx --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl restart trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 crontab mycron
@@ -137,7 +137,7 @@ rm mycron
         export GD_Key="$CX_Key"
         export GD_Secret="$CX_Secret"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt --issue --dns dns_gd --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl restart trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 crontab mycron
@@ -151,7 +151,7 @@ rm mycron
         export Namecom_Username="$Namecom_Username"
         export Namecom_Token="$Namecom_Token"
         installacme
-        ~/.acme.sh/acme.sh --issue --dns dns_namecom --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
+        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt --issue --dns dns_namecom --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl reload trojan postfix dovecot nginx || true"
 crontab -l > mycron
 echo "0 0 * * 0 /root/.acme.sh/acme.sh --cron --cert-home /etc/certs --reloadcmd 'systemctl restart trojan postfix dovecot nginx || true' >> /root/.trojan/letcron.log 2>&1" >> mycron
 crontab mycron
