@@ -151,9 +151,9 @@ XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6
 1. 本项目实现了**模块化**
 2. 本项目我个人从学习 bash 开始就写起的项目,可能有诸多不合理之处,不建议作为直接教材学习。
 
-## 自建 Monero 节点命令
+## 自建 Monero(XMR,门罗币) 节点命令
 
-注：需要至少 `100GB` 空闲空间。
+注：需要至少 `200GB` 可用硬盘空间。
 
 Monero 项目地址: [https://github.com/monero-project/monero-gui](https://github.com/monero-project/monero-gui)
 
@@ -238,9 +238,7 @@ systemctl restart php7.4-fpm
 
 ## 恰饭
 
-注 : 无可用性或 SLA 保证
-
-[https://cp.v2tun.com/aff.php?aff=233](https://cp.v2tun.com/aff.php?aff=233)
+暂无相关内容
 
 ## 執照
 
@@ -268,6 +266,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## 如果本项目帮助到了你,请给颗 star 并帮忙推广,谢谢!
+## 如果本项目帮助到了你,请帮忙推广,谢谢!
 
 [![Stargazers over time](https://starchart.cc/johnrosen1/vpstoolbox.svg)](https://starchart.cc/johnrosen1/vpstoolbox)
