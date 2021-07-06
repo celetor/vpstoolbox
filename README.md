@@ -100,7 +100,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 BTC: `bc1qkkpe9rt9vn52yymfjv3q5trgyanz9np3q0tnly`
 
-ETH: `0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16`
+ETH: `john3.eth`
 
 XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6pWK1BQ77wjk5eKUu9NNid`
 
