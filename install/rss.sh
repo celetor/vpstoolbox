@@ -65,6 +65,16 @@ if [[ -d /usr/share/nginx/tt-rss/ ]]; then
     cp .env-dist .env
     sed -i "s/http:\/\/localhost:8280\/tt-rss/https:\/\/${domain}\/tt-rss/" .env
     docker-compose pull && docker-compose up -d
+    # 安装Fever插件
+    cd /var/lib/docker/volumes/ttrss-docker_app/_data/tt-rss/plugins.local/
+    git clone https://github.com/DigitalDJ/tinytinyrss-fever-plugin fever
+    # 安装Feedly主题
+    mkdir /usr/share/nginx/themes/
+    cd /usr/share/nginx/themes/
+    git clone https://github.com/levito/tt-rss-feedly-theme.git feedly
+    cd /usr/share/nginx/themes/feedly/
+    cp -r feedly* /var/lib/docker/volumes/ttrss-docker_app/_data/tt-rss/themes.local
+    rm -rf /usr/share/nginx/themes/
   else
     echo "dev ing"
 fi
