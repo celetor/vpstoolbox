@@ -62,6 +62,7 @@ if [[ -d /usr/share/nginx/tt-rss/ ]]; then
     git clone https://git.tt-rss.org/fox/ttrss-docker-compose.git ttrss-docker
     cd ttrss-docker
     git checkout static-dockerhub
+    cp .env-dist .env
     docker-compose pull && docker-compose up -d
   else
     echo "dev ing"
