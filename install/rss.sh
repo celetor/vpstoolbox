@@ -63,7 +63,7 @@ if [[ -d /usr/share/nginx/tt-rss/ ]]; then
     cd ttrss-docker
     git checkout static-dockerhub
     cp .env-dist .env
-    sed -i "s/http:\/\/localhost:8280\/tt-rss/https:\/\/${domain}\/tt-rss" .env
+    sed -i "s/http:\/\/localhost:8280\/tt-rss/https:\/\/${domain}\/tt-rss/" .env
     docker-compose pull && docker-compose up -d
   else
     echo "dev ing"
