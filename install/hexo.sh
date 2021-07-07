@@ -169,7 +169,7 @@ hexo g && hexo d
 
 #### Tiny Tiny RSS
 
-- <a href="https://$domain/ttrss/" target="_blank" rel="noreferrer">https://$domain/ttrss/</a>
+- <a href="https://$domain/tt-rss/" target="_blank" rel="noreferrer">https://$domain/tt-rss/</a>
 - 用户名(username): **admin**
 - 密碼(password): **password**
 
