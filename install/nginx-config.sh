@@ -24,7 +24,7 @@ server {
   #if (\$http_user_agent = "") { return 403; }
   #if (\$host != "$domain") { return 404; }
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-  add_header X-Cache-Status \$upstream_cache_status;
+  #add_header X-Cache-Status \$upstream_cache_status;
   location / {
     #proxy_pass http://127.0.0.1:4000/;
     root /usr/share/nginx/hexo/public/;
@@ -346,7 +346,7 @@ echo "server {" >> /etc/nginx/conf.d/default.conf
 echo "    listen 80 fastopen=20 reuseport;" >> /etc/nginx/conf.d/default.conf
 echo "    listen [::]:80 fastopen=20 reuseport;" >> /etc/nginx/conf.d/default.conf
 echo "    server_name $domain;" >> /etc/nginx/conf.d/default.conf
-echo "    if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345) ) { return 403; }" >> /etc/nginx/conf.d/default.conf
+echo "    #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345) ) { return 403; }" >> /etc/nginx/conf.d/default.conf
 echo "    return 301 https://$domain\$request_uri;" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 echo "" >> /etc/nginx/conf.d/default.conf
