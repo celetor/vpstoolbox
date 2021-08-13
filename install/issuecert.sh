@@ -31,7 +31,7 @@ EOF
   systemctl restart nginx
   clear
   colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
-  ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt --issue --nginx --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl restart trojan postfix dovecot nginx || true"
+  ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt --issue --nginx /etc/nginx/conf.d/default.conf --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl restart trojan postfix dovecot nginx || true"
   if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
     :
     else
