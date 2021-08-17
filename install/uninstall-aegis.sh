@@ -64,6 +64,45 @@ for ((var=2; var<=5; var++)) do
 done
 apt-get purge sysstat exim4 chrony aliyun-assist -y
 systemctl daemon-reload
+# 更换apt源以防出bug
+curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/system-upgrade.sh
+    source system-upgrade.sh
+    upgrade_system
+
+if [[ $(lsb_release -cs) == buster ]]; then
+      cat > '/etc/apt/sources.list' << EOF
+#------------------------------------------------------------------------------#
+#                   OFFICIAL DEBIAN REPOS                    
+#------------------------------------------------------------------------------#
+###### Debian Main Repos
+deb http://deb.debian.org/debian/ stable main contrib non-free
+#deb-src http://deb.debian.org/debian/ stable main contrib non-free
+deb http://deb.debian.org/debian/ stable-updates main contrib non-free
+#deb-src http://deb.debian.org/debian/ stable-updates main contrib non-free
+deb http://deb.debian.org/debian-security stable/updates main
+#deb-src http://deb.debian.org/debian-security stable/updates main
+deb http://ftp.debian.org/debian buster-backports main
+#deb-src http://ftp.debian.org/debian buster-backports main
+EOF
+fi
+
+if [[ $(lsb_release -cs) == bionic ]]; then
+    cat > '/etc/apt/sources.list' << EOF
+#------------------------------------------------------------------------------#
+#                            OFFICIAL UBUNTU REPOS                             #
+#------------------------------------------------------------------------------#
+###### Ubuntu Main Repos
+deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
+#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
+###### Ubuntu Update Repos
+deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+EOF
+fi
+
+apt-get update
 #echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 }
 
