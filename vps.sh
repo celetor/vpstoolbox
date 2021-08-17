@@ -290,7 +290,10 @@ if [[ -d /usr/local/qcloud ]]; then
 fi
 
 ## 卸载阿里云云盾
-if [[ -d /usr/local/aegis ]]; then
+
+cat /etc/apt/sources.list | grep aliyun &> /dev/null
+
+if [[ $? == 0 ]] || [[ -d /usr/local/aegis ]]; then
 curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/uninstall-aegis.sh
 source uninstall-aegis.sh
 uninstall_aegis
