@@ -27,11 +27,10 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
+mkdir /etc/filebrowser/
 systemctl daemon-reload
 systemctl enable filebrowser
 systemctl restart filebrowser
-mkdir /etc/filebrowser/
-touch /etc/filebrowser/database.db
 chmod -R 755 /etc/filebrowser/
 cd
 }
