@@ -60,6 +60,10 @@ collation_server       = utf8mb4_unicode_ci
 !includedir /etc/mysql/mariadb.conf.d/
 bind-address=127.0.0.1
 
+innodb_large_prefix=true
+innodb_file_format=barracuda
+innodb_file_per_table=1
+
 [mariadb]
 
 userstat = 1
