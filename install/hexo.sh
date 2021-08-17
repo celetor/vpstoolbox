@@ -16,6 +16,7 @@ TERM=ansi whiptail --title "安装中" --infobox "安装Hexo中..." 7 68
   npm prune
   hexo new page ${password1}
   cd /usr/share/nginx/hexo/themes
+  apt-get install git -y
   git clone https://github.com/theme-next/hexo-theme-next next
   cd /usr/share/nginx/hexo
   npm install hexo-generator-feed --save
