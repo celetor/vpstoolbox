@@ -75,23 +75,6 @@ install_trojan=1
 trojanport="443"
 tcp_fastopen="false"
 
-## 卸载腾讯云云盾
-if [[ -d /usr/local/qcloud ]]; then
-  #disable tencent cloud process
-  rm -rf /usr/local/sa
-  rm -rf /usr/local/agenttools
-  rm -rf /usr/local/qcloud
-  #disable huawei cloud process
-  rm -rf /usr/local/telescope
-fi
-
-## 卸载阿里云云盾
-if [[ -d /usr/local/aegis ]]; then
-curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/uninstall-aegis.sh
-source uninstall-aegis.sh
-uninstall_aegis
-fi
-
 #Disable cloud-init
 rm -rf /lib/systemd/system/cloud*
 
@@ -295,6 +278,24 @@ if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
   echo "OS not supported(操作系统不支援),Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)"
   exit 1;
 fi
+
+## 卸载腾讯云云盾
+if [[ -d /usr/local/qcloud ]]; then
+  #disable tencent cloud process
+  rm -rf /usr/local/sa
+  rm -rf /usr/local/agenttools
+  rm -rf /usr/local/qcloud
+  #disable huawei cloud process
+  rm -rf /usr/local/telescope
+fi
+
+## 卸载阿里云云盾
+if [[ -d /usr/local/aegis ]]; then
+curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/uninstall-aegis.sh
+source uninstall-aegis.sh
+uninstall_aegis
+fi
+
 }
 
 ## 初始化安装
