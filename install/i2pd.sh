@@ -89,9 +89,6 @@ ipv6 = true
 ## Enable SSU transport (default = true)
 ssu = true
 
-## Should we assume we are behind NAT? (false only in MeshNet)
-nat = true
-
 ## Bandwidth configuration
 ## L limit bandwidth to 32KBs/sec, O - to 256KBs/sec, P - to 2048KBs/sec,
 ## X - unlimited
