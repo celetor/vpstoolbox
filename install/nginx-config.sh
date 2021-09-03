@@ -56,17 +56,31 @@ if [[ $install_nextcloud == 1 ]]; then
 echo "    include /etc/nginx/conf.d/nextcloud.conf;" >> /etc/nginx/conf.d/default.conf
 touch /etc/nginx/conf.d/nextcloud.conf
 cat << EOF > /etc/nginx/conf.d/nextcloud.conf
-    location /.well-known {
-        rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
-        rewrite ^/\.well-known/host-meta        /nextcloud/public.php?service=host-meta         last;
-        rewrite ^/\.well-known/webfinger        /nextcloud/public.php?service=webfinger         last;
-        rewrite ^/\.well-known/nodeinfo         /nextcloud/public.php?service=nodeinfo          last;
 
-        try_files \$uri \$uri/ =404;
+# https://docs.nextcloud.com/server/21/admin_manual/installation/nginx.html
+
+    location ^~ /.well-known {
+        # The following 6 rules are borrowed from `.htaccess`
+
+        location = /.well-known/carddav     { return 301 https://\$host:443/nextcloud/remote.php/dav/; }
+        location = /.well-known/caldav      { return 301 https://\$host:443/nextcloud/remote.php/dav/; }
+        # Anything else is dynamically handled by Nextcloud
+        location ^~ /.well-known            { return 301 https://\$host:443/nextcloud/index.php\$uri; }
+
+        try_files $uri $uri/ =404;
     }
 
-    location = /.well-known/carddav { return 301 https://\$host:443/nextcloud/remote.php/dav; }
-    location = /.well-known/caldav { return 301 https://\$host:443/nextcloud/remote.php/dav; }
+    #location /.well-known {
+    #    rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
+    #    rewrite ^/\.well-known/host-meta        /nextcloud/public.php?service=host-meta         last;
+    #    rewrite ^/\.well-known/webfinger        /nextcloud/public.php?service=webfinger         last;
+    #    rewrite ^/\.well-known/nodeinfo         /nextcloud/public.php?service=nodeinfo          last;
+
+    #    try_files \$uri \$uri/ =404;
+    #}
+
+    #location = /.well-known/carddav { return 301 https://\$host:443/nextcloud/remote.php/dav/; }
+    #location = /.well-known/caldav { return 301 https://\$host:443/nextcloud/remote.php/dav/; }
 
     location ^~ /nextcloud/ {
         root /usr/share/nginx/;
