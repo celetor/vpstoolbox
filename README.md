@@ -151,14 +151,6 @@ XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6
 1. 本项目实现了**模块化**
 2. 本项目我个人从学习 bash 开始就写起的项目,可能有诸多不合理之处,不建议作为直接教材学习。
 
-## 自建 Monero(XMR,门罗币) 节点命令
-
-注：需要至少 `200GB` 可用硬盘空间。
-
-Monero 项目地址: [https://github.com/monero-project/monero-gui](https://github.com/monero-project/monero-gui)
-
-`curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/monerod.sh | sudo bash`
-
 ## Rclone 以及全自动上传脚本使用方法
 
 **[Aria2+Rclone+Onedrive 实现全自动化下载](https://johnrosen1.com/2021/02/14/onedrive/)**
@@ -173,6 +165,8 @@ Monero 项目地址: [https://github.com/monero-project/monero-gui](https://gith
 - 更多请看[Trojan-panel 使用方法](https://johnrosen1.com/2021/02/01/trojan-panel/)
 
 ## Nextcloud 优化方法
+
+
 
 > 由于 Nextcloud 自身限制,无法全自动添加 redis 配置,请手动配置。
 
@@ -190,7 +184,10 @@ Monero 项目地址: [https://github.com/monero-project/monero-gui](https://gith
     'port' => 0,
     'timeout' => 0.0,
   ),
+  'default_phone_region' => 'US',
 ```
+
+[相关文档](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html)
 
 2. 优化索引
 
@@ -224,6 +221,14 @@ systemctl restart php7.4-fpm
 6. 本项目暂不支援 Postfixadmin,LDAP 等企业级服务。
 
 > 由于邮箱服务的特殊性,仅推荐有需求的人使用。
+
+## 自建 Monero(XMR,门罗币) 节点命令
+
+注：需要至少 `200GB` 可用硬盘空间。
+
+Monero 项目地址: [https://github.com/monero-project/monero-gui](https://github.com/monero-project/monero-gui)
+
+`curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/monerod.sh | sudo bash`
 
 ## Debug 相关
 
