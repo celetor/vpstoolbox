@@ -67,7 +67,7 @@ cat << EOF > /etc/nginx/conf.d/nextcloud.conf
         # Anything else is dynamically handled by Nextcloud
         location ^~ /.well-known            { return 301 https://\$host:443/nextcloud/index.php\$uri; }
 
-        try_files $uri $uri/ =404;
+        try_files \$uri \$uri/ =404;
     }
 
     #location /.well-known {
