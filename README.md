@@ -215,8 +215,9 @@ systemctl restart php7.4-fpm
 4. 你的伺服器或 VPS 厂商必须支援**rDNS(PTR) record**(除非你希望你的邮件被列为 spam)。
 5. 你的伺服器或者 VPS 的 ip 必须不在各种邮件黑名单里面(否则你发的所有邮件都会被列为 spam)。
 6. 本项目暂不支援 Postfixadmin,LDAP 等企业级服务。
+7. 全自动垃圾删除功能默认垃圾邮件 30d 清理，已删除 14d 。
 
-> 由于邮箱服务的特殊性,仅推荐有需求的人使用。
+> 由于邮箱服务的特殊性,仅推荐有需求(且乐意折腾)的人使用。
 
 ## 自建 Monero(XMR,门罗币) 节点命令
 
@@ -241,7 +242,7 @@ Monero 项目地址: [https://github.com/monero-project/monero-gui](https://gith
 
 暂无相关内容
 
-## 執照
+## License
 
 ```
 MIT License
@@ -267,6 +268,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## 如果本项目帮助到了你,请帮忙推广,谢谢!
+## 如果本项目帮助到了你,那真是太好不过了!!
 
 [![Stargazers over time](https://starchart.cc/johnrosen1/vpstoolbox.svg)](https://starchart.cc/johnrosen1/vpstoolbox)
+
+## 题外话，看看就好
+
+1. 这个项目的初衷是什么？
+A: 我主要是因为懒，所以才创立的这个项目。
+2. 这个项目花费了多少时间完成？
+A: 林林总总的也有上千小时了吧，不算维护花费的时间吧。
+3. 这个项目花费了多少资金？
+A: 金钱方面的花费倒是不多。
+4. 这个项目目前是什么情况？
+A: 已经没什么值得添加的新功能了，我只能维护维护罢了，这个项目也没有什么热度。
+5. 开发这个项目最耗时间的是什么事情？
+A: 查询各种各样的文档以及各种调试工作。
+6. 是否有想放弃的时候？
+A: 有些功能确实特别难搞，中途确实有不管不顾的时候，但是最后还是坚持下来了。
+7. 开发这个项目最大的收获是什么？
+A: 最大的收获我个人觉得不是学到了什么牛逼的技术，而是学到了项目开发所需的各种基础技能。
+8. 最可惜的是什么？
+A: 我觉得最可惜的可能是基本只有我一个人开发，没多少人帮我。
