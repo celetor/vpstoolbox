@@ -17,6 +17,7 @@ install_ss_rust(){
   	cat > '/etc/ss-rust/config.json' << EOF
 {
     "server": "::",
+    "mode": "tcp_and_udp",
     "server_port": 8388,
     "password": "${password1}",
     "timeout": 300,
@@ -33,7 +34,7 @@ After=network.target
 User=root
 Group=root
 RemainAfterExit=yes
-ExecStart=/usr/sbin/ssserver -U -c /etc/ss-rust/config.json
+ExecStart=/usr/sbin/ssserver -c /etc/ss-rust/config.json
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
 LimitNOFILE=65536
