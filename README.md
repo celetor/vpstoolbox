@@ -17,6 +17,9 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 1. 请以 **root/sudoer** 身份运行(sudo -i)
 2. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**,即将域名指向你的 VPS IP,(ipv6 地址请添加 AAAA 解析,namesilo 最慢需要 15min 生效)!
 3. 请在 VPS 控制面板中 **完全关闭 VPS 防火墙(即开放所有端口)**(Trojan-gfw 以及 Shadowsocks-rust 皆支援 fullcone-nat 但需服务器开启所有端口才能使用) 并 **关闭(请勿开启) Cloudflare CDN** !
+
+![CF](images/cf1.png)
+
 4. API 申请证书和 HTTP 申请证书区别不大,推荐 HTTP 申请(需 A 解析生效),无需输入 API 等信息。
 
 ## 支援的软件
