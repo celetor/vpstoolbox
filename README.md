@@ -21,9 +21,9 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 ![CF](images/cf1.png)
 
-4. API 申请证书和 HTTP 申请证书区别不大,推荐 HTTP 申请(需 A 解析生效),无需输入 API 等信息。
-3. 证书续签目前使用 crontab,如有问题,欢迎反馈 !
-4. 本项目不对 Vultr 机器造成的任何问题负责,this project is not responsible for any possible problems caused by Vultr machines !
+5. API 申请证书和 HTTP 申请证书区别不大,推荐 HTTP 申请(需 A 解析生效),无需输入 API 等信息。
+6. 证书续签目前使用 crontab,如有问题,欢迎反馈 !
+7. 本项目不对 Vultr 机器造成的任何问题负责,this project is not responsible for any possible problems caused by Vultr machines !
 
 ## 支援的软件 Supported applications
 
