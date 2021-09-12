@@ -12,7 +12,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 > 注: 仅推荐**Debian10**系统。
 
-## 使用要点 usage instruction
+## 使用要点 Usage instruction
 
 1. 请以 **root/sudoer** 身份运行(sudo -i)
 1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
@@ -25,7 +25,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 3. 证书续签目前使用 crontab,如有问题,欢迎反馈 !
 4. 本项目不对 Vultr 机器造成的任何问题负责,this project is not responsible for any possible problems caused by Vultr machines !
 
-## 支援的软件 supported applications
+## 支援的软件 Supported applications
 
 > 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅为参考。
 
@@ -84,7 +84,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 > 欢迎 PR/issue 更多软件。
 
-## 尚未添加/整合/测试的软件 to be done
+## 尚未添加/整合/测试的软件 To be done
 
 > 欢迎 PR/request。
 
@@ -96,7 +96,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
 - [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
 
-## 捐赠 donation
+## 捐赠 Donation
 
 **[买币就上 Okex](https://www.okex.win/join/4802028)**
 
@@ -117,13 +117,11 @@ XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6
 - [x] Ubuntu 18.xx
 - [ ] Ubuntu 16.xx
 
-## 项目实现
+## 项目实现 Program Language
 
 使用`100% bash shell`实现。
 
-
-
-## 贡献
+## 贡献 Contritbution
 
 1. **Fork**本项目
 2. **Clone**到你自己的机器
