@@ -4,7 +4,7 @@
 
 最强一键脚本,一键安装 Trojan-GFW 代理,Hexo 博客,Nextcloud 等應用程式。
 
-## 一键命令
+## 一键命令 One click command
 
 ```bash
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
@@ -12,17 +12,20 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 > 注: 仅推荐**Debian10**系统。
 
-## 使用要点
+## 使用要点 usage instruction
 
 1. 请以 **root/sudoer** 身份运行(sudo -i)
-2. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**,即将域名指向你的 VPS IP,(ipv6 地址请添加 AAAA 解析,namesilo 最慢需要 15min 生效)!
-3. 请在 VPS 控制面板中 **完全关闭或禁用 VPS 防火墙(即开放所有端口)**(Trojan-gfw 以及 Shadowsocks-rust 皆支援 fullcone-nat 但需服务器开启所有端口才能使用) 并 **关闭(请勿开启) Cloudflare CDN** !
+1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
+3. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**,即将域名指向你的 VPS IP,(ipv6 地址请添加 AAAA 解析,namesilo 最慢需要 15min 生效)!
+4. 请在 VPS 控制面板中 **完全关闭或禁用 VPS 防火墙(即开放所有端口)**(Trojan-gfw 以及 Shadowsocks-rust 皆支援 fullcone-nat 但需服务器开启所有端口才能使用) 并 **关闭(请勿开启) Cloudflare CDN** !
 
 ![CF](images/cf1.png)
 
 4. API 申请证书和 HTTP 申请证书区别不大,推荐 HTTP 申请(需 A 解析生效),无需输入 API 等信息。
+3. 证书续签目前使用 crontab,如有问题,欢迎反馈 !
+4. 本项目不对 Vultr 机器造成的任何问题负责,this project is not responsible for any possible problems caused by Vultr machines !
 
-## 支援的软件
+## 支援的软件 supported applications
 
 > 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅为参考。
 
@@ -81,7 +84,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 > 欢迎 PR/issue 更多软件。
 
-## 尚未添加/整合/测试的软件
+## 尚未添加/整合/测试的软件 to be done
 
 > 欢迎 PR/request。
 
@@ -93,7 +96,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
 - [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
 
-## 捐赠
+## 捐赠 donation
 
 **[买币就上 Okex](https://www.okex.win/join/4802028)**
 
@@ -118,12 +121,7 @@ XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6
 
 使用`100% bash shell`实现。
 
-## 重要提示
 
-1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
-2. Trojan-GFW**不支援 Cloudflare CDN**,请勿开启!
-3. 证书续签目前使用 crontab,如有问题,欢迎反馈 !
-4. 本项目不对 Vultr 机器造成的任何问题负责,this project is not responsible for any problems caused by Vultr machines !
 
 ## 贡献
 
@@ -241,7 +239,7 @@ Monero 项目地址: [https://github.com/monero-project/monero-gui](https://gith
 
 ![https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
 
-## 恰饭
+## 恰饭 aff
 
 暂无相关内容
 
