@@ -2,7 +2,7 @@
 
 [TG 群组](https://t.me/vpstoolbox_chat)
 
-最强一键脚本,一键安装 Trojan-GFW 代理,Hexo 博客,Nextcloud 等應用程式。
+厌倦了总是需要手动输入命令安装博客，代理，网盘了吗？VPSToolBox提供了一种全自动化的解决方案，解放双手，从今天开始！
 
 ## 一键命令 One click command
 
