@@ -4,9 +4,6 @@
 
 upgrade_system(){
   set +e
-  if [[ $(lsb_release -cs) == jessie ]]; then
-      debian9_install=1
-  fi
 
   if [[ $(lsb_release -cs) == xenial ]]; then
       ubuntu18_install=1
@@ -46,42 +43,14 @@ fi
   sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -y'
   if [[ ${debian10_install} == 1 ]]; then
     cat > '/etc/apt/sources.list' << EOF
-#------------------------------------------------------------------------------#
-#                   OFFICIAL DEBIAN REPOS                    
-#------------------------------------------------------------------------------#
+deb http://ftp.us.debian.org/debian/ buster main contrib non-free
+#deb-src http://ftp.us.debian.org/debian/ buster main contrib non-free
 
-###### Debian Main Repos
-deb http://deb.debian.org/debian/ stable main contrib non-free
-#deb-src http://deb.debian.org/debian/ stable main contrib non-free
+deb http://ftp.us.debian.org/debian/ buster-updates main contrib non-free
+#deb-src http://ftp.us.debian.org/debian/ buster-updates main contrib non-free
 
-deb http://deb.debian.org/debian/ stable-updates main contrib non-free
-#deb-src http://deb.debian.org/debian/ stable-updates main contrib non-free
-
-deb http://deb.debian.org/debian-security stable/updates main
-#deb-src http://deb.debian.org/debian-security stable/updates main
-
-deb http://ftp.debian.org/debian buster-backports main
-#deb-src http://ftp.debian.org/debian buster-backports main
-EOF
-fi
-  if [[ ${debian9_install} == 1 ]]; then
-    cat > '/etc/apt/sources.list' << EOF
-#------------------------------------------------------------------------------#
-#                   OFFICIAL DEBIAN REPOS                    
-#------------------------------------------------------------------------------#
-
-###### Debian Main Repos
-deb http://deb.debian.org/debian/ oldstable main contrib non-free
-#deb-src http://deb.debian.org/debian/ oldstable main contrib non-free
-
-deb http://deb.debian.org/debian/ oldstable-updates main contrib non-free
-#deb-src http://deb.debian.org/debian/ oldstable-updates main contrib non-free
-
-deb http://deb.debian.org/debian-security oldstable/updates main
-#deb-src http://deb.debian.org/debian-security oldstable/updates main
-
-deb http://ftp.debian.org/debian stretch-backports main
-#deb-src http://ftp.debian.org/debian stretch-backports main
+deb http://security.debian.org/ buster/updates main contrib non-free
+#deb-src http://security.debian.org/ buster/updates main contrib non-free
 EOF
 fi
   apt-get update --fix-missing
