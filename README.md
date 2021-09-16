@@ -110,12 +110,11 @@ XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6
 
 > 打勾的为测试过的,保证可用性,未打勾的表示理论上支援但未测试。
 
+- [x] Debian11
 - [x] Debian10
 - [x] Debian9
-- [ ] Debian8
 - [x] Ubuntu 20.xx
 - [x] Ubuntu 18.xx
-- [ ] Ubuntu 16.xx
 
 ## 项目实现 Program Language
 
