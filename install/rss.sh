@@ -54,7 +54,6 @@ systemctl restart rsshub
 fi
 
 cd /usr/share/nginx/
-if [[ -d /usr/share/nginx/tt-rss/ ]]; then
     TERM=ansi whiptail --title "安装中" --infobox "更新tt-rss中..." 7 68
     #echo "dev ing"
     curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -75,9 +74,6 @@ if [[ -d /usr/share/nginx/tt-rss/ ]]; then
     cd /usr/share/nginx/themes/feedly/
     cp -r feedly* /var/lib/docker/volumes/ttrss-docker_app/_data/tt-rss/themes.local
     rm -rf /usr/share/nginx/themes/
-  else
-    echo "dev ing"
-fi
 cd
 }
 
