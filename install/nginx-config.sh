@@ -59,16 +59,18 @@ cat << EOF > /etc/nginx/conf.d/nextcloud.conf
 
 # https://docs.nextcloud.com/server/21/admin_manual/installation/nginx.html
 
-    location ^~ /.well-known {
+# 与acme.sh路径冲突,待修复
+
+    #location ^~ /.well-known {
         # The following 6 rules are borrowed from `.htaccess`
 
-        location = /.well-known/carddav     { return 301 https://\$host:443/nextcloud/remote.php/dav/; }
-        location = /.well-known/caldav      { return 301 https://\$host:443/nextcloud/remote.php/dav/; }
+    #    location = /.well-known/carddav     { return 301 https://\$host:443/nextcloud/remote.php/dav/; }
+    #    location = /.well-known/caldav      { return 301 https://\$host:443/nextcloud/remote.php/dav/; }
         # Anything else is dynamically handled by Nextcloud
-        location ^~ /.well-known            { return 301 https://\$host:443/nextcloud/index.php\$uri; }
+    #    location ^~ /.well-known            { return 301 https://\$host:443/nextcloud/index.php\$uri; }
 
-        try_files \$uri \$uri/ =404;
-    }
+    #    try_files \$uri \$uri/ =404;
+    #}
 
     #location /.well-known {
     #    rewrite ^/\.well-known/host-meta\.json  /nextcloud/public.php?service=host-meta-json    last;
