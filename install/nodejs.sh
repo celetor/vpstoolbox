@@ -5,9 +5,9 @@
 install_nodejs(){
 	set +e
 if [[ ${dist} == debian ]]; then
-  curl -sL https://deb.nodesource.com/setup_16.x | bash -
+  curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
  elif [[ ${dist} == ubuntu ]]; then
-  curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+  curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
  else
   echo "fail"
 fi
