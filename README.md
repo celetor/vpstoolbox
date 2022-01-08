@@ -85,7 +85,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 ## 尚未添加/整合/测试的软件 To be done
 
-> 欢迎 PR/request。
+咕咕咕。
 
 - 影音
 
@@ -94,6 +94,8 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - [ ] [Lidarr](https://github.com/lidarr/Lidarr)
 - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
 - [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
+- [ ] [音乐解锁](https://github.com/unlock-music/unlock-music)
+- [ ] [youtube-dl](https://github.com/ytdl-org/youtube-dl)
 
 ## 支援的 Linux 发行版
 
