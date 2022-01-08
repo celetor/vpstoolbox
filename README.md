@@ -14,16 +14,15 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 ## 使用要点 Usage instruction
 
-1. 请以 **root/sudoer** 身份运行(sudo -i)
+1. 请以 **root(sudo)** 身份运行。
 1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
-3. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**,即将域名指向你的 VPS IP,(ipv6 地址请添加 AAAA 解析,namesilo 最慢需要 15min 生效)!
+3. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**,即将域名指向你的 VPS IP,(namesilo NS 最慢需要 15+min 生效)!
 4. 请在 VPS 控制面板中 **完全关闭或禁用 VPS 防火墙(即开放所有端口)**(Trojan-gfw 以及 Shadowsocks-rust 皆支援 fullcone-nat 但需服务器开启所有端口才能使用) 并 **关闭(请勿开启) Cloudflare CDN** !
 
 ![CF](images/cf1.png)
 
 5. API 申请证书和 HTTP 申请证书区别不大,推荐 HTTP 申请(需 A 解析生效),无需输入 API 等信息。
-6. 证书续签目前使用 crontab,如有问题,欢迎反馈 !
-7. 本项目不对 Vultr 机器造成的任何问题负责,this project is not responsible for any possible problems caused by Vultr machines !
+6. 本项目不对使用 Vultr 提供的机器造成的任何问题负责,this project is not responsible for any possible problems caused by Vultr machines !
 
 ## 支援的软件 Supported applications
 
