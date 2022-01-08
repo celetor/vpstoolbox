@@ -79,7 +79,6 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
   - [ ] Non standard https port support
   - [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
 - 区块链
-  - [ ] [Chia](https://github.com/Chia-Network/chia-blockchain/tree/main)
   - [ ] [Monero](https://github.com/monero-project/monero-gui)
 
 > 欢迎 PR/issue 更多软件。
@@ -96,16 +95,6 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
 - [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
 
-## 捐赠 Donation
-
-**[买币就上 Okex](https://www.okex.win/join/4802028)**
-
-BTC: `bc1qkkpe9rt9vn52yymfjv3q5trgyanz9np3q0tnly`
-
-ETH: `john3.eth`
-
-XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6pWK1BQ77wjk5eKUu9NNid`
-
 ## 支援的 Linux 发行版
 
 > 打勾的为测试过的,保证可用性,未打勾的表示理论上支援但未测试。
@@ -118,7 +107,7 @@ XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6
 
 ## 项目实现 Program Language
 
-使用`100% bash shell`实现。
+使用`bash shell`实现。
 
 ## 贡献 Contritbution
 
@@ -159,8 +148,6 @@ XMR: `48CJJNSVB9rCEXznrdzHRu8mf7WuVsmYm9JxZi5q8h2hLV6TegTVYusSHuDgz4w62oHxXeTNw6
 - 更多请看[Trojan-panel 使用方法](https://johnrosen1.com/2021/02/01/trojan-panel/)
 
 ## Nextcloud 优化方法
-
-
 
 > 由于 Nextcloud 自身限制,无法全自动添加 redis 配置,请手动配置。
 
@@ -206,24 +193,16 @@ systemctl restart php7.4-fpm
 
 ## 邮箱服务(Mail Service)使用条件
 
-1. 一台有**独立公网 IPv4**的非中国大陆 VPS/伺服器且**25/80/143/443/465/587/993 等 TCP 端口必须能正常使用**。
+1. 一台有**独立公网 IPv4**的非中国大陆 VPS/伺服器且**25/143/443/465/587/993 等 TCP 端口必须能正常使用**。
    > _阿里云，Google cloud platform,vultr 等厂商皆不满足此项要求_。
-2. 伺服器/VPS 必须拥有大于等于 **2GB RAM 以及 30GB Storage**(SSD 最好).
+2. 伺服器/VPS 必须拥有大于等于 **2+GB RAM 以及 30+GB Storage**.
 3. 一个付费域名(推荐[Namesilo](https://www.namesilo.com/?rid=685fb47qi)),.com/.xyz/.moe 等后缀无所谓。
-4. 你的伺服器或 VPS 厂商必须支援**rDNS(PTR) record**(除非你希望你的邮件被列为 spam)。
-5. 你的伺服器或者 VPS 的 ip 必须不在各种邮件黑名单里面(否则你发的所有邮件都会被列为 spam)。
-6. 本项目暂不支援 Postfixadmin,LDAP 等企业级服务。
+4. 你的伺服器(VPS) 必须支援**rDNS(PTR) record**(除非你希望你的邮件被列为 spam)。
+5. 你的伺服器(VPS) 的 ip 必须不在各种邮件黑名单里面(否则你发的所有邮件都会被列为 spam)。
+6. 本项目暂不支援 Postfixadmin,LDAP等相关功能。
 7. 全自动垃圾删除功能默认垃圾邮件 30d 清理，已删除 14d 。
 
 > 由于邮箱服务的特殊性,仅推荐有需求(且乐意折腾)的人使用。
-
-## 自建 Monero(XMR,门罗币) 节点命令
-
-注：需要至少 `200GB` 可用硬盘空间。
-
-Monero 项目地址: [https://github.com/monero-project/monero-gui](https://github.com/monero-project/monero-gui)
-
-`curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/monerod.sh | sudo bash`
 
 ## Debug 相关
 
