@@ -27,7 +27,7 @@ TERM=ansi whiptail --title "安装中" --infobox "安装Trojan中..." 7 68
   if [[ -n $myipv6 ]]; then
     ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
     if [[ $? -eq 0 ]]; then
-      ipv4_prefer="false"
+      ipv4_prefer="true"
     fi
   fi
   cat > '/etc/systemd/system/trojan.service' << EOF
