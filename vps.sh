@@ -101,7 +101,7 @@ setlanguage(){
   if (whiptail --title "System Language Setting" --yes-button "中文" --no-button "English" --yesno "系统语言使用中文或英文(Use Chinese or English)?" 8 68); then
   chattr -i /etc/locale.gen
   cat > '/etc/locale.gen' << EOF
-zh_TW.UTF-8 UTF-8
+zh_CN.UTF-8 UTF-8
 en_US.UTF-8 UTF-8
 EOF
 language="cn"
@@ -109,9 +109,9 @@ locale-gen
 update-locale
 chattr -i /etc/default/locale
   cat > '/etc/default/locale' << EOF
-LANGUAGE="zh_TW.UTF-8"
-LANG="zh_TW.UTF-8"
-LC_ALL="zh_TW.UTF-8"
+LANGUAGE="zh_CN.UTF-8"
+LANG="zh_CN.UTF-8"
+LC_ALL="zh_CN.UTF-8"
 EOF
 #apt-get install manpages-zh -y
   cat > '/root/.trojan/language.json' << EOF
@@ -122,7 +122,7 @@ EOF
   else
   chattr -i /etc/locale.gen
   cat > '/etc/locale.gen' << EOF
-zh_TW.UTF-8 UTF-8
+zh_CN.UTF-8 UTF-8
 en_US.UTF-8 UTF-8
 EOF
 language="en"
@@ -142,9 +142,9 @@ EOF
 fi
 done
 if [[ $language == "cn" ]]; then
-export LANGUAGE="zh_TW.UTF-8"
-export LANG="zh_TW.UTF-8"
-export LC_ALL="zh_TW.UTF-8"
+export LANGUAGE="zh_CN.UTF-8"
+export LANG="zh_CN.UTF-8"
+export LC_ALL="zh_CN.UTF-8"
   else
 export LANGUAGE="en_US.UTF-8"
 export LANG="en_US.UTF-8"
@@ -510,7 +510,7 @@ install_moudles(){
 ## 主菜单
 MasterMenu() {
   Mainmenu=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。有關錯誤報告或更多信息，請訪問以下鏈接: https://github.com/johnrosen1/vpstoolbox 或者 https://t.me/vpstoolbox_chat。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 68 5 \
-  "Install_standard" "基础安裝(仅基础+代理相关软件)" \
+  "Install_standard" "基础安裝(推荐)" \
   "Install_extend" "扩展安装(完整软件列表)" \
   "Benchmark" "效能测试"\
   "Uninstall" "卸载"\
