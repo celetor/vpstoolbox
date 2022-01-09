@@ -59,35 +59,16 @@ fi
 cat > '/etc/php/7.4/fpm/pool.d/www.conf' << EOF
 [www]
 
-;prefix = /path/to/pools/$pool
+;prefix = /path/to/pools/\$pool
 
 user = nginx
 group = nginx
 
 listen = /run/php/php7.4-fpm.sock
-; Set listen(2) backlog.
-; Default Value: 511 (-1 on FreeBSD and OpenBSD)
-;listen.backlog = 511
 
-; Set permissions for unix socket, if one is used. In Linux, read/write
-; permissions must be set in order to allow connections from a web server. Many
-; BSD-derived systems allow connections regardless of permissions. The owner
-; and group can be specified either by name or by their numeric IDs.
-; Default Values: user and group are set as the running user
-;                 mode is set to 0660
 listen.owner = nginx
 listen.group = nginx
 ;listen.mode = 0660
-;listen.acl_users =
-;listen.acl_groups =
-
-; List of addresses (IPv4/IPv6) of FastCGI clients which are allowed to connect.
-; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original
-; PHP FCGI (5.2.2+). Makes sense only with a tcp listening socket. Each address
-; must be separated by a comma. If this value is left blank, connections will be
-; accepted from any ip address.
-; Default Value: any
-; listen.allowed_clients = 127.0.0.1
 
 pm = dynamic
 
@@ -111,13 +92,9 @@ ping.path = /ping
 
 catch_workers_output = no
 
-; Default Value: nothing is defined by default except the values in php.ini and
-;                specified at startup with the -d argument
-;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
-php_flag[display_errors] = on
+php_flag[display_errors] = off
 php_admin_value[error_log] = /var/log/fpm-php.www.log
-php_admin_flag[log_errors] = on
-;php_admin_value[memory_limit] = 32M
+php_admin_flag[log_errors] = off
 EOF
 #touch /var/log/fpm-php.www.log
 systemctl restart php7.4-fpm
