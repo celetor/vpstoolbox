@@ -122,6 +122,4 @@ http {
 }
 EOF
 clear
-timedatectl set-timezone Asia/Hong_Kong
-timedatectl set-ntp off
 }
