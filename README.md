@@ -28,18 +28,18 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 
 ## 支援的软件 Supported applications
 
-> 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅为参考。
+> 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考。
 
 - 代理
   - [x] [Trojan-gfw](https://github.com/trojan-gfw/trojan)
-  - [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
   - [ ] [Shadowsocks-rust](https://github.com/shadowsocks/shadowsocks-rust)
   - [ ] [Trojan-panel](https://github.com/trojan-gfw/trojan-panel)
 - 系统
+  - [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
   - [x] [IPv6](https://zh.wikipedia.org/wiki/IPv6)
   - [x] [Tcp-BBR and tcp_fastopen](https://zh.wikipedia.org/wiki/TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6#TCP_BBR)
   - [x] [Netdata](https://github.com/netdata/netdata)
-- 博客
+- 前端
   - [x] [Nginx](https://github.com/nginx/nginx)
   - [x] [Hexo Blog](https://github.com/hexojs/hexo)
   - [ ] [Typecho](https://typecho.org/)
@@ -77,10 +77,10 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
   - [ ] [Opentracker](https://erdgeist.org/arts/software/opentracker/)
   - [ ] [stun-server](https://github.com/jselbie/stunserver)
   - [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
-  - [ ] Non standard https port support
+  - [ ] 自定义Trojan端口(Non standard https port support)
   - [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
 - 区块链
-  - [ ] [Monero](https://github.com/monero-project/monero-gui)
+  - [ ] [Monero/XMR](https://github.com/monero-project/monero-gui)
 
 > 欢迎 PR/issue 更多软件。
 
@@ -97,6 +97,10 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
 - [ ] [音乐解锁](https://github.com/unlock-music/unlock-music)
 - [ ] [youtube-dl](https://github.com/ytdl-org/youtube-dl)
+
+- 前端
+
+- [mikutap](https://github.com/akirarika/mikutap)
 
 ## 支援的 Linux 发行版
 
