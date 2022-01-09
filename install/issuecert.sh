@@ -51,7 +51,7 @@ rm mycron
 dns_issue(){
 whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你的域名的NS)不在下列列表中,请在上一个yes/no选项中选否(需要保证域名A解析已成功)或者open an github issue/pr" 8 68
     APIOPTION=$(whiptail --nocancel --clear --ok-button "吾意已決 立即執行" --title "API choose" --menu --separate-output "域名(domain)API：請按方向键來選擇(Use Arrow key to choose)" 15 68 6 \
-"1" "Cloudflare(不支援免费域名)" \
+"1" "Cloudflare" \
 "2" "Namesilo" \
 "3" "Aliyun" \
 "4" "DNSPod.cn" \
@@ -63,8 +63,8 @@ whiptail --title "Warning" --msgbox "若你的域名厂商(或者准确来说你
     case $APIOPTION in
         1)
         while [[ -z ${CF_Key} ]] || [[ -z ${CF_Email} ]]; do
-        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，快輸入你CF Global Key併按回車" 8 68 --title "CF_Key input" 3>&1 1>&2 2>&3)
-        CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，快輸入你CF_Email併按回車" 8 68 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        CF_Key=$(whiptail --passwordbox --nocancel "https://dash.cloudflare.com/profile/api-tokens，輸入你的CF Global Key併按回車" 8 68 --title "CF_Key input" 3>&1 1>&2 2>&3)
+        CF_Email=$(whiptail --inputbox --nocancel "https://dash.cloudflare.com/profile，輸入你的CF_Email併按回車" 8 68 --title "CF_Key input" 3>&1 1>&2 2>&3)
         done
         export CF_Key="$CF_Key"
         export CF_Email="$CF_Email"
@@ -77,7 +77,7 @@ rm mycron
         ;;
         2)
         while [[ -z $Namesilo_Key ]]; do
-        Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，快輸入你的Namesilo_Key併按回車" 8 68 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
+        Namesilo_Key=$(whiptail --passwordbox --nocancel "https://www.namesilo.com/account_api.php，輸入你的Namesilo_Key併按回車" 8 68 --title "Namesilo_Key input" 3>&1 1>&2 2>&3)
         done
         export Namesilo_Key="$Namesilo_Key"
         installacme
@@ -89,8 +89,8 @@ rm mycron
         ;;
         3)
         while [[ -z $Ali_Key ]] || [[ -z $Ali_Secret ]]; do
-        Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Key併按回車" 8 68 --title "Ali_Key input" 3>&1 1>&2 2>&3)
-        Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，快輸入你的Ali_Secret併按回車" 8 68 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
+        Ali_Key=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，輸入你的Ali_Key併按回車" 8 68 --title "Ali_Key input" 3>&1 1>&2 2>&3)
+        Ali_Secret=$(whiptail --passwordbox --nocancel "https://ak-console.aliyun.com/#/accesskey，輸入你的Ali_Secret併按回車" 8 68 --title "Ali_Secret input" 3>&1 1>&2 2>&3)
         done
         export Ali_Key="$Ali_Key"
         export Ali_Secret="$Ali_Secret"
@@ -103,8 +103,8 @@ rm mycron
         ;;
         4)
         while [[ -z $DP_Id ]] || [[ -z $DP_Key ]]; do
-        DP_Id=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Id併按回車" 8 68 --title "DP_Id input" 3>&1 1>&2 2>&3)
-        DP_Key=$(whiptail --passwordbox --nocancel "DNSPod.cn，快輸入你的DP_Key併按回車" 8 68 --title "DP_Key input" 3>&1 1>&2 2>&3)
+        DP_Id=$(whiptail --passwordbox --nocancel "DNSPod.cn，輸入你的DP_Id併按回車" 8 68 --title "DP_Id input" 3>&1 1>&2 2>&3)
+        DP_Key=$(whiptail --passwordbox --nocancel "DNSPod.cn，輸入你的DP_Key併按回車" 8 68 --title "DP_Key input" 3>&1 1>&2 2>&3)
         done
         export DP_Id="$DP_Id"
         export DP_Key="$DP_Key"
@@ -117,8 +117,8 @@ rm mycron
         ;;
         5)
         while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
-        CX_Key=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Key併按回車" 8 68 --title "CX_Key input" 3>&1 1>&2 2>&3)
-        CX_Secret=$(whiptail --passwordbox --nocancel "CloudXNS.com，快輸入你的CX_Secret併按回車" 8 68 --title "CX_Secret input" 3>&1 1>&2 2>&3)
+        CX_Key=$(whiptail --passwordbox --nocancel "CloudXNS.com，輸入你的CX_Key併按回車" 8 68 --title "CX_Key input" 3>&1 1>&2 2>&3)
+        CX_Secret=$(whiptail --passwordbox --nocancel "CloudXNS.com，輸入你的CX_Secret併按回車" 8 68 --title "CX_Secret input" 3>&1 1>&2 2>&3)
         done
         export CX_Key="$CX_Key"
         export CX_Secret="$CX_Secret"
@@ -131,8 +131,8 @@ rm mycron
         ;;
         6)
         while [[ -z $CX_Key ]] || [[ -z $CX_Secret ]]; do
-        CX_Key=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Key" 8 68 --title "GD_Key input" 3>&1 1>&2 2>&3)
-        CX_Secret=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，快輸入你的GD_Secret" 8 68 --title "GD_Secret input" 3>&1 1>&2 2>&3)
+        CX_Key=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，輸入你的GD_Key" 8 68 --title "GD_Key input" 3>&1 1>&2 2>&3)
+        CX_Secret=$(whiptail --passwordbox --nocancel "https://developer.godaddy.com/keys/，輸入你的GD_Secret" 8 68 --title "GD_Secret input" 3>&1 1>&2 2>&3)
         done
         export GD_Key="$CX_Key"
         export GD_Secret="$CX_Secret"
@@ -145,8 +145,8 @@ rm mycron
         ;;
         7)
         while [[ -z $Namecom_Username ]] || [[ -z $Namecom_Token ]]; do
-        Namecom_Username=$(whiptail --passwordbox --nocancel "https://www.name.com/account/settings/api，快輸入你的Namecom_Username" 8 68 --title "Namecom_Username input" 3>&1 1>&2 2>&3)
-        Namecom_Token=$(whiptail --passwordbox --nocancel "https://www.name.com/account/settings/api，快輸入你的Namecom_Token" 8 68 --title "Namecom_Token input" 3>&1 1>&2 2>&3)
+        Namecom_Username=$(whiptail --passwordbox --nocancel "https://www.name.com/account/settings/api，輸入你的Namecom_Username" 8 68 --title "Namecom_Username input" 3>&1 1>&2 2>&3)
+        Namecom_Token=$(whiptail --passwordbox --nocancel "https://www.name.com/account/settings/api，輸入你的Namecom_Token" 8 68 --title "Namecom_Token input" 3>&1 1>&2 2>&3)
         done
         export Namecom_Username="$Namecom_Username"
         export Namecom_Token="$Namecom_Token"
