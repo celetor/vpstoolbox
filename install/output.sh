@@ -83,22 +83,17 @@ echo -e "Postfix:\t\t"\$(systemctl is-active postfix)
   if [[ -f /usr/bin/fail2ban-server ]]; then
 echo -e "Fail2ban:\t\t"\$(systemctl is-active fail2ban)
   fi
-  if [[ -f /usr/bin/tor ]]; then
-echo -e "Tor:\t\t"\$(systemctl is-active tor)
-  fi
-  if [[ -f /usr/sbin/i2pd ]]; then
-echo -e "i2p:\t\t"\$(systemctl is-active i2pd)
-  fi
 echo -e " --- \${BLUE}帶寬使用(Bandwith Usage)\${NOCOLOR} ---"
 echo -e "         接收(Receive)    发送(Transmit)"
 tail -n +3 /proc/net/dev | awk '{print \$1 " " \$2 " " \$10}' | numfmt --to=iec --field=2,3
-#echo -e " --- \${GREEN}證書狀態(Certificate Status)\${NOCOLOR} ---"
-#ssl_date=\$(echo |openssl s_client -connect ${domain}:443 -tls1_3 2>&1 |sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'|openssl x509 -text)
-#tmp_last_date=\$(echo "\${ssl_date}" | grep 'Not After :' | awk -F' : ' '{print \$NF}')
-#last_date=\$(date -ud "\${tmp_last_date}" +%Y-%m-%d" "%H:%M:%S)
-#day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
-#echo -e "\e[40;33;1m The [${domain}] expiration date is : \${last_date} && [\${day_count} days] \e[0m"
-#echo -e "--------------------------------------------------------------------------"
+echo -e " --- \${GREEN}證書狀態(Certificate Status)\${NOCOLOR} ---"
+ssl_date=\$(echo |openssl s_client -connect ${domain}:443 -tls1_3 2>&1 |sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'|openssl x509 -text)
+tmp_last_date=\$(echo "\${ssl_date}" | grep 'Not After :' | awk -F' : ' '{print \$NF}')
+last_date=\$(date -ud "\${tmp_last_date}" +%Y-%m-%d" "%H:%M:%S)
+day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
+echo -e "\e[40;33;1m The [${domain}] expiration date is : \${last_date} && [\${day_count} days] \e[0m"
+echo -e "请运行以下命令查看更多 cat /root/.trojan/letcron.log"
+echo -e "--------------------------------------------------------------------------"
 echo -e " --- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
 echo -e " --- 请在VPS控制面板上彻底禁用防火墙(firewall)以达到最佳效果(allow all ports) ---"
 ###
@@ -112,16 +107,6 @@ echo -e "    \${YELLOW}https://$domain/nextcloud/\${NOCOLOR}"
 echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 ###
-fi
-if [[ -d /usr/share/nginx/trojan-panel/ ]]; then
-echo -e " --- \${BLUE}Trojan-panel快速链接\${NOCOLOR}(Trojan-panel links) ---"
-###
-echo -e "    \${YELLOW}https://$domain/config/\${NOCOLOR}"
-###
-fi
-if [[ -f /usr/bin/tor ]]; then
-echo -e " --- \${BLUE}Onion快速链接\${NOCOLOR}(onion link) ---"
-echo -e "\$(cat /var/lib/tor/hidden_service/hostname)"
 fi
 echo -e " --- 請\${bold}訪問以下鏈接\${normal}以獲得更多详细結果(Please visit the following link to get more info) "
 echo -e "    \${YELLOW}https://$domain/${password1}/\${NOCOLOR}"
