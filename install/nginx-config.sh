@@ -313,17 +313,6 @@ echo "        proxy_pass http://127.0.0.1:8081/;" >> /etc/nginx/conf.d/default.c
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
-#if [[ $install_filebrowser == 1 ]]; then
-#echo "    include /etc/nginx/conf.d/filebrowser.conf;" >> /etc/nginx/conf.d/default.conf
-#touch /etc/nginx/conf.d/filebrowser.conf
-#cat > '/etc/nginx/conf.d/filebrowser.conf' << EOF
-#location /file/ {
-  #access_log off;
-#  proxy_pass http://127.0.0.1:8081/;
-#  client_max_body_size 0;
-#}
-#EOF
-#fi
 if [[ $install_i2pd == 1 ]]; then
 echo "    location /${password1}_i2p/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
