@@ -55,7 +55,8 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
   - [ ] [Onedrive](https://johnrosen1.com/2021/02/14/onedrive/)
 - RSS
   - [ ] [RSSHub](https://github.com/DIYgod/RSSHub)
-  - [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)
+  - [ ] [Miniflux](https://miniflux.app/index.html)
+        ~~- [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)~~
 - 影音(待完善)
   - [ ] [JellyFin](https://github.com/jellyfin/jellyfin)
 - 邮箱

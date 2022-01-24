@@ -158,7 +158,7 @@ hexo g && hexo d
 请自行注释掉*/etc/nginx/conf.d/default.conf*中的Hexo部分并去掉Typecho的注释以启用Typecho。
 
 ---
-### Rsshub + TT-RSS
+### Rsshub + Miniflux
 
 *默认安装: ❎*
 
@@ -168,11 +168,11 @@ hexo g && hexo d
 
 <a href="https://$domain/${password1}_rsshub/" target="_blank" rel="noreferrer">https://$domain/${password1}_rsshub/</a>
 
-#### Tiny Tiny RSS
+#### Miniflux
 
-- <a href="https://$domain/tt-rss/" target="_blank" rel="noreferrer">https://$domain/tt-rss/</a>
+- <a href="https://$domain/miniflux/" target="_blank" rel="noreferrer">https://$domain/miniflux/</a>
 - 用户名(username): **admin**
-- 密碼(password): **password**
+- 密碼(password): **test123**
 
 > *请自行修改初始密码！*
 
