@@ -29,15 +29,15 @@ server {
     #proxy_pass http://127.0.0.1:4000/;
     root /usr/share/nginx/hexo/public/;
     #error_page 404  /404.html;
-    http2_push /css/main.css;
-        http2_push /lib/font-awesome/css/all.min.css;
-        http2_push /lib/anime.min.js;
-        http2_push /lib/velocity/velocity.min.js;
-        http2_push /lib/velocity/velocity.ui.min.js;
-        http2_push /js/utils.js;
-        http2_push /js/motion.js;
-        http2_push /js/schemes/muse.js;
-        http2_push /js/next-boot.js;
+    #http2_push /css/main.css;
+    #http2_push /lib/font-awesome/css/all.min.css;
+    #http2_push /lib/anime.min.js;
+    #http2_push /lib/velocity/velocity.min.js;
+    #http2_push /lib/velocity/velocity.ui.min.js;
+    #http2_push /js/utils.js;
+    #http2_push /js/motion.js;
+    #http2_push /js/schemes/muse.js;
+    #http2_push /js/next-boot.js;
   }
   location /${password1}.png {
     root /usr/share/nginx/html/;
