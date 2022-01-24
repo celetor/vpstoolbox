@@ -21,7 +21,11 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 3. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**,即将域名指向你的 VPS IP,(namesilo NS 最慢需要 15+min 生效)!
 4. 请在 VPS 控制面板中 **完全关闭或禁用 VPS 防火墙(即开放所有端口)**(Trojan-gfw 以及 Shadowsocks-rust 皆支援 fullcone-nat 但需服务器开启所有端口才能使用) 并 **关闭(请勿开启) Cloudflare CDN** ![CF](images/cf1.png) !
 5. [HTTP 申请](https://github.com/acmesh-official/acme.sh/wiki/Blogs-and-tutorials) TLS 证书需 **域名 A 解析生效**,[API 申请](https://github.com/acmesh-official/acme.sh/wiki/dnsapi)则需要输入正确的信息。
-6. 本项目不对使用 Vultr 提供的机器造成的任何可能问题负责,this project is not responsible for any possible problems caused by Vultr machines !
+
+## 免责声明 Disclaimer
+
+1. 本项目不对使用 Vultr 提供的机器造成的任何可能问题负责(this project is not responsible for any possible problems caused by Vultr machines) !
+2. 本项目部分应用需要较高的系统资源和服务器配置(Nextcloud,邮箱等)，这些都不是必选项，请量力而行 ！
 
 ## 支援的软件 Supported applications
 
