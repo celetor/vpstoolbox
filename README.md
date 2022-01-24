@@ -2,7 +2,7 @@
 
 [TG 群组](https://t.me/vpstoolbox_chat)
 
-厌倦了总是需要手动输入命令安装博客，网盘，邮箱，代理了吗？VPSToolBox提供了一种全自动化的解决方案，解放双手，从今天开始！
+厌倦了总是需要手动输入命令安装博客，网盘，邮箱，代理了吗？VPSToolBox 提供了一种全自动化的解决方案，解放双手，从今天开始！
 
 > 经观察，**证书自动续签的问题已解决**，方案已稳定，可长期正常使用。
 
@@ -12,17 +12,14 @@
 apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 ```
 
-> 注: 仅推荐**Debian10**系统。
+> 注: 仅推荐**Debian10+**系统。
 
 ## 使用要点 Usage instruction
 
 1. 请以 **root(sudo)** 身份运行。
-1. 本项目**可覆盖安装，无需重建伺服器/VPS !**
+2. 本项目**可覆盖安装，无需重建伺服器/VPS !**
 3. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**,即将域名指向你的 VPS IP,(namesilo NS 最慢需要 15+min 生效)!
-4. 请在 VPS 控制面板中 **完全关闭或禁用 VPS 防火墙(即开放所有端口)**(Trojan-gfw 以及 Shadowsocks-rust 皆支援 fullcone-nat 但需服务器开启所有端口才能使用) 并 **关闭(请勿开启) Cloudflare CDN** !
-
-![CF](images/cf1.png)
-
+4. 请在 VPS 控制面板中 **完全关闭或禁用 VPS 防火墙(即开放所有端口)**(Trojan-gfw 以及 Shadowsocks-rust 皆支援 fullcone-nat 但需服务器开启所有端口才能使用) 并 **关闭(请勿开启) Cloudflare CDN** ![CF](images/cf1.png) !
 5. API 申请证书和 HTTP 申请证书区别不大,推荐 HTTP 申请(需 A 解析生效),无需输入 API 等信息。
 6. 本项目不对使用 Vultr 提供的机器造成的任何问题负责,this project is not responsible for any possible problems caused by Vultr machines !
 
@@ -77,7 +74,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
   - [ ] [Opentracker](https://erdgeist.org/arts/software/opentracker/)
   - [ ] [stun-server](https://github.com/jselbie/stunserver)
   - [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
-  - [ ] 自定义Trojan端口(Non standard https port support)
+  - [ ] 自定义 Trojan 端口(Non standard https port support)
   - [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
 - 区块链
   - [ ] [Monero/XMR](https://github.com/monero-project/monero-gui)
@@ -206,7 +203,7 @@ systemctl restart php7.4-fpm
 3. 一个付费域名(推荐[Namesilo](https://www.namesilo.com/?rid=685fb47qi)),.com/.xyz/.moe 等后缀无所谓。
 4. 你的伺服器(VPS) 必须支援**rDNS(PTR) record**(除非你希望你的邮件被列为 spam)。
 5. 你的伺服器(VPS) 的 ip 必须不在各种邮件黑名单里面(否则你发的所有邮件都会被列为 spam)。
-6. 本项目暂不支援 Postfixadmin,LDAP等相关功能。
+6. 本项目暂不支援 Postfixadmin,LDAP 等相关功能。
 7. 全自动垃圾删除功能默认垃圾邮件 30d 清理，已删除 14d 。
 
 > 由于邮箱服务的特殊性,仅推荐有需求(且乐意折腾)的人使用。
@@ -259,18 +256,18 @@ SOFTWARE.
 ## 题外话，看看就好
 
 1. 这个项目的初衷是什么？
-A: 我主要是因为懒，所以才创立的这个项目。
+   A: 我主要是因为懒，所以才创立的这个项目。
 2. 这个项目花费了多少时间完成？
-A: 林林总总的也有上千小时了吧，不算维护花费的时间吧。
+   A: 林林总总的也有上千小时了吧，不算维护花费的时间吧。
 3. 这个项目花费了多少资金？
-A: 金钱方面的花费倒是不多。
+   A: 金钱方面的花费倒是不多。
 4. 这个项目目前是什么情况？
-A: 已经没什么值得添加的新功能了，我只能维护维护罢了，这个项目也没有什么热度。
+   A: 已经没什么值得添加的新功能了，我只能维护维护罢了，这个项目也没有什么热度。
 5. 开发这个项目最耗时间的是什么事情？
-A: 查询各种各样的文档以及各种调试工作。
+   A: 查询各种各样的文档以及各种调试工作。
 6. 是否有想放弃的时候？
-A: 有些功能确实特别难搞，中途确实有不管不顾的时候，但是最后还是坚持下来了。
+   A: 有些功能确实特别难搞，中途确实有不管不顾的时候，但是最后还是坚持下来了。
 7. 开发这个项目最大的收获是什么？
-A: 最大的收获我个人觉得不是学到了什么牛逼的技术，而是学到了项目开发所需的各种基础技能。
+   A: 最大的收获我个人觉得不是学到了什么牛逼的技术，而是学到了项目开发所需的各种基础技能。
 8. 最可惜的是什么？
-A: 我觉得最可惜的可能是基本只有我一个人开发，没多少人帮我。
+   A: 我觉得最可惜的可能是基本只有我一个人开发，没多少人帮我。
