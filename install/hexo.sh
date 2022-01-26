@@ -47,6 +47,11 @@ nofollow:
     - 'exclude1.com'
     - 'exclude2.com'
 EOF
+
+## Enable CC license (by-nc-sa)
+
+sed -i '0,/sidebar: false/s//sidebar: true/' /usr/share/nginx/hexo/themes/next/_config.yml
+
 cd /usr/share/nginx/hexo/source/${password1}
 if [[ -f index.md ]]; then
   rm index.md
