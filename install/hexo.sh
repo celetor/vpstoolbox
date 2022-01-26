@@ -20,7 +20,8 @@ TERM=ansi whiptail --title "安装中" --infobox "安装Hexo中..." 7 68
   git clone https://github.com/theme-next/hexo-theme-next next
   cd /usr/share/nginx/hexo
   npm install hexo-generator-feed --save
-  npm i hexo-filter-nofollow --save
+  npm install hexo-filter-nofollow --save
+  npm install hexo-migrator-rss --save
     cat > '/usr/share/nginx/hexo/_config.yml' << EOF
 #title: xxx's Blog
 #author: xxx
