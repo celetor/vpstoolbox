@@ -24,6 +24,7 @@ TERM=ansi whiptail --title "安装中" --infobox "安装Hexo中..." 7 68
     cat > '/usr/share/nginx/hexo/_config.yml' << EOF
 #title: xxx's Blog
 #author: xxx
+#description: xxx的博客。
 language: zh-cn
 url: https://${domain}
 theme: next
