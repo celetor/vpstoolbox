@@ -55,6 +55,8 @@ EOF
 sed -i '0,/sidebar: false/s//sidebar: true/' /usr/share/nginx/hexo/themes/next/_config.yml
 sed -i '0,/post: false/s//post: true/' /usr/share/nginx/hexo/themes/next/_config.yml
 sed -i '0,/darkmode: false/s//darkmode: true/' /usr/share/nginx/hexo/themes/next/_config.yml
+sed -i '0,/lazyload: false/s//lazyload: true/' /usr/share/nginx/hexo/themes/next/_config.yml
+sed -i '0,/lazyload: false/s//lazyload: true/' /usr/share/nginx/hexo/themes/next/_config.yml
 
 cd /usr/share/nginx/hexo/source/${password1}
 if [[ -f index.md ]]; then
