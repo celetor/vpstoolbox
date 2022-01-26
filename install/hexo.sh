@@ -25,7 +25,7 @@ TERM=ansi whiptail --title "安装中" --infobox "安装Hexo中..." 7 68
 #title: xxx's Blog
 #author: xxx
 #description: xxx的博客。
-language: zh-cn
+language: zh-CN
 url: https://${domain}
 theme: next
 post_asset_folder: true
