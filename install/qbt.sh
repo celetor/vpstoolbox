@@ -17,6 +17,7 @@ unzip -o qb*.zip
 rm qb*.zip
 cp -f qb* /usr/bin/
 chmod +x /usr/bin/qbittorrent-nox
+chmod +x /usr/bin/qb*
 cd
 rm -rf qbt
   cat > '/etc/systemd/system/qbittorrent.service' << EOF
