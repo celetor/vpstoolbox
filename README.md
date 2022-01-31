@@ -14,7 +14,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 > 注: 仅推荐 **Debian10/11** 系统。
 
-## 使用要点 Usage instruction
+## 前提条件及要点 Usage instruction
 
 1. **Trojan-GFW 不支援 Cloudflare CDN ！！！** ( ![CF](images/cf1.png) )
 2. 请以 **root(sudo -i)** 运行。
@@ -29,7 +29,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 1. 本项目不对使用 Vultr 提供的机器造成的任何可能问题负责(this project is not responsible for any possible problems caused by Vultr machines) !
 2. 本项目部分应用需要较高的系统资源和服务器配置(Nextcloud,邮箱等)，这些都不是必选项，请量力而行 ！
 
-## 支援的软件 Supported applications
+## 支援的软件及应用 Supported applications
 
 > 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考。
 
