@@ -511,7 +511,7 @@ install_moudles(){
 
 ## 主菜单
 MasterMenu() {
-  Mainmenu=$(whiptail --clear --ok-button "选择完毕,进入下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。有關錯誤報告或更多信息，請訪問以下鏈接: https://github.com/johnrosen1/vpstoolbox 或者 https://t.me/vpstoolbox_chat。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 68 5 \
+  Mainmenu=$(whiptail --clear --ok-button "选择完毕,下一步" --backtitle "Hi,欢迎使用VPSTOOLBOX。有關錯誤報告或更多信息，請訪問以下鏈接: https://github.com/johnrosen1/vpstoolbox 或者 https://t.me/vpstoolbox_chat。" --title "VPS ToolBox Menu" --menu --nocancel "Welcome to VPS Toolbox main menu,Please Choose an option 欢迎使用VPSTOOLBOX,请选择一个选项" 14 68 5 \
   "Install_standard" "基础安裝(推荐)" \
   "Install_extend" "扩展安装(完整软件列表)" \
   "Benchmark" "效能测试"\
