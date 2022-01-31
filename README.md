@@ -21,7 +21,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 3. **可覆盖安装**。
 4. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**，即将域名指向你的 VPS IP,(namesilo NS 最慢需要 15+min 生效)!
 5. 请在 服务器/VPS/其他各种 控制面板中 **完全关闭或禁用 VPS 防火墙(即开放所有端口)**
-> Trojan-gfw 以及 Shadowsocks-rust 皆支援 **Fullcone-nat** 但需服务器开启所有端口才能使用。
+> _Trojan-gfw 以及 Shadowsocks-rust 皆支援 **Fullcone-nat** 但需服务器开启所有端口才能使用。_
 6. [HTTP 申请](https://github.com/acmesh-official/acme.sh/wiki/Blogs-and-tutorials) TLS 证书需 **域名 A 解析生效**，[API 申请](https://github.com/acmesh-official/acme.sh/wiki/dnsapi)则需要输入正确的信息。
 
 ## 免责声明 Disclaimer
@@ -205,7 +205,7 @@ systemctl restart php7.4-fpm
 ## 邮箱服务(Mail Service)使用条件
 
 1. 一台有**独立公网 IPv4**的非中国大陆 VPS/伺服器且**25/143/443/465/587/993 等 TCP 端口必须能正常使用**。
-   > _阿里云，Google cloud platform,vultr 等厂商皆不满足此项要求_。
+   > _阿里云，Google cloud platform,vultr 等厂商皆不满足此项要求（当然你乐意去跟他们交涉的话就不关我事了。）。_
 2. 伺服器/VPS 必须拥有大于等于 **2+GB RAM 以及 30+GB Storage**.
 3. 一个付费域名(推荐[Namesilo](https://www.namesilo.com/?rid=685fb47qi)),.com/.xyz/.moe 等后缀无所谓。
 4. 你的伺服器(VPS) 必须支援**rDNS(PTR) record**(除非你希望你的邮件被列为 spam)。
