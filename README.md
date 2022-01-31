@@ -202,6 +202,23 @@ Nextcloud 设定-->基本设定-->改为 cron(伺服器端已配置完成，无�
 systemctl restart php7.4-fpm
 ```
 
+## Qbittorrent手动添加的trackers一直尚未连线(Debian 10)
+
+> Ubuntu 18.04+ 用户请启用webui中高级选项中 “同时连线所有trackers”选项 。
+
+解决办法：由于Qbt的config是runtime生成的，脚本不能直接覆写，故需用户手动修改。
+
+添加tracker完成后输入以下命令即可。
+
+```shell
+systemctl stop qbittorrent
+qbtline=$(grep -n "Preferences" /usr/share/nginx/qBittorrent/config/qBittorrent.conf | cut -c1-2)
+sed -i "${qbtline} aAdvanced\\\AnnounceToAllTrackers=true" /usr/share/nginx/qBittorrent/config/qBittorrent.conf
+systemctl restart qbittorrent
+```
+
+这样trackers就不会出现尚未连线的状态了。
+
 ## 邮箱服务(Mail Service)使用条件
 
 1. 一台有**独立公网 IPv4**的非中国大陆 VPS/伺服器且**25/143/443/465/587/993 等 TCP 端口必须能正常使用**。
