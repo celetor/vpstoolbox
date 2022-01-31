@@ -208,7 +208,7 @@ systemctl restart php7.4-fpm
 
 解决办法：由于Qbt的config是runtime生成的，脚本不能直接覆写，故需用户手动修改。
 
-添加tracker完成后输入以下命令即可。
+添加tracker完成后**手动输入**以下命令即可。
 
 ```shell
 systemctl stop qbittorrent
