@@ -109,17 +109,32 @@ EOF
 DefaultTimeoutStopSec=30s
 #DefaultRestartSec=100ms
 DefaultLimitCORE=infinity
-DefaultLimitNOFILE=65535
+DefaultLimitNOFILE=1000000
 EOF
     cat > '/etc/security/limits.conf' << EOF
-* soft nofile 65535
-* hard nofile 65535
+root     soft   nofile    1000000
+root     hard   nofile    1000000
+root     soft   nproc     1000000
+root     hard   nproc     1000000
+root     soft   core      1000000
+root     hard   core      1000000
+root     hard   memlock   unlimited
+root     soft   memlock   unlimited
+
+*     soft   nofile    1000000
+*     hard   nofile    1000000
+*     soft   nproc     1000000
+*     hard   nproc     1000000
+*     soft   core      1000000
+*     hard   core      1000000
+*     hard   memlock   unlimited
+*     soft   memlock   unlimited
 EOF
 if grep -q "ulimit" /etc/profile
 then
   :
 else
-echo "ulimit -SHn 65535" >> /etc/profile
+echo "ulimit -SHn 1000000" >> /etc/profile
 fi
 if grep -q "pam_limits.so" /etc/pam.d/common-session
 then
