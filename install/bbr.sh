@@ -116,8 +116,8 @@ root     soft   nofile    1000000
 root     hard   nofile    1000000
 root     soft   nproc     1000000
 root     hard   nproc     1000000
-root     soft   core      1000000
-root     hard   core      1000000
+root     soft   core      unlimited
+root     hard   core      unlimited
 root     hard   memlock   unlimited
 root     soft   memlock   unlimited
 
@@ -125,8 +125,8 @@ root     soft   memlock   unlimited
 *     hard   nofile    1000000
 *     soft   nproc     1000000
 *     hard   nproc     1000000
-*     soft   core      1000000
-*     hard   core      1000000
+*     soft   core      unlimited
+*     hard   core      unlimited
 *     hard   memlock   unlimited
 *     soft   memlock   unlimited
 EOF
