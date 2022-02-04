@@ -114,8 +114,8 @@ EOF
     cat > '/etc/security/limits.conf' << EOF
 root     soft   nofile    1000000
 root     hard   nofile    1000000
-root     soft   nproc     1000000
-root     hard   nproc     1000000
+root     soft   nproc     unlimited
+root     hard   nproc     unlimited
 root     soft   core      unlimited
 root     hard   core      unlimited
 root     hard   memlock   unlimited
@@ -123,8 +123,8 @@ root     soft   memlock   unlimited
 
 *     soft   nofile    1000000
 *     hard   nofile    1000000
-*     soft   nproc     1000000
-*     hard   nproc     1000000
+*     soft   nproc     unlimited
+*     hard   nproc     unlimited
 *     soft   core      unlimited
 *     hard   core      unlimited
 *     hard   memlock   unlimited
