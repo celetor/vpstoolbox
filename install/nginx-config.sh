@@ -26,8 +26,8 @@ server {
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
   #add_header X-Cache-Status \$upstream_cache_status;
   location / {
-    proxy_pass http://127.0.0.1:4000/;
-    #root /usr/share/nginx/hexo/public/;
+    #proxy_pass http://127.0.0.1:4000/; # 有bug，需要黑夜模式请手动启用
+    root /usr/share/nginx/hexo/public/;
     #error_page 404  /404.html;
     #http2_push /css/main.css;
     #http2_push /lib/font-awesome/css/all.min.css;
