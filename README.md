@@ -253,7 +253,7 @@ systemctl restart qbittorrent
 
 ## 流量示意图
 
-> 可能不完整,仅供参考。
+> 懒得更新,仅供参考。
 
 ![https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
 
