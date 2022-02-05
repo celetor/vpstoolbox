@@ -45,7 +45,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 ## 支援的软件及应用 Supported applications
 
-> 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考。
+> 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考（删除线表示该应用已被淘汰）。
 
 - 代理
   - [x] [Trojan-gfw](https://github.com/trojan-gfw/trojan)
@@ -88,12 +88,10 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
   - [ ] [Redis-server](https://github.com/redis/redis)
   - [ ] [MongoDB](https://github.com/mongodb/mongo)
 - 暗网
-  - [ ] [i2pd](https://github.com/PurpleI2P/i2pd)
   - [ ] [Tor](https://www.torproject.org/)
 - 其他
   - [ ] [Docker](https://www.docker.com/)
   - [ ] [Opentracker](https://erdgeist.org/arts/software/opentracker/)
-  - [ ] [stun-server](https://github.com/jselbie/stunserver)
   - [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
   - [ ] 自定义 Trojan 端口(Non standard https port support)
   - [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
@@ -119,6 +117,13 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 - 前端
 
 - [mikutap](https://github.com/akirarika/mikutap)
+
+## 无实际生产用途的应用
+
+> 下列应用已经过测试和验证，但除非特殊需求，否则安装时请勿选中。
+
+  1. [stun-server](https://github.com/jselbie/stunserver)
+  2. [i2pd](https://github.com/PurpleI2P/i2pd)
 
 ## 支援的 Linux 发行版
 
