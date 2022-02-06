@@ -82,7 +82,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 - 测速
   - [ ] [Librespeed](https://github.com/librespeed/speedtest)
 - 安全
-  - [ ] [Fail2ban](https://github.com/fail2ban/fail2ban)
+  - [x] [Fail2ban](https://github.com/fail2ban/fail2ban)
 - 数据库
   - [ ] [MariaDB](https://github.com/MariaDB/server)
   - [ ] [Redis-server](https://github.com/redis/redis)
