@@ -1,6 +1,6 @@
 # ![VPSToolBox](logo.png)
 
-[TG 群组](https://t.me/vpstoolbox_chat)
+[TG 频道](https://t.me/vpstoolbox)
 
 厌倦了总是需要手动输入命令安装博客，网盘，邮箱，代理了吗？VPSToolBox 提供了一种全自动化的解决方案，解放双手，从今天开始！
 
@@ -9,27 +9,43 @@
 ## 一键命令 One click command
 
 ```bash
-apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
+apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 ```
 
-> 注: 仅推荐**Debian10/11**系统。
+> 注: 仅推荐 **Debian10/11** 系统。
 
-## 使用要点 Usage instruction
+## 前提条件及要点 Usage instruction
 
-1. 请以 **root(sudo)** 身份运行。
-2. 本项目**可覆盖安装，无需重建伺服器/VPS !**
-3. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的/**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**,即将域名指向你的 VPS IP,(namesilo NS 最慢需要 15+min 生效)!
-4. 请在 VPS 控制面板中 **完全关闭或禁用 VPS 防火墙(即开放所有端口)**(Trojan-gfw 以及 Shadowsocks-rust 皆支援 fullcone-nat 但需服务器开启所有端口才能使用) 并 **关闭(请勿开启) Cloudflare CDN** ![CF](images/cf1.png) !
-5. [HTTP 申请](https://github.com/acmesh-official/acme.sh/wiki/Blogs-and-tutorials) TLS 证书需 **域名 A 解析生效**,[API 申请](https://github.com/acmesh-official/acme.sh/wiki/dnsapi)则需要输入正确的信息。
+1. **Trojan-GFW 不支援 Cloudflare CDN ！！！** ( ![请勿开启CDN](images/cf1.png) )
+2. 请以 **root(sudo -i)** 运行。
+3. **可覆盖安装**。
+4. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**，即将域名指向你的 VPS IP,(namesilo NS 最慢需要 15+min 生效)!
+5. 请在 服务器/VPS/其他各种 控制面板中 **完全关闭或禁用 VPS 防火墙(即开放所有 TCP + UDP 端口)。**
+> _Trojan-gfw 以及 Shadowsocks-rust 皆支援 **Fullcone-nat** 但需服务器开启所有端口才能使用。_
+6. [HTTP 申请](https://github.com/acmesh-official/acme.sh/wiki/Blogs-and-tutorials) TLS 证书需 **域名 A 解析生效**，[API 申请](https://github.com/acmesh-official/acme.sh/wiki/dnsapi)则需要输入正确的信息。
+7. 安装完成后，**BBR 已默认启用**，无需手动配置。
 
 ## 免责声明 Disclaimer
 
 1. 本项目不对使用 Vultr 提供的机器造成的任何可能问题负责(this project is not responsible for any possible problems caused by Vultr machines) !
 2. 本项目部分应用需要较高的系统资源和服务器配置(Nextcloud,邮箱等)，这些都不是必选项，请量力而行 ！
 
-## 支援的软件 Supported applications
+## 可能的错误及原因
 
-> 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考。
+1. 证书签发失败
+> 可能原因: （1）tcp 80/443即tcp http/https端口未开放 （2）域名A解析未完成 或 api信息输入错误
+2. 重启后连不上了
+> 可能原因: （1）VPS厂商面板问题(不常见)（2）重启时间长,请等待
+3. 某个服务 404 / 502 了
+> 可能原因: （1）安装清单里面没有勾选（2）某个服务掉线了(请及时反馈)
+4. 安装中途卡住了  
+> 可能原因: （1）网络缓慢或出错（2）CPU或硬盘 垃圾导致某个安装过程缓慢
+5. 安装后连不上 
+> 可能原因: （1）客户端配置错误（2）本地网络问题（3）某个服务掉线了(请及时反馈)
+
+## 支援的软件及应用 Supported applications
+
+> 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考（删除线表示该应用已被淘汰）。
 
 - 代理
   - [x] [Trojan-gfw](https://github.com/trojan-gfw/trojan)
@@ -66,18 +82,16 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - 测速
   - [ ] [Librespeed](https://github.com/librespeed/speedtest)
 - 安全
-  - [ ] [Fail2ban](https://github.com/fail2ban/fail2ban)
+  - [x] [Fail2ban](https://github.com/fail2ban/fail2ban)
 - 数据库
   - [ ] [MariaDB](https://github.com/MariaDB/server)
   - [ ] [Redis-server](https://github.com/redis/redis)
   - [ ] [MongoDB](https://github.com/mongodb/mongo)
 - 暗网
-  - [ ] [i2pd](https://github.com/PurpleI2P/i2pd)
   - [ ] [Tor](https://www.torproject.org/)
 - 其他
   - [ ] [Docker](https://www.docker.com/)
   - [ ] [Opentracker](https://erdgeist.org/arts/software/opentracker/)
-  - [ ] [stun-server](https://github.com/jselbie/stunserver)
   - [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
   - [ ] 自定义 Trojan 端口(Non standard https port support)
   - [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
@@ -103,6 +117,13 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
 - 前端
 
 - [mikutap](https://github.com/akirarika/mikutap)
+
+## 无实际生产用途的应用
+
+> 下列应用已经过测试和验证，但除非特殊需求，否则安装时请勿选中。
+
+  1. [stun-server](https://github.com/jselbie/stunserver)
+  2. [i2pd](https://github.com/PurpleI2P/i2pd)
 
 ## 支援的 Linux 发行版
 
@@ -174,7 +195,7 @@ apt-get update && apt-get install sudo curl -y && curl -Ss https://raw.githubuse
     'port' => 0,
     'timeout' => 0.0,
   ),
-  'default_phone_region' => 'US',
+  'default_phone_region' => 'CN',
 ```
 
 [相关文档](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html)
@@ -200,10 +221,27 @@ Nextcloud 设定-->基本设定-->改为 cron(伺服器端已配置完成，无�
 systemctl restart php7.4-fpm
 ```
 
+## Qbittorrent手动添加的trackers一直尚未连线(Debian 10)
+
+> Ubuntu 18.04+ 用户请启用webui中高级选项中 “同时连线所有trackers”选项 。
+
+解决办法：由于Qbt的config是runtime生成的，脚本不能直接覆写，故需用户手动修改。
+
+添加tracker完成后**手动输入**以下命令即可。
+
+```shell
+systemctl stop qbittorrent
+qbtline=$(grep -n "Preferences" /usr/share/nginx/qBittorrent/config/qBittorrent.conf | cut -c1-2)
+sed -i "${qbtline} aAdvanced\\\AnnounceToAllTrackers=true" /usr/share/nginx/qBittorrent/config/qBittorrent.conf
+systemctl restart qbittorrent
+```
+
+这样trackers就不会出现尚未连线的状态了。
+
 ## 邮箱服务(Mail Service)使用条件
 
 1. 一台有**独立公网 IPv4**的非中国大陆 VPS/伺服器且**25/143/443/465/587/993 等 TCP 端口必须能正常使用**。
-   > _阿里云，Google cloud platform,vultr 等厂商皆不满足此项要求_。
+   > _阿里云，Google cloud platform,vultr 等厂商皆不满足此项要求（当然你乐意去跟他们交涉的话就不关我事了。）。_
 2. 伺服器/VPS 必须拥有大于等于 **2+GB RAM 以及 30+GB Storage**.
 3. 一个付费域名(推荐[Namesilo](https://www.namesilo.com/?rid=685fb47qi)),.com/.xyz/.moe 等后缀无所谓。
 4. 你的伺服器(VPS) 必须支援**rDNS(PTR) record**(除非你希望你的邮件被列为 spam)。
@@ -220,13 +258,13 @@ systemctl restart php7.4-fpm
 
 ## 流量示意图
 
-> 可能不完整,仅供参考。
+> 懒得更新,仅供参考。
 
 ![https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
 
 ## 恰饭 aff
 
-暂无相关内容
+1. [Namesilo](https://www.namesilo.com/?rid=685fb47qi)
 
 ## License
 

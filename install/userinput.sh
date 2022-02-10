@@ -21,7 +21,7 @@ userinput_standard() {
     check_speed="off"
   fi
   if [[ -z ${check_fail2ban} ]]; then
-    check_fail2ban="off"
+    check_fail2ban="on"
   fi
   if [[ -z ${check_tjp} ]]; then
     check_tjp="off"
@@ -185,7 +185,7 @@ userinput_full() {
     check_mariadb="off"
   fi
   if [[ -z ${check_fail2ban} ]]; then
-    check_fail2ban="off"
+    check_fail2ban="on"
   fi
   if [[ -z ${check_mail} ]]; then
     check_mail="off"

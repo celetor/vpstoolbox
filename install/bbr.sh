@@ -72,24 +72,16 @@ net.ipv4.tcp_wmem = 4096 65536 67108864
 net.ipv4.udp_rmem_min = 8192
 net.ipv4.udp_wmem_min = 8192
 net.ipv4.tcp_mtu_probing = 0
-##############################
 net.ipv4.tcp_autocorking = 0
 net.ipv4.tcp_slow_start_after_idle = 0
 net.ipv4.tcp_max_syn_backlog = 30000
-net.core.default_qdisc = fq
-net.ipv4.tcp_congestion_control = bbr
 net.ipv4.tcp_notsent_lowat = 16384
 net.ipv4.tcp_no_metrics_save = 1
 net.ipv4.tcp_ecn = 2
 net.ipv4.tcp_ecn_fallback = 1
 net.ipv4.tcp_frto = 0
-##############################
 net.ipv6.conf.all.accept_redirects = 0
 net.ipv6.conf.default.accept_redirects = 0
-vm.swappiness = 1
-vm.overcommit_memory = 1
-#vm.nr_hugepages=1280
-kernel.pid_max=64000
 net.ipv4.neigh.default.gc_thresh3=8192
 net.ipv4.neigh.default.gc_thresh2=4096
 net.ipv4.neigh.default.gc_thresh1=2048
@@ -97,8 +89,16 @@ net.ipv6.neigh.default.gc_thresh3=8192
 net.ipv6.neigh.default.gc_thresh2=4096
 net.ipv6.neigh.default.gc_thresh1=2048
 net.ipv4.tcp_max_syn_backlog = 262144
+##############################
+vm.swappiness = 1
+vm.overcommit_memory = 1
+#vm.nr_hugepages=1280
+kernel.pid_max=64000
 net.netfilter.nf_conntrack_max = 262144
 net.nf_conntrack_max = 262144
+## Enable bbr
+net.core.default_qdisc = fq
+net.ipv4.tcp_congestion_control = bbr
 EOF
   sysctl -p
   sysctl --system
@@ -109,18 +109,29 @@ EOF
 DefaultTimeoutStopSec=30s
 #DefaultRestartSec=100ms
 DefaultLimitCORE=infinity
-DefaultLimitNOFILE=65535
+DefaultLimitNOFILE=1000000
 EOF
     cat > '/etc/security/limits.conf' << EOF
-* soft nofile 65535
-* hard nofile 65535
+root     soft   nofile    1000000
+root     hard   nofile    1000000
+root     soft   nproc     unlimited
+root     hard   nproc     unlimited
+root     soft   core      unlimited
+root     hard   core      unlimited
+root     hard   memlock   unlimited
+root     soft   memlock   unlimited
+
+*     soft   nofile    1000000
+*     hard   nofile    1000000
+*     soft   nproc     unlimited
+*     hard   nproc     unlimited
+*     soft   core      unlimited
+*     hard   core      unlimited
+*     hard   memlock   unlimited
+*     soft   memlock   unlimited
 EOF
-if grep -q "ulimit" /etc/profile
-then
-  :
-else
-echo "ulimit -SHn 65535" >> /etc/profile
-fi
+sed -i '/ulimit -SHn/d' /etc/profile
+echo "ulimit -SHn 1000000" >> /etc/profile
 if grep -q "pam_limits.so" /etc/pam.d/common-session
 then
   :

@@ -13,9 +13,11 @@ mkdir qbt
 cd qbt
 qbtver=$(curl -s "https://api.github.com/repos/c0re100/qBittorrent-Enhanced-Edition/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 curl -LO https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases/download/${qbtver}/qbittorrent-enhanced-nox_x86_64-linux-musl_static.zip
-unzip -o qbittorrent*.zip
-cp -f qbittorrent-nox /usr/bin/
+unzip -o qb*.zip
+rm qb*.zip
+cp -f qb* /usr/bin/
 chmod +x /usr/bin/qbittorrent-nox
+chmod +x /usr/bin/qb*
 cd
 rm -rf qbt
   cat > '/etc/systemd/system/qbittorrent.service' << EOF
