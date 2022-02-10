@@ -329,7 +329,6 @@ deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
 \$config['enigma_encryption'] = true;
 \$config['enigma_signatures'] = true;
 \$config['enigma_decryption'] = true;
-\$config['enigma_sign_all'] = true;
 EOF
 useradd -m -s /sbin/nologin ${mailuser}
 echo -e "${password1}\n${password1}" | passwd ${mailuser}
