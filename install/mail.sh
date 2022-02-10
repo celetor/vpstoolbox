@@ -305,7 +305,7 @@ deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
   cat > '/usr/share/nginx/roundcubemail/config/config.inc.php' << EOF
 <?php
 
-\$config['language'] = 'zh_TW';
+\$config['language'] = 'zh_CN';
 \$config['db_dsnw'] = 'mysql://roundcube:${password1}@unix(/run/mysqld/mysqld.sock)/roundcubemail';
 \$config['default_host'] = '${domain}';
 \$config['default_port'] = 143;
