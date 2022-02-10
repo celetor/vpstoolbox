@@ -335,6 +335,13 @@ EOF
 # sed -i '${domain} 127.0.0.1' /etc/hosts
 # echo "${domain} 127.0.0.1" >> /etc/hosts
 
+if grep -q "MAILTO" /etc/crontab
+then
+  :
+else
+echo 'MAILTO=""' >> /etc/crontab
+fi
+
 useradd -m -s /sbin/nologin ${mailuser}
 echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
