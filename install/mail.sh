@@ -331,6 +331,10 @@ deskey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-_#&!*%?' | fold -w 24 | head -n 1)
 \$config['enigma_decryption'] = true;
 \$config['enigma_password_time'] = 5;
 EOF
+
+# sed -i '${domain} 127.0.0.1' /etc/hosts
+# echo "${domain} 127.0.0.1" >> /etc/hosts
+
 useradd -m -s /sbin/nologin ${mailuser}
 echo -e "${password1}\n${password1}" | passwd ${mailuser}
 apt-get install opendkim opendkim-tools -y
