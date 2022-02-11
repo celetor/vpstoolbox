@@ -119,7 +119,7 @@ PS: ***不支援Cloudflare CDN ❗***
 ss://aes-128-gcm:${password1}@${domain}:8388#iplc-only
 ss://$(echo "aes-128-gcm:${password1}@${domain}:8388" | base64)#iplc-only
 
-PS: 仅推荐用于iplc落地,不推荐直连使用。
+PS: 仅推荐用于[iplc](https://relay.nekoneko.cloud?aff=2257)落地,不推荐直连使用。
 
 ---
 
