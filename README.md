@@ -265,6 +265,7 @@ systemctl restart qbittorrent
 ## 恰饭 aff
 
 1. [Namesilo](https://www.namesilo.com/?rid=685fb47qi)
+2. [Neko Neko Relay](https://relay.nekoneko.cloud?aff=2257)
 
 ## License
 
