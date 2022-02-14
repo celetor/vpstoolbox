@@ -77,7 +77,7 @@ fi
 #local:
 #  user     : 'netdata'
 #  update_every : 1
-EOF
+#EOF
 systemctl restart netdata
 clear
 }
