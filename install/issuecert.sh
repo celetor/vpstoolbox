@@ -5,7 +5,7 @@
 installacme(){
   set +e
   curl -s https://get.acme.sh | sh
-  if [[ $? != 0 ]]; then
+  if [[ ! -f /root/.acme.sh/acme.sh ]]; then
     colorEcho ${ERROR} "安装acme.sh失败，请自行检查网络连接及DNS配置!"
     colorEcho ${ERROR} "Install acme.sh fail,please check your internet availability!!!"
     exit 1
