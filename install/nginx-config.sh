@@ -279,12 +279,6 @@ echo "        proxy_set_header Host ${domain};" >> /etc/nginx/conf.d/default.con
 echo "        proxy_set_header X-Forwarded-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:8280/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-echo "    location /ttrss/cache/ {" >> /etc/nginx/conf.d/default.conf
-echo "        deny all;" >> /etc/nginx/conf.d/default.conf
-echo "        }" >> /etc/nginx/conf.d/default.conf
-echo "    location /ttrss/config.php {" >> /etc/nginx/conf.d/default.conf
-echo "        deny all;" >> /etc/nginx/conf.d/default.conf
-echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_aria == 1 ]]; then
 echo "    location $ariapath {" >> /etc/nginx/conf.d/default.conf
