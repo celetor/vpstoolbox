@@ -45,12 +45,12 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 ## 支援的软件及应用 Supported applications
 
-> 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考（删除线表示该应用已被淘汰）。
+> 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考（删除线表示该应用已被淘汰或不再可用）。
 
 - 代理
   - [x] [Trojan-gfw](https://github.com/trojan-gfw/trojan)
   - [ ] [Shadowsocks-rust](https://github.com/shadowsocks/shadowsocks-rust)
-  - [ ] [Trojan-panel](https://github.com/trojan-gfw/trojan-panel)
+  ~~- [ ] [Trojan-panel](https://github.com/trojan-gfw/trojan-panel)~~
 - 系统
   - [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
   - [x] [IPv6](https://zh.wikipedia.org/wiki/IPv6)
