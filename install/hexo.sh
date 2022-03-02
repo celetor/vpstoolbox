@@ -177,7 +177,7 @@ hexo g && hexo d
 
 #### RSSHUB
 
-<a href="https://$domain/${password1}_rsshub/" target="_blank" rel="noreferrer">https://$domain/${password1}_rsshub/</a>
+<a href="https://$domain/rsshub/" target="_blank" rel="noreferrer">https://$domain/${password1}_rsshub/</a>
 
 #### Miniflux
 
@@ -319,7 +319,7 @@ $(cat /var/lib/tor/hidden_service/hostname)
 
 > Introduction: self-build onion site.
 
-- <a href="https://$domain:443/${password1}_i2p/" target="_blank" rel="noreferrer">https://$domain/${password1}_i2p/</a>
+- <a href="https://$domain:443/i2p/" target="_blank" rel="noreferrer">https://$domain/${password1}_i2p/</a>
 
 ---
 
