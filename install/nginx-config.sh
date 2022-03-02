@@ -266,7 +266,7 @@ echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_rss == 1 ]]; then
-echo "    location /${password1}_rsshub/ {" >> /etc/nginx/conf.d/default.conf
+echo "    location /rsshub/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
@@ -308,7 +308,7 @@ echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_i2pd == 1 ]]; then
-echo "    location /${password1}_i2p/ {" >> /etc/nginx/conf.d/default.conf
+echo "    location /i2p/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:7070/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
