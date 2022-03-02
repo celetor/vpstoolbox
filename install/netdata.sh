@@ -78,6 +78,7 @@ fi
 #  user     : 'netdata'
 #  update_every : 1
 #EOF
+systemctl enable netdata
 systemctl restart netdata
 clear
 }
