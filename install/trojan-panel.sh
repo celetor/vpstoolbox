@@ -2,6 +2,8 @@
 
 ## Trojan-panel模组 Trojan-panel moudle
 
+## 已过时，不再可用
+
 install_tjp(){
 set +e
 TERM=ansi whiptail --title "安装中" --infobox "安装Trojan-panel中..." 7 68
