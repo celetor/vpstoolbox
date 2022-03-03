@@ -206,8 +206,8 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 ```
 cd /usr/share/nginx/nextcloud/
-sudo -u nginx ./occ db:add-missing-indices
-sudo -u nginx ./occ db:convert-filecache-bigint
+sudo -u nginx php --define apc.enable_cli=1 ./occ db:add-missing-indices
+sudo -u nginx php --define apc.enable_cli=1 ./occ db:convert-filecache-bigint
 cd
 ```
 
