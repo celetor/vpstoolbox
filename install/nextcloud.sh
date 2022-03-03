@@ -22,7 +22,7 @@ install_nextcloud(){
   mysql -u root -e "create user 'nextcloud'@'localhost' IDENTIFIED BY '${password1}';"
   mysql -u root -e "GRANT ALL PRIVILEGES ON nextcloud.* to nextcloud@'localhost';"
   mysql -u root -e "flush privileges;"
-  curl -LO https://download.nextcloud.com/server/releases/nextcloud-21.0.5.zip
+  curl -LO https://download.nextcloud.com/server/releases/nextcloud-${cloudver1}.zip
   unzip -o nextcloud*.zip
   rm nextcloud*.zip
   mkdir /usr/share/nginx/nextcloud_data
