@@ -85,6 +85,7 @@ version: '3.4'
 services:
   miniflux:
     image: miniflux/miniflux:latest
+    restart: unless-stopped
     ports:
       - "8280:8080"
     depends_on:
@@ -97,6 +98,7 @@ services:
       - ADMIN_PASSWORD=test123
   db:
     image: postgres:latest
+    restart: unless-stopped
     environment:
       - POSTGRES_USER=miniflux
       - POSTGRES_PASSWORD=secret
