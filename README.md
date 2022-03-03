@@ -168,14 +168,14 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 **[Aria2+Rclone+Onedrive 实现全自动化下载](https://johnrosen1.com/2021/02/14/onedrive/)**
 
-## Trojan-panel 使用方法（已失效）
+~~ ## Trojan-panel 使用方法（已失效）~~
 
-- Trojan-panel 默认不安装,请**手动选中**以执行安装程序。
-- 进入生成的 url,**首次注册的用户为管理员(admin)**。
-- 用户需联系管理员(admin)申请流量(**设置为-1 为不限流量**)。
-- 客户端配置文件中的密码为用户注册在 Panel 时填入的：`Username:Password`(**中间的`:`不能漏!**)。
-- 若出现`File not found. `错误,刷新页面即可。
-- 更多请看[Trojan-panel 使用方法](https://johnrosen1.com/2021/02/01/trojan-panel/)
+~~ - Trojan-panel 默认不安装,请**手动选中**以执行安装程序。~~
+~~ - 进入生成的 url,**首次注册的用户为管理员(admin)**。~~
+~~ - 用户需联系管理员(admin)申请流量(**设置为-1 为不限流量**)。~~
+~~ - 客户端配置文件中的密码为用户注册在 Panel 时填入的：`Username:Password`(**中间的`:`不能漏!**)。~~
+~~ - 若出现`File not found. `错误,刷新页面即可。~~
+~~ - 更多请看[Trojan-panel 使用方法](https://johnrosen1.com/2021/02/01/trojan-panel/) ~~
 
 ## Nextcloud 优化方法
 
