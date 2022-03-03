@@ -168,7 +168,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 **[Aria2+Rclone+Onedrive 实现全自动化下载](https://johnrosen1.com/2021/02/14/onedrive/)**
 
-## Nextcloud 优化方法
+## Nextcloud 配置
 
 > 由于 Nextcloud 自身限制,无法全自动添加 redis 配置,请手动配置。
 
