@@ -16,6 +16,7 @@ install_nextcloud(){
     curl -LO https://download.nextcloud.com/server/releases/nextcloud-${cloudver1}.zip
     unzip -o nextcloud*.zip
     rm nextcloud*.zip
+    chown -R nginx:nginx /usr/share/nginx/nextcloud/
     cd
   else
   mysql -u root -e "CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
