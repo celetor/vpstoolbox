@@ -9,7 +9,6 @@ install_nextcloud(){
   apt-get install smbclient -y
   apt-get install libmagickcore-6.q16-6-extra -y
   cd /usr/share/nginx
-  cloudver=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
   cloudver1=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-20)
   if [[ -d /usr/share/nginx/nextcloud/ ]]; then
     TERM=ansi whiptail --title "安装中" --infobox "更新nextcloud中..." 7 68
