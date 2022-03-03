@@ -168,7 +168,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 **[Aria2+Rclone+Onedrive 实现全自动化下载](https://johnrosen1.com/2021/02/14/onedrive/)**
 
-## Trojan-panel 使用方法
+## Trojan-panel 使用方法（已失效）
 
 - Trojan-panel 默认不安装,请**手动选中**以执行安装程序。
 - 进入生成的 url,**首次注册的用户为管理员(admin)**。
