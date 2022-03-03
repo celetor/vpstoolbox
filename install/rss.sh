@@ -80,7 +80,7 @@ fi
 cd /usr/share/nginx/
 mkdir miniflux
 cd /usr/share/nginx/miniflux
-cat > '/usr/share/nginx/miniflux/docker-compose.yml' << EOF
+cat > "/usr/share/nginx/miniflux/docker-compose.yml" << EOF
 version: '3.4'
 services:
   miniflux:
@@ -92,6 +92,7 @@ services:
       - db
     environment:
       - DATABASE_URL=postgres://miniflux:secret@db/miniflux?sslmode=disable
+      - BASE_URL=https://${domain}/miniflux/
       - RUN_MIGRATIONS=1
       - CREATE_ADMIN=1
       - ADMIN_USERNAME=admin
