@@ -5,6 +5,7 @@
 prase_output(){
 set +e
 clear
+apt-get install neofetch -y
 	cat > '/etc/profile.d/mymotd.sh' << EOF
 #!/usr/bin/env bash
 #!!! Do not change these settings unless you know what you are doing !!!
