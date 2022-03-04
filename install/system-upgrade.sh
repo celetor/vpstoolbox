@@ -9,7 +9,7 @@ upgrade_system(){
       ubuntu18_install=1
   fi
   
-if [[ $(lsb_release -cs) == stretch ]]; then
+if [[ $(lsb_release -cs) == stretch ]] || [[ $(lsb_release -cs) == buster ]]; then
   debian10_install=1
 fi
 
@@ -43,18 +43,9 @@ fi
   sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -y'
   if [[ ${debian10_install} == 1 ]]; then
     cat > '/etc/apt/sources.list' << EOF
-#------------------------------------------------------------------------------#
-#                   OFFICIAL DEBIAN REPOS                    
-#------------------------------------------------------------------------------#
-
-###### Debian Main Repos
 deb http://deb.debian.org/debian/ stable main contrib non-free
-
 deb http://deb.debian.org/debian/ stable-updates main contrib non-free
-
 deb http://deb.debian.org/debian-security stable-security main
-
-deb http://ftp.debian.org/debian buster-backports main
 EOF
 fi
   apt-get update --fix-missing
@@ -73,7 +64,6 @@ fi
 if [[ -f /etc/apt/sources.list.d/nginx.list ]]; then
   cat > '/etc/apt/sources.list.d/nginx.list' << EOF
 deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
-#deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
 apt-get update
 fi
