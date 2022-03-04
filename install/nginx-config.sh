@@ -177,7 +177,7 @@ echo "        return 301 https://${domain}/config/;" >> /etc/nginx/conf.d/defaul
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_rocketchat == 1 ]]; then
-echo "    location /rocketchat {" >> /etc/nginx/conf.d/default.conf
+echo "    location /chat/ {" >> /etc/nginx/conf.d/default.conf
 echo "        expires -1;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_no_cache 1;" >> /etc/nginx/conf.d/default.conf
