@@ -60,23 +60,6 @@ curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/
     source system-upgrade.sh
     upgrade_system
 
-if [[ $(lsb_release -cs) == buster ]]; then
-      cat > '/etc/apt/sources.list' << EOF
-#------------------------------------------------------------------------------#
-#                   OFFICIAL DEBIAN REPOS                    
-#------------------------------------------------------------------------------#
-
-###### Debian Main Repos
-deb http://deb.debian.org/debian/ stable main contrib non-free
-
-deb http://deb.debian.org/debian/ stable-updates main contrib non-free
-
-deb http://deb.debian.org/debian-security stable-security main
-
-deb http://ftp.debian.org/debian buster-backports main
-EOF
-fi
-
 if [[ $(lsb_release -cs) == bionic ]]; then
     cat > '/etc/apt/sources.list' << EOF
 #------------------------------------------------------------------------------#
@@ -84,14 +67,10 @@ if [[ $(lsb_release -cs) == bionic ]]; then
 #------------------------------------------------------------------------------#
 ###### Ubuntu Main Repos
 deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
-#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
 ###### Ubuntu Update Repos
 deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
 deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
-#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
-#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
 EOF
-fi
 
   apt-get update --fix-missing
   sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get upgrade -q -y'
@@ -99,6 +78,8 @@ fi
   sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -q -y'
   sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y'
   sh -c 'echo "y\n\ny\ny\ny\ny\ny\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get autoremove -qq -y'
+
+fi
 
 #echo "nameserver 1.1.1.1" > '/etc/resolv.conf'
 }
