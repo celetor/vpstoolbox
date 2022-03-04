@@ -170,26 +170,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 ## Nextcloud 配置
 
-> 由于 Nextcloud 自身限制,无法全自动添加 redis 配置,请手动配置。
-
-1. 开启 Memcache
-   在`/usr/share/nginx/nextcloud/config/config.php`中添加以下几行(请添加在中间，非开头或末尾)
-
-```
-  'memcache.local' => '\OC\Memcache\APCu',
-  'memcache.distributed' => '\OC\Memcache\Redis',
-  'memcache.locking' => '\OC\Memcache\Redis',
-  'redis' => [
-     'host'     => '/var/run/redis/redis.sock',
-     'port'     => 0,
-     'timeout'  => 1.0,
-  ],
-  'default_phone_region' => 'CN',
-```
-
-[相关文档](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html)
-
-2. 优化索引
+1. 优化索引
 
 运行以下几行
 
@@ -198,10 +179,10 @@ sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:ad
 sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:convert-filecache-bigint
 ```
 
-3. 重启服务使配置生效
+2. 重启服务使配置生效
 
 ```
-systemctl restart php7.4-fpm
+systemctl restart php8.0-fpm
 ```
 
 ## Qbittorrent手动添加的trackers一直尚未连线(Debian 10)
