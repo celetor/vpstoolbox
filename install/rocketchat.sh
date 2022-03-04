@@ -3,6 +3,11 @@
 ## RocketChat模组 RocketChat moudle
 
 install_rocketchat(){
+
+cd /usr/share/nginx/
+mkdir rocketchat
+cd rocketchat
+
     cat > "docker-compose.yml" << EOF
 version: '2'
 
@@ -88,4 +93,6 @@ services:
 
 EOF
 docker-compose up -d
+
+cd
 }
