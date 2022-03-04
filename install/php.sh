@@ -21,7 +21,7 @@ fi
   apt-get install php8.1-fpm -y
   apt-get install php8.1-json -y
   apt-get install php8.1-apcu php8.1-gmp php8.1-common php8.1-mysql php8.1-ldap php8.1-xml php8.1-readline php8.1-xmlrpc php8.1-curl php8.1-gd php8.1-imagick php8.1-fpm php8.1-dev php8.1-imap php8.1-mbstring php8.1-opcache php8.1-soap php8.1-zip php8.1-intl php8.1-bcmath -y
-  apt-get purge apache2* -y
+  apt-get purge apache* -y
   sed -i "s/;date.timezone.*/date.timezone = Asia\/Hong_Kong/" /etc/php/8.1/fpm/php.ini
   sed -i "s/;opcache.enable=1/opcache.enable=1/" /etc/php/8.1/fpm/php.ini
   sed -i "s/;opcache.save_comments=1/opcache.save_comments=1/" /etc/php/8.1/fpm/php.ini
