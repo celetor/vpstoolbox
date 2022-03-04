@@ -3,7 +3,7 @@
 ## RocketChat模组 RocketChat moudle
 
 install_rocketchat(){
-    cat > 'docker-compose.yml' << EOF
+    cat > "docker-compose.yml" << EOF
 version: '2'
 
 services:
@@ -22,7 +22,7 @@ services:
       - ./uploads:/app/uploads
     environment:
       - PORT=3000
-      - ROOT_URL=http://localhost:3000
+      - ROOT_URL=https://${domain}/chat/
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local
 #      - REG_TOKEN=${REG_TOKEN}
