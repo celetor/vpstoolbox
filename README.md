@@ -196,10 +196,8 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 运行以下几行
 
 ```
-cd /usr/share/nginx/nextcloud/
-sudo -u nginx php --define apc.enable_cli=1 ./occ db:add-missing-indices
-sudo -u nginx php --define apc.enable_cli=1 ./occ db:convert-filecache-bigint
-cd
+sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:add-missing-indices
+sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:convert-filecache-bigint
 ```
 
 3. 重启服务使配置生效
