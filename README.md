@@ -178,7 +178,6 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 ```
   'memcache.local' => '\OC\Memcache\APCu',
   'memcache.distributed' => '\OC\Memcache\Redis',
-  'filelocking.enabled' => true,
   'memcache.locking' => '\OC\Memcache\Redis',
   'redis' => [
      'host'     => '/var/run/redis/redis.sock',
