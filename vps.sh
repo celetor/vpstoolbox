@@ -170,7 +170,6 @@ prasejson(){
   "ariapasswd": "$ariapasswd",
   "filepath": "$filepath",
   "check_trojan": "$check_trojan",
-  "check_tjp": "$check_tjp",
   "check_dns": "$check_dns",
   "check_rss": "$check_rss",
   "check_qbt": "$check_qbt",
@@ -184,7 +183,6 @@ prasejson(){
   "check_tracker": "$check_tracker",
   "check_cloud": "$check_cloud",
   "check_tor": "$check_tor",
-  "check_i2p": "$check_i2p",
   "check_ss": "$check_ss",
   "check_echo": "$check_echo",
   "check_rclone": "$check_rclone",
@@ -205,10 +203,8 @@ readconfig(){
   ariapath="$( jq -r '.ariapath' "/root/.trojan/config.json" )"
   ariapasswd="$( jq -r '.ariapasswd' "/root/.trojan/config.json" )"
   filepath="$( jq -r '.filepath' "/root/.trojan/config.json" )"
-  netdatapath="$( jq -r '.netdatapath' "/root/.trojan/config.json" )"
   tor_name="$( jq -r '.tor_name' "/root/.trojan/config.json" )"
   check_trojan="$( jq -r '.check_trojan' "/root/.trojan/config.json" )"
-  check_tjp="$( jq -r '.check_tjp' "/root/.trojan/config.json" )"
   check_dns="$( jq -r '.check_dns' "/root/.trojan/config.json" )"
   check_rss="$( jq -r '.check_rss' "/root/.trojan/config.json" )"
   check_qbt="$( jq -r '.check_qbt' "/root/.trojan/config.json" )"
@@ -223,7 +219,6 @@ readconfig(){
   check_cloud="$( jq -r '.check_cloud' "/root/.trojan/config.json" )"
   check_tor="$( jq -r '.check_tor' "/root/.trojan/config.json" )"
   check_chat="$( jq -r '.check_chat' "/root/.trojan/config.json" )"
-  check_i2p="$( jq -r '.check_i2p' "/root/.trojan/config.json" )"
   check_ss="$( jq -r '.check_ss' "/root/.trojan/config.json" )"
   check_echo="$( jq -r '.check_echo' "/root/.trojan/config.json" )"
   check_rclone="$( jq -r '.check_rclone' "/root/.trojan/config.json" )"
