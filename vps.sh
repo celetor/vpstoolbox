@@ -357,16 +357,16 @@ clear
 ## 安装具体软件
 install_moudles(){
   # Src url : https://github.com/johnrosen1/vpstoolbox/blob/master/install/
+  ## Install bbr
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/bbr.sh
+  source bbr.sh
+  install_bbr
   ## Install Mariadb
   if [[ ${install_mariadb} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/mariadb.sh
   source mariadb.sh
   install_mariadb
   fi
-  ## Install bbr
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/bbr.sh
-  source bbr.sh
-  install_bbr
   ## Install Nodejs
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nodejs.sh
   source nodejs.sh
