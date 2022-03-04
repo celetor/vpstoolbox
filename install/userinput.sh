@@ -23,9 +23,6 @@ userinput_standard() {
   if [[ -z ${check_fail2ban} ]]; then
     check_fail2ban="on"
   fi
-  if [[ -z ${check_tjp} ]]; then
-    check_tjp="off"
-  fi
   if [[ -z ${check_ss} ]]; then
     check_ss="off"
   fi
@@ -204,9 +201,6 @@ userinput_full() {
   if [[ -z ${check_i2p} ]]; then
     check_i2p="off"
   fi
-  if [[ -z ${check_tjp} ]]; then
-    check_tjp="off"
-  fi
   if [[ -z ${check_ss} ]]; then
     check_ss="off"
   fi
@@ -248,7 +242,6 @@ userinput_full() {
   "安全" "安全" off \
   "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
   "其他" "其他软件及选项" off \
-  "i2p" "自建i2p网站" ${check_i2p} \
   "tor" "自建onion网站" ${check_tor} \
   "stun" "stunserver(用于测试nat类型)" ${stun} \
   "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
