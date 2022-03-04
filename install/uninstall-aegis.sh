@@ -63,14 +63,18 @@ curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/
 
 if [[ $(lsb_release -cs) == buster ]]; then
       cat > '/etc/apt/sources.list' << EOF
-deb http://ftp.us.debian.org/debian/ buster main contrib non-free
-#deb-src http://ftp.us.debian.org/debian/ buster main contrib non-free
+#------------------------------------------------------------------------------#
+#                   OFFICIAL DEBIAN REPOS                    
+#------------------------------------------------------------------------------#
 
-deb http://ftp.us.debian.org/debian/ buster-updates main contrib non-free
-#deb-src http://ftp.us.debian.org/debian/ buster-updates main contrib non-free
+###### Debian Main Repos
+deb http://deb.debian.org/debian/ stable main contrib non-free
 
-deb http://security.debian.org/ buster/updates main contrib non-free
-#deb-src http://security.debian.org/ buster/updates main contrib non-free
+deb http://deb.debian.org/debian/ stable-updates main contrib non-free
+
+deb http://deb.debian.org/debian-security stable/updates main
+
+deb http://ftp.debian.org/debian buster-backports main
 EOF
 fi
 
