@@ -2,8 +2,6 @@
 
 ## NGINX模组 NGINX moudle
 
-## 基础模组
-
 install_nginx(){
   clear
   TERM=ansi whiptail --title "安装中" --infobox "安装NGINX中..." 7 68
@@ -14,13 +12,10 @@ install_nginx(){
   touch /etc/apt/sources.list.d/nginx.list
   cat > '/etc/apt/sources.list.d/nginx.list' << EOF
 deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
-#deb-src https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
   curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
   #apt-key fingerprint ABF5BD827BD9BF62
-  #apt-get purge nginx -qq -y
   apt-get update
-  #apt-get install nginx -q -y
   sh -c 'echo "y\n\ny\ny\ny\n" | apt-get install nginx -y'
   id -u nginx
 if [[ $? != 0 ]]; then
