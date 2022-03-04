@@ -10,13 +10,13 @@ if [[ -d /usr/share/nginx/RSSHub ]]; then
     cd /usr/share/nginx/RSSHub
     git pull
     npm update
-    npm install --production
+    npm ci --production
     npm prune
   else
     git clone https://github.com/DIYgod/RSSHub.git
     cd /usr/share/nginx/RSSHub
     npm update
-    npm install --production
+    npm ci --production
     npm prune
     touch .env
 cat > '.env' << EOF
