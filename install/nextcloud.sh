@@ -9,10 +9,9 @@ install_nextcloud(){
   apt-get install smbclient -y
   apt-get install libmagickcore-6.q16-6-extra -y
   cd /usr/share/nginx
-  cloudver1=$(curl -s "https://api.github.com/repos/nextcloud/server/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-20)
   if [[ -d /usr/share/nginx/nextcloud/ ]]; then
     TERM=ansi whiptail --title "安装中" --infobox "更新nextcloud中..." 7 68
-    curl -LO https://download.nextcloud.com/server/releases/nextcloud-${cloudver1}.zip
+    curl -LO https://download.nextcloud.com/server/releases/latest.zip
     unzip -o nextcloud*.zip
     rm nextcloud*.zip
     chown -R nginx:nginx /usr/share/nginx/nextcloud/
@@ -23,7 +22,7 @@ install_nextcloud(){
   mysql -u root -e "create user 'nextcloud'@'localhost' IDENTIFIED BY '${password1}';"
   mysql -u root -e "GRANT ALL PRIVILEGES ON nextcloud.* to nextcloud@'localhost';"
   mysql -u root -e "flush privileges;"
-  curl -LO https://download.nextcloud.com/server/releases/nextcloud-${cloudver1}.zip
+  curl -LO https://download.nextcloud.com/server/releases/latest.zip
   unzip -o nextcloud*.zip
   rm nextcloud*.zip
   mkdir /usr/share/nginx/nextcloud_data
