@@ -475,11 +475,6 @@ install_moudles(){
   source tracker.sh
   install_tracker
   fi
-  if [[ ${install_trojan_panel} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/trojan-panel.sh
-  source trojan-panel.sh
-  install_tjp
-  fi
   if [[ ${install_rclone} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/rclone.sh
   source rclone.sh
