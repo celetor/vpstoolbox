@@ -57,7 +57,7 @@ echo "    include /etc/nginx/conf.d/nextcloud.conf;" >> /etc/nginx/conf.d/defaul
 touch /etc/nginx/conf.d/nextcloud.conf
 cat << EOF > /etc/nginx/conf.d/nextcloud.conf
 
-# https://docs.nextcloud.com/server/21/admin_manual/installation/nginx.html
+# https://docs.nextcloud.com/server/23/admin_manual/installation/nginx.html
 
     location = /.well-known/carddav { return 301 https://${domain}:443/nextcloud/remote.php/dav/; }
     location = /.well-known/caldav { return 301 https://${domain}:443/nextcloud/remote.php/dav/; }
@@ -158,8 +158,6 @@ echo "    location /config/ {" >> /etc/nginx/conf.d/default.conf
 echo "        expires -1;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
 echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
-echo "        #http2_push /${password1}_config/css/app.css;" >> /etc/nginx/conf.d/default.conf
-echo "        #http2_push /${password1}_config/js/app.js;" >> /etc/nginx/conf.d/default.conf
 echo "        alias /usr/share/nginx/trojan-panel/public/;" >> /etc/nginx/conf.d/default.conf
 echo "        try_files \$uri \$uri/ @config;" >> /etc/nginx/conf.d/default.conf
 echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
