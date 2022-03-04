@@ -32,11 +32,6 @@ nginx_log:
   name  : 'nginx_log'
   path  : '/var/log/nginx/access.log'
 EOF
-  cat > '/opt/netdata/etc/netdata/go.d/docker_engine.conf' << EOF
-jobs:
-  - name: local
-    url : http://127.0.0.1:9323/metrics
-EOF
   cat > '/opt/netdata/etc/netdata/go.d/x509check.conf' << EOF
 update_every : 60
 
@@ -45,12 +40,12 @@ jobs:
   - name   : ${domain}_${password1}_file_cert
     source : file:///etc/certs/${domain}_ecc/fullchain.cer
 EOF
-if [[ ${install_php} == 1 ]]; then
-cat > '/opt/netdata/etc/netdata/python.d/phpfpm.conf' << EOF
-local:
-  url     : 'http://127.0.0.1:83/status?full&json'
-EOF
-fi
+#if [[ ${install_php} == 1 ]]; then
+#cat > '/opt/netdata/etc/netdata/python.d/phpfpm.conf' << EOF
+#local:
+#  url     : 'http://127.0.0.1:83/status?full&json'
+#EOF
+#fi
 #if [[ ${install_tor} == 1 ]]; then
 #apt-get install python-pip -y
 #pip install stem
@@ -77,6 +72,11 @@ fi
 #local:
 #  user     : 'netdata'
 #  update_every : 1
+#EOF
+#  cat > '/opt/netdata/etc/netdata/go.d/docker_engine.conf' << EOF
+#jobs:
+#  - name: local
+#    url : http://127.0.0.1:9323/metrics
 #EOF
 systemctl enable netdata
 systemctl restart netdata
