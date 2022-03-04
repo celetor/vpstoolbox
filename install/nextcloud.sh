@@ -12,8 +12,8 @@ install_nextcloud(){
   if [[ -d /usr/share/nginx/nextcloud/ ]]; then
     TERM=ansi whiptail --title "安装中" --infobox "更新nextcloud中..." 7 68
     curl -LO https://download.nextcloud.com/server/releases/latest.zip
-    unzip -o nextcloud*.zip
-    rm nextcloud*.zip
+    unzip -o latest.zip
+    rm latest.zip
     chown -R nginx:nginx /usr/share/nginx/nextcloud/
     chmod +x /usr/share/nginx/nextcloud/occ
     cd
@@ -23,8 +23,8 @@ install_nextcloud(){
   mysql -u root -e "GRANT ALL PRIVILEGES ON nextcloud.* to nextcloud@'localhost';"
   mysql -u root -e "flush privileges;"
   curl -LO https://download.nextcloud.com/server/releases/latest.zip
-  unzip -o nextcloud*.zip
-  rm nextcloud*.zip
+  unzip -o latest.zip
+  rm latest.zip
   mkdir /usr/share/nginx/nextcloud_data
   cd /usr/share/nginx/nextcloud/config
   cat > "autoconfig.php" << EOF
