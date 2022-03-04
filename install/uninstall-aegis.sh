@@ -6,7 +6,6 @@ uninstall_aegis(){
 
 set +e
 
-TERM=ansi whiptail --title "阿里云监控卸载" --infobox "检测到阿里云恶意监控服务，开始卸载..." 7 68
 colorEcho ${INFO} "Uninstall Aliyun aegis ing"
 systemctl stop aegis
 systemctl stop CmsGoAgent.service
