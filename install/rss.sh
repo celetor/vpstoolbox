@@ -112,7 +112,7 @@ services:
 volumes:
   miniflux-db:
 EOF
-docker-compose up miniflux
+docker-compose up
 cd
 }
 
