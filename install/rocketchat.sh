@@ -8,7 +8,7 @@ version: '2'
 
 services:
   rocketchat:
-    image: rocketchat/rocket.chat:latest
+    image: registry.rocket.chat/rocketchat/rocket.chat:latest
     command: >
       bash -c
         "for i in `seq 1 30`; do
@@ -17,22 +17,29 @@ services:
           echo \"Tried $$i times. Waiting 5 secs...\";
           sleep 5;
         done; (exit $$s)"
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./uploads:/app/uploads
     environment:
-      - ROOT_URL=https://${domain}/rocketchat
-      - Accounts_UseDNSDomainCheck=False
+      - PORT=3000
+      - ROOT_URL=http://localhost:3000
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+      - REG_TOKEN=${REG_TOKEN}
+#       - MAIL_URL=smtp://smtp.email
+#       - HTTP_PROXY=http://proxy.domain.com
+#       - HTTPS_PROXY=http://proxy.domain.com
     depends_on:
       - mongo
     ports:
-      - 127.0.0.1:3000:3000
+      - 3000:3000
+    labels:
+      - "traefik.backend=rocketchat"
+      - "traefik.frontend.rule=Host: your.domain.tld"
 
   mongo:
     image: mongo:4.0
-    restart: always
+    restart: unless-stopped
     volumes:
      - ./data/db:/data/db
      #- ./data/dump:/dump
@@ -57,6 +64,28 @@ services:
         done; (exit $$s)"
     depends_on:
       - mongo
+
+  #traefik:
+  #  image: traefik:latest
+  #  restart: unless-stopped
+  #  command: >
+  #    traefik
+  #     --docker
+  #     --acme=true
+  #     --acme.domains='your.domain.tld'
+  #     --acme.email='your@email.tld'
+  #     --acme.entrypoint=https
+  #     --acme.storagefile=acme.json
+  #     --defaultentrypoints=http
+  #     --defaultentrypoints=https
+  #     --entryPoints='Name:http Address::80 Redirect.EntryPoint:https'
+  #     --entryPoints='Name:https Address::443 TLS.Certificates:'
+  #  ports:
+  #    - 80:80
+  #    - 443:443
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock
+
 EOF
 docker-compose up -d
 }
