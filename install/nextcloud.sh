@@ -89,8 +89,8 @@ sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:ad
 sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:convert-filecache-bigint
 
 #rm -rf /root/nextcloud_autoconfig.log
-rm -rf /root/nextcloud_autoconfig.sh
-systemctl disable nextcloud --now
+#rm -rf /root/nextcloud_autoconfig.sh
+#systemctl disable nextcloud --now
 
 exit 0
 EOF
@@ -103,6 +103,7 @@ Description=Nextcloud auto config service
 Type=simple
 User=root
 ExecStart=bash /root/nextcloud_autoconfig.sh
+ExecStop=systemctl disable nextcloud
 StandardOutput=journal
 
 [Install]
