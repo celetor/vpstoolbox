@@ -176,16 +176,17 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
    在`/usr/share/nginx/nextcloud/config/config.php`中添加以下几行(请添加在中间，非开头或末尾)
 
 ```
-  'memcache.local' => '\\OC\\Memcache\\APCu',
-  'memcache.distributed' => '\\OC\\Memcache\\Redis',
+  'memcache.local' => '\OC\Memcache\APCu',
+  'memcache.distributed' => '\OC\Memcache\Redis',
   'filelocking.enabled' => true,
-  'memcache.locking' => '\\OC\Memcache\\Redis',
-  'redis' =>
-  array (
-    'host' => '/var/run/redis/redis.sock',
-    'port' => 0,
-    'timeout' => 0.0,
-  ),
+  'memcache.locking' => '\OC\Memcache\Redis',
+  'redis' => [
+     'host'     => '/var/run/redis/redis.sock',
+     'port'     => 0,
+     'dbindex'  => 0,
+     'password' => 'secret',
+     'timeout'  => 1.0,
+  ],
   'default_phone_region' => 'CN',
 ```
 
