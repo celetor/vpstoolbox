@@ -202,11 +202,7 @@ sudo -u nginx php --define apc.enable_cli=1 ./occ db:convert-filecache-bigint
 cd
 ```
 
-3. 切换后台进程方式为 cron(Nextcloud 会自己切换,如未切换请手动切换)
-
-Nextcloud 设定-->基本设定-->改为 cron(伺服器端已配置完成，无需任何手动配置)
-
-4. 重启服务使配置生效
+3. 重启服务使配置生效
 
 ```
 systemctl restart php7.4-fpm
