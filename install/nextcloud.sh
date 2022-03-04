@@ -98,7 +98,7 @@ EOF
 Description=Nextcloud auto config service
 
 [Service]
-Type=oneshot
+Type=simple
 User=root
 ExecStart=/root/nextcloud_autoconfig.sh
 ExecStop=/usr/bin/rm -rf /etc/systemd/system/nextcloud.service
