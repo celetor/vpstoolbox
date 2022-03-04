@@ -55,14 +55,14 @@ mkdir /usr/share/nginx/tmp/
 
 cd
 
-## Nextcloud 全自动配置
+## Nextcloud 全自动配置 && 配置完成后全自动删除
 
     cat > '/root/nextcloud_autoconfig.sh' << EOF
 #!/usr/bin/env bash
 
 set +e
 
-sleep 300s;
+sleep 200s;
 
 while [[ -f /usr/share/nginx/nextcloud/config/autoconfig.php ]] && [[ ! -f /usr/share/nginx/nextcloud/config/config.php ]]
 do
@@ -83,24 +83,12 @@ echo "  ]," >> /usr/share/nginx/nextcloud/config/config.php
 echo "  'default_phone_region' => 'CN'," >> /usr/share/nginx/nextcloud/config/config.php
 echo ");" >> /usr/share/nginx/nextcloud/config/config.php
 
-exit 0
-EOF
-
-## 配置完成后全自动删除
-
-    cat > '/root/nextcloud_finish.sh' << EOF
-#!/usr/bin/env bash
-
-set +e
-
 sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:add-missing-indices
 sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:convert-filecache-bigint
 
-rm -rf /root/nextcloud_autoconfig.log
+#rm -rf /root/nextcloud_autoconfig.log
 rm -rf /root/nextcloud_autoconfig.sh
-rm -rf /root/nextcloud_finish.sh
-systemctl disable nextcloud
-rm -rf /etc/systemd/system/nextcloud.service
+systemctl disable nextcloud --now
 
 exit 0
 EOF
@@ -113,8 +101,7 @@ Description=Nextcloud auto config service
 Type=oneshot
 User=root
 ExecStart=/root/nextcloud_autoconfig.sh
-RemainAfterExit=true
-ExecStop=/root/nextcloud_finish.sh
+ExecStop=/usr/bin/rm -rf /etc/systemd/system/nextcloud.service
 StandardOutput=journal
 
 [Install]
@@ -122,9 +109,8 @@ WantedBy=multi-user.target
 EOF
 
 chmod +x /root/nextcloud_autoconfig.sh
-chmod +x /root/nextcloud_finish.sh
 
 systemctl daemon-reload
-systemctl enable nextcloud
+systemctl enable nextcloud --now
 
 }
