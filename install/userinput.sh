@@ -229,7 +229,6 @@ userinput_full() {
   "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
   "net" "Netdata(监测伺服器运行状态)" on \
   "fast" "TCP Fastopen" ${fastopen} \
-  "tjp" "Trojan-panel" ${check_tjp} \
   "ss" "shadowsocks-rust" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "网盘" "网盘" off \
