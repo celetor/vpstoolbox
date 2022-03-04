@@ -48,7 +48,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 > 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考（删除线表示该应用已被淘汰或无实际价值）。
 
 - 代理
-  - [x] [Trojan-gfw](https://github.com/trojan-gfw/trojan)
+  - [x] [Trojan-gfw (可自定义端口)](https://github.com/trojan-gfw/trojan)
   - [ ] [Shadowsocks-rust](https://github.com/shadowsocks/shadowsocks-rust)
 - 系统
   - [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
@@ -93,7 +93,6 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
   - [ ] [Docker](https://www.docker.com/)
   - [ ] [Opentracker](https://erdgeist.org/arts/software/opentracker/)
   - [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
-  - [ ] 自定义 Trojan 端口(Non standard https port support)
   - [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
   ~~- [ ] [stun-server](https://github.com/jselbie/stunserver)~~
 - 区块链
