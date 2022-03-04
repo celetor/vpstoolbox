@@ -62,10 +62,12 @@ cd
 
 set +e
 
+sleep 300s;
+
 while [[ -f /usr/share/nginx/nextcloud/config/autoconfig.php ]] && [[ ! -f /usr/share/nginx/nextcloud/config/config.php ]]
 do
   echo "no auto config required" &> /root/nextcloud_autoconfig.log
-  sleep 15s;
+  sleep 5s;
 done
 
 sed '\$d' /usr/share/nginx/nextcloud/config/config.php ## delete last line
