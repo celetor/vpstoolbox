@@ -17,11 +17,11 @@ install_redis(){
     make USE_SYSTEMD=yes -j $(nproc --all)
     make install
   else
+  apt-get install libsystemd-dev pkg-config unzip -y
   curl -LO https://github.com/redis/redis/archive/${redisver}.zip
   unzip -o ${redisver}.zip
   rm ${redisver}.zip
   cd redis-${redisver}
-  apt-get install libsystemd-dev pkg-config -y
   make USE_SYSTEMD=yes -j $(nproc --all)
   make install
   chmod +x /usr/local/bin/redis-server
