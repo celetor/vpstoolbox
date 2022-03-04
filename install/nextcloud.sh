@@ -82,9 +82,6 @@ echo "  ]," >> /usr/share/nginx/nextcloud/config/config.php
 echo "  'default_phone_region' => 'CN'," >> /usr/share/nginx/nextcloud/config/config.php
 echo ");" >> /usr/share/nginx/nextcloud/config/config.php
 
-#sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:add-missing-indices
-#sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:convert-filecache-bigint
-
 exit 0
 EOF
 
@@ -94,6 +91,9 @@ EOF
 #!/usr/bin/env bash
 
 set +e
+
+sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:add-missing-indices
+sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:convert-filecache-bigint
 
 rm -rf /root/nextcloud_autoconfig.log
 rm -rf /root/nextcloud_autoconfig.sh
