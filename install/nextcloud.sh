@@ -101,7 +101,6 @@ Description=Nextcloud auto config service
 Type=simple
 User=root
 ExecStart=bash /root/nextcloud_autoconfig.sh
-ExecStop=/usr/bin/rm -rf /etc/systemd/system/nextcloud.service
 StandardOutput=journal
 
 [Install]
