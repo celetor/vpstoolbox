@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-## Nextcloud模组 Nectcloud moudle
+## Nextcloud模组 Nextcloud moudle
 
 install_nextcloud(){
   set +e
   TERM=ansi whiptail --title "安装中" --infobox "安装nextcloud中..." 7 68
-  apt-get install php7.4-redis -y
+  apt-get install php8.0-redis -y
   apt-get install smbclient -y
   apt-get install libmagickcore-6.q16-6-extra -y
   cd /usr/share/nginx
@@ -50,11 +50,80 @@ EOF
   rm mycron
   chmod +x /usr/share/nginx/nextcloud/occ
   cd
-  #sudo -u nginx ./occ db:add-missing-indices
-  #sudo -u nginx ./occ db:convert-filecache-bigint
 fi
 
 mkdir /usr/share/nginx/tmp/
 
 cd
+
+## Nextcloud 全自动配置
+
+    cat > '/root/nextcloud_autoconfig.sh' << EOF
+#!/usr/bin/env bash
+
+set +e
+
+while [[ -f /usr/share/nginx/nextcloud/config/autoconfig.php ]] && [[ ! -f /usr/share/nginx/nextcloud/config/config.php ]]
+do
+  echo "no auto config required" &> /root/nextcloud_autoconfig.log
+  sleep 15s;
+done
+
+sed '\$d' /usr/share/nginx/nextcloud/config/config.php ## delete last line
+
+echo "  'memcache.local' => '\\OC\\Memcache\\APCu'," >> /usr/share/nginx/nextcloud/config/config.php
+echo "  'memcache.distributed' => '\\OC\\Memcache\\Redis'," >> /usr/share/nginx/nextcloud/config/config.php
+echo "  'memcache.locking' => '\\OC\\Memcache\\Redis'," >> /usr/share/nginx/nextcloud/config/config.php
+echo "  'redis' => [" >> /usr/share/nginx/nextcloud/config/config.php
+echo "     'host'     => '/var/run/redis/redis.sock'," >> /usr/share/nginx/nextcloud/config/config.php
+echo "     'port'     => 0," >> /usr/share/nginx/nextcloud/config/config.php
+echo "     'timeout'  => 1.0," >> /usr/share/nginx/nextcloud/config/config.php
+echo "  ]," >> /usr/share/nginx/nextcloud/config/config.php
+echo "  'default_phone_region' => 'CN'," >> /usr/share/nginx/nextcloud/config/config.php
+echo ");" >> /usr/share/nginx/nextcloud/config/config.php
+
+#sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:add-missing-indices
+#sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:convert-filecache-bigint
+
+exit 0
+EOF
+
+## 配置完成后全自动删除
+
+    cat > '/root/nextcloud_finish.sh' << EOF
+#!/usr/bin/env bash
+
+set +e
+
+rm -rf /root/nextcloud_autoconfig.log
+rm -rf /root/nextcloud_autoconfig.sh
+rm -rf /root/nextcloud_finish.sh
+systemctl disable nextcloud
+rm -rf /etc/systemd/system/nextcloud.service
+
+exit 0
+EOF
+
+  cat > '/etc/systemd/system/nextcloud.service' << EOF
+[Unit]
+Description=Nextcloud auto config service
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/root/nextcloud_autoconfig.sh
+RemainAfterExit=true
+ExecStop=/root/nextcloud_finish.sh
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+chmod +x /root/nextcloud_autoconfig.sh
+chmod +x /root/nextcloud_finish.sh
+
+systemctl daemon-reload
+systemctl enable nextcloud --now
+
 }
