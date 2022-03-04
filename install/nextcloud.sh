@@ -62,7 +62,7 @@ cd
 
 set +e
 
-sleep 200s;
+sleep 10s;
 
 while [[ -f /usr/share/nginx/nextcloud/config/autoconfig.php ]] && [[ ! -f /usr/share/nginx/nextcloud/config/config.php ]]
 do
