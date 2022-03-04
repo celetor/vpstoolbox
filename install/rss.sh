@@ -5,9 +5,6 @@
 install_rss(){
 set +e
 cd /usr/share/nginx/
-apt-get install php7.4-mysql -y
-apt-get install php7.4-pgsql -y
-apt-get install php7.4-sqlite -y
 if [[ -d /usr/share/nginx/RSSHub ]]; then
     TERM=ansi whiptail --title "安装中" --infobox "更新rsshub中..." 7 68
     cd /usr/share/nginx/RSSHub
