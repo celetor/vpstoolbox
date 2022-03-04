@@ -198,9 +198,6 @@ userinput_full() {
   if [[ -z ${check_tor} ]]; then
     check_tor="off"
   fi
-  if [[ -z ${check_i2p} ]]; then
-    check_i2p="off"
-  fi
   if [[ -z ${check_ss} ]]; then
     check_ss="off"
   fi
@@ -212,9 +209,6 @@ userinput_full() {
   fi
   if [[ -z ${fastopen} ]]; then
     fastopen="on"
-  fi
-  if [[ -z ${stun} ]]; then
-    stun="off"
   fi
 
   whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 24 65 16 \
@@ -243,7 +237,6 @@ userinput_full() {
   "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
   "其他" "其他软件及选项" off \
   "tor" "自建onion网站" ${check_tor} \
-  "stun" "stunserver(用于测试nat类型)" ${stun} \
   "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
   "7" "MariaDB数据库" ${check_mariadb} \
   "redis" "Redis缓存数据库" off \
@@ -275,9 +268,6 @@ userinput_full() {
       ;;
     onedrive)
       install_onedrive=1
-      ;;
-    stun)
-      install_stun="1"
       ;;
     dns)
       check_dns="on"
@@ -368,9 +358,6 @@ userinput_full() {
       ;;
     tor)
       install_tor=1
-      ;;
-    i2p)
-      install_i2pd=1
       ;;
     13)
       check_qbt_origin="on"
