@@ -172,12 +172,6 @@ sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:ad
 sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:convert-filecache-bigint
 ```
 
-2. 重启服务使配置生效
-
-```
-systemctl restart php8.0-fpm
-```
-
 ## Qbittorrent手动添加的trackers一直尚未连线(Debian 10)
 
 > Ubuntu 18.04+ 用户请启用webui中高级选项中 “同时连线所有trackers”选项 。
