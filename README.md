@@ -183,8 +183,6 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
   'redis' => [
      'host'     => '/var/run/redis/redis.sock',
      'port'     => 0,
-     'dbindex'  => 0,
-     'password' => 'secret',
      'timeout'  => 1.0,
   ],
   'default_phone_region' => 'CN',
