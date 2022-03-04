@@ -410,11 +410,6 @@ install_moudles(){
   source filebrowser.sh
   install_filebrowser
   fi
-  if [[ ${install_i2pd} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/i2pd.sh
-  source i2pd.sh
-  install_i2pd
-  fi
   if [[ ${install_mail} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/mail.sh
   source mail.sh
@@ -615,6 +610,10 @@ MasterMenu() {
     source nginx-config.sh
     nginx_config
     clean_env
+    ## 初始化Nextcloud
+    if [[ ${install_nextcloud} == 1 ]]; then
+    curl https://${domain}/nextcloud/
+    fi
     ## 输出结果
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/output.sh
