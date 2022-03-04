@@ -111,6 +111,6 @@ EOF
 chmod +x /root/nextcloud_autoconfig.sh
 
 systemctl daemon-reload
-systemctl enable nextcloud --now
+systemctl enable nextcloud
 
 }
