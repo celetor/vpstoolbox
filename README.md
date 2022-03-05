@@ -98,7 +98,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 - 区块链
   - [ ] [Monero/XMR](https://github.com/monero-project/monero-gui)
 
-> 欢迎 PR/issue 更多软件。
+> 欢迎 PR 更多应用。
 
 ## 尚未添加/整合/测试的软件 To be done
 
