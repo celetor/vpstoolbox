@@ -58,13 +58,6 @@ userinput_standard() {
     fast)
       tcp_fastopen="true"
       ;;
-    tjp)
-      check_tjp="on"
-      install_trojan_panel=1
-      install_php=1
-      install_mariadb=1
-      install_redis=1
-      ;;
     net)
       install_netdata=1
       ;;
@@ -283,13 +276,6 @@ userinput_full() {
     chat)
       install_rocketchat=1
       install_docker=1
-      ;;
-    tjp)
-      check_tjp="on"
-      install_trojan_panel=1
-      install_php=1
-      install_mariadb=1
-      install_redis=1
       ;;
     net)
       install_netdata=1
