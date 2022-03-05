@@ -27,7 +27,7 @@ services:
       - ./uploads:/app/uploads
     environment:
       - PORT=3000
-      - ROOT_URL=https://${domain}/chat/
+      - ROOT_URL=https://safdadhskafhd/chat/
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local
 #      - REG_TOKEN=${REG_TOKEN}
@@ -92,6 +92,9 @@ services:
   #    - /var/run/docker.sock:/var/run/docker.sock
 
 EOF
+
+sed -i "s/safdadhskafhd/${domain}/g" docker-compose.yml
+
 docker-compose up -d
 
 cd
