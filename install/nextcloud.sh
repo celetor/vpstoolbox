@@ -7,7 +7,7 @@ install_nextcloud(){
   TERM=ansi whiptail --title "安装中" --infobox "安装nextcloud中..." 7 68
   apt-get install php8.0-redis -y
   apt-get install unzip -y
-  #apt-get install libmagickcore-6.q16-6-extra -y
+  apt-get install libmagickcore-6.q16-6-extra -y
   cd /usr/share/nginx
   if [[ -d /usr/share/nginx/nextcloud/ ]]; then
     TERM=ansi whiptail --title "安装中" --infobox "更新nextcloud中..." 7 68
