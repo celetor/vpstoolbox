@@ -35,11 +35,11 @@ userinput_standard() {
   "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
   "net" "Netdata(监测伺服器运行状态)" on \
   "fast" "TCP Fastopen" ${fastopen} \
+  "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
   "ss" "shadowsocks-rust" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
-  "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
   "port" "自定义Trojan-GFW端口" off \
-  "test-only" "test-only" off 2>results
+  "0000" "test-only" off 2>results
 
   while read choice; do
     case $choice in
@@ -213,6 +213,8 @@ userinput_full() {
   "fast" "TCP Fastopen" ${fastopen} \
   "ss" "shadowsocks-rust" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
+  "安全" "安全" off \
+  "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
   "网盘" "网盘" off \
   "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
   "rss" "RSSHUB + Miniflux(RSS生成器+RSS阅读器)" ${check_rss} \
@@ -225,8 +227,6 @@ userinput_full() {
   "通讯" "通讯" off \
   "chat" "Rocket Chat" ${check_chat} \
   "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
-  "安全" "安全" off \
-  "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
   "影音" "影音" off \
   "jellyfin" "Jellyfin" off \
   "其他" "其他软件及选项" off \
