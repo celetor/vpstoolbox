@@ -40,44 +40,44 @@ jobs:
   - name   : ${domain}_${password1}_file_cert
     source : file:///etc/certs/${domain}_ecc/fullchain.cer
 EOF
-#if [[ ${install_php} == 1 ]]; then
-#cat > '/opt/netdata/etc/netdata/python.d/phpfpm.conf' << EOF
-#local:
-#  url     : 'http://127.0.0.1:83/status?full&json'
-#EOF
-#fi
-#if [[ ${install_tor} == 1 ]]; then
-#apt-get install python-pip -y
-#pip install stem
-#cat > '/opt/netdata/etc/netdata/python.d/tor.conf' << EOF
-#update_every : 1
-#priority     : 60001
-#
-#local_tcp:
-# name: 'local'
-# control_port: 9051
-#EOF
-#fi
-#if [[ ${install_redis} == 1 ]]; then
-#cat > '/opt/netdata/etc/netdata/python.d/redis.conf' << EOF
-#socket:
-#  name     : 'local'
-#  socket   : '/var/run/redis/redis.sock'
-#EOF
-#fi
-#cat > '/opt/netdata/etc/netdata/python.d/mysql.conf' << EOF
-#update_every : 10
-#priority     : 90100
-#
-#local:
-#  user     : 'netdata'
-#  update_every : 1
-#EOF
-#  cat > '/opt/netdata/etc/netdata/go.d/docker_engine.conf' << EOF
-#jobs:
-#  - name: local
-#    url : http://127.0.0.1:9323/metrics
-#EOF
+if [[ ${install_php} == 1 ]]; then
+cat > '/opt/netdata/etc/netdata/python.d/phpfpm.conf' << EOF
+local:
+  url     : 'http://127.0.0.1:83/status?full&json'
+EOF
+fi
+if [[ ${install_tor} == 1 ]]; then
+apt-get install python-pip -y
+pip install stem
+cat > '/opt/netdata/etc/netdata/python.d/tor.conf' << EOF
+update_every : 1
+priority     : 60001
+
+local_tcp:
+ name: 'local'
+ control_port: 9051
+EOF
+fi
+if [[ ${install_redis} == 1 ]]; then
+cat > '/opt/netdata/etc/netdata/python.d/redis.conf' << EOF
+socket:
+  name     : 'local'
+  socket   : '/var/run/redis/redis.sock'
+EOF
+fi
+cat > '/opt/netdata/etc/netdata/python.d/mysql.conf' << EOF
+update_every : 10
+priority     : 90100
+
+local:
+  user     : 'netdata'
+  update_every : 1
+EOF
+  cat > '/opt/netdata/etc/netdata/go.d/docker_engine.conf' << EOF
+jobs:
+  - name: local
+    url : http://127.0.0.1:9323/metrics
+EOF
 systemctl enable netdata
 systemctl restart netdata
 clear
