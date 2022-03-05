@@ -161,22 +161,9 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 **[Aria2+Rclone+Onedrive 实现全自动化下载](https://johnrosen1.com/2021/02/14/onedrive/)**
 
-## Qbittorrent手动添加的trackers一直尚未连线(Debian 10)
+## Qbittorrent手动添加的trackers一直尚未连线
 
-> Ubuntu 18.04+ 用户请启用webui中高级选项中 “同时连线所有trackers”选项 。
-
-解决办法：由于Qbt的config是runtime生成的，脚本不能直接覆写，故需用户手动修改。
-
-添加tracker完成后**手动输入**以下命令即可。
-
-```shell
-systemctl stop qbittorrent
-qbtline=$(grep -n "Preferences" /usr/share/nginx/qBittorrent/config/qBittorrent.conf | cut -c1-2)
-sed -i "${qbtline} aAdvanced\\\AnnounceToAllTrackers=true" /usr/share/nginx/qBittorrent/config/qBittorrent.conf
-systemctl restart qbittorrent
-```
-
-这样trackers就不会出现尚未连线的状态了。
+启用webui中高级选项中 “同时连线所有trackers”选项，这样trackers就不会出现尚未连线的状态了。
 
 ## 邮箱服务(Mail Service)使用条件
 
