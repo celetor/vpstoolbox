@@ -12,7 +12,7 @@
 apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
 ```
 
-> 注: 仅推荐 **Debian10/11** 系统。
+> 仅推荐 **Debian10/11** 系统。
 
 ## 前提条件及要点 Usage instruction
 
