@@ -612,6 +612,23 @@ MasterMenu() {
     ## 初始化Nextcloud
     if [[ ${install_nextcloud} == 1 ]]; then
     curl https://${domain}/nextcloud/
+    sleep 13s;
+
+    ## Delete last line
+
+    sed '$d' /usr/share/nginx/nextcloud/config/config.php ## delete last line
+
+    echo "  'default_phone_region' => 'CN'," >> /usr/share/nginx/nextcloud/config/config.php
+    echo "  'memcache.local' => '\\OC\\Memcache\\APCu'," >> /usr/share/nginx/nextcloud/config/config.php
+    echo "  'memcache.distributed' => '\\OC\\Memcache\\Redis'," >> /usr/share/nginx/nextcloud/config/config.php
+    echo "  'memcache.locking' => '\\OC\\Memcache\\Redis'," >> /usr/share/nginx/nextcloud/config/config.php
+    echo "  'redis' => [" >> /usr/share/nginx/nextcloud/config/config.php
+    echo "     'host'     => '/var/run/redis/redis.sock'," >> /usr/share/nginx/nextcloud/config/config.php
+    echo "     'port'     => 0," >> /usr/share/nginx/nextcloud/config/config.php
+    echo "     'timeout'  => 1.0," >> /usr/share/nginx/nextcloud/config/config.php
+    echo "  ]," >> /usr/share/nginx/nextcloud/config/config.php
+    echo ");" >> /usr/share/nginx/nextcloud/config/config.php
+
     fi
     ## 输出结果
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
