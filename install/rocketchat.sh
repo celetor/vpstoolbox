@@ -45,7 +45,7 @@ services:
       - "traefik.frontend.rule=Host: your.domain.tld"
 
   mongo:
-    image: mongo:4.0
+    image: mongo:latest
     restart: unless-stopped
     volumes:
      - ./data/db:/data/db
