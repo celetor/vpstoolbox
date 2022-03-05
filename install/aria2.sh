@@ -145,4 +145,3 @@ cd /etc/aria2/
 curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/autoupload.sh
 chmod +x /etc/aria2/autoupload.sh
 }
-
