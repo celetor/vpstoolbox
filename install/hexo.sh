@@ -295,7 +295,7 @@ Introduction: test download and upload speed from vps to your local network.
 
 Introduction: just like discord.
 
-- <a href="https://$domain:443/rocketchat/" target="_blank" rel="noreferrer">https://$domain/rocketchat/</a>
+- <a href="https://$domain:443/chat/" target="_blank" rel="noreferrer">https://$domain/rocketchat/</a>
 
 ---
 
