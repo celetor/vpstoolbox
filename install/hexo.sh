@@ -177,7 +177,7 @@ hexo g && hexo d
 
 #### RSSHUB
 
-<a href="https://$domain/rsshub/" target="_blank" rel="noreferrer">https://$domain/${password1}_rsshub/</a>
+<a href="https://$domain/rsshub/" target="_blank" rel="noreferrer">https://$domain/rsshub/</a>
 
 #### Miniflux
 
