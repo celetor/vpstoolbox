@@ -12,12 +12,14 @@ if [[ -d /usr/share/nginx/RSSHub ]]; then
     npm update
     npm ci --production
     npm prune
+    npm audit fix
   else
     git clone https://github.com/DIYgod/RSSHub.git
     cd /usr/share/nginx/RSSHub
     npm update
     npm ci --production
     npm prune
+    npm audit fix
     touch .env
 cat > '.env' << EOF
 CACHE_TYPE=redis
