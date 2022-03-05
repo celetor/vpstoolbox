@@ -2,8 +2,9 @@
 
 ## Docker模组 Docker moudle
 
-install_docker(){
 set +e
+
+install_docker(){
 clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Docker中..." 7 68
 colorEcho ${INFO} "安装Docker(Install Docker ing)"
