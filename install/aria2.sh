@@ -33,7 +33,6 @@ sed -i 's/new NumberOptionHandler(PREF_SPLIT, TEXT_SPLIT, "5", 1, -1,/new Number
 /root/aria2*/configure
 make -j $(nproc --all)
 make install
-cp -f /root/aria2*/src/aria2c /usr/local/bin/aria2c
 chmod +x /usr/local/bin/aria2c
 rm -rf /root/aria2*
 apt-get autoremove -y
