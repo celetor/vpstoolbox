@@ -16,8 +16,11 @@ trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/all_ar
 ariaport=$(shuf -i 13000-19000 -n 1)
 mkdir /etc/aria2/
 
+ariaver1=$(curl -s "https://api.github.com/repos/aria2/aria2/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+ariaver2=$(curl -s "https://api.github.com/repos/aria2/aria2/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c9-20)
+
 apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
-curl -LO --progress-bar https://github.com/aria2/aria2/releases/download/release-1.36.0/aria2-1.36.0.tar.xz
+curl -LO --progress-bar https://github.com/aria2/aria2/releases/download/${ariaver1}/aria2-${ariaver2}.tar.xz
 xz --decompress aria2*.xz
 rm *.xz
 cd /root/aria2*
