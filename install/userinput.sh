@@ -327,18 +327,9 @@ userinput_full() {
       install_php=1
       install_mariadb=1
       ;;
-    stun)
-      install_stun="1"
-      ;;
     10)
       check_tracker="on"
       install_tracker=1
-      ;;
-    11)
-      install_trojan_panel=1
-      install_php=1
-      install_nodejs=1
-      install_mariadb=1
       ;;
     tor)
       install_tor=1
