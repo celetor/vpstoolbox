@@ -33,6 +33,7 @@ make -j $(nproc --all)
 mkdir /usr/local/bin/
 cp -f /root/aria2*/src/aria2c /usr/local/bin/aria2c
 chmod +x /usr/local/bin/aria2c
+rm -rf /root/aria2*
 apt-get autoremove -y
 
   cat > '/etc/systemd/system/aria2.service' << EOF
