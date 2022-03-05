@@ -153,29 +153,6 @@ echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/defau
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
-if [[ $install_trojan_panel == 1 ]]; then
-echo "    location /config/ {" >> /etc/nginx/conf.d/default.conf
-echo "        expires -1;" >> /etc/nginx/conf.d/default.conf
-echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
-echo "        index index.php;" >> /etc/nginx/conf.d/default.conf
-echo "        alias /usr/share/nginx/trojan-panel/public/;" >> /etc/nginx/conf.d/default.conf
-echo "        try_files \$uri \$uri/ @config;" >> /etc/nginx/conf.d/default.conf
-echo "        location ~ \.php\$ {" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_split_path_info ^(.+\.php)(/.+)\$;" >> /etc/nginx/conf.d/default.conf
-echo "        include fastcgi_params;" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_pass unix:/run/php/php8.0-fpm.sock;" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_param HTTPS on;" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
-echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
-echo "        }" >> /etc/nginx/conf.d/default.conf
-echo "        }" >> /etc/nginx/conf.d/default.conf
-echo "        location @config {" >> /etc/nginx/conf.d/default.conf
-echo "        rewrite /config/(.*)\$ /config/index.php?/\$1 last;" >> /etc/nginx/conf.d/default.conf
-echo "        }" >> /etc/nginx/conf.d/default.conf
-echo "    location /config {" >> /etc/nginx/conf.d/default.conf
-echo "        return 301 https://${domain}/config/;" >> /etc/nginx/conf.d/default.conf
-echo "        }" >> /etc/nginx/conf.d/default.conf
-fi
 if [[ $install_rocketchat == 1 ]]; then
 echo "    location /chat/ {" >> /etc/nginx/conf.d/default.conf
 echo "        expires -1;" >> /etc/nginx/conf.d/default.conf
