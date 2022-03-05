@@ -616,7 +616,7 @@ MasterMenu() {
 
     ## Delete last line
 
-    sed '$d' /usr/share/nginx/nextcloud/config/config.php ## delete last line
+    sed -i '$d' /usr/share/nginx/nextcloud/config/config.php
 
     echo "  'default_phone_region' => 'CN'," >> /usr/share/nginx/nextcloud/config/config.php
     echo "  'memcache.local' => '\\OC\\Memcache\\APCu'," >> /usr/share/nginx/nextcloud/config/config.php
