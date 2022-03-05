@@ -11,9 +11,28 @@ github_url="https://github.com/johnrosen1/vpstoolbox"
 
 install_aria2(){
 TERM=ansi whiptail --title "安装中" --infobox "安装Aria2中..." 7 68
+cd /root/
 trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/all_aria2.txt)
 ariaport=$(shuf -i 13000-19000 -n 1)
 mkdir /etc/aria2/
+
+apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
+curl -LO --progress-bar https://github.com/aria2/aria2/releases/download/release-1.36.0/aria2-1.36.0.tar.xz
+xz --decompress aria2*.xz
+rm *.xz
+cd /root/aria2*
+sed -i 's/"1", 1, 16/"128", 1, -1/g' /root/aria2*/src/OptionHandlerFactory.cc
+sed -i 's/"20M", 1_m, 1_g/"4K", 1_k, 1_g/g' /root/aria2*/src/OptionHandlerFactory.cc
+sed -i 's/PREF_CONNECT_TIMEOUT, TEXT_CONNECT_TIMEOUT, "60", 1, 600/PREF_CONNECT_TIMEOUT, TEXT_CONNECT_TIMEOUT, "30", 1, 600/g' /root/aria2*/src/OptionHandlerFactory.cc
+sed -i 's/PREF_PIECE_LENGTH, TEXT_PIECE_LENGTH, "1M", 1_m, 1_g/PREF_PIECE_LENGTH, TEXT_PIECE_LENGTH, "4k", 1_k, 1_g/g' /root/aria2*/src/OptionHandlerFactory.cc
+sed -i 's/new NumberOptionHandler(PREF_RETRY_WAIT, TEXT_RETRY_WAIT, "0", 0, 600/new NumberOptionHandler(PREF_RETRY_WAIT, TEXT_RETRY_WAIT, "2", 0, 600/g' /root/aria2*/src/OptionHandlerFactory.cc
+sed -i 's/new NumberOptionHandler(PREF_SPLIT, TEXT_SPLIT, "5", 1, -1,/new NumberOptionHandler(PREF_SPLIT, TEXT_SPLIT, "8", 1, -1,/g' /root/aria2*/src/OptionHandlerFactory.cc
+./configure ARIA2_STATIC=yes
+make -j $(nproc --all)
+cp -f /root/aria2*/src/aria2c /usr/local/bin/aria2c
+chmod +x /usr/local/bin/aria2c
+apt-get autoremove -y
+
   cat > '/etc/systemd/system/aria2.service' << EOF
 [Unit]
 Description=Aria2c download manager
@@ -101,13 +120,6 @@ bt-max-peers=0
 bt-tracker=$trackers_list
 EOF
 clear
-apt-get install nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
-curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/aria2c.xz
-xz --decompress aria2c.xz
-cp -f aria2c /usr/local/bin/aria2c
-chmod +x /usr/local/bin/aria2c
-rm -rf aria2c
-apt-get autoremove -q -y
 touch /var/log/aria2.log
 touch /usr/local/bin/aria2.session
 mkdir /usr/share/nginx/aria2/
@@ -121,7 +133,8 @@ if [[ ! -d /usr/share/nginx/ariang ]]; then
   mkdir /usr/share/nginx/ariang
 fi
 cd /usr/share/nginx/ariang
-curl -LO https://github.com/mayswind/AriaNg/releases/download/1.1.7/AriaNg-1.1.7.zip
+ariangver=$(curl -s "https://api.github.com/repos/mayswind/AriaNg/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+curl -LO https://github.com/mayswind/AriaNg/releases/download/${ariangver}/AriaNg-${ariangver}.zip
 unzip *
 rm -rf *.zip
 cd
