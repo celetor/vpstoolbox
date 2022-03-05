@@ -60,7 +60,7 @@ curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/
     source system-upgrade.sh
     upgrade_system
 
-if [[ $(lsb_release -cs) == bionic ]]; then
+if [[ $(lsb_release -cs) == bionic ]] || [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
     cat > '/etc/apt/sources.list' << EOF
 deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
 deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse

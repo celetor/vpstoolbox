@@ -5,14 +5,14 @@
 upgrade_system(){
   set +e
 
-  ## Install lastest ubuntu lts
-  if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
-      ubuntu18_install=1
-  fi
-  ## Install lastest stable debian
-  if [[ $(lsb_release -cs) == stretch ]] || [[ $(lsb_release -cs) == buster ]]; then
+## Install lastest ubuntu lts
+if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
+  ubuntu18_install=1
+fi
+## Install lastest stable debian
+if [[ $(lsb_release -cs) == stretch ]] || [[ $(lsb_release -cs) == buster ]]; then
   debian10_install=1
-  fi
+fi
 
  if [[ $dist == ubuntu ]]; then
   if [[ $ubuntu18_install == 1 ]]; then
