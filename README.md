@@ -28,7 +28,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 ## 免责声明 Disclaimer
 
 1. 本项目不对使用 Vultr 提供的机器造成的任何可能问题负责(this project is not responsible for any possible problems caused by Vultr machines) !
-2. 本项目部分应用需要较高的系统资源和服务器配置(Nextcloud,邮箱等)，这些都不是必选项，请量力而行 ！
+2. 本项目部分非必须应用需要较高的系统资源和服务器配置(Rocket.chat以及邮箱等)，请量力而行 ！
 
 ## 可能的错误及原因
 
