@@ -232,12 +232,10 @@ userinput_full() {
   "其他" "其他软件及选项" off \
   "tor" "自建onion网站" ${check_tor} \
   "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
-  "7" "MariaDB数据库" ${check_mariadb} \
-  "redis" "Redis缓存数据库" off \
   "typecho" "Typecho" ${check_echo} \
-  "10" "Bt-Tracker(Bittorrent-tracker服务)" ${check_tracker} \
+  "10" "Bt-Tracker(Bt tracker服务器)" ${check_tracker} \
   "13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
-  "test-only" "test-only" off 2>results
+  "14" "test-only" off 2>results
 
   while read choice; do
     case $choice in
