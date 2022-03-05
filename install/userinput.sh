@@ -208,6 +208,7 @@ userinput_full() {
   "Back" "返回上级菜单(Back to main menu)" off \
   "基础" "基础" off \
   "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
+  "port" "自定义Trojan-GFW端口" ${check_qbt_origin} \
   "net" "Netdata(监测伺服器运行状态)" on \
   "fast" "TCP Fastopen" ${fastopen} \
   "ss" "shadowsocks-rust" ${check_ss} \
@@ -222,19 +223,18 @@ userinput_full() {
   "下载" "下载" off \
   "qbt" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
   "file" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
-  "影音" "影音" off \
-  "jellyfin" "Jellyfin" off \
   "通讯" "通讯" off \
   "chat" "Rocket Chat" ${check_chat} \
   "安全" "安全" off \
   "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
+  "影音" "影音" off \
+  "jellyfin" "Jellyfin" off \
   "其他" "其他软件及选项" off \
   "tor" "自建onion网站" ${check_tor} \
   "dns" "Dnscrypt-proxy(Doh客户端)" ${check_dns} \
   "7" "MariaDB数据库" ${check_mariadb} \
   "redis" "Redis缓存数据库" off \
   "typecho" "Typecho" ${check_echo} \
-  "port" "自定义Trojan-GFW端口" ${check_qbt_origin} \
   "10" "Bt-Tracker(Bittorrent-tracker服务)" ${check_tracker} \
   "13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
   "test-only" "test-only" off 2>results
