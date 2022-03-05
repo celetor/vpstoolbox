@@ -16,6 +16,8 @@ install_ss_rust(){
 	tar -xvf shadowsocks*
 	cp -f ssserver /usr/sbin
 	mkdir /etc/ss-rust
+  rm -rf *.xz
+  rm -rf ss*
   	cat > '/etc/ss-rust/config.json' << EOF
 {
     "server": "::",
