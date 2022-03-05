@@ -163,7 +163,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 ## Qbittorrent手动添加的trackers一直尚未连线
 
-启用webui中高级选项中 “同时连线所有trackers”选项，这样trackers就不会出现尚未连线的状态了。
+启用webui中选项-->"高级"中 “同时连线所有trackers”选项，这样trackers就不会出现尚未连线的状态了。
 
 ## 邮箱服务(Mail Service)使用条件
 
