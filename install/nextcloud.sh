@@ -43,6 +43,7 @@ install_nextcloud(){
 EOF
   chown -R nginx:nginx /usr/share/nginx/
   chown -R nginx:nginx /etc/nginx/
+  update-alternatives --set php /usr/bin/php8.0
   crontab -l > mycron
   echo "*/5 * * * * sudo -u nginx php --define apc.enable_cli=1 -f /usr/share/nginx/nextcloud/cron.php &> /dev/null" >> mycron
   crontab mycron
