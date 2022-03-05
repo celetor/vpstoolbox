@@ -163,20 +163,20 @@ echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/def
 echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Nginx-Proxy true;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_pass http://127.0.0.1:3000/rocketchat;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:3000/chat/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        location /file-upload/ {" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_pass http://127.0.0.1:3000/rocketchat/file-upload/;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:3000/chat/file-upload/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        location /avatar/ {" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_pass http://127.0.0.1:3000/rocketchat/avatar/;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:3000/chat/avatar/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        location /assets/ {" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_pass http://127.0.0.1:3000/rocketchat/assets/;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:3000/chat/assets/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        location /home {" >> /etc/nginx/conf.d/default.conf
-echo "        return 301 https://${domain}/rocketchat/home/;" >> /etc/nginx/conf.d/default.conf
+echo "        return 301 https://${domain}/chat/home/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_mail == 1 ]]; then
