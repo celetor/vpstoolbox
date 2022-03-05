@@ -47,6 +47,7 @@ fi
     echo "redis.session.locking_enabled=1" >> /etc/php/8.0/fpm/php.ini
     echo "redis.session.lock_retries=10" >> /etc/php/8.0/fpm/php.ini
     echo "redis.session.lock_wait_time=10000" >> /etc/php/8.0/fpm/php.ini
+    echo "expose_php=off" >> /etc/php/8.0/fpm/php.ini
   fi
   if grep -q "env[PATH]" /etc/php/8.0/fpm/php-fpm.conf
     then
