@@ -30,6 +30,8 @@ services:
       - ROOT_URL=https://safdadhskafhd/chat/
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASS=supersecret
 #      - REG_TOKEN=${REG_TOKEN}
 #       - MAIL_URL=smtp://smtp.email
 #       - HTTP_PROXY=http://proxy.domain.com
@@ -94,6 +96,7 @@ services:
 EOF
 
 sed -i "s/safdadhskafhd/${domain}/g" docker-compose.yml
+sed -i "s/supersecret/${password1}/g" docker-compose.yml
 
 docker-compose up -d
 
