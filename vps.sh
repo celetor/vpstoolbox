@@ -612,7 +612,7 @@ MasterMenu() {
     ## 初始化Nextcloud
     if [[ ${install_nextcloud} == 1 ]]; then
     curl https://${domain}/nextcloud/
-    sleep 13s;
+    sleep 10s;
     ## Delete last line
     sed -i '$d' /usr/share/nginx/nextcloud/config/config.php
     echo "  'default_phone_region' => 'CN'," >> /usr/share/nginx/nextcloud/config/config.php
