@@ -216,7 +216,6 @@ userinput_full() {
   "网盘" "网盘" off \
   "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
   "rss" "RSSHUB + Miniflux(RSS生成器+RSS阅读器)" ${check_rss} \
-  "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
   "rclone" "Rclone" ${check_rclone} \
   "aria" "Aria2下载器" ${check_aria} \
   "onedrive" "Rclone Onedrive" ${check_rclone} \
@@ -225,6 +224,7 @@ userinput_full() {
   "file" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
   "通讯" "通讯" off \
   "chat" "Rocket Chat" ${check_chat} \
+  "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
   "安全" "安全" off \
   "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
   "影音" "影音" off \
