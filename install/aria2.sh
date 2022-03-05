@@ -137,7 +137,7 @@ fi
 cd /usr/share/nginx/ariang
 ariangver=$(curl -s "https://api.github.com/repos/mayswind/AriaNg/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 curl -LO https://github.com/mayswind/AriaNg/releases/download/${ariangver}/AriaNg-${ariangver}.zip
-unzip *
+unzip *.zip
 rm -rf *.zip
 cd
 TERM=ansi whiptail --title "安装中" --infobox "拉取全自动Aria2上传脚本中..." 7 68
