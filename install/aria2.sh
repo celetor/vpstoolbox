@@ -21,7 +21,7 @@ ariaver2=$(curl -s "https://api.github.com/repos/aria2/aria2/releases/latest" | 
 
 apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
 curl -LO --progress-bar https://github.com/aria2/aria2/releases/download/${ariaver1}/aria2-${ariaver2}.tar.xz
-xz --decompress aria2*.xz
+tar -xvf aria2*.xz
 rm *.xz
 cd /root/aria2*
 sed -i 's/"1", 1, 16/"128", 1, -1/g' /root/aria2*/src/OptionHandlerFactory.cc
