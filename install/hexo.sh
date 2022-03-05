@@ -311,18 +311,6 @@ $(cat /var/lib/tor/hidden_service/hostname)
 
 ---
 
-### i2p Service
-
-*默认安装: ❎*
-
-> 简介: 自建的i2p站点。
-
-> Introduction: self-build onion site.
-
-- <a href="https://$domain:443/i2p/" target="_blank" rel="noreferrer">https://$domain/${password1}_i2p/</a>
-
----
-
 ### Mail Service
 
 *默认安装: ❎*
