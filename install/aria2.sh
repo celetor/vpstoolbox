@@ -30,6 +30,7 @@ sed -i 's/new NumberOptionHandler(PREF_RETRY_WAIT, TEXT_RETRY_WAIT, "0", 0, 600/
 sed -i 's/new NumberOptionHandler(PREF_SPLIT, TEXT_SPLIT, "5", 1, -1,/new NumberOptionHandler(PREF_SPLIT, TEXT_SPLIT, "8", 1, -1,/g' /root/aria2*/src/OptionHandlerFactory.cc
 ./configure ARIA2_STATIC=yes
 make -j $(nproc --all)
+mkdir /usr/local/bin/
 cp -f /root/aria2*/src/aria2c /usr/local/bin/aria2c
 chmod +x /usr/local/bin/aria2c
 apt-get autoremove -y
