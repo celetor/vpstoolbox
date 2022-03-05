@@ -161,17 +161,6 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 **[Aria2+Rclone+Onedrive 实现全自动化下载](https://johnrosen1.com/2021/02/14/onedrive/)**
 
-## Nextcloud 配置
-
-1. 优化索引
-
-运行以下几行
-
-```
-sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:add-missing-indices
-sudo -u nginx php --define apc.enable_cli=1 /usr/share/nginx/nextcloud/occ db:convert-filecache-bigint
-```
-
 ## Qbittorrent手动添加的trackers一直尚未连线(Debian 10)
 
 > Ubuntu 18.04+ 用户请启用webui中高级选项中 “同时连线所有trackers”选项 。
