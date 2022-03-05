@@ -5,30 +5,23 @@
 upgrade_system(){
   set +e
 
+  ## Install lastest ubuntu lts
   if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
       ubuntu18_install=1
   fi
-  
-if [[ $(lsb_release -cs) == stretch ]] || [[ $(lsb_release -cs) == buster ]]; then
+  ## Install lastest stable debian
+  if [[ $(lsb_release -cs) == stretch ]] || [[ $(lsb_release -cs) == buster ]]; then
   debian10_install=1
-fi
+  fi
 
  if [[ $dist == ubuntu ]]; then
   if [[ $ubuntu18_install == 1 ]]; then
     cat > '/etc/apt/sources.list' << EOF
-#------------------------------------------------------------------------------#
-#                            OFFICIAL UBUNTU REPOS                             #
-#------------------------------------------------------------------------------#
-
-###### Ubuntu Main Repos
-deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
-#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
-
-###### Ubuntu Update Repos
-deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
-deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
-#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
-#deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse
+deb http://archive.canonical.com/ubuntu focal partner
 EOF
 fi
   apt-get update --fix-missing
