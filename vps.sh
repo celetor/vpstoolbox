@@ -459,11 +459,6 @@ install_moudles(){
   source speedtest.sh
   install_speedtest
   fi
-  if [[ ${install_stun} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/stun.sh
-  source stun.sh
-  install_stun
-  fi
   if [[ ${install_tor} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/tor.sh
   source tor.sh
