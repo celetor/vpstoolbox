@@ -38,7 +38,7 @@ userinput_standard() {
   "ss" "shadowsocks-rust" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
-  "port" "自定义Trojan端口(除nat机器外请勿选中)" off \
+  "port" "自定义Trojan-GFW端口" off \
   "test-only" "test-only" off 2>results
 
   while read choice; do
@@ -241,7 +241,7 @@ userinput_full() {
   "7" "MariaDB数据库" ${check_mariadb} \
   "redis" "Redis缓存数据库" off \
   "typecho" "Typecho" ${check_echo} \
-  "port" "自定义Trojan端口(除nat机器外请勿选中)" ${check_qbt_origin} \
+  "port" "自定义Trojan-GFW端口" ${check_qbt_origin} \
   "10" "Bt-Tracker(Bittorrent-tracker服务)" ${check_tracker} \
   "13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
   "test-only" "test-only" off 2>results
