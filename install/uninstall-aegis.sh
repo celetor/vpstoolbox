@@ -62,14 +62,11 @@ curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/
 
 if [[ $(lsb_release -cs) == bionic ]]; then
     cat > '/etc/apt/sources.list' << EOF
-#------------------------------------------------------------------------------#
-#                            OFFICIAL UBUNTU REPOS                             #
-#------------------------------------------------------------------------------#
-###### Ubuntu Main Repos
-deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
-###### Ubuntu Update Repos
-deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
-deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse
+deb http://archive.canonical.com/ubuntu focal partner
 EOF
 
   apt-get update --fix-missing
