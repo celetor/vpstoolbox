@@ -205,8 +205,7 @@ Introduction: download resources you want to your vps(support bt only but extrem
 
 #### Tips:
 
-1. 请将Bittorrent加密選項改为 ***強制加密(Require encryption)***！
-2. 请手动修改Trackers源为 <a href="https://trackerslist.com/all.txt" target="_blank" rel="noreferrer">https://trackerslist.com/all.txt</a>
+1. 请手动修改Trackers源为 <a href="https://trackerslist.com/all.txt" target="_blank" rel="noreferrer">https://trackerslist.com/all.txt</a>
 
 ---
 
