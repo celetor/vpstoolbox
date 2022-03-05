@@ -9,6 +9,8 @@ url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
+set +e
+
 install_aria2(){
 TERM=ansi whiptail --title "安装中" --infobox "安装Aria2中..." 7 68
 cd /root/
@@ -30,7 +32,7 @@ sed -i 's/new NumberOptionHandler(PREF_RETRY_WAIT, TEXT_RETRY_WAIT, "0", 0, 600/
 sed -i 's/new NumberOptionHandler(PREF_SPLIT, TEXT_SPLIT, "5", 1, -1,/new NumberOptionHandler(PREF_SPLIT, TEXT_SPLIT, "8", 1, -1,/g' /root/aria2*/src/OptionHandlerFactory.cc
 ./configure
 make -j $(nproc --all)
-mkdir /usr/local/bin/
+make install
 cp -f /root/aria2*/src/aria2c /usr/local/bin/aria2c
 chmod +x /usr/local/bin/aria2c
 rm -rf /root/aria2*
