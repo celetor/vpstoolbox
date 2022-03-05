@@ -436,16 +436,10 @@ userinput_full() {
   if [[ ${install_aria} == 1 ]]; then
     ariaport=$(shuf -i 13000-19000 -n 1)
     while [[ -z ${ariapath} ]]; do
-      ariapath=$(whiptail --inputbox --nocancel "Aria2 RPC Nginx Path(路径)" 8 68 /jsonrpc --title "Aria2 path input" 3>&1 1>&2 2>&3)
+      ariapath="/jsonrpc"
     done
     while [[ -z $ariapasswd ]]; do
-      ariapasswd=$(whiptail --passwordbox --nocancel "Aria2 rpc token(密码)" 8 68 --title "Aria2 rpc token input" 3>&1 1>&2 2>&3)
-      if [[ -z ${ariapasswd} ]]; then
-        ariapasswd=$(
-          head /dev/urandom | tr -dc 0-9 | head -c 10
-          echo ''
-        )
-      fi
+      ariapasswd=${password1}
     done
   fi
 }
