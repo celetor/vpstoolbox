@@ -127,6 +127,8 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 - [x] Debian9
 - [x] Ubuntu 20.xx
 - [x] Ubuntu 18.xx
+- [ ] Ubuntu 16.xx
+- [ ] Ubuntu 14.xx
 
 ## 项目实现 Program Language
 

@@ -5,7 +5,7 @@
 upgrade_system(){
   set +e
 
-  if [[ $(lsb_release -cs) == xenial ]]; then
+  if [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
       ubuntu18_install=1
   fi
   
