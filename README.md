@@ -125,6 +125,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 - [x] Debian11
 - [x] Debian10
 - [x] Debian9
+- [ ] Debian8
 - [x] Ubuntu 20.xx
 - [x] Ubuntu 18.xx
 - [ ] Ubuntu 16.xx
