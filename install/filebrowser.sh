@@ -6,7 +6,15 @@ install_filebrowser(){
 clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Filebrowser中..." 7 68
 colorEcho ${INFO} "Install Filebrowser ing"
-curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
+
+filever=$(curl -s https://api.github.com/repos/filebrowser/filebrowser/releases/latest | grep -o '"tag_name": ".*"' | sed 's/"//g' | sed 's/tag_name: //g')
+
+curl -LO https://github.com/filebrowser/filebrowser/releases/download/${filever}/linux-amd64-filebrowser.tar.gz
+tar -xvf linux-amd64-filebrowser.tar.gz
+cp -f filebrowser /usr/local/bin/filebrowser
+rm linux-amd64-filebrowser.tar.gz
+rm CHANGELOG.md LICENSE README.md filebrowser
+
   cat > '/etc/systemd/system/filebrowser.service' << EOF
 [Unit]
 Description=filebrowser browser
