@@ -10,7 +10,7 @@ if [[ $(lsb_release -cs) == bionic ]] || [[ $(lsb_release -cs) == xenial ]] || [
   ubuntu18_install=1
 fi
 ## Install lastest stable debian
-if [[ $(lsb_release -cs) == stretch ]] || [[ $(lsb_release -cs) == buster ]]; then
+if [[ $(lsb_release -cs) == stretch ]] || [[ $(lsb_release -cs) == buster ]] || [[ $(lsb_release -cs) == jessie ]]; then
   debian10_install=1
 fi
 
