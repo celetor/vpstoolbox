@@ -164,10 +164,6 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 **[Aria2+Rclone+Onedrive 实现全自动化下载](https://johnrosen1.com/2021/02/14/onedrive/)**
 
-## Qbittorrent手动添加的trackers一直尚未连线
-
-启用webui中选项-->"高级"中 **总是向同级的所有 Tracker 汇报**选项，这样trackers就不会出现尚未连线的状态了。
-
 ## 邮箱服务(Mail Service)使用条件
 
 1. 一台有**独立公网 IPv4**的非中国大陆 VPS/伺服器且**25/143/443/465/587/993 等 TCP 端口必须能正常使用**。
