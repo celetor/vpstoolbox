@@ -52,6 +52,13 @@ cd
 chmod 755 /usr/share/nginx/
 chown -R nginx:nginx /usr/share/nginx/
 systemctl restart qbittorrent.service
+
+cd /usr/share/nginx/qBittorrent/
+curl -LO https://github.com/CzBiX/qb-web/releases/download/nightly-20210808/qb-web-nightly-20210808.zip
+unzip qb-web-nightly-20210808.zip
+rm qb-web-nightly-20210808.zip
+mv dist web
+cd
 }
 
 
