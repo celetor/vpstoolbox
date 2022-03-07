@@ -2,11 +2,13 @@
 
 ## Qbittorrnet-enhanced-version模组 Qbittorrnet-enhanced-version moudle
 
-install_qbt_e(){
 set +e
+
+install_qbt_e(){
 clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Qbt加强版中..." 7 68
 colorEcho ${INFO} "安装增强版Qbittorrent(Install Qbittorrent ing)"
+apt-get install unzip -y
 apt-get remove qbittorrent-nox -y
 cd
 mkdir qbt
