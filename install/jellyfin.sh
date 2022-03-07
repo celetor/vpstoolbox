@@ -35,7 +35,6 @@ services:
   jellyfin:
     image: jellyfin/jellyfin
     container_name: jellyfin
-    user: uid:gid
     network_mode: "host"
     volumes:
       - /usr/share/nginx/jellyfin/config:/config
