@@ -253,8 +253,6 @@ Introduction: download any resources(formaly downloaded by qbt or aria2) from yo
 
 - <a href="https://$domain:443/jellyfin/" target="_blank" rel="noreferrer">https://$domain/jellyfin/</a>
 
-> *请自行修改初始用户名和密码！*
-
 ---
 
 ### Speedtest
