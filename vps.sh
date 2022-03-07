@@ -247,7 +247,6 @@ echo "nameserver 127.0.0.1" > /etc/resolvconf/resolv.conf.d/base
 resolvconf -u
 fi
 cd
-rm -rf *.sh
 clear
 }
 
