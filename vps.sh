@@ -554,15 +554,18 @@ MasterMenu() {
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/firewall.sh
     source firewall.sh
     openfirewall
+    rm firewall.sh
     ## NGINX安装
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nginx.sh
     source nginx.sh
     install_nginx
+    rm nginx.sh
     ## 证书签发
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/issuecert.sh
     source issuecert.sh
+    rm issuecert.sh
     ## HTTP证书签发
     if [[ ${httpissue} == 1 ]]; then
       http_issue
@@ -577,6 +580,7 @@ MasterMenu() {
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nginx-config.sh
     source nginx-config.sh
     nginx_config
+    rm nginx-config.sh
     clean_env
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     ## 输出结果
@@ -595,16 +599,19 @@ MasterMenu() {
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/userinput.sh
     source userinput.sh
     userinput_full
+    rm userinput.sh
     ## 检测证书是否已有
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/detectcert.sh
     source detectcert.sh
     detectcert
+    rm detectcert.sh
     ## 开始安装
     TERM=ansi whiptail --title "开始安装" --infobox "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!" 7 68
     colorEcho ${INFO} "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!"
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/system-upgrade.sh
     source system-upgrade.sh
     upgrade_system
+    rm system-upgrade.sh
     ## 基础软件安装
     install_base
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
@@ -628,6 +635,7 @@ MasterMenu() {
     if [[ ${dnsissue} == 1 ]]; then
       dns_issue
     fi
+    rm issuecert.sh
     ## 具体软件安装
     install_moudles
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
