@@ -108,13 +108,10 @@ userinput_standard() {
       fi
     done
     while [[ -z ${password2} ]]; do
-      password2=$(whiptail --passwordbox --nocancel "Trojan-GFW 密码二 (若不確定，請直接回車，会随机生成)" 8 68 --title "password2 input" 3>&1 1>&2 2>&3)
-      if [[ -z ${password2} ]]; then
         password2=$(
           head /dev/urandom | tr -dc a-z0-9 | head -c 9
           echo ''
         )
-      fi
     done
   fi
   if [[ ${password1} == ${password2} ]]; then
@@ -386,13 +383,10 @@ userinput_full() {
       fi
     done
     while [[ -z ${password2} ]]; do
-      password2=$(whiptail --passwordbox --nocancel "Trojan-GFW 密码二 (若不確定，請直接回車，会随机生成)" 8 68 --title "password2 input" 3>&1 1>&2 2>&3)
-      if [[ -z ${password2} ]]; then
         password2=$(
           head /dev/urandom | tr -dc a-z0-9 | head -c 9
           echo ''
         )
-      fi
     done
   fi
   if [[ ${password1} == ${password2} ]]; then
