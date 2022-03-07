@@ -17,7 +17,8 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 ## 前提条件及要点 Usage instruction
 
 1. **Trojan-GFW 不支援 Cloudflare CDN ！！！** ( ![请勿开启CDN](images/cf1.png) )
-2. 请以 **root(sudo -i)** 运行。![root](images/root.png)
+2. 请以 **root(sudo -i)** 运行。
+![root](images/root.png)
 3. **可覆盖安装**。
 4. 请自行[购买](https://www.namesilo.com/?rid=685fb47qi)/[白嫖](https://www.freenom.com)/使用现有的**域名** 并 **[完成 DNS A 解析](https://dnschecker.org/)**，即将域名指向你的 VPS IP,(Namesilo 最慢需要 15+min 生效)。![dns](images/dns.png)
 5. 请在 服务器/VPS/其他各种 控制面板中 **完全关闭或禁用 VPS 防火墙(即开放所有 TCP + UDP 端口)。![防火墙](firewall.png)**
