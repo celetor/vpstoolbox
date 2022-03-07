@@ -30,38 +30,5 @@ sed -i "s/<IgnoreVirtualInterfaces>true<\/IgnoreVirtualInterfaces>/<IgnoreVirtua
 
 systemctl restart jellyfin
 
-## Docker install
-
-# cd /usr/share/nginx/
-# mkdir jellyfin
-# cd /usr/share/nginx/jellyfin
-# mkdir /usr/share/nginx/jellyfin/config
-# mkdir /usr/share/nginx/jellyfin/cache
-# mkdir /usr/share/nginx/jellyfin/media
-
-#     cat > "docker-compose.yml" << "EOF"
-# version: "3.5"
-# services:
-#   jellyfin:
-#     image: jellyfin/jellyfin
-#     container_name: jellyfin
-#     # user: uid:gid
-#     network_mode: "host"
-#     volumes:
-#       - /usr/share/nginx/jellyfin/config:/config
-#       - /usr/share/nginx/jellyfin/cache:/cache
-#       - /usr/share/nginx/jellyfin/media:/media
-#       - /usr/share/nginx/:/media2:ro
-#     restart: "unless-stopped"
-#     # Optional - alternative address used for autodiscovery
-#     environment:
-#       - Base_URL:=/jellyfin/
-
-# EOF
-# sed -i "s/http/https/g" docker-compose.yml
-# sed -i "s/example.com/${domain}\/jellyfin\//g" docker-compose.yml
-
-# docker-compose up -d
-
 cd
 }
