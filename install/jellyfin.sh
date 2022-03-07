@@ -2,8 +2,6 @@
 
 ## JellyFin模组 Jellyfin moudle
 
-# *:8096 port
-
 set +e
 
 #---Author Info---
