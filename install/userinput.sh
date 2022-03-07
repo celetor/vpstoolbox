@@ -262,8 +262,8 @@ userinput_full() {
       install_dnscrypt=1
       ;;
     jellyfin)
-      #check_dns="on"
       install_jellyfin=1
+      install_docker=1
       ;;
     fast)
       tcp_fastopen="true"
