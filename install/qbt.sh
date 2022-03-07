@@ -62,5 +62,3 @@ rm qb-web-nightly-20210808.zip
 mv dist web
 cd
 }
-
-
