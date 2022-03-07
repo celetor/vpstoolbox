@@ -96,7 +96,7 @@ echo -e "\e[40;33;1m The [${domain}] expiration date is : \${last_date} && [\${d
 echo -e "请运行以下命令查看更多 cat /root/.trojan/letcron.log"
 echo -e "--------------------------------------------------------------------------"
 echo -e " --- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
-echo -e " --- 请在VPS控制面板上彻底禁用防火墙(firewall)以达到最佳效果(allow all ports) ---"
+echo -e " --- 请在VPS控制面板上彻底禁用防火墙以达到最佳效果 ---"
 ###
 echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
 echo -e "    \${YELLOW}trojan://$password2@$domain:${trojanport}\${NOCOLOR}"
