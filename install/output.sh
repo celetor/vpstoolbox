@@ -125,13 +125,13 @@ fi
 if [[ -d /usr/share/nginx/nextcloud/ ]]; then
 echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Nextcloud links) ---"
 ###
-echo -e "    \${YELLOW}https://$domain/nextcloud/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://${domain}:${trojanport}/nextcloud/\${NOCOLOR}"
 echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 ###
 fi
 echo -e " --- 請\${bold}訪問以下鏈接\${normal}以獲得详细結果(Please visit the following link to get more info) "
-echo -e "    \${YELLOW}https://$domain/${password1}/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://${domain}:${trojanport}/${password1}/\${NOCOLOR}"
 echo -e "*********************"
 EOF
 chmod +x /etc/profile.d/mymotd.sh
