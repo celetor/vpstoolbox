@@ -40,9 +40,9 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 > 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考（删除线表示该应用已被淘汰或无实际价值）。
 
 - 代理
-  - [x] [Trojan-gfw 可自定义端口 不支持Cloudflare CDN转发](https://github.com/trojan-gfw/trojan)
-  - [x] [Vless(grpc) 可自定义端口 低延迟 支持Cloudflare CDN转发](https://xtls.github.io/config/transports/grpc.html)
-  - [ ] [Shadowsocks-rust 仅推荐搭配IPLC/IEPL使用](https://github.com/shadowsocks/shadowsocks-rust)
+  - [x] [Trojan-gfw 可自定义端口 不支持Cloudflare CDN转发 无最低配置要求](https://github.com/trojan-gfw/trojan)
+  - [x] [Vless(grpc) 可自定义端口 低延迟 支持Cloudflare CDN转发 无最低配置要求](https://xtls.github.io/config/transports/grpc.html)
+  - [ ] [Shadowsocks-rust 仅推荐搭配IPLC/IEPL使用 不支持Cloudflare CDN转发 无最低配置要求](https://github.com/shadowsocks/shadowsocks-rust)
 - 系统
   - [x] [Acme.sh 支持HTTP或DNS API方式申请Let's encrypt证书](https://github.com/acmesh-official/acme.sh)
   - [x] [IPv6](https://zh.wikipedia.org/wiki/IPv6)
@@ -53,28 +53,28 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
   - [x] [Hexo Blog](https://github.com/hexojs/hexo)
   - [ ] [Typecho](https://typecho.org/)
 - 下载
-  - [ ] [Qbittorrent_enhanced_version](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
+  - [ ] [Qbittorrent_enhanced_version 高硬盘需求](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
   - [ ] [Aria2](https://github.com/aria2/aria2)
   - [ ] [AriaNG](https://github.com/mayswind/AriaNg/)
 - 网盘
-  - [ ] [Nextcloud](https://github.com/nextcloud/server)
-  - [ ] [Rclone](https://github.com/rclone/rclone)
-  - [ ] [Filebrowser](https://github.com/filebrowser/filebrowser)
-  - [ ] [Onedrive](https://johnrosen1.com/2021/02/14/onedrive/)
+  - [ ] [Nextcloud 高硬盘需求](https://github.com/nextcloud/server)
+  - [ ] [Rclone 仅作为API使用 无最低配置要求](https://github.com/rclone/rclone)
+  - [ ] [Filebrowser 高硬盘需求](https://github.com/filebrowser/filebrowser)
+  - [ ] [Onedrive 高网络需求](https://johnrosen1.com/2021/02/14/onedrive/)
 - RSS
-  - [ ] [RSSHub](https://github.com/DIYgod/RSSHub)
-  - [ ] [Miniflux](https://miniflux.app/index.html)
+  - [ ] [RSSHub 高硬盘需求](https://github.com/DIYgod/RSSHub)
+  - [ ] [Miniflux 无最低配置要求](https://miniflux.app/index.html)
         ~~- [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)~~
 - 影音(待完善)
-  - [ ] [JellyFin](https://github.com/jellyfin/jellyfin)
+  - [ ] [JellyFin 高CPU需求](https://github.com/jellyfin/jellyfin)
 - 邮箱
-  - [ ] [Mail Service](https://johnrosen1.com/2020/08/27/mail1/)
+  - [ ] [Mail Service 高内存需求](https://johnrosen1.com/2020/08/27/mail1/)
 - 通讯
-  - [ ] [RocketChat](https://github.com/RocketChat/Rocket.Chat)
+  - [ ] [RocketChat 高内存需求](https://github.com/RocketChat/Rocket.Chat)
 - 测速
-  - [ ] [Librespeed](https://github.com/librespeed/speedtest)
+  - [ ] [Librespeed 无最低配置要求](https://github.com/librespeed/speedtest)
 - 安全
-  - [x] [Fail2ban](https://github.com/fail2ban/fail2ban)
+  - [x] [Fail2ban 无最低配置要求](https://github.com/fail2ban/fail2ban)
 - 数据库
   - [ ] [MariaDB](https://github.com/MariaDB/server)
   - [ ] [Redis-server](https://github.com/redis/redis)
@@ -84,12 +84,12 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
   ~~- [i2pd](https://github.com/PurpleI2P/i2pd)~~
 - 其他
   - [ ] [Docker](https://www.docker.com/)
-  - [ ] [Opentracker](https://erdgeist.org/arts/software/opentracker/)
+  - [ ] [Opentracker 高网络需求](https://erdgeist.org/arts/software/opentracker/)
   - [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
-  - [ ] [Qbittorrent_origin_version](https://github.com/qbittorrent/qBittorrent)
+  - [ ] [Qbittorrent_origin_version 高硬盘需求](https://github.com/qbittorrent/qBittorrent)
   ~~- [ ] [stun-server](https://github.com/jselbie/stunserver)~~
 - 区块链
-  - [ ] [Monero/XMR](https://github.com/monero-project/monero-gui)
+  - [ ] [Monero/XMR 高硬盘需求](https://github.com/monero-project/monero-gui)
 
 > 欢迎 PR 更多应用。
 
