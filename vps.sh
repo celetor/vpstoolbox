@@ -160,6 +160,7 @@ prasejson(){
   cat > '/root/.trojan/config.json' << EOF
 {
   "installed": "1",
+  "trojanport": "${trojanport}",
   "domain": "$domain",
   "password1": "$password1",
   "password2": "$password2",
@@ -195,6 +196,7 @@ EOF
 ## 读取配置文件
 readconfig(){
   domain="$( jq -r '.domain' "/root/.trojan/config.json" )"
+  trojanport="$( jq -r '.trojanport' "/root/.trojan/config.json" )"
   password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
   password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
   qbtpath="$( jq -r '.qbtpath' "/root/.trojan/config.json" )"
