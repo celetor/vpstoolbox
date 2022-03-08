@@ -40,7 +40,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 - 代理
   - [x] [Trojan-gfw 可自定义端口 不支持Cloudflare CDN转发](https://github.com/trojan-gfw/trojan)
   - [x] [Vless(grpc) 可自定义端口 低延迟 支持Cloudflare CDN转发](https://xtls.github.io/config/transports/grpc.html)
-  - [ ] [Shadowsocks-rust](https://github.com/shadowsocks/shadowsocks-rust)
+  - [ ] [Shadowsocks-rust 仅推荐搭配IPLC/IEPL使用](https://github.com/shadowsocks/shadowsocks-rust)
 - 系统
   - [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
   - [x] [IPv6](https://zh.wikipedia.org/wiki/IPv6)
