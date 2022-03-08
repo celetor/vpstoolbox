@@ -38,7 +38,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 > 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考（删除线表示该应用已被淘汰或无实际价值）。
 
 - 代理
-  - [x] [Trojan-gfw (可自定义端口)](https://github.com/trojan-gfw/trojan)
+  - [x] [Trojan-gfw 可自定义端口 不支持Cloudflare CDN转发](https://github.com/trojan-gfw/trojan)
   - [x] [Vless(grpc) 低延迟 支持Cloudflare CDN转发](https://xtls.github.io/config/transports/grpc.html)
   - [ ] [Shadowsocks-rust](https://github.com/shadowsocks/shadowsocks-rust)
 - 系统
