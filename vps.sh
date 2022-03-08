@@ -391,9 +391,11 @@ install_moudles(){
   install_mongodb
   fi
   ## Install Hexo
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/hexo.sh
-  source hexo.sh
-  install_hexo
+  if [[ ${install_grpc} == 1 ]]; then
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/grpc.sh
+  source grpc.sh
+  install_grpc
+  fi
   if [[ ${install_ss_rust} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/ss-rust.sh
   source ss-rust.sh
@@ -482,16 +484,14 @@ install_moudles(){
   if [[ ${install_onedrive} == 1 ]]; then
   curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/rclone_config.sh | sudo bash
   fi
-  if [[ ${install_grpc} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/grpc.sh
-  source grpc.sh
-  install_grpc
-  fi
   if [[ ${install_netdata} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/netdata.sh
   source netdata.sh
   install_netdata
   fi
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/hexo.sh
+  source hexo.sh
+  install_hexo
   ## Install Trojan-gfw
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/trojan.sh
   source trojan.sh
