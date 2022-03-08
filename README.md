@@ -35,6 +35,8 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 ## 支援的软件及应用 Supported applications
 
+所有应用均支援全自动化安装与配置，**开箱即用** ！
+
 > 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考（删除线表示该应用已被淘汰或无实际价值）。
 
 - 代理
@@ -42,7 +44,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
   - [x] [Vless(grpc) 可自定义端口 低延迟 支持Cloudflare CDN转发](https://xtls.github.io/config/transports/grpc.html)
   - [ ] [Shadowsocks-rust 仅推荐搭配IPLC/IEPL使用](https://github.com/shadowsocks/shadowsocks-rust)
 - 系统
-  - [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
+  - [x] [Acme.sh 支持HTTP或DNS API方式申请Let's encrypt证书](https://github.com/acmesh-official/acme.sh)
   - [x] [IPv6](https://zh.wikipedia.org/wiki/IPv6)
   - [x] [Tcp-BBR and tcp_fastopen](https://zh.wikipedia.org/wiki/TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6#TCP_BBR)
   - [x] [Netdata](https://github.com/netdata/netdata)
