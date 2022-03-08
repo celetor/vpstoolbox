@@ -45,17 +45,17 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
   - [ ] [Shadowsocks-rust 仅推荐搭配IPLC/IEPL使用 不支持Cloudflare CDN转发 无最低配置要求](https://github.com/shadowsocks/shadowsocks-rust)
 - 系统
   - [x] [Acme.sh 支持HTTP或DNS API方式申请Let's encrypt证书](https://github.com/acmesh-official/acme.sh)
-  - [x] [IPv6](https://zh.wikipedia.org/wiki/IPv6)
-  - [x] [Tcp-BBR and tcp_fastopen](https://zh.wikipedia.org/wiki/TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6#TCP_BBR)
-  - [x] [Netdata](https://github.com/netdata/netdata)
+  - [x] [IPv6 无要求](https://zh.wikipedia.org/wiki/IPv6)
+  - [x] [Tcp-BBR and tcp_fastopen 无要求](https://zh.wikipedia.org/wiki/TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6#TCP_BBR)
+  - [x] [Netdata 无最低配置要求](https://github.com/netdata/netdata)
 - 前端
-  - [x] [Nginx](https://github.com/nginx/nginx)
-  - [x] [Hexo Blog](https://github.com/hexojs/hexo)
-  - [ ] [Typecho](https://typecho.org/)
+  - [x] [Nginx 无最低配置要求](https://github.com/nginx/nginx)
+  - [x] [Hexo Blog 无最低配置要求](https://github.com/hexojs/hexo)
+  - [ ] [Typecho 无最低配置要求](https://typecho.org/)
 - 下载
   - [ ] [Qbittorrent_enhanced_version 高硬盘需求](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
-  - [ ] [Aria2](https://github.com/aria2/aria2)
-  - [ ] [AriaNG](https://github.com/mayswind/AriaNg/)
+  - [ ] [Aria2 高硬盘需求](https://github.com/aria2/aria2)
+  - [ ] [AriaNG 仅作为前端使用 无最低配置要求](https://github.com/mayswind/AriaNg/)
 - 网盘
   - [ ] [Nextcloud 高硬盘需求](https://github.com/nextcloud/server)
   - [ ] [Rclone 仅作为API使用 无最低配置要求](https://github.com/rclone/rclone)
