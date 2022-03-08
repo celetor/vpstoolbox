@@ -45,6 +45,9 @@ echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
   if [[ -f /usr/bin/xray ]]; then
 echo -e "Vless(Grpc):\t\t"\$(systemctl is-active grpc)
   fi
+  if [[ -f /usr/sbin/ssserver ]]; then
+echo -e "SS-rust:\t\t"\$(systemctl is-active ssserver)
+  fi
   if [[ -f /usr/sbin/nginx ]]; then
 echo -e "Nginx:\t\t\t"\$(systemctl is-active nginx)
   fi
