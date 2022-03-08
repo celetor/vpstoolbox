@@ -111,7 +111,6 @@ echo -e "    \${YELLOW}trojan://$password2@$domain:${trojanport}\${NOCOLOR}"
 ###
 if [[ -f /usr/bin/xray ]]; then
 echo -e " --- \${BLUE}Vless(grpc)快速链接\${NOCOLOR}(vless grpc links) ---"
-###
 echo -e "    \${YELLOW}vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#vless(grpc_direct)\${NOCOLOR}"
 echo -e " --- \${BLUE}Vless(grpc)支持Cloudflare CDN链接\${NOCOLOR}(vless grpc links) ---"
 echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#vless(grpc_cdn)\${NOCOLOR}"
