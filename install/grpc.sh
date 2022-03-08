@@ -57,7 +57,19 @@ cd /etc/grpc
       "protocol": "blackhole",
       "settings": {}
     }
-  ]
+  ],
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "direct"
+      }
+    ]
+  }
 }
 EOF
 
