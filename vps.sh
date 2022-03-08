@@ -297,7 +297,6 @@ if [[ $? == 0 ]] || [[ -d /usr/local/aegis ]]; then
 curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/uninstall-aegis.sh
 source uninstall-aegis.sh
 uninstall_aegis
-rm uninstall_aegis.sh
 fi
 
 }
