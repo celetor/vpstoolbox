@@ -6,6 +6,7 @@ set +e
 
 install_grpc(){
 
+apt-get install unzip -y
 mkdir /etc/tmp/
 cd /etc/tmp/
 curl -LO --retry 5 https://github.com/XTLS/Xray-core/releases/download/v1.5.3/Xray-linux-64.zip
