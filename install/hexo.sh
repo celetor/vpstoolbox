@@ -290,18 +290,6 @@ Introduction: just like discord.
 
 ---
 
-### Tor Service
-
-*默认安装: ❎*
-
-> 简介: 自建的onion站点。
-
-> Introduction: self-build onion site.
-
-$(cat /var/lib/tor/hidden_service/hostname)
-
----
-
 ### Mail Service
 
 *默认安装: ❎*
