@@ -73,11 +73,6 @@ jobs:
   - name: local
     url : http://127.0.0.1:9323/metrics
 EOF
-#cat > '/opt/netdata/etc/netdata/python.d/web_log.conf' << EOF
-#nginx_log:
-#  name  : 'nginx_log'
-#  path  : '/var/log/nginx/access.log'
-#EOF
 systemctl enable netdata
 systemctl restart netdata
 clear
