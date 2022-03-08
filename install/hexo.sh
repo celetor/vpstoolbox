@@ -96,11 +96,6 @@ PS: ***不支援Cloudflare CDN ❗***
 1. trojan://$password1@$domain:443
 2. trojan://$password2@$domain:443
 
-#### Trojan-GFW QR codes(二维码) (不支援python3-qrcode的系统会404!)
-
-1. <a href="https://$domain/$password1.png" target="_blank">QR code 1</a>
-2. <a href="https://$domain/$password2.png" target="_blank">QR code 2</a>
-
 #### 相关链接(重要!)
 
 1. <a href="https://github.com/trojan-gfw/igniter/releases" target="_blank" rel="noreferrer">Android client</a> 安卓客户端

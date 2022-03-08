@@ -39,12 +39,6 @@ server {
     #http2_push /js/schemes/muse.js;
     #http2_push /js/next-boot.js;
   }
-  location /${password1}.png {
-    root /usr/share/nginx/html/;
-  }
-  location /${password2}.png {
-    root /usr/share/nginx/html/;
-  }
   location /client1-${password1}.json {
     root /usr/share/nginx/html/;
   }
