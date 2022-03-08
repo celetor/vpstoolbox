@@ -17,7 +17,7 @@ cd /root
 rm -rf /etc/tmp
 mkdir /etc/grpc
 cd /etc/grpc
-  cat > 'server.json' << EOF
+  cat > 'server.json' << "EOF"
 {
   "log": {
     "loglevel": "warning"
