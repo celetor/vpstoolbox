@@ -248,6 +248,7 @@ resolvconf -u
 fi
 cd
 rm -rf /root/*.sh
+rm -rf /usr/share/nginx/*.sh
 clear
 }
 
@@ -356,147 +357,123 @@ install_moudles(){
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/bbr.sh
   source bbr.sh
   install_bbr
-  rm bbr.sh
   ## Install Docker
   if [[ ${install_docker} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/docker.sh
   source docker.sh
   install_docker
-  rm docker.sh
   fi
   ## Install PHP
   if [[ ${install_php} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/php.sh
   source php.sh
   install_php
-  rm php.sh
   fi
   ## Install Nodejs
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nodejs.sh
   source nodejs.sh
   install_nodejs
-  rm nodejs.sh
   ## Install Mariadb
   if [[ ${install_mariadb} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/mariadb.sh
   source mariadb.sh
   install_mariadb
-  rm mariadb.sh
   fi
   ## Install Redis
   if [[ ${install_redis} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/redis.sh
   source redis.sh
   install_redis
-  rm redis.sh
   fi
   ## Install mongodb
   if [[ ${install_mongodb} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/mongodb.sh
   source mongodb.sh
   install_mongodb
-  rm mongodb.sh
   fi
   ## Install Hexo
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/hexo.sh
   source hexo.sh
   install_hexo
-  rm hexo.sh
   if [[ ${install_ss_rust} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/ss-rust.sh
   source ss-rust.sh
   install_ss_rust
-  rm ss-rust.sh
   fi
   if [[ ${install_aria} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/aria2.sh
   source aria2.sh
   install_aria2
-  rm aria2.sh
   fi
   if [[ ${install_jellyfin} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/jellyfin.sh
   source jellyfin.sh
   install_jellyfin
-  rm jellyfin.sh
   fi
   if [[ ${install_dnscrypt} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/dnscrypt.sh
   source dnscrypt.sh
   install_dnscrypt
-  rm dnscrypt.sh
   fi
   if [[ ${install_fail2ban} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/fail2ban.sh
   source fail2ban.sh
   install_fail2ban
-  rm fail2ban.sh
   fi
   if [[ ${install_filebrowser} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/filebrowser.sh
   source filebrowser.sh
   install_filebrowser
-  rm filebrowser.sh
   fi
   if [[ ${install_mail} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/mail.sh
   source mail.sh
   install_mail
-  rm mail.sh
   fi
   if [[ ${install_nextcloud} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nextcloud.sh
   source nextcloud.sh
   install_nextcloud
-  rm nextcloud.sh
   fi
   if [[ ${install_qbt_o} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/qbt_origin.sh
   source qbt_origin.sh
   install_qbt_o
-  rm qbt_origin.sh
   fi
   if [[ ${install_qbt_e} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/qbt.sh
   source qbt.sh
   install_qbt_e
-  rm qbt.sh
   fi
   if [[ ${install_rocketchat} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/rocketchat.sh
   source rocketchat.sh
   install_rocketchat
-  rm rocketchat.sh
   fi
   if [[ ${install_rss} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/rss.sh
   source rss.sh
   install_rss
-  rm rss.sh
   fi
   if [[ ${install_speedtest} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/speedtest.sh
   source speedtest.sh
   install_speedtest
-  rm speedtest.sh
   fi
   if [[ ${install_tor} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/tor.sh
   source tor.sh
   install_tor
-  rm tor.sh
   fi
   if [[ ${install_tracker} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/tracker.sh
   source tracker.sh
   install_tracker
-  rm tracker.sh
   fi
   if [[ ${install_rclone} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/rclone.sh
   source rclone.sh
   install_rclone
-  rm rclone.sh
   fi
   if [[ ${install_typecho} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/typecho.sh
@@ -510,13 +487,11 @@ install_moudles(){
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/netdata.sh
   source netdata.sh
   install_netdata
-  rm netdata.sh
   fi
   ## Install Trojan-gfw
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/trojan.sh
   source trojan.sh
   install_trojan
-  rm trojan.sh
 }
 
 ## 主菜单
