@@ -313,7 +313,6 @@ if [[ $install_status != 1 ]]; then
   #echo "nameserver 1.0.0.1" >> /etc/resolvconf/resolv.conf.d/base
   #echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/base
   #resolvconf -u
-  prasejson
   if [[ $(systemctl is-active caddy) == active ]]; then
       systemctl stop caddy
       systemctl disable caddy
@@ -574,6 +573,7 @@ MasterMenu() {
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/userinput.sh
     source userinput.sh
     userinput_full
+    prasejson
     rm userinput.sh
     ## 检测证书是否已有
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/detectcert.sh
