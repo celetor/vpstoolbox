@@ -33,26 +33,13 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 1. 本项目不对使用 Vultr 提供的机器造成的任何可能问题负责(this project is not responsible for any possible problems caused by Vultr machines) !
 2. 本项目部分非必须应用需要较高的系统资源和服务器配置(Rocket.chat以及邮箱等)，请量力而行 ！
 
-## 可能的错误及原因
-
-1. 证书签发失败
-> 可能原因: （1）tcp 80/443即tcp http/https端口未开放 （2）域名A解析未完成 或 api信息输入错误
-2. 重启后连不上了
-> 可能原因: （1）VPS厂商面板问题(不常见)（2）重启时间长,请等待
-3. 某个服务 404 / 502 了
-> 可能原因: （1）安装清单里面没有勾选（2）某个服务掉线了(请及时反馈)
-4. 安装中途卡住了  
-> 可能原因: （1）网络缓慢或出错（2）CPU或硬盘 垃圾导致某个安装过程缓慢
-5. 安装后连不上 
-> 可能原因: （1）客户端配置错误（2）本地网络问题（3）某个服务掉线了(请及时反馈)
-
 ## 支援的软件及应用 Supported applications
 
 > 打勾的为启用默认安装的,其余请手动选中以安装,分类标签仅供参考（删除线表示该应用已被淘汰或无实际价值）。
 
 - 代理
   - [x] [Trojan-gfw (可自定义端口)](https://github.com/trojan-gfw/trojan)
-  - [x] [Vless(grpc)](https://xtls.github.io/config/transports/grpc.html)
+  - [x] [Vless(grpc) 低延迟 支持Cloudflare CDN转发](https://xtls.github.io/config/transports/grpc.html)
   - [ ] [Shadowsocks-rust](https://github.com/shadowsocks/shadowsocks-rust)
 - 系统
   - [x] [Acme.sh](https://github.com/acmesh-official/acme.sh)
@@ -104,6 +91,32 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 > 欢迎 PR 更多应用。
 
+## 支援的 Linux 发行版
+
+> 打勾的为测试过的,保证可用性,未打勾的表示理论上支援但未测试。
+
+- [x] Debian11
+- [x] Debian10
+- [x] Debian9
+- [ ] Debian8
+- [x] Ubuntu 20.xx
+- [x] Ubuntu 18.xx
+- [ ] Ubuntu 16.xx
+- [ ] Ubuntu 14.xx
+
+## 可能的错误及原因
+
+1. 证书签发失败
+> 可能原因: （1）tcp 80/443即tcp http/https端口未开放 （2）域名A解析未完成 或 api信息输入错误
+2. 重启后连不上了
+> 可能原因: （1）VPS厂商面板问题(不常见)（2）重启时间长,请等待
+3. 某个服务 404 / 502 了
+> 可能原因: （1）安装清单里面没有勾选（2）某个服务掉线了(请及时反馈)
+4. 安装中途卡住了  
+> 可能原因: （1）网络缓慢或出错（2）CPU或硬盘 垃圾导致某个安装过程缓慢
+5. 安装后连不上 
+> 可能原因: （1）客户端配置错误（2）本地网络问题（3）某个服务掉线了(请及时反馈)
+
 ## 尚未添加/整合/测试的软件 To be done
 
 咕咕咕。
@@ -121,19 +134,6 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 - 前端
 
 - [mikutap](https://github.com/akirarika/mikutap)
-
-## 支援的 Linux 发行版
-
-> 打勾的为测试过的,保证可用性,未打勾的表示理论上支援但未测试。
-
-- [x] Debian11
-- [x] Debian10
-- [x] Debian9
-- [ ] Debian8
-- [x] Ubuntu 20.xx
-- [x] Ubuntu 18.xx
-- [ ] Ubuntu 16.xx
-- [ ] Ubuntu 14.xx
 
 ## 项目实现 Program Language
 
