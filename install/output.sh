@@ -107,10 +107,19 @@ echo -e " --- 请在VPS控制面板上彻底禁用防火墙以达到最佳效果
 echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
 echo -e "    \${YELLOW}trojan://$password2@$domain:${trojanport}\${NOCOLOR}"
 ###
+if [[ -f /usr/bin/xray ]]; then
 echo -e " --- \${BLUE}Vless(grpc)快速链接\${NOCOLOR}(vless grpc links) ---"
 ###
 echo -e "    \${YELLOW}vless://${uuid_new}@${myip}:443?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#test\${NOCOLOR}"
 ###
+fi
+if [[ -f /usr/sbin/ssserver ]]; then
+echo -e " --- \${BLUE}SS-rust快速链接\${NOCOLOR}(ss-rust links) ---"
+###
+echo -e "    \${YELLOW}ss://aes-128-gcm:${password1}@${domain}:8388#iplc-only\${NOCOLOR}"
+echo -e "    \${YELLOW}ss://$(echo "aes-128-gcm:${password1}@${domain}:8388" | base64)#iplc-only\${NOCOLOR}"
+###
+fi
 if [[ -d /usr/share/nginx/nextcloud/ ]]; then
 echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Nextcloud links) ---"
 ###
