@@ -16,6 +16,7 @@ install_nextcloud(){
     rm latest.zip
     chown -R nginx:nginx /usr/share/nginx/nextcloud/
     chmod +x /usr/share/nginx/nextcloud/occ
+    nextcloud_installed=1
     cd
   else
   mysql -u root -e "CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"

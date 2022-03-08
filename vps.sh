@@ -625,7 +625,7 @@ MasterMenu() {
     rm nginx-config.sh
     clean_env
     ## 初始化Nextcloud
-    if [[ ${install_nextcloud} == 1 ]]; then
+    if [[ ${install_nextcloud} == 1 ]] && [[ ${nextcloud_installed} != 1 ]]; then
     curl https://${domain}/nextcloud/
     sleep 10s;
     ## Delete last line
