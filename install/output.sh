@@ -42,6 +42,9 @@ echo -e " --- \${BLUE}服務狀態(Service Status)\${NOCOLOR} ---"
   if [[ -f /usr/local/bin/trojan ]]; then
 echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
   fi
+  if [[ -f /usr/bin/xray ]]; then
+echo -e "Vless(Grpc):\t\t"\$(systemctl is-active grpc)
+  fi
   if [[ -f /usr/sbin/nginx ]]; then
 echo -e "Nginx:\t\t\t"\$(systemctl is-active nginx)
   fi
@@ -111,7 +114,6 @@ echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 fi
 echo -e " --- 請\${bold}訪問以下鏈接\${normal}以獲得详细結果(Please visit the following link to get more info) "
 echo -e "    \${YELLOW}https://$domain/${password1}/\${NOCOLOR}"
-echo -e " --- 如需更多信息，請訪問 https://github.com/johnrosen1/vpstoolbox"
 echo -e "*********************"
 EOF
 chmod +x /etc/profile.d/mymotd.sh
