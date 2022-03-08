@@ -194,7 +194,7 @@ fi
     "no_delay": true,
     "keep_alive": true,
     "reuse_port": false,
-    "fast_open": ${tcp_fastopen},
+    "fast_open": false,
     "fast_open_qlen": 20
   }
 }
@@ -229,7 +229,7 @@ EOF
     "no_delay": true,
     "keep_alive": true,
     "reuse_port": false,
-    "fast_open": ${tcp_fastopen},
+    "fast_open": false,
     "fast_open_qlen": 20
   }
 }
@@ -266,7 +266,7 @@ if [[ -n $myipv6 ]]; then
     "no_delay": true,
     "keep_alive": true,
     "reuse_port": false,
-    "fast_open": ${tcp_fastopen},
+    "fast_open": false,
     "fast_open_qlen": 20
   }
 }
@@ -345,8 +345,6 @@ EOF
   }
 }
 EOF
-./trojan-url.py -q -i /usr/share/nginx/client1.json -o /usr/share/nginx/html/$password1.png
-./trojan-url.py -q -i /usr/share/nginx/client2.json -o /usr/share/nginx/html/$password2.png
 rm /usr/share/nginx/client1.json
 rm /usr/share/nginx/client2.json
 rm -rf trojan-url.py
