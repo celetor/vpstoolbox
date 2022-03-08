@@ -93,8 +93,8 @@ PS: ***不支援Cloudflare CDN ❗***
 
 #### Trojan-GFW Share Links
 
-1. trojan://$password1@$domain:443
-2. trojan://$password2@$domain:443
+1. trojan://$password1@$domain:${trojanport}
+2. trojan://$password2@$domain:${trojanport}
 
 #### 相关链接(重要!)
 
@@ -104,6 +104,18 @@ PS: ***不支援Cloudflare CDN ❗***
 4. <a href="https://github.com/NetchX/Netch" target="_blank" rel="noreferrer">https://github.com/NetchX/Netch</a>推荐的**游戏**客户端
 5. <a href="https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif" target="_blank" rel="noreferrer">Proxy SwitchyOmega</a>
 6. <a href="https://github.com/gfwlist/gfwlist/blob/master/gfwlist.txt" target="_blank" rel="noreferrer">Gfwlist(请配合SwichyOmega食用)</a>
+
+---
+
+### Vless(Grpc)
+
+地址：$domain
+
+端口：${trojanport}
+
+用户UD(id): ${uuid_new}
+
+path：/${uuid_new}
 
 ---
 

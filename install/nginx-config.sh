@@ -123,6 +123,18 @@ cat << EOF > /etc/nginx/conf.d/nextcloud.conf
     }
 EOF
 fi
+if [[ $install_grpc == 1 ]]; then
+echo "    include /etc/nginx/conf.d/grpc.conf;" >> /etc/nginx/conf.d/default.conf
+touch /etc/nginx/conf.d/grpc.conf
+cat << EOF > /etc/nginx/conf.d/grpc.conf
+	location /${uuid_new} {
+		client_max_body_size 0;
+		client_body_timeout 0;
+		grpc_read_timeout 10m;
+		grpc_pass grpc://127.0.0.1:2002;
+	}
+EOF
+fi
 if [[ $install_typecho == 1 ]]; then
 echo "    #location / {" >> /etc/nginx/conf.d/default.conf
 echo "    #    client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf

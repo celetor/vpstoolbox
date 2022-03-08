@@ -5,6 +5,9 @@
 userinput_standard() {
   set +e
   clear
+
+  tcp_fastopen="true"
+
   if [[ ${install_status} == 1 ]]; then
     if (whiptail --title "Installed" --yes-button "读取" --no-button "修改" --yesno "检测到现有配置，读取/修改现有配置?(Installed,read configuration?)" 8 68); then
       readconfig
@@ -33,12 +36,12 @@ userinput_standard() {
   whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 18 65 10 \
   "Back" "返回上级菜单(Back to main menu)" off \
   "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
-  "net" "Netdata(监测伺服器运行状态)" on \
-  "fast" "TCP Fastopen" ${fastopen} \
-  "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
+  "port" "自定义Trojan-GFW端口" off \
+  "grpc" "Trojan+Vless+gRPC+TLS(支持CDN)" ${fastopen} \
   "ss" "shadowsocks-rust" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
-  "port" "自定义Trojan-GFW端口" off \
+  "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
+  "net" "Netdata(监测伺服器运行状态)" on \
   "0000" "test-only" off 2>results
 
   while read choice; do
@@ -55,8 +58,8 @@ userinput_standard() {
       check_ss="on"
       install_ss_rust=1
       ;;
-    fast)
-      tcp_fastopen="true"
+    grpc)
+      install_grpc=1
       ;;
     net)
       install_netdata=1
@@ -206,10 +209,10 @@ userinput_full() {
   "基础" "基础" off \
   "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
   "port" "自定义Trojan-GFW端口" ${check_qbt_origin} \
-  "net" "Netdata(监测伺服器运行状态)" on \
-  "fast" "TCP Fastopen" ${fastopen} \
+  "grpc" "Trojan+Vless+gRPC+TLS(支持CDN)" ${fastopen} \
   "ss" "shadowsocks-rust" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
+  "net" "Netdata(监测伺服器运行状态)" on \
   "安全" "安全" off \
   "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
   "网盘" "网盘" off \
@@ -265,8 +268,8 @@ userinput_full() {
       install_jellyfin=1
       install_docker=1
       ;;
-    fast)
-      tcp_fastopen="true"
+    grpc)
+      install_grpc=1
       ;;
     chat)
       install_rocketchat=1
