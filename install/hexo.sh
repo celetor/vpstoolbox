@@ -198,10 +198,6 @@ Introduction: download resources you want to your vps(support bt only but extrem
 
 > *请自行修改初始用户名和密码！*
 
-#### Tips:
-
-1. 请手动修改Trackers源为 <a href="https://trackerslist.com/all.txt" target="_blank" rel="noreferrer">https://trackerslist.com/all.txt</a>
-
 ---
 
 ### Aria2
