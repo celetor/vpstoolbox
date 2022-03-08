@@ -26,7 +26,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 > _Trojan-gfw 以及 Shadowsocks-rust 皆支援 **Fullcone-nat** 但需服务器开启所有端口才能使用。_
 6. [HTTP 申请](https://github.com/acmesh-official/acme.sh/wiki/Blogs-and-tutorials) TLS 证书需 **域名 A 解析生效**，[API 申请](https://github.com/acmesh-official/acme.sh/wiki/dnsapi)则需要输入正确的信息。![issuecert](images/cert.png)
 7. 安装完成后，**BBR 已默认启用**，无需手动配置。
-8. 如果使用gRPC通过Cloudflare转发,需要在Cloudflare控制面板->网络中设置允许gRPC。![grpc](images/grpc.png)
+8. 如果使用gRPC通过Cloudflare转发,需要在Cloudflare控制面板->网络中设置允许gRPC。![grpc](images/grpc.png) ![ssl](images/ssl.png)
 
 ## 免责声明 Disclaimer
 
