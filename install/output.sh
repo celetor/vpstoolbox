@@ -2,8 +2,9 @@
 
 ## OUTPUT模组 Tor moudle
 
-prase_output(){
 set +e
+
+prase_output(){
 clear
 apt-get install neofetch -y
 	cat > '/etc/profile.d/mymotd.sh' << EOF
