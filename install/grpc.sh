@@ -13,6 +13,8 @@ curl -LO --retry 5 https://github.com/XTLS/Xray-core/releases/download/v1.5.3/Xr
 unzip Xray-linux-64.zip
 rm Xray-linux-64.zip
 cp -f xray /usr/bin/xray
+cp -f geoip.dat /usr/bin/geoip.dat
+cp -f geosite.dat /usr/bin/geosite.dat
 chmod +X /usr/bin/xray
 cd /root
 rm -rf /etc/tmp
