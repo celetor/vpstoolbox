@@ -14,7 +14,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 > 仅支援 **Debian/Ubuntu** 系统。
 
-## 前提条件及要点 Usage instruction
+## 前提条件及使用要点 Usage instruction
 
 1. **Trojan-GFW 不支援 Cloudflare CDN ！！！** ( ![请勿开启CDN](images/cf1.png) )
 2. 请以 **root(sudo -i)** 运行(**可覆盖安装**)。
