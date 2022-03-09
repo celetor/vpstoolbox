@@ -148,6 +148,12 @@ mv /etc/profile.d/mymotd.sh /etc/
 mv /etc/mymotd.sh /etc/profile.d/mymotd.sh
 ```
 
+## 证书续签日志
+
+```
+cat /root/.trojan/letcron.log
+```
+
 ## 项目实现 Program Language
 
 使用`bash shell`实现。
