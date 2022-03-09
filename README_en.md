@@ -45,7 +45,7 @@ All applications support fully automated installation and configuration, **out o
   - [ ] [Shadowsocks-rust is only recommended for use with IPLC/IEPL, does not support Cloudflare CDN forwarding, no minimum configuration requirements](https://github.com/shadowsocks/shadowsocks-rust)
 - system
   - [x] [Acme.sh supports HTTP or DNS API to apply for Let's encrypt certificate](https://github.com/acmesh-official/acme.sh)
-  - [x][IPv6 not required](https://en.wikipedia.org/wiki/IPv6)
+  - [x] [IPv6 not required](https://en.wikipedia.org/wiki/IPv6)
   - [x] [Tcp-BBR and tcp_fastopen not required](https://en.wikipedia.org/wiki/TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88% B6#TCP_BBR)
   - [x] [Netdata has no minimum configuration requirements](https://github.com/netdata/netdata)
 - front end
