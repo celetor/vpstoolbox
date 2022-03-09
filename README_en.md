@@ -27,7 +27,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 6. HTTP issue TLS certificate requires domain name A record to take effect, API issue requires you to enter the correct information. 
 ![issuecert](images/cert.png)
 7. After installation, **BBR is enabled by default**, no manual configuration is required.
-8. If you use gRPC to forward through Cloudflare, you need to allow gRPC in Cloudflare Control Panel -> Network. ![grpc](images/grpc.png) ![ssl](images/ssl.png)
+8. If you use gRPC to forward through Cloudflare, you need to allow gRPC in Cloudflare Control Panel -> Network. ![grpc](images/grpc.png) ![ssl](images/ssl.png) ![cf_firewall](images/cf_firewall.png)
 
 ## Disclaimer
 
