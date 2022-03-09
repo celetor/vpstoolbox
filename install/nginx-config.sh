@@ -20,6 +20,7 @@ server {
   #resolver 127.0.0.1;
   resolver_timeout 10s;
   client_header_timeout 1071906480m;
+  lingering_close always;
   #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|Maxthon|TheWorld|UC|OPPO|baidu|Sogou|2345|) ) { return 403; }
   #if (\$http_user_agent ~* (wget|curl) ) { return 403; }
   #if (\$http_user_agent = "") { return 403; }
@@ -130,12 +131,23 @@ touch /etc/nginx/conf.d/grpc.conf
 cat << EOF > /etc/nginx/conf.d/grpc.conf
 	location /${uuid_new} {
 		client_max_body_size 0;
-		grpc_set_header X-Real-IP \$proxy_add_x_forwarded_for;
     grpc_socket_keepalive on;
     #keepalive_timeout 1071906480m;
+    keepalive_requests 10000;
 		client_body_timeout 1071906480m;
 		grpc_read_timeout 1071906480m;
+    grpc_send_timeout 1071906480m;
 		grpc_pass grpc://127.0.0.1:2002;
+	}
+  location /${uuid_new}_trojan {
+		client_max_body_size 0;
+    grpc_socket_keepalive on;
+    #keepalive_timeout 1071906480m;
+    keepalive_requests 10000;
+		client_body_timeout 1071906480m;
+		grpc_read_timeout 1071906480m;
+    grpc_send_timeout 1071906480m;
+		grpc_pass grpc://127.0.0.1:2022;
 	}
 EOF
 fi

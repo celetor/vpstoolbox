@@ -37,9 +37,7 @@ trojanport="$( jq -r '.trojanport' "/root/.trojan/config.json" )"
 password1="$( jq -r '.password1' "/root/.trojan/config.json" )"
 password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
 neofetch
-echo -e " --- 欢迎使用VPSToolBox,如果您想要关闭本报告，请使用以下命令"
-echo -e " --- mv /etc/profile.d/mymotd.sh /etc/"
-echo -e " --- 再次启用 mv /etc/mymotd.sh /etc/profile.d/mymotd.sh"
+echo -e " --- 欢迎使用VPSToolBox --- "
 echo -e " --- \${BLUE}服務狀態(Service Status)\${NOCOLOR} ---"
   if [[ -f /usr/local/bin/trojan ]]; then
 echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
@@ -104,23 +102,21 @@ echo -e "\e[40;33;1m [${domain}] 证书过期日期 : \${last_date} && [\${day_c
 echo -e "请运行以下命令查看更多 cat /root/.trojan/letcron.log"
 echo -e "--------------------------------------------------------------------------"
 echo -e " --- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
-echo -e " --- 请在VPS控制面板上彻底禁用防火墙以达到最佳效果 ---"
 ###
 echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
-echo -e "    \${YELLOW}trojan://$password2@$domain:${trojanport}\${NOCOLOR}"
 ###
 if [[ -f /usr/bin/xray ]]; then
-echo -e " --- \${BLUE}Vless(grpc)快速链接\${NOCOLOR}(vless grpc links) ---"
-echo -e "    \${YELLOW}vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#vless(grpc_direct)\${NOCOLOR}"
-echo -e " --- \${BLUE}Vless(grpc)支持Cloudflare CDN链接\${NOCOLOR}(vless grpc links) ---"
-echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#vless(grpc_cdn)\${NOCOLOR}"
+echo -e " --- \${BLUE}Trojan(grpc)快速链接\${NOCOLOR}(trojan grpc links) ---"
+echo -e "    \${YELLOW}trojan://${uuid_new}@${myip}:${trojanport}?encryption=none&peer=${domain}&security=tls&type=grpc&sni=${domain}&alpn=h2&path=/${uuid_new}_trojan&serviceName=/${uuid_new}_trojan#Trojan(grpc_direct)\${NOCOLOR}"
+echo -e " --- \${BLUE}Trojan(grpc)支持Cloudflare CDN链接\${NOCOLOR}(trojan grpc links) ---"
+echo -e "    \${YELLOW}trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&peer=${domain}&security=tls&type=grpc&sni=${domain}&alpn=h2&path=/${uuid_new}_trojan&serviceName=/${uuid_new}_trojan#Trojan(grpc_cdn)\${NOCOLOR}"
 ###
 fi
 if [[ -f /usr/sbin/ssserver ]]; then
 echo -e " --- \${BLUE}SS-rust快速链接\${NOCOLOR}(ss-rust links) ---"
 ###
-echo -e "    \${YELLOW}ss://aes-128-gcm:${password1}@${domain}:8388#iplc-only\${NOCOLOR}"
-echo -e "    \${YELLOW}ss://$(echo "aes-128-gcm:${password1}@${domain}:8388" | base64)#iplc-only\${NOCOLOR}"
+echo -e "    \${YELLOW}ss://aes-128-gcm:${password1}@${myip}:8388#iplc-only\${NOCOLOR}"
+echo -e "    \${YELLOW}ss://$(echo "aes-128-gcm:${password1}@${myip}:8388" | base64)#iplc-only\${NOCOLOR}"
 ###
 fi
 if [[ -d /usr/share/nginx/nextcloud/ ]]; then
@@ -131,7 +127,7 @@ echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 ###
 fi
-echo -e " --- 請\${bold}訪問以下鏈接\${normal}以獲得详细結果(Please visit the following link to get more info) "
+echo -e " --- 請\${bold}訪問以下鏈接\${normal}获取详细結果(Please visit the following link to get more info) "
 echo -e "    \${YELLOW}https://${domain}:${trojanport}/${password1}/\${NOCOLOR}"
 echo -e "*********************"
 EOF

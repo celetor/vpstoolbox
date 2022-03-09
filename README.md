@@ -137,6 +137,17 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 - [mikutap](https://github.com/akirarika/mikutap)
 
+## 生成的CLI界面管理
+
+关闭
+```
+mv /etc/profile.d/mymotd.sh /etc/
+```
+重新开启
+```
+mv /etc/mymotd.sh /etc/profile.d/mymotd.sh
+```
+
 ## 项目实现 Program Language
 
 使用`bash shell`实现。
