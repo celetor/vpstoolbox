@@ -2,7 +2,7 @@
 
 [TG Channel](https://t.me/vpstoolbox) [简体中文](README.md)
 
-Tired of always needing to manually enter commands to install blog, network disk, RSS, email, proxy? VPSToolBox provides a complete set of fully automated solutions, free your hands, starting today!
+Tired of always needing to manually enter commands to install blog, online drive, RSS, email, proxy? VPSToolBox provides a complete set of fully automated solutions, free your hands, starting today!
 
 > After observation, **the problem of automatic certificate renewal has been solved**, the solution has been stable and can be used normally for a long time.
 
