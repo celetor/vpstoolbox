@@ -131,6 +131,7 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
 	location /${uuid_new} {
 		client_max_body_size 0;
 		grpc_set_header X-Real-IP \$proxy_add_x_forwarded_for;
+    grpc_socket_keepalive on;
     #keepalive_timeout 1071906480m;
 		client_body_timeout 1071906480m;
 		grpc_read_timeout 1071906480m;
