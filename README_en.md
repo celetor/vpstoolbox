@@ -16,15 +16,16 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 ## Preconditions and key points (Usage instruction)
 
-1. **Trojan-GFW does not support Cloudflare CDN! ! ! ** ( ![Do not open CDN](images/cf1.png) )
-2. Please run as **root(sudo -i)** (**overwrite installation**).
+1. **Trojan-GFW** does not support Cloudflare CDN! ! !  ( ![Do not open CDN](images/cf1.png) )
+2. Please run as **root(sudo -i)** (**overwrite installation is ok**).
 
 ![root](images/root.png)
 
 4. Please [buy](https://www.namesilo.com/?rid=685fb47qi)/[white prostitution](https://www.freenom.com)/ use your existing **domain name** and **[Complete DNS A resolution](https://dnschecker.org/)**, point the domain name to your VPS IP, (Namesilo takes 15+min to take effect at the slowest). ![dns](images/dns.png)
-5. Please **completely close or disable the VPS firewall (ie open all TCP + UDP ports) in the Server/VPS/Various Control Panel. ![Firewall](images/firewall.png)**
-> _Trojan-gfw and Shadowsocks-rust both support **Fullcone-nat** but need to open all ports on the server to use it. _
-6. [HTTP application](https://github.com/acmesh-official/acme.sh/wiki/Blogs-and-tutorials) TLS certificate requires **domain name A resolution to take effect**, [API application](https: //github.com/acmesh-official/acme.sh/wiki/dnsapi) you need to enter the correct information. ![issuecert](images/cert.png)
+5. Please **completely close or disable the VPS firewall** (ie open all TCP + UDP ports) in the Server/VPS/Various Control Panel. ![Firewall](images/firewall.png)
+> Trojan-gfw and Shadowsocks-rust both support **Fullcone-nat** but need to open all ports on the server to use it. _
+6. HTTP issue TLS certificate requires domain name A record to take effect, API issue requires you to enter the correct information. 
+![issuecert](images/cert.png)
 7. After installation, **BBR is enabled by default**, no manual configuration is required.
 8. If you use gRPC to forward through Cloudflare, you need to allow gRPC in Cloudflare Control Panel -> Network. ![grpc](images/grpc.png) ![ssl](images/ssl.png)
 
@@ -152,7 +153,7 @@ Implemented using the `bash shell`.
 
 ## Bug feedback and Feature request
 
-- [x][Github Issue](https://github.com/johnrosen1/vpstoolbox/issues)
+- [x] [Github Issue](https://github.com/johnrosen1/vpstoolbox/issues)
 - [x] [TG Group](https://t.me/vpstoolbox_chat)
 
 Note:
