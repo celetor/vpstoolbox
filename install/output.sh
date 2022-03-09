@@ -102,18 +102,18 @@ echo -e "\e[40;33;1m [${domain}] 证书过期日期 : \${last_date} && [\${day_c
 echo -e "请运行以下命令查看更多 cat /root/.trojan/letcron.log"
 echo -e "--------------------------------------------------------------------------"
 if [[ -f /usr/bin/xray ]]; then
-echo -e " --- \${BLUE}Vless(grpc)链接(推荐使用 支持Cloudflare CDN)\${NOCOLOR}(vless grpc links) ---"
+echo -e " --- \${BLUE}Vless(grpc)链接(推荐使用 支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#vless(grpc_cdn)\${NOCOLOR}"
-echo -e " --- \${BLUE}Trojan(grpc)链接(支持Cloudflare CDN)\${NOCOLOR}(trojan grpc links) ---"
+echo -e " --- \${BLUE}Trojan(grpc)链接(支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&peer=${domain}&security=tls&type=grpc&sni=${domain}&alpn=h2&path=/${uuid_new}_trojan&serviceName=/${uuid_new}_trojan#Trojan(grpc_cdn)\${NOCOLOR}"
-echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR}(Trojan links) ---"
+echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
 else
-echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR}(Trojan links) ---"
+echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
 fi
 if [[ -f /usr/sbin/ssserver ]]; then
-echo -e " --- \${BLUE}SS-rust快速链接\${NOCOLOR}(ss-rust links) ---"
+echo -e " --- \${BLUE}SS-rust快速链接\${NOCOLOR} ---"
 ###
 echo -e "    \${YELLOW}ss://aes-128-gcm:${password1}@${myip}:8388#iplc-only\${NOCOLOR}"
 echo -e "    \${YELLOW}ss://$(echo "aes-128-gcm:${password1}@${myip}:8388" | base64)#iplc-only\${NOCOLOR}"
@@ -127,7 +127,7 @@ echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 ###
 fi
-echo -e " --- 請\${bold}訪問以下鏈接\${normal}获取详细結果(Please visit the following link to get more info) "
+echo -e " --- 请\${bold}访问以下链接\${normal}获取详细結果"
 echo -e "    \${YELLOW}https://${domain}:${trojanport}/${password1}/\${NOCOLOR}"
 echo -e "*********************"
 EOF
