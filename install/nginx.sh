@@ -11,9 +11,7 @@ install_nginx(){
   apt-get install gpg-agent -y
   touch /etc/apt/sources.list.d/nginx.list
   if [[ ${dist} == ubuntu ]]; then
-  cat > '/etc/apt/sources.list.d/nginx.list' << EOF
-deb [arch=amd64] https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
-EOF
+echo "deb [arch=amd64] http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx"  | sudo tee /etc/apt/sources.list.d/nginx.list
 else
   cat > '/etc/apt/sources.list.d/nginx.list' << EOF
 deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
