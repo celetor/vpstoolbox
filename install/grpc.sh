@@ -53,7 +53,7 @@ cd /etc/grpc
         "settings": {
             "clients": [
                 {
-                    "password": "49ec002d-ca69-4325-aea5-dbef18dd6f42",
+                    "password": "49ec002d-ca69-4325-aea5-dbef18dd6f42"
                 }
             ]
         },
