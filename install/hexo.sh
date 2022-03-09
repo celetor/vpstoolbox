@@ -127,11 +127,11 @@ vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=non
 
 Trojan(grpc)快速链接(trojan grpc links)
 
-trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=grpc&sni=${domain}&alpn=h2&path=/${uuid_new}_trojan&serviceName=/${uuid_new}_trojan#Trojan(grpc_direct)
+trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=grpc&sni=${domain}&alpn=h2&serviceName=/${uuid_new}_trojan#Trojan(grpc_direct)
 
 Trojan(grpc)支持Cloudflare CDN链接(trojan grpc links)
 
-trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=grpc&sni=${domain}&alpn=h2&path=/${uuid_new}_trojan&serviceName=/${uuid_new}_trojan#Trojan(grpc_cdn)
+trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=grpc&sni=${domain}&alpn=h2&serviceName=/${uuid_new}_trojan#Trojan(grpc_cdn)
 
 ---
 
