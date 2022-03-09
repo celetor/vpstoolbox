@@ -60,36 +60,36 @@ All applications support fully automated installation and configuration, **out o
   - [ ] [Nextcloud High Hard Disk Requirements](https://github.com/nextcloud/server)
   - [ ] [Rclone is only used as an API, no minimum configuration requirements](https://github.com/rclone/rclone)
   - [ ] [Filebrowser High HDD Requirements](https://github.com/filebrowser/filebrowser)
-  - [ ][Onedrive High Network Demand](https://johnrosen1.com/2021/02/14/onedrive/)
+  - [ ] [Onedrive High Network Demand](https://johnrosen1.com/2021/02/14/onedrive/)
 - RSS
   - [ ] [RSSHub High Hard Disk Requirements](https://github.com/DIYgod/RSSHub)
   - [ ] [Miniflux has no minimum configuration requirements](https://miniflux.app/index.html)
         ~~- [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)~~
-- Video (to be improved)
-  - [ ][JellyFin High CPU Requirements](https://github.com/jellyfin/jellyfin)
+- Video
+  - [ ] [JellyFin High CPU Requirements](https://github.com/jellyfin/jellyfin)
 - Mail
-  - [ ][Mail Service High Memory Requirements](https://johnrosen1.com/2020/08/27/mail1/)
+  - [ ] [Mail Service High Memory Requirements](https://johnrosen1.com/2020/08/27/mail1/)
 - Communication
-  - [ ][RocketChat high memory requirement](https://github.com/RocketChat/Rocket.Chat)
-- Speed ​​measurement
+  - [ ] [RocketChat high memory requirement](https://github.com/RocketChat/Rocket.Chat)
+- Bandwith
   - [ ] [Librespeed has no minimum configuration requirements](https://github.com/librespeed/speedtest)
-- Safety
+- Security
   - [x] [Fail2ban has no minimum configuration requirements](https://github.com/fail2ban/fail2ban)
 - Database
-  - [ ][MariaDB](https://github.com/MariaDB/server)
-  - [ ][Redis-server](https://github.com/redis/redis)
+  - [ ] [MariaDB](https://github.com/MariaDB/server)
+  - [ ] [Redis-server](https://github.com/redis/redis)
   - [ ] [MongoDB](https://github.com/mongodb/mongo)
 - Darknet
   - [ ] [Tor](https://www.torproject.org/)
   ~~- [i2pd](https://github.com/PurpleI2P/i2pd)~~
 - other
   - [ ] [Docker](https://www.docker.com/)
-  - [ ][Opentracker high network requirements](https://erdgeist.org/arts/software/opentracker/)
-  - [ ][Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
+  - [ ] [Opentracker high network requirements](https://erdgeist.org/arts/software/opentracker/)
+  - [ ] [Dnscrypt-proxy2](https://github.com/DNSCrypt/dnscrypt-proxy)
   - [ ] [Qbittorrent_origin_version High HDD Requirements](https://github.com/qbittorrent/qBittorrent)
   ~~- [ ] [stun-server](https://github.com/jselbie/stunserver)~~
 - Blockchain
-  - [ ][Monero/XMR high hard disk requirements](https://github.com/monero-project/monero-gui)
+  - [ ] [Monero/XMR high hard disk requirements](https://github.com/monero-project/monero-gui)
 
 > Welcome to PR for more applications.
 
