@@ -41,7 +41,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 - 代理
   - [x] [Trojan-gfw 可自定义端口 不支持Cloudflare CDN转发 无最低配置要求](https://github.com/trojan-gfw/trojan)
-  - [x] [Vless(grpc) 可自定义端口 低延迟 支持Cloudflare CDN转发 无最低配置要求](https://xtls.github.io/config/transports/grpc.html)
+  - [x] [Trojan(grpc)+Vless(grpc) 可自定义端口 低延迟 支持Cloudflare CDN转发 无最低配置要求](https://xtls.github.io/config/transports/grpc.html)
   - [ ] [Shadowsocks-rust 仅推荐搭配IPLC/IEPL使用 不支持Cloudflare CDN转发 无最低配置要求](https://github.com/shadowsocks/shadowsocks-rust)
 - 系统
   - [x] [Acme.sh 支持HTTP或DNS API方式申请Let's encrypt证书](https://github.com/acmesh-official/acme.sh)
