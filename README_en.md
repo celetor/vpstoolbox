@@ -35,7 +35,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 ## Supported software and applications Supported applications
 
-All applications support fully automated installation and configuration, **out of the box**!
+All applications support fully automated installation and configuration, ready to be used **out of the box**!
 
 > The ones that are ticked are those that enable default installation, and the rest should be manually selected to install them. The category labels are for reference only (strike-through means that the application has been eliminated or has no actual value).
 
@@ -125,13 +125,13 @@ Cuckoo.
 
 - Video
 
-- [ ][Jackett](https://github.com/Jackett/Jackett)
-- [ ][Radarr](https://github.com/Radarr/Radarr)
+- [ ] [Jackett](https://github.com/Jackett/Jackett)
+- [ ] [Radarr](https://github.com/Radarr/Radarr)
 - [ ] [Lidarr](https://github.com/lidarr/Lidarr)
-- [ ][Sonarr](https://github.com/Sonarr/Sonarr)
+- [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
 - [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
 - [ ] [Music Unlock](https://github.com/unlock-music/unlock-music)
-- [ ][youtube-dl](https://github.com/ytdl-org/youtube-dl)
+- [ ] [youtube-dl](https://github.com/ytdl-org/youtube-dl)
 
 - front end
 
