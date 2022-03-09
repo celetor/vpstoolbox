@@ -32,7 +32,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 ## Disclaimer
 
 1. This project is not responsible for any possible problems caused by Vultr machines!
-2. Some non-essential applications of this project require high system resources and server configuration (Rocket.chat and mailboxes, etc.), please do what you can!
+2. Some non-essential applications of this project require high system resources (Rocket.chat and mailboxes, etc.), please think twice before continue!
 
 ## Supported software and applications
 
