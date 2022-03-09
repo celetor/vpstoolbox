@@ -53,11 +53,4 @@ fi
   TERM=ansi whiptail --title "error can't upgrade system" --infobox "error can't upgrade system" 8 68
   exit 1;
  fi
-
-if [[ -f /etc/apt/sources.list.d/nginx.list ]]; then
-  cat > '/etc/apt/sources.list.d/nginx.list' << EOF
-deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
-EOF
-apt-get update
-fi
 }

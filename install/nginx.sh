@@ -10,9 +10,15 @@ install_nginx(){
   apt-get install gnupg gnupg2 -y
   apt-get install gpg-agent -y
   touch /etc/apt/sources.list.d/nginx.list
+  if [[ ${dist} == ubuntu ]]; then
+  cat > '/etc/apt/sources.list.d/nginx.list' << EOF
+deb [arch=amd64] https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
+EOF
+else
   cat > '/etc/apt/sources.list.d/nginx.list' << EOF
 deb https://nginx.org/packages/mainline/${dist}/ $(lsb_release -cs) nginx
 EOF
+fi
   curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
   #apt-key fingerprint ABF5BD827BD9BF62
   apt-get update
