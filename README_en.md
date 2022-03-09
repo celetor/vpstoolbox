@@ -6,7 +6,7 @@ Tired of always needing to manually enter commands to install blog, network disk
 
 > After observation, **the problem of automatic certificate renewal has been solved**, the solution has been stable and can be used normally for a long time.
 
-## One click command One click command
+## One click command
 
 ```bash
 apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl -y && curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/vps.sh | sudo bash
@@ -14,7 +14,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 
 > Only supports **Debian/Ubuntu** systems.
 
-## Preconditions and key points Usage instruction
+## Preconditions and key points (Usage instruction)
 
 1. **Trojan-GFW does not support Cloudflare CDN! ! ! ** ( ![Do not open CDN](images/cf1.png) )
 2. Please run as **root(sudo -i)** (**overwrite installation**).
@@ -28,12 +28,12 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 7. After installation, **BBR is enabled by default**, no manual configuration is required.
 8. If you use gRPC to forward through Cloudflare, you need to allow gRPC in Cloudflare Control Panel -> Network. ![grpc](images/grpc.png) ![ssl](images/ssl.png)
 
-## Disclaimer Disclaimer
+## Disclaimer
 
 1. This project is not responsible for any possible problems caused by Vultr machines!
 2. Some non-essential applications of this project require high system resources and server configuration (Rocket.chat and mailboxes, etc.), please do what you can!
 
-## Supported software and applications Supported applications
+## Supported software and applications
 
 All applications support fully automated installation and configuration, ready to be used **out of the box**!
 
@@ -119,7 +119,7 @@ All applications support fully automated installation and configuration, ready t
 5. Can't connect after installation
 > Possible reasons: (1) Client configuration error (2) Local network problem (3) A service is offline (please give feedback in time)
 
-## Software not yet added/integrated/tested To be done
+## Software not yet added/integrated/tested (To be done)
 
 Cuckoo.
 
