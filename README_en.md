@@ -55,7 +55,7 @@ All applications support fully automated installation and configuration, ready t
   - [ ] [Typecho has no minimum system hardware requirements](https://typecho.org/)
 - download
   - [ ] [Qbittorrent_enhanced_version High Storage Requirements](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
-  - [ ] [Aria2 High HDD Requirements](https://github.com/aria2/aria2)
+  - [ ] [Aria2 High Storage Requirements](https://github.com/aria2/aria2)
   - [ ] [AriaNG is only used as a front-end without minimum configuration requirements](https://github.com/mayswind/AriaNg/)
 - netdisc
   - [ ] [Nextcloud High Storage Requirements](https://github.com/nextcloud/server)
