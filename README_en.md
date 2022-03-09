@@ -45,21 +45,21 @@ All applications support fully automated installation and configuration, **out o
   - [ ] [Shadowsocks-rust is only recommended for use with IPLC/IEPL, does not support Cloudflare CDN forwarding, no minimum configuration requirements](https://github.com/shadowsocks/shadowsocks-rust)
 - System
   - [x] [Acme.sh supports HTTP or DNS API to issue Let\'s encrypt certificate](https://github.com/acmesh-official/acme.sh)
-  - [x] [IPv6 not required](https://en.wikipedia.org/wiki/IPv6)
-  - [x] [Tcp-BBR and tcp_fastopen not required]
+  - [x] [IPv6 no requirements](https://en.wikipedia.org/wiki/IPv6)
+  - [x] [Tcp-BBR and tcp_fastopen no requirements]
   - [x] [Netdata has no minimum configuration requirements](https://github.com/netdata/netdata)
 - front end
   - [x] [Nginx has no minimum configuration requirements](https://github.com/nginx/nginx)
   - [x] [Hexo Blog no minimum configuration requirements](https://github.com/hexojs/hexo)
   - [ ] [Typecho has no minimum configuration requirements](https://typecho.org/)
 - download
-  - [ ] [Qbittorrent_enhanced_version High HDD Requirements](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
+  - [ ] [Qbittorrent_enhanced_version High Storage Requirements](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
   - [ ] [Aria2 High HDD Requirements](https://github.com/aria2/aria2)
   - [ ] [AriaNG is only used as a front-end without minimum configuration requirements](https://github.com/mayswind/AriaNg/)
 - netdisc
-  - [ ] [Nextcloud High Hard Disk Requirements](https://github.com/nextcloud/server)
+  - [ ] [Nextcloud High Storage Requirements](https://github.com/nextcloud/server)
   - [ ] [Rclone is only used as an API, no minimum configuration requirements](https://github.com/rclone/rclone)
-  - [ ] [Filebrowser High HDD Requirements](https://github.com/filebrowser/filebrowser)
+  - [ ] [Filebrowser Storage Requirements](https://github.com/filebrowser/filebrowser)
   - [ ] [Onedrive High Network Demand](https://johnrosen1.com/2021/02/14/onedrive/)
 - RSS
   - [ ] [RSSHub High Hard Disk Requirements](https://github.com/DIYgod/RSSHub)
@@ -89,13 +89,13 @@ All applications support fully automated installation and configuration, **out o
   - [ ] [Qbittorrent_origin_version High HDD Requirements](https://github.com/qbittorrent/qBittorrent)
   ~~- [ ] [stun-server](https://github.com/jselbie/stunserver)~~
 - Blockchain
-  - [ ] [Monero/XMR high hard disk requirements](https://github.com/monero-project/monero-gui)
+  - [ ] [Monero/XMR high Storage requirements](https://github.com/monero-project/monero-gui)
 
 > Welcome to PR for more applications.
 
 ## Supported Linux distributions
 
-> Checked means tested, guaranteed availability, unchecked means theoretically supported but not tested.
+> Checked means tested, guaranteed availability, unchecked means theoretically supports but not tested.
 
 - [x] Debian11
 - [x] Debian10
