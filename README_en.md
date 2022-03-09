@@ -39,12 +39,12 @@ All applications support fully automated installation and configuration, **out o
 
 > The ones that are ticked are those that enable default installation, and the rest should be manually selected to install them. The category labels are for reference only (strike-through means that the application has been eliminated or has no actual value).
 
-- acting
+- Proxy
   - [x] [Trojan-gfw can customize the port, does not support Cloudflare CDN forwarding, no minimum configuration requirements](https://github.com/trojan-gfw/trojan)
   - [x] [Vless(grpc) customizable port, low latency, support Cloudflare CDN forwarding, no minimum configuration requirements](https://xtls.github.io/config/transports/grpc.html)
   - [ ] [Shadowsocks-rust is only recommended for use with IPLC/IEPL, does not support Cloudflare CDN forwarding, no minimum configuration requirements](https://github.com/shadowsocks/shadowsocks-rust)
-- system
-  - [x] [Acme.sh supports HTTP or DNS API to apply for Let's encrypt certificate](https://github.com/acmesh-official/acme.sh)
+- System
+  - [x] [Acme.sh supports HTTP or DNS API to issue Let\'s encrypt certificate](https://github.com/acmesh-official/acme.sh)
   - [x] [IPv6 not required](https://en.wikipedia.org/wiki/IPv6)
   - [x] [Tcp-BBR and tcp_fastopen not required]
   - [x] [Netdata has no minimum configuration requirements](https://github.com/netdata/netdata)
