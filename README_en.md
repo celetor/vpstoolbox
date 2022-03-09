@@ -41,18 +41,18 @@ All applications support fully automated installation and configuration, ready t
 > The ones that are ticked are those that enable default installation, and the rest should be manually selected to install them. The category labels are for reference only (strike-through means that the application has been eliminated or has no actual value).
 
 - Proxy
-  - [x] [Trojan-gfw can customize the port, does not support Cloudflare CDN forwarding, no minimum configuration requirements](https://github.com/trojan-gfw/trojan)
-  - [x] [Vless(grpc) customizable port, low latency, support Cloudflare CDN forwarding, no minimum configuration requirements](https://xtls.github.io/config/transports/grpc.html)
-  - [ ] [Shadowsocks-rust is only recommended for use with IPLC/IEPL, does not support Cloudflare CDN forwarding, no minimum configuration requirements](https://github.com/shadowsocks/shadowsocks-rust)
+  - [x] [Trojan-gfw customizable port, does not support Cloudflare CDN forwarding, no minimum system hardware requirements](https://github.com/trojan-gfw/trojan)
+  - [x] [Vless(grpc) customizable port, low latency, support Cloudflare CDN forwarding, no minimum system hardware requirements](https://xtls.github.io/config/transports/grpc.html)
+  - [ ] [Shadowsocks-rust only recommends using with IPLC/IEPL, does not support Cloudflare CDN forwarding, no minimum system hardware requirements](https://github.com/shadowsocks/shadowsocks-rust)
 - System
   - [x] [Acme.sh supports HTTP or DNS API to issue Let\'s encrypt certificate](https://github.com/acmesh-official/acme.sh)
   - [x] [IPv6 no requirements](https://en.wikipedia.org/wiki/IPv6)
   - [x] [Tcp-BBR and tcp_fastopen no requirements]
-  - [x] [Netdata has no minimum configuration requirements](https://github.com/netdata/netdata)
+  - [x] [Netdata has no minimum system hardware requirements](https://github.com/netdata/netdata)
 - front end
-  - [x] [Nginx has no minimum configuration requirements](https://github.com/nginx/nginx)
-  - [x] [Hexo Blog no minimum configuration requirements](https://github.com/hexojs/hexo)
-  - [ ] [Typecho has no minimum configuration requirements](https://typecho.org/)
+  - [x] [Nginx has no minimum system hardware requirements](https://github.com/nginx/nginx)
+  - [x] [Hexo Blog no minimum system hardware requirements](https://github.com/hexojs/hexo)
+  - [ ] [Typecho has no minimum system hardware requirements](https://typecho.org/)
 - download
   - [ ] [Qbittorrent_enhanced_version High Storage Requirements](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
   - [ ] [Aria2 High HDD Requirements](https://github.com/aria2/aria2)
@@ -73,9 +73,9 @@ All applications support fully automated installation and configuration, ready t
 - Communication
   - [ ] [RocketChat high memory requirement](https://github.com/RocketChat/Rocket.Chat)
 - Bandwith
-  - [ ] [Librespeed has no minimum configuration requirements](https://github.com/librespeed/speedtest)
+  - [ ] [Librespeed has no minimum system hardware requirements](https://github.com/librespeed/speedtest)
 - Security
-  - [x] [Fail2ban has no minimum configuration requirements](https://github.com/fail2ban/fail2ban)
+  - [x] [Fail2ban has no minimum system hardware requirements](https://github.com/fail2ban/fail2ban)
 - Database
   - [ ] [MariaDB](https://github.com/MariaDB/server)
   - [ ] [Redis-server](https://github.com/redis/redis)
