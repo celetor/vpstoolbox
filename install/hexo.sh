@@ -117,6 +117,14 @@ PS: ***不支援Cloudflare CDN ❗***
 
 path：/${uuid_new}
 
+Vless(grpc)快速链接(vless grpc links)
+
+vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#vless(grpc_direct)
+
+Vless(grpc)支持Cloudflare CDN链接(vless grpc links)
+
+vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#vless(grpc_cdn)
+
 Trojan(grpc)快速链接(trojan grpc links)
 
 trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&peer=${domain}&security=tls&type=grpc&sni=${domain}&alpn=h2&path=/${uuid_new}_trojan&serviceName=/${uuid_new}_trojan#Trojan(grpc_direct)
@@ -124,14 +132,6 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&peer=${domain}&secu
 Trojan(grpc)支持Cloudflare CDN链接(trojan grpc links)
 
 trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&peer=${domain}&security=tls&type=grpc&sni=${domain}&alpn=h2&path=/${uuid_new}_trojan&serviceName=/${uuid_new}_trojan#Trojan(grpc_cdn)
-
-Vless(grpc)快速链接(vless grpc links)
-
-vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#vless(grpc_direct)
-
-支持Cloudflare CDN链接(vless grpc links)
-
-vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#vless(grpc_cdn)
 
 ---
 
