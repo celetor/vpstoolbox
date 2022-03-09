@@ -14,11 +14,12 @@ touch /etc/nginx/conf.d/default.conf
   cat > '/etc/nginx/conf.d/default.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 server {
-  listen 127.0.0.1:81 fastopen=20 reuseport default_server;
-  listen 127.0.0.1:82 http2 fastopen=20 reuseport default_server;
+  listen 127.0.0.1:81 fastopen=20 reuseport default_server so_keepalive=on;
+  listen 127.0.0.1:82 http2 fastopen=20 reuseport default_server so_keepalive=on;
   server_name $domain _;
   #resolver 127.0.0.1;
   resolver_timeout 10s;
+  client_header_timeout 1071906480m;
   #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|Maxthon|TheWorld|UC|OPPO|baidu|Sogou|2345|) ) { return 403; }
   #if (\$http_user_agent ~* (wget|curl) ) { return 403; }
   #if (\$http_user_agent = "") { return 403; }
@@ -130,6 +131,7 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
 	location /${uuid_new} {
 		client_max_body_size 0;
 		grpc_set_header X-Real-IP \$proxy_add_x_forwarded_for;
+    #keepalive_timeout 1071906480m;
 		client_body_timeout 1071906480m;
 		grpc_read_timeout 1071906480m;
 		grpc_pass grpc://127.0.0.1:2002;
