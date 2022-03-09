@@ -101,16 +101,16 @@ day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
 echo -e "\e[40;33;1m [${domain}] 证书过期日期 : \${last_date} && [\${day_count} days] \e[0m"
 echo -e "请运行以下命令查看更多 cat /root/.trojan/letcron.log"
 echo -e "--------------------------------------------------------------------------"
-echo -e " --- \${BLUE}Trojan-GFW快速链接\${NOCOLOR}(Trojan links) ---"
-###
-echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
-###
 if [[ -f /usr/bin/xray ]]; then
-echo -e " --- \${BLUE}Trojan(grpc)快速链接\${NOCOLOR}(trojan grpc links) ---"
-echo -e "    \${YELLOW}trojan://${uuid_new}@${myip}:${trojanport}?encryption=none&peer=${domain}&security=tls&type=grpc&sni=${domain}&alpn=h2&path=/${uuid_new}_trojan&serviceName=/${uuid_new}_trojan#Trojan(grpc_direct)\${NOCOLOR}"
-echo -e " --- \${BLUE}Trojan(grpc)支持Cloudflare CDN链接\${NOCOLOR}(trojan grpc links) ---"
+echo -e " --- \${BLUE}Vless(grpc)链接(推荐使用 支持Cloudflare CDN)\${NOCOLOR}(vless grpc links) ---"
+echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#vless(grpc_cdn)\${NOCOLOR}"
+echo -e " --- \${BLUE}Trojan(grpc)链接(支持Cloudflare CDN)\${NOCOLOR}(trojan grpc links) ---"
 echo -e "    \${YELLOW}trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&peer=${domain}&security=tls&type=grpc&sni=${domain}&alpn=h2&path=/${uuid_new}_trojan&serviceName=/${uuid_new}_trojan#Trojan(grpc_cdn)\${NOCOLOR}"
-###
+echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR}(Trojan links) ---"
+echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
+else
+echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR}(Trojan links) ---"
+echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
 fi
 if [[ -f /usr/sbin/ssserver ]]; then
 echo -e " --- \${BLUE}SS-rust快速链接\${NOCOLOR}(ss-rust links) ---"
