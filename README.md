@@ -1,6 +1,6 @@
 # ![VPSToolBox](logo.png)
 
-[TG 频道](https://t.me/vpstoolbox)
+[TG 频道](https://t.me/vpstoolbox) [English version](README_en.md)
 
 厌倦了总是需要手动输入命令安装博客，网盘，RSS，邮箱，代理了吗？VPSToolBox 提供了一整套全自动化的解决方案，解放双手，从今天开始！
 
