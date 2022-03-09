@@ -59,12 +59,12 @@ All applications support fully automated installation and configuration, ready t
   - [ ] [AriaNG is only used as a front-end without minimum configuration requirements](https://github.com/mayswind/AriaNg/)
 - netdisc
   - [ ] [Nextcloud High Storage Requirements](https://github.com/nextcloud/server)
-  - [ ] [Rclone is only used as an API, no minimum configuration requirements](https://github.com/rclone/rclone)
+  - [ ] [Rclone is only used as an API, no minimum system hardware requirements](https://github.com/rclone/rclone)
   - [ ] [Filebrowser Storage Requirements](https://github.com/filebrowser/filebrowser)
   - [ ] [Onedrive High Network Demand](https://johnrosen1.com/2021/02/14/onedrive/)
 - RSS
-  - [ ] [RSSHub High Hard Disk Requirements](https://github.com/DIYgod/RSSHub)
-  - [ ] [Miniflux has no minimum configuration requirements](https://miniflux.app/index.html)
+  - [ ] [RSSHub no minimum system hardware requirements](https://github.com/DIYgod/RSSHub)
+  - [ ] [Miniflux no minimum system hardware requirements](https://miniflux.app/index.html)
         ~~- [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)~~
 - Video
   - [ ] [JellyFin High CPU Requirements](https://github.com/jellyfin/jellyfin)
