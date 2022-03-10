@@ -298,20 +298,11 @@ PS: 不支援自定义证书,仅支援全自动申请的let证书!
 
 *默认安装: ❎*
 
-> 简介: Bittorrent-tracker , 可作为私人或公开Bt-tracker。
-
-#### Bittorrent-trackers
-
 udp://$domain:6969/announce
 
 #### Info link
 
 <a href="https://$domain/tracker/" target="_blank" rel="noreferrer">https://$domain/tracker/</a>
-
-#### Tips:
-
-1. 请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。
-2. 请记得将此Tracker分享给你的朋友们。
 
 ---
 
