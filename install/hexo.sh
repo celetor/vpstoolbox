@@ -225,8 +225,6 @@ hexo g && hexo d
 
 *默认安装: ❎*
 
-#### Filebrowser
-
 - <a href="https://$domain:443/file/" target="_blank" rel="noreferrer">https://$domain/file/</a>
 - 用户名(username): **admin**
 - 密碼(token): **admin**
