@@ -364,26 +364,6 @@ udp://$domain:6969/announce
 
 ---
 
-### MariaDB
-
-*默认安装: ❎*
-
-> 简介: MariaDB 数据库。
-
-> Introduction: MariaDB Database.
-
-无默认root密码,为了安全起见,外网访问已禁用,请直接使用以下命令访问数据库！
-
-{% blockquote %}
-mysql -u root
-{% endblockquote %}
-
-如果需要外网访问,请自行注释掉/etc/mysql/my.cnf中的bind-address选项并重启mariadb！
-
-Please edit /etc/mysql/my.cnf and restart mariadb if you need remote access !
-
----
-
 ### 相关链接
 
 ##### Qbt相关链接
@@ -430,6 +410,9 @@ Please edit /etc/mysql/my.cnf and restart mariadb if you need remote access !
 
 1. <a href="https://www.mail-tester.com/" target="_blank" rel="noreferrer">https://www.mail-tester.com/</a>
 2. <a href="https://lala.im/6838.html" target="_blank" rel="noreferrer">Debian10使用Postfix+Dovecot+Roundcube搭建邮件服务器</a>(仅供参考!)
+
+<iframe src="https://snowflake.torproject.org/embed.html" width="320" height="240" frameborder="0" scrolling="no"></iframe>
+
 EOF
 cd /usr/share/nginx/hexo/
 hexo g
