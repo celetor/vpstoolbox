@@ -6,6 +6,7 @@ install_nginx(){
   clear
   TERM=ansi whiptail --title "安装中" --infobox "安装NGINX中..." 7 68
   colorEcho ${INFO} "Install Nginx ing"
+  apt --fix-broken install -y
   apt-get install ca-certificates lsb-release -y
   apt-get install gnupg gnupg2 -y
   apt-get install gpg-agent -y
