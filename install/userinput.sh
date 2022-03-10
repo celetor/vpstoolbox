@@ -2,8 +2,9 @@
 
 ## 用户输入模组 User Input moudle
 
+set +e
+
 userinput_standard() {
-  set +e
   clear
 
   tcp_fastopen="true"
