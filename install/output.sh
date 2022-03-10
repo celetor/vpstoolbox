@@ -101,10 +101,8 @@ day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
 echo -e "\e[40;33;1m [${domain}] 证书过期日期 : \${last_date} && [\${day_count} days] \e[0m"
 echo -e "------------------------------------------------------------------------"
 if [[ -f /usr/bin/xray ]]; then
-echo -e " --- \${BLUE}Vless(grpc)链接(推荐使用 支持Cloudflare CDN)\${NOCOLOR} ---"
-echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#Vless(grpc_cdn)\${NOCOLOR}"
-echo -e " --- \${BLUE}Trojan(grpc)链接(支持Cloudflare CDN)\${NOCOLOR} ---"
-echo -e "    \${YELLOW}trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=grpc&sni=${domain}&alpn=h2&serviceName=/${uuid_new}_trojan#Trojan(grpc_cdn)\${NOCOLOR}"
+echo -e " --- \${BLUE}Vless(grpc)链接(低延迟 推荐使用 支持Cloudflare CDN)\${NOCOLOR} ---"
+echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${uuid_new}&sni=${domain}#Vless(grpc_cdn_${myip}_${domain})\${NOCOLOR}"
 echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
 else
@@ -112,21 +110,21 @@ echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
 fi
 if [[ -f /usr/sbin/ssserver ]]; then
-echo -e " --- \${BLUE}SS-rust快速链接\${NOCOLOR} ---"
+echo -e " --- \${BLUE}SS-rust链接\${NOCOLOR} ---"
 ###
 echo -e "    \${YELLOW}ss://aes-128-gcm:${password1}@${myip}:8388#iplc-only\${NOCOLOR}"
 echo -e "    \${YELLOW}ss://$(echo "aes-128-gcm:${password1}@${myip}:8388" | base64)#iplc-only\${NOCOLOR}"
 ###
 fi
 if [[ -d /usr/share/nginx/nextcloud/ ]]; then
-echo -e " --- \${BLUE}Nextcloud快速链接\${NOCOLOR}(Nextcloud links) ---"
+echo -e " --- \${BLUE}Nextcloud链接\${NOCOLOR}(Nextcloud links) ---"
 ###
 echo -e "    \${YELLOW}https://${domain}:${trojanport}/nextcloud/\${NOCOLOR}"
 echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 ###
 fi
-echo -e " --- 请\${bold}访问以下链接\${normal}获取详细結果"
+echo -e " --- 获取详细結果 ---"
 echo -e "    \${YELLOW}https://${domain}:${trojanport}/${password1}/\${NOCOLOR}"
 echo -e "*********************"
 EOF
