@@ -115,7 +115,7 @@ PS: ***不支援Cloudflare CDN ❗***
 
 用户UD(id): ${uuid_new}
 
-path：/${uuid_new}
+path：/${path_new}
 
 Vless(grpc)快速链接(vless grpc links)
 
