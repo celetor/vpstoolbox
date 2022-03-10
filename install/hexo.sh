@@ -82,10 +82,6 @@ Welcome to [VPSToolBox](https://github.com/johnrosen1/vpstoolbox)! This page is 
 
 *默认安装: ✅*
 
-> Introduction: An unidentifiable mechanism that helps you bypass GFW.
-
-PS: ***不支援Cloudflare CDN ❗***
-
 #### Trojan-GFW client config profiles(客户端配置文件)
 
 1. <a href="https://$domain/client1-$password1.json" target="_blank" rel="noreferrer">Profile 1</a>
@@ -160,8 +156,6 @@ PS: 仅推荐用于[iplc](https://relay.nekoneko.cloud?aff=2257)落地,不推荐
 
 *默认安装: ✅*
 
-> 简介: 快速、簡單且強大的網誌框架。
-
 #### Hexo location
 
 {% blockquote %}
@@ -187,8 +181,6 @@ hexo g && hexo d
 
 *默认安装: ❎*
 
-> 简介: RSSHUB + Tiny Tiny RSS。
-
 #### RSSHUB
 
 <a href="https://$domain/rsshub/" target="_blank" rel="noreferrer">https://$domain/rsshub/</a>
@@ -205,8 +197,6 @@ hexo g && hexo d
 
 *默认安装: ❎*
 
-> 简介: 一款用于 **下载bt资源到你的VPS上** 的软件
-
 - <a href="https://$domain/qbt/" target="_blank" rel="noreferrer">https://$domain/qbt/</a>
 - 用户名(username): admin
 - 密碼(password): ${password1}
@@ -216,8 +206,6 @@ hexo g && hexo d
 ### Aria2
 
 *默认安装: ❎*
-
-> 简介: 将任何你想下载的东西(支援http/https/ftp/bt等,不支援emule/ed2k)**下载到你的VPS**上的软件。
 
 #### AriaNG
 
@@ -236,8 +224,6 @@ hexo g && hexo d
 ### Filebrowser
 
 *默认安装: ❎*
-
-> 简介: 一款 **从VPS上下载资源(在aria2/qbt下载完成后)到本地网络** 的软件。
 
 #### Filebrowser
 
@@ -261,10 +247,6 @@ hexo g && hexo d
 
 *默认安装: ❎*
 
-> 简介: 一款 **测试本地网络到VPS的延迟及带宽** 的应用。
-
-#### Speedtest
-
 - <a href="https://$domain:443/${password1}_speedtest/" target="_blank" rel="noreferrer">https://$domain/${password1}_speedtest/</a>
 
 ---
@@ -284,8 +266,6 @@ hexo g && hexo d
 ### Rocket Chat
 
 *默认安装: ❎*
-
-> 简介: 聊天应用。
 
 - <a href="https://$domain:443/chat/" target="_blank" rel="noreferrer">https://$domain/rocketchat/</a>
 
