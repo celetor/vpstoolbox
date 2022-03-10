@@ -119,19 +119,19 @@ path：/${uuid_new}
 
 Vless(grpc)快速链接(vless grpc links)
 
-vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${path_new}&sni=${domain}#vless(grpc_direct)
+vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${path_new}&sni=${domain}#vless(grpc_direct_${myip})
 
 Vless(grpc)支持Cloudflare CDN链接(vless grpc links)
 
-vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${path_new}&sni=${domain}#vless(grpc_cdn)
+vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${path_new}&sni=${domain}#vless(grpc_cdn_${myip})
 
 Trojan(grpc)快速链接(trojan grpc links)
 
-trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=grpc&sni=${domain}&alpn=h2&serviceName=/${path_new}_trojan#Trojan(grpc_direct)
+trojan://${uuid_new}@${myip}:${trojanport}?encryption=none&security=tls&type=grpc&sni=${domain}&alpn=h2&serviceName=/${path_new}_trojan#Trojan(grpc_direct_${myip})
 
 Trojan(grpc)支持Cloudflare CDN链接(trojan grpc links)
 
-trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=grpc&sni=${domain}&alpn=h2&serviceName=/${path_new}_trojan#Trojan(grpc_cdn)
+trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=grpc&sni=${domain}&alpn=h2&serviceName=/${path_new}_trojan#Trojan(grpc_cdn_${myip})
 
 ---
 
