@@ -13,10 +13,12 @@ install_redis(){
     unzip -o ${redisver}.zip
     rm ${redisver}.zip
     cd redis-${redisver}
+    apt-get install build-essential -y
     apt-get install libsystemd-dev pkg-config -y
     make USE_SYSTEMD=yes -j $(nproc --all)
     make install
   else
+  apt-get install build-essential -y
   apt-get install libsystemd-dev pkg-config unzip -y
   curl -LO https://github.com/redis/redis/archive/${redisver}.zip
   unzip -o ${redisver}.zip
