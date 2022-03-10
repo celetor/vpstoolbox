@@ -41,18 +41,6 @@ local:
   url     : 'http://127.0.0.1:83/status?full&json'
 EOF
 fi
-if [[ ${install_tor} == 1 ]]; then
-apt-get install python-pip -y
-pip install stem
-cat > '/opt/netdata/etc/netdata/python.d/tor.conf' << EOF
-update_every : 1
-priority     : 60001
-
-local_tcp:
- name: 'local'
- control_port: 9051
-EOF
-fi
 if [[ ${install_redis} == 1 ]]; then
 cat > '/opt/netdata/etc/netdata/python.d/redis.conf' << EOF
 socket:

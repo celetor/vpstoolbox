@@ -7,12 +7,11 @@
 install_tor(){
 set +e
 clear
-TERM=ansi whiptail --title "安装中" --infobox "安装Tor relay中..." 7 68
-colorEcho ${INFO} "Install Tor Relay ing"
+TERM=ansi whiptail --title "安装中" --infobox "安装Tor proxy中..." 7 68
+colorEcho ${INFO} "Install Tor proxy ing"
 touch /etc/apt/sources.list.d/tor.list
   cat > '/etc/apt/sources.list.d/tor.list' << EOF
 deb https://deb.torproject.org/torproject.org $(lsb_release -cs) main
-#deb-src https://deb.torproject.org/torproject.org $(lsb_release -cs) main
 EOF
 curl https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
 gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
@@ -29,8 +28,8 @@ fi
   cat > '/etc/tor/torrc' << EOF
 ClientUseIPv6 ${ipv4_prefer_1}
 ClientPreferIPv6ORPort ${ipv4_prefer_1}
-ControlPort 127.0.0.1:9051
-CookieAuthentication 0
+#ControlPort 127.0.0.1:9051
+#CookieAuthentication 0
 HardwareAccel 1
 HiddenServiceDir /var/lib/tor/hidden_service/
 HiddenServiceVersion 3
