@@ -2,8 +2,9 @@
 
 ## Redis-server模组 Redis-server moudle
 
+set +e
+
 install_redis(){
-  set +e
   cd
   TERM=ansi whiptail --title "安装中" --infobox "安装redis中..." 7 68
   redisver=$(curl -s "https://api.github.com/repos/redis/redis/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
