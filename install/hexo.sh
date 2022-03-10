@@ -209,9 +209,7 @@ hexo g && hexo d
 
 - <a href="https://$domain/qbt/" target="_blank" rel="noreferrer">https://$domain/qbt/</a>
 - 用户名(username): admin
-- 密碼(password): adminadmin
-
-> *请自行修改初始用户名和密码！*
+- 密碼(password): ${password1}
 
 ---
 
