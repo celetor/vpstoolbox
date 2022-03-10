@@ -129,7 +129,7 @@ if [[ $install_grpc == 1 ]]; then
 echo "    include /etc/nginx/conf.d/grpc.conf;" >> /etc/nginx/conf.d/default.conf
 touch /etc/nginx/conf.d/grpc.conf
 cat << EOF > /etc/nginx/conf.d/grpc.conf
-	location /${uuid_new} {
+	location /${path_new} {
 		client_max_body_size 0;
     grpc_socket_keepalive on;
     #keepalive_timeout 1071906480m;
@@ -139,7 +139,7 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
     grpc_send_timeout 1071906480m;
 		grpc_pass grpc://127.0.0.1:2002;
 	}
-  location /${uuid_new}_trojan {
+  location /${path_new}_trojan {
 		client_max_body_size 0;
     grpc_socket_keepalive on;
     #keepalive_timeout 1071906480m;

@@ -100,8 +100,9 @@ cd /etc/grpc
 EOF
 
 uuid_new=$(/usr/bin/xray uuid -i "${password1}")
+path_new=$(/usr/bin/xray uuid -i "${password1}" | cut -c1-8 )
 sed -i "s/49ec002d-ca69-4325-aea5-dbef18dd6f42/${uuid_new}/g" server.json
-sed -i "s/\/grpc/\/${uuid_new}/g" server.json
+sed -i "s/\/grpc/\/${path_new}/g" server.json
 
   cat > '/etc/systemd/system/grpc.service' << EOF
 [Unit]
