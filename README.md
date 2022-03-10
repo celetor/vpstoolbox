@@ -264,5 +264,3 @@ SOFTWARE.
    A: 最大的收获我个人觉得不是学到了什么牛逼的技术，而是学到了项目开发所需的各种基础技能。
 8. 最可惜的是什么？
    A: 我觉得最可惜的可能是基本只有我一个人开发，没多少人帮我。
-
-<iframe src="https://snowflake.torproject.org/embed.html" width="320" height="240" frameborder="0" scrolling="no"></iframe>
