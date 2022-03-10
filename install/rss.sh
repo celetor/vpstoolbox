@@ -89,6 +89,7 @@ services:
 volumes:
   miniflux-db:
 EOF
+sed -i "s/test123/${password1}/g" docker-compose.yml
 docker-compose up -d
 cd
 }

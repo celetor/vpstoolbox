@@ -197,9 +197,7 @@ hexo g && hexo d
 
 - <a href="https://$domain/miniflux/" target="_blank" rel="noreferrer">https://$domain/miniflux/</a>
 - 用户名(username): **admin**
-- 密碼(password): **test123**
-
-> *请自行修改初始密码！*
+- 密碼(password): **${password1}**
 
 ---
 
