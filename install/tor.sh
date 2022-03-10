@@ -53,4 +53,21 @@ HiddenServicePort 443 127.0.0.1:443
 EOF
 torhostname=$(cat /var/lib/tor/hidden_service/hostname)
 systemctl restart tor@default
+
+cd /etc/tor/
+mkdir snowflake
+cd /etc/tor/snowflake
+  cat > 'docker-compose.yml' << EOF
+ version: "3.8"
+
+ services:
+    snowflake-proxy:
+        network_mode: host
+        image: thetorproject/snowflake-proxy:latest
+        container_name: snowflake-proxy
+        restart: unless-stopped
+EOF
+
+docker-compose up -d
+cd
 }
