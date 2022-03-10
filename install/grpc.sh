@@ -86,6 +86,13 @@ cd /etc/grpc
           "geoip:private"
         ],
         "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:category-ads"
+        ],
+        "outboundTag": "blocked"
       }
     ]
   }
