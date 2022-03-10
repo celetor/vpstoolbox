@@ -2,7 +2,7 @@
 
 ## Tor模组 Tor moudle
 
-## 仅用于.onion建站
+## 仅用于Trojan/Vless(grpc)代理以及.onion建站
 
 install_tor(){
 set +e
@@ -16,8 +16,7 @@ EOF
 curl https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
 gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
 apt-get update
-apt-get install tor tor-geoipdb nyx -y
-apt-get install python-stem -y
+apt-get install tor tor-geoipdb -y
 ipv4_prefer_1="0"
 if [[ -n $myipv6 ]]; then
     ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
@@ -28,11 +27,17 @@ fi
   cat > '/etc/tor/torrc' << EOF
 ClientUseIPv6 ${ipv4_prefer_1}
 ClientPreferIPv6ORPort ${ipv4_prefer_1}
+SocksListenAddress 127.0.0.1:9200
+SocksPort 9200
+SOCKSPolicy accept 127.0.0.1
+#SOCKSPolicy accept6 FC00::/7
+SOCKSPolicy reject *
 #ControlPort 127.0.0.1:9051
 #CookieAuthentication 0
 HardwareAccel 1
 HiddenServiceDir /var/lib/tor/hidden_service/
 HiddenServiceVersion 3
+#HiddenServicePort 22 127.0.0.1:22
 HiddenServicePort 80 127.0.0.1:81
 HiddenServicePort 443 127.0.0.1:443
 #Socks5Proxy 127.0.0.1:1080
