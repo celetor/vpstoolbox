@@ -185,13 +185,6 @@ hexo g && hexo d
 
 ---
 
-### Typecho
-
-*默认安装: ❎*
-
-请自行注释掉*/etc/nginx/conf.d/default.conf*中的Hexo部分并去掉Typecho的注释以启用Typecho。
-
----
 ### Rsshub + Miniflux
 
 *默认安装: ❎*
@@ -361,6 +354,14 @@ udp://$domain:6969/announce
 
 1. 请手动将此Tracker添加于你的BT客户端中，发布种子时记得填上即可。
 2. 请记得将此Tracker分享给你的朋友们。
+
+---
+
+### Typecho
+
+*默认安装: ❎*
+
+请自行注释掉*/etc/nginx/conf.d/default.conf*中的Hexo部分并去掉Typecho的注释以启用Typecho。
 
 ---
 
