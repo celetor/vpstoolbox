@@ -154,8 +154,6 @@ PS: 仅推荐用于[iplc](https://relay.nekoneko.cloud?aff=2257)落地,不推荐
 - 用户名(username): **admin**
 - 密碼(password): **${password1}**
 
-PS: 推荐自行参考GitHub相关内容修正Nextcloud配置文件。
-
 ---
 
 ### Hexo
@@ -211,8 +209,6 @@ hexo g && hexo d
 
 > 简介: 一款用于 **下载bt资源到你的VPS上** 的软件
 
-Introduction: download resources you want to your vps(support bt only but extremely fast)
-
 - <a href="https://$domain/qbt/" target="_blank" rel="noreferrer">https://$domain/qbt/</a>
 - 用户名(username): admin
 - 密碼(password): adminadmin
@@ -247,8 +243,6 @@ Introduction: download resources you want to your vps(support bt only but extrem
 
 > 简介: 一款 **从VPS上下载资源(在aria2/qbt下载完成后)到本地网络** 的软件。
 
-Introduction: download any resources(formaly downloaded by qbt or aria2) from your vps to your local network
-
 #### Filebrowser
 
 - <a href="https://$domain:443/file/" target="_blank" rel="noreferrer">https://$domain/file/</a>
@@ -273,8 +267,6 @@ Introduction: download any resources(formaly downloaded by qbt or aria2) from yo
 
 > 简介: 一款 **测试本地网络到VPS的延迟及带宽** 的应用。
 
-Introduction: test download and upload speed from vps to your local network.
-
 #### Speedtest
 
 - <a href="https://$domain:443/${password1}_speedtest/" target="_blank" rel="noreferrer">https://$domain/${password1}_speedtest/</a>
@@ -286,8 +278,6 @@ Introduction: test download and upload speed from vps to your local network.
 *默认安装: ✅*
 
 > 简介: 一款 **实时效能监测工具** 应用。
-
-> Introduction: Open-source, distributed, real-time, performance and health monitoring for systems and applications.
 
 #### Netdata
 
@@ -301,8 +291,6 @@ Introduction: test download and upload speed from vps to your local network.
 
 > 简介: 聊天应用。
 
-Introduction: just like discord.
-
 - <a href="https://$domain:443/chat/" target="_blank" rel="noreferrer">https://$domain/rocketchat/</a>
 
 ---
@@ -314,8 +302,6 @@ Introduction: just like discord.
 ***⚠️WARNING⚠️请不要自行修改任何邮件配置,除非你知道你在做什么 ❗❗❗***
 
 > 简介: 邮件软件。
-
-> Introduction: Mail Service
 
 PS: 不支援自定义证书,仅支援全自动申请的let证书!
 
@@ -339,8 +325,6 @@ PS: 不支援自定义证书,仅支援全自动申请的let证书!
 *默认安装: ❎*
 
 > 简介: Bittorrent-tracker , 可作为私人或公开Bt-tracker。
-
-> Introduction: Bittorrent-tracker as private or public.
 
 #### Bittorrent-trackers
 
@@ -382,9 +366,6 @@ udp://$domain:6969/announce
 1. <a href="https://docs.rsshub.app/" target="_blank" rel="noreferrer">RSSHUB docs</a>
 2. <a href="https://github.com/DIYgod/RSSHub-Radar" target="_blank" rel="noreferrer">RSSHub Radar</a>(推荐自行将默认的rsshub.app换成上述自建的)
 3. <a href="https://docs.rsshub.app/social-media.html" target="_blank" rel="noreferrer">RSSHUB路由</a>
-4. <a href="https://wzfou.com/tt-rss/" target="_blank" rel="noreferrer">自建RSS阅读器Tiny Tiny RSS安装和配置自动更新</a>(仅供参考 !)
-
-*[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md)*
 
 ##### Aria相关链接
 
