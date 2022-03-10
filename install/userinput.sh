@@ -23,6 +23,12 @@ userinput_standard() {
   if [[ -z ${check_speed} ]]; then
     check_speed="off"
   fi
+  if [[ -z ${check_cloud} ]]; then
+    check_cloud="off"
+  fi
+  if [[ -z ${check_rss} ]]; then
+    check_rss="off"
+  fi
   if [[ -z ${check_fail2ban} ]]; then
     check_fail2ban="on"
   fi
@@ -40,6 +46,8 @@ userinput_standard() {
   "grpc" "Trojan+Vless+gRPC+TLS(支持CDN)" ${fastopen} \
   "ss" "shadowsocks-rust" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
+  "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
+  "rss" "RSSHUB + Miniflux(RSS生成器+RSS阅读器)" ${check_rss} \
   "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
   "net" "Netdata(监测伺服器运行状态)" on \
   "0000" "test-only" off 2>results
@@ -68,6 +76,18 @@ userinput_standard() {
       check_speed="on"
       install_speedtest=1
       install_php=1
+      ;;
+    nextcloud)
+      install_nextcloud=1
+      install_php=1
+      install_mariadb=1
+      install_redis=1
+      ;;
+    rss)
+      check_rss="on"
+      install_rss=1
+      install_docker=1
+      install_redis=1
       ;;
     fail2ban)
       check_fail2ban="on"
@@ -282,13 +302,11 @@ userinput_full() {
       install_mariadb=1
       install_redis=1
       ;;
-    redis)
-      install_redis=1
-      ;;
     rss)
       check_rss="on"
       install_rss=1
       install_docker=1
+      install_redis=1
       ;;
     qbt)
       check_qbt="on"
@@ -310,10 +328,6 @@ userinput_full() {
       check_speed="on"
       install_speedtest=1
       install_php=1
-      ;;
-    7)
-      check_mariadb="on"
-      install_mariadb=1
       ;;
     fail2ban)
       check_fail2ban="on"
