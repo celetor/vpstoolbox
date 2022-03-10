@@ -107,6 +107,13 @@ All applications support fully automated installation and configuration, ready t
 - [ ] Ubuntu 16.xx
 - [ ] Ubuntu 14.xx
 
+## Proxy client support
+
+1. [v2rayNG android](https://github.com/2dust/v2rayNG)
+2. [Shadowrocket ios](https://apps.apple.com/us/app/shadowrocket/id932747118)
+3. [Netch Windows](https://github.com/netchx/Netch)
+4. [Qv2ray Windows/Linux/Macos](https://github.com/Qv2ray/Qv2ray)
+
 ## Possible errors and causes
 
 1. Certificate issuance failed
