@@ -346,6 +346,7 @@ userinput_full() {
       ;;
     tor)
       install_tor=1
+      install_docker=1
       ;;
     13)
       check_qbt_origin="on"
