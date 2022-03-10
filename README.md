@@ -106,18 +106,12 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 - [ ] Ubuntu 16.xx
 - [ ] Ubuntu 14.xx
 
-## 可能的错误及原因
+## 支援的代理客户端
 
-1. 证书签发失败
-> 可能原因: （1）tcp 80/443即tcp http/https端口未开放 （2）域名A解析未完成 或 api信息输入错误
-2. 重启后连不上了
-> 可能原因: （1）VPS厂商面板问题(不常见)（2）重启时间长,请等待
-3. 某个服务 404 / 502 了
-> 可能原因: （1）安装清单里面没有勾选（2）某个服务掉线了(请及时反馈)
-4. 安装中途卡住了  
-> 可能原因: （1）网络缓慢或出错（2）CPU或硬盘 垃圾导致某个安装过程缓慢
-5. 安装后连不上 
-> 可能原因: （1）客户端配置错误（2）本地网络问题（3）某个服务掉线了(请及时反馈)
+1. [v2rayNG 安卓](https://github.com/2dust/v2rayNG)
+2. [Shadowrocket ios](https://apps.apple.com/us/app/shadowrocket/id932747118)
+3. [Netch Windows](https://github.com/netchx/Netch)
+4. [Qv2ray Windows/Linux/Macos](https://github.com/Qv2ray/Qv2ray)
 
 ## 尚未添加/整合/测试的软件 To be done
 
@@ -136,6 +130,19 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 - 前端
 
 - [mikutap](https://github.com/akirarika/mikutap)
+
+## 可能的错误及原因
+
+1. 证书签发失败
+> 可能原因: （1）tcp 80/443即tcp http/https端口未开放 （2）域名A解析未完成 或 api信息输入错误
+2. 重启后连不上了
+> 可能原因: （1）VPS厂商面板问题(不常见)（2）重启时间长,请等待
+3. 某个服务 404 / 502 了
+> 可能原因: （1）安装清单里面没有勾选（2）某个服务掉线了(请及时反馈)
+4. 安装中途卡住了  
+> 可能原因: （1）网络缓慢或出错（2）CPU或硬盘 垃圾导致某个安装过程缓慢
+5. 安装后连不上 
+> 可能原因: （1）客户端配置错误（2）本地网络问题（3）某个服务掉线了(请及时反馈)
 
 ## 生成的CLI界面管理
 
