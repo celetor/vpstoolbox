@@ -21,6 +21,7 @@ server {
   resolver_timeout 10s;
   client_header_timeout 1071906480m;
   lingering_close always;
+  ssl_early_data on;
   #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|Maxthon|TheWorld|UC|OPPO|baidu|Sogou|2345|) ) { return 403; }
   #if (\$http_user_agent ~* (wget|curl) ) { return 403; }
   #if (\$http_user_agent = "") { return 403; }
