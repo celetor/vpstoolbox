@@ -243,6 +243,8 @@ hexo g && hexo d
 *默认安装: ❎*
 
 - <a href="https://$domain:443/jellyfin/" target="_blank" rel="noreferrer">https://$domain/jellyfin/</a>
+- <a href="https://$domain:443/sonarr/" target="_blank" rel="noreferrer">https://$domain/sonarr/</a>
+- <a href="https://$domain:443/jackett/" target="_blank" rel="noreferrer">https://$domain/jackett/</a>
 
 ---
 
