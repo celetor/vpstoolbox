@@ -133,9 +133,6 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 - 影音
 
 - [ ] [Radarr](https://github.com/Radarr/Radarr)
-
-
-
 - [ ] [音乐解锁](https://github.com/unlock-music/unlock-music)
 - [ ] [youtube-dl](https://github.com/ytdl-org/youtube-dl)
 
