@@ -68,6 +68,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 - 影音(待完善)
   - [ ] [JellyFin 高CPU需求](https://github.com/jellyfin/jellyfin)
   - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
+  - [ ] [Jackett](https://github.com/Jackett/Jackett)
 - 邮箱
   - [ ] [Mail Service 高内存需求](https://johnrosen1.com/2020/08/27/mail1/)
 - 通讯
@@ -128,7 +129,6 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 - 影音
 
-- [ ] [Jackett](https://github.com/Jackett/Jackett)
 - [ ] [Radarr](https://github.com/Radarr/Radarr)
 - [ ] [Lidarr](https://github.com/lidarr/Lidarr)
 
