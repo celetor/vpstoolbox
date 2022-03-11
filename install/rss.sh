@@ -58,7 +58,7 @@ cd /usr/share/nginx/
 mkdir miniflux
 cd /usr/share/nginx/miniflux
 cat > "/usr/share/nginx/miniflux/docker-compose.yml" << EOF
-version: '3.4'
+version: '3.8'
 services:
   miniflux:
     image: miniflux/miniflux:latest
