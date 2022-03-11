@@ -11,12 +11,15 @@ url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
+echo media:${password1} | chpasswd
+
+uid=$(id media)
+
 install_sonarr(){
 cd /usr/share/nginx/
 mkdir sonarr
 cd /usr/share/nginx/sonarr
 
-uid=$(id nginx)
 
     cat > "docker-compose.yml" << "EOF"
 version: "3.8"
