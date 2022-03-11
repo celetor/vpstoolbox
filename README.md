@@ -69,6 +69,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
   - [ ] [Emby 高CPU需求](https://emby.media/)
   - [ ] [JellyFin 高CPU需求](https://github.com/jellyfin/jellyfin)
   - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
+  - [ ] [Lidarr](https://github.com/lidarr/Lidarr)
   - [ ] [Jackett](https://github.com/Jackett/Jackett)
 - 邮箱
   - [ ] [Mail Service 高内存需求](https://johnrosen1.com/2020/08/27/mail1/)
@@ -131,7 +132,7 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 - 影音
 
 - [ ] [Radarr](https://github.com/Radarr/Radarr)
-- [ ] [Lidarr](https://github.com/lidarr/Lidarr)
+
 
 - [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
 - [ ] [音乐解锁](https://github.com/unlock-music/unlock-music)

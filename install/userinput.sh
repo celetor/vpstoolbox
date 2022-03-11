@@ -243,13 +243,13 @@ userinput_full() {
   "aria" "Aria2下载器" ${check_aria} \
   "onedrive" "Rclone Onedrive" ${check_rclone} \
   "下载" "下载" off \
-  "qbt" "Qbittorrent增强版(可全自动屏蔽吸血行为)" ${check_qbt} \
-  "file" "Filebrowser(用于拉回Qbt/aria下载完成的文件)" ${check_file} \
+  "qbt" "Qbittorrent增强版" ${check_qbt} \
+  "file" "Filebrowser" ${check_file} \
   "通讯" "通讯" off \
   "chat" "Rocket Chat" ${check_chat} \
-  "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
+  "mail" "Mail service(邮箱服务)" ${check_mail} \
   "影音" "影音" off \
-  "media" "Emby/Jellyfin Sonarr Jackett Qbt" off \
+  "media" "Emby/Jellyfin Sonarr Lidarr Jackett Qbt" off \
   "其他" "其他软件及选项" off \
   "typecho" "Typecho" ${check_echo} \
   "10" "Bt-Tracker(服务器)" ${check_tracker} \
