@@ -126,33 +126,33 @@ userinput_standard() {
       password1=$(whiptail --passwordbox --nocancel "VPSToolBox系统主密码 (***请勿添加特殊符号***)" 8 68 --title "password1 input" 3>&1 1>&2 2>&3)
       if [[ -z ${password1} ]]; then
         password1=$(
-          head /dev/urandom | tr -dc a-z0-9 | head -c 9
+          head /dev/urandom | tr -dc a-z0-9 | head -c 6
           echo ''
         )
       fi
     done
     while [[ -z ${password2} ]]; do
         password2=$(
-          head /dev/urandom | tr -dc a-z0-9 | head -c 9
+          head /dev/urandom | tr -dc a-z0-9 | head -c 6
           echo ''
         )
     done
   fi
   if [[ ${password1} == ${password2} ]]; then
     password2=$(
-      head /dev/urandom | tr -dc a-z0-9 | head -c 9
+      head /dev/urandom | tr -dc a-z0-9 | head -c 6
       echo ''
     )
   fi
   if [[ -z ${password1} ]]; then
     password1=$(
-      head /dev/urandom | tr -dc a-z0-9 | head -c 9
+      head /dev/urandom | tr -dc a-z0-9 | head -c 6
       echo ''
     )
   fi
   if [[ -z ${password2} ]]; then
     password2=$(
-      head /dev/urandom | tr -dc a-z0-9 | head -c 9
+      head /dev/urandom | tr -dc a-z0-9 | head -c 6
       echo ''
     )
   fi
@@ -394,33 +394,33 @@ userinput_full() {
       password1=$(whiptail --passwordbox --nocancel "VPSToolBox系统主密码 (***请勿添加特殊符号***)" 8 68 --title "password1 input" 3>&1 1>&2 2>&3)
       if [[ -z ${password1} ]]; then
         password1=$(
-          head /dev/urandom | tr -dc a-z0-9 | head -c 9
+          head /dev/urandom | tr -dc a-z0-9 | head -c 6
           echo ''
         )
       fi
     done
     while [[ -z ${password2} ]]; do
         password2=$(
-          head /dev/urandom | tr -dc a-z0-9 | head -c 9
+          head /dev/urandom | tr -dc a-z0-9 | head -c 6
           echo ''
         )
     done
   fi
   if [[ ${password1} == ${password2} ]]; then
     password2=$(
-      head /dev/urandom | tr -dc a-z0-9 | head -c 9
+      head /dev/urandom | tr -dc a-z0-9 | head -c 6
       echo ''
     )
   fi
   if [[ -z ${password1} ]]; then
     password1=$(
-      head /dev/urandom | tr -dc a-z0-9 | head -c 9
+      head /dev/urandom | tr -dc a-z0-9 | head -c 6
       echo ''
     )
   fi
   if [[ -z ${password2} ]]; then
     password2=$(
-      head /dev/urandom | tr -dc a-z0-9 | head -c 9
+      head /dev/urandom | tr -dc a-z0-9 | head -c 6
       echo ''
     )
   fi
