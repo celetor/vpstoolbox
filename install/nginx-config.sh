@@ -185,7 +185,7 @@ echo "        proxy_set_header Connection \$http_connection;" >> /etc/nginx/conf
 echo "        proxy_buffering off;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location /emby {" >> /etc/nginx/conf.d/default.conf
-echo "        return 302 https://${domain}:443/jellyfin/;" >> /etc/nginx/conf.d/default.conf
+echo "        return 302 https://${domain}:443/emby/;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
 echo "    location /emby/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
