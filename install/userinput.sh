@@ -369,14 +369,11 @@ userinput_full() {
     fi
   fi
 
-  system_upgrade=1
-  if [[ ${system_upgrade} == 1 ]]; then
-    if [[ $(lsb_release -cs) == jessie ]]; then
-      debian9_install=1
-    fi
-    if [[ $(lsb_release -cs) == xenial ]]; then
-      ubuntu18_install=1
-    fi
+  if [[ $(lsb_release -cs) == jessie ]]; then
+    debian9_install=1
+  fi
+  if [[ $(lsb_release -cs) == xenial ]]; then
+    ubuntu18_install=1
   fi
 
   while [[ -z ${domain} ]]; do
