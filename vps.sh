@@ -411,6 +411,9 @@ install_moudles(){
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/jellyfin.sh
   source jellyfin.sh
   install_jellyfin
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/sonarr.sh
+  source sonarr.sh
+  install_sonarr
   fi
   if [[ ${install_dnscrypt} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/dnscrypt.sh

@@ -27,7 +27,6 @@ systemctl disable cloud-init-local.service
 systemctl disable cloud-init
 systemctl disable ecs_mq
 systemctl disable exim4
-systemctl disable apparmor
 systemctl disable sysstat
 killall -9 aegis_cli >/dev/null 2>&1
 killall -9 aegis_update >/dev/null 2>&1
