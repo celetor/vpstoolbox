@@ -16,6 +16,8 @@ cd /usr/share/nginx/
 mkdir sonarr
 cd /usr/share/nginx/sonarr
 
+uid=$(id nginx)
+
     cat > "docker-compose.yml" << "EOF"
 version: "3.8"
 services:
@@ -24,8 +26,8 @@ services:
     image: lscr.io/linuxserver/sonarr
     container_name: sonarr
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/sonarr/data:/config
@@ -64,8 +66,8 @@ services:
     image: lscr.io/linuxserver/jackett
     container_name: jackett
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
       - AUTO_UPDATE=true #optional
     volumes:
@@ -105,8 +107,8 @@ services:
     image: lscr.io/linuxserver/lidarr
     container_name: lidarr
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/lidarr/config:/config
@@ -143,8 +145,8 @@ services:
     image: lscr.io/linuxserver/bazarr
     container_name: bazarr
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/bazarr/config:/config
