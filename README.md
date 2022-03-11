@@ -67,6 +67,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
         ~~- [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)~~
 - 影音(待完善)
   - [ ] [JellyFin 高CPU需求](https://github.com/jellyfin/jellyfin)
+  - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
 - 邮箱
   - [ ] [Mail Service 高内存需求](https://johnrosen1.com/2020/08/27/mail1/)
 - 通讯
@@ -122,7 +123,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 - [ ] [Jackett](https://github.com/Jackett/Jackett)
 - [ ] [Radarr](https://github.com/Radarr/Radarr)
 - [ ] [Lidarr](https://github.com/lidarr/Lidarr)
-- [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
+
 - [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
 - [ ] [音乐解锁](https://github.com/unlock-music/unlock-music)
 - [ ] [youtube-dl](https://github.com/ytdl-org/youtube-dl)
