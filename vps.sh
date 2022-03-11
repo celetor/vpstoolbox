@@ -262,7 +262,7 @@ if [[ -f /etc/sysctl.d/60-disable-ipv6.conf ]]; then
   mv /etc/sysctl.d/60-disable-ipv6.conf /etc/sysctl.d/60-disable-ipv6.conf.bak
 fi
 if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
-  dist=ubuntu
+  dist="ubuntu"
   if [[ -f /etc/sysctl.d/60-disable-ipv6.conf.bak ]]; then
     sed -i 's/#//g' /etc/netplan/01-netcfg.yaml
     netplan apply
@@ -270,12 +270,12 @@ if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
   apt-get update
   apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y
  elif cat /etc/*release | grep ^NAME | grep -q Debian; then
-  dist=debian
+  dist="debian"
   apt-get update
   apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y
  else
-  whiptail --title "OS not supported(操作系统不支援)" --msgbox "Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)" 8 68
-  echo "OS not supported(操作系统不支援),Please use Debian or Ubuntu to run this project.(请使用Debian或者Ubuntu运行本项目)"
+  whiptail --title "操作系统不支援 OS incompatible" --msgbox "请使用Debian或者Ubuntu运行本项目 Please use Debian or Ubuntu to run this project" 8 68
+  echo "操作系统不支援,请使用Debian或者Ubuntu运行本项目 OS incompatible,Please use Debian or Ubuntu to run this project."
   exit 1;
 fi
 
