@@ -418,9 +418,9 @@ install_moudles(){
   install_qbt_e
   fi
   if [[ ${install_jellyfin} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/jellyfin.sh
-  source jellyfin.sh
-  install_jellyfin
+  #curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/jellyfin.sh
+  #source jellyfin.sh
+  #install_jellyfin
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/emby.sh
   source emby.sh
   install_emby
