@@ -218,7 +218,9 @@ cat /root/.trojan/letcron.log
 
 ![https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
 
-## 恰饭 aff
+## 如果觉得好用，欢迎打钱帮助开发或者尝试以下服务，😃❤️🤣
+
+ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 1. [Namesilo](https://www.namesilo.com/?rid=685fb47qi)
 2. [Neko Neko Relay](https://relay.nekoneko.cloud?aff=2257)

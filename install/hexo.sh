@@ -70,9 +70,12 @@ Welcome to [VPSToolBox](https://github.com/johnrosen1/vpstoolbox)! This page is 
 
 欢迎使用[VPSToolBox](https://github.com/johnrosen1/vpstoolbox) ! 此页面由[Hexo](https://hexo.io/zh-tw/docs/)全自动生成,如果你在使用VPSToolBox时遇到任何问题,请仔细阅读以下所有链接以及信息或者**通过 [Telegram](https://t.me/vpstoolbox_chat)请求支援** !
 
-> *如果你安装的时候没有选择相应的软件，请自行忽略相关内容 ❗*
+如果觉得好用，欢迎打钱帮助开发或者尝试以下服务，😃❤️🤣：
 
-**以下所有链接以及信息都是有用的，请在提任何问题或者issue前仔细阅读相关内容,否则你的issue将会被立即关闭 ❗**
+ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
+
+[Namesilo](https://www.namesilo.com/?rid=685fb47qi)
+
 
 ***⚠️WARNING⚠️请不要自行修改默认配置,除非你知道你在做什么 ❗❗❗***
 
