@@ -73,7 +73,7 @@ install_bbr=1
 install_nodejs=1
 install_trojan=1
 trojanport="443"
-tcp_fastopen="false"
+tcp_fastopen="true"
 
 #Disable cloud-init
 rm -rf /lib/systemd/system/cloud*
@@ -534,18 +534,15 @@ MasterMenu() {
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/firewall.sh
     source firewall.sh
     openfirewall
-    rm firewall.sh
     ## NGINX安装
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nginx.sh
     source nginx.sh
     install_nginx
-    rm nginx.sh
     ## 证书签发
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/issuecert.sh
     source issuecert.sh
-    rm issuecert.sh
     ## HTTP证书签发
     if [[ ${httpissue} == 1 ]]; then
       http_issue
@@ -560,7 +557,6 @@ MasterMenu() {
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nginx-config.sh
     source nginx-config.sh
     nginx_config
-    rm nginx-config.sh
     clean_env
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     ## 输出结果
