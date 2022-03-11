@@ -233,9 +233,8 @@ userinput_full() {
   "grpc" "Trojan+Vless+gRPC+TLS(支持CDN)" ${fastopen} \
   "ss" "shadowsocks-rust" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
-  "net" "Netdata(监测伺服器运行状态)" on \
-  "安全" "安全" off \
-  "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
+  "影音" "影音" off \
+  "media" "Emby/Jellyfin Sonarr Lidarr Jackett Qbt" off \
   "网盘" "网盘" off \
   "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
   "rss" "RSSHUB + Miniflux(RSS生成器+RSS阅读器)" ${check_rss} \
@@ -248,9 +247,10 @@ userinput_full() {
   "通讯" "通讯" off \
   "chat" "Rocket Chat" ${check_chat} \
   "mail" "Mail service(邮箱服务)" ${check_mail} \
-  "影音" "影音" off \
-  "media" "Emby/Jellyfin Sonarr Lidarr Jackett Qbt" off \
+  "安全" "安全" off \
+  "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
   "其他" "其他软件及选项" off \
+  "net" "Netdata(监测伺服器运行状态)" on \
   "typecho" "Typecho" ${check_echo} \
   "10" "Bt-Tracker(服务器)" ${check_tracker} \
   "13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
