@@ -114,6 +114,12 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
 3. [Netch Windows](https://github.com/netchx/Netch)
 4. [Qv2ray Windows/Linux/Macos](https://github.com/Qv2ray/Qv2ray)
 
+## 如果觉得好用，欢迎打钱帮助开发或者尝试以下服务，😃❤️🤣
+
+ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
+
+[Namesilo](https://www.namesilo.com/?rid=685fb47qi)
+
 ## 尚未添加/整合/测试的软件 To be done
 
 咕咕咕。
@@ -217,12 +223,6 @@ cat /root/.trojan/letcron.log
 > 懒得更新,仅供参考。
 
 ![https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
-
-## 如果觉得好用，欢迎打钱帮助开发或者尝试以下服务，😃❤️🤣
-
-ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
-
-[Namesilo](https://www.namesilo.com/?rid=685fb47qi)
 
 ## License
 
