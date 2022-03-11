@@ -120,6 +120,8 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 [Namesilo](https://www.namesilo.com/?rid=685fb47qi)
 
+[阿里云](https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=fgdncdz2)
+
 ## 尚未添加/整合/测试的软件 To be done
 
 咕咕咕。
