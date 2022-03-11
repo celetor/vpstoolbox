@@ -2,8 +2,9 @@
 
 ## 系统升级模组 System upgrade moudle
 
+set +e
+
 upgrade_system(){
-  set +e
 
 ## Install lastest ubuntu lts
 if [[ $(lsb_release -cs) == bionic ]] || [[ $(lsb_release -cs) == xenial ]] || [[ $(lsb_release -cs) == trusty ]]; then
