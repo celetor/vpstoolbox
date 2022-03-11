@@ -65,11 +65,12 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
   - [ ] [RSSHub 无最低配置要求](https://github.com/DIYgod/RSSHub)
   - [ ] [Miniflux 无最低配置要求](https://miniflux.app/index.html)
         ~~- [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)~~
-- 影音(待完善)
+- 影音(待整合)
   - [ ] [Emby 高CPU需求](https://emby.media/)
   - [ ] [JellyFin 高CPU需求](https://github.com/jellyfin/jellyfin)
   - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
   - [ ] [Lidarr](https://github.com/lidarr/Lidarr)
+  - [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
   - [ ] [Jackett](https://github.com/Jackett/Jackett)
 - 邮箱
   - [ ] [Mail Service 高内存需求](https://johnrosen1.com/2020/08/27/mail1/)
@@ -134,7 +135,7 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 - [ ] [Radarr](https://github.com/Radarr/Radarr)
 
 
-- [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
+
 - [ ] [音乐解锁](https://github.com/unlock-music/unlock-music)
 - [ ] [youtube-dl](https://github.com/ytdl-org/youtube-dl)
 

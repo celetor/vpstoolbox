@@ -129,5 +129,34 @@ docker-compose up -d
 fi
 cd
 
+cd /usr/share/nginx/
+mkdir bazarr
+cd /usr/share/nginx/bazarr
+mkdir /usr/share/nginx/bazarr/config
+mkdir /usr/share/nginx/bazarr/downloads
+
+    cat > "docker-compose.yml" << "EOF"
+version: "3.8"
+services:
+  bazarr:
+    network_mode: host
+    image: lscr.io/linuxserver/bazarr
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    volumes:
+      - /usr/share/nginx/bazarr/config:/config
+    restart: unless-stopped
+EOF
+
+docker-compose up -d
+sleep 10s;
+docker-compose down
+sed -i "0,/base_url \=/s//base_url \= \/bazarr/g" /usr/share/nginx/bazarr/config/config/config.ini
+sed -i '/^\[analytics\]$/,/^\[/ s/^enabled = True/enabled = False/' /usr/share/nginx/bazarr/config/config/config.ini
+docker-compose up -d
+cd
 
 }
