@@ -9,7 +9,7 @@ mkdir rocketchat
 cd rocketchat
 
     cat > "docker-compose.yml" << "EOF"
-version: '2'
+version: '2.4'
 
 services:
   rocketchat:
