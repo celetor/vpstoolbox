@@ -66,6 +66,7 @@ apt-get update --fix-missing && apt-get upgrade -y && apt-get install sudo curl 
   - [ ] [Miniflux 无最低配置要求](https://miniflux.app/index.html)
         ~~- [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)~~
 - 影音(待完善)
+  - [ ] [Emby 高CPU需求](https://emby.media/)
   - [ ] [JellyFin 高CPU需求](https://github.com/jellyfin/jellyfin)
   - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
   - [ ] [Jackett](https://github.com/Jackett/Jackett)

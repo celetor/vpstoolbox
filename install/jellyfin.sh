@@ -21,6 +21,7 @@ sed -i "s/<BaseUrl \/>/<BaseUrl>\/jellyfin\/<\/BaseUrl>/g" /etc/jellyfin/system.
 sed -i "s/<EnableIPV6>false<\/EnableIPV6>/<EnableIPV6>true<\/EnableIPV6>/g" /etc/jellyfin/system.xml
 sed -i "s/<EnableRemoteAccess>true<\/EnableRemoteAccess>/<EnableRemoteAccess>false<\/EnableRemoteAccess>/g" /etc/jellyfin/system.xml
 sed -i "s/en-US/zh-CN/g" /etc/jellyfin/system.xml
+sed -i "s/<PublicPort>8096<\/PublicPort>/<PublicPort>8099<\/PublicPort>/g" /etc/jellyfin/system.xml
 sed -i "s/<BaseUrl \/>/<BaseUrl>\/jellyfin\/<\/BaseUrl>/g" /etc/jellyfin/network.xml
 sed -i "s/<EnableIPV6>false<\/EnableIPV6>/<EnableIPV6>true<\/EnableIPV6>/g" /etc/jellyfin/network.xml
 sed -i "s/<IgnoreVirtualInterfaces>true<\/IgnoreVirtualInterfaces>/<IgnoreVirtualInterfaces>false<\/IgnoreVirtualInterfaces>/g" /etc/jellyfin/network.xml
