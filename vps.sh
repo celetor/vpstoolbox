@@ -612,14 +612,12 @@ MasterMenu() {
     if [[ ${dnsissue} == 1 ]]; then
       dns_issue
     fi
-    rm issuecert.sh
     ## 具体软件安装
     install_moudles
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nginx-config.sh
     source nginx-config.sh
     nginx_config
-    rm nginx-config.sh
     clean_env
     ## 初始化Nextcloud
     if [[ ${install_nextcloud} == 1 ]] && [[ ${nextcloud_installed} != 1 ]]; then
