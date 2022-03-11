@@ -407,6 +407,16 @@ install_moudles(){
   source aria2.sh
   install_aria2
   fi
+  if [[ ${install_qbt_o} == 1 ]]; then
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/qbt_origin.sh
+  source qbt_origin.sh
+  install_qbt_o
+  fi
+  if [[ ${install_qbt_e} == 1 ]]; then
+  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/qbt.sh
+  source qbt.sh
+  install_qbt_e
+  fi
   if [[ ${install_jellyfin} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/jellyfin.sh
   source jellyfin.sh
@@ -439,16 +449,6 @@ install_moudles(){
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nextcloud.sh
   source nextcloud.sh
   install_nextcloud
-  fi
-  if [[ ${install_qbt_o} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/qbt_origin.sh
-  source qbt_origin.sh
-  install_qbt_o
-  fi
-  if [[ ${install_qbt_e} == 1 ]]; then
-  curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/qbt.sh
-  source qbt.sh
-  install_qbt_e
   fi
   if [[ ${install_rocketchat} == 1 ]]; then
   curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/rocketchat.sh
