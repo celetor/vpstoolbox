@@ -222,8 +222,7 @@ cat /root/.trojan/letcron.log
 
 ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
-1. [Namesilo](https://www.namesilo.com/?rid=685fb47qi)
-2. [Neko Neko Relay](https://relay.nekoneko.cloud?aff=2257)
+[Namesilo](https://www.namesilo.com/?rid=685fb47qi)
 
 ## License
 
