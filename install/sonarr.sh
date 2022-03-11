@@ -61,6 +61,8 @@ cd /usr/share/nginx/jackett
 mkdir /usr/share/nginx/jackett/config
 mkdir /usr/share/nginx/jackett/downloads
 
+## 8191
+
     cat > "docker-compose.yml" << "EOF"
 version: "3.8"
 services:
@@ -77,6 +79,18 @@ services:
       - /usr/share/nginx/jackett/config:/config
       - /usr/share/nginx/jackett/downloads:/downloads
     restart: unless-stopped
+    services:
+  flaresolverr:
+    network_mode: host
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=Asia/Shanghai
+    ports:
+    restart: unless-stopped 
 EOF
 
 docker-compose up -d
