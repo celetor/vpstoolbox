@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Sonarr模组
+## Sonarr + Jackett 模组
 
 set +e
 
@@ -49,4 +49,42 @@ echo '</Config>' >> /usr/share/nginx/sonarr/data/config.xml
 docker-compose up -d
 fi
 cd
+
+cd /usr/share/nginx/
+mkdir jackett
+cd /usr/share/nginx/jackett
+mkdir /usr/share/nginx/jackett/config
+mkdir /usr/share/nginx/jackett/downloads
+
+    cat > "docker-compose.yml" << "EOF"
+version: "3.8"
+services:
+  jackett:
+    network_mode: host
+    image: lscr.io/linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - AUTO_UPDATE=true #optional
+    volumes:
+      - /usr/share/nginx/jackett/config:/config
+      - /usr/share/nginx/jackett/downloads:/downloads
+    restart: unless-stopped
+EOF
+
+docker-compose up -d
+sleep 10s;
+
+cat /usr/share/nginx/jackett/config/Jackett/ServerConfig.json | grep /jackett/ &> /dev/null
+
+if [[ $? != 0 ]]; then
+docker-compose down
+cat '/usr/share/nginx/jackett/config/Jackett/ServerConfig.json' | jq '.BasePathOverride |= "/jackett/"' >> /usr/share/nginx/jackett/config/Jackett/tmp.json
+cp -f /usr/share/nginx/jackett/config/Jackett/tmp.json /usr/share/nginx/jackett/config/Jackett/ServerConfig.json
+rm /usr/share/nginx/jackett/config/Jackett/tmp.json
+docker-compose up -d
+fi
+cd /root
 }

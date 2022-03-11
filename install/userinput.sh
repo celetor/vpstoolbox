@@ -249,7 +249,7 @@ userinput_full() {
   "chat" "Rocket Chat" ${check_chat} \
   "mail" "Mail service(邮箱服务,需2g+内存)" ${check_mail} \
   "影音" "影音" off \
-  "jellyfin" "Jellyfin" off \
+  "media" "Jellyfin Sonarr Jackett Qbittorrent增强版" off \
   "其他" "其他软件及选项" off \
   "typecho" "Typecho" ${check_echo} \
   "10" "Bt-Tracker(服务器)" ${check_tracker} \
@@ -283,9 +283,10 @@ userinput_full() {
       check_dns="on"
       install_dnscrypt=1
       ;;
-    jellyfin)
+    media)
       install_jellyfin=1
       install_docker=1
+      install_qbt_e=1
       ;;
     grpc)
       install_grpc=1
