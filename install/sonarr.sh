@@ -20,7 +20,7 @@ mkdir sonarr
 cd /usr/share/nginx/sonarr
 
 
-    cat > "docker-compose.yml" << "EOF"
+    cat > "docker-compose.yml" << EOF
 version: "3.8"
 services:
   sonarr:
@@ -60,7 +60,7 @@ cd /usr/share/nginx/radarr
 
 ## 7878
 
-    cat > "docker-compose.yml" << "EOF"
+    cat > "docker-compose.yml" << EOF
 version: "3.8"
 services:
   radarr:
@@ -103,7 +103,7 @@ mkdir /usr/share/nginx/jackett/downloads
 
 ## 8191
 
-    cat > "docker-compose.yml" << "EOF"
+    cat > "docker-compose.yml" << EOF
 version: "3.8"
 services:
   jackett:
@@ -157,7 +157,7 @@ cd /usr/share/nginx/lidarr
 mkdir /usr/share/nginx/lidarr/config
 mkdir /usr/share/nginx/lidarr/downloads
 
-    cat > "docker-compose.yml" << "EOF"
+    cat > "docker-compose.yml" << EOF
 version: "3.8"
 services:
   lidarr:
@@ -195,7 +195,7 @@ cd /usr/share/nginx/bazarr
 mkdir /usr/share/nginx/bazarr/config
 mkdir /usr/share/nginx/bazarr/downloads
 
-    cat > "docker-compose.yml" << "EOF"
+    cat > "docker-compose.yml" << EOF
 version: "3.8"
 services:
   bazarr:
