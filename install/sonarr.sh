@@ -14,6 +14,26 @@ github_url="https://github.com/johnrosen1/vpstoolbox"
 uid=$(id -u nginx)
 gid=$(id -g nginx)
 
+## 文件夹
+
+### 一级子目录(sonarr,radarr)
+mkdir /usr/share/nginx/data/
+### 二级子目录(qbt,emby,bazarr)
+mkdir /usr/share/nginx/data/torrents/
+mkdir /usr/share/nginx/data/usenet/
+mkdir /usr/share/nginx/data/media/
+### 三级子目录(none)
+mkdir /usr/share/nginx/data/torrents/movies/
+mkdir /usr/share/nginx/data/torrents/music/
+mkdir /usr/share/nginx/data/torrents/tv/
+mkdir /usr/share/nginx/data/usenet/movies/
+mkdir /usr/share/nginx/data/usenet/music/
+mkdir /usr/share/nginx/data/usenet/tv/
+mkdir /usr/share/nginx/data/media/movies/
+mkdir /usr/share/nginx/data/media/music/
+mkdir /usr/share/nginx/data/media/tv/
+
+
 install_sonarr(){
 cd /usr/share/nginx/
 mkdir sonarr
@@ -33,8 +53,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/sonarr/data:/config
-      - /usr/share/nginx/sonarr/tvseries:/tv #optional
-      - /usr/share/nginx/sonarr/downloads:/downloads #optional
+      - /usr/share/nginx/data:/data
     restart: unless-stopped
 EOF
 
@@ -73,8 +92,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/radarr/data:/config
-      - /usr/share/nginx/radarr/tvseries:/tv #optional
-      - /usr/share/nginx/radarr/downloads:/downloads #optional
+      - /usr/share/nginx/data:/data
     restart: unless-stopped
 EOF
 
@@ -170,6 +188,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/lidarr/config:/config
+      - /usr/share/nginx/data:/data
     restart: unless-stopped
 EOF
 
@@ -208,6 +227,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/bazarr/config:/config
+      - /usr/share/nginx/data/media/:/data/media
     restart: unless-stopped
 EOF
 
