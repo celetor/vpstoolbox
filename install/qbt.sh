@@ -90,19 +90,20 @@ curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22web_ui_address%2
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22validate_https_tracker_certificate%22:false%7D  --cookie "${qbtcookie}"
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22peer_tos%22:0%7D  --cookie "${qbtcookie}"
 ## 新增分类以及下载位置
-mkdir /usr/share/nginx/media/
-mkdir /usr/share/nginx/media/anime/
-curl -X POST -F 'category=动漫(Anime)' -F 'savePath=/usr/share/nginx/media/anime/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-mkdir /usr/share/nginx/media/music/
-curl -X POST -F 'category=音乐(Music)' -F 'savePath=/usr/share/nginx/media/music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-mkdir /usr/share/nginx/media/18_plus/
-curl -X POST -F 'category=18禁(18_plus)' -F 'savePath=/usr/share/nginx/media/18_plus/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-mkdir /usr/share/nginx/media/documentary/
-curl -X POST -F 'category=纪录片(Documentary)' -F 'savePath=/usr/share/nginx/media/documentary/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-mkdir /usr/share/nginx/media/tv/
-curl -X POST -F 'category=电视剧(Tv)' -F 'savePath=/usr/share/nginx/media/tv/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-mkdir /usr/share/nginx/media/others/
-curl -X POST -F 'category=其他(Others)' -F 'savePath=/usr/share/nginx/media/others/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /usr/share/nginx/data/
+mkdir /usr/share/nginx/data/torrents/
+mkdir/usr/share/nginx/data/torrents/anime/
+curl -X POST -F 'category=动漫(Anime)' -F 'savePath=/usr/share/nginx/data/torrents/anime/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /usr/share/nginx/data/torrents/music/
+curl -X POST -F 'category=音乐(Music)' -F 'savePath=/usr/share/nginx/data/torrents/music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /usr/share/nginx/data/torrents/18_plus/
+curl -X POST -F 'category=18禁(18_plus)' -F 'savePath=/usr/share/nginx/data/torrents/18_plus/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /usr/share/nginx/data/torrents/documentary/
+curl -X POST -F 'category=纪录片(Documentary)' -F 'savePath=/usr/share/nginx/data/torrents/documentary/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /usr/share/nginx/data/torrents/tv/
+curl -X POST -F 'category=电视剧(Tv)' -F 'savePath=/usr/share/nginx/data/torrents/tv/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /usr/share/nginx/data/torrents/others/
+curl -X POST -F 'category=其他(Others)' -F 'savePath=/usr/share/nginx/data/torrents/others/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 ## 修改密码，锁定配置
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22web_ui_password%22:%22${password1}%22%7D  --cookie "${qbtcookie}"
 }
