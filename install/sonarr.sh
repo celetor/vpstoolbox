@@ -167,44 +167,44 @@ docker-compose up -d
 fi
 cd /root
 
-cd /usr/share/nginx/
-mkdir lidarr
-cd /usr/share/nginx/lidarr
-mkdir /usr/share/nginx/lidarr/config
-mkdir /usr/share/nginx/lidarr/downloads
+# cd /usr/share/nginx/
+# mkdir lidarr
+# cd /usr/share/nginx/lidarr
+# mkdir /usr/share/nginx/lidarr/config
+# mkdir /usr/share/nginx/lidarr/downloads
 
-    cat > "docker-compose.yml" << EOF
-version: "3.8"
-services:
-  lidarr:
-    network_mode: host
-    image: lscr.io/linuxserver/lidarr
-    container_name: lidarr
-    environment:
-      - PUID=${uid}
-      - PGID=${gid}
-      - TZ=Asia/Shanghai
-    volumes:
-      - /usr/share/nginx/lidarr/config:/config
-      - /usr/share/nginx/data:/data
-    restart: unless-stopped
-EOF
+#     cat > "docker-compose.yml" << EOF
+# version: "3.8"
+# services:
+#   lidarr:
+#     network_mode: host
+#     image: lscr.io/linuxserver/lidarr
+#     container_name: lidarr
+#     environment:
+#       - PUID=${uid}
+#       - PGID=${gid}
+#       - TZ=Asia/Shanghai
+#     volumes:
+#       - /usr/share/nginx/lidarr/config:/config
+#       - /usr/share/nginx/data:/data
+#     restart: unless-stopped
+# EOF
 
-docker-compose up -d
-sleep 10s;
+# docker-compose up -d
+# sleep 10s;
 
-cat /usr/share/nginx/lidarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
+# cat /usr/share/nginx/lidarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
 
-if [[ $? != 0 ]]; then
-docker-compose down
-sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/lidarr\/<\/UrlBase>/g" /usr/share/nginx/lidarr/config/config.xml
-sed -i '$d' /usr/share/nginx/lidarr/config/config.xml
-echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/lidarr/config/config.xml
-echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/lidarr/config/config.xml
-echo '</Config>' >> /usr/share/nginx/lidarr/config/config.xml
-docker-compose up -d
-fi
-cd
+# if [[ $? != 0 ]]; then
+# docker-compose down
+# sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/lidarr\/<\/UrlBase>/g" /usr/share/nginx/lidarr/config/config.xml
+# sed -i '$d' /usr/share/nginx/lidarr/config/config.xml
+# echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/lidarr/config/config.xml
+# echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/lidarr/config/config.xml
+# echo '</Config>' >> /usr/share/nginx/lidarr/config/config.xml
+# docker-compose up -d
+# fi
+# cd
 
 cd /usr/share/nginx/
 mkdir bazarr
