@@ -117,7 +117,6 @@ cd /usr/share/nginx/
 mkdir jackett
 cd /usr/share/nginx/jackett
 mkdir /usr/share/nginx/jackett/config
-mkdir /usr/share/nginx/jackett/downloads
 
 ## 8191
 
@@ -135,7 +134,6 @@ services:
       - AUTO_UPDATE=true #optional
     volumes:
       - /usr/share/nginx/jackett/config:/config
-      - /usr/share/nginx/jackett/downloads:/downloads
     restart: unless-stopped
   flaresolverr:
     network_mode: host
