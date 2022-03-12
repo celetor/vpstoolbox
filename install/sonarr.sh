@@ -239,4 +239,32 @@ sed -i '/^\[analytics\]$/,/^\[/ s/^enabled = True/enabled = False/' /usr/share/n
 docker-compose up -d
 cd
 
+cd /usr/share/nginx/
+mkdir chinesesubfinder
+cd /usr/share/nginx/chinesesubfinder
+mkdir /usr/share/nginx/chinesesubfinder/config
+
+## 19035
+
+    cat > "docker-compose.yml" << EOF
+version: "3.8"
+services:
+  chinesesubfinder:
+    network_mode: host
+    image: allanpk716/chinesesubfinder:latest
+    environment:
+      - PUID=${uid}
+      - PGID=${gid}
+      - TZ=Asia/Shanghai    
+    volumes:
+      - /usr/share/nginx/chinesesubfinder/config:/config
+    restart: unless-stopped
+EOF
+
+docker-compose up -d
+#sleep 10s;
+#docker-compose down
+#docker-compose up -d
+cd
+
 }
