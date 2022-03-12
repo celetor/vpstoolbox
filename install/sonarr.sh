@@ -103,7 +103,7 @@ cat /usr/share/nginx/radarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
 
 if [[ $? != 0 ]]; then
 docker-compose down
-sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr\/<\/UrlBase>/g" /usr/share/nginx/sonarr/data/config.xml
+sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr\/<\/UrlBase>/g" /usr/share/nginx/radarr/data/config.xml
 sed -i '$d' /usr/share/nginx/radarr/data/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/radarr/data/config.xml
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/radarr/data/config.xml
