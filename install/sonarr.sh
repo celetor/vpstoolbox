@@ -11,9 +11,8 @@ url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
-echo media:${password1} | chpasswd
-
-uid=$(id media)
+uid=$(id -u nginx)
+gid=$(id -g nginx)
 
 install_sonarr(){
 cd /usr/share/nginx/
@@ -71,8 +70,8 @@ services:
     image: lscr.io/linuxserver/jackett
     container_name: jackett
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${uid}
+      - PGID=${gid}
       - TZ=Asia/Shanghai
       - AUTO_UPDATE=true #optional
     volumes:
@@ -102,6 +101,9 @@ cat '/usr/share/nginx/jackett/config/Jackett/ServerConfig.json' | jq '.BasePathO
 cp -f /usr/share/nginx/jackett/config/Jackett/tmp.json /usr/share/nginx/jackett/config/Jackett/ServerConfig.json
 rm /usr/share/nginx/jackett/config/Jackett/tmp.json
 cat '/usr/share/nginx/jackett/config/Jackett/ServerConfig.json' | jq '.AllowExternal |= false' >> /usr/share/nginx/jackett/config/Jackett/tmp.json
+cp -f /usr/share/nginx/jackett/config/Jackett/tmp.json /usr/share/nginx/jackett/config/Jackett/ServerConfig.json
+rm /usr/share/nginx/jackett/config/Jackett/tmp.json
+cat '/usr/share/nginx/jackett/config/Jackett/ServerConfig.json' | jq '.FlareSolverrUrl |= "http://127.0.0.1:8191"' >> /usr/share/nginx/jackett/config/Jackett/tmp.json
 cp -f /usr/share/nginx/jackett/config/Jackett/tmp.json /usr/share/nginx/jackett/config/Jackett/ServerConfig.json
 rm /usr/share/nginx/jackett/config/Jackett/tmp.json
 docker-compose up -d
