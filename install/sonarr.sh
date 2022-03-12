@@ -79,17 +79,15 @@ services:
       - /usr/share/nginx/jackett/config:/config
       - /usr/share/nginx/jackett/downloads:/downloads
     restart: unless-stopped
-    services:
   flaresolverr:
     network_mode: host
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
     environment:
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-      - LOG_HTML=${LOG_HTML:-false}
-      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - LOG_LEVEL=\${LOG_LEVEL:-info}
+      - LOG_HTML=\${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=\${CAPTCHA_SOLVER:-none}
       - TZ=Asia/Shanghai
-    ports:
     restart: unless-stopped 
 EOF
 
