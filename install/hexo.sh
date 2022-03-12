@@ -87,11 +87,6 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 *默认安装: ✅*
 
-#### Trojan-GFW client config profiles(客户端配置文件)
-
-1. <a href="https://$domain/client1-$password1.json" target="_blank" rel="noreferrer">Profile 1</a>
-2. <a href="https://$domain/client2-$password2.json" target="_blank" rel="noreferrer">Profile 2</a>
-
 #### Trojan-GFW Share Links
 
 1. trojan://$password1@$domain:${trojanport}

@@ -42,12 +42,6 @@ server {
     #http2_push /js/schemes/muse.js;
     #http2_push /js/next-boot.js;
   }
-  location /client1-${password1}.json {
-    root /usr/share/nginx/html/;
-  }
-  location /client2-${password2}.json {
-    root /usr/share/nginx/html/;
-  }
 EOF
 if [[ $install_nextcloud == 1 ]]; then
 echo "    include /etc/nginx/conf.d/nextcloud.conf;" >> /etc/nginx/conf.d/default.conf
