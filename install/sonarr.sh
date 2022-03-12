@@ -55,6 +55,47 @@ fi
 cd
 
 cd /usr/share/nginx/
+mkdir radarr
+cd /usr/share/nginx/radarr
+
+## 7878
+
+    cat > "docker-compose.yml" << "EOF"
+version: "3.8"
+services:
+  radarr:
+    network_mode: host
+    image: lscr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=${uid}
+      - PGID=${gid}
+      - TZ=Asia/Shanghai
+    volumes:
+      - /usr/share/nginx/radarr/data:/config
+      - /usr/share/nginx/radarr/tvseries:/tv #optional
+      - /usr/share/nginx/radarr/downloads:/downloads #optional
+    restart: unless-stopped
+EOF
+
+docker-compose up -d
+sleep 10s;
+
+cat /usr/share/nginx/radarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
+
+if [[ $? != 0 ]]; then
+docker-compose down
+sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr\/<\/UrlBase>/g" /usr/share/nginx/sonarr/data/config.xml
+sed -i '$d' /usr/share/nginx/radarr/data/config.xml
+echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/radarr/data/config.xml
+echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/radarr/data/config.xml
+echo '</Config>' >> /usr/share/nginx/radarr/data/config.xml
+docker-compose up -d
+fi
+cd
+
+
+cd /usr/share/nginx/
 mkdir jackett
 cd /usr/share/nginx/jackett
 mkdir /usr/share/nginx/jackett/config
