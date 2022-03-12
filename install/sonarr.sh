@@ -28,8 +28,8 @@ services:
     image: lscr.io/linuxserver/sonarr
     container_name: sonarr
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${uid}
+      - PGID=${gid}
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/sonarr/data:/config
@@ -124,8 +124,8 @@ services:
     image: lscr.io/linuxserver/lidarr
     container_name: lidarr
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${uid}
+      - PGID=${gid}
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/lidarr/config:/config
@@ -162,8 +162,8 @@ services:
     image: lscr.io/linuxserver/bazarr
     container_name: bazarr
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${uid}
+      - PGID=${gid}
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/bazarr/config:/config
