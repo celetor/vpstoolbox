@@ -238,7 +238,6 @@ hexo g && hexo d
 *默认安装: ❎*
 
 - <a href="https://$domain:443/emby/" target="_blank" rel="noreferrer">https://$domain/emby/</a>
-- <a href="https://$domain:443/jellyfin/" target="_blank" rel="noreferrer">https://$domain/jellyfin/</a>
 - <a href="https://$domain:443/sonarr/" target="_blank" rel="noreferrer">https://$domain/sonarr/</a>
 - <a href="https://$domain:443/radarr/" target="_blank" rel="noreferrer">https://$domain/radarr/</a>
 - <a href="https://$domain:443/lidarr/" target="_blank" rel="noreferrer">https://$domain/lidarr/</a>
