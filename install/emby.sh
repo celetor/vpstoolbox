@@ -13,7 +13,7 @@ github_url="https://github.com/johnrosen1/vpstoolbox"
 
 install_emby(){
 apt install -y apt-transport-https
-curl -LO https://github.com/MediaBrowser/Emby.Releases/releases/download/4.6.7.0/emby-server-deb_4.6.7.0_amd64.deb
+curl --retry 5 -LO https://github.com/MediaBrowser/Emby.Releases/releases/download/4.6.7.0/emby-server-deb_4.6.7.0_amd64.deb
 dpkg -i emby-server-deb_4.6.7.0_amd64.deb
 rm emby-server-deb_4.6.7.0_amd64.deb
 
