@@ -285,7 +285,7 @@ echo "        return 302 https://${domain}:443/prowlarr/;" >> /etc/nginx/conf.d/
 echo "    }" >> /etc/nginx/conf.d/default.conf
 echo "    location /prowlarr/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_pass http://127.0.0.1:9696/;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:9696/prowlarr/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
