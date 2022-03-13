@@ -283,7 +283,7 @@ echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location /prowlarr{" >> /etc/nginx/conf.d/default.conf
 echo "        return 302 https://${domain}:443/prowlarr/;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
-echo "    location /overseerr/ {" >> /etc/nginx/conf.d/default.conf
+echo "    location /prowlarr/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:9696/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf

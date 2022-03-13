@@ -244,6 +244,7 @@ hexo g && hexo d
 - <a href="https://$domain:443/bazarr/" target="_blank" rel="noreferrer">https://$domain/bazarr/</a>
 - <a href="https://$domain:443/chinesesubfinder/" target="_blank" rel="noreferrer">https://$domain/chinesesubfinder/</a>
 - <a href="https://$domain:443/ombi/" target="_blank" rel="noreferrer">https://$domain/ombi/</a>
+- <a href="https://$domain:443/prowlarr/" target="_blank" rel="noreferrer">https://$domain/prowlarr/</a>
 - <a href="https://$domain:443/jackett/" target="_blank" rel="noreferrer">https://$domain/jackett/</a>
 
 ---
