@@ -181,6 +181,8 @@ echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/radarr/d
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/radarr/data/config.xml
 echo '</Config>' >> /usr/share/nginx/radarr/data/config.xml
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into RootFolders values ('1','/data/media/movies/');"
+sqlite3 /usr/share/nginx/sonarr/data/radarr.db  "UPDATE NamingConfig SET RenameMovies = 1;"
+## PRAGMA table_info(NamingConfig);
 add_download_client_radarr
 docker-compose up -d
 fi
