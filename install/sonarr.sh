@@ -67,7 +67,33 @@ rm add.sh
 
 }
 
+add_download_client_radarr(){
 
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+
+  sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into DownloadClients values ('1','1','localhost','QBittorrent','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 8080,
+  \"useSsl\": false,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"tvCategory\": \"movies\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"initialState\": 0,
+  \"sequentialOrder\": false,
+  \"firstAndLast\": false
+}','QBittorrentSettings','1','1','1');"
+EOF
+
+sed -i "s/adminadmin/${password1}/g" add.sh
+
+bash add.sh
+
+rm add.sh
+
+}
 
 
 install_sonarr(){
@@ -155,6 +181,7 @@ echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/radarr/d
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/radarr/data/config.xml
 echo '</Config>' >> /usr/share/nginx/radarr/data/config.xml
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into RootFolders values ('1','/data/media/movies/');"
+add_download_client_radarr
 docker-compose up -d
 fi
 cd
