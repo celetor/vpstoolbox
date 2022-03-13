@@ -326,6 +326,7 @@ sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into IndexerProxie
 }','FlareSolverr','FlareSolverrSettings','[
   1
 ]');"
+sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Config values ('6','uilanguage','10');"
 ##
 cat '/usr/share/nginx/jackett/config/Jackett/ServerConfig.json' | jq '.BasePathOverride |= "/jackett/"' >> /usr/share/nginx/jackett/config/Jackett/tmp.json
 cp -f /usr/share/nginx/jackett/config/Jackett/tmp.json /usr/share/nginx/jackett/config/Jackett/ServerConfig.json
@@ -416,6 +417,8 @@ sed -i "/^\[radarr\]$/,/^\[/ s/^apikey =/apikey = ${radarr_api}/" /usr/share/ngi
 sed -i '/^\[analytics\]$/,/^\[/ s/^enabled = True/enabled = False/' /usr/share/nginx/bazarr/config/config/config.ini
 sed -i "s/use_sonarr = False/use_sonarr = True/g" /usr/share/nginx/bazarr/config/config/config.ini
 sed -i "s/use_radarr = False/use_radarr = True/g" /usr/share/nginx/bazarr/config/config/config.ini
+## enabled_providers = ['zimuku']
+sqlite3 /usr/share/nginx/bazarr/config/db/bazarr.db  "insert into table_languages_profiles values ('1','1','[{"id": 1, "language": "zh", "audio_exclude": "False", "hi": "False", "forced": "False"}, {"id": 2, "language": "zt", "audio_exclude": "False", "hi": "False", "forced": "False"}, {"id": 3, "language": "en", "audio_exclude": "False", "hi": "False", "forced": "False"}]','Chinese','[]','[]');"
 docker-compose up -d
 cd
 
@@ -443,9 +446,22 @@ services:
 EOF
 
 docker-compose up -d
-#sleep 10s;
-#docker-compose down
-#docker-compose up -d
+sleep 10s;
+docker-compose down
+
+## movie path
+cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.movie_paths |= /data/media/movies/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
+cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
+rm /usr/share/nginx/chinesesubfinder/config/tmp.json
+## tv path
+cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.series_paths |= /data/media/tv/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
+cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
+rm /usr/share/nginx/chinesesubfinder/config/tmp.json
+cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.address_url |= http://127.0.0.1:8096/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
+cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
+rm /usr/share/nginx/chinesesubfinder/config/tmp.json
+
+docker-compose up -d
 cd
 
 ## ombi
