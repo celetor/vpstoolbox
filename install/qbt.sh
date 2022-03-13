@@ -69,7 +69,7 @@ io_thread=$((${cpu_thread_count}*4))
 
 qbtcookie=$(curl -s -i --header 'Referer: http://localhost:8080' --data 'username=admin&password=adminadmin' http://localhost:8080/api/v2/auth/login | grep set-cookie | cut -c13-48)
 #curl http://localhost:8080/api/v2/app/version  --cookie "${qbtcookie}"
-#curl http://localhost:8080/api/v2/app/preferences  --cookie "${qbtcookie}"
+#curl http://localhost:8080/api/v2/app/preferences  --cookie "${qbtcookie}" | jq
 ## 修改性能设置
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22async_io_threads%22:${io_thread}%7D  --cookie "${qbtcookie}"
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22preallocate_all%22:true%7D  --cookie "${qbtcookie}"
