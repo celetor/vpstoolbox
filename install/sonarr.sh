@@ -39,6 +39,35 @@ mkdir /usr/share/nginx/data/media/tv/
 apt-get install xml-twig-tools -y
 apt-get install sqlite3 -y
 
+add_download_client(){
+
+    cat > "add.sh" << "EOF"
+  sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into DownloadClients values ('1','1','localhost','QBittorrent','{
+  "host": "127.0.0.1",
+  "port": 8080,
+  "useSsl": false,
+  "username": "admin",
+  "password": "adminadmin",
+  "tvCategory": "tv",
+  "recentTvPriority": 0,
+  "olderTvPriority": 0,
+  "initialState": 0,
+  "sequentialOrder": false,
+  "firstAndLast": false
+}','QBittorrentSettings','1','1','1');"
+EOF
+
+sed -i "s/adminadmin/${password1}/g" add.sh
+
+bash add.sh
+
+rm add.sh
+
+}
+
+
+
+
 install_sonarr(){
 
 ## tv show
@@ -78,6 +107,7 @@ echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/sonarr/d
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/sonarr/data/config.xml
 echo '</Config>' >> /usr/share/nginx/sonarr/data/config.xml
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('1','/data/media/tv/');"
+add_download_client
 docker-compose up -d
 fi
 cd
