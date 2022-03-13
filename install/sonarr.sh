@@ -380,5 +380,5 @@ cd
 # #docker-compose up -d
 # cd
 
-
+chown -R nginx:nginx /data/
 }
