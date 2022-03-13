@@ -39,7 +39,7 @@ mkdir /usr/share/nginx/data/media/tv/
 apt-get install xml-twig-tools -y
 apt-get install sqlite3 -y
 
-add_download_client(){
+add_download_client_sonarr(){
 
     cat > "add.sh" << "EOF"
   sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into DownloadClients values ('1','1','localhost','QBittorrent','{
@@ -107,7 +107,7 @@ echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/sonarr/d
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/sonarr/data/config.xml
 echo '</Config>' >> /usr/share/nginx/sonarr/data/config.xml
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('1','/data/media/tv/');"
-add_download_client
+add_download_client_sonarr
 docker-compose up -d
 fi
 cd
