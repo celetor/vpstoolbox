@@ -17,24 +17,24 @@ gid=$(id -g nginx)
 ## 文件夹
 
 ### 一级子目录(sonarr,radarr)
-mkdir /usr/share/nginx/data/
+mkdir /data/
 ### 二级子目录(qbt,emby,bazarr)
-mkdir /usr/share/nginx/data/torrents/
-mkdir /usr/share/nginx/data/usenet/
-mkdir /usr/share/nginx/data/media/
+mkdir /data/torrents/
+mkdir /data/usenet/
+mkdir /data/media/
 ### 三级子目录(none)
-mkdir /usr/share/nginx/data/torrents/animes/
-mkdir /usr/share/nginx/data/torrents/movies/
-mkdir /usr/share/nginx/data/torrents/music/
-mkdir /usr/share/nginx/data/torrents/tv/
-mkdir /usr/share/nginx/data/usenet/animes/
-mkdir /usr/share/nginx/data/usenet/movies/
-mkdir /usr/share/nginx/data/usenet/music/
-mkdir /usr/share/nginx/data/usenet/tv/
-mkdir /usr/share/nginx/data/media/animes/
-mkdir /usr/share/nginx/data/media/movies/
-mkdir /usr/share/nginx/data/media/music/
-mkdir /usr/share/nginx/data/media/tv/
+mkdir /data/torrents/animes/
+mkdir /data/torrents/movies/
+mkdir /data/torrents/music/
+mkdir /data/torrents/tv/
+mkdir /data/usenet/animes/
+mkdir /data/usenet/movies/
+mkdir /data/usenet/music/
+mkdir /data/usenet/tv/
+mkdir /data/media/animes/
+mkdir /data/media/movies/
+mkdir /data/media/music/
+mkdir /data/media/tv/
 
 apt-get install xml-twig-tools -y
 apt-get install sqlite3 -y
@@ -116,7 +116,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/sonarr/data:/config
-      - /usr/share/nginx/data:/data
+      - /data:/data
     restart: unless-stopped
 EOF
 
@@ -162,7 +162,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/radarr/data:/config
-      - /usr/share/nginx/data:/data
+      - /data:/data
     restart: unless-stopped
 EOF
 
@@ -304,7 +304,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/bazarr/config:/config
-      - /usr/share/nginx/data/media/:/data/media
+      - /data/media/:/data/media
     restart: unless-stopped
 EOF
 

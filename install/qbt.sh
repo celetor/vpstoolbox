@@ -96,33 +96,33 @@ curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22validate_https_t
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22peer_tos%22:0%7D  --cookie "${qbtcookie}"
 ## 设置自动管理以及默认下载位置
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22auto_tmm_enabled%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22save_path%22:%22%2fusr%2fshare%2fnginx%2fdata%2fmedia%2f%22%7D --cookie "${qbtcookie}"
+curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22save_path%22:%22%2fdata%2fmedia%2f%22%7D --cookie "${qbtcookie}"
 
 ## 新增分类以及下载位置
-mkdir /usr/share/nginx/data/
-mkdir /usr/share/nginx/data/torrents/
-mkdir /usr/share/nginx/data/media/
-mkdir /usr/share/nginx/data/torrents/animes/
-mkdir /usr/share/nginx/data/media/animes/
-curl -X POST -F 'category=animes' -F 'savePath=/usr/share/nginx/data/torrents/animes/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-mkdir /usr/share/nginx/data/torrents/music/
-mkdir /usr/share/nginx/data/media/music/
-curl -X POST -F 'category=music' -F 'savePath=/usr/share/nginx/data/torrents/music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-mkdir /usr/share/nginx/data/torrents/18_plus/
-mkdir /usr/share/nginx/data/media/18_plus/
-curl -X POST -F 'category=18_plus' -F 'savePath=/usr/share/nginx/data/torrents/18_plus/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-mkdir /usr/share/nginx/data/torrents/documentary/
-mkdir /usr/share/nginx/data/media/documentary/
-curl -X POST -F 'category=documentary' -F 'savePath=/usr/share/nginx/data/torrents/documentary/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-mkdir /usr/share/nginx/data/torrents/tv/
-mkdir /usr/share/nginx/data/media/tv/
-curl -X POST -F 'category=tv' -F 'savePath=/usr/share/nginx/data/torrents/tv/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-mkdir /usr/share/nginx/data/torrents/movies/
-mkdir /usr/share/nginx/data/media/movies/
-curl -X POST -F 'category=movies' -F 'savePath=/usr/share/nginx/data/torrents/movies/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-mkdir /usr/share/nginx/data/torrents/others/
-mkdir /usr/share/nginx/data/media/others/
-curl -X POST -F 'category=others' -F 'savePath=/usr/share/nginx/data/torrents/others/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /data/
+mkdir /data/torrents/
+mkdir /data/media/
+mkdir /data/torrents/animes/
+mkdir /data/media/animes/
+curl -X POST -F 'category=animes' -F 'savePath=/data/torrents/animes/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /data/torrents/music/
+mkdir /data/media/music/
+curl -X POST -F 'category=music' -F 'savePath=/data/torrents/music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /data/torrents/18_plus/
+mkdir /data/media/18_plus/
+curl -X POST -F 'category=18_plus' -F 'savePath=/data/torrents/18_plus/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /data/torrents/documentary/
+mkdir /data/media/documentary/
+curl -X POST -F 'category=documentary' -F 'savePath=/data/torrents/documentary/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /data/torrents/tv/
+mkdir /data/media/tv/
+curl -X POST -F 'category=tv' -F 'savePath=/data/torrents/tv/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /data/torrents/movies/
+mkdir /data/media/movies/
+curl -X POST -F 'category=movies' -F 'savePath=/data/torrents/movies/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir /data/torrents/others/
+mkdir /data/media/others/
+curl -X POST -F 'category=others' -F 'savePath=/data/torrents/others/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 ## 修改密码，锁定配置
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22web_ui_password%22:%22${password1}%22%7D  --cookie "${qbtcookie}"
 }
