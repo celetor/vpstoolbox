@@ -371,34 +371,38 @@ docker-compose up -d
 #docker-compose up -d
 cd
 
-# cd /usr/share/nginx/
-# mkdir overseerr
-# cd /usr/share/nginx/overseerr
-# mkdir /usr/share/nginx/overseerr/config
+## ombi
 
-# ## 5055
+cd /usr/share/nginx/
+mkdir ombi
+cd /usr/share/nginx/ombi
+mkdir /usr/share/nginx/ombi/config
 
-#     cat > "docker-compose.yml" << EOF
-# version: "3.8"
-# services:
-#   overseerr:
-#     network_mode: host
-#     image: sctx/overseerr:latest
-#     container_name: overseerr
-#     environment:
-#       - PUID=${uid}
-#       - PGID=${gid}
-#       - TZ=Asia/Shanghai    
-#     volumes:
-#       - /usr/share/nginx/overseerr/config:/config
-#     restart: unless-stopped
-# EOF
+## 3579
 
-# docker-compose up -d
+     cat > "docker-compose.yml" << EOF
+version: "3.8"
+services:
+  ombi:
+    image: lscr.io/linuxserver/ombi
+    container_name: ombi
+    environment:
+      - PUID=${uid}
+      - PGID=${gid}
+      - TZ=Asia/Shanghai
+      - BASE_URL=/ombi #optional
+    volumes:
+      - /usr/share/nginx/ombi/config:/config
+    ports:
+      - 3579:3579
+    restart: unless-stopped
+EOF
+
+docker-compose up -d
 # #sleep 10s;
 # #docker-compose down
 # #docker-compose up -d
-# cd
+cd /root
 
 chown -R nginx:nginx /data/
 }
