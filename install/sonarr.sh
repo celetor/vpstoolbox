@@ -117,6 +117,7 @@ sed -i '$d' /usr/share/nginx/radarr/data/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/radarr/data/config.xml
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/radarr/data/config.xml
 echo '</Config>' >> /usr/share/nginx/radarr/data/config.xml
+sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into RootFolders values ('1','/data/media/movies/');"
 docker-compose up -d
 fi
 cd
