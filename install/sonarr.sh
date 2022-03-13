@@ -133,6 +133,8 @@ echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/sonarr/d
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/sonarr/data/config.xml
 echo '</Config>' >> /usr/share/nginx/sonarr/data/config.xml
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('1','/data/media/tv/');"
+sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "UPDATE NamingConfig SET RenameEpisodes = 1;"
+## PRAGMA table_info(NamingConfig);
 add_download_client_sonarr
 docker-compose up -d
 fi
