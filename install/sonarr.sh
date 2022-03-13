@@ -36,6 +36,7 @@ mkdir /usr/share/nginx/data/media/movies/
 mkdir /usr/share/nginx/data/media/music/
 mkdir /usr/share/nginx/data/media/tv/
 
+apt-get install xml-twig-tools -y
 
 install_sonarr(){
 
@@ -80,6 +81,9 @@ docker-compose up -d
 fi
 cd
 
+sonarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/sonarr/data/config.xml --text_only)
+
+
 ## movies
 
 cd /usr/share/nginx/
@@ -121,6 +125,9 @@ sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into RootFolders values 
 docker-compose up -d
 fi
 cd
+
+radarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/radarr/data/config.xml --text_only)
+
 
 ## api
 
