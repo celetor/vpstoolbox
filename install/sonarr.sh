@@ -250,6 +250,12 @@ cat /usr/share/nginx/jackett/config/Jackett/ServerConfig.json | grep /jackett/ &
 
 if [[ $? != 0 ]]; then
 docker-compose down
+
+## 
+
+sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/prowlarr\/<\/UrlBase>/g" /usr/share/nginx/prowlarr/config/config.xml
+
+##
 cat '/usr/share/nginx/jackett/config/Jackett/ServerConfig.json' | jq '.BasePathOverride |= "/jackett/"' >> /usr/share/nginx/jackett/config/Jackett/tmp.json
 cp -f /usr/share/nginx/jackett/config/Jackett/tmp.json /usr/share/nginx/jackett/config/Jackett/ServerConfig.json
 rm /usr/share/nginx/jackett/config/Jackett/tmp.json
