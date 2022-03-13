@@ -447,22 +447,22 @@ services:
 EOF
 
 docker-compose up -d
-sleep 10s;
-docker-compose down
+# sleep 10s;
+# docker-compose down
 
 ## movie path
-cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.movie_paths |= /data/media/movies/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
-cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
-rm /usr/share/nginx/chinesesubfinder/config/tmp.json
-## tv path
-cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.series_paths |= /data/media/tv/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
-cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
-rm /usr/share/nginx/chinesesubfinder/config/tmp.json
-cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.address_url |= http://127.0.0.1:8096/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
-cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
-rm /usr/share/nginx/chinesesubfinder/config/tmp.json
+# cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.movie_paths |= /data/media/movies/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
+# cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
+# rm /usr/share/nginx/chinesesubfinder/config/tmp.json
+# ## tv path
+# cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.series_paths |= /data/media/tv/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
+# cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
+# rm /usr/share/nginx/chinesesubfinder/config/tmp.json
+# cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.address_url |= http://127.0.0.1:8096/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
+# cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
+# rm /usr/share/nginx/chinesesubfinder/config/tmp.json
 
-docker-compose up -d
+# docker-compose up -d
 cd
 
 ## ombi
