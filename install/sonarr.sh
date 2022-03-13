@@ -265,4 +265,33 @@ docker-compose up -d
 #docker-compose up -d
 cd
 
+cd /usr/share/nginx/
+mkdir overseerr
+cd /usr/share/nginx/overseerr
+mkdir /usr/share/nginx/overseerr/config
+
+## 5055
+
+    cat > "docker-compose.yml" << EOF
+version: "3.8"
+services:
+  overseerr:
+    network_mode: host
+    image: allanpk716/chinesesubfinder:latest
+    environment:
+      - PUID=${uid}
+      - PGID=${gid}
+      - TZ=Asia/Shanghai    
+    volumes:
+      - /usr/share/nginx/overseerr/config:/config
+    restart: unless-stopped
+EOF
+
+docker-compose up -d
+#sleep 10s;
+#docker-compose down
+#docker-compose up -d
+cd
+
+
 }
