@@ -223,7 +223,6 @@ cd /usr/share/nginx/
 mkdir bazarr
 cd /usr/share/nginx/bazarr
 mkdir /usr/share/nginx/bazarr/config
-mkdir /usr/share/nginx/bazarr/downloads
 
     cat > "docker-compose.yml" << EOF
 version: "3.8"
