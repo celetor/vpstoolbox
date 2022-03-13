@@ -78,12 +78,10 @@ add_download_client_radarr(){
   \"useSsl\": false,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
-  \"tvCategory\": \"movies\",
+  \"movieCategory\": \"movies\",
   \"recentTvPriority\": 0,
   \"olderTvPriority\": 0,
-  \"initialState\": 0,
-  \"sequentialOrder\": false,
-  \"firstAndLast\": false
+  \"initialState\": 0
 }','QBittorrentSettings','1','1','1');"
 EOF
 
