@@ -198,10 +198,12 @@ radarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/radarr/data/config.xml --text_on
 
 cd /usr/share/nginx/
 mkdir jackett
+mkdir prowlarr
 cd /usr/share/nginx/jackett
 mkdir /usr/share/nginx/jackett/config
+mkdir /usr/share/nginx/prowlarr/config
 
-## 8191
+## 8191 9696
 
     cat > "docker-compose.yml" << EOF
 version: "3.8"
@@ -218,6 +220,17 @@ services:
     volumes:
       - /usr/share/nginx/jackett/config:/config
     restart: unless-stopped
+  prowlarr:
+    network_mode: host
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    environment:
+      - PUID=${uid}
+      - PGID=${gid}
+      - TZ=Asia/Shanghai
+    volumes:
+      - /usr/share/nginx/prowlarr/config:/config
+    restart: unless-stopped
   flaresolverr:
     network_mode: host
     image: ghcr.io/flaresolverr/flaresolverr:latest
@@ -227,7 +240,7 @@ services:
       - LOG_HTML=\${LOG_HTML:-false}
       - CAPTCHA_SOLVER=\${CAPTCHA_SOLVER:-none}
       - TZ=Asia/Shanghai
-    restart: unless-stopped 
+    restart: unless-stopped
 EOF
 
 docker-compose up -d

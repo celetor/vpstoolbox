@@ -194,7 +194,7 @@ echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/def
 echo "        proxy_set_header Connection \$http_connection;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_buffering off;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-## sonarr
+## sonarr 8989
 echo "    location /sonarr {" >> /etc/nginx/conf.d/default.conf
 echo "        return 302 https://${domain}:443/sonarr/;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
@@ -211,7 +211,7 @@ echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/def
 echo "        proxy_set_header Connection \$http_connection;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_buffering off;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-## radarr
+## radarr 7878
 echo "    location /radarr {" >> /etc/nginx/conf.d/default.conf
 echo "        return 302 https://${domain}:443/radarr/;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
@@ -228,7 +228,7 @@ echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/def
 echo "        proxy_set_header Connection \$http_connection;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_buffering off;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-## lidarr
+## lidarr 8686
 echo "    location /lidarr {" >> /etc/nginx/conf.d/default.conf
 echo "        return 302 https://${domain}:443/lidarr/;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
@@ -245,7 +245,7 @@ echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/def
 echo "        proxy_set_header Connection \$http_connection;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_buffering off;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-## bazarr
+## bazarr 6767
 echo "    location /bazarr {" >> /etc/nginx/conf.d/default.conf
 echo "        return 302 https://${domain}:443/bazarr/;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
@@ -262,7 +262,7 @@ echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/def
 echo "        proxy_set_header Connection \$http_connection;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_buffering off;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-## chinesesubfinder
+## chinesesubfinder 19035
 echo "    location /chinesesubfinder {" >> /etc/nginx/conf.d/default.conf
 echo "        return 302 https://${domain}:443/chinesesubfinder/;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
@@ -279,13 +279,13 @@ echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/def
 echo "        proxy_set_header Connection \$http_connection;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_buffering off;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-## overseerr
-echo "    location /overseerr {" >> /etc/nginx/conf.d/default.conf
-echo "        return 302 https://${domain}:443/overseerr/;" >> /etc/nginx/conf.d/default.conf
+## prowlarr 9696
+echo "    location /prowlarr{" >> /etc/nginx/conf.d/default.conf
+echo "        return 302 https://${domain}:443/prowlarr/;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
 echo "    location /overseerr/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_pass http://127.0.0.1:5055/;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:9696/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
@@ -296,7 +296,7 @@ echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/def
 echo "        proxy_set_header Connection \$http_connection;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_buffering off;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-## jackett
+## jackett 9117
 echo "    location /jackett {" >> /etc/nginx/conf.d/default.conf
 echo "        return 302 https://${domain}:443/jackett/;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf
