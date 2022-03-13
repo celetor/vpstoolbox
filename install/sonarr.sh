@@ -384,6 +384,7 @@ mkdir /usr/share/nginx/ombi/config
 version: "3.8"
 services:
   ombi:
+    network_mode: host
     image: lscr.io/linuxserver/ombi
     container_name: ombi
     environment:
@@ -393,8 +394,6 @@ services:
       - BASE_URL=/ombi #optional
     volumes:
       - /usr/share/nginx/ombi/config:/config
-    ports:
-      - 3579:3579
     restart: unless-stopped
 EOF
 
