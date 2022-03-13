@@ -185,6 +185,8 @@ docker-compose up -d
 fi
 cd /root
 
+## music
+
 # cd /usr/share/nginx/
 # mkdir lidarr
 # cd /usr/share/nginx/lidarr
@@ -291,34 +293,34 @@ docker-compose up -d
 #docker-compose up -d
 cd
 
-cd /usr/share/nginx/
-mkdir overseerr
-cd /usr/share/nginx/overseerr
-mkdir /usr/share/nginx/overseerr/config
+# cd /usr/share/nginx/
+# mkdir overseerr
+# cd /usr/share/nginx/overseerr
+# mkdir /usr/share/nginx/overseerr/config
 
-## 5055
+# ## 5055
 
-    cat > "docker-compose.yml" << EOF
-version: "3.8"
-services:
-  overseerr:
-    network_mode: host
-    image: sctx/overseerr:latest
-    container_name: overseerr
-    environment:
-      - PUID=${uid}
-      - PGID=${gid}
-      - TZ=Asia/Shanghai    
-    volumes:
-      - /usr/share/nginx/overseerr/config:/config
-    restart: unless-stopped
-EOF
+#     cat > "docker-compose.yml" << EOF
+# version: "3.8"
+# services:
+#   overseerr:
+#     network_mode: host
+#     image: sctx/overseerr:latest
+#     container_name: overseerr
+#     environment:
+#       - PUID=${uid}
+#       - PGID=${gid}
+#       - TZ=Asia/Shanghai    
+#     volumes:
+#       - /usr/share/nginx/overseerr/config:/config
+#     restart: unless-stopped
+# EOF
 
-docker-compose up -d
-#sleep 10s;
-#docker-compose down
-#docker-compose up -d
-cd
+# docker-compose up -d
+# #sleep 10s;
+# #docker-compose down
+# #docker-compose up -d
+# cd
 
 
 }
