@@ -42,18 +42,20 @@ apt-get install sqlite3 -y
 add_download_client_sonarr(){
 
     cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+
   sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into DownloadClients values ('1','1','localhost','QBittorrent','{
-  "host": "127.0.0.1",
-  "port": 8080,
-  "useSsl": false,
-  "username": "admin",
-  "password": "adminadmin",
-  "tvCategory": "tv",
-  "recentTvPriority": 0,
-  "olderTvPriority": 0,
-  "initialState": 0,
-  "sequentialOrder": false,
-  "firstAndLast": false
+  \"host\": \"127.0.0.1\",
+  \"port\": 8080,
+  \"useSsl\": false,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"tvCategory\": \"tv\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"initialState\": 0,
+  \"sequentialOrder\": false,
+  \"firstAndLast\": false
 }','QBittorrentSettings','1','1','1');"
 EOF
 
