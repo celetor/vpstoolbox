@@ -95,8 +95,8 @@ curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22save_path%22:%22
 ## 新增分类以及下载位置
 mkdir /usr/share/nginx/data/
 mkdir /usr/share/nginx/data/torrents/
-mkdir/usr/share/nginx/data/torrents/anime/
-curl -X POST -F 'category=动漫(Anime)' -F 'savePath=/usr/share/nginx/data/torrents/anime/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+mkdir/usr/share/nginx/data/torrents/animes/
+curl -X POST -F 'category=动漫(Anime)' -F 'savePath=/usr/share/nginx/data/torrents/animes/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 mkdir /usr/share/nginx/data/torrents/music/
 curl -X POST -F 'category=音乐(Music)' -F 'savePath=/usr/share/nginx/data/torrents/music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 mkdir /usr/share/nginx/data/torrents/18_plus/

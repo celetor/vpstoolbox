@@ -23,12 +23,15 @@ mkdir /usr/share/nginx/data/torrents/
 mkdir /usr/share/nginx/data/usenet/
 mkdir /usr/share/nginx/data/media/
 ### 三级子目录(none)
+mkdir /usr/share/nginx/data/torrents/animes/
 mkdir /usr/share/nginx/data/torrents/movies/
 mkdir /usr/share/nginx/data/torrents/music/
 mkdir /usr/share/nginx/data/torrents/tv/
+mkdir /usr/share/nginx/data/usenet/animes/
 mkdir /usr/share/nginx/data/usenet/movies/
 mkdir /usr/share/nginx/data/usenet/music/
 mkdir /usr/share/nginx/data/usenet/tv/
+mkdir /usr/share/nginx/data/media/animes/
 mkdir /usr/share/nginx/data/media/movies/
 mkdir /usr/share/nginx/data/media/music/
 mkdir /usr/share/nginx/data/media/tv/
