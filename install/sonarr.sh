@@ -75,6 +75,7 @@ sed -i '$d' /usr/share/nginx/sonarr/data/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/sonarr/data/config.xml
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/sonarr/data/config.xml
 echo '</Config>' >> /usr/share/nginx/sonarr/data/config.xml
+sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('1','/data/media/tv/');"
 docker-compose up -d
 fi
 cd
