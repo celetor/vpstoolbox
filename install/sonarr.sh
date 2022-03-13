@@ -442,6 +442,7 @@ services:
       - TZ=Asia/Shanghai    
     volumes:
       - /usr/share/nginx/chinesesubfinder/config:/config
+      - /data/media/:/data/media
     restart: unless-stopped
 EOF
 
