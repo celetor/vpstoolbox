@@ -21,6 +21,8 @@ cat /etc/emby-server.conf | grep media &> /dev/null
 if [[ $? != 0 ]]; then
 systemctl stop emby-server
 sed -i "s/EMBY_DATA=/EMBY_DATA=\/usr\/share\/nginx\/data\/media\//g" /etc/emby-server.conf
+sed -i "s/User=emby/User=nginx/g" /lib/systemd/system/emby-server.service
+systemctl daemon reload
 systemctl restart emby-server
 fi
 cd /root
