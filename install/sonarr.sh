@@ -253,7 +253,9 @@ sleep 10s;
 docker-compose down
 sed -i "0,/base_url \=/s//base_url \= \/bazarr/g" /usr/share/nginx/bazarr/config/config/config.ini
 sed -i '/^\[sonarr\]$/,/^\[/ s/^base_url = \//base_url = \/sonarr\//' /usr/share/nginx/bazarr/config/config/config.ini
+sed -i "/^\[sonarr\]$/,/^\[/ s/^apikey =/apikey = ${sonarr_api}/" /usr/share/nginx/bazarr/config/config/config.ini
 sed -i '/^\[radarr\]$/,/^\[/ s/^base_url = \//base_url = \/radarr\//' /usr/share/nginx/bazarr/config/config/config.ini
+sed -i "/^\[radarr\]$/,/^\[/ s/^apikey =/apikey = ${radarr_api}/" /usr/share/nginx/bazarr/config/config/config.ini
 sed -i '/^\[analytics\]$/,/^\[/ s/^enabled = True/enabled = False/' /usr/share/nginx/bazarr/config/config/config.ini
 sed -i "s/use_sonarr = False/use_sonarr = True/g" /usr/share/nginx/bazarr/config/config/config.ini
 sed -i "s/use_radarr = False/use_radarr = True/g" /usr/share/nginx/bazarr/config/config/config.ini
