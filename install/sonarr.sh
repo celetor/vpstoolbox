@@ -38,6 +38,9 @@ mkdir /usr/share/nginx/data/media/tv/
 
 
 install_sonarr(){
+
+## tv show
+
 cd /usr/share/nginx/
 mkdir sonarr
 cd /usr/share/nginx/sonarr
@@ -75,6 +78,8 @@ echo '</Config>' >> /usr/share/nginx/sonarr/data/config.xml
 docker-compose up -d
 fi
 cd
+
+## movies
 
 cd /usr/share/nginx/
 mkdir radarr
@@ -115,6 +120,7 @@ docker-compose up -d
 fi
 cd
 
+## api
 
 cd /usr/share/nginx/
 mkdir jackett
@@ -209,6 +215,8 @@ cd /root
 # fi
 # cd
 
+## subtitles
+
 cd /usr/share/nginx/
 mkdir bazarr
 cd /usr/share/nginx/bazarr
@@ -253,6 +261,7 @@ services:
   chinesesubfinder:
     network_mode: host
     image: allanpk716/chinesesubfinder:latest
+    container_name: chinesesubfinder
     environment:
       - PUID=${uid}
       - PGID=${gid}
@@ -280,7 +289,8 @@ version: "3.8"
 services:
   overseerr:
     network_mode: host
-    image: allanpk716/chinesesubfinder:latest
+    image: sctx/overseerr:latest
+    container_name: overseerr
     environment:
       - PUID=${uid}
       - PGID=${gid}
