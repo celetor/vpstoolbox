@@ -93,6 +93,67 @@ rm add.sh
 
 }
 
+add_prowlarr_sonarr_radarr(){
+
+    cat > "add1.sh" << "EOF"
+#!/usr/bin/env bash
+
+  sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('1','Sonarr','Sonarr','{
+  \"prowlarrUrl\": \"http://127.0.0.1:9696\",
+  \"baseUrl\": \"http://127.0.0.1:8989/sonarr\",
+  \"apiKey\": \"adminadmin\",
+  \"syncCategories\": [
+    5000,
+    5010,
+    5020,
+    5030,
+    5040,
+    5045,
+    5050
+  ],
+  \"animeSyncCategories\": [
+    5070
+  ]
+}','SonarrSettings','2','[]');"
+EOF
+
+sed -i "s/adminadmin/${sonarr_api}/g" add1.sh
+
+bash add1.sh
+
+rm add1.sh
+
+    cat > "add2.sh" << "EOF"
+#!/usr/bin/env bash
+
+  sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('2','Radarr','Radarr','{
+  \"prowlarrUrl\": \"http://127.0.0.1:9696\",
+  \"baseUrl\": \"http://127.0.0.1:7878/radarr\",
+  \"apiKey\": \"adminadmin\",
+  \"syncCategories\": [
+    2000,
+    2010,
+    2020,
+    2030,
+    2040,
+    2045,
+    2050,
+    2060,
+    2070,
+    2080
+  ]
+}','RadarrSettings','2','[]');"
+EOF
+
+sed -i "s/adminadmin/${radarr_api}/g" add2.sh
+
+bash add2.sh
+
+rm add2.sh
+
+
+}
+
 
 install_sonarr(){
 
@@ -258,7 +319,13 @@ sed -i '$d' /usr/share/nginx/prowlarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/prowlarr/config/config.xml
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/prowlarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/prowlarr/config/config.xml
-
+add_prowlarr_sonarr_radarr
+sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into IndexerProxies values ('1','localhost','{
+  \"host\": \"http://127.0.0.1:8191/\",
+  \"requestTimeout\": 60
+}','FlareSolverr','FlareSolverrSettings','[
+  1
+]');"
 ##
 cat '/usr/share/nginx/jackett/config/Jackett/ServerConfig.json' | jq '.BasePathOverride |= "/jackett/"' >> /usr/share/nginx/jackett/config/Jackett/tmp.json
 cp -f /usr/share/nginx/jackett/config/Jackett/tmp.json /usr/share/nginx/jackett/config/Jackett/ServerConfig.json
