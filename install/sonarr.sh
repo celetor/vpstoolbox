@@ -37,6 +37,7 @@ mkdir /usr/share/nginx/data/media/music/
 mkdir /usr/share/nginx/data/media/tv/
 
 apt-get install xml-twig-tools -y
+apt-get install sqlite3 -y
 
 install_sonarr(){
 
