@@ -62,10 +62,12 @@ rm qb-web-nightly-20210808.zip
 mv dist web
 cd
 
+sleep 5s;
+
 cpu_thread_count=$(nproc --all)
 io_thread=$((${cpu_thread_count}*4))
 
-qbtcookie=$(curl -i --header 'Referer: http://localhost:8080' --data 'username=admin&password=adminadmin' http://localhost:8080/api/v2/auth/login | grep set-cookie | cut -c13-48)
+qbtcookie=$(curl -s -i --header 'Referer: http://localhost:8080' --data 'username=admin&password=adminadmin' http://localhost:8080/api/v2/auth/login | grep set-cookie | cut -c13-48)
 #curl http://localhost:8080/api/v2/app/version  --cookie "${qbtcookie}"
 #curl http://localhost:8080/api/v2/app/preferences  --cookie "${qbtcookie}"
 ## 修改性能设置
