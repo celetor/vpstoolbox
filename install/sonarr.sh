@@ -621,8 +621,6 @@ services:
       - PGID=${gid}
       - TZ=Asia/Shanghai
       - BASE_URL=/ombi #
-      - DefaultLanguageCode=zh #optional
-      - CollectAnalyticData=false #optional
     volumes:
       - /usr/share/nginx/ombi/config:/config
     restart: unless-stopped
