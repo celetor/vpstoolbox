@@ -195,6 +195,126 @@ echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/son
 echo '</Config>' >> /usr/share/nginx/sonarr/data/config.xml
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('1','/data/media/tv/');"
 ## PRAGMA table_info(NamingConfig);
+
+sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into LanguageProfiles values ('2','Chinese','[
+  {
+    \"language\": 0,
+    \"allowed\": false
+  },
+  {
+    \"language\": 13,
+    \"allowed\": false
+  },
+  {
+    \"language\": 17,
+    \"allowed\": false
+  },
+  {
+    \"language\": 14,
+    \"allowed\": false
+  },
+  {
+    \"language\": 3,
+    \"allowed\": false
+  },
+  {
+    \"language\": 11,
+    \"allowed\": false
+  },
+  {
+    \"language\": 18,
+    \"allowed\": false
+  },
+  {
+    \"language\": 12,
+    \"allowed\": false
+  },
+  {
+    \"language\": 15,
+    \"allowed\": false
+  },
+  {
+    \"language\": 24,
+    \"allowed\": false
+  },
+  {
+    \"language\": 21,
+    \"allowed\": false
+  },
+  {
+    \"language\": 8,
+    \"allowed\": false
+  },
+  {
+    \"language\": 5,
+    \"allowed\": false
+  },
+  {
+    \"language\": 9,
+    \"allowed\": false
+  },
+  {
+    \"language\": 22,
+    \"allowed\": false
+  },
+  {
+    \"language\": 27,
+    \"allowed\": false
+  },
+  {
+    \"language\": 23,
+    \"allowed\": false
+  },
+  {
+    \"language\": 20,
+    \"allowed\": false
+  },
+  {
+    \"language\": 4,
+    \"allowed\": false
+  },
+  {
+    \"language\": 2,
+    \"allowed\": false
+  },
+  {
+    \"language\": 19,
+    \"allowed\": false
+  },
+  {
+    \"language\": 16,
+    \"allowed\": false
+  },
+  {
+    \"language\": 1,
+    \"allowed\": false
+  },
+  {
+    \"language\": 7,
+    \"allowed\": false
+  },
+  {
+    \"language\": 6,
+    \"allowed\": false
+  },
+  {
+    \"language\": 25,
+    \"allowed\": false
+  },
+  {
+    \"language\": 28,
+    \"allowed\": false
+  },
+  {
+    \"language\": 26,
+    \"allowed\": false
+  },
+  {
+    \"language\": 10,
+    \"allowed\": true
+  }
+]','10','0');"
+
 add_download_client_sonarr
 docker-compose up -d
 fi
