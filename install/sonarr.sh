@@ -43,7 +43,6 @@ add_download_client_sonarr(){
 
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
-
   sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
   \"host\": \"127.0.0.1\",
   \"port\": 8080,
@@ -58,20 +57,15 @@ add_download_client_sonarr(){
   \"firstAndLast\": false
 }','QBittorrentSettings','1','1','1');"
 EOF
-
 sed -i "s/adminadmin/${password1}/g" add.sh
-
 bash add.sh
-
 rm add.sh
-
 }
 
 add_download_client_radarr(){
 
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
-
   sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
   \"host\": \"127.0.0.1\",
   \"port\": 8080,
@@ -84,20 +78,15 @@ add_download_client_radarr(){
   \"initialState\": 0
 }','QBittorrentSettings','1','1','1');"
 EOF
-
 sed -i "s/adminadmin/${password1}/g" add.sh
-
 bash add.sh
-
 rm add.sh
-
 }
 
 add_prowlarr_sonarr_radarr(){
 
     cat > "add1.sh" << "EOF"
 #!/usr/bin/env bash
-
   sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('1','Sonarr','Sonarr','{
   \"prowlarrUrl\": \"http://127.0.0.1:9696\",
   \"baseUrl\": \"http://127.0.0.1:8989/sonarr\",
@@ -118,14 +107,11 @@ add_prowlarr_sonarr_radarr(){
 EOF
 
 sed -i "s/adminadmin/${sonarr_api}/g" add1.sh
-
 bash add1.sh
-
 rm add1.sh
 
     cat > "add2.sh" << "EOF"
 #!/usr/bin/env bash
-
   sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('2','Radarr','Radarr','{
   \"prowlarrUrl\": \"http://127.0.0.1:9696\",
   \"baseUrl\": \"http://127.0.0.1:7878/radarr\",
@@ -144,20 +130,15 @@ rm add1.sh
   ]
 }','RadarrSettings','2','[]');"
 EOF
-
 sed -i "s/adminadmin/${radarr_api}/g" add2.sh
-
 bash add2.sh
-
 rm add2.sh
-
-
 }
 
 
 install_sonarr(){
 
-## tv show
+## tv animes 8989
 
 cd /usr/share/nginx/
 mkdir sonarr
@@ -335,13 +316,11 @@ cd
 sonarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/sonarr/data/config.xml --text_only)
 
 
-## movies
+## movies 7878
 
 cd /usr/share/nginx/
 mkdir radarr
 cd /usr/share/nginx/radarr
-
-## 7878
 
     cat > "docker-compose.yml" << EOF
 version: "3.8"
@@ -395,6 +374,45 @@ cd
 
 radarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/radarr/data/config.xml --text_only)
 
+## music 8686
+
+cd /usr/share/nginx/
+mkdir lidarr
+cd /usr/share/nginx/lidarr
+mkdir /usr/share/nginx/lidarr/config
+
+    cat > "docker-compose.yml" << EOF
+version: "3.8"
+services:
+  lidarr:
+    network_mode: host
+    image: lscr.io/linuxserver/lidarr
+    container_name: lidarr
+    environment:
+      - PUID=${uid}
+      - PGID=${gid}
+      - TZ=Asia/Shanghai
+    volumes:
+      - /usr/share/nginx/lidarr/config:/config
+      - /data:/data
+    restart: unless-stopped
+EOF
+
+docker-compose up -d
+sleep 10s;
+
+cat /usr/share/nginx/lidarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
+
+if [[ $? != 0 ]]; then
+docker-compose down
+sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/lidarr\/<\/UrlBase>/g" /usr/share/nginx/lidarr/config/config.xml
+sed -i '$d' /usr/share/nginx/lidarr/config/config.xml
+echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/lidarr/config/config.xml
+echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/lidarr/config/config.xml
+echo '</Config>' >> /usr/share/nginx/lidarr/config/config.xml
+docker-compose up -d
+fi
+cd
 
 ## api
 
@@ -482,47 +500,6 @@ docker-compose up -d
 fi
 cd /root
 
-## music
-
-# cd /usr/share/nginx/
-# mkdir lidarr
-# cd /usr/share/nginx/lidarr
-# mkdir /usr/share/nginx/lidarr/config
-# mkdir /usr/share/nginx/lidarr/downloads
-
-#     cat > "docker-compose.yml" << EOF
-# version: "3.8"
-# services:
-#   lidarr:
-#     network_mode: host
-#     image: lscr.io/linuxserver/lidarr
-#     container_name: lidarr
-#     environment:
-#       - PUID=${uid}
-#       - PGID=${gid}
-#       - TZ=Asia/Shanghai
-#     volumes:
-#       - /usr/share/nginx/lidarr/config:/config
-#       - /usr/share/nginx/data:/data
-#     restart: unless-stopped
-# EOF
-
-# docker-compose up -d
-# sleep 10s;
-
-# cat /usr/share/nginx/lidarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
-
-# if [[ $? != 0 ]]; then
-# docker-compose down
-# sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/lidarr\/<\/UrlBase>/g" /usr/share/nginx/lidarr/config/config.xml
-# sed -i '$d' /usr/share/nginx/lidarr/config/config.xml
-# echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/lidarr/config/config.xml
-# echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/lidarr/config/config.xml
-# echo '</Config>' >> /usr/share/nginx/lidarr/config/config.xml
-# docker-compose up -d
-# fi
-# cd
-
 ## subtitles
 
 cd /usr/share/nginx/
@@ -588,26 +565,22 @@ services:
 EOF
 
 docker-compose up -d
-# sleep 10s;
-# docker-compose down
-
+sleep 10s;
+docker-compose down
 cd /usr/share/nginx/chinesesubfinder/config
 
      cat > "ChineseSubFinderSettings.json" << EOF
 {"user_info":{"username":"admin","password":"${password1}"},"common_settings":{"scan_interval":"6h","threads":1,"run_scan_at_start_up":false,"movie_paths":["/data/media/movies/"],"series_paths":["/data/media/tv/"]},"advanced_settings":{"proxy_settings":{"use_http_proxy":false,"http_proxy_address":""},"debug_mode":false,"save_full_season_tmp_subtitles":false,"sub_type_priority":0,"sub_name_formatter":0,"save_multi_sub":false,"custom_video_exts":[],"fix_time_line":false,"topic":1},"emby_settings":{"enable":true,"address_url":"http://127.0.0.1:8096","api_key":"","max_request_video_number":3000,"skip_watched":true,"movie_paths_mapping":{"/data/media/movies/":"/data/media/movies/"},"series_paths_mapping":{"/data/media/tv/":"/data/media/tv/"}},"developer_settings":{"enable":false,"bark_server_address":""},"timeline_fixer_settings":{"max_offset_time":120,"min_offset":0.1},"experimental_function":{"auto_change_sub_encode":{"enable":false,"des_encode_type":0}}}
 EOF
-
-# docker-compose up -d
+docker-compose up -d
 cd
 
-## ombi
+## ombi 3579
 
 cd /usr/share/nginx/
 mkdir ombi
 cd /usr/share/nginx/ombi
 mkdir /usr/share/nginx/ombi/config
-
-## 3579
 
      cat > "docker-compose.yml" << EOF
 version: "3.8"
@@ -651,33 +624,25 @@ add_sonarr_ombi(){
 
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
-
   sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('4','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"QualityProfile\":\"1\",\"SeasonFolders\":false,\"RootPath\":\"1\",\"QualityProfileAnime\":\"1\",\"RootPathAnime\":\"2\",\"AddOnly\":false,\"V3\":true,\"LanguageProfile\":2,\"LanguageProfileAnime\":2,\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/sonarr\",\"Ip\":\"127.0.0.1\",\"Port\":8989,\"Id\":0}',
   'SonarrSettings');"
 EOF
 
 sed -i "s/adminadmin/${sonarr_api}/g" add.sh
-
 bash add.sh
-
 rm add.sh
-
 }
 
 add_radarr_ombi(){
 
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
-
   sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('5','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/movies\",\"AddOnly\":false,\"MinimumAvailability\":\"Announced\",\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/radarr\",\"Ip\":\"127.0.0.1\",\"Port\":7878,\"Id\":0}','RadarrSettings');"
 EOF
 
 sed -i "s/adminadmin/${radarr_api}/g" add.sh
-
 bash add.sh
-
 rm add.sh
-
 }
 
 
