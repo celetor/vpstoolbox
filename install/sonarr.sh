@@ -212,7 +212,6 @@ bash add3.sh
 rm add3.sh
 }
 
-
 install_sonarr(){
 
 ## nzbget 6789
@@ -248,14 +247,12 @@ sed -i "s/ControlIP=0.0.0.0/ControlIP=127.0.0.1/g" /usr/share/nginx/nzbget/confi
 sed -i "s/ControlUsername=nzbget/ControlUsername=admin/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/ControlPassword=tegbzn6789/ControlPassword=${password1}/g" /usr/share/nginx/nzbget/config/nzbget.conf
 docker-compose up -d
-cd
 
 ## tv animes 8989
 
 cd /usr/share/nginx/
 mkdir sonarr
 cd /usr/share/nginx/sonarr
-
 
     cat > "docker-compose.yml" << EOF
 version: "3.8"
@@ -295,7 +292,6 @@ sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into Metadata values ('1
   \"episodeImages\": true,
   \"isValid\": true
 }','XbmcMetadataSettings');"
-
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into LanguageProfiles values ('2','Chinese','[
   {
     \"language\": 0,
@@ -417,7 +413,6 @@ sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into LanguageProfiles va
 
 add_download_client_sonarr
 docker-compose up -d
-cd
 sonarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/sonarr/data/config.xml --text_only)
 
 ## movies 7878
@@ -457,7 +452,6 @@ sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into Config values ('6',
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into Config values ('7','uilanguage','10');"
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE Metadata SET Enable = 1 WHERE Id = 1;"
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "DELETE FROM Metadata WHERE Id = 1;"
-
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
   \"movieMetadata\": true,
   \"movieMetadataURL\": false,
@@ -469,8 +463,6 @@ sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into Metadata values ('1
 
 add_download_client_radarr
 docker-compose up -d
-cd
-
 radarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/radarr/data/config.xml --text_only)
 
 ## music 8686
@@ -516,8 +508,6 @@ sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into Metadata values (
   \"isValid\": true
 }','XbmcMetadataSettings');"
 docker-compose up -d
-cd
-
 lidarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/lidarr/config/config.xml --text_only)
 
 ## api
@@ -599,7 +589,6 @@ cat '/usr/share/nginx/jackett/config/Jackett/ServerConfig.json' | jq '.FlareSolv
 cp -f /usr/share/nginx/jackett/config/Jackett/tmp.json /usr/share/nginx/jackett/config/Jackett/ServerConfig.json
 rm /usr/share/nginx/jackett/config/Jackett/tmp.json
 docker-compose up -d
-cd /root
 
 ## subtitles
 
@@ -639,7 +628,6 @@ sed -i "s/use_radarr = False/use_radarr = True/g" /usr/share/nginx/bazarr/config
 sed -i "s/enabled_providers = \[\]/enabled_providers = \['zimuku', 'subscenter'\]/g" /usr/share/nginx/bazarr/config/config/config.ini
 sqlite3 /usr/share/nginx/bazarr/config/db/bazarr.db  "insert into table_languages_profiles values ('1','','[{\"id\": 1, \"language\": \"zh\", \"audio_exclude\": \"False\", \"hi\": \"False\", \"forced\": \"False\"}, {\"id\": 2, \"language\": \"zt\", \"audio_exclude\": \"False\", \"hi\": \"False\", \"forced\": \"False\"}, {\"id\": 3, \"language\": \"en\", \"audio_exclude\": \"False\", \"hi\": \"False\", \"forced\": \"False\"}]','Chinese','[]','[]');"
 docker-compose up -d
-cd
 
 cd /usr/share/nginx/
 mkdir chinesesubfinder
@@ -669,7 +657,6 @@ docker-compose up -d
 sleep 10s;
 docker-compose down
 cd /usr/share/nginx/chinesesubfinder/config
-
      cat > "ChineseSubFinderSettings.json" << EOF
 {"user_info":{"username":"admin","password":"${password1}"},"common_settings":{"scan_interval":"6h","threads":1,"run_scan_at_start_up":false,"movie_paths":["/data/media/movies/"],"series_paths":["/data/media/tv/"]},"advanced_settings":{"proxy_settings":{"use_http_proxy":false,"http_proxy_address":""},"debug_mode":false,"save_full_season_tmp_subtitles":false,"sub_type_priority":0,"sub_name_formatter":0,"save_multi_sub":false,"custom_video_exts":[],"fix_time_line":false,"topic":1},"emby_settings":{"enable":true,"address_url":"http://127.0.0.1:8096","api_key":"","max_request_video_number":3000,"skip_watched":true,"movie_paths_mapping":{"/data/media/movies/":"/data/media/movies/"},"series_paths_mapping":{"/data/media/tv/":"/data/media/tv/"}},"developer_settings":{"enable":false,"bark_server_address":""},"timeline_fixer_settings":{"max_offset_time":120,"min_offset":0.1},"experimental_function":{"auto_change_sub_encode":{"enable":false,"des_encode_type":0}}}
 EOF
@@ -706,10 +693,8 @@ docker-compose down
 add_sonarr_ombi
 add_radarr_ombi
 add_lidarr_ombi
-
 sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "DELETE FROM GlobalSettings WHERE Id = 1;"
 sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('1','{\"BaseUrl\":\"/ombi\",\"CollectAnalyticData\":false,\"Wizard\":false,\"ApiKey\":\"dfbcab4789604b4289b3cdc71aa41bf6\",\"DoNotSendNotificationsForAutoApprove\":false,\"HideRequestsUsers\":false,\"DisableHealthChecks\":false,\"DefaultLanguageCode\":\"zh\",\"AutoDeleteAvailableRequests\":false,\"AutoDeleteAfterDays\":0,\"Branch\":0,\"HasMigratedOldTvDbData\":false,\"Set\":false,\"Id\":1}','OmbiSettings');"
-
 curl 127.0.0.1:8989/sonarr/
 sleep 3s;
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "UPDATE NamingConfig SET RenameEpisodes = 1 WHERE Id = 1;"
@@ -718,45 +703,37 @@ sleep 3s;
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE NamingConfig SET RenameMovies = 1 WHERE Id = 1;"
 docker-compose up -d
 cd /root
-
 chown -R nginx:nginx /data/
 }
 
 add_sonarr_ombi(){
-
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
   sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('2','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"QualityProfile\":\"1\",\"SeasonFolders\":false,\"RootPath\":\"1\",\"QualityProfileAnime\":\"1\",\"RootPathAnime\":\"2\",\"AddOnly\":false,\"V3\":true,\"LanguageProfile\":2,\"LanguageProfileAnime\":2,\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/sonarr\",\"Ip\":\"127.0.0.1\",\"Port\":8989,\"Id\":0}',
   'SonarrSettings');"
 EOF
-
 sed -i "s/adminadmin/${sonarr_api}/g" add.sh
 bash add.sh
 rm add.sh
 }
 
 add_radarr_ombi(){
-
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
   sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('3','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/movies\",\"AddOnly\":false,\"MinimumAvailability\":\"Announced\",\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/radarr\",\"Ip\":\"127.0.0.1\",\"Port\":7878,\"Id\":0}','RadarrSettings');"
 EOF
-
 sed -i "s/adminadmin/${radarr_api}/g" add.sh
 bash add.sh
 rm add.sh
 }
 
 add_lidarr_ombi(){
-
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
   sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('6','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/music/\",\"AlbumFolder\":true,\"MetadataProfileId\":1,\"AddOnly\":false,\"Ssl\":false,\"SubDir\":\"/lidarr\",\"Ip\":\"127.0.0.1\",\"Port\":8686,\"Id\":0}','LidarrSettings');"
 EOF
-
 sed -i "s/adminadmin/${lidarr_api}/g" add.sh
 bash add.sh
 rm add.sh
 }
-
 chown -R nginx:nginx /data/
