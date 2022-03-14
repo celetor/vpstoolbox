@@ -607,7 +607,7 @@ echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/prowlarr
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/prowlarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/prowlarr/config/config.xml
 add_prowlarr_sonarr_radarr_lidarr
-sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into IndexerProxies values ('1','localhost','{
+sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into IndexerProxies values ('1','FlareSolverr','{
   \"host\": \"http://127.0.0.1:8191/\",
   \"requestTimeout\": 60
 }','FlareSolverr','FlareSolverrSettings','[
