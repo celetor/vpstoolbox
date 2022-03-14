@@ -56,6 +56,18 @@ add_download_client_sonarr(){
   \"sequentialOrder\": false,
   \"firstAndLast\": false
 }','QBittorrentSettings','1','1','1');"
+
+sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 6789,
+  \"useSsl\": false,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"tvCategory\": \"Series\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"addPaused\": true
+}','NzbgetSettings','1','1','1');"
 EOF
 sed -i "s/adminadmin/${password1}/g" add.sh
 bash add.sh
@@ -77,6 +89,18 @@ add_download_client_radarr(){
   \"olderTvPriority\": 0,
   \"initialState\": 0
 }','QBittorrentSettings','1','1','1');"
+
+sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 6789,
+  \"useSsl\": false,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"movieCategory\": \"Movies\",
+  \"recentMoviePriority\": 0,
+  \"olderMoviePriority\": 0,
+  \"addPaused\": true
+}','NzbgetSettings','1','1','1');"
 EOF
 sed -i "s/adminadmin/${password1}/g" add.sh
 bash add.sh
@@ -98,6 +122,18 @@ add_download_client_lidarr(){
   \"initialState\": 0,
   \"useSsl\": false
 }','QBittorrentSettings','1');"
+
+sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 6789,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"musicCategory\": \"Music\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"addPaused\": true,
+  \"useSsl\": false
+}','NzbgetSettings','1');"
 EOF
 sed -i "s/adminadmin/${password1}/g" add.sh
 bash add.sh
@@ -158,6 +194,45 @@ rm add2.sh
 
 
 install_sonarr(){
+
+## nzbget 6789
+
+cd /usr/share/nginx/
+mkdir nzbget
+cd /usr/share/nginx/nzbget
+mkdir /usr/share/nginx/nzbget/config
+
+    cat > "docker-compose.yml" << EOF
+version: "3.8"
+services:
+  lidarr:
+    network_mode: host
+    image: lscr.io/linuxserver/nzbget
+    container_name: nzbget
+    environment:
+      - PUID=${uid}
+      - PGID=${gid}
+      - TZ=Asia/Shanghai
+    volumes:
+      - /usr/share/nginx/nzbget/config:/config
+      - /data:/data
+    restart: unless-stopped
+EOF
+
+docker-compose up -d
+sleep 10s;
+
+# cat /usr/share/nginx/lidarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
+
+# if [[ $? != 0 ]]; then
+docker-compose down
+sed -i "s/MainDir=\/downloads/MainDir=\/data\/usenet\//g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/ControlIP=0.0.0.0/ControlIP=127.0.0.1/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/ControlUsername=nzbget/ControlUsername=admin/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/ControlPassword=tegbzn6789/ControlPassword=${password1}/g" /usr/share/nginx/nzbget/config/nzbget.conf
+docker-compose up -d
+# fi
+cd
 
 ## tv animes 8989
 
@@ -445,6 +520,8 @@ docker-compose up -d
 fi
 cd
 
+lidarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/lidarr/config/config.xml --text_only)
+
 ## api
 
 cd /usr/share/nginx/
@@ -635,6 +712,7 @@ sleep 10s;
 docker-compose down
 add_sonarr_ombi
 add_radarr_ombi
+add_lidarr_ombi
 
 sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "DELETE FROM GlobalSettings WHERE Id = 1;"
 sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('1','{\"BaseUrl\":\"/ombi\",\"CollectAnalyticData\":false,\"Wizard\":false,\"ApiKey\":\"dfbcab4789604b4289b3cdc71aa41bf6\",\"DoNotSendNotificationsForAutoApprove\":false,\"HideRequestsUsers\":false,\"DisableHealthChecks\":false,\"DefaultLanguageCode\":\"zh\",\"AutoDeleteAvailableRequests\":false,\"AutoDeleteAfterDays\":0,\"Branch\":0,\"HasMigratedOldTvDbData\":false,\"Set\":false,\"Id\":1}','OmbiSettings');"
@@ -648,42 +726,6 @@ sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE NamingConfig SET RenameM
 docker-compose up -d
 cd /root
 
-## nzbget 6789
-
-cd /usr/share/nginx/
-mkdir nzbget
-cd /usr/share/nginx/nzbget
-mkdir /usr/share/nginx/nzbget/config
-
-    cat > "docker-compose.yml" << EOF
-version: "3.8"
-services:
-  lidarr:
-    network_mode: host
-    image: lscr.io/linuxserver/nzbget
-    container_name: nzbget
-    environment:
-      - PUID=${uid}
-      - PGID=${gid}
-      - TZ=Asia/Shanghai
-    volumes:
-      - /usr/share/nginx/nzbget/config:/config
-      - /data:/data
-    restart: unless-stopped
-EOF
-
-docker-compose up -d
-sleep 10s;
-
-# cat /usr/share/nginx/lidarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
-
-# if [[ $? != 0 ]]; then
-docker-compose down
-sed -i "s/MainDir=\/downloads/MainDir=\/data\/usenet\//g" /usr/share/nginx/nzbget/config/nzbget.conf
-docker-compose up -d
-# fi
-cd
-
 chown -R nginx:nginx /data/
 }
 
@@ -691,7 +733,7 @@ add_sonarr_ombi(){
 
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('4','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"QualityProfile\":\"1\",\"SeasonFolders\":false,\"RootPath\":\"1\",\"QualityProfileAnime\":\"1\",\"RootPathAnime\":\"2\",\"AddOnly\":false,\"V3\":true,\"LanguageProfile\":2,\"LanguageProfileAnime\":2,\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/sonarr\",\"Ip\":\"127.0.0.1\",\"Port\":8989,\"Id\":0}',
+  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('2','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"QualityProfile\":\"1\",\"SeasonFolders\":false,\"RootPath\":\"1\",\"QualityProfileAnime\":\"1\",\"RootPathAnime\":\"2\",\"AddOnly\":false,\"V3\":true,\"LanguageProfile\":2,\"LanguageProfileAnime\":2,\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/sonarr\",\"Ip\":\"127.0.0.1\",\"Port\":8989,\"Id\":0}',
   'SonarrSettings');"
 EOF
 
@@ -704,7 +746,7 @@ add_radarr_ombi(){
 
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('5','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/movies\",\"AddOnly\":false,\"MinimumAvailability\":\"Announced\",\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/radarr\",\"Ip\":\"127.0.0.1\",\"Port\":7878,\"Id\":0}','RadarrSettings');"
+  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('3','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/movies\",\"AddOnly\":false,\"MinimumAvailability\":\"Announced\",\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/radarr\",\"Ip\":\"127.0.0.1\",\"Port\":7878,\"Id\":0}','RadarrSettings');"
 EOF
 
 sed -i "s/adminadmin/${radarr_api}/g" add.sh
@@ -712,5 +754,16 @@ bash add.sh
 rm add.sh
 }
 
+add_lidarr_ombi(){
+
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('4',{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/music/\",\"AlbumFolder\":true,\"MetadataProfileId\":1,\"AddOnly\":false,\"Ssl\":false,\"SubDir\":\"/lidarr\",\"Ip\":\"127.0.0.1\",\"Port\":8686,\"Id\":0},'LidarrSettings');"
+EOF
+
+sed -i "s/adminadmin/${lidarr_api}/g" add.sh
+bash add.sh
+rm add.sh
+}
 
 
