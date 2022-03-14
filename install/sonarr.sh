@@ -140,7 +140,7 @@ bash add.sh
 rm add.sh
 }
 
-add_prowlarr_sonarr_radarr(){
+add_prowlarr_sonarr_radarr_lidarr(){
 
     cat > "add1.sh" << "EOF"
 #!/usr/bin/env bash
@@ -190,6 +190,26 @@ EOF
 sed -i "s/adminadmin/${radarr_api}/g" add2.sh
 bash add2.sh
 rm add2.sh
+
+    cat > "add3.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('3','Lidarr','Lidarr','{
+  \"prowlarrUrl\": \"http://127.0.0.1:9696\",
+  \"baseUrl\": \"http://127.0.0.1:8686/lidarr\",
+  \"apiKey\": \"adminadmin\",
+  \"syncCategories\": [
+    3000,
+    3010,
+    3030,
+    3040,
+    3050,
+    3060
+  ]
+}','LidarrSettings','2','[]');"
+EOF
+sed -i "s/adminadmin/${lidarr_api}/g" add3.sh
+bash add3.sh
+rm add3.sh
 }
 
 
@@ -586,7 +606,7 @@ sed -i '$d' /usr/share/nginx/prowlarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/prowlarr/config/config.xml
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/prowlarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/prowlarr/config/config.xml
-add_prowlarr_sonarr_radarr
+add_prowlarr_sonarr_radarr_lidarr
 sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into IndexerProxies values ('1','localhost','{
   \"host\": \"http://127.0.0.1:8191/\",
   \"requestTimeout\": 60
