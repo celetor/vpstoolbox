@@ -418,7 +418,7 @@ services:
       - PUID=${uid}
       - PGID=${gid}
       - TZ=Asia/Shanghai
-      - AUTO_UPDATE=true #optional
+      - AUTO_UPDATE=true
     volumes:
       - /usr/share/nginx/jackett/config:/config
     restart: unless-stopped
