@@ -44,7 +44,7 @@ add_download_client_sonarr(){
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
 
-  sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into DownloadClients values ('1','1','localhost','QBittorrent','{
+  sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
   \"host\": \"127.0.0.1\",
   \"port\": 8080,
   \"useSsl\": false,
@@ -72,7 +72,7 @@ add_download_client_radarr(){
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
 
-  sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into DownloadClients values ('1','1','localhost','QBittorrent','{
+  sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
   \"host\": \"127.0.0.1\",
   \"port\": 8080,
   \"useSsl\": false,
