@@ -786,4 +786,4 @@ bash add.sh
 rm add.sh
 }
 
-
+chown -R nginx:nginx /data/
