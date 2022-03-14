@@ -105,14 +105,6 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 ### Trojan(Grpc)/Vless(Grpc)
 
-地址：$domain
-
-端口：${trojanport}
-
-用户UD(id): ${uuid_new}
-
-path：/${path_new}
-
 Vless(grpc)快速链接(vless grpc links)
 
 vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${path_new}&sni=${domain}#vless(grpc_direct_${myip})
@@ -121,24 +113,26 @@ Vless(grpc)支持Cloudflare CDN链接(vless grpc links)
 
 vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=/${path_new}&sni=${domain}#vless(grpc_cdn_${myip})
 
-Trojan(grpc)快速链接(trojan grpc links)
-
-trojan://${uuid_new}@${myip}:${trojanport}?encryption=none&security=tls&type=grpc&sni=${domain}&alpn=h2&serviceName=/${path_new}_trojan#Trojan(grpc_direct_${myip})
-
-Trojan(grpc)支持Cloudflare CDN链接(trojan grpc links)
+Trojan(grpc)链接(支持Cloudflare)
 
 trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=grpc&sni=${domain}&alpn=h2&serviceName=/${path_new}_trojan#Trojan(grpc_cdn_${myip})
 
 ---
 
-### Shadowsocks-rust
+### 影音
 
 *默认安装: ❎*
 
-ss://aes-128-gcm:${password1}@${domain}:8388#iplc-only
-ss://$(echo "aes-128-gcm:${password1}@${domain}:8388" | base64)#iplc-only
-
-PS: 仅推荐用于[iplc](https://relay.nekoneko.cloud?aff=2257)落地,不推荐直连使用。
+- <a href="https://$domain:443/emby/" target="_blank" rel="noreferrer">https://$domain/emby/</a>
+- <a href="https://$domain:443/sonarr/" target="_blank" rel="noreferrer">https://$domain/sonarr/</a>
+- <a href="https://$domain:443/radarr/" target="_blank" rel="noreferrer">https://$domain/radarr/</a>
+- <a href="https://$domain:443/lidarr/" target="_blank" rel="noreferrer">https://$domain/lidarr/</a>
+- <a href="https://$domain:443/bazarr/" target="_blank" rel="noreferrer">https://$domain/bazarr/</a>
+- <a href="https://$domain:443/chinesesubfinder/" target="_blank" rel="noreferrer">https://$domain/chinesesubfinder/</a>
+- <a href="https://$domain:443/ombi/" target="_blank" rel="noreferrer">https://$domain/ombi/</a>
+- <a href="https://$domain:443/prowlarr/" target="_blank" rel="noreferrer">https://$domain/prowlarr/</a>
+- <a href="https://$domain:443/jackett/" target="_blank" rel="noreferrer">https://$domain/jackett/</a>
+- <a href="https://$domain:443/nzbget/" target="_blank" rel="noreferrer">https://$domain/nzbget/</a>
 
 ---
 
@@ -221,6 +215,17 @@ hexo g && hexo d
 
 ---
 
+### Shadowsocks-rust
+
+*默认安装: ❎*
+
+ss://aes-128-gcm:${password1}@${domain}:8388#iplc-only
+ss://$(echo "aes-128-gcm:${password1}@${domain}:8388" | base64)#iplc-only
+
+PS: 仅推荐用于[iplc](https://relay.nekoneko.cloud?aff=2257)落地,不推荐直连使用。
+
+---
+
 ### Filebrowser
 
 *默认安装: ❎*
@@ -233,22 +238,7 @@ hexo g && hexo d
 
 ---
 
-### 影音
 
-*默认安装: ❎*
-
-- <a href="https://$domain:443/emby/" target="_blank" rel="noreferrer">https://$domain/emby/</a>
-- <a href="https://$domain:443/sonarr/" target="_blank" rel="noreferrer">https://$domain/sonarr/</a>
-- <a href="https://$domain:443/radarr/" target="_blank" rel="noreferrer">https://$domain/radarr/</a>
-- <a href="https://$domain:443/lidarr/" target="_blank" rel="noreferrer">https://$domain/lidarr/</a>
-- <a href="https://$domain:443/bazarr/" target="_blank" rel="noreferrer">https://$domain/bazarr/</a>
-- <a href="https://$domain:443/chinesesubfinder/" target="_blank" rel="noreferrer">https://$domain/chinesesubfinder/</a>
-- <a href="https://$domain:443/ombi/" target="_blank" rel="noreferrer">https://$domain/ombi/</a>
-- <a href="https://$domain:443/prowlarr/" target="_blank" rel="noreferrer">https://$domain/prowlarr/</a>
-- <a href="https://$domain:443/jackett/" target="_blank" rel="noreferrer">https://$domain/jackett/</a>
-- <a href="https://$domain:443/nzbget/" target="_blank" rel="noreferrer">https://$domain/nzbget/</a>
-
----
 
 ### Speedtest
 
