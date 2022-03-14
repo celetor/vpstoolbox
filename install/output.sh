@@ -94,7 +94,7 @@ echo -e " --- \${BLUE}帶寬使用(Bandwith Usage)\${NOCOLOR} ---"
 echo -e "         接收(Receive)    发送(Transmit)"
 tail -n +3 /proc/net/dev | grep -e eth -e enp | awk '{print \$1 " " \$2 " " \$10}' | numfmt --to=iec --field=2,3
 echo -e " --- \${GREEN}證書狀態(Certificate Status)\${NOCOLOR} ---"
-ssl_date=\$(echo |timeout 3 openssl s_client -4 -connect ${myip}:${trojanport} -servername ${domain} -tls1_3 2>&1 |sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'|openssl x509 -text)
+ssl_date=\$(echo |timeout 3 openssl s_client -4 -connect ${myip}:${trojanport} -servername ${domain} -tls1_3 2>&1 |sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'|openssl x509 -text) &>/dev/null
 tmp_last_date=\$(echo "\${ssl_date}" | grep 'Not After :' | awk -F' : ' '{print \$NF}')
 last_date=\$(date -ud "\${tmp_last_date}" +%Y-%m-%d" "%H:%M:%S)
 day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
