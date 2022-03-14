@@ -83,11 +83,7 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 ---
 
-### Trojan-GFW
-
-*默认安装: ✅*
-
-#### Trojan-GFW Share Links
+### Trojan-GFW 链接
 
 1. trojan://$password1@$domain:${trojanport}
 2. trojan://$password2@$domain:${trojanport}
@@ -121,8 +117,6 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 
 ### 影音
 
-*默认安装: ❎*
-
 - <a href="https://$domain:443/emby/" target="_blank" rel="noreferrer">https://$domain/emby/</a>
 - <a href="https://$domain:443/sonarr/" target="_blank" rel="noreferrer">https://$domain/sonarr/</a>
 - <a href="https://$domain:443/radarr/" target="_blank" rel="noreferrer">https://$domain/radarr/</a>
@@ -138,8 +132,6 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 
 ### Nextcloud
 
-*默认安装: ❎*
-
 <a href="https://$domain/nextcloud/" target="_blank" rel="noreferrer">https://$domain/nextcloud/</a>
 - 用户名(username): **admin**
 - 密碼(password): **${password1}**
@@ -148,32 +140,13 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 
 ### Hexo
 
-*默认安装: ✅*
-
-#### Hexo location
-
 {% blockquote %}
 cd /usr/share/nginx/hexo/source/_posts/
 {% endblockquote %}
 
-{% blockquote %}
-hexo new post title(标题)
-{% endblockquote %}
-
-{% blockquote %}
-hexo g && hexo d
-{% endblockquote %}
-
-#### Docs
-
-1. <a href="https://hexo.io/zh-tw/docs/" target="_blank" rel="noreferrer">Hexo docs</a>
-2. <a href="https://www.typora.io" target="_blank" rel="noreferrer">A new way to read & write Markdown</a>
-
 ---
 
 ### Rsshub + Miniflux
-
-*默认安装: ❎*
 
 #### RSSHUB
 
@@ -189,8 +162,6 @@ hexo g && hexo d
 
 ### Qbittorrent Enhanced Version
 
-*默认安装: ❎*
-
 - <a href="https://$domain/qbt/" target="_blank" rel="noreferrer">https://$domain/qbt/</a>
 - 用户名(username): admin
 - 密碼(password): ${password1}
@@ -198,8 +169,6 @@ hexo g && hexo d
 ---
 
 ### Aria2
-
-*默认安装: ❎*
 
 #### AriaNG
 
@@ -217,8 +186,6 @@ hexo g && hexo d
 
 ### Shadowsocks-rust
 
-*默认安装: ❎*
-
 ss://aes-128-gcm:${password1}@${domain}:8388#iplc-only
 ss://$(echo "aes-128-gcm:${password1}@${domain}:8388" | base64)#iplc-only
 
@@ -227,8 +194,6 @@ PS: 仅推荐用于[iplc](https://relay.nekoneko.cloud?aff=2257)落地,不推荐
 ---
 
 ### Filebrowser
-
-*默认安装: ❎*
 
 - <a href="https://$domain:443/file/" target="_blank" rel="noreferrer">https://$domain/file/</a>
 - 用户名(username): **admin**
@@ -242,19 +207,13 @@ PS: 仅推荐用于[iplc](https://relay.nekoneko.cloud?aff=2257)落地,不推荐
 
 ### Speedtest
 
-*默认安装: ❎*
-
 - <a href="https://$domain:443/${password1}_speedtest/" target="_blank" rel="noreferrer">https://$domain/${password1}_speedtest/</a>
 
 ---
 
 ### Netdata
 
-*默认安装: ✅*
-
 > 简介: 一款 **实时效能监测工具** 应用。
-
-#### Netdata
 
 - <a href="https://$domain:443/${password1}_netdata/" target="_blank" rel="noreferrer">https://${domain}/${password1}_netdata/</a>
 
@@ -262,21 +221,11 @@ PS: 仅推荐用于[iplc](https://relay.nekoneko.cloud?aff=2257)落地,不推荐
 
 ### Rocket Chat
 
-*默认安装: ❎*
-
 - <a href="https://$domain:443/chat/" target="_blank" rel="noreferrer">https://$domain/rocketchat/</a>
 
 ---
 
 ### Mail Service
-
-*默认安装: ❎*
-
-***⚠️WARNING⚠️请不要自行修改任何邮件配置,除非你知道你在做什么 ❗❗❗***
-
-> 简介: 邮件软件。
-
-PS: 不支援自定义证书,仅支援全自动申请的let证书!
 
 #### Roundcube Webmail
 
@@ -287,15 +236,12 @@ PS: 不支援自定义证书,仅支援全自动申请的let证书!
 
 #### Tips:
 
-1. 阿里云，gcp等厂商默认不开放25(包括对外访问)端口，不能发邮件，请注意。
-2. 请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all
-3. 请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD
+1. 请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all
+2. 请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD
 
 ---
 
 ### Bittorrent-trackers
-
-*默认安装: ❎*
 
 udp://$domain:6969/announce
 
@@ -307,8 +253,6 @@ udp://$domain:6969/announce
 
 ### Typecho
 
-*默认安装: ❎*
-
 请自行注释掉*/etc/nginx/conf.d/default.conf*中的Hexo部分并去掉Typecho的注释以启用Typecho。
 
 ---
@@ -317,13 +261,11 @@ udp://$domain:6969/announce
 
 ##### Qbt相关链接
 
-1. <a href="https://www.qbittorrent.org/download.php" target="_blank" rel="noreferrer">win等平台下载页面</a>
-2. <a href="https://github.com/qbittorrent/qBittorrent" target="_blank" rel="noreferrer">Github页面</a>
-3. <a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank" rel="noreferrer">Android远程操控客户端</a>
-4. <a href="https://www.qbittorrent.org/" target="_blank" rel="noreferrer">https://www.qbittorrent.org/</a>
-1. <a href="https://thepiratebay.org/" target="_blank" rel="noreferrer">https://thepiratebay.org/</a>
-2. <a href="https://sukebei.nyaa.si/" target="_blank" rel="noreferrer">https://sukebei.nyaa.si/</a></li>
-3. <a href="https://rarbgprx.org/torrents.php" target="_blank" rel="noreferrer">https://rarbgprx.org/torrents.php</a>
+1. <a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank" rel="noreferrer">Android远程操控客户端</a>
+2. <a href="https://www.qbittorrent.org/" target="_blank" rel="noreferrer">https://www.qbittorrent.org/</a>
+3. <a href="https://thepiratebay.org/" target="_blank" rel="noreferrer">https://thepiratebay.org/</a>
+4. <a href="https://sukebei.nyaa.si/" target="_blank" rel="noreferrer">https://sukebei.nyaa.si/</a></li>
+5. <a href="https://rarbgprx.org/torrents.php" target="_blank" rel="noreferrer">https://rarbgprx.org/torrents.php</a>
 
 ##### Rsshub相关链接
 
@@ -341,11 +283,6 @@ udp://$domain:6969/announce
 
 1. <a href="https://github.com/filebrowser/filebrowser" target="_blank" rel="noreferrer">https://github.com/filebrowser/filebrowser</a>
 2. <a href="https://filebrowser.xyz/" target="_blank" rel="noreferrer">https://filebrowser.xyz/</a>
-
-
-##### Speedtest相关链接
-
-1. <a href="https://github.com/librespeed/speedtest" target="_blank" rel="noreferrer">https://github.com/librespeed/speedtest</a>
 
 ##### Netdata相关链接
 
