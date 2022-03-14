@@ -235,7 +235,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/nzbget/config:/config
-      - /data:/data
+      - /data/usenet:/data/usenet:rw
     restart: unless-stopped
 EOF
 
