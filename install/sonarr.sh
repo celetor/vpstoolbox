@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Sonarr + Jackett 模组
+## 影音模组
 
 set +e
 
