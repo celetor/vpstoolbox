@@ -27,10 +27,10 @@ mkdir /data/torrents/animes/
 mkdir /data/torrents/movies/
 mkdir /data/torrents/music/
 mkdir /data/torrents/tv/
-mkdir /data/usenet/animes/
-mkdir /data/usenet/movies/
-mkdir /data/usenet/music/
-mkdir /data/usenet/tv/
+#mkdir /data/usenet/animes/
+#mkdir /data/usenet/movies/
+#mkdir /data/usenet/music/
+#mkdir /data/usenet/tv/
 mkdir /data/media/animes/
 mkdir /data/media/movies/
 mkdir /data/media/music/
@@ -673,18 +673,16 @@ services:
 EOF
 
 docker-compose up -d
-# sleep 10s;
+sleep 10s;
 
 # cat /usr/share/nginx/lidarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
 
 # if [[ $? != 0 ]]; then
-# docker-compose down
-
-# docker-compose up -d
+docker-compose down
+sed -i "s/MainDir=\/downloads/MainDir=\/data\/usenet\//g" /usr/share/nginx/nzbget/config/nzbget.conf
+docker-compose up -d
 # fi
 cd
-
-
 
 chown -R nginx:nginx /data/
 }
