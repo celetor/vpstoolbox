@@ -230,8 +230,8 @@ services:
     image: lscr.io/linuxserver/nzbget
     container_name: nzbget
     environment:
-      - PUID=${uid}
-      - PGID=${gid}
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/nzbget/config:/config
@@ -269,8 +269,8 @@ services:
     image: lscr.io/linuxserver/sonarr
     container_name: sonarr
     environment:
-      - PUID=${uid}
-      - PGID=${gid}
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/sonarr/data:/config
@@ -446,8 +446,8 @@ services:
     image: lscr.io/linuxserver/radarr
     container_name: radarr
     environment:
-      - PUID=${uid}
-      - PGID=${gid}
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/radarr/data:/config
@@ -505,8 +505,8 @@ services:
     image: lscr.io/linuxserver/lidarr
     container_name: lidarr
     environment:
-      - PUID=${uid}
-      - PGID=${gid}
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/lidarr/config:/config
@@ -561,8 +561,8 @@ services:
     image: lscr.io/linuxserver/jackett
     container_name: jackett
     environment:
-      - PUID=${uid}
-      - PGID=${gid}
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
       - AUTO_UPDATE=true
     volumes:
@@ -573,8 +573,8 @@ services:
     image: lscr.io/linuxserver/prowlarr:develop
     container_name: prowlarr
     environment:
-      - PUID=${uid}
-      - PGID=${gid}
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/prowlarr/config:/config
@@ -643,8 +643,8 @@ services:
     image: lscr.io/linuxserver/bazarr
     container_name: bazarr
     environment:
-      - PUID=${uid}
-      - PGID=${gid}
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
     volumes:
       - /usr/share/nginx/bazarr/config:/config
@@ -683,8 +683,8 @@ services:
     image: allanpk716/chinesesubfinder:latest
     container_name: chinesesubfinder
     environment:
-      - PUID=${uid}
-      - PGID=${gid}
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai    
     volumes:
       - /usr/share/nginx/chinesesubfinder/config:/config
@@ -718,8 +718,8 @@ services:
     image: lscr.io/linuxserver/ombi
     container_name: ombi
     environment:
-      - PUID=${uid}
-      - PGID=${gid}
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Shanghai
       - BASE_URL=/ombi #
     volumes:
