@@ -197,6 +197,17 @@ sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values 
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('2','/data/media/animes/');"
 ## PRAGMA table_info(NamingConfig);
 
+sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "DELETE FROM Metadata WHERE Id = 1;"
+sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
+  \"seriesMetadata\": true,
+  \"seriesMetadataUrl\": false,
+  \"episodeMetadata\": true,
+  \"seriesImages\": true,
+  \"seasonImages\": true,
+  \"episodeImages\": true,
+  \"isValid\": true
+}','XbmcMetadataSettings');"
+
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into LanguageProfiles values ('2','Chinese','[
   {
     \"language\": 0,
