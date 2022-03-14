@@ -631,6 +631,12 @@ sleep 10s;
 docker-compose down
 add_sonarr_ombi
 add_radarr_ombi
+curl 127.0.0.1:8989/sonarr/
+sleep 3s;
+sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "UPDATE NamingConfig SET RenameEpisodes = 1 WHERE Id = 1;"
+curl 127.0.0.1:7878/radarr/
+sleep 3s;
+sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE NamingConfig SET RenameMovies = 1 WHERE Id = 1;"
 docker-compose up -d
 cd /root
 
@@ -669,11 +675,3 @@ bash add.sh
 rm add.sh
 
 }
-
-
-curl 127.0.0.1:8989/sonarr/
-sleep 3s;
-sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "UPDATE NamingConfig SET RenameEpisodes = 1 WHERE Id = 1;"
-curl 127.0.0.1:7878/radarr/
-sleep 3s;
-sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE NamingConfig SET RenameMovies = 1 WHERE Id = 1;"
