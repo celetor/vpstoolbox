@@ -27,10 +27,10 @@ mkdir /data/torrents/animes/
 mkdir /data/torrents/movies/
 mkdir /data/torrents/music/
 mkdir /data/torrents/tv/
-#mkdir /data/usenet/animes/
-#mkdir /data/usenet/movies/
-#mkdir /data/usenet/music/
-#mkdir /data/usenet/tv/
+mkdir /data/usenet/Animes/
+mkdir /data/usenet/Movies/
+mkdir /data/usenet/Music/
+mkdir /data/usenet/Series/
 mkdir /data/media/animes/
 mkdir /data/media/movies/
 mkdir /data/media/music/
@@ -247,6 +247,7 @@ sleep 10s;
 # if [[ $? != 0 ]]; then
 docker-compose down
 sed -i "s/MainDir=\/downloads/MainDir=\/data\/usenet\//g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/DestDir=\${MainDir}\/completed/DestDir=\${MainDir}/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/ControlIP=0.0.0.0/ControlIP=127.0.0.1/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/ControlUsername=nzbget/ControlUsername=admin/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/ControlPassword=tegbzn6789/ControlPassword=${password1}/g" /usr/share/nginx/nzbget/config/nzbget.conf
