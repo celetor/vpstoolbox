@@ -241,10 +241,6 @@ EOF
 
 docker-compose up -d
 sleep 10s;
-
-# cat /usr/share/nginx/lidarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
-
-# if [[ $? != 0 ]]; then
 docker-compose down
 sed -i "s/MainDir=\/downloads/MainDir=\/data\/usenet\//g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/DestDir=\${MainDir}\/completed/DestDir=\${MainDir}/g" /usr/share/nginx/nzbget/config/nzbget.conf
@@ -252,7 +248,6 @@ sed -i "s/ControlIP=0.0.0.0/ControlIP=127.0.0.1/g" /usr/share/nginx/nzbget/confi
 sed -i "s/ControlUsername=nzbget/ControlUsername=admin/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/ControlPassword=tegbzn6789/ControlPassword=${password1}/g" /usr/share/nginx/nzbget/config/nzbget.conf
 docker-compose up -d
-# fi
 cd
 
 ## tv animes 8989
@@ -281,10 +276,6 @@ EOF
 
 docker-compose up -d
 sleep 10s;
-
-cat /usr/share/nginx/sonarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
-
-if [[ $? != 0 ]]; then
 docker-compose down
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/sonarr\/<\/UrlBase>/g" /usr/share/nginx/sonarr/data/config.xml
 sed -i '$d' /usr/share/nginx/sonarr/data/config.xml
@@ -294,7 +285,6 @@ echo '</Config>' >> /usr/share/nginx/sonarr/data/config.xml
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('1','/data/media/tv/');"
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('2','/data/media/animes/');"
 ## PRAGMA table_info(NamingConfig);
-
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "DELETE FROM Metadata WHERE Id = 1;"
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
   \"seriesMetadata\": true,
@@ -427,11 +417,8 @@ sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into LanguageProfiles va
 
 add_download_client_sonarr
 docker-compose up -d
-fi
 cd
-
 sonarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/sonarr/data/config.xml --text_only)
-
 
 ## movies 7878
 
@@ -458,10 +445,6 @@ EOF
 
 docker-compose up -d
 sleep 10s;
-
-cat /usr/share/nginx/radarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
-
-if [[ $? != 0 ]]; then
 docker-compose down
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr\/<\/UrlBase>/g" /usr/share/nginx/radarr/data/config.xml
 sed -i '$d' /usr/share/nginx/radarr/data/config.xml
@@ -486,7 +469,6 @@ sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into Metadata values ('1
 
 add_download_client_radarr
 docker-compose up -d
-fi
 cd
 
 radarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/radarr/data/config.xml --text_only)
@@ -517,10 +499,6 @@ EOF
 
 docker-compose up -d
 sleep 10s;
-
-cat /usr/share/nginx/lidarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
-
-if [[ $? != 0 ]]; then
 docker-compose down
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/lidarr\/<\/UrlBase>/g" /usr/share/nginx/lidarr/config/config.xml
 sed -i '$d' /usr/share/nginx/lidarr/config/config.xml
@@ -538,7 +516,6 @@ sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into Metadata values (
   \"isValid\": true
 }','XbmcMetadataSettings');"
 docker-compose up -d
-fi
 cd
 
 lidarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/lidarr/config/config.xml --text_only)
@@ -594,10 +571,6 @@ EOF
 
 docker-compose up -d
 sleep 10s;
-
-cat /usr/share/nginx/jackett/config/Jackett/ServerConfig.json | grep /jackett/ &> /dev/null
-
-if [[ $? != 0 ]]; then
 docker-compose down
 
 ## 
@@ -626,7 +599,6 @@ cat '/usr/share/nginx/jackett/config/Jackett/ServerConfig.json' | jq '.FlareSolv
 cp -f /usr/share/nginx/jackett/config/Jackett/tmp.json /usr/share/nginx/jackett/config/Jackett/ServerConfig.json
 rm /usr/share/nginx/jackett/config/Jackett/tmp.json
 docker-compose up -d
-fi
 cd /root
 
 ## subtitles
