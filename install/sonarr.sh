@@ -648,6 +648,44 @@ sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE NamingConfig SET RenameM
 docker-compose up -d
 cd /root
 
+## nzbget 6789
+
+cd /usr/share/nginx/
+mkdir nzbget
+cd /usr/share/nginx/nzbget
+mkdir /usr/share/nginx/nzbget/config
+
+    cat > "docker-compose.yml" << EOF
+version: "3.8"
+services:
+  lidarr:
+    network_mode: host
+    image: lscr.io/linuxserver/nzbget
+    container_name: nzbget
+    environment:
+      - PUID=${uid}
+      - PGID=${gid}
+      - TZ=Asia/Shanghai
+    volumes:
+      - /usr/share/nginx/nzbget/config:/config
+      - /data:/data
+    restart: unless-stopped
+EOF
+
+docker-compose up -d
+# sleep 10s;
+
+# cat /usr/share/nginx/lidarr/data/config.xml | grep AnalyticsEnabled &> /dev/null
+
+# if [[ $? != 0 ]]; then
+# docker-compose down
+
+# docker-compose up -d
+# fi
+cd
+
+
+
 chown -R nginx:nginx /data/
 }
 
