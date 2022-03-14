@@ -245,6 +245,17 @@ sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into RootFolders values 
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into Config values ('6','movieinfolanguage','10');"
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into Config values ('7','uilanguage','10');"
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE Metadata SET Enable = 1 WHERE Id = 1;"
+sqlite3 /usr/share/nginx/radarr/data/radarr.db  "DELETE FROM Metadata WHERE Id = 1;"
+
+sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
+  \"movieMetadata\": true,
+  \"movieMetadataURL\": false,
+  \"movieMetadataLanguage\": 10,
+  \"movieImages\": true,
+  \"useMovieNfo\": false,
+  \"isValid\": true
+}','XbmcMetadataSettings');"
+
 add_download_client_radarr
 docker-compose up -d
 fi
