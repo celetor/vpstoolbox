@@ -98,7 +98,7 @@ setlanguage(){
   export LANGUAGE="C.UTF-8"
   export LANG="C.UTF-8"
   export LC_ALL="C.UTF-8"
-  if (timeout 30 whiptail --title "System Language Setting" --yes-button "中文" --no-button "English" --yesno "系统语言使用中文或英文(Use Chinese or English)?" 8 68 || echo true ); then
+  if (whiptail --title "System Language Setting" --yes-button "中文" --no-button "English" --yesno "系统语言使用中文或英文(Use Chinese or English)?" 8 68); then
   chattr -i /etc/locale.gen
   cat > '/etc/locale.gen' << EOF
 zh_CN.UTF-8 UTF-8
