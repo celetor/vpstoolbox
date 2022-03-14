@@ -83,6 +83,27 @@ bash add.sh
 rm add.sh
 }
 
+add_download_client_lidarr(){
+
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 8080,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"musicCategory\": \"music\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"initialState\": 0,
+  \"useSsl\": false
+}','QBittorrentSettings','1');"
+EOF
+sed -i "s/adminadmin/${password1}/g" add.sh
+bash add.sh
+rm add.sh
+}
+
 add_prowlarr_sonarr_radarr(){
 
     cat > "add1.sh" << "EOF"
@@ -410,6 +431,16 @@ sed -i '$d' /usr/share/nginx/lidarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/lidarr/config/config.xml
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/lidarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/lidarr/config/config.xml
+sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into RootFolders values ('1','/data/media/music/','music','1','1','0','[]');"
+add_download_client_lidarr
+sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "DELETE FROM Metadata WHERE Id = 1;"
+sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
+  \"artistMetadata\": true,
+  \"albumMetadata\": true,
+  \"artistImages\": true,
+  \"albumImages\": true,
+  \"isValid\": true
+}','XbmcMetadataSettings');"
 docker-compose up -d
 fi
 cd
