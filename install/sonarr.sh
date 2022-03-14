@@ -627,13 +627,49 @@ services:
 EOF
 
 docker-compose up -d
-# #sleep 10s;
-# #docker-compose down
-# #docker-compose up -d
+sleep 10s;
+docker-compose down
+add_sonarr_ombi
+add_radarr_ombi
+docker-compose up -d
 cd /root
 
 chown -R nginx:nginx /data/
 }
+
+add_sonarr_ombi(){
+
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+
+  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('4','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"QualityProfile\":\"1\",\"SeasonFolders\":false,\"RootPath\":\"1\",\"QualityProfileAnime\":\"1\",\"RootPathAnime\":\"2\",\"AddOnly\":false,\"V3\":true,\"LanguageProfile\":2,\"LanguageProfileAnime\":2,\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/sonarr\",\"Ip\":\"127.0.0.1\",\"Port\":8989,\"Id\":0}',
+  'SonarrSettings');"
+EOF
+
+sed -i "s/adminadmin/${sonarr_api}/g" add.sh
+
+bash add.sh
+
+rm add.sh
+
+}
+
+add_radarr_ombi(){
+
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+
+  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('5','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/movies\",\"AddOnly\":false,\"MinimumAvailability\":\"Announced\",\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/radarr\",\"Ip\":\"127.0.0.1\",\"Port\":7878,\"Id\":0}','RadarrSettings');"
+EOF
+
+sed -i "s/adminadmin/${radarr_api}/g" add.sh
+
+bash add.sh
+
+rm add.sh
+
+}
+
 
 curl 127.0.0.1:8989/sonarr/
 sleep 3s;
