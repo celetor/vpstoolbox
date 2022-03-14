@@ -194,6 +194,7 @@ echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/sonarr/d
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/sonarr/data/config.xml
 echo '</Config>' >> /usr/share/nginx/sonarr/data/config.xml
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('1','/data/media/tv/');"
+sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('2','/data/media/animes/');"
 ## PRAGMA table_info(NamingConfig);
 
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into LanguageProfiles values ('2','Chinese','[
@@ -579,17 +580,11 @@ docker-compose up -d
 # sleep 10s;
 # docker-compose down
 
-## movie path
-# cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.movie_paths |= /data/media/movies/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
-# cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
-# rm /usr/share/nginx/chinesesubfinder/config/tmp.json
-# ## tv path
-# cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.series_paths |= /data/media/tv/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
-# cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
-# rm /usr/share/nginx/chinesesubfinder/config/tmp.json
-# cat '/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json' | jq '.address_url |= http://127.0.0.1:8096/' >> /usr/share/nginx/chinesesubfinder/config/tmp.json
-# cp -f /usr/share/nginx/chinesesubfinder/config/tmp.json /usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json
-# rm /usr/share/nginx/chinesesubfinder/config/tmp.json
+cd /usr/share/nginx/chinesesubfinder/config
+
+     cat > "ChineseSubFinderSettings.json" << EOF
+{"user_info":{"username":"admin","password":"${password1}"},"common_settings":{"scan_interval":"6h","threads":1,"run_scan_at_start_up":false,"movie_paths":["/data/media/movies/"],"series_paths":["/data/media/tv/"]},"advanced_settings":{"proxy_settings":{"use_http_proxy":false,"http_proxy_address":""},"debug_mode":false,"save_full_season_tmp_subtitles":false,"sub_type_priority":0,"sub_name_formatter":0,"save_multi_sub":false,"custom_video_exts":[],"fix_time_line":false,"topic":1},"emby_settings":{"enable":true,"address_url":"http://127.0.0.1:8096","api_key":"","max_request_video_number":3000,"skip_watched":true,"movie_paths_mapping":{"/data/media/movies/":"/data/media/movies/"},"series_paths_mapping":{"/data/media/tv/":"/data/media/tv/"}},"developer_settings":{"enable":false,"bark_server_address":""},"timeline_fixer_settings":{"max_offset_time":120,"min_offset":0.1},"experimental_function":{"auto_change_sub_encode":{"enable":false,"des_encode_type":0}}}
+EOF
 
 # docker-compose up -d
 cd
@@ -614,7 +609,9 @@ services:
       - PUID=${uid}
       - PGID=${gid}
       - TZ=Asia/Shanghai
-      - BASE_URL=/ombi #optional
+      - BASE_URL=/ombi #
+      - DefaultLanguageCode=zh #optional
+      - CollectAnalyticData=false #optional
     volumes:
       - /usr/share/nginx/ombi/config:/config
     restart: unless-stopped
