@@ -637,9 +637,9 @@ cd /root
 chown -R nginx:nginx /data/
 }
 
-curl 127.0.0.1:8989/sonarr/settings/mediamanagement
+curl 127.0.0.1:8989/sonarr/
 sleep 3s;
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "UPDATE NamingConfig SET RenameEpisodes = 1 WHERE Id = 1;"
-curl 127.0.0.1:7878/radarr/settings/mediamanagement
+curl 127.0.0.1:7878/radarr/
 sleep 3s;
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE NamingConfig SET RenameMovies = 1 WHERE Id = 1;"
