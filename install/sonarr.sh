@@ -197,7 +197,6 @@ sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values 
 ## PRAGMA table_info(NamingConfig);
 add_download_client_sonarr
 docker-compose up -d
-sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "UPDATE NamingConfig SET RenameEpisodes = 1 WHERE Id = 1;"
 fi
 cd
 
@@ -248,7 +247,6 @@ sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into Config values ('7',
 sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE Metadata SET Enable = 1 WHERE Id = 1;"
 add_download_client_radarr
 docker-compose up -d
-sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE NamingConfig SET RenameMovies = 1 WHERE Id = 1;"
 fi
 cd
 
@@ -499,3 +497,6 @@ cd /root
 
 chown -R nginx:nginx /data/
 }
+
+sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "UPDATE NamingConfig SET RenameEpisodes = 1 WHERE Id = 1;"
+sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE NamingConfig SET RenameMovies = 1 WHERE Id = 1;"
