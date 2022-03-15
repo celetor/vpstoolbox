@@ -633,6 +633,8 @@ docker-compose up -d
 cd /usr/share/nginx/
 mkdir chinesesubfinder
 cd /usr/share/nginx/chinesesubfinder
+mkdir /usr/share/nginx/chinesesubfinder/app/
+mkdir /usr/share/nginx/chinesesubfinder/app/cache
 mkdir /usr/share/nginx/chinesesubfinder/config
 
 ## chinesesubfinder 19035
@@ -649,8 +651,9 @@ services:
       - PGID=0
       - TZ=Asia/Shanghai    
     volumes:
+      - /usr/share/nginx/chinesesubfinder/app/cache:/app/cache
       - /usr/share/nginx/chinesesubfinder/config:/config
-      - /data:/data
+      - /data/media:/media
     restart: unless-stopped
 EOF
 
@@ -659,7 +662,7 @@ sleep 10s;
 docker-compose down
 cd /usr/share/nginx/chinesesubfinder/config
      cat > "ChineseSubFinderSettings.json" << EOF
-{"user_info":{"username":"admin","password":"${password1}"},"common_settings":{"scan_interval":"6h","threads":1,"run_scan_at_start_up":false,"movie_paths":["/data/media/movies/"],"series_paths":["/data/media/tv/"]},"advanced_settings":{"proxy_settings":{"use_http_proxy":false,"http_proxy_address":""},"debug_mode":false,"save_full_season_tmp_subtitles":false,"sub_type_priority":0,"sub_name_formatter":0,"save_multi_sub":false,"custom_video_exts":[],"fix_time_line":false,"topic":1},"emby_settings":{"enable":true,"address_url":"http://127.0.0.1:8096","api_key":"","max_request_video_number":3000,"skip_watched":true,"movie_paths_mapping":{"/data/media/movies/":"/data/media/movies/"},"series_paths_mapping":{"/data/media/tv/":"/data/media/tv/"}},"developer_settings":{"enable":false,"bark_server_address":""},"timeline_fixer_settings":{"max_offset_time":120,"min_offset":0.1},"experimental_function":{"auto_change_sub_encode":{"enable":false,"des_encode_type":0}}}
+{"user_info":{"username":"admin","password":"${password1}"},"common_settings":{"scan_interval":"6h","threads":1,"run_scan_at_start_up":false,"movie_paths":["/media/movies/"],"series_paths":["/media/tv/"]},"advanced_settings":{"proxy_settings":{"use_http_proxy":false,"http_proxy_address":""},"debug_mode":false,"save_full_season_tmp_subtitles":false,"sub_type_priority":0,"sub_name_formatter":0,"save_multi_sub":false,"custom_video_exts":[],"fix_time_line":false,"topic":1},"emby_settings":{"enable":true,"address_url":"http://127.0.0.1:8096","api_key":"","max_request_video_number":3000,"skip_watched":true,"movie_paths_mapping":{"/media/movies/":"/data/media/movies/"},"series_paths_mapping":{"/media/tv/":"/data/media/tv/"}},"developer_settings":{"enable":false,"bark_server_address":""},"timeline_fixer_settings":{"max_offset_time":120,"min_offset":0.1},"experimental_function":{"auto_change_sub_encode":{"enable":false,"des_encode_type":0}}}
 EOF
 docker-compose up -d
 cd
