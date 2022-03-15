@@ -234,7 +234,7 @@ userinput_full() {
   "ss" "shadowsocks-rust" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "影音" "影音" off \
-  "media" "Emby/Jellyfin Sonarr Lidarr Jackett Qbt" off \
+  "media" "Emby Sonarr Radarr Lidarr Prowlarr Qbt" off \
   "网盘" "网盘" off \
   "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
   "rss" "RSSHUB + Miniflux(RSS生成器+RSS阅读器)" ${check_rss} \
