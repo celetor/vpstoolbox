@@ -204,7 +204,7 @@ add_download_client_prowlarr(){
   \"category\": \"prowlarr\",
   \"priority\": 0,
   \"initialState\": 0
-}','QBittorrentSettings','1','1','1');"
+}','QBittorrentSettings','1');"
 
 sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
   \"host\": \"127.0.0.1\",
@@ -214,8 +214,8 @@ sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into DownloadClien
   \"password\": \"adminadmin\",
   \"category\": \"Prowlarr\",
   \"priority\": 0,
-  \"addPaused\": false
-}','NzbgetSettings','1','1','1');"
+  \"addPaused\": true
+}','NzbgetSettings','1');"
 EOF
 sed -i "s/adminadmin/${password1}/g" add.sh
 bash add.sh
