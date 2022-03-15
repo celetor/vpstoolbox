@@ -671,8 +671,8 @@ MasterMenu() {
     ;;
     esac
 }
+cd /root
 clear
-cd
 initialize
 setlanguage
 clear
