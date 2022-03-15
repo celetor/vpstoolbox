@@ -93,7 +93,6 @@ sed -i "s/adminadmin/${lidarr_api}/g" add.sh
 bash add.sh
 rm add.sh
 }
-chown -R nginx:nginx /data/
 
 add_download_client_sonarr(){
     cat > "add.sh" << "EOF"
