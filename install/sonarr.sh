@@ -511,6 +511,8 @@ sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into Metadata values (
   \"albumImages\": true,
   \"isValid\": true
 }','XbmcMetadataSettings');"
+sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
+sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into NamingConfig values ('1','1','{Artist Name}','1','{Album Title} ({Release Year})/{Artist Name} - {Album Title} - {track:00} - {Track Title}','{Album Title} ({Release Year})/{Medium Format} {medium:00}/{Artist Name} - {Album Title} - {track:00} - {Track Title}');"
 docker-compose up -d
 lidarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/lidarr/config/config.xml --text_only)
 
