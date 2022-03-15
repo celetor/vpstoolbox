@@ -192,6 +192,36 @@ bash add.sh
 rm add.sh
 }
 
+add_download_client_prowlarr(){
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 8080,
+  \"useSsl\": false,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"category\": \"prowlarr\",
+  \"priority\": 0,
+  \"initialState\": 0
+}','QBittorrentSettings','1','1','1');"
+
+sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 6789,
+  \"useSsl\": false,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"category\": \"Prowlarr\",
+  \"priority\": 0,
+  \"addPaused\": false
+}','NzbgetSettings','1','1','1');"
+EOF
+sed -i "s/adminadmin/${password1}/g" add.sh
+bash add.sh
+rm add.sh
+}
+
 add_prowlarr_sonarr_radarr_lidarr(){
     cat > "add1.sh" << "EOF"
 #!/usr/bin/env bash
@@ -542,10 +572,10 @@ sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into LanguageProfiles 
   }
 ]','10','0');"
 
-sonarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/sonarr/config/config.xml --text_only)
-add_download_client_sonarr
 sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
 sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into NamingConfig values ('1','0','1','{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}','{Series Title} - {Air-Date} - {Episode Title} {Quality Full}','Season {season}','{Series Title}','{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}','1','Specials');"
+add_download_client_sonarr
+sonarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/sonarr/config/config.xml --text_only)
 
 ## radarr
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr\/<\/UrlBase>/g" /usr/share/nginx/radarr/config/config.xml
@@ -578,7 +608,6 @@ echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/lidarr/c
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/lidarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/lidarr/config/config.xml
 sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into RootFolders values ('1','/data/media/music/','music','1','1','0','[]');"
-add_download_client_lidarr
 sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "DELETE FROM Metadata WHERE Id = 1;"
 sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
   \"artistMetadata\": true,
@@ -589,6 +618,7 @@ sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into Metadata values (
 }','XbmcMetadataSettings');"
 sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
 sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into NamingConfig values ('1','1','{Artist Name}','1','{Album Title} ({Release Year})/{Artist Name} - {Album Title} - {track:00} - {Track Title}','{Album Title} ({Release Year})/{Medium Format} {medium:00}/{Artist Name} - {Album Title} - {track:00} - {Track Title}');"
+add_download_client_lidarr
 lidarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/lidarr/config/config.xml --text_only)
 
 ## prowlarr 8191
@@ -606,6 +636,7 @@ sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into IndexerProxie
   1
 ]');"
 sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Config values ('6','uilanguage','10');"
+add_download_client_prowlarr
 
 ## Jackett 9696
 cat '/usr/share/nginx/jackett/config/Jackett/ServerConfig.json' | jq '.BasePathOverride |= "/jackett/"' >> /usr/share/nginx/jackett/config/Jackett/tmp.json
