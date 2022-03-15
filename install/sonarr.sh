@@ -39,6 +39,8 @@ mkdir /data/media/tv/
 apt-get install xml-twig-tools -y
 apt-get install sqlite3 -y
 
+## PRAGMA table_info(NamingConfig);
+
 add_download_client_sonarr(){
 
     cat > "add.sh" << "EOF"
@@ -281,7 +283,6 @@ echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/son
 echo '</Config>' >> /usr/share/nginx/sonarr/data/config.xml
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('1','/data/media/tv/');"
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into RootFolders values ('2','/data/media/animes/');"
-## PRAGMA table_info(NamingConfig);
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "DELETE FROM Metadata WHERE Id = 1;"
 sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
   \"seriesMetadata\": true,
