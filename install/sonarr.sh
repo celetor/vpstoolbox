@@ -637,7 +637,8 @@ sed -i '/^\[analytics\]$/,/^\[/ s/^enabled = True/enabled = False/' /usr/share/n
 sed -i "s/use_sonarr = False/use_sonarr = True/g" /usr/share/nginx/bazarr/config/config/config.ini
 sed -i "s/use_radarr = False/use_radarr = True/g" /usr/share/nginx/bazarr/config/config/config.ini
 sed -i '/^\[assrt\]$/,/^\[/ s/^token =/token = oHwtSNdY1aQe1qwRSZVo70SqNW0Pu1AM/' /usr/share/nginx/bazarr/config/config/config.ini ## 5次/分钟
-sed -i "s/enabled_providers = \[\]/enabled_providers = \['zimuku', 'assrt', 'subscenter'\]/g" /usr/share/nginx/bazarr/config/config/config.ini
+sed -i '/^\[betaseries\]$/,/^\[/ s/^token =/token = ecd1f45f3036/' /usr/share/nginx/bazarr/config/config/config.ini ## 5次/分钟
+sed -i "s/enabled_providers = \[\]/enabled_providers = \['zimuku', 'assrt', 'betaseries'\]/g" /usr/share/nginx/bazarr/config/config/config.ini
 sqlite3 /usr/share/nginx/bazarr/config/db/bazarr.db  "insert into table_languages_profiles values ('1','','[{\"id\": 1, \"language\": \"zh\", \"audio_exclude\": \"False\", \"hi\": \"False\", \"forced\": \"False\"}, {\"id\": 2, \"language\": \"zt\", \"audio_exclude\": \"False\", \"hi\": \"False\", \"forced\": \"False\"}, {\"id\": 3, \"language\": \"en\", \"audio_exclude\": \"False\", \"hi\": \"False\", \"forced\": \"False\"}]','Chinese','[]','[]');"
 docker-compose up -d
 
