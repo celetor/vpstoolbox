@@ -116,7 +116,7 @@ http {
   gzip on;
   gzip_proxied any;
   gzip_types *;
-  gzip_comp_level 9;
+  gzip_comp_level 1;
 
   include /etc/nginx/conf.d/default.conf;
 }
