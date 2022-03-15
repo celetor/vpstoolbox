@@ -115,7 +115,7 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 
 ---
 
-### 影音
+### 影音(包含qBittorrent加强版)
 
 - <a href="https://$domain/qbt/" target="_blank" rel="noreferrer">https://$domain/qbt/</a>
 - <a href="https://$domain:443/emby/" target="_blank" rel="noreferrer">https://$domain/emby/</a>
