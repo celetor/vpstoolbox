@@ -413,6 +413,8 @@ sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into LanguageProfiles va
 ]','10','0');"
 
 add_download_client_sonarr
+sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
+sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "insert into NamingConfig values ('1','0','1','{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}','{Series Title} - {Air-Date} - {Episode Title} {Quality Full}','Season {season}','{Series Title}','{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}','1','Specials');"
 docker-compose up -d
 sonarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/sonarr/data/config.xml --text_only)
 
@@ -461,7 +463,8 @@ sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into Metadata values ('1
   \"useMovieNfo\": false,
   \"isValid\": true
 }','XbmcMetadataSettings');"
-
+sqlite3 /usr/share/nginx/radarr/data/radarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
+sqlite3 /usr/share/nginx/radarr/data/radarr.db  "insert into NamingConfig values ('1','0','1','{Movie Title} ({Release Year}) {Quality Full}','{Movie Title} ({Release Year})','0','1');"
 add_download_client_radarr
 docker-compose up -d
 radarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/radarr/data/config.xml --text_only)
@@ -706,12 +709,7 @@ add_radarr_ombi
 add_lidarr_ombi
 sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "DELETE FROM GlobalSettings WHERE Id = 1;"
 sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('1','{\"BaseUrl\":\"/ombi\",\"CollectAnalyticData\":false,\"Wizard\":false,\"ApiKey\":\"dfbcab4789604b4289b3cdc71aa41bf6\",\"DoNotSendNotificationsForAutoApprove\":false,\"HideRequestsUsers\":false,\"DisableHealthChecks\":false,\"DefaultLanguageCode\":\"zh\",\"AutoDeleteAvailableRequests\":false,\"AutoDeleteAfterDays\":0,\"Branch\":0,\"HasMigratedOldTvDbData\":false,\"Set\":false,\"Id\":1}','OmbiSettings');"
-curl 127.0.0.1:8989/sonarr/
 sleep 3s;
-sqlite3 /usr/share/nginx/sonarr/data/sonarr.db  "UPDATE NamingConfig SET RenameEpisodes = 1 WHERE Id = 1;"
-curl 127.0.0.1:7878/radarr/
-sleep 3s;
-sqlite3 /usr/share/nginx/radarr/data/radarr.db  "UPDATE NamingConfig SET RenameMovies = 1 WHERE Id = 1;"
 docker-compose up -d
 cd /root
 chown -R nginx:nginx /data/

@@ -104,7 +104,7 @@ mkdir /data/torrents/
 mkdir /data/media/
 mkdir /data/torrents/animes/
 mkdir /data/media/animes/
-curl -X POST -F 'category=animes' -F 'savePath=/data/torrents/animes/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Animes' -F 'savePath=/data/torrents/animes/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 mkdir /data/torrents/music/
 mkdir /data/media/music/
 curl -X POST -F 'category=Music' -F 'savePath=/data/torrents/music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
@@ -113,7 +113,7 @@ mkdir /data/media/adults/
 curl -X POST -F 'category=Adults' -F 'savePath=/data/torrents/adults/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 mkdir /data/torrents/documentary/
 mkdir /data/media/documentary/
-curl -X POST -F 'category=documentary' -F 'savePath=/data/torrents/documentary/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Documentary' -F 'savePath=/data/torrents/documentary/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 mkdir /data/torrents/tv/
 mkdir /data/media/tv/
 curl -X POST -F 'category=tv' -F 'savePath=/data/torrents/tv/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
