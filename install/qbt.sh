@@ -107,7 +107,7 @@ mkdir /data/media/animes/
 curl -X POST -F 'category=animes' -F 'savePath=/data/torrents/animes/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 mkdir /data/torrents/music/
 mkdir /data/media/music/
-curl -X POST -F 'category=music' -F 'savePath=/data/torrents/music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Music' -F 'savePath=/data/torrents/music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 mkdir /data/torrents/18_plus/
 mkdir /data/media/18_plus/
 curl -X POST -F 'category=18_plus' -F 'savePath=/data/torrents/18_plus/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"

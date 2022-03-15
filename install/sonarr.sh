@@ -116,7 +116,7 @@ add_download_client_lidarr(){
   \"port\": 8080,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
-  \"musicCategory\": \"music\",
+  \"musicCategory\": \"Music\",
   \"recentTvPriority\": 0,
   \"olderTvPriority\": 0,
   \"initialState\": 0,
