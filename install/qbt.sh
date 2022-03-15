@@ -9,8 +9,7 @@ clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Qbt加强版中..." 7 68
 colorEcho ${INFO} "安装增强版Qbittorrent(Install Qbittorrent ing)"
 apt-get install unzip -y
-apt-get remove qbittorrent-nox -y
-cd
+cd /root
 mkdir qbt
 cd qbt
 qbtver=$(curl --retry 5 -s "https://api.github.com/repos/c0re100/qBittorrent-Enhanced-Edition/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
