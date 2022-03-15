@@ -193,7 +193,7 @@ EOF
 
 docker-compose up -d
 
-sleep 15s;
+sleep 60s;
 
 docker-compose down
 
@@ -341,10 +341,10 @@ sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into LanguageProfiles 
   }
 ]','10','0');"
 
+sonarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/sonarr/config/config.xml --text_only)
 add_download_client_sonarr
 sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
 sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into NamingConfig values ('1','0','1','{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}','{Series Title} - {Air-Date} - {Episode Title} {Quality Full}','Season {season}','{Series Title}','{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}','1','Specials');"
-sonarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/sonarr/config/config.xml --text_only)
 
 ## radarr
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr\/<\/UrlBase>/g" /usr/share/nginx/radarr/config/config.xml
