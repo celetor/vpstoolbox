@@ -578,6 +578,12 @@ sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into IndexerProxie
 }','FlareSolverr','FlareSolverrSettings','[
   1
 ]');"
+# sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Indexers values ('1','FlareSolverr','{
+#   \"host\": \"http://127.0.0.1:8191/\",
+#   \"requestTimeout\": 60
+# }','FlareSolverr','FlareSolverrSettings','[
+#   1
+# ]');"
 sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Config values ('6','uilanguage','10');"
 ##
 cat '/usr/share/nginx/jackett/config/Jackett/ServerConfig.json' | jq '.BasePathOverride |= "/jackett/"' >> /usr/share/nginx/jackett/config/Jackett/tmp.json
