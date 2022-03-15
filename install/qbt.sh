@@ -111,8 +111,8 @@ mkdir /data/torrents/music/
 mkdir /data/media/music/
 mkdir /data/torrents/documentary/
 mkdir /data/media/documentary/
-mkdir /data/torrents/adults/
-mkdir /data/media/adults/
+mkdir /data/torrents/xxx/
+mkdir /data/media/xxx/
 mkdir /data/torrents/others/
 mkdir /data/media/others/
 ## 新增分类
@@ -121,7 +121,7 @@ curl -X POST -F 'category=Movies' -F 'savePath=/data/torrents/movies/' http://lo
 curl -X POST -F 'category=tv' -F 'savePath=/data/torrents/tv/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Music' -F 'savePath=/data/torrents/music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Documentary' -F 'savePath=/data/torrents/documentary/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=Adults' -F 'savePath=/data/torrents/adults/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=XXX' -F 'savePath=/data/torrents/xxx/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=others' -F 'savePath=/data/torrents/others/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 ## 修改密码，锁定配置
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22web_ui_password%22:%22${password1}%22%7D  --cookie "${qbtcookie}"
