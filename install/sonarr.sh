@@ -422,7 +422,8 @@ sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into Metadata values (
   \"episodeImages\": true,
   \"isValid\": true
 }','XbmcMetadataSettings');"
-sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into LanguageProfiles values ('2','Chinese','[
+sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "DELETE FROM LanguageProfiles WHERE Id = 1;"
+sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into LanguageProfiles values ('1','Chinese','[
   {
     \"language\": 0,
     \"allowed\": false
@@ -468,10 +469,6 @@ sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into LanguageProfiles 
     \"allowed\": false
   },
   {
-    \"language\": 8,
-    \"allowed\": false
-  },
-  {
     \"language\": 5,
     \"allowed\": false
   },
@@ -512,10 +509,6 @@ sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into LanguageProfiles 
     \"allowed\": false
   },
   {
-    \"language\": 1,
-    \"allowed\": false
-  },
-  {
     \"language\": 7,
     \"allowed\": false
   },
@@ -534,6 +527,14 @@ sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into LanguageProfiles 
   {
     \"language\": 26,
     \"allowed\": false
+  },
+  {
+    \"language\": 8,
+    \"allowed\": true
+  },
+  {
+    \"language\": 1,
+    \"allowed\": true
   },
   {
     \"language\": 10,
