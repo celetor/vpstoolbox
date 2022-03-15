@@ -64,7 +64,7 @@ apt-get update --fix-missing && apt-get install sudo curl -y && curl -Ss https:/
   - [ ] [RSSHub 无最低配置要求](https://github.com/DIYgod/RSSHub)
   - [ ] [Miniflux 无最低配置要求](https://miniflux.app/index.html)
         ~~- [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)~~
-- 影音(待测试)
+- 影音
   - [ ] [Emby](https://emby.media/)
   - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
   - [ ] [Radarr](https://github.com/Radarr/Radarr)
