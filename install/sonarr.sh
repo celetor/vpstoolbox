@@ -84,7 +84,7 @@ add_download_client_radarr(){
   \"useSsl\": false,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
-  \"movieCategory\": \"movies\",
+  \"movieCategory\": \"Movies\",
   \"recentTvPriority\": 0,
   \"olderTvPriority\": 0,
   \"initialState\": 0
@@ -635,7 +635,7 @@ mkdir chinesesubfinder
 cd /usr/share/nginx/chinesesubfinder
 mkdir /usr/share/nginx/chinesesubfinder/config
 
-## 19035
+## chinesesubfinder 19035
 
     cat > "docker-compose.yml" << EOF
 version: "3.8"
