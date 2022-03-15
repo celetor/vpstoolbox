@@ -64,6 +64,205 @@ mkdir /usr/share/nginx/chinesesubfinder/config
 mkdir /usr/share/nginx/ombi
 mkdir /usr/share/nginx/ombi/config
 
+add_sonarr_ombi(){
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('2','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"QualityProfile\":\"1\",\"SeasonFolders\":false,\"RootPath\":\"1\",\"QualityProfileAnime\":\"1\",\"RootPathAnime\":\"2\",\"AddOnly\":false,\"V3\":true,\"LanguageProfile\":2,\"LanguageProfileAnime\":2,\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/sonarr\",\"Ip\":\"127.0.0.1\",\"Port\":8989,\"Id\":0}','SonarrSettings');"
+EOF
+sed -i "s/adminadmin/${sonarr_api}/g" add.sh
+bash add.sh
+rm add.sh
+}
+
+add_radarr_ombi(){
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('3','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/movies\",\"AddOnly\":false,\"MinimumAvailability\":\"Announced\",\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/radarr\",\"Ip\":\"127.0.0.1\",\"Port\":7878,\"Id\":0}','RadarrSettings');"
+EOF
+sed -i "s/adminadmin/${radarr_api}/g" add.sh
+bash add.sh
+rm add.sh
+}
+
+add_lidarr_ombi(){
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('4','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/music/\",\"AlbumFolder\":true,\"MetadataProfileId\":1,\"AddOnly\":false,\"Ssl\":false,\"SubDir\":\"/lidarr\",\"Ip\":\"127.0.0.1\",\"Port\":8686,\"Id\":0}','LidarrSettings');"
+EOF
+sed -i "s/adminadmin/${lidarr_api}/g" add.sh
+bash add.sh
+rm add.sh
+}
+chown -R nginx:nginx /data/
+
+add_download_client_sonarr(){
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 8080,
+  \"useSsl\": false,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"tvCategory\": \"tv\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"initialState\": 0,
+  \"sequentialOrder\": false,
+  \"firstAndLast\": false
+}','QBittorrentSettings','1','1','1');"
+
+sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 6789,
+  \"useSsl\": false,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"tvCategory\": \"Series\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"addPaused\": true
+}','NzbgetSettings','1','1','1');"
+EOF
+sed -i "s/adminadmin/${password1}/g" add.sh
+bash add.sh
+rm add.sh
+}
+
+add_download_client_radarr(){
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/radarr/config/radarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 8080,
+  \"useSsl\": false,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"movieCategory\": \"Movies\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"initialState\": 0
+}','QBittorrentSettings','1','1','1');"
+
+sqlite3 /usr/share/nginx/radarr/config/radarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 6789,
+  \"useSsl\": false,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"movieCategory\": \"Movies\",
+  \"recentMoviePriority\": 0,
+  \"olderMoviePriority\": 0,
+  \"addPaused\": true
+}','NzbgetSettings','1','1','1');"
+EOF
+sed -i "s/adminadmin/${password1}/g" add.sh
+bash add.sh
+rm add.sh
+}
+
+add_download_client_lidarr(){
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 8080,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"musicCategory\": \"Music\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"initialState\": 0,
+  \"useSsl\": false
+}','QBittorrentSettings','1');"
+
+sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 6789,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"musicCategory\": \"Music\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"addPaused\": true,
+  \"useSsl\": false
+}','NzbgetSettings','1');"
+EOF
+sed -i "s/adminadmin/${password1}/g" add.sh
+bash add.sh
+rm add.sh
+}
+
+add_prowlarr_sonarr_radarr_lidarr(){
+    cat > "add1.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('1','Sonarr','Sonarr','{
+  \"prowlarrUrl\": \"http://127.0.0.1:9696\",
+  \"baseUrl\": \"http://127.0.0.1:8989/sonarr\",
+  \"apiKey\": \"adminadmin\",
+  \"syncCategories\": [
+    5000,
+    5010,
+    5020,
+    5030,
+    5040,
+    5045,
+    5050
+  ],
+  \"animeSyncCategories\": [
+    5070
+  ]
+}','SonarrSettings','2','[]');"
+EOF
+sed -i "s/adminadmin/${sonarr_api}/g" add1.sh
+bash add1.sh
+rm add1.sh
+
+    cat > "add2.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('2','Radarr','Radarr','{
+  \"prowlarrUrl\": \"http://127.0.0.1:9696\",
+  \"baseUrl\": \"http://127.0.0.1:7878/radarr\",
+  \"apiKey\": \"adminadmin\",
+  \"syncCategories\": [
+    2000,
+    2010,
+    2020,
+    2030,
+    2040,
+    2045,
+    2050,
+    2060,
+    2070,
+    2080
+  ]
+}','RadarrSettings','2','[]');"
+EOF
+sed -i "s/adminadmin/${radarr_api}/g" add2.sh
+bash add2.sh
+rm add2.sh
+
+    cat > "add3.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('3','Lidarr','Lidarr','{
+  \"prowlarrUrl\": \"http://127.0.0.1:9696\",
+  \"baseUrl\": \"http://127.0.0.1:8686/lidarr\",
+  \"apiKey\": \"adminadmin\",
+  \"syncCategories\": [
+    3000,
+    3010,
+    3030,
+    3040,
+    3050,
+    3060
+  ]
+}','LidarrSettings','2','[]');"
+EOF
+sed -i "s/adminadmin/${lidarr_api}/g" add3.sh
+bash add3.sh
+rm add3.sh
+}
+
 install_sonarr(){
 
 cd /data/
@@ -443,203 +642,4 @@ add_lidarr_ombi
 sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "DELETE FROM GlobalSettings WHERE Id = 1;"
 sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('1','{\"BaseUrl\":\"/ombi\",\"CollectAnalyticData\":false,\"Wizard\":false,\"ApiKey\":\"dfbcab4789604b4289b3cdc71aa41bf6\",\"DoNotSendNotificationsForAutoApprove\":false,\"HideRequestsUsers\":false,\"DisableHealthChecks\":false,\"DefaultLanguageCode\":\"zh\",\"AutoDeleteAvailableRequests\":false,\"AutoDeleteAfterDays\":0,\"Branch\":0,\"HasMigratedOldTvDbData\":false,\"Set\":false,\"Id\":1}','OmbiSettings');"
 docker-compose up -d
-}
-
-add_sonarr_ombi(){
-    cat > "add.sh" << "EOF"
-#!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('2','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"QualityProfile\":\"1\",\"SeasonFolders\":false,\"RootPath\":\"1\",\"QualityProfileAnime\":\"1\",\"RootPathAnime\":\"2\",\"AddOnly\":false,\"V3\":true,\"LanguageProfile\":2,\"LanguageProfileAnime\":2,\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/sonarr\",\"Ip\":\"127.0.0.1\",\"Port\":8989,\"Id\":0}','SonarrSettings');"
-EOF
-sed -i "s/adminadmin/${sonarr_api}/g" add.sh
-bash add.sh
-rm add.sh
-}
-
-add_radarr_ombi(){
-    cat > "add.sh" << "EOF"
-#!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('3','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/movies\",\"AddOnly\":false,\"MinimumAvailability\":\"Announced\",\"ScanForAvailability\":false,\"Ssl\":false,\"SubDir\":\"/radarr\",\"Ip\":\"127.0.0.1\",\"Port\":7878,\"Id\":0}','RadarrSettings');"
-EOF
-sed -i "s/adminadmin/${radarr_api}/g" add.sh
-bash add.sh
-rm add.sh
-}
-
-add_lidarr_ombi(){
-    cat > "add.sh" << "EOF"
-#!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('4','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/music/\",\"AlbumFolder\":true,\"MetadataProfileId\":1,\"AddOnly\":false,\"Ssl\":false,\"SubDir\":\"/lidarr\",\"Ip\":\"127.0.0.1\",\"Port\":8686,\"Id\":0}','LidarrSettings');"
-EOF
-sed -i "s/adminadmin/${lidarr_api}/g" add.sh
-bash add.sh
-rm add.sh
-}
-chown -R nginx:nginx /data/
-
-add_download_client_sonarr(){
-    cat > "add.sh" << "EOF"
-#!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
-  \"host\": \"127.0.0.1\",
-  \"port\": 8080,
-  \"useSsl\": false,
-  \"username\": \"admin\",
-  \"password\": \"adminadmin\",
-  \"tvCategory\": \"tv\",
-  \"recentTvPriority\": 0,
-  \"olderTvPriority\": 0,
-  \"initialState\": 0,
-  \"sequentialOrder\": false,
-  \"firstAndLast\": false
-}','QBittorrentSettings','1','1','1');"
-
-sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
-  \"host\": \"127.0.0.1\",
-  \"port\": 6789,
-  \"useSsl\": false,
-  \"username\": \"admin\",
-  \"password\": \"adminadmin\",
-  \"tvCategory\": \"Series\",
-  \"recentTvPriority\": 0,
-  \"olderTvPriority\": 0,
-  \"addPaused\": true
-}','NzbgetSettings','1','1','1');"
-EOF
-sed -i "s/adminadmin/${password1}/g" add.sh
-bash add.sh
-rm add.sh
-}
-
-add_download_client_radarr(){
-    cat > "add.sh" << "EOF"
-#!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/radarr/config/radarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
-  \"host\": \"127.0.0.1\",
-  \"port\": 8080,
-  \"useSsl\": false,
-  \"username\": \"admin\",
-  \"password\": \"adminadmin\",
-  \"movieCategory\": \"Movies\",
-  \"recentTvPriority\": 0,
-  \"olderTvPriority\": 0,
-  \"initialState\": 0
-}','QBittorrentSettings','1','1','1');"
-
-sqlite3 /usr/share/nginx/radarr/config/radarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
-  \"host\": \"127.0.0.1\",
-  \"port\": 6789,
-  \"useSsl\": false,
-  \"username\": \"admin\",
-  \"password\": \"adminadmin\",
-  \"movieCategory\": \"Movies\",
-  \"recentMoviePriority\": 0,
-  \"olderMoviePriority\": 0,
-  \"addPaused\": true
-}','NzbgetSettings','1','1','1');"
-EOF
-sed -i "s/adminadmin/${password1}/g" add.sh
-bash add.sh
-rm add.sh
-}
-
-add_download_client_lidarr(){
-    cat > "add.sh" << "EOF"
-#!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
-  \"host\": \"127.0.0.1\",
-  \"port\": 8080,
-  \"username\": \"admin\",
-  \"password\": \"adminadmin\",
-  \"musicCategory\": \"Music\",
-  \"recentTvPriority\": 0,
-  \"olderTvPriority\": 0,
-  \"initialState\": 0,
-  \"useSsl\": false
-}','QBittorrentSettings','1');"
-
-sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
-  \"host\": \"127.0.0.1\",
-  \"port\": 6789,
-  \"username\": \"admin\",
-  \"password\": \"adminadmin\",
-  \"musicCategory\": \"Music\",
-  \"recentTvPriority\": 0,
-  \"olderTvPriority\": 0,
-  \"addPaused\": true,
-  \"useSsl\": false
-}','NzbgetSettings','1');"
-EOF
-sed -i "s/adminadmin/${password1}/g" add.sh
-bash add.sh
-rm add.sh
-}
-
-add_prowlarr_sonarr_radarr_lidarr(){
-    cat > "add1.sh" << "EOF"
-#!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('1','Sonarr','Sonarr','{
-  \"prowlarrUrl\": \"http://127.0.0.1:9696\",
-  \"baseUrl\": \"http://127.0.0.1:8989/sonarr\",
-  \"apiKey\": \"adminadmin\",
-  \"syncCategories\": [
-    5000,
-    5010,
-    5020,
-    5030,
-    5040,
-    5045,
-    5050
-  ],
-  \"animeSyncCategories\": [
-    5070
-  ]
-}','SonarrSettings','2','[]');"
-EOF
-sed -i "s/adminadmin/${sonarr_api}/g" add1.sh
-bash add1.sh
-rm add1.sh
-
-    cat > "add2.sh" << "EOF"
-#!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('2','Radarr','Radarr','{
-  \"prowlarrUrl\": \"http://127.0.0.1:9696\",
-  \"baseUrl\": \"http://127.0.0.1:7878/radarr\",
-  \"apiKey\": \"adminadmin\",
-  \"syncCategories\": [
-    2000,
-    2010,
-    2020,
-    2030,
-    2040,
-    2045,
-    2050,
-    2060,
-    2070,
-    2080
-  ]
-}','RadarrSettings','2','[]');"
-EOF
-sed -i "s/adminadmin/${radarr_api}/g" add2.sh
-bash add2.sh
-rm add2.sh
-
-    cat > "add3.sh" << "EOF"
-#!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('3','Lidarr','Lidarr','{
-  \"prowlarrUrl\": \"http://127.0.0.1:9696\",
-  \"baseUrl\": \"http://127.0.0.1:8686/lidarr\",
-  \"apiKey\": \"adminadmin\",
-  \"syncCategories\": [
-    3000,
-    3010,
-    3030,
-    3040,
-    3050,
-    3060
-  ]
-}','LidarrSettings','2','[]');"
-EOF
-sed -i "s/adminadmin/${lidarr_api}/g" add3.sh
-bash add3.sh
-rm add3.sh
 }
