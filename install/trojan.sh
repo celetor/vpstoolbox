@@ -42,8 +42,8 @@ StandardError=journal
 ExecStart=/usr/local/bin/trojan /usr/local/etc/trojan/config.json
 ExecReload=/bin/kill -HUP \$MAINPID
 LimitNOFILE=65536
-Restart=on-failure
-RestartSec=1s
+Restart=always
+RestartSec=3s
 
 [Install]
 WantedBy=multi-user.target

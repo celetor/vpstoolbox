@@ -116,7 +116,7 @@ User=root
 ExecStart=/usr/bin/xray -c /etc/grpc/server.json
 TimeoutStopSec=infinity
 LimitNOFILE=65536
-Restart=on-failure
+Restart=always
 RestartSec=3s
 
 [Install]

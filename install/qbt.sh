@@ -35,7 +35,7 @@ RemainAfterExit=yes
 ExecStart=/usr/bin/qbittorrent-nox --profile=/usr/share/nginx/
 TimeoutStopSec=infinity
 LimitNOFILE=65536
-Restart=on-failure
+Restart=always
 RestartSec=3s
 
 [Install]

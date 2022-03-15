@@ -312,8 +312,8 @@ After=network.target
 WorkingDirectory=/usr/share/nginx/hexo
 ExecStart=${hexo_location} server -i 127.0.0.1
 LimitNOFILE=65536
-Restart=on-failure
-RestartSec=1s
+Restart=always
+RestartSec=3s
 
 [Install]
 WantedBy=multi-user.target

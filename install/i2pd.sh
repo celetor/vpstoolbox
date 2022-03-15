@@ -334,7 +334,7 @@ KillSignal=SIGQUIT
 #TimeoutStopSec=10m
 
 LimitNOFILE=65536
-Restart=on-failure
+Restart=always
 RestartSec=3s
 
 [Install]

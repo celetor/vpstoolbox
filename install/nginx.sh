@@ -42,7 +42,7 @@ ExecReload=/usr/sbin/nginx -s reload
 ExecStop=/bin/kill -s QUIT \$MAINPID
 PrivateTmp=true
 LimitNOFILE=65536
-Restart=on-failure
+Restart=always
 RestartSec=3s
 
 [Install]
