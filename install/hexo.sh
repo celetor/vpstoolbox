@@ -117,6 +117,7 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 
 ### 影音
 
+- <a href="https://$domain/qbt/" target="_blank" rel="noreferrer">https://$domain/qbt/</a>
 - <a href="https://$domain:443/emby/" target="_blank" rel="noreferrer">https://$domain/emby/</a>
 - <a href="https://$domain:443/sonarr/" target="_blank" rel="noreferrer">https://$domain/sonarr/</a>
 - <a href="https://$domain:443/radarr/" target="_blank" rel="noreferrer">https://$domain/radarr/</a>
@@ -157,14 +158,6 @@ cd /usr/share/nginx/hexo/source/_posts/
 - <a href="https://$domain/miniflux/" target="_blank" rel="noreferrer">https://$domain/miniflux/</a>
 - 用户名(username): **admin**
 - 密碼(password): **${password1}**
-
----
-
-### Qbittorrent Enhanced Version
-
-- <a href="https://$domain/qbt/" target="_blank" rel="noreferrer">https://$domain/qbt/</a>
-- 用户名(username): admin
-- 密碼(password): ${password1}
 
 ---
 
