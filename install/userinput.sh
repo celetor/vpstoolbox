@@ -370,13 +370,6 @@ userinput_full() {
     fi
   fi
 
-  if [[ $(lsb_release -cs) == jessie ]]; then
-    debian9_install=1
-  fi
-  if [[ $(lsb_release -cs) == xenial ]]; then
-    ubuntu18_install=1
-  fi
-
   while [[ -z ${domain} ]]; do
     domain=$(whiptail --inputbox --nocancel "请輸入你的域名,例如 example.com(请先完成A/AAAA解析) | Please enter your domain" 8 68 --title "Domain input" 3>&1 1>&2 2>&3)
   done
