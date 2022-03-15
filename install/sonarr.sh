@@ -400,6 +400,8 @@ sed -i "s/MainDir=\/downloads/MainDir=\/data\/usenet\//g" /usr/share/nginx/nzbge
 sed -i "s/DestDir=\${MainDir}\/completed/DestDir=\${MainDir}/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/ControlIP=0.0.0.0/ControlIP=127.0.0.1/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/ControlUsername=nzbget/ControlUsername=admin/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/FormAuth=no/FormAuth=yes/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/AuthorizedIP=127.0.0.1/AuthorizedIP=/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/ControlPassword=tegbzn6789/ControlPassword=${password1}/g" /usr/share/nginx/nzbget/config/nzbget.conf
 
 ## sonarr
