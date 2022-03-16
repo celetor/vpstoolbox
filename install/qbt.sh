@@ -43,7 +43,6 @@ EOF
 systemctl daemon-reload
 systemctl enable qbittorrent.service
 mkdir /usr/share/nginx/qBittorrent/
-mkdir /usr/share/nginx/qBittorrent/downloads/
 mkdir /usr/share/nginx/qBittorrent/data/
 mkdir /usr/share/nginx/qBittorrent/data/GeoIP/
 cd /usr/share/nginx/qBittorrent/data/GeoIP/
