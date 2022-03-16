@@ -22,25 +22,36 @@ gid=$(id -g root)
 
 ## 资源文件夹
 
-### 一级子目录(sonarr,radarr)
+## 一级子目录(sonarr,radarr)
 mkdir /data/
-### 二级子目录(qbt,emby,bazarr)
+## 二级子目录(qbt,emby,bazarr)
 mkdir /data/torrents/
 mkdir /data/usenet/
 mkdir /data/media/
-### 三级子目录(none)
+## 三级子目录(BT/PT)
 mkdir /data/torrents/Animes/
 mkdir /data/torrents/Movies/
-mkdir /data/torrents/Music/
 mkdir /data/torrents/Series/
+mkdir /data/torrents/Music/
+mkdir /data/torrents/Books/
+mkdir /data/torrents/XXX/
+mkdir /data/torrents/Others/
+## Usenet
 mkdir /data/usenet/Animes/
 mkdir /data/usenet/Movies/
-mkdir /data/usenet/Music/
 mkdir /data/usenet/Series/
+mkdir /data/usenet/Music/
+mkdir /data/usenet/Books/
+mkdir /data/usenet/XXX/
+mkdir /data/usenet/Others/
+## Sonarr Radarr Lidarr Readarr
 mkdir /data/media/Animes/
 mkdir /data/media/Movies/
-mkdir /data/media/Music/
 mkdir /data/media/Series/
+mkdir /data/media/Music/
+mkdir /data/media/Books/
+mkdir /data/media/XXX/
+mkdir /data/media/Others/
 
 apt-get install xml-twig-tools -y
 apt-get install sqlite3 -y
