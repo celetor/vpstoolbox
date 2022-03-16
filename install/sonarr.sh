@@ -126,7 +126,7 @@ sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients v
   \"tvCategory\": \"Series\",
   \"recentTvPriority\": 0,
   \"olderTvPriority\": 0,
-  \"addPaused\": true
+  \"addPaused\": false
 }','NzbgetSettings','1','1','1');"
 EOF
 sed -i "s/adminadmin/${password1}/g" add.sh
@@ -158,7 +158,7 @@ sqlite3 /usr/share/nginx/radarr/config/radarr.db  "insert into DownloadClients v
   \"movieCategory\": \"Movies\",
   \"recentMoviePriority\": 0,
   \"olderMoviePriority\": 0,
-  \"addPaused\": true
+  \"addPaused\": false
 }','NzbgetSettings','1','1','1');"
 EOF
 sed -i "s/adminadmin/${password1}/g" add.sh
@@ -189,7 +189,7 @@ sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into DownloadClients v
   \"musicCategory\": \"Music\",
   \"recentTvPriority\": 0,
   \"olderTvPriority\": 0,
-  \"addPaused\": true,
+  \"addPaused\": false,
   \"useSsl\": false
 }','NzbgetSettings','1');"
 EOF
@@ -220,7 +220,7 @@ sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into DownloadClien
   \"password\": \"adminadmin\",
   \"category\": \"Software\",
   \"priority\": 0,
-  \"addPaused\": true
+  \"addPaused\": false
 }','NzbgetSettings','1');"
 EOF
 sed -i "s/adminadmin/${password1}/g" add.sh
