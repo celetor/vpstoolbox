@@ -122,6 +122,7 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 - <a href="https://$domain:443/sonarr/" target="_blank" rel="noreferrer">https://$domain/sonarr/</a>
 - <a href="https://$domain:443/radarr/" target="_blank" rel="noreferrer">https://$domain/radarr/</a>
 - <a href="https://$domain:443/lidarr/" target="_blank" rel="noreferrer">https://$domain/lidarr/</a>
+- <a href="https://$domain:443/readarr/" target="_blank" rel="noreferrer">https://$domain/readarr/</a>
 - <a href="https://$domain:443/bazarr/" target="_blank" rel="noreferrer">https://$domain/bazarr/</a>
 - <a href="https://$domain:443/chinesesubfinder/" target="_blank" rel="noreferrer">https://$domain/chinesesubfinder/</a>
 - <a href="https://$domain:443/ombi/" target="_blank" rel="noreferrer">https://$domain/ombi/</a>

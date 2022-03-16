@@ -57,6 +57,8 @@ mkdir /usr/share/nginx/radarr
 mkdir /usr/share/nginx/radarr/config
 mkdir /usr/share/nginx/lidarr
 mkdir /usr/share/nginx/lidarr/config
+mkdir /usr/share/nginx/readarr
+mkdir /usr/share/nginx/readarr/config
 mkdir /usr/share/nginx/prowlarr
 mkdir /usr/share/nginx/prowlarr/config
 mkdir /usr/share/nginx/jackett
@@ -353,6 +355,18 @@ services:
       - /usr/share/nginx/lidarr/config:/config
       - /data:/data
     restart: unless-stopped
+  readarr:
+    network_mode: host # 8787
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+    volumes:
+      - /usr/share/nginx/readarr/config:/config
+      - /data:/data
+    restart: unless-stopped    
   prowlarr:
     network_mode: host
     image: lscr.io/linuxserver/prowlarr:develop
@@ -629,6 +643,26 @@ sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "DELETE FROM NamingConfig WHER
 sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into NamingConfig values ('1','1','{Artist Name}','1','{Album Title} ({Release Year})/{Artist Name} - {Album Title} - {track:00} - {Track Title}','{Album Title} ({Release Year})/{Medium Format} {medium:00}/{Artist Name} - {Album Title} - {track:00} - {Track Title}');"
 add_download_client_lidarr
 lidarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/lidarr/config/config.xml --text_only)
+
+## readarr
+sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/readarr\/<\/UrlBase>/g" /usr/share/nginx/readarr/config/config.xml
+# sed -i '$d' /usr/share/nginx/readarr/config/config.xml
+# echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/readarr/config/config.xml
+# echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/readarr/config/config.xml
+# echo '</Config>' >> /usr/share/nginx/readarr/config/config.xml
+# sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into RootFolders values ('1','/data/media/Music/','music','1','1','0','[]');"
+# sqlite3 /usr/share/nginx/readarr/config/readarr.db  "DELETE FROM Metadata WHERE Id = 1;"
+# sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
+#   \"artistMetadata\": true,
+#   \"albumMetadata\": true,
+#   \"artistImages\": true,
+#   \"albumImages\": true,
+#   \"isValid\": true
+# }','XbmcMetadataSettings');"
+# sqlite3 /usr/share/nginx/readarr/config/readarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
+# sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into NamingConfig values ('1','1','{Artist Name}','1','{Album Title} ({Release Year})/{Artist Name} - {Album Title} - {track:00} - {Track Title}','{Album Title} ({Release Year})/{Medium Format} {medium:00}/{Artist Name} - {Album Title} - {track:00} - {Track Title}');"
+# add_download_client_readarr
+readarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/readarr/config/config.xml --text_only)
 
 ## prowlarr 8191
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/prowlarr\/<\/UrlBase>/g" /usr/share/nginx/prowlarr/config/config.xml

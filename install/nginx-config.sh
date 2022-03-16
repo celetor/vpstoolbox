@@ -245,6 +245,23 @@ echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/def
 echo "        proxy_set_header Connection \$http_connection;" >> /etc/nginx/conf.d/default.conf
 echo "        #proxy_buffering off;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
+## readarr 8787
+echo "    location /readarr {" >> /etc/nginx/conf.d/default.conf
+echo "        return 302 https://${domain}:443/readarr/;" >> /etc/nginx/conf.d/default.conf
+echo "    }" >> /etc/nginx/conf.d/default.conf
+echo "    location /readarr/ {" >> /etc/nginx/conf.d/default.conf
+echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass http://127.0.0.1:8787/readarr/;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
+echo "        proxy_set_header Connection \$http_connection;" >> /etc/nginx/conf.d/default.conf
+echo "        #proxy_buffering off;" >> /etc/nginx/conf.d/default.conf
+echo "        }" >> /etc/nginx/conf.d/default.conf
 ## bazarr 6767
 echo "    location /bazarr {" >> /etc/nginx/conf.d/default.conf
 echo "        return 302 https://${domain}:443/bazarr/;" >> /etc/nginx/conf.d/default.conf
