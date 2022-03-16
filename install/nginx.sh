@@ -9,7 +9,6 @@ install_nginx(){
   apt --fix-broken install -y
   apt-get install ca-certificates lsb-release -y
   apt-get install gnupg gnupg2 -y
-  apt-get install gpg-agent -y
   touch /etc/apt/sources.list.d/nginx.list
   if [[ ${dist} == ubuntu ]]; then
 echo "deb [arch=amd64] http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx"  | sudo tee /etc/apt/sources.list.d/nginx.list
