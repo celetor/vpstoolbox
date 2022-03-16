@@ -50,7 +50,7 @@ EOF
 systemctl daemon-reload
 systemctl enable nginx
 mkdir /usr/share/nginx/cache
-mkdir /usr/share/nginx/php_cache
+#mkdir /usr/share/nginx/php_cache
   cat > '/etc/nginx/nginx.conf' << EOF
 user nginx;
 worker_processes auto;
