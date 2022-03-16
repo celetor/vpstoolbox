@@ -212,7 +212,7 @@ sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into DownloadClien
   \"useSsl\": false,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
-  \"category\": \"Prowlarr\",
+  \"category\": \"Software\",
   \"priority\": 0,
   \"addPaused\": true
 }','NzbgetSettings','1');"
