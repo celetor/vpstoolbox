@@ -9,9 +9,8 @@ clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Qbt加强版中..." 7 68
 colorEcho ${INFO} "安装增强版Qbittorrent(Install Qbittorrent ing)"
 apt-get install unzip -y
-cd /root
-mkdir qbt
-cd qbt
+mkdir /root/qbt
+cd /root/qbt
 qbtver=$(curl --retry 5 -s "https://api.github.com/repos/c0re100/qBittorrent-Enhanced-Edition/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 curl -LO https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases/download/${qbtver}/qbittorrent-enhanced-nox_x86_64-linux-musl_static.zip
 unzip -o qb*.zip
@@ -19,8 +18,8 @@ rm qb*.zip
 cp -f qb* /usr/bin/
 chmod +x /usr/bin/qbittorrent-nox
 chmod +x /usr/bin/qb*
-cd
-rm -rf qbt
+cd /root
+rm -rf /root/qbt
   cat > '/etc/systemd/system/qbittorrent.service' << EOF
 [Unit]
 Description=qBittorrent Daemon Service
