@@ -207,7 +207,7 @@ add_download_client_prowlarr(){
   \"useSsl\": false,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
-  \"category\": \"prowlarr\",
+  \"category\": \"others\",
   \"priority\": 0,
   \"initialState\": 0
 }','QBittorrentSettings','1');"

@@ -112,8 +112,6 @@ mkdir /data/torrents/Documentary/
 mkdir /data/media/Documentary/
 mkdir /data/torrents/XXX/
 mkdir /data/media/XXX/
-mkdir /data/torrents/prowlarr/
-mkdir /data/media/prowlarr/
 mkdir /data/torrents/others/
 mkdir /data/media/others/
 ## 新增分类
@@ -123,7 +121,6 @@ curl -X POST -F 'category=Series' -F 'savePath=/data/torrents/Series/' http://lo
 curl -X POST -F 'category=Music' -F 'savePath=/data/torrents/Music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Documentary' -F 'savePath=/data/torrents/Documentary/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=XXX' -F 'savePath=/data/torrents/XXX/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=prowlarr' -F 'savePath=/data/torrents/prowlarr/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=others' -F 'savePath=/data/torrents/others/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 ## 修改密码，锁定配置
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22web_ui_password%22:%22${password1}%22%7D  --cookie "${qbtcookie}"
