@@ -420,9 +420,7 @@ services:
 EOF
 
 docker-compose up -d
-
 sleep 60s;
-
 docker-compose down
 
 ## nzbget
