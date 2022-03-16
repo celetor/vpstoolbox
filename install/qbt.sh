@@ -100,29 +100,29 @@ curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22save_path%22:%22
 mkdir /data/
 mkdir /data/torrents/
 mkdir /data/media/
-mkdir /data/torrents/animes/
-mkdir /data/media/animes/
-mkdir /data/torrents/movies/
-mkdir /data/media/movies/
-mkdir /data/torrents/tv/
-mkdir /data/media/tv/
-mkdir /data/torrents/music/
-mkdir /data/media/music/
-mkdir /data/torrents/documentary/
-mkdir /data/media/documentary/
-mkdir /data/torrents/xxx/
-mkdir /data/media/xxx/
+mkdir /data/torrents/Animes/
+mkdir /data/media/Animes/
+mkdir /data/torrents/Movies/
+mkdir /data/media/Movies/
+mkdir /data/torrents/Series/
+mkdir /data/media/Series/
+mkdir /data/torrents/Music/
+mkdir /data/media/Music/
+mkdir /data/torrents/Documentary/
+mkdir /data/media/Documentary/
+mkdir /data/torrents/XXX/
+mkdir /data/media/XXX/
 mkdir /data/torrents/prowlarr/
 mkdir /data/media/prowlarr/
 mkdir /data/torrents/others/
 mkdir /data/media/others/
 ## 新增分类
-curl -X POST -F 'category=Animes' -F 'savePath=/data/torrents/animes/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=Movies' -F 'savePath=/data/torrents/movies/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=tv' -F 'savePath=/data/torrents/tv/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=Music' -F 'savePath=/data/torrents/music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=Documentary' -F 'savePath=/data/torrents/documentary/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=XXX' -F 'savePath=/data/torrents/xxx/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Animes' -F 'savePath=/data/torrents/Animes/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Movies' -F 'savePath=/data/torrents/Movies/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Series' -F 'savePath=/data/torrents/Series/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Music' -F 'savePath=/data/torrents/Music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Documentary' -F 'savePath=/data/torrents/Documentary/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=XXX' -F 'savePath=/data/torrents/XXX/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=prowlarr' -F 'savePath=/data/torrents/prowlarr/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=others' -F 'savePath=/data/torrents/others/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 ## 修改密码，锁定配置

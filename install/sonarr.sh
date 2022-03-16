@@ -23,18 +23,18 @@ mkdir /data/torrents/
 mkdir /data/usenet/
 mkdir /data/media/
 ### 三级子目录(none)
-mkdir /data/torrents/animes/
-mkdir /data/torrents/movies/
-mkdir /data/torrents/music/
-mkdir /data/torrents/tv/
+mkdir /data/torrents/Animes/
+mkdir /data/torrents/Movies/
+mkdir /data/torrents/Music/
+mkdir /data/torrents/Series/
 mkdir /data/usenet/Animes/
 mkdir /data/usenet/Movies/
 mkdir /data/usenet/Music/
 mkdir /data/usenet/Series/
-mkdir /data/media/animes/
-mkdir /data/media/movies/
-mkdir /data/media/music/
-mkdir /data/media/tv/
+mkdir /data/media/Animes/
+mkdir /data/media/Movies/
+mkdir /data/media/Music/
+mkdir /data/media/Series/
 
 apt-get install xml-twig-tools -y
 apt-get install sqlite3 -y
@@ -87,7 +87,7 @@ rm add.sh
 add_lidarr_ombi(){
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
-  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('4','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/music/\",\"AlbumFolder\":true,\"MetadataProfileId\":1,\"AddOnly\":false,\"Ssl\":false,\"SubDir\":\"/lidarr\",\"Ip\":\"127.0.0.1\",\"Port\":8686,\"Id\":0}','LidarrSettings');"
+  sqlite3 /usr/share/nginx/ombi/config/OmbiSettings.db  "insert into GlobalSettings values ('4','{\"Enabled\":true,\"ApiKey\":\"adminadmin\",\"DefaultQualityProfile\":\"1\",\"DefaultRootPath\":\"/data/media/Music/\",\"AlbumFolder\":true,\"MetadataProfileId\":1,\"AddOnly\":false,\"Ssl\":false,\"SubDir\":\"/lidarr\",\"Ip\":\"127.0.0.1\",\"Port\":8686,\"Id\":0}','LidarrSettings');"
 EOF
 sed -i "s/adminadmin/${lidarr_api}/g" add.sh
 bash add.sh
@@ -103,7 +103,7 @@ add_download_client_sonarr(){
   \"useSsl\": false,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
-  \"tvCategory\": \"tv\",
+  \"tvCategory\": \"Series\",
   \"recentTvPriority\": 0,
   \"olderTvPriority\": 0,
   \"initialState\": 0,
@@ -312,7 +312,7 @@ services:
       - /data/usenet:/data/usenet:rw
     restart: unless-stopped
   sonarr:
-    network_mode: host # tv animes 8989
+    network_mode: host # Series animes 8989
     image: lscr.io/linuxserver/sonarr
     container_name: sonarr
     environment:
@@ -443,8 +443,8 @@ sed -i '$d' /usr/share/nginx/sonarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/sonarr/config/config.xml
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/sonarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/sonarr/config/config.xml
-sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into RootFolders values ('1','/data/media/tv/');"
-sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into RootFolders values ('2','/data/media/animes/');"
+sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into RootFolders values ('1','/data/media/Series/');"
+sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into RootFolders values ('2','/data/media/Animes/');"
 sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "DELETE FROM Metadata WHERE Id = 1;"
 sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
   \"seriesMetadata\": true,
@@ -586,7 +586,7 @@ sed -i '$d' /usr/share/nginx/radarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/radarr/config/config.xml
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/radarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/radarr/config/config.xml
-sqlite3 /usr/share/nginx/radarr/config/radarr.db  "insert into RootFolders values ('1','/data/media/movies/');"
+sqlite3 /usr/share/nginx/radarr/config/radarr.db  "insert into RootFolders values ('1','/data/media/Movies/');"
 sqlite3 /usr/share/nginx/radarr/config/radarr.db  "insert into Config values ('6','movieinfolanguage','10');"
 sqlite3 /usr/share/nginx/radarr/config/radarr.db  "insert into Config values ('7','uilanguage','10');"
 sqlite3 /usr/share/nginx/radarr/config/radarr.db  "UPDATE Metadata SET Enable = 1 WHERE Id = 1;"
@@ -610,7 +610,7 @@ sed -i '$d' /usr/share/nginx/lidarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/lidarr/config/config.xml
 echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/lidarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/lidarr/config/config.xml
-sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into RootFolders values ('1','/data/media/music/','music','1','1','0','[]');"
+sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into RootFolders values ('1','/data/media/Music/','music','1','1','0','[]');"
 sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "DELETE FROM Metadata WHERE Id = 1;"
 sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
   \"artistMetadata\": true,
@@ -672,7 +672,7 @@ sqlite3 /usr/share/nginx/bazarr/config/db/bazarr.db  "insert into table_language
 
 ## chinesesubfinder 19035
 #     cat > "/usr/share/nginx/chinesesubfinder/config/ChineseSubFinderSettings.json" << EOF
-# {"user_info":{"username":"admin","password":"${password1}"},"common_settings":{"scan_interval":"6h","threads":1,"run_scan_at_start_up":false,"movie_paths":["/media/movies/"],"series_paths":["/media/tv/"]},"advanced_settings":{"proxy_settings":{"use_http_proxy":false,"http_proxy_address":""},"debug_mode":false,"save_full_season_tmp_subtitles":false,"sub_type_priority":0,"sub_name_formatter":0,"save_multi_sub":false,"custom_video_exts":[],"fix_time_line":false,"topic":1},"emby_settings":{"enable":true,"address_url":"http://127.0.0.1:8096","api_key":"","max_request_video_number":3000,"skip_watched":true,"movie_paths_mapping":{"/media/movies/":"/data/media/movies/"},"series_paths_mapping":{"/media/tv/":"/data/media/tv/"}},"developer_settings":{"enable":false,"bark_server_address":""},"timeline_fixer_settings":{"max_offset_time":120,"min_offset":0.1},"experimental_function":{"auto_change_sub_encode":{"enable":false,"des_encode_type":0}}}
+# {"user_info":{"username":"admin","password":"${password1}"},"common_settings":{"scan_interval":"6h","threads":1,"run_scan_at_start_up":false,"movie_paths":["/media/Movies/"],"series_paths":["/media/Series/"]},"advanced_settings":{"proxy_settings":{"use_http_proxy":false,"http_proxy_address":""},"debug_mode":false,"save_full_season_tmp_subtitles":false,"sub_type_priority":0,"sub_name_formatter":0,"save_multi_sub":false,"custom_video_exts":[],"fix_time_line":false,"topic":1},"emby_settings":{"enable":true,"address_url":"http://127.0.0.1:8096","api_key":"","max_request_video_number":3000,"skip_watched":true,"movie_paths_mapping":{"/media/Movies/":"/data/media/Movies/"},"series_paths_mapping":{"/media/Series/":"/data/media/Series/"}},"developer_settings":{"enable":false,"bark_server_address":""},"timeline_fixer_settings":{"max_offset_time":120,"min_offset":0.1},"experimental_function":{"auto_change_sub_encode":{"enable":false,"des_encode_type":0}}}
 # EOF
 
 ## ombi 3579
