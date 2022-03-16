@@ -11,6 +11,12 @@ url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
+## Standalone用法
+
+# password1="adminadmin"
+
+# install_sonarr
+
 uid=$(id -u root)
 gid=$(id -g root)
 
