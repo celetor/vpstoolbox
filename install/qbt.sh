@@ -108,6 +108,8 @@ mkdir /data/torrents/Series/
 mkdir /data/media/Series/
 mkdir /data/torrents/Music/
 mkdir /data/media/Music/
+mkdir /data/torrents/Books/
+mkdir /data/media/Books/
 mkdir /data/torrents/Documentary/
 mkdir /data/media/Documentary/
 mkdir /data/torrents/XXX/
@@ -119,6 +121,7 @@ curl -X POST -F 'category=Animes' -F 'savePath=/data/torrents/Animes/' http://lo
 curl -X POST -F 'category=Movies' -F 'savePath=/data/torrents/Movies/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Series' -F 'savePath=/data/torrents/Series/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Music' -F 'savePath=/data/torrents/Music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Bookes' -F 'savePath=/data/torrents/Books/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Documentary' -F 'savePath=/data/torrents/Documentary/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=XXX' -F 'savePath=/data/torrents/XXX/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=others' -F 'savePath=/data/torrents/others/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
