@@ -733,8 +733,8 @@ sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/readarr\/<\/UrlBase>/g" /usr/share/ngi
 #   \"albumImages\": true,
 #   \"isValid\": true
 # }','XbmcMetadataSettings');"
-# sqlite3 /usr/share/nginx/readarr/config/readarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
-# sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into NamingConfig values ('1','1','{Artist Name}','1','{Album Title} ({Release Year})/{Artist Name} - {Album Title} - {track:00} - {Track Title}','{Album Title} ({Release Year})/{Medium Format} {medium:00}/{Artist Name} - {Album Title} - {track:00} - {Track Title}');"
+sqlite3 /usr/share/nginx/readarr/config/readarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
+sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into NamingConfig values ('1','1','{Author Name}','1','{Book Title}/{Author Name} - {Book Title}{ (PartNumber)}');"
 add_download_client_readarr
 readarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/readarr/config/config.xml --text_only)
 
