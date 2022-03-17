@@ -63,7 +63,7 @@ sleep 5s;
 cpu_thread_count=$(nproc --all)
 io_thread=$((${cpu_thread_count}*4))
 
-qbtcookie=$(curl -s -i --header 'Referer: http://127.0.0.1:8080' --data 'username=admin&password=adminadmin' http://127.0.0.1:8080/api/v2/auth/login | grep set-cookie | cut -c13-48)
+qbtcookie=$(curl -i --header 'Referer: http://127.0.0.1:8080' --data 'username=admin&password=adminadmin' http://127.0.0.1:8080/api/v2/auth/login | grep -i set-cookie | cut -c13-48)
 # curl http://127.0.0.1:8080/api/v2/app/version  --cookie "${qbtcookie}"
 # curl http://127.0.0.1:8080/api/v2/app/preferences  --cookie "${qbtcookie}" | jq
 # curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22alternative_webui_enabled%22:false%7D  --cookie "${qbtcookie}"
