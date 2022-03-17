@@ -393,7 +393,7 @@ rm add3.sh
     7050,
     7060
   ]
-}','LidarrSettings','2','[]');"
+}','ReadarrSettings','2','[]');"
 EOF
 sed -i "s/adminadmin/${readarr_api}/g" add4.sh
 bash add4.sh
