@@ -12,5 +12,5 @@ if [[ ${dist} == debian ]]; then
   echo "fail"
 fi
 apt-get update
-apt-get install -q -y nodejs
+apt-get install -y nodejs
 }
