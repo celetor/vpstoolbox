@@ -116,20 +116,6 @@ rm add.sh
 add_download_client_sonarr(){
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
-  ## Qbt Series
-  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('1','1','qBittorrent_Series','QBittorrent','{
-  \"host\": \"127.0.0.1\",
-  \"port\": 8080,
-  \"useSsl\": false,
-  \"username\": \"admin\",
-  \"password\": \"adminadmin\",
-  \"tvCategory\": \"Series\",
-  \"recentTvPriority\": 0,
-  \"olderTvPriority\": 0,
-  \"initialState\": 0,
-  \"sequentialOrder\": false,
-  \"firstAndLast\": false
-}','QBittorrentSettings','1','1','1');"
   ## Qbt Animes
   sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('1','1','qBittorrent_Animes','QBittorrent','{
   \"host\": \"127.0.0.1\",
@@ -144,26 +130,40 @@ add_download_client_sonarr(){
   \"sequentialOrder\": false,
   \"firstAndLast\": false
 }','QBittorrentSettings','1','1','1');"
-  ## nzbget Series
-  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
+  ## Qbt Series
+  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('2','1','qBittorrent_Series','QBittorrent','{
   \"host\": \"127.0.0.1\",
-  \"port\": 6789,
+  \"port\": 8080,
   \"useSsl\": false,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
   \"tvCategory\": \"Series\",
   \"recentTvPriority\": 0,
   \"olderTvPriority\": 0,
-  \"addPaused\": false
-}','NzbgetSettings','1','1','1');"
+  \"initialState\": 0,
+  \"sequentialOrder\": false,
+  \"firstAndLast\": false
+}','QBittorrentSettings','1','1','1');"
   ## nzbget Animes
-  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
+  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('4','1','NZBGet_Animes','Nzbget','{
   \"host\": \"127.0.0.1\",
   \"port\": 6789,
   \"useSsl\": false,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
   \"tvCategory\": \"Animes\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"addPaused\": false
+}','NzbgetSettings','1','1','1');"
+  ## nzbget Series
+  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('3','1','NZBGet_Series','Nzbget','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 6789,
+  \"useSsl\": false,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"tvCategory\": \"Series\",
   \"recentTvPriority\": 0,
   \"olderTvPriority\": 0,
   \"addPaused\": false
@@ -222,6 +222,38 @@ add_download_client_lidarr(){
 }','QBittorrentSettings','1');"
 
 sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 6789,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"musicCategory\": \"Music\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"addPaused\": false,
+  \"useSsl\": false
+}','NzbgetSettings','1');"
+EOF
+sed -i "s/adminadmin/${password1}/g" add.sh
+bash add.sh
+rm add.sh
+}
+
+add_download_client_readarr(){
+    cat > "add.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
+  \"host\": \"127.0.0.1\",
+  \"port\": 8080,
+  \"username\": \"admin\",
+  \"password\": \"adminadmin\",
+  \"musicCategory\": \"Music\",
+  \"recentTvPriority\": 0,
+  \"olderTvPriority\": 0,
+  \"initialState\": 0,
+  \"useSsl\": false
+}','QBittorrentSettings','1');"
+
+sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
   \"host\": \"127.0.0.1\",
   \"port\": 6789,
   \"username\": \"admin\",
