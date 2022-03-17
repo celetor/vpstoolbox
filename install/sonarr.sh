@@ -28,7 +28,7 @@ mkdir /data/
 mkdir /data/torrents/
 mkdir /data/usenet/
 mkdir /data/media/
-## 三级子目录(BT/PT)
+## BT/PT qBittorrent
 mkdir /data/torrents/Animes/
 mkdir /data/torrents/Movies/
 mkdir /data/torrents/Series/
@@ -36,7 +36,7 @@ mkdir /data/torrents/Music/
 mkdir /data/torrents/Books/
 mkdir /data/torrents/XXX/
 mkdir /data/torrents/Others/
-## Usenet
+## Usenet NZBGet
 mkdir /data/usenet/Animes/
 mkdir /data/usenet/Movies/
 mkdir /data/usenet/Series/
