@@ -244,25 +244,25 @@ add_download_client_readarr(){
   sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into DownloadClients values ('1','1','qBittorrent','QBittorrent','{
   \"host\": \"127.0.0.1\",
   \"port\": 8080,
+  \"useSsl\": false,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
-  \"musicCategory\": \"Music\",
+  \"musicCategory\": \"Books\",
   \"recentTvPriority\": 0,
   \"olderTvPriority\": 0,
-  \"initialState\": 0,
-  \"useSsl\": false
+  \"initialState\": 0
 }','QBittorrentSettings','1');"
 
 sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into DownloadClients values ('2','1','NZBGet','Nzbget','{
   \"host\": \"127.0.0.1\",
   \"port\": 6789,
+  \"useSsl\": false,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
-  \"musicCategory\": \"Music\",
+  \"musicCategory\": \"Books\",
   \"recentTvPriority\": 0,
   \"olderTvPriority\": 0,
-  \"addPaused\": false,
-  \"useSsl\": false
+  \"addPaused\": false
 }','NzbgetSettings','1');"
 EOF
 sed -i "s/adminadmin/${password1}/g" add.sh
@@ -527,6 +527,9 @@ sed -i "s/Server1.Encryption=no/Server1.Encryption=yes/g" /usr/share/nginx/nzbge
 sed -i "s/Server1.Connections=4/Server1.Connections=50/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/UrlConnections=4/UrlConnections=50/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/Category4.Name=Software/Category4.Name=Animes/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed '/^Category4.Name=Animes/a Category5.Name=Books' /usr/share/nginx/nzbget/config/nzbget.conf
+sed '/^Category5.Name=Books/a Category6.Name=XXX' /usr/share/nginx/nzbget/config/nzbget.conf
+sed '/^Category6.Name=XXX/a Category7.Name=Others' /usr/share/nginx/nzbget/config/nzbget.conf
 
 ## sonarr
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/sonarr\/<\/UrlBase>/g" /usr/share/nginx/sonarr/config/config.xml
@@ -732,7 +735,7 @@ sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/readarr\/<\/UrlBase>/g" /usr/share/ngi
 # }','XbmcMetadataSettings');"
 # sqlite3 /usr/share/nginx/readarr/config/readarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
 # sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into NamingConfig values ('1','1','{Artist Name}','1','{Album Title} ({Release Year})/{Artist Name} - {Album Title} - {track:00} - {Track Title}','{Album Title} ({Release Year})/{Medium Format} {medium:00}/{Artist Name} - {Album Title} - {track:00} - {Track Title}');"
-# add_download_client_readarr
+add_download_client_readarr
 readarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/readarr/config/config.xml --text_only)
 
 ## prowlarr 8191
