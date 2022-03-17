@@ -304,7 +304,7 @@ bash add.sh
 rm add.sh
 }
 
-add_prowlarr_sonarr_radarr_lidarr(){
+add_prowlarr_sonarr_radarr_lidarr_readarr(){
     cat > "add1.sh" << "EOF"
 #!/usr/bin/env bash
   sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('1','Sonarr','Sonarr','{
@@ -783,7 +783,7 @@ sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/prowlarr\/<\/UrlBase>/g" /usr/share/ng
 sed -i '$d' /usr/share/nginx/prowlarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/prowlarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/prowlarr/config/config.xml
-add_prowlarr_sonarr_radarr_lidarr
+add_prowlarr_sonarr_radarr_lidarr_readarr
 sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Tags values ('1','flaresolverr');"
 sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into IndexerProxies values ('1','FlareSolverr','{
   \"host\": \"http://127.0.0.1:8191/\",
