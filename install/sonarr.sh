@@ -546,7 +546,7 @@ services:
       - PUID=0
       - PGID=0
       - TZ=Asia/Shanghai
-      - BASE_URL=/ombi #
+      - BASE_URL=/ombi
     volumes:
       - /usr/share/nginx/ombi/config:/config
     restart: unless-stopped
