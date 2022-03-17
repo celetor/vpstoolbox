@@ -724,15 +724,7 @@ sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/readarr\/<\/UrlBase>/g" /usr/share/ngi
 # echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/readarr/config/config.xml
 # echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/readarr/config/config.xml
 # echo '</Config>' >> /usr/share/nginx/readarr/config/config.xml
-# sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into RootFolders values ('1','/data/media/Music/','music','1','1','0','[]');"
-# sqlite3 /usr/share/nginx/readarr/config/readarr.db  "DELETE FROM Metadata WHERE Id = 1;"
-# sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
-#   \"artistMetadata\": true,
-#   \"albumMetadata\": true,
-#   \"artistImages\": true,
-#   \"albumImages\": true,
-#   \"isValid\": true
-# }','XbmcMetadataSettings');"
+sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into RootFolders values ('1','/data/media/Books/','Books','1','1','0','[]','0','','0');"
 sqlite3 /usr/share/nginx/readarr/config/readarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
 sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into NamingConfig values ('1','1','{Author Name}','1','{Book Title}/{Author Name} - {Book Title}{ (PartNumber)}');"
 add_download_client_readarr
