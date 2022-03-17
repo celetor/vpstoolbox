@@ -117,7 +117,7 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 <a href="https://$domain:${trojanport}/radarr/" target="_blank" rel="noreferrer">radarr</a>
 <a href="https://$domain:${trojanport}/lidarr/" target="_blank" rel="noreferrer">lidarr</a>
 <a href="https://$domain:${trojanport}/readarr/" target="_blank" rel="noreferrer">readarr</a>
-后端
+字幕
 <a href="https://$domain:${trojanport}/bazarr/" target="_blank" rel="noreferrer">bazarr</a>
 <a href="https://$domain:${trojanport}/chinesesubfinder/" target="_blank" rel="noreferrer">chinesesubfinder</a>
 索引器
