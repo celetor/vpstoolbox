@@ -68,6 +68,25 @@ qbtcookie=$(curl -s -i --header 'Referer: http://localhost:8080' --data 'usernam
 # curl http://localhost:8080/api/v2/app/preferences  --cookie "${qbtcookie}" | jq
 # curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22alternative_webui_enabled%22:false%7D  --cookie "${qbtcookie}"
 
+## 新增下载位置
+mkdir /data/
+mkdir /data/torrents/
+mkdir /data/media/
+mkdir /data/torrents/Animes/
+mkdir /data/media/Animes/
+mkdir /data/torrents/Series/
+mkdir /data/media/Series/
+mkdir /data/torrents/Movies/
+mkdir /data/media/Movies/
+mkdir /data/torrents/Music/
+mkdir /data/media/Music/
+mkdir /data/torrents/Books/
+mkdir /data/media/Books/
+mkdir /data/torrents/XXX/
+mkdir /data/media/XXX/
+mkdir /data/torrents/Others/
+mkdir /data/media/Others/
+
 ## 修改性能设置
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22auto_delete_mode%22:1%7D  --cookie "${qbtcookie}"
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22async_io_threads%22:${io_thread}%7D  --cookie "${qbtcookie}"
@@ -96,24 +115,6 @@ curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22peer_tos%22:0%7D
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22auto_tmm_enabled%22:true%7D  --cookie "${qbtcookie}"
 curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22save_path%22:%22%2fdata%2fmedia%2f%22%7D --cookie "${qbtcookie}"
 
-## 新增下载位置
-mkdir /data/
-mkdir /data/torrents/
-mkdir /data/media/
-mkdir /data/torrents/Animes/
-mkdir /data/media/Animes/
-mkdir /data/torrents/Series/
-mkdir /data/media/Series/
-mkdir /data/torrents/Movies/
-mkdir /data/media/Movies/
-mkdir /data/torrents/Music/
-mkdir /data/media/Music/
-mkdir /data/torrents/Books/
-mkdir /data/media/Books/
-mkdir /data/torrents/XXX/
-mkdir /data/media/XXX/
-mkdir /data/torrents/Others/
-mkdir /data/media/Others/
 ## 新增分类
 curl -X POST -F 'category=Animes' -F 'savePath=/data/torrents/Animes/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Series' -F 'savePath=/data/torrents/Series/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
