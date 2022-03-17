@@ -563,9 +563,9 @@ sed -i "s/Server1.Encryption=no/Server1.Encryption=yes/g" /usr/share/nginx/nzbge
 sed -i "s/Server1.Connections=4/Server1.Connections=50/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/UrlConnections=4/UrlConnections=50/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/Category4.Name=Software/Category4.Name=Animes/g" /usr/share/nginx/nzbget/config/nzbget.conf
-sed '/^Category4.Name=Animes/a Category5.Name=Books' /usr/share/nginx/nzbget/config/nzbget.conf
-sed '/^Category5.Name=Books/a Category6.Name=XXX' /usr/share/nginx/nzbget/config/nzbget.conf
-sed '/^Category6.Name=XXX/a Category7.Name=Others' /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i '/^Category4.Name=Animes/a Category5.Name=Books' /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i '/^Category5.Name=Books/a Category6.Name=XXX' /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i '/^Category6.Name=XXX/a Category7.Name=Others' /usr/share/nginx/nzbget/config/nzbget.conf
 
 ## sonarr
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/sonarr\/<\/UrlBase>/g" /usr/share/nginx/sonarr/config/config.xml
