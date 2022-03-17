@@ -494,6 +494,7 @@ services:
     ports:
       - '1200:1200'
     environment:
+      # PROXY_URI: 'http://127.0.0.1:8080'
       NODE_ENV: production
       CACHE_TYPE: redis
       REDIS_URL: 'redis://redis:6379/'
