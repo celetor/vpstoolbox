@@ -11,6 +11,10 @@ url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
+## Usenet Provider
+
+## https://www.newsgroup.ninja/en/landing/usenet-promotion?utm_source=reddit&utm_medium=organicsocial&utm_campaign=BlackFriday2020
+
 ## Standalone用法
 
 # password1="adminadmin"
