@@ -109,22 +109,22 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 
 ### 影音(包含qBittorrent加强版,RSSHUB)
 
-#### 前端
+前端
 - <a href="https://$domain:${trojanport}/emby/" target="_blank" rel="noreferrer">emby</a>
 - <a href="https://$domain:${trojanport}/ombi/" target="_blank" rel="noreferrer">ombi</a>
-#### 中间层
+中间层
 - <a href="https://$domain:${trojanport}/sonarr/" target="_blank" rel="noreferrer">sonarr</a>
 - <a href="https://$domain:${trojanport}/radarr/" target="_blank" rel="noreferrer">radarr</a>
 - <a href="https://$domain:${trojanport}/lidarr/" target="_blank" rel="noreferrer">lidarr</a>
 - <a href="https://$domain:${trojanport}/readarr/" target="_blank" rel="noreferrer">readarr</a>
-#### 后端
+后端
 - <a href="https://$domain:${trojanport}/bazarr/" target="_blank" rel="noreferrer">bazarr</a>
 - <a href="https://$domain:${trojanport}/chinesesubfinder/" target="_blank" rel="noreferrer">chinesesubfinder</a>
-#### indexers
+indexers
 - <a href="https://$domain:${trojanport}/prowlarr/" target="_blank" rel="noreferrer">prowlarr</a>
 - <a href="https://$domain:${trojanport}/jackett/" target="_blank" rel="noreferrer">jackett</a>
 - <a href="https://$domain:${trojanport}/rsshub/" target="_blank" rel="noreferrer">rsshub</a>
-#### 下载器
+下载器
 - <a href="https://$domain:${trojanport}/qbt/" target="_blank" rel="noreferrer">qbt</a>
 - <a href="https://$domain:${trojanport}/nzbget/" target="_blank" rel="noreferrer">nzbget</a>
 
