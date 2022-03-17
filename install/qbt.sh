@@ -63,10 +63,10 @@ sleep 5s;
 cpu_thread_count=$(nproc --all)
 io_thread=$((${cpu_thread_count}*4))
 
-qbtcookie=$(curl -s -i --header 'Referer: http://localhost:8080' --data 'username=admin&password=adminadmin' http://localhost:8080/api/v2/auth/login | grep set-cookie | cut -c13-48)
-# curl http://localhost:8080/api/v2/app/version  --cookie "${qbtcookie}"
-# curl http://localhost:8080/api/v2/app/preferences  --cookie "${qbtcookie}" | jq
-# curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22alternative_webui_enabled%22:false%7D  --cookie "${qbtcookie}"
+qbtcookie=$(curl -s -i --header 'Referer: http://127.0.0.1:8080' --data 'username=admin&password=adminadmin' http://127.0.0.1:8080/api/v2/auth/login | grep set-cookie | cut -c13-48)
+# curl http://127.0.0.1:8080/api/v2/app/version  --cookie "${qbtcookie}"
+# curl http://127.0.0.1:8080/api/v2/app/preferences  --cookie "${qbtcookie}" | jq
+# curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22alternative_webui_enabled%22:false%7D  --cookie "${qbtcookie}"
 
 ## 新增下载位置
 mkdir /data/
@@ -88,41 +88,41 @@ mkdir /data/torrents/Others/
 mkdir /data/media/Others/
 
 ## 修改性能设置
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22auto_delete_mode%22:1%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22async_io_threads%22:${io_thread}%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22preallocate_all%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22customize_trackers_list_url%22:%22https:%2f%2ftrackerslist.com%2fall.txt%22%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22auto_update_trackers_enabled%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22idn_support_enabled%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22enable_multi_connections_from_same_ip%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22add_trackers_enabled%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_tiers%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_trackers%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_trackers%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22limit_utp_rate%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22limit_tcp_overhead%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22limit_lan_peers%22:false%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22enable_os_cache%22:false%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22alternative_webui_enabled%22:false%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22web_ui_upnp%22:false%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22alternative_webui_path%22:%22%2fusr%2fshare%2fnginx%2fqBittorrent%2fweb%2f%22%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22max_connec%22:-1%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22max_connec_per_torrent%22:-1%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22web_ui_address%22:%22127.0.0.1%22%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22validate_https_tracker_certificate%22:false%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22peer_tos%22:0%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22auto_delete_mode%22:1%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22async_io_threads%22:${io_thread}%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22preallocate_all%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22customize_trackers_list_url%22:%22https:%2f%2ftrackerslist.com%2fall.txt%22%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22auto_update_trackers_enabled%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22idn_support_enabled%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22enable_multi_connections_from_same_ip%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22add_trackers_enabled%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_tiers%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_trackers%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_trackers%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22limit_utp_rate%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22limit_tcp_overhead%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22limit_lan_peers%22:false%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22enable_os_cache%22:false%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22alternative_webui_enabled%22:false%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22web_ui_upnp%22:false%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22alternative_webui_path%22:%22%2fusr%2fshare%2fnginx%2fqBittorrent%2fweb%2f%22%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22max_connec%22:-1%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22max_connec_per_torrent%22:-1%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22web_ui_address%22:%22127.0.0.1%22%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22validate_https_tracker_certificate%22:false%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22peer_tos%22:0%7D  --cookie "${qbtcookie}"
 ## 设置自动管理以及默认下载位置
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22auto_tmm_enabled%22:true%7D  --cookie "${qbtcookie}"
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22save_path%22:%22%2fdata%2fmedia%2f%22%7D --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22auto_tmm_enabled%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22save_path%22:%22%2fdata%2fmedia%2f%22%7D --cookie "${qbtcookie}"
 
 ## 新增分类
-curl -X POST -F 'category=Animes' -F 'savePath=/data/torrents/Animes/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=Series' -F 'savePath=/data/torrents/Series/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=Movies' -F 'savePath=/data/torrents/Movies/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=Music' -F 'savePath=/data/torrents/Music/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=Bookes' -F 'savePath=/data/torrents/Books/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=XXX' -F 'savePath=/data/torrents/XXX/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
-curl -X POST -F 'category=Others' -F 'savePath=/data/torrents/Others/' http://localhost:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Animes' -F 'savePath=/data/torrents/Animes/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Series' -F 'savePath=/data/torrents/Series/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Movies' -F 'savePath=/data/torrents/Movies/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Music' -F 'savePath=/data/torrents/Music/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Bookes' -F 'savePath=/data/torrents/Books/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=XXX' -F 'savePath=/data/torrents/XXX/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+curl -X POST -F 'category=Others' -F 'savePath=/data/torrents/Others/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 ## 修改密码，锁定配置
-curl http://localhost:8080/api/v2/app/setPreferences?json=%7B%22web_ui_password%22:%22${password1}%22%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22web_ui_password%22:%22${password1}%22%7D  --cookie "${qbtcookie}"
 }
