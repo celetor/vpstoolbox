@@ -120,7 +120,7 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 后端
 <a href="https://$domain:${trojanport}/bazarr/" target="_blank" rel="noreferrer">bazarr</a>
 <a href="https://$domain:${trojanport}/chinesesubfinder/" target="_blank" rel="noreferrer">chinesesubfinder</a>
-indexers
+索引器
 <a href="https://$domain:${trojanport}/prowlarr/" target="_blank" rel="noreferrer">prowlarr</a>
 <a href="https://$domain:${trojanport}/jackett/" target="_blank" rel="noreferrer">jackett</a>
 <a href="https://$domain:${trojanport}/rsshub/" target="_blank" rel="noreferrer">rsshub</a>
