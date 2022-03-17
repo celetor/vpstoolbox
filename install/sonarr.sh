@@ -491,7 +491,6 @@ services:
     restart: unless-stopped
   rsshub: # 1200
     image: diygod/rsshub
-    restart: unless-stopped
     ports:
       - '1200:1200'
     environment:
@@ -502,6 +501,7 @@ services:
     depends_on:
       - browserless
       - redis
+    restart: unless-stopped
   browserless: # 3000
     image: browserless/chrome
     restart: unless-stopped
@@ -563,12 +563,12 @@ services:
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
-    restart: unless-stopped
     environment: 
         - TZ=Asia/Shanghai
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: nzbget sonarr radarr lidarr readarr prowlarr jackett rsshub browserless redis flaresolverr bazarr chinesesubfinder ombi watchtower --cleanup --schedule "0 0 3 * * *"
+    restart: unless-stopped
 EOF
 
 docker-compose up -d
