@@ -756,7 +756,7 @@ sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/readarr\/<\/UrlBase>/g" /usr/share/ngi
 sed -i '$d' /usr/share/nginx/readarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/readarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/readarr/config/config.xml
-sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into RootFolders values ('1','/data/media/Books/','Books','1','1','0','[]','0','','0');"
+# sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into RootFolders values ('1','/data/media/Books/','Books','1','1','0','[]','0','','0');"
 sqlite3 /usr/share/nginx/readarr/config/readarr.db  "DELETE FROM NamingConfig WHERE Id = 1;"
 sqlite3 /usr/share/nginx/readarr/config/readarr.db  "insert into NamingConfig values ('1','1','{Author Name}','1','{Book Title}/{Author Name} - {Book Title}{ (PartNumber)}');"
 add_download_client_readarr
