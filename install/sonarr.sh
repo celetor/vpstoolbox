@@ -145,7 +145,7 @@ add_download_client_sonarr(){
   \"firstAndLast\": false
 }','QBittorrentSettings','1','1','1');"
   ## nzbget Animes
-  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('4','1','NZBGet_Animes','Nzbget','{
+  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('3','1','NZBGet_Animes','Nzbget','{
   \"host\": \"127.0.0.1\",
   \"port\": 6789,
   \"useSsl\": false,
@@ -157,7 +157,7 @@ add_download_client_sonarr(){
   \"addPaused\": false
 }','NzbgetSettings','1','1','1');"
   ## nzbget Series
-  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('3','1','NZBGet_Series','Nzbget','{
+  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('4','1','NZBGet_Series','Nzbget','{
   \"host\": \"127.0.0.1\",
   \"port\": 6789,
   \"useSsl\": false,
