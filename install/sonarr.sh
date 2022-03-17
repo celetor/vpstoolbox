@@ -559,7 +559,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: nzbget sonarr radarr lidarr readarr prowlarr jackett rsshub browserless redis flaresolverr bazarr chinesesubfinder ombi watchtower --cleanup --schedule "0 0 3 * * *"
-
 EOF
 
 docker-compose up -d
