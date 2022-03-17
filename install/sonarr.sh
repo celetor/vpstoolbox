@@ -481,7 +481,7 @@ services:
     restart: unless-stopped
     ports:
       - 127.0.0.1:3000:3000
-  redis:
+  redis: # 6379
     image: "redis:latest"
     ports:
       - "6379:6379"
