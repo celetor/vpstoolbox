@@ -32,15 +32,6 @@ server {
     #proxy_pass http://127.0.0.1:4000/; # Hexo server
     root /usr/share/nginx/hexo/public/; # Hexo public content
     #error_page 404  /404.html;
-    #http2_push /css/main.css;
-    #http2_push /lib/font-awesome/css/all.min.css;
-    #http2_push /lib/anime.min.js;
-    #http2_push /lib/velocity/velocity.min.js;
-    #http2_push /lib/velocity/velocity.ui.min.js;
-    #http2_push /js/utils.js;
-    #http2_push /js/motion.js;
-    #http2_push /js/schemes/muse.js;
-    #http2_push /js/next-boot.js;
   }
 EOF
 if [[ $install_nextcloud == 1 ]]; then
@@ -432,12 +423,14 @@ echo "        fastcgi_pass   unix:/run/php/php8.0-fpm.sock;" >> /etc/nginx/conf.
 echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
-if [[ $install_rss == 1 ]]; then
+if [[ $install_rss == 1 ]] || [[ $install_jellyfin == 1 ]]; then
 echo "    location /rsshub/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:1200/;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
+fi
+if [[ $install_rss == 1 ]]; then
 echo "    location /miniflux/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf

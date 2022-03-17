@@ -83,6 +83,10 @@ mkdir /usr/share/nginx/chinesesubfinder/config
 mkdir /usr/share/nginx/ombi
 mkdir /usr/share/nginx/ombi/config
 
+## Redis
+
+mkdir /data/redis
+
 add_sonarr_ombi(){
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
@@ -377,8 +381,8 @@ cd /data/
     cat > "docker-compose.yml" << EOF
 version: "3.8"
 services:
-  nzbget:
-    network_mode: host # nzbget 6789
+  nzbget: # 6789
+    network_mode: host 
     image: lscr.io/linuxserver/nzbget
     container_name: nzbget
     environment:
@@ -389,8 +393,8 @@ services:
       - /usr/share/nginx/nzbget/config:/config
       - /data/usenet:/data/usenet:rw
     restart: unless-stopped
-  sonarr:
-    network_mode: host # Series animes 8989
+  sonarr: # 8989
+    network_mode: host 
     image: lscr.io/linuxserver/sonarr
     container_name: sonarr
     environment:
@@ -401,8 +405,8 @@ services:
       - /usr/share/nginx/sonarr/config:/config
       - /data:/data
     restart: unless-stopped
-  radarr:
-    network_mode: host # movies 7878
+  radarr: # 7878
+    network_mode: host 
     image: lscr.io/linuxserver/radarr
     container_name: radarr
     environment:
@@ -413,8 +417,8 @@ services:
       - /usr/share/nginx/radarr/config:/config
       - /data:/data
     restart: unless-stopped
-  lidarr:
-    network_mode: host # music 8686
+  lidarr: # 8686
+    network_mode: host 
     image: lscr.io/linuxserver/lidarr
     container_name: lidarr
     environment:
@@ -425,8 +429,8 @@ services:
       - /usr/share/nginx/lidarr/config:/config
       - /data:/data
     restart: unless-stopped
-  readarr:
-    network_mode: host # 8787
+  readarr: # 8787
+    network_mode: host 
     image: lscr.io/linuxserver/readarr:develop
     container_name: readarr
     environment:
@@ -437,7 +441,7 @@ services:
       - /usr/share/nginx/readarr/config:/config
       - /data:/data
     restart: unless-stopped    
-  prowlarr:
+  prowlarr: # 9696
     network_mode: host
     image: lscr.io/linuxserver/prowlarr:develop
     container_name: prowlarr
@@ -448,7 +452,7 @@ services:
     volumes:
       - /usr/share/nginx/prowlarr/config:/config
     restart: unless-stopped
-  jackett:
+  jackett: #9117
     network_mode: host
     image: lscr.io/linuxserver/jackett
     container_name: jackett
@@ -456,13 +460,52 @@ services:
       - PUID=0
       - PGID=0
       - TZ=Asia/Shanghai
-      - AUTO_UPDATE=true
     volumes:
       - /usr/share/nginx/jackett/config:/config
     restart: unless-stopped
-  flaresolverr:
-    network_mode: host
-    image: ghcr.io/flaresolverr/flaresolverr:latest
+  rsshub: # 1200
+    image: diygod/rsshub
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:1200:1200
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: 'redis://redis:6379/'
+      PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'
+      depends_on:
+        - redis
+        - browserless
+  browserless: # 3000
+    image: browserless/chrome
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+    ports:
+      - 127.0.0.1:3000:3000
+    ulimits:
+      core:
+        hard: 0
+        soft: 0
+    restart: always
+  redis: # 6379
+    image: redis:alpine
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+    ports:
+      - 127.0.0.1:6379:6379
+    restart: always
+      volumes:
+        - /data/redis:/data
+  flaresolverr: # 8191
+    network_mode: host 
+    image: flaresolverr/flaresolverr
     container_name: flaresolverr
     environment:
       - LOG_LEVEL=\${LOG_LEVEL:-info}
@@ -470,7 +513,7 @@ services:
       - CAPTCHA_SOLVER=\${CAPTCHA_SOLVER:-none}
       - TZ=Asia/Shanghai
     restart: unless-stopped
-  bazarr:
+  bazarr: # 6767
     network_mode: host
     image: lscr.io/linuxserver/bazarr
     container_name: bazarr
@@ -482,7 +525,7 @@ services:
       - /usr/share/nginx/bazarr/config:/config
       - /data/media/:/data/media
     restart: unless-stopped
-  chinesesubfinder:
+  chinesesubfinder: # 19035
     network_mode: host
     image: allanpk716/chinesesubfinder:latest
     container_name: chinesesubfinder
@@ -495,7 +538,7 @@ services:
       - /usr/share/nginx/chinesesubfinder/config:/config
       - /data/media:/media
     restart: unless-stopped
-  ombi:
+  ombi: # 3579
     network_mode: host
     image: lscr.io/linuxserver/ombi
     container_name: ombi
@@ -507,6 +550,16 @@ services:
     volumes:
       - /usr/share/nginx/ombi/config:/config
     restart: unless-stopped
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    environment: 
+        - TZ=Asia/Shanghai
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: nzbget sonarr radarr lidarr readarr prowlarr jackett rsshub browserless redis flaresolverr bazarr chinesesubfinder ombi watchtower --cleanup --schedule "0 0 3 * * *"
+
 EOF
 
 docker-compose up -d
@@ -535,7 +588,6 @@ sed '/^Category6.Name=XXX/a Category7.Name=Others' /usr/share/nginx/nzbget/confi
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/sonarr\/<\/UrlBase>/g" /usr/share/nginx/sonarr/config/config.xml
 sed -i '$d' /usr/share/nginx/sonarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/sonarr/config/config.xml
-echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/sonarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/sonarr/config/config.xml
 sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into RootFolders values ('1','/data/media/Series/');"
 sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into RootFolders values ('2','/data/media/Animes/');"
@@ -678,7 +730,6 @@ sonarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/sonarr/config/config.xml --text_
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/radarr\/<\/UrlBase>/g" /usr/share/nginx/radarr/config/config.xml
 sed -i '$d' /usr/share/nginx/radarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/radarr/config/config.xml
-echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/radarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/radarr/config/config.xml
 sqlite3 /usr/share/nginx/radarr/config/radarr.db  "insert into RootFolders values ('1','/data/media/Movies/');"
 sqlite3 /usr/share/nginx/radarr/config/radarr.db  "insert into Config values ('6','movieinfolanguage','10');"
@@ -702,7 +753,6 @@ radarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/radarr/config/config.xml --text_
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/lidarr\/<\/UrlBase>/g" /usr/share/nginx/lidarr/config/config.xml
 sed -i '$d' /usr/share/nginx/lidarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/lidarr/config/config.xml
-echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/lidarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/lidarr/config/config.xml
 sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "insert into RootFolders values ('1','/data/media/Music/','music','1','1','0','[]');"
 sqlite3 /usr/share/nginx/lidarr/config/lidarr.db  "DELETE FROM Metadata WHERE Id = 1;"
@@ -733,7 +783,6 @@ readarr_api=$(xml_grep 'ApiKey' /usr/share/nginx/readarr/config/config.xml --tex
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/prowlarr\/<\/UrlBase>/g" /usr/share/nginx/prowlarr/config/config.xml
 sed -i '$d' /usr/share/nginx/prowlarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/prowlarr/config/config.xml
-echo '  <UpdateAutomatically>True</UpdateAutomatically>' >> /usr/share/nginx/prowlarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/prowlarr/config/config.xml
 add_prowlarr_sonarr_radarr_lidarr
 sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Tags values ('1','flaresolverr');"

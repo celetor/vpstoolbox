@@ -107,7 +107,7 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 
 ---
 
-### 影音(包含qBittorrent加强版)
+### 影音(包含qBittorrent加强版,RSSHUB)
 
 ## 前端
 - <a href="https://$domain:${trojanport}/emby/" target="_blank" rel="noreferrer">emby</a>
@@ -123,6 +123,7 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 ## indexers
 - <a href="https://$domain:${trojanport}/prowlarr/" target="_blank" rel="noreferrer">prowlarr</a>
 - <a href="https://$domain:${trojanport}/jackett/" target="_blank" rel="noreferrer">jackett</a>
+- <a href="https://$domain:${trojanport}/rsshub/" target="_blank" rel="noreferrer">rsshub</a>
 ## 下载器
 - <a href="https://$domain:${trojanport}/qbt/" target="_blank" rel="noreferrer">qbt</a>
 - <a href="https://$domain:${trojanport}/nzbget/" target="_blank" rel="noreferrer">nzbget</a>
