@@ -492,6 +492,7 @@ services:
     restart: unless-stopped
   rsshub: # 1200
     image: diygod/rsshub
+    container_name: rsshub
     ports:
       - '1200:1200'
     environment:
@@ -506,11 +507,13 @@ services:
     restart: unless-stopped
   browserless: # 3000
     image: browserless/chrome
+    container_name: browserless
     restart: unless-stopped
     ports:
       - 127.0.0.1:3000:3000
   redis: # 6379
     image: "redis:latest"
+    container_name: redis
     ports:
       - "6379:6379"
     volumes:
