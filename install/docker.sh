@@ -35,7 +35,7 @@ EOF
 
 dockerver=$(curl --retry 5 -s "https://api.github.com/repos/docker/compose/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
-sudo curl -L "https://github.com/docker/compose/releases/download/${dockerver}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl --retry 5 -L "https://github.com/docker/compose/releases/download/${dockerver}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
 systemctl restart docker
