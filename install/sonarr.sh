@@ -283,7 +283,7 @@ add_download_client_prowlarr(){
   \"useSsl\": false,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
-  \"category\": \"others\",
+  \"category\": \"Others\",
   \"priority\": 0,
   \"initialState\": 0
 }','QBittorrentSettings','1');"
@@ -294,7 +294,7 @@ sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into DownloadClien
   \"useSsl\": false,
   \"username\": \"admin\",
   \"password\": \"adminadmin\",
-  \"category\": \"Software\",
+  \"category\": \"Others\",
   \"priority\": 0,
   \"addPaused\": false
 }','NzbgetSettings','1');"
@@ -372,6 +372,28 @@ EOF
 sed -i "s/adminadmin/${lidarr_api}/g" add3.sh
 bash add3.sh
 rm add3.sh
+
+    cat > "add4.sh" << "EOF"
+#!/usr/bin/env bash
+  sqlite3 /usr/share/nginx/prowlarr/config/prowlarr.db  "insert into Applications values ('4','Readarr','Readarr','{
+  \"prowlarrUrl\": \"http://127.0.0.1:9696\",
+  \"baseUrl\": \"http://127.0.0.1:8787/readarr\",
+  \"apiKey\": \"adminadmin\",
+  \"syncCategories\": [
+    3030,
+    7000,
+    7010,
+    7020,
+    7030,
+    7040,
+    7050,
+    7060
+  ]
+}','LidarrSettings','2','[]');"
+EOF
+sed -i "s/adminadmin/${readarr_api}/g" add4.sh
+bash add4.sh
+rm add4.sh
 }
 
 install_sonarr(){
