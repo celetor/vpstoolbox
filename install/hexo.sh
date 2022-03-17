@@ -117,18 +117,18 @@ trojan://${uuid_new}@${domain}:${trojanport}?encryption=none&security=tls&type=g
 
 ### 影音(包含qBittorrent加强版)
 
-- <a href="https://$domain/qbt/" target="_blank" rel="noreferrer">https://$domain/qbt/</a>
-- <a href="https://$domain:443/emby/" target="_blank" rel="noreferrer">https://$domain/emby/</a>
-- <a href="https://$domain:443/sonarr/" target="_blank" rel="noreferrer">https://$domain/sonarr/</a>
-- <a href="https://$domain:443/radarr/" target="_blank" rel="noreferrer">https://$domain/radarr/</a>
-- <a href="https://$domain:443/lidarr/" target="_blank" rel="noreferrer">https://$domain/lidarr/</a>
-- <a href="https://$domain:443/readarr/" target="_blank" rel="noreferrer">https://$domain/readarr/</a>
-- <a href="https://$domain:443/bazarr/" target="_blank" rel="noreferrer">https://$domain/bazarr/</a>
-- <a href="https://$domain:443/chinesesubfinder/" target="_blank" rel="noreferrer">https://$domain/chinesesubfinder/</a>
-- <a href="https://$domain:443/ombi/" target="_blank" rel="noreferrer">https://$domain/ombi/</a>
-- <a href="https://$domain:443/prowlarr/" target="_blank" rel="noreferrer">https://$domain/prowlarr/</a>
-- <a href="https://$domain:443/jackett/" target="_blank" rel="noreferrer">https://$domain/jackett/</a>
-- <a href="https://$domain:443/nzbget/" target="_blank" rel="noreferrer">https://$domain/nzbget/</a>
+- <a href="https://$domain/qbt/" target="_blank" rel="noreferrer">qbt</a>
+- <a href="https://$domain:443/emby/" target="_blank" rel="noreferrer">emby</a>
+- <a href="https://$domain:443/sonarr/" target="_blank" rel="noreferrer">sonarr</a>
+- <a href="https://$domain:443/radarr/" target="_blank" rel="noreferrer">radarr</a>
+- <a href="https://$domain:443/lidarr/" target="_blank" rel="noreferrer">lidarr</a>
+- <a href="https://$domain:443/readarr/" target="_blank" rel="noreferrer">readarr</a>
+- <a href="https://$domain:443/bazarr/" target="_blank" rel="noreferrer">bazarr</a>
+- <a href="https://$domain:443/chinesesubfinder/" target="_blank" rel="noreferrer">chinesesubfinder</a>
+- <a href="https://$domain:443/ombi/" target="_blank" rel="noreferrer">ombi</a>
+- <a href="https://$domain:443/prowlarr/" target="_blank" rel="noreferrer">prowlarr</a>
+- <a href="https://$domain:443/jackett/" target="_blank" rel="noreferrer">jackett</a>
+- <a href="https://$domain:443/nzbget/" target="_blank" rel="noreferrer">nzbget</a>
 
 ---
 
