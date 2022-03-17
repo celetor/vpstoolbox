@@ -2,6 +2,12 @@
 
 ## Nginx config模组 Nginx moudle
 
+## Standalone用法
+
+# install_jellyfin=1
+
+# nginx_config
+
 nginx_config(){
   set +e
   clear
@@ -12,7 +18,6 @@ rm -rf /etc/nginx/sites-enabled/*
 rm -rf /etc/nginx/conf.d/*
 touch /etc/nginx/conf.d/default.conf
   cat > '/etc/nginx/conf.d/default.conf' << EOF
-#!!! Do not change these settings unless you know what you are doing !!!
 server {
   listen 127.0.0.1:81 fastopen=20 reuseport default_server so_keepalive=on;
   listen 127.0.0.1:82 http2 fastopen=20 reuseport default_server so_keepalive=on;
