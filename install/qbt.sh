@@ -72,8 +72,6 @@ qbtcookie=$(curl -i --header 'Referer: http://127.0.0.1:8080' --data 'username=a
 mkdir /data/
 mkdir /data/torrents/
 mkdir /data/media/
-mkdir /data/torrents/Animes/
-mkdir /data/media/Animes/
 mkdir /data/torrents/Series/
 mkdir /data/media/Series/
 mkdir /data/torrents/Movies/
@@ -116,7 +114,6 @@ curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22auto_tmm_enabled
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22save_path%22:%22%2fdata%2fmedia%2f%22%7D --cookie "${qbtcookie}"
 
 ## 新增分类
-curl -X POST -F 'category=Animes' -F 'savePath=/data/torrents/Animes/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Series' -F 'savePath=/data/torrents/Series/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Movies' -F 'savePath=/data/torrents/Movies/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Music' -F 'savePath=/data/torrents/Music/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"

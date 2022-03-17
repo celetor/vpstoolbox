@@ -33,7 +33,6 @@ mkdir /data/torrents/
 mkdir /data/usenet/
 mkdir /data/media/
 ## BT/PT qBittorrent
-mkdir /data/torrents/Animes/
 mkdir /data/torrents/Movies/
 mkdir /data/torrents/Series/
 mkdir /data/torrents/Music/
@@ -41,7 +40,6 @@ mkdir /data/torrents/Books/
 mkdir /data/torrents/XXX/
 mkdir /data/torrents/Others/
 ## Usenet NZBGet
-mkdir /data/usenet/Animes/
 mkdir /data/usenet/Movies/
 mkdir /data/usenet/Series/
 mkdir /data/usenet/Music/
@@ -49,7 +47,6 @@ mkdir /data/usenet/Books/
 mkdir /data/usenet/XXX/
 mkdir /data/usenet/Others/
 ## Sonarr Radarr Lidarr Readarr
-mkdir /data/media/Animes/
 mkdir /data/media/Movies/
 mkdir /data/media/Series/
 mkdir /data/media/Music/
@@ -125,22 +122,8 @@ rm add.sh
 add_download_client_sonarr(){
     cat > "add.sh" << "EOF"
 #!/usr/bin/env bash
-  ## Qbt Animes
-  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('1','1','qBittorrent_Animes','QBittorrent','{
-  \"host\": \"127.0.0.1\",
-  \"port\": 8080,
-  \"useSsl\": false,
-  \"username\": \"admin\",
-  \"password\": \"adminadmin\",
-  \"tvCategory\": \"Animes\",
-  \"recentTvPriority\": 0,
-  \"olderTvPriority\": 0,
-  \"initialState\": 0,
-  \"sequentialOrder\": false,
-  \"firstAndLast\": false
-}','QBittorrentSettings','1','1','1');"
   ## Qbt Series
-  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('2','1','qBittorrent_Series','QBittorrent','{
+  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('1','1','qBittorrent_Series','QBittorrent','{
   \"host\": \"127.0.0.1\",
   \"port\": 8080,
   \"useSsl\": false,
@@ -153,20 +136,8 @@ add_download_client_sonarr(){
   \"sequentialOrder\": false,
   \"firstAndLast\": false
 }','QBittorrentSettings','1','1','1');"
-  ## nzbget Animes
-  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('3','1','NZBGet_Animes','Nzbget','{
-  \"host\": \"127.0.0.1\",
-  \"port\": 6789,
-  \"useSsl\": false,
-  \"username\": \"admin\",
-  \"password\": \"adminadmin\",
-  \"tvCategory\": \"Animes\",
-  \"recentTvPriority\": 0,
-  \"olderTvPriority\": 0,
-  \"addPaused\": false
-}','NzbgetSettings','1','1','1');"
   ## nzbget Series
-  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('4','1','NZBGet_Series','Nzbget','{
+  sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into DownloadClients values ('2','1','NZBGet_Series','Nzbget','{
   \"host\": \"127.0.0.1\",
   \"port\": 6789,
   \"useSsl\": false,
@@ -593,10 +564,9 @@ sed -i "s/Server1.Cipher=/Server1.Cipher=AES128-SHA/g" /usr/share/nginx/nzbget/c
 sed -i "s/Server1.Encryption=no/Server1.Encryption=yes/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/Server1.Connections=4/Server1.Connections=50/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/UrlConnections=4/UrlConnections=50/g" /usr/share/nginx/nzbget/config/nzbget.conf
-sed -i "s/Category4.Name=Software/Category4.Name=Animes/g" /usr/share/nginx/nzbget/config/nzbget.conf
-sed -i '/^Category4.Name=Animes/a Category5.Name=Books' /usr/share/nginx/nzbget/config/nzbget.conf
-sed -i '/^Category5.Name=Books/a Category6.Name=XXX' /usr/share/nginx/nzbget/config/nzbget.conf
-sed -i '/^Category6.Name=XXX/a Category7.Name=Others' /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/Category4.Name=Software/Category4.Name=Books/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i '/^Category4.Name=Books/a Category5.Name=XXX' /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i '/^Category5.Name=XXX/a Category6.Name=Others' /usr/share/nginx/nzbget/config/nzbget.conf
 
 ## sonarr
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/sonarr\/<\/UrlBase>/g" /usr/share/nginx/sonarr/config/config.xml
@@ -604,7 +574,6 @@ sed -i '$d' /usr/share/nginx/sonarr/config/config.xml
 echo '  <AnalyticsEnabled>False</AnalyticsEnabled>' >> /usr/share/nginx/sonarr/config/config.xml
 echo '</Config>' >> /usr/share/nginx/sonarr/config/config.xml
 sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into RootFolders values ('1','/data/media/Series/');"
-sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into RootFolders values ('2','/data/media/Animes/');"
 sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "DELETE FROM Metadata WHERE Id = 1;"
 sqlite3 /usr/share/nginx/sonarr/config/sonarr.db  "insert into Metadata values ('1','1','Kodi (XBMC) / Emby','XbmcMetadata','{
   \"seriesMetadata\": true,
