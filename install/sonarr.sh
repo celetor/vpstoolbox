@@ -467,42 +467,26 @@ services:
     image: diygod/rsshub
     restart: unless-stopped
     ports:
-      - 127.0.0.1:1200:1200
+      - '1200:1200'
     environment:
-      - PUID=0
-      - PGID=0
-      - TZ=Asia/Shanghai
       NODE_ENV: production
       CACHE_TYPE: redis
       REDIS_URL: 'redis://redis:6379/'
       PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'
-      depends_on:
-        - redis
-        - browserless
+    depends_on:
+      - browserless
+      - redis
   browserless: # 3000
     image: browserless/chrome
-    environment:
-      - PUID=0
-      - PGID=0
-      - TZ=Asia/Shanghai
+    restart: unless-stopped
     ports:
       - 127.0.0.1:3000:3000
-    ulimits:
-      core:
-        hard: 0
-        soft: 0
-    restart: always
-  redis: # 6379
-    image: redis:alpine
-    environment:
-      - PUID=0
-      - PGID=0
-      - TZ=Asia/Shanghai
+  redis:
+    image: "redis:latest"
     ports:
-      - 127.0.0.1:6379:6379
-    restart: always
-      volumes:
-        - /data/redis:/data
+      - "6379:6379"
+    volumes:
+      - "/data/redis:/data"
   flaresolverr: # 8191
     network_mode: host 
     image: flaresolverr/flaresolverr
