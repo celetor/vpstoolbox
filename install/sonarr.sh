@@ -59,6 +59,7 @@ mkdir /data/media/Others/
 
 apt-get install xml-twig-tools -y
 apt-get install sqlite3 -y
+apt-get install jq -y
 
 ## PRAGMA table_info(NamingConfig);
 
