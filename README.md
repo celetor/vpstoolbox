@@ -33,6 +33,8 @@ apt-get update --fix-missing && apt-get install sudo curl -y && curl -Ss https:/
 1. 本项目不对使用 Vultr 提供的机器造成的任何可能问题负责(this project is not responsible for any possible problems caused by Vultr machines) !
 2. 本项目部分非必须应用需要较高的系统资源和服务器配置(Rocket.chat以及邮箱等)，请量力而行 ！
 
+## [懒人党的福音--顶级全自动化影音系统全方位深入剖析](https://johnrosen1.com/2022/03/18/media/)
+
 ## 支援的软件及应用 Supported applications
 
 所有应用均支援全自动化安装与配置，**开箱即用** ！
