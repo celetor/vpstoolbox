@@ -522,7 +522,7 @@ services:
     volumes:
       - /usr/share/nginx/chinesesubfinder/app/cache:/app/cache
       - /usr/share/nginx/chinesesubfinder/config:/config
-      - /data/media:/media
+      - /data:/data
     restart: unless-stopped
   ombi: # 3579
     network_mode: host
