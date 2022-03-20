@@ -567,6 +567,9 @@ sed -i "s/UrlConnections=4/UrlConnections=50/g" /usr/share/nginx/nzbget/config/n
 sed -i "s/Category4.Name=Software/Category4.Name=Books/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i '/^Category4.Name=Books/a Category5.Name=XXX' /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i '/^Category5.Name=XXX/a Category6.Name=Others' /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/PostStrategy=sequential/PostStrategy=rocket/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/PostStrategy=balanced/PostStrategy=rocket/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/PostStrategy=aggressive/PostStrategy=rocket/g" /usr/share/nginx/nzbget/config/nzbget.conf
 
 ## sonarr
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/sonarr\/<\/UrlBase>/g" /usr/share/nginx/sonarr/config/config.xml
