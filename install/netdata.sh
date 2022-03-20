@@ -41,13 +41,6 @@ local:
   url     : 'http://127.0.0.1:83/status?full&json'
 EOF
 fi
-if [[ ${install_redis} == 1 ]]; then
-cat > '/opt/netdata/etc/netdata/python.d/redis.conf' << EOF
-socket:
-  name     : 'local'
-  socket   : '/var/run/redis/redis.sock'
-EOF
-fi
 cat > '/opt/netdata/etc/netdata/python.d/mysql.conf' << EOF
 update_every : 10
 priority     : 90100
