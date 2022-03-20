@@ -570,6 +570,7 @@ sed -i '/^Category5.Name=XXX/a Category6.Name=Others' /usr/share/nginx/nzbget/co
 sed -i "s/PostStrategy=sequential/PostStrategy=rocket/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/PostStrategy=balanced/PostStrategy=rocket/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/PostStrategy=aggressive/PostStrategy=rocket/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/WriteBuffer=0/WriteBuffer=1024/g" /usr/share/nginx/nzbget/config/nzbget.conf
 
 ## sonarr
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/sonarr\/<\/UrlBase>/g" /usr/share/nginx/sonarr/config/config.xml
