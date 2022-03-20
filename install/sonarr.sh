@@ -563,7 +563,7 @@ sed -i "s/Server1.Port=119/Server1.Port=563/g" /usr/share/nginx/nzbget/config/nz
 sed -i "s/Server1.Cipher=/Server1.Cipher=AES128-SHA/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/Server1.Encryption=no/Server1.Encryption=yes/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/Server1.Connections=4/Server1.Connections=50/g" /usr/share/nginx/nzbget/config/nzbget.conf
-sed -i "s/UrlConnections=4/UrlConnections=5/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/UrlConnections=4/UrlConnections=3/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/Category4.Name=Software/Category4.Name=Books/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i '/^Category4.Name=Books/a Category5.Name=XXX' /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i '/^Category5.Name=XXX/a Category6.Name=Others' /usr/share/nginx/nzbget/config/nzbget.conf
