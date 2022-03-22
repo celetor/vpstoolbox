@@ -381,7 +381,8 @@ version: "3.8"
 services:
   nzbget: # 6789
     network_mode: host 
-    image: lscr.io/linuxserver/nzbget
+    #image: lscr.io/linuxserver/nzbget
+    image: johnrosen/nzbget:latest
     container_name: nzbget
     environment:
       - PUID=0
