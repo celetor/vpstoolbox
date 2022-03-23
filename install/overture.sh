@@ -49,16 +49,6 @@ bindAddress: :53
 debugHTTPAddress: 127.0.0.1:5555
 dohEnabled: false
 primaryDNS:
-  - name: Cloudflare
-    address: https://1.1.1.1/dns-query
-    protocol: https
-    socks5Address: 127.0.0.1:1080
-    timeout: 60
-    ednsClientSubnet:
-      policy: disabled
-      externalIP:
-      noCookie: true
-alternativeDNS:
   - name: Dnspod
     address: https://doh.pub/dns-query
     protocol: https
@@ -68,16 +58,26 @@ alternativeDNS:
       policy: disabled
       externalIP:
       noCookie: true
+alternativeDNS:
+  - name: Cloudflare
+    address: https://1.1.1.1/dns-query
+    protocol: https
+    socks5Address: 127.0.0.1:1080
+    timeout: 60
+    ednsClientSubnet:
+      policy: disabled
+      externalIP:
+      noCookie: true
 onlyPrimaryDNS: false
 ipv6UseAlternativeDNS: false
 alternativeDNSConcurrent: false
 whenPrimaryDNSAnswerNoneUse: alternativeDNS
 ipNetworkFile:
-  primary: /etc/overture/ip_network_alternative_sample
-  alternative: /etc/overture/china_ip_list.txt
+  primary: /etc/overture/china_ip_list.txt
+  alternative: /etc/overture/ip_network_alternative_sample
 domainFile:
-  primary: /etc/overture/gfw_all_domain.txt
-  alternative: /etc/overture/chnlist.txt
+  primary: /etc/overture/chnlist.txt
+  alternative: /etc/overture/gfw_all_domain.txt
   matcher: /etc/overture/suffix-tree
 hostsFile:
   hostsFile: /etc/overture/hosts_sample
