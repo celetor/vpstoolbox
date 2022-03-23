@@ -52,7 +52,7 @@ primaryDNS:
   - name: Cloudflare
     address: https://1.1.1.1/dns-query
     protocol: https
-    socks5Address: 127.0.0.1:3080
+    socks5Address: 127.0.0.1:1080
     timeout: 60
     ednsClientSubnet:
       policy: disabled
