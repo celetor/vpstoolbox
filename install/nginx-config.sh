@@ -122,20 +122,22 @@ touch /etc/nginx/conf.d/grpc.conf
 cat << EOF > /etc/nginx/conf.d/grpc.conf
 	location /${path_new} {
 		client_max_body_size 0;
-    grpc_socket_keepalive on;
+    client_body_buffer_size 512k;
+		client_body_timeout 1071906480m;
     #keepalive_timeout 1071906480m;
     keepalive_requests 10000;
-		client_body_timeout 1071906480m;
+    grpc_socket_keepalive on;
 		grpc_read_timeout 1071906480m;
     grpc_send_timeout 1071906480m;
 		grpc_pass grpc://127.0.0.1:2002;
 	}
   location /${path_new}_trojan {
 		client_max_body_size 0;
-    grpc_socket_keepalive on;
+    client_body_buffer_size 512k;
+		client_body_timeout 1071906480m;
     #keepalive_timeout 1071906480m;
     keepalive_requests 10000;
-		client_body_timeout 1071906480m;
+    grpc_socket_keepalive on;
 		grpc_read_timeout 1071906480m;
     grpc_send_timeout 1071906480m;
 		grpc_pass grpc://127.0.0.1:2022;
