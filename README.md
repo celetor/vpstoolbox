@@ -67,12 +67,7 @@ apt-get update --fix-missing && apt-get install sudo curl -y && curl -Ss https:/
   - [ ] [Miniflux 无最低配置要求](https://miniflux.app/index.html)
         ~~- [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)~~
 - 影音
-  - [ ] [Emby](https://emby.media/)
-  - [ ] [Sonarr](https://github.com/Sonarr/Sonarr)
-  - [ ] [Radarr](https://github.com/Radarr/Radarr)
-  - [ ] [Lidarr](https://github.com/lidarr/Lidarr)
-  - [ ] [Bazarr](https://github.com/morpheus65535/bazarr)
-  - [ ] [Jackett](https://github.com/Jackett/Jackett)
+  - [ ] [懒人党的福音--顶级全自动化影音系统全方位深入剖析](https://johnrosen1.com/2022/03/18/media/)
 - 邮箱
   - [ ] [Mail Service 高内存需求](https://johnrosen1.com/2020/08/27/mail1/)
 - 通讯
