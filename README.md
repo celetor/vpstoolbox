@@ -69,7 +69,7 @@ apt-get update --fix-missing && apt-get install sudo curl -y && curl -Ss https:/
 - 影音
   - [ ] [懒人党的福音--顶级全自动化影音系统全方位深入剖析](https://johnrosen1.com/2022/03/18/media/)
 - 邮箱
-  - [ ] [Mail Service 高内存需求](https://johnrosen1.com/2020/08/27/mail1/)
+  - [ ] [自建邮件伺服器指南基础篇](https://johnrosen1.com/2020/08/27/mail1/)
 - 通讯
   - [ ] [RocketChat 高内存需求](https://github.com/RocketChat/Rocket.Chat)
 - 测速
