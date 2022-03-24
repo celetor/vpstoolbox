@@ -64,8 +64,7 @@ apt-get update --fix-missing && apt-get install sudo curl -y && curl -Ss https:/
   - [ ] [Onedrive 高网络需求](https://johnrosen1.com/2021/02/14/onedrive/)
 - RSS
   - [ ] [RSSHub 无最低配置要求](https://github.com/DIYgod/RSSHub)
-  - [ ] [Miniflux 无最低配置要求](https://miniflux.app/index.html)
-        ~~- [ ] [Tiny Tiny RSS](https://git.tt-rss.org/fox/tt-rss)~~
+  - [ ] [RSSHUB + Miniflux + Fever API实现多设备同步](https://johnrosen1.com/2022/01/26/rss/)
 - 影音
   - [ ] [懒人党的福音--顶级全自动化影音系统全方位深入剖析](https://johnrosen1.com/2022/03/18/media/)
 - 邮箱
