@@ -575,6 +575,7 @@ sed -i "s/DirectUnpack=no/DirectUnpack=yes/g" /usr/share/nginx/nzbget/config/nzb
 sed -i "s/DirectRename=no/DirectRename=yes/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/ArticleCache=0/ArticleCache=200/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/WriteBuffer=0/WriteBuffer=1024/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/WriteBuffer=3/UrlRetries=99/g" /usr/share/nginx/nzbget/config/nzbget.conf
 
 ## sonarr
 sed -i "s/<UrlBase><\/UrlBase>/<UrlBase>\/sonarr\/<\/UrlBase>/g" /usr/share/nginx/sonarr/config/config.xml
