@@ -7,7 +7,7 @@ install_i2pd(){
   if [[ ${dist} == debian ]]; then
 wget -q -O - https://repo.i2pd.xyz/.help/add_repo | sudo bash -s -
 apt-get update
-apt-get install libminiupnpc17 -y
+apt-get install minissdpd -y
 #curl -LO https://github.com/PurpleI2P/i2pd/releases/download/2.39.0/i2pd_2.39.0-1bullseye1_amd64.deb
 #dpkg -i i2pd_2.39.0-1bullseye1_amd64.deb
 apt-get install i2pd -y
@@ -75,12 +75,6 @@ ipv4 = true
 ## Enable communication through ipv6
 ipv6 = true
 
-## Network interface to bind to
-# ifname =
-## You can specify different interfaces for IPv4 and IPv6
-# ifname4 = 
-# ifname6 = 
-
 ## Enable NTCP transport (default = true)
 # ntcp = true
 ## If you run i2pd behind a proxy server, you can only use NTCP transport with ntcpproxy option 
@@ -88,28 +82,17 @@ ipv6 = true
 # ntcpproxy = http://127.0.0.1:8118
 ## Enable SSU transport (default = true)
 ssu = true
-
-## Bandwidth configuration
-## L limit bandwidth to 32KBs/sec, O - to 256KBs/sec, P - to 2048KBs/sec,
-## X - unlimited
-## Default is X for floodfill, L for regular node
 bandwidth = X
-## Max % of bandwidth limit for transit. 0-100. 100 by default
-# share = 100
-
-## Router will not accept transit tunnels, disabling transit traffic completely
-## (default = false)
-# notransit = true
-
-## Router will be floodfill
-# floodfill = true
+share = 100
+notransit = false
+floodfill = false
 
 [http]
 ## Web Console settings
 ## Uncomment and set to 'false' to disable Web Console
 # enabled = true
 ## Address and port service will listen on
-address = 127.0.0.1
+address = 0.0.0.0
 port = 7070
 strictheaders = false
 ## Path to web console, default "/"
@@ -125,12 +108,10 @@ webroot = /${password1}_i2p/
 ## Address and port service will listen on
 address = 127.0.0.1
 port = 4444
-## Optional keys file for proxy local destination
-# keys = http-proxy-keys.dat
 ## Enable address helper for adding .i2p domains with "jump URLs" (default: true)
 # addresshelper = true
 ## Address of a proxy server inside I2P, which is used to visit regular Internet
-outproxy = http://false.i2p
+# outproxy = http://false.i2p
 ## httpproxy section also accepts I2CP parameters, like "inbound.length" etc.
 #inbound.length = 2
 #inbound.quantity = 16
@@ -284,30 +265,6 @@ outbound.length = 1
 #outbound.quantity = 16
 keys = my-website.dat
 EOF
-    cat > '/etc/i2pd/tunnels.conf.d/ssh.conf' << EOF
-[SSH-SERVER]
-type = server
-host = 127.0.0.1
-port = 22
-inbound.length = 1
-outbound.length = 1
-#inbound.quantity = 16
-#outbound.quantity = 16
-keys = ssh-in.dat
-EOF
-    cat > '/etc/i2pd/tunnels.conf.d/proxy.conf' << EOF
-[PROXY-SERVER]
-type = server
-host = 127.0.0.1
-port = 8388
-inbound.length = 1
-outbound.length = 1
-#inbound.quantity = 16
-#outbound.quantity = 16
-keys = ssh-in.dat
-EOF
-cd /etc/i2pd/tunnels.conf.d
-curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/conf/tg-mtproxy.conf
 cd
     cat > '/lib/systemd/system/i2pd.service' << EOF
 [Unit]
