@@ -572,6 +572,7 @@ sed -i "s/PostStrategy=sequential/PostStrategy=rocket/g" /usr/share/nginx/nzbget
 sed -i "s/PostStrategy=balanced/PostStrategy=rocket/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/PostStrategy=aggressive/PostStrategy=rocket/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/DirectUnpack=no/DirectUnpack=yes/g" /usr/share/nginx/nzbget/config/nzbget.conf
+sed -i "s/DirectRename=no/DirectRename=yes/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/ArticleCache=0/ArticleCache=200/g" /usr/share/nginx/nzbget/config/nzbget.conf
 sed -i "s/WriteBuffer=0/WriteBuffer=1024/g" /usr/share/nginx/nzbget/config/nzbget.conf
 
