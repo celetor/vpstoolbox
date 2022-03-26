@@ -68,6 +68,8 @@ services:
       test: ["CMD", "pg_isready", "-U", "miniflux"]
       interval: 10s
       start_period: 30s
+volumes:
+  miniflux-db:
 EOF
 sed -i "s/adminadmin/${password1}/g" docker-compose.yml
 docker-compose up -d
