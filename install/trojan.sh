@@ -234,44 +234,6 @@ EOF
   }
 }
 EOF
-if [[ -n $myipv6 ]]; then
-  touch /usr/share/nginx/html/clientv6-$password1.json
-  cat > "/usr/share/nginx/html/clientv6-$password1.json" << EOF
-{
-  "run_type": "client",
-  "local_addr": "127.0.0.1",
-  "local_port": 1080,
-  "remote_addr": "$myipv6",
-  "remote_port": ${trojanport},
-  "password": [
-    "$password1"
-  ],
-  "log_level": 1,
-  "ssl": {
-    "verify": true,
-    "verify_hostname": true,
-    "cert": "",
-    "cipher": "$cipher_client",
-    "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
-    "sni": "$domain",
-    "alpn": [
-      "h2",
-      "http/1.1"
-    ],
-    "reuse_session": true,
-    "session_ticket": false,
-    "curves": ""
-  },
-  "tcp": {
-    "no_delay": true,
-    "keep_alive": true,
-    "reuse_port": false,
-    "fast_open": false,
-    "fast_open_qlen": 20
-  }
-}
-EOF
-fi
 
 curl -LO --progress-bar https://github.com/trojan-gfw/trojan-url/raw/master/trojan-url.py
 chmod +x trojan-url.py
