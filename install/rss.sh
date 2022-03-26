@@ -55,7 +55,7 @@ services:
       - RUN_MIGRATIONS=1
       - CREATE_ADMIN=1
       - ADMIN_USERNAME=admin
-      - ADMIN_PASSWORD=test123
+      - ADMIN_PASSWORD=adminadmin
   db:
     image: postgres:latest
     restart: unless-stopped
@@ -71,7 +71,7 @@ services:
 volumes:
   miniflux-db:
 EOF
-sed -i "s/test123/${password1}/g" docker-compose.yml
+sed -i "s/adminadmin/${password1}/g" docker-compose.yml
 docker-compose up -d
 cd
 }
