@@ -50,7 +50,7 @@ services:
     depends_on:
       - postgresql
     environment:
-      - DATABASE_URL=postgres://miniflux:adminadmin@db/miniflux?sslmode=disable
+      - DATABASE_URL=postgres://miniflux:adminadmin@postgresql/miniflux?sslmode=disable
       - BASE_URL=https://${domain}/miniflux/
       - RUN_MIGRATIONS=1
       - CREATE_ADMIN=1
@@ -63,13 +63,11 @@ services:
       - POSTGRES_USER=miniflux
       - POSTGRES_PASSWORD=adminadmin
     volumes:
-      - miniflux-db:/var/lib/postgresql/data
+      - "/var/lib/postgresql/data"
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "miniflux"]
       interval: 10s
       start_period: 30s
-volumes:
-  miniflux-db:
 EOF
 sed -i "s/adminadmin/${password1}/g" docker-compose.yml
 docker-compose up -d
