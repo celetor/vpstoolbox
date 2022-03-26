@@ -42,7 +42,7 @@ services:
       - "6379:6379"
     volumes:
       - "/data/redis:/data"
-  miniflux:
+  miniflux: # 8280
     image: miniflux/miniflux:latest
     restart: unless-stopped
     ports:
