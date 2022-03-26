@@ -20,7 +20,7 @@ touch /etc/nginx/conf.d/default.conf
   cat > '/etc/nginx/conf.d/default.conf' << EOF
 server {
   listen 127.0.0.1:81 fastopen=20 reuseport default_server so_keepalive=on;
-  listen 127.0.0.1:82 http2 fastopen=20 reuseport default_server so_keepalive=on;
+  listen 127.0.0.1:80 http2 fastopen=20 reuseport default_server so_keepalive=on;
   server_name $domain _;
   #resolver 127.0.0.1;
   resolver_timeout 10s;
