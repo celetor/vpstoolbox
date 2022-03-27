@@ -63,11 +63,13 @@ services:
       - POSTGRES_USER=miniflux
       - POSTGRES_PASSWORD=adminadmin
     volumes:
-      - "/var/lib/postgresql/data"
+      - miniflux-db:var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "miniflux"]
       interval: 10s
       start_period: 30s
+volumes:
+  miniflux-db:
 EOF
 sed -i "s/adminadmin/${password1}/g" docker-compose.yml
 docker-compose up -d
