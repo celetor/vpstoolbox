@@ -60,23 +60,19 @@ collation_server       = utf8mb4_unicode_ci
 !includedir /etc/mysql/mariadb.conf.d/
 bind-address=127.0.0.1
 
-#innodb_large_prefix=true
-#innodb_file_format=barracuda
-#innodb_file_per_table=1
-
 innodb_read_only_compressed=OFF
 
 [mariadb]
 
 userstat = 1
 tls_version = TLSv1.2,TLSv1.3
-ssl_cert = /etc/certs/${domain}_ecc/fullchain.cer
-ssl_key = /etc/certs/${domain}_ecc/${domain}.key
+# ssl_cert = /etc/certs/${domain}_ecc/fullchain.cer
+# ssl_key = /etc/certs/${domain}_ecc/${domain}.key
 EOF
 
-#mysql -u root -e "create user 'netdata'@'localhost';"
-#mysql -u root -e "grant usage on *.* to 'netdata'@'localhost';"
-#mysql -u root -e "flush privileges;"
+# mysql -u root -e "create user 'netdata'@'localhost';"
+# mysql -u root -e "grant usage on *.* to 'netdata'@'localhost';"
+# mysql -u root -e "flush privileges;"
 
 mysql -u root -e "CREATE DATABASE trojan CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql -u root -e "create user 'trojan'@'localhost' IDENTIFIED BY '${password1}';"
