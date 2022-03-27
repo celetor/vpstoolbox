@@ -6,7 +6,7 @@ install_mariadb(){
 	set +e
   curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
   apt-get install mariadb-server -y
-  apt-get install python-mysqldb -y
+  #apt-get install python-mysqldb -y
   apt-get -y install expect
 
   SECURE_MYSQL=$(expect -c "
