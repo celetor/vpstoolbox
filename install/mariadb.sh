@@ -74,9 +74,9 @@ ssl_cert = /etc/certs/${domain}_ecc/fullchain.cer
 ssl_key = /etc/certs/${domain}_ecc/${domain}.key
 EOF
 
-mysql -u root -e "create user 'netdata'@'localhost';"
-mysql -u root -e "grant usage on *.* to 'netdata'@'localhost';"
-mysql -u root -e "flush privileges;"
+#mysql -u root -e "create user 'netdata'@'localhost';"
+#mysql -u root -e "grant usage on *.* to 'netdata'@'localhost';"
+#mysql -u root -e "flush privileges;"
 
 mysql -u root -e "CREATE DATABASE trojan CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql -u root -e "create user 'trojan'@'localhost' IDENTIFIED BY '${password1}';"
