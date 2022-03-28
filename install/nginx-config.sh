@@ -42,6 +42,7 @@ server {
   # ssl_stapling_verify on;
   # resolver               1.1.1.1 1.0.0.1 8.8.8.8 8.8.4.4 valid=60s;
   # ssl_session_tickets off;
+  # ssl_session_cache shared:SSL:10m;
   resolver_timeout 10s;
   client_header_timeout 1071906480m;
   lingering_close always;
@@ -535,7 +536,6 @@ echo "" >> /etc/nginx/conf.d/default.conf
 echo "server {" >> /etc/nginx/conf.d/default.conf
 echo "    listen 80 fastopen=20 reuseport;" >> /etc/nginx/conf.d/default.conf
 echo "    listen [::]:80 fastopen=20 reuseport;" >> /etc/nginx/conf.d/default.conf
-echo "    #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345) ) { return 403; }" >> /etc/nginx/conf.d/default.conf
 echo "    return 301 https://\$host\$request_uri;" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 echo "" >> /etc/nginx/conf.d/default.conf
