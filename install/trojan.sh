@@ -67,7 +67,7 @@ systemctl enable trojan
             "http/1.1"
         ],
         "alpn_port_override": {
-            "h2": 80
+            "h2": 82
         },
         "reuse_session": true,
         "session_ticket": false,
