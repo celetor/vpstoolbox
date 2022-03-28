@@ -8,6 +8,8 @@
 
 # nginx_config
 
+cipher_server="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
+
 nginx_config(){
   set +e
   clear
@@ -22,11 +24,27 @@ server {
   listen 127.0.0.1:81 fastopen=20 reuseport default_server so_keepalive=on;
   listen 127.0.0.1:82 http2 fastopen=20 reuseport default_server so_keepalive=on;
   server_name $domain _;
-  #resolver 127.0.0.1;
+  # listen 443 ssl http2 fastopen=20 reuseport default_server so_keepalive=on;
+  # listen [::]:443 ssl http2 fastopen=20 reuseport default_server so_keepalive=on;
+  # ssl_certificate     /etc/certs/${domain}_ecc/fullchain.cer;
+  # ssl_certificate_key /etc/certs/${domain}_ecc/${domain}.key;
+  # ssl_client_certificate /etc/certs/${domain}_ecc/ca.cer;
+  # ssl_protocols TLSv1.3 TLSv1.2;
+  # ssl_prefer_server_ciphers on;
+  # ssl_ciphers TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384:$cipher_server;
+  # ssl_reject_handshake off;
+  # ssl_conf_command Ciphersuites TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384;
+  # ssl_early_data on;
+  # proxy_set_header Early-Data \$ssl_early_data;
+  # ssl_verify_client off;
+  # ssl_ocsp          on;
+  # ssl_stapling on;
+  # ssl_stapling_verify on;
+  # resolver               1.1.1.1 1.0.0.1 8.8.8.8 8.8.4.4 valid=60s;
+  # ssl_session_tickets off;
   resolver_timeout 10s;
   client_header_timeout 1071906480m;
   lingering_close always;
-  ssl_early_data on;
   #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|Maxthon|TheWorld|UC|OPPO|baidu|Sogou|2345|) ) { return 403; }
   #if (\$http_user_agent ~* (wget|curl) ) { return 403; }
   #if (\$http_user_agent = "") { return 403; }
@@ -517,9 +535,8 @@ echo "" >> /etc/nginx/conf.d/default.conf
 echo "server {" >> /etc/nginx/conf.d/default.conf
 echo "    listen 80 fastopen=20 reuseport;" >> /etc/nginx/conf.d/default.conf
 echo "    listen [::]:80 fastopen=20 reuseport;" >> /etc/nginx/conf.d/default.conf
-echo "    server_name $domain;" >> /etc/nginx/conf.d/default.conf
 echo "    #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|MetaSr|Xiaomi|Maxthon|TheWorld|QQ|UC|OPPO|baidu|Sogou|2345) ) { return 403; }" >> /etc/nginx/conf.d/default.conf
-echo "    return 301 https://$domain\$request_uri;" >> /etc/nginx/conf.d/default.conf
+echo "    return 301 https://\$host\$request_uri;" >> /etc/nginx/conf.d/default.conf
 echo "}" >> /etc/nginx/conf.d/default.conf
 echo "" >> /etc/nginx/conf.d/default.conf
 if [[ $install_netdata == 1 ]]; then
