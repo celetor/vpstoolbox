@@ -77,6 +77,8 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 [阿里云](https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=fgdncdz2)
 
+[Hostyun](https://my.hostyun.com/page.aspx?c=referral&u=27710)
+
 ---
 
 ### Trojan-GFW 链接
