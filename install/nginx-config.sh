@@ -148,7 +148,6 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
     grpc_socket_keepalive on;
 		grpc_read_timeout 1071906480m;
     grpc_send_timeout 1071906480m;
-		# grpc_pass grpc://127.0.0.1:2002;
     grpc_pass unix:/dev/shm/vgrpc.sock;
 	}
   location /${path_new}_trojan {
