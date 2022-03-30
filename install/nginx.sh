@@ -52,7 +52,7 @@ systemctl enable nginx
 mkdir /usr/share/nginx/cache
 #mkdir /usr/share/nginx/php_cache
   cat > '/etc/nginx/nginx.conf' << EOF
-user nginx;
+user root;
 worker_processes auto;
 
 error_log /var/log/nginx/error.log warn;

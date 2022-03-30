@@ -27,8 +27,7 @@ cd /etc/grpc
   },
   "inbounds": [
     {
-      "port": 2002,
-      "listen": "127.0.0.1",
+    "listen": "/dev/shm/vgrpc.sock",
       "protocol": "vless",
       "settings": {
         "clients": [
