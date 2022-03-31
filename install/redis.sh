@@ -12,7 +12,7 @@ install_redis(){
   echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
 
   apt-get update
-  apt-get install redis
+  apt-get install redis -y
   cat > '/etc/redis/redis.conf' << EOF
 bind 127.0.0.1 ::1
 protected-mode no
