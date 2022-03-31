@@ -102,7 +102,7 @@ echo -e "\e[40;33;1m [${domain}] 证书过期日期 : \${last_date} && [\${day_c
 echo -e "*******************************************************************"
 if [[ -f /usr/bin/xray ]]; then
 echo -e " --- \${BLUE}Vless(grpc)链接(低延迟 推荐使用 支持Cloudflare CDN)\${NOCOLOR} ---"
-echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=/${path_new}&sni=${domain}#Vless(grpc_cdn_${myip})\${NOCOLOR}"
+echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(grpc_cdn_${myip})\${NOCOLOR}"
 echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
 else
