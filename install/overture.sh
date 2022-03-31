@@ -86,7 +86,7 @@ minimumTTL: 0
 domainTTLFile: /etc/overture/domain_ttl_sample
 cacheSize: 10000
 cacheRedisUrl:
-cacheRedisConnectionPoolSize:
+cacheRedisConnectionPoolSize: 1000000
 rejectQType:
   - 255
 EOF
