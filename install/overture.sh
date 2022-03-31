@@ -49,8 +49,8 @@ bindAddress: :53
 debugHTTPAddress: 127.0.0.1:5555
 dohEnabled: false
 primaryDNS:
-  - name: Dnspod
-    address: https://doh.pub/dns-query
+  - name: Ali
+    address: https://223.5.5.5/dns-query
     protocol: https
     socks5Address:
     timeout: 6
