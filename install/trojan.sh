@@ -80,7 +80,7 @@ systemctl enable trojan
         "prefer_ipv4": true,
         "no_delay": true,
         "keep_alive": true,
-        "reuse_port": false,
+        "reuse_port": true,
         "fast_open": true,
         "fast_open_qlen": 20
     },
