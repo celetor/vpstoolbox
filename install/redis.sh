@@ -7,85 +7,12 @@ set +e
 install_redis(){
   cd
   TERM=ansi whiptail --title "安装中" --infobox "安装redis中..." 7 68
-  redisver=$(curl -s "https://api.github.com/repos/redis/redis/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-  if [[ -f /usr/local/bin/redis-server ]]; then
-    TERM=ansi whiptail --title "安装中" --infobox "更新redis中..." 7 68
-    curl -LO https://github.com/redis/redis/archive/${redisver}.zip
-    unzip -o ${redisver}.zip
-    rm ${redisver}.zip
-    cd redis-${redisver}
-    apt-get install build-essential -y
-    apt-get install libsystemd-dev pkg-config -y
-    make USE_SYSTEMD=yes -j $(nproc --all)
-    make install
-  else
-  apt-get install build-essential -y
-  apt-get install libsystemd-dev pkg-config unzip -y
-  curl -LO https://github.com/redis/redis/archive/${redisver}.zip
-  unzip -o ${redisver}.zip
-  rm ${redisver}.zip
-  cd redis-${redisver}
-  make USE_SYSTEMD=yes -j $(nproc --all)
-  make install
-  chmod +x /usr/local/bin/redis-server
-  chmod +x /usr/local/bin/redis-cli
-  useradd -m -s /sbin/nologin redis
-  groupadd redis
-  usermod -a -G redis redis
-  usermod -a -G redis nginx
-  usermod -a -G redis netdata
-  mkdir /var/lib/redis
-  mkdir /var/log/redis/
-  mkdir /etc/redis
-  chown -R redis:redis /var/lib/redis
-  chown -R redis:redis /etc/redis
-  chown -R redis:redis /var/log/redis
-  cat > '/etc/systemd/system/redis.service' << EOF
-[Unit]
-Description=Advanced key-value store
-After=network.target
-Documentation=http://redis.io/documentation, man:redis-server(1)
+  curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 
-[Service]
-Type=notify
-ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
-ExecStop=/usr/local/bin/redis-cli shutdown
-TimeoutStopSec=0
-Restart=always
-User=redis
-Group=redis
-RuntimeDirectory=redis
-RuntimeDirectoryMode=2755
+  echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
 
-UMask=007
-PrivateTmp=yes
-LimitNOFILE=65535
-PrivateDevices=yes
-ProtectHome=yes
-ReadOnlyDirectories=/
-ReadWriteDirectories=-/var/lib/redis
-ReadWriteDirectories=-/var/log/redis
-ReadWriteDirectories=-/var/run/redis
-
-NoNewPrivileges=true
-CapabilityBoundingSet=CAP_SETGID CAP_SETUID CAP_SYS_RESOURCE
-MemoryDenyWriteExecute=true
-ProtectKernelModules=true
-ProtectKernelTunables=true
-ProtectControlGroups=true
-RestrictRealtime=true
-RestrictNamespaces=true
-RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
-
-ProtectSystem=full
-ReadWriteDirectories=-/etc/redis
-
-[Install]
-WantedBy=multi-user.target
-Alias=redis.service
-EOF
-systemctl daemon-reload
-fi
+  apt-get update
+  apt-get install redis
   cat > '/etc/redis/redis.conf' << EOF
 bind 127.0.0.1 ::1
 protected-mode no
