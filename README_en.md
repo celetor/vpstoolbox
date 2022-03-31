@@ -42,7 +42,7 @@ All applications support fully automated installation and configuration, ready t
 
 - Proxy
   - [x] [Trojan-gfw customizable port, does not support Cloudflare CDN forwarding, no minimum system hardware requirements](https://github.com/trojan-gfw/trojan)
-  - [x] [Trojan(grpc)+Vless(grpc) customizable port, low latency, support Cloudflare CDN forwarding, no minimum system hardware requirements](https://xtls.github.io/config/transports/grpc.html)
+  - [x] [Vless(grpc) customizable port, low latency, support Cloudflare CDN forwarding, no minimum system hardware requirements](https://xtls.github.io/config/transports/grpc.html)
   - [ ] [Shadowsocks-rust only recommends using with IPLC/IEPL, does not support Cloudflare CDN forwarding, no minimum system hardware requirements](https://github.com/shadowsocks/shadowsocks-rust)
 - System
   - [x] [Acme.sh supports HTTP or DNS API to issue Let\'s encrypt certificate](https://github.com/acmesh-official/acme.sh)
