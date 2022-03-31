@@ -150,17 +150,6 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
     grpc_send_timeout 1071906480m;
     grpc_pass unix:/dev/shm/vgrpc.sock;
 	}
-  location /${path_new}_trojan {
-		client_max_body_size 0;
-    client_body_buffer_size 512k;
-		client_body_timeout 1071906480m;
-    #keepalive_timeout 1071906480m;
-    keepalive_requests 10000;
-    grpc_socket_keepalive on;
-		grpc_read_timeout 1071906480m;
-    grpc_send_timeout 1071906480m;
-		grpc_pass grpc://127.0.0.1:2022;
-	}
 EOF
 fi
 if [[ $install_typecho == 1 ]]; then

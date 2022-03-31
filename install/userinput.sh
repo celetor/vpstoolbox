@@ -44,7 +44,7 @@ userinput_standard() {
   "Back" "返回上级菜单(Back to main menu)" off \
   "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
   "port" "自定义Trojan-GFW/Vless(grpc)端口" off \
-  "grpc" "Trojan+Vless+gRPC+TLS(支持CDN)" ${fastopen} \
+  "grpc" "Vless+gRPC+TLS(支持CDN)" ${fastopen} \
   "ss" "shadowsocks-rust" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
@@ -230,7 +230,7 @@ userinput_full() {
   "基础" "基础" off \
   "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
   "port" "自定义Trojan-GFW/Vless(grpc)端口" off \
-  "grpc" "Trojan+Vless+gRPC+TLS(支持CDN)" ${fastopen} \
+  "grpc" "Vless+gRPC+TLS(支持CDN)" ${fastopen} \
   "ss" "shadowsocks-rust" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "影音" "影音" off \

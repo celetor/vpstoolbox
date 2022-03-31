@@ -43,25 +43,6 @@ cd /etc/grpc
           "serviceName": "/grpc"
         }
       }
-    },
-    {
-      "port": 2022,
-      "listen": "127.0.0.1",
-      "protocol": "trojan",
-      "tag": "trojangRPC",
-        "settings": {
-            "clients": [
-                {
-                    "password": "49ec002d-ca69-4325-aea5-dbef18dd6f42"
-                }
-            ]
-        },
-        "streamSettings": {
-            "network": "grpc",
-            "grpcSettings": {
-                "serviceName": "/grpc_trojan"
-            }
-        }
     }
   ],
   "outbounds": [
