@@ -43,7 +43,7 @@ echo -e " --- \${BLUE}服務狀態(Service Status)\${NOCOLOR} ---"
 echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
   fi
   if [[ -f /usr/bin/xray ]]; then
-echo -e "Trojan/Vless(Grpc):\t"\$(systemctl is-active grpc)
+echo -e "Vless(Grpc):\t"\$(systemctl is-active grpc)
   fi
   if [[ -f /usr/sbin/ssserver ]]; then
 echo -e "SS-rust:\t\t"\$(systemctl is-active ssserver)
