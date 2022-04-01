@@ -44,7 +44,7 @@ server {
   # ssl_session_tickets off;
   # ssl_session_cache shared:SSL:10m;
   resolver_timeout 10s;
-  client_header_timeout 1071906480m;
+  client_header_timeout 60m;
   lingering_close always;
   #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|Maxthon|TheWorld|UC|OPPO|baidu|Sogou|2345|) ) { return 403; }
   #if (\$http_user_agent ~* (wget|curl) ) { return 403; }
