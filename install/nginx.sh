@@ -112,8 +112,8 @@ http {
     '"\$http_user_agent" "\$http_x_forwarded_for"';
 
   sendfile on;
-  gzip off;
-  gzip_proxied any;
+  gzip on;
+  gzip_proxied off;
   gzip_types *;
   gzip_comp_level 1;
 
