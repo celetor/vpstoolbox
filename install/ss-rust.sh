@@ -41,7 +41,7 @@ RemainAfterExit=yes
 ExecStart=/usr/sbin/ssserver -c /etc/ss-rust/config.json
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
-LimitNOFILE=65536
+LimitNOFILE=infinity
 RestartSec=3s
 Restart=on-failure
 

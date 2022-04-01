@@ -301,7 +301,7 @@ After=network.target
 [Service]
 WorkingDirectory=/usr/share/nginx/hexo
 ExecStart=${hexo_location} server -i 127.0.0.1
-LimitNOFILE=65536
+LimitNOFILE=infinity
 Restart=always
 RestartSec=3s
 

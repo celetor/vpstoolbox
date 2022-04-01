@@ -34,7 +34,7 @@ User=root
 RemainAfterExit=yes
 ExecStart=/usr/bin/overture -c /etc/overture/config.yml
 TimeoutStopSec=infinity
-LimitNOFILE=65536
+LimitNOFILE=infinity
 Restart=always
 RestartSec=3s
 

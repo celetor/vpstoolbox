@@ -290,7 +290,7 @@ KillSignal=SIGQUIT
 #KillSignal=SIGINT
 #TimeoutStopSec=10m
 
-LimitNOFILE=65536
+LimitNOFILE=infinity
 Restart=always
 RestartSec=3s
 

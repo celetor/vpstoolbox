@@ -28,7 +28,7 @@ RemainAfterExit=yes
 ExecStart=/usr/local/bin/filebrowser -r / -d /etc/filebrowser/database.db -b /file/ -p 8081
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
-LimitNOFILE=65536
+LimitNOFILE=infinity
 RestartSec=3s
 Restart=on-failure
 

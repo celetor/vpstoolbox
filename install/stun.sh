@@ -22,7 +22,7 @@ After=network.target network-online.target nss-lookup.target
 Type=simple
 ExecStart=/usr/sbin/stunserver --configfile /etc/stunserver/stun.conf --verbosity 1
 ExecReload=/bin/kill -HUP \$MAINPID
-LimitNOFILE=65536
+LimitNOFILE=infinity
 Restart=on-failure
 RestartSec=1s
 

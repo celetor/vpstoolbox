@@ -120,7 +120,7 @@ ProtectKernelModules=yes
 CacheDirectory=dnscrypt-proxy
 LogsDirectory=dnscrypt-proxy
 RuntimeDirectory=dnscrypt-proxy
-LimitNOFILE=65536
+LimitNOFILE=infinity
 Restart=on-failure
 RestartSec=3s
 
@@ -173,7 +173,7 @@ RemainAfterExit=yes
 ExecStart=/usr/bin/doh-proxy
 ExecReload=/usr/bin/kill -HUP \$MAINPID
 ExecStop=/usr/bin/kill -s STOP \$MAINPID
-LimitNOFILE=65536
+LimitNOFILE=infinity
 LimitNPROC=51200
 RestartSec=3s
 Restart=on-failure

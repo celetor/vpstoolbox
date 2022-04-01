@@ -33,7 +33,7 @@ Group=opentracker
 RemainAfterExit=yes
 ExecStart=/usr/sbin/opentracker
 TimeoutStopSec=infinity
-LimitNOFILE=65536
+LimitNOFILE=infinity
 Restart=on-failure
 RestartSec=3s
 
