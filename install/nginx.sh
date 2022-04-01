@@ -59,7 +59,7 @@ error_log /var/log/nginx/error.log warn;
 pid /run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 events {
-  worker_connections 65536;
+  worker_connections 1000000;
   use epoll;
   multi_accept on;
 }
