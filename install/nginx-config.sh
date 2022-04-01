@@ -142,13 +142,14 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
 	location /${path_new} {
 		client_max_body_size 0;
     client_body_buffer_size 512k;
-		client_body_timeout 1071906480m;
-    #keepalive_timeout 1071906480m;
+		client_body_timeout 60m;
+    keepalive_timeout 60m;
     keepalive_requests 10000;
     grpc_socket_keepalive on;
-		grpc_read_timeout 1071906480m;
-    grpc_send_timeout 1071906480m;
+		grpc_read_timeout 60m;
+    grpc_send_timeout 60m;
     grpc_pass unix:/dev/shm/vgrpc.sock;
+    grpc_set_header X-Real-IP $remote_addr;
 	}
 EOF
 fi
