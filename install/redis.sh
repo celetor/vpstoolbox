@@ -15,6 +15,7 @@ install_redis(){
   then
     :
   else
+  echo "" >> /etc/redis/redis.conf
   echo "unixsocket /var/run/redis/redis.sock" >> /etc/redis/redis.conf
   echo "unixsocketperm 770" >> /etc/redis/redis.conf
   fi
