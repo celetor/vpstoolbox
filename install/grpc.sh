@@ -95,7 +95,7 @@ Type=simple
 User=root
 ExecStart=/usr/bin/xray -c /etc/grpc/server.json
 TimeoutStopSec=infinity
-LimitNOFILE=65536
+LimitNOFILE=infinity
 Restart=always
 RestartSec=3s
 
