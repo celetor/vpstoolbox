@@ -150,7 +150,7 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
 		grpc_read_timeout 60m;
     grpc_send_timeout 60m;
     grpc_pass unix:/dev/shm/vgrpc.sock;
-    grpc_set_header X-Real-IP $remote_addr;
+    grpc_set_header X-Real-IP \$remote_addr;
     etag off;
     lingering_close always;
     lingering_time 60m;
