@@ -95,7 +95,7 @@ http {
   tcp_nopush on;
   server_tokens off;
   
-  proxy_intercept_errors on;
+  proxy_intercept_errors off;
   proxy_http_version 1.1;
   proxy_ssl_protocols TLSv1.2 TLSv1.3;
   proxy_set_header Host \$http_host;
