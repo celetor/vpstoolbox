@@ -45,7 +45,6 @@ server {
   # ssl_session_cache shared:SSL:10m;
   resolver_timeout 10s;
   client_header_timeout 60m;
-  lingering_close always;
   #if (\$http_user_agent ~* (360|Tencent|MicroMessenger|Maxthon|TheWorld|UC|OPPO|baidu|Sogou|2345|) ) { return 403; }
   #if (\$http_user_agent ~* (wget|curl) ) { return 403; }
   #if (\$http_user_agent = "") { return 403; }
@@ -153,6 +152,9 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
     grpc_pass unix:/dev/shm/vgrpc.sock;
     grpc_set_header X-Real-IP $remote_addr;
     etag off;
+    lingering_close always;
+    lingering_time 60m;
+    lingering_timeout 1s;
 	}
 EOF
 fi
