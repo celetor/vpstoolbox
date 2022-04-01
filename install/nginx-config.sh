@@ -143,6 +143,8 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
 		client_max_body_size 0;
     client_body_buffer_size 1m;
 		client_body_timeout 60m;
+    keepalive_disable none;
+    keepalive_time 12h;
     keepalive_timeout 60m;
     keepalive_requests 10000;
     grpc_socket_keepalive on;
@@ -150,6 +152,7 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
     grpc_send_timeout 60m;
     grpc_pass unix:/dev/shm/vgrpc.sock;
     grpc_set_header X-Real-IP $remote_addr;
+    etag off;
 	}
 EOF
 fi
