@@ -141,7 +141,7 @@ touch /etc/nginx/conf.d/grpc.conf
 cat << EOF > /etc/nginx/conf.d/grpc.conf
 	location /${path_new} {
 		client_max_body_size 0;
-    client_body_buffer_size 512k;
+    client_body_buffer_size 1m;
 		client_body_timeout 60m;
     keepalive_timeout 60m;
     keepalive_requests 10000;
