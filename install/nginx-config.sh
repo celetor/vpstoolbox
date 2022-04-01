@@ -139,9 +139,9 @@ echo "    include /etc/nginx/conf.d/grpc.conf;" >> /etc/nginx/conf.d/default.con
 touch /etc/nginx/conf.d/grpc.conf
 cat << EOF > /etc/nginx/conf.d/grpc.conf
 	location /${path_new} {
-		client_max_body_size 0;
+    client_max_body_size 0;
     client_body_buffer_size 1m;
-		client_body_timeout 60m;
+    client_body_timeout 60m;
     keepalive_disable none;
     keepalive_time 12h;
     keepalive_timeout 60m;
