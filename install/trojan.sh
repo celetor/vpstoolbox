@@ -34,7 +34,7 @@ Type=simple
 StandardError=journal
 ExecStart=/usr/local/bin/trojan /usr/local/etc/trojan/config.json
 ExecReload=/bin/kill -HUP \$MAINPID
-LimitNOFILE=65536
+LimitNOFILE=infinity
 Restart=always
 RestartSec=3s
 
