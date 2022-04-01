@@ -11,6 +11,14 @@ install_redis(){
   echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
   apt-get update
   apt-get install redis -y
+  if grep -q "unixsocket /var/run/redis/redis.sock" /etc/redis/redis.conf
+  then
+    :
+  else
+  echo "unixsocket /var/run/redis/redis.sock" >> /etc/redis/redis.conf
+  echo "unixsocketperm 770" >> /etc/redis/redis.conf
+  fi
   systemctl enable redis-server
+  systemctl restart redis-server
 cd
 }
