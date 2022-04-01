@@ -128,7 +128,7 @@ root     soft   memlock   unlimited
 *     soft   memlock   unlimited
 EOF
 sed -i '/ulimit -SHn/d' /etc/profile
-echo "ulimit -SHn 10000000" >> /etc/profile
+echo "ulimit -SHn 1000000" >> /etc/profile
 if grep -q "pam_limits.so" /etc/pam.d/common-session
 then
   :
