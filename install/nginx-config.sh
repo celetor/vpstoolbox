@@ -147,7 +147,7 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
     keepalive_timeout 60m;
     keepalive_requests 10000;
     grpc_socket_keepalive on;
-		grpc_read_timeout 60m;
+    grpc_read_timeout 60m;
     grpc_send_timeout 60m;
     grpc_pass unix:/dev/shm/vgrpc.sock;
     grpc_set_header X-Real-IP \$remote_addr;
