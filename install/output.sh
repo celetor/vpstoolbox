@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## OUTPUT模组 Tor moudle
+## OUTPUT模组 Output moudle
 
 set +e
 
