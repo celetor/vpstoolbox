@@ -98,23 +98,23 @@ upload_onedrive(){
 		## 如默认策略为删除,则强制删除已下载档案。
 		if [[ ${policy_default} == "delete" ]] || [[ ${file_folder_size} -gt ${policy_default_delete_file_size} ]]; then
 			echo "[${gid}] 文件数量大于1,可能为bt下载,检测到默认策略为删除,上传档案并删除" &>> /var/log/rclone/upload.log
-			rclone copy -v ${file_folder} ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log && rm -rf ${file_folder}
+			rclone copy -v "${file_folder}" ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log && rm -rf ${file_folder}
 			exit 0;
 		fi
 		## 新建screen上传文件
 		echo "[${gid}] 文件数量大于1,可能为bt下载,默认保留文件并上传" &>> /var/log/rclone/upload.log
-		rclone copy -v ${file_folder} ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log
+		rclone copy -v "${file_folder}" ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log
 		exit 0;
 	fi
 	## 如默认策略为删除,则强制删除已下载档案。
 	if [[ ${policy_default} == "delete" ]] || [[ ${file_folder_size} -gt ${policy_default_delete_file_size} ]]; then
 		echo "[${gid}] 文件数量等于1,可能为http(s)/ftp(s)下载,检测到默认策略为删除,上传档案并删除" &>> /var/log/rclone/upload.log
-		rclone copy -v ${file_path} ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log && rm -rf ${file_path}
+		rclone copy -v "${file_path}" ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log && rm -rf ${file_path}
 		exit 0;
 	fi
 	## 新建screen上传文件
 		echo "[${gid}] 文件数量等于1,可能为http(s)/ftp(s)下载,默认保留文件并上传" &>> /var/log/rclone/upload.log
-		rclone copy -v ${file_path} ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log
+		rclone copy -v "${file_path}" ${rclone_name}:${policy_default_path} -v &>> /var/log/rclone/upload.log
 		exit 0;
 }
 
