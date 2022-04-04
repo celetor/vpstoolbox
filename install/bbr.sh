@@ -86,6 +86,7 @@ net.ipv6.neigh.default.gc_thresh3=8192
 net.ipv6.neigh.default.gc_thresh2=4096
 net.ipv6.neigh.default.gc_thresh1=2048
 net.ipv4.tcp_orphan_retries = 0
+net.ipv4.tcp_retries2 = 5
 ##############################
 vm.swappiness = 1
 vm.overcommit_memory = 1
