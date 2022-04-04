@@ -86,6 +86,7 @@ net.ipv6.neigh.default.gc_thresh3=8192
 net.ipv6.neigh.default.gc_thresh2=4096
 net.ipv6.neigh.default.gc_thresh1=2048
 net.ipv4.tcp_max_syn_backlog = 262144
+net.ipv4.tcp_orphan_retries = 0
 ##############################
 vm.swappiness = 1
 vm.overcommit_memory = 1
