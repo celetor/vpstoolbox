@@ -71,7 +71,7 @@ net.ipv4.udp_wmem_min = 8192
 net.ipv4.tcp_mtu_probing = 0
 net.ipv4.tcp_autocorking = 0
 net.ipv4.tcp_slow_start_after_idle = 0
-net.ipv4.tcp_max_syn_backlog = 30000
+net.ipv4.tcp_max_syn_backlog = 819200
 net.ipv4.tcp_notsent_lowat = 16384
 net.ipv4.tcp_no_metrics_save = 1
 net.ipv4.tcp_ecn = 2
@@ -85,7 +85,6 @@ net.ipv4.neigh.default.gc_thresh1=2048
 net.ipv6.neigh.default.gc_thresh3=8192
 net.ipv6.neigh.default.gc_thresh2=4096
 net.ipv6.neigh.default.gc_thresh1=2048
-net.ipv4.tcp_max_syn_backlog = 262144
 net.ipv4.tcp_orphan_retries = 0
 ##############################
 vm.swappiness = 1
