@@ -79,26 +79,14 @@ tcp_fastopen="true"
 rm -rf /lib/systemd/system/cloud*
 
 colorEcho(){
-  set +e
   COLOR=$1
   echo -e "\033[${COLOR}${@:2}\033[0m"
 }
 
 #设置系统语言
 setlanguage(){
-  set +e
-  if [[ ! -d /root/.trojan/ ]]; then
-    mkdir /root/.trojan/
-    mkdir /etc/certs/
-  fi
-  if [[ -f /root/.trojan/language.json ]]; then
-    language="$( jq -r '.language' "/root/.trojan/language.json" )"
-  fi
-  while [[ -z $language ]]; do
-  export LANGUAGE="C.UTF-8"
-  export LANG="C.UTF-8"
-  export LC_ALL="C.UTF-8"
-  if (whiptail --title "System Language Setting" --yes-button "中文" --no-button "English" --yesno "系统语言使用中文或英文(Use Chinese or English)?" 8 68); then
+  mkdir /root/.trojan/
+  mkdir /etc/certs/
   chattr -i /etc/locale.gen
   cat > '/etc/locale.gen' << EOF
 zh_CN.UTF-8 UTF-8
@@ -106,7 +94,6 @@ zh_TW.UTF-8 UTF-8
 en_US.UTF-8 UTF-8
 ja_JP.UTF-8 UTF-8
 EOF
-language="cn"
 locale-gen
 update-locale
 chattr -i /etc/default/locale
@@ -115,44 +102,9 @@ LANGUAGE="zh_CN.UTF-8"
 LANG="zh_CN.UTF-8"
 LC_ALL="zh_CN.UTF-8"
 EOF
-#apt-get install manpages-zh -y
-  cat > '/root/.trojan/language.json' << EOF
-{
-  "language": "$language"
-}
-EOF
-  else
-  chattr -i /etc/locale.gen
-  cat > '/etc/locale.gen' << EOF
-zh_CN.UTF-8 UTF-8
-zh_TW.UTF-8 UTF-8
-en_US.UTF-8 UTF-8
-EOF
-language="en"
-locale-gen
-update-locale
-chattr -i /etc/default/locale
-  cat > '/etc/default/locale' << EOF
-LANGUAGE="en_US.UTF-8"
-LANG="en_US.UTF-8"
-LC_ALL="en_US.UTF-8"
-EOF
-  cat > '/root/.trojan/language.json' << EOF
-{
-  "language": "$language"
-}
-EOF
-fi
-done
-if [[ $language == "cn" ]]; then
 export LANGUAGE="zh_CN.UTF-8"
 export LANG="zh_CN.UTF-8"
 export LC_ALL="zh_CN.UTF-8"
-  else
-export LANGUAGE="en_US.UTF-8"
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
-fi
 }
 
 ## 写入配置文件
