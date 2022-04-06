@@ -462,34 +462,34 @@ services:
     volumes:
       - /usr/share/nginx/jackett/config:/config
     restart: unless-stopped
-  rsshub: # 1200
-    image: diygod/rsshub
-    container_name: rsshub
-    ports:
-      - '1200:1200'
-    environment:
-      # PROXY_URI: 'http://127.0.0.1:8080'
-      NODE_ENV: production
-      CACHE_TYPE: redis
-      REDIS_URL: 'redis://redis:6379/'
-      PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'
-    depends_on:
-      - browserless
-      - redis
-    restart: unless-stopped
-  browserless: # 3000
-    image: browserless/chrome
-    container_name: browserless
-    restart: unless-stopped
-    ports:
-      - 127.0.0.1:3000:3000
-  redis: # 6379
-    image: "redis:latest"
-    container_name: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - "/data/redis:/data"
+  # rsshub: # 1200
+  #   image: diygod/rsshub
+  #   container_name: rsshub
+  #   ports:
+  #     - '1200:1200'
+  #   environment:
+  #     # PROXY_URI: 'http://127.0.0.1:8080'
+  #     NODE_ENV: production
+  #     CACHE_TYPE: redis
+  #     REDIS_URL: 'redis://redis:6379/'
+  #     PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'
+  #   depends_on:
+  #     - browserless
+  #     - redis
+  #   restart: unless-stopped
+  # browserless: # 3000
+  #   image: browserless/chrome
+  #   container_name: browserless
+  #   restart: unless-stopped
+  #   ports:
+  #     - 127.0.0.1:3000:3000
+  # redis: # 6379
+  #   image: "redis:latest"
+  #   container_name: redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - "/data/redis:/data"
   flaresolverr: # 8191
     network_mode: host 
     image: flaresolverr/flaresolverr
@@ -544,7 +544,7 @@ services:
         - TZ=Asia/Shanghai
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: nzbget sonarr radarr lidarr readarr prowlarr jackett rsshub browserless redis flaresolverr bazarr chinesesubfinder ombi watchtower --cleanup --schedule "0 0 3 * * *"
+    command: --cleanup --schedule "0 0 3 * * *"
     restart: unless-stopped
 EOF
 
