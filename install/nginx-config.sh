@@ -141,19 +141,19 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
 	location /${path_new} {
     client_max_body_size 0;
     client_body_buffer_size 1m;
-    client_body_timeout 60m;
+    client_body_timeout 12h;
     keepalive_disable none;
-    keepalive_time 1h;
-    keepalive_timeout 60m;
+    keepalive_time 12h;
+    keepalive_timeout 12h;
     keepalive_requests 10000;
     grpc_socket_keepalive on;
-    grpc_read_timeout 60m;
-    grpc_send_timeout 60m;
+    grpc_read_timeout 12h;
+    grpc_send_timeout 12h;
     grpc_pass unix:/dev/shm/vgrpc.sock;
     grpc_set_header X-Real-IP \$remote_addr;
     etag off;
     lingering_close always;
-    lingering_time 60m;
+    lingering_time 12h;
     lingering_timeout 1s;
 	}
 EOF
