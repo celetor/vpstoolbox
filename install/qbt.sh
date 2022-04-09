@@ -120,6 +120,8 @@ curl -X POST -F 'category=Music' -F 'savePath=/data/torrents/Music/' http://127.
 curl -X POST -F 'category=Bookes' -F 'savePath=/data/torrents/Books/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=XXX' -F 'savePath=/data/torrents/XXX/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Others' -F 'savePath=/data/torrents/Others/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
+## 新增标签
+curl -X POST -F 'tags=BT,PT' -F 'savePath=/data/torrents/XXX/' http://127.0.0.1:8080/api/v2/torrents/createTags --cookie "${qbtcookie}"
 ## 修改密码，锁定配置
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22web_ui_password%22:%22${password1}%22%7D  --cookie "${qbtcookie}"
 }
