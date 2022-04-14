@@ -174,22 +174,6 @@ echo "    #    }" >> /etc/nginx/conf.d/default.conf
 echo "    #    }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_jellyfin == 1 ]]; then
-# echo "    location /jellyfin {" >> /etc/nginx/conf.d/default.conf
-# echo "        return 302 https://${domain}:443/jellyfin/;" >> /etc/nginx/conf.d/default.conf
-# echo "    }" >> /etc/nginx/conf.d/default.conf
-# echo "    location /jellyfin/ {" >> /etc/nginx/conf.d/default.conf
-# echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
-# echo "        proxy_pass http://127.0.0.1:8099/jellyfin/;" >> /etc/nginx/conf.d/default.conf
-# echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
-# echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-# echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-# echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
-# echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
-# echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
-# echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
-# echo "        proxy_set_header Connection \$http_connection;" >> /etc/nginx/conf.d/default.conf
-# echo "        proxy_buffering off;" >> /etc/nginx/conf.d/default.conf
-# echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location /emby {" >> /etc/nginx/conf.d/default.conf
 echo "        return 302 https://${domain}:443/emby/;" >> /etc/nginx/conf.d/default.conf
 echo "    }" >> /etc/nginx/conf.d/default.conf

@@ -46,13 +46,13 @@ mkdir /usr/share/nginx/qBittorrent/
 mkdir /usr/share/nginx/qBittorrent/data/
 mkdir /usr/share/nginx/qBittorrent/data/GeoIP/
 cd /usr/share/nginx/qBittorrent/data/GeoIP/
-curl -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/GeoLite2-Country.mmdb
+curl --retry 5 -LO --progress-bar https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/binary/GeoLite2-Country.mmdb
 chmod 755 /usr/share/nginx/
 chown -R nginx:nginx /usr/share/nginx/
 systemctl restart qbittorrent.service
 
 cd /usr/share/nginx/qBittorrent/
-curl -LO https://github.com/CzBiX/qb-web/releases/download/nightly-20210808/qb-web-nightly-20210808.zip
+curl --retry 5 -LO https://github.com/CzBiX/qb-web/releases/download/nightly-20210808/qb-web-nightly-20210808.zip
 unzip qb-web-nightly-20210808.zip
 rm qb-web-nightly-20210808.zip
 mv dist web

@@ -20,7 +20,7 @@ mkdir /etc/aria2/
 ariaver1=$(curl -s "https://api.github.com/repos/aria2/aria2/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 ariaver2=$(curl -s "https://api.github.com/repos/aria2/aria2/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c9-20)
 apt-get install build-essential nettle-dev libgmp-dev libssh2-1-dev libc-ares-dev libxml2-dev zlib1g-dev libsqlite3-dev libssl-dev libuv1-dev -q -y
-curl -LO --progress-bar https://github.com/aria2/aria2/releases/download/${ariaver1}/aria2-${ariaver2}.tar.xz
+curl --retry 5 -LO --progress-bar https://github.com/aria2/aria2/releases/download/${ariaver1}/aria2-${ariaver2}.tar.xz
 tar -xvf aria2*.xz
 rm *.xz
 cd /root/aria2*
@@ -138,12 +138,12 @@ if [[ ! -d /usr/share/nginx/ariang ]]; then
 fi
 cd /usr/share/nginx/ariang
 ariangver=$(curl -s "https://api.github.com/repos/mayswind/AriaNg/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-curl -LO https://github.com/mayswind/AriaNg/releases/download/${ariangver}/AriaNg-${ariangver}.zip
+curl --retry 5 -LO https://github.com/mayswind/AriaNg/releases/download/${ariangver}/AriaNg-${ariangver}.zip
 unzip *.zip
 rm -rf *.zip
 cd
 TERM=ansi whiptail --title "安装中" --infobox "拉取全自动Aria2上传脚本中..." 7 68
 cd /etc/aria2/
-curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/autoupload.sh
+curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/autoupload.sh
 chmod +x /etc/aria2/autoupload.sh
 }

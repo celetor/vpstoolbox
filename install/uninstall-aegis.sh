@@ -55,7 +55,7 @@ done
 apt-get purge sysstat exim4 chrony aliyun-assist -y
 systemctl daemon-reload
 # 更换apt源以防出bug
-curl -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/system-upgrade.sh
+curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/system-upgrade.sh
 source system-upgrade.sh
 upgrade_system
 #echo "nameserver 1.1.1.1" > '/etc/resolv.conf'

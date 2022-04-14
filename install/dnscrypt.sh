@@ -145,7 +145,7 @@ if [[ $(systemctl is-active systemd-resolved) == active ]]; then
   echo "nameserver 8.8.8.8" >> /etc/resolv.conf  
 fi
 dnsver=$(curl -s "https://api.github.com/repos/DNSCrypt/dnscrypt-proxy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-curl -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/${dnsver}/dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
+curl --retry 5 -LO --progress-bar https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/${dnsver}/dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
 tar -xvf dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
 rm dnscrypt-proxy-linux_x86_64-${dnsver}.tar.gz
 cd linux-x86_64

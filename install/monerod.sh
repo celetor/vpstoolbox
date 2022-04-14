@@ -10,7 +10,7 @@ github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
 install_monerod() {
-curl -LO https://downloads.getmonero.org/linux64
+curl --retry 5 -LO https://downloads.getmonero.org/linux64
 tar -xjvf linux64
 mv monero-x86_64* monero
 cd monero

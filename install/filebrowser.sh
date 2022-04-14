@@ -9,7 +9,7 @@ colorEcho ${INFO} "Install Filebrowser ing"
 
 filever=$(curl -s https://api.github.com/repos/filebrowser/filebrowser/releases/latest | grep -o '"tag_name": ".*"' | sed 's/"//g' | sed 's/tag_name: //g')
 
-curl -LO https://github.com/filebrowser/filebrowser/releases/download/${filever}/linux-amd64-filebrowser.tar.gz
+curl --retry 5 -LO https://github.com/filebrowser/filebrowser/releases/download/${filever}/linux-amd64-filebrowser.tar.gz
 tar -xvf linux-amd64-filebrowser.tar.gz
 cp -f filebrowser /usr/local/bin/filebrowser
 rm linux-amd64-filebrowser.tar.gz

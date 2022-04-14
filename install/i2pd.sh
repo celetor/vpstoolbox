@@ -8,7 +8,7 @@ install_i2pd(){
 wget -q -O - https://repo.i2pd.xyz/.help/add_repo | sudo bash -s -
 apt-get update
 apt-get install minissdpd -y
-#curl -LO https://github.com/PurpleI2P/i2pd/releases/download/2.39.0/i2pd_2.39.0-1bullseye1_amd64.deb
+#curl --retry 5 -LO https://github.com/PurpleI2P/i2pd/releases/download/2.39.0/i2pd_2.39.0-1bullseye1_amd64.deb
 #dpkg -i i2pd_2.39.0-1bullseye1_amd64.deb
 apt-get install i2pd -y
  elif [[ ${dist} == ubuntu ]]; then
