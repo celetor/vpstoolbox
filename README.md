@@ -14,6 +14,10 @@ apt-get update --fix-missing && apt-get install sudo curl -y && curl -Ss https:/
 
 > 仅支援 **Debian/Ubuntu** 系统。
 
+## 给纯新手小白看的教程
+
+[纯新手教程点这里！！！](README_bai.md)
+
 ## 前提条件及使用要点 Usage instruction
 
 1. **Trojan-GFW 不支援 Cloudflare CDN ！！！** ( ![请勿开启CDN](images/cf1.png) )
