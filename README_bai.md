@@ -25,7 +25,7 @@
 
 ## 域名的购买及 IP 绑定
 
-1. 前往[https://www.namesilo.com]，注册账号，搜索你想要的域名，点击购买。
+1. 前往[namesilo.com](https://www.namesilo.com/?rid=685fb47qi)，注册账号，搜索你想要的域名，点击购买。
 ![domain1](images/domain1.png)
 2. 打开[管理页面](https://www.namesilo.com/account_domains.php)，点击`Manage DNS for this domain`。
 ![domain2](images/domain2.png)
