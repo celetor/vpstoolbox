@@ -7,15 +7,8 @@ install_dnscrypt(){
   if [[ ! -d /etc/dnscrypt-proxy/ ]]; then
     mkdir /etc/dnscrypt-proxy/
   fi
-ipv6_true="false"
-block_ipv6="true"
-if [[ -n ${myipv6} ]]; then
-  ping -6 ipv6.google.com -c 2 || ping -6 2620:fe::10 -c 2
-  if [[ $? -eq 0 ]]; then
-    ipv6_true="true"
-    block_ipv6="false"
-  fi
-fi
+ipv6_true="true"
+block_ipv6="false"
     cat > '/etc/dnscrypt-proxy/dnscrypt-proxy.toml' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 listen_addresses = ['127.0.0.1:53','[::1]:53']
