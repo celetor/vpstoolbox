@@ -6,6 +6,10 @@
 
 > 经观察，**证书自动续签的问题已解决**，方案已稳定，可长期正常使用。
 
+## 给纯新手小白看的教程
+
+[纯新手教程点这里！！！](README_bai.md)
+
 ## 一键命令 One click command
 
 ```bash
@@ -13,10 +17,6 @@ apt-get update --fix-missing && apt-get install sudo curl -y && curl -Ss https:/
 ```
 
 > 仅支援 **Debian/Ubuntu** 系统。
-
-## 给纯新手小白看的教程
-
-[纯新手教程点这里！！！](README_bai.md)
 
 ## 前提条件及使用要点 Usage instruction
 
