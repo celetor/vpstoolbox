@@ -2,10 +2,9 @@
 
 ## 阿里云云盾卸载模组 Uninstall Aliyun-aegis moudle
 
-uninstall_aegis(){
-
 set +e
 
+uninstall_aegis(){
 colorEcho ${INFO} "Uninstall Aliyun aegis ing"
 systemctl stop aegis
 systemctl stop CmsGoAgent.service

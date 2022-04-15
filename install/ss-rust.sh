@@ -9,6 +9,8 @@ url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
+set +e
+
 ss_version=$(curl -s "https://api.github.com/repos/shadowsocks/shadowsocks-rust/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
 install_ss_rust(){

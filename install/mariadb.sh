@@ -2,6 +2,8 @@
 
 ## mariadb模组 mariadb moudle
 
+set +e
+
 install_mariadb(){
 	set +e
   curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash

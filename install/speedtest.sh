@@ -2,6 +2,8 @@
 
 ## Speedtest模组 Speedtest moudle
 
+set +e
+
 install_speedtest(){
 	cd /usr/share/nginx/
 git clone https://github.com/librespeed/speedtest.git

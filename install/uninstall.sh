@@ -2,7 +2,9 @@
 
 ## 卸载模组 Uninstall moudle
 
-## 仅用于卸载
+## 仅用于卸载基础安装
+
+set +e
 
 uninstall(){
   set +e

@@ -2,14 +2,14 @@
 
 ## 影音模组
 
-set +e
-
 #---Author Info---
 ver="1.0.0"
 Author="johnrosen1"
 url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
+
+set +e
 
 ## Usenet Provider
 

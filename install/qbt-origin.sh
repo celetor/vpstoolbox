@@ -2,8 +2,9 @@
 
 ## Qbt_origin模组 Qbt_origin moudle
 
-install_qbt_o(){
 set +e
+
+install_qbt_o(){
 clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Qbt原版中..." 7 68
 colorEcho ${INFO} "安装原版Qbittorrent(Install Qbittorrent ing)"

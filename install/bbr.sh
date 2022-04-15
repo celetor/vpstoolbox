@@ -9,6 +9,8 @@ url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
+set +e
+
 install_bbr(){
   TERM=ansi whiptail --title "初始化中" --infobox "启动BBR中..." 7 68
   colorEcho ${INFO} "Enabling TCP-BBR boost"

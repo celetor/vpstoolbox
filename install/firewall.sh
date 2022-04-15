@@ -2,8 +2,9 @@
 
 ## Firewall模组 Firewall moudle
 
-openfirewall(){
 set +e
+
+openfirewall(){
 TERM=ansi whiptail --title "配置中" --infobox "配置防火墙中..." 7 68
 colorEcho ${INFO} "设置 firewall"
 #policy

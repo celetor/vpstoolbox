@@ -2,6 +2,8 @@
 
 ## 证书申请模组 Let's encrypt moudle
 
+set +e
+
 installacme(){
   set +e
   curl --retry 5 -s https://get.acme.sh | sh

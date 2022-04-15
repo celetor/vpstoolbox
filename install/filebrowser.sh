@@ -2,6 +2,8 @@
 
 ## Filebrowser模组 Filebrowser moudle
 
+set +e
+
 install_filebrowser(){
 clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Filebrowser中..." 7 68

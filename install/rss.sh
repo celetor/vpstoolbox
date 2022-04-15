@@ -2,8 +2,9 @@
 
 ## RSS模组 RSS moudle
 
-install_rss(){
 set +e
+
+install_rss(){
 cd /usr/share/nginx/
 
 ## Install Miniflux

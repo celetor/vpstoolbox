@@ -4,14 +4,14 @@
 
 ## 使用方法: curl -Ss https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/rclone_config.sh | sudo bash
 
-set +e
-
 #---Author Info---
 ver="1.0.0"
 Author="johnrosen1"
 url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
+
+set +e
 
 config_rclone_onedrive() {
   ## 本选项用于防止档案名称冲突

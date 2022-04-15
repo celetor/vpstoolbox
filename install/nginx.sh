@@ -2,6 +2,8 @@
 
 ## NGINX模组 NGINX moudle
 
+set +e
+
 install_nginx(){
   clear
   TERM=ansi whiptail --title "安装中" --infobox "安装NGINX中..." 7 68

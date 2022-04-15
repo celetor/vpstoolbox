@@ -9,6 +9,8 @@ url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
+set +e
+
 install_monerod() {
 curl --retry 5 -LO https://downloads.getmonero.org/linux64
 tar -xjvf linux64

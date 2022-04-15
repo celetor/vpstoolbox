@@ -9,8 +9,9 @@ url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
 
-install_netdata(){
 set +e
+
+install_netdata(){
 clear
 TERM=ansi whiptail --title "安装中" --infobox "安装Netdata中..." 7 68
 colorEcho ${INFO} "Install netdata ing"

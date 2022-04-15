@@ -2,8 +2,9 @@
 
 ## Stun-server模组 Stun-server moudle
 
+set +e
+
 install_stun(){
-  set +e
   cd
   TERM=ansi whiptail --title "安装中" --infobox "安装stunserver中..." 7 68
   apt-get install libboost-all-dev -y

@@ -2,6 +2,8 @@
 
 ## i2pd模组 i2pd moudle
 
+set +e
+
 install_i2pd(){
   set +e
   if [[ ${dist} == debian ]]; then

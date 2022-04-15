@@ -2,8 +2,9 @@
 
 ## 邮箱模组 Mail moudle
 
-install_mail(){
   set +e
+
+install_mail(){
   clear
 TERM=ansi whiptail --title "安装中" --infobox "安装邮件服务中..." 7 68
   colorEcho ${INFO} "Install Mail Service ing"

@@ -2,6 +2,8 @@
 
 ## 证书检测模组 Cert detect moudle
 
+set +e
+
 detectcert(){
     set +e
 if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then

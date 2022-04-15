@@ -2,6 +2,8 @@
 
 ## RocketChat模组 RocketChat moudle
 
+set +e
+
 install_rocketchat(){
 
 cd /usr/share/nginx/

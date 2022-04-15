@@ -2,6 +2,8 @@
 
 ## MongoDB模组 MongoDb moudle
 
+set +e
+
 install_mongodb(){
 set +e
 apt-get install gnupg2 -y
