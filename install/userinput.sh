@@ -50,8 +50,7 @@ userinput_standard() {
   "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
   "rss" "RSSHUB + Miniflux(RSS生成器+RSS阅读器)" ${check_rss} \
   "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
-  "net" "Netdata(监测伺服器运行状态)" off \
-  "0000" "test-only" off 2>results
+  "net" "Netdata(监测伺服器运行状态)" off 2>results
 
   while read choice; do
     case $choice in
@@ -253,8 +252,7 @@ userinput_full() {
   "net" "Netdata(监测伺服器运行状态)" off \
   "typecho" "Typecho" ${check_echo} \
   "10" "Bt-Tracker(服务器)" ${check_tracker} \
-  "13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
-  "14" "test-only" off 2>results
+  "13" "Qbt原版(除PT站指明要求,请勿选中)" off 2>results
 
   while read choice; do
     case $choice in

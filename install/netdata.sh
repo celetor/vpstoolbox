@@ -27,14 +27,6 @@ localipv4:
   name : 'local'
   url  : 'http://127.0.0.1:83/stub_status'
 EOF
-  cat > '/opt/netdata/etc/netdata/go.d/x509check.conf' << EOF
-update_every : 60
-
-jobs:
-
-  - name   : ${domain}_${password1}_file_cert
-    source : file:///etc/certs/${domain}_ecc/fullchain.cer
-EOF
 if [[ ${install_php} == 1 ]]; then
 cat > '/opt/netdata/etc/netdata/python.d/phpfpm.conf' << EOF
 local:
