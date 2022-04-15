@@ -43,14 +43,14 @@ userinput_standard() {
   whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 18 65 10 \
   "Back" "返回上级菜单(Back to main menu)" off \
   "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
-  "port" "自定义Trojan-GFW/Vless(grpc)端口" off \
   "grpc" "Vless+gRPC+TLS(支持CDN)" ${fastopen} \
-  "ss" "shadowsocks-rust" ${check_ss} \
+  "port" "自定义Trojan-GFW/Vless(grpc)端口" off \
+  "ss" "shadowsocks-rust(不支持CDN)" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
   "rss" "RSSHUB + Miniflux(RSS生成器+RSS阅读器)" ${check_rss} \
   "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
-  "net" "Netdata(监测伺服器运行状态)" on \
+  "net" "Netdata(监测伺服器运行状态)" off \
   "0000" "test-only" off 2>results
 
   while read choice; do
@@ -229,9 +229,9 @@ userinput_full() {
   "Back" "返回上级菜单(Back to main menu)" off \
   "基础" "基础" off \
   "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
-  "port" "自定义Trojan-GFW/Vless(grpc)端口" off \
   "grpc" "Vless+gRPC+TLS(支持CDN)" ${fastopen} \
-  "ss" "shadowsocks-rust" ${check_ss} \
+  "port" "自定义Trojan-GFW/Vless(grpc)端口" off \
+  "ss" "shadowsocks-rust(不支持CDN)" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "影音" "影音" off \
   "media" "Emby Sonarr Radarr Lidarr Prowlarr Qbt" off \
@@ -250,7 +250,7 @@ userinput_full() {
   "安全" "安全" off \
   "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
   "其他" "其他软件及选项" off \
-  "net" "Netdata(监测伺服器运行状态)" on \
+  "net" "Netdata(监测伺服器运行状态)" off \
   "typecho" "Typecho" ${check_echo} \
   "10" "Bt-Tracker(服务器)" ${check_tracker} \
   "13" "Qbt原版(除PT站指明要求,请勿选中)" ${check_qbt_origin} \
