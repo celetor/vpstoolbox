@@ -97,8 +97,7 @@ mkdir /etc/stunserver
     ]
 }
 EOF
-systemctl restart stunserver
-systemctl enable stunserver
+systemctl enable stunserver --now
 cd
 rm -rf stunserver
 }

@@ -39,8 +39,7 @@ WantedBy=multi-user.target
 EOF
 mkdir /etc/filebrowser/
 systemctl daemon-reload
-systemctl enable filebrowser
-systemctl restart filebrowser
+systemctl enable filebrowser --now
 chmod -R 755 /etc/filebrowser/
 cd
 }

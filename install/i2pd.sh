@@ -298,7 +298,6 @@ RestartSec=3s
 WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
-systemctl enable i2pd
-systemctl restart i2pd
+systemctl enable i2pd --now
 cd
 }

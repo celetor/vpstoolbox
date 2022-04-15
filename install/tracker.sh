@@ -42,8 +42,7 @@ RestartSec=3s
 WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
-systemctl enable tracker
-systemctl restart tracker
+systemctl enable tracker --now
 cd /usr/share/nginx/
 mkdir tracker
 cd /usr/share/nginx/tracker/

@@ -129,8 +129,7 @@ touch /usr/local/bin/aria2.session
 mkdir /usr/share/nginx/aria2/
 chmod 755 /usr/share/nginx/aria2/
 systemctl daemon-reload
-systemctl enable aria2
-systemctl restart aria2
+systemctl enable aria2 --now
 cd
 ## 安装 AriaNG
 if [[ ! -d /usr/share/nginx/ariang ]]; then

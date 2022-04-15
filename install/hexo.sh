@@ -102,7 +102,7 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 Vless(grpc)链接(支持Cloudflare CDN)
 
-vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=${path_new}&sni=${domain}#vless(grpc_cdn_${myip})
+vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=${path_new}&sni=${domain}#vless(grpc_${mycountry}_${myip})
 
 ---
 
