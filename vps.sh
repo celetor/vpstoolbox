@@ -268,13 +268,10 @@ if [[ $install_status != 1 ]]; then
   if [[ $(systemctl is-active httpd) == active ]]; then
       systemctl disable httpd --now
   fi
-  curl --retry 5 -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
-  myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
-  mycountry="$( jq -r '.country' "/root/.trojan/ip.json" )"
-  localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
-  myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 fi
+curl --retry 5 -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
 myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
+mycountry="$( jq -r '.country' "/root/.trojan/ip.json" )"
 localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 }
