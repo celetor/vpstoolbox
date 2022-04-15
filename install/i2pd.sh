@@ -92,11 +92,11 @@ floodfill = false
 ## Uncomment and set to 'false' to disable Web Console
 # enabled = true
 ## Address and port service will listen on
-address = 0.0.0.0
+address = 127.0.0.1
 port = 7070
 strictheaders = false
 ## Path to web console, default "/"
-webroot = /${password1}_i2p/
+webroot = /i2p/
 ## Uncomment following lines to enable Web Console authentication 
 # auth = true
 # user = i2pd
