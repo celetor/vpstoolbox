@@ -24,7 +24,7 @@ ExecStart=/usr/sbin/stunserver --configfile /etc/stunserver/stun.conf --verbosit
 ExecReload=/bin/kill -HUP \$MAINPID
 LimitNOFILE=infinity
 Restart=on-failure
-RestartSec=1s
+RestartSec=3s
 
 [Install]
 WantedBy=multi-user.target
