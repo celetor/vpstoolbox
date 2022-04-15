@@ -140,7 +140,7 @@ port = 4447
 
 [sam]
 ## Uncomment and set to 'true' to enable SAM Bridge
-# enabled = true
+enabled = false
 # singlethread = false
 ## Address and port service will listen on
 # address = 127.0.0.1
@@ -155,7 +155,7 @@ port = 4447
 
 [i2cp]
 ## Uncomment and set to 'true' to enable I2CP protocol
-enabled = true
+enabled = false
 # singlethread = false
 ## Address and port service will listen on
 # address = 127.0.0.1
