@@ -120,7 +120,7 @@ port = 4444
 
 [socksproxy]
 ## Uncomment and set to 'false' to disable SOCKS Proxy
-# enabled = true
+enabled = false
 ## Address and port service will listen on
 address = 127.0.0.1
 port = 4447
