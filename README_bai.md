@@ -34,7 +34,7 @@
 4. 点击`Submit`提交修改
 5. Namesilo的DNS需要15分钟生效，可以先去干其他事情。
 6. 确认域名绑定已生效，前往[https://dnschecker.org/](https://dnschecker.org/)，填入域名，点击`Search`，如下方服务器列表右边为绿勾且IP地址正确则绑定成功。
-![dns](images/dns.png)
+![dnscheck](images/dnscheck.png)
 
 
 ## SSH 操作
