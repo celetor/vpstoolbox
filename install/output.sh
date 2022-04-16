@@ -53,9 +53,6 @@ echo -e "Nginx:\t\t\t"\$(systemctl is-active nginx)
   if [[ -f /usr/bin/hexo ]]; then
 echo -e "Hexo:\t\t\t"\$(systemctl is-active hexo)
   fi
-  if [[ -f /usr/sbin/dnscrypt-proxy ]]; then
-echo -e "Dnscrypt-proxy:\t\t"\$(systemctl is-active dnscrypt-proxy)
-  fi
   if [[ -f /usr/bin/qbittorrent-nox ]]; then
 echo -e "Qbittorrent:\t\t"\$(systemctl is-active qbittorrent)
   fi
@@ -101,12 +98,12 @@ echo -e "\e[40;33;1m [${domain}] 证书过期日期 : \${last_date} && [\${day_c
 echo -e "*******************************************************************"
 if [[ -f /usr/bin/xray ]]; then
 echo -e " --- \${BLUE}Vless(grpc)链接(低延迟 推荐使用 支持Cloudflare CDN)\${NOCOLOR} ---"
-echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(grpc_${mycountry}_${myip})\${NOCOLOR}"
+echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${mycountry}_${mycity}_${myip})\${NOCOLOR}"
 echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
-echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
+echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}#Trojan(${mycountry}_${mycity}_${myip})\${NOCOLOR}"
 else
 echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
-echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}\${NOCOLOR}"
+echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}#Trojan(${mycountry}_${mycity}_${myip})\${NOCOLOR}"
 fi
 if [[ -f /usr/sbin/ssserver ]]; then
 echo -e " --- \${BLUE}SS-rust链接\${NOCOLOR} ---"

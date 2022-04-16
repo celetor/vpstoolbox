@@ -310,6 +310,5 @@ RestartSec=3s
 WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
-systemctl enable hexo
-systemctl restart hexo
+systemctl enable hexo --now
 }

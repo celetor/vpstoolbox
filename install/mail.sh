@@ -510,7 +510,7 @@ namespace inbox {
   mailbox Junk {
     auto = subscribe
     special_use = \Junk
-    autoexpunge = 30d
+    autoexpunge = 14d
   }
   mailbox Trash {
     auto = subscribe

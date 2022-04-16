@@ -2,14 +2,14 @@
 
 ## Aria2全自动上传Onedrive(可以为GD等)模组 Aria2 Auto upload to Onedrive/Google Drive moudle
 
-set +e
-
 #---Author Info---
 ver="1.0.0"
 Author="johnrosen1"
 url="https://johnrosen1.com/"
 github_url="https://github.com/johnrosen1/vpstoolbox"
 #-----------------
+
+set +e
 
 ## Aria2使用方法: aria2c --on-download-complete /etc/aria2/autoupload.sh http://example.org/file.iso 或者 on-download-complete=/etc/aria2/autoupload.sh
 ## Qbittorrent-nox使用方法: bash /etc/aria2/autoupload.sh %N %C %F
