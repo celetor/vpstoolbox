@@ -92,6 +92,7 @@ net.nf_conntrack_max = 262144
 ## Enable bbr
 net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
+net.ipv4.tcp_low_latency = 1
 EOF
   sysctl -p
   sysctl --system
