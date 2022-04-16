@@ -104,6 +104,7 @@ DefaultTimeoutStopSec=30s
 #DefaultRestartSec=100ms
 DefaultLimitCORE=infinity
 DefaultLimitNOFILE=infinity
+DefaultLimitNPROC=infinity
 DefaultTasksMax=infinity
 EOF
     cat > '/etc/security/limits.conf' << EOF
