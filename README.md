@@ -20,7 +20,7 @@ apt-get update --fix-missing && apt-get install sudo curl -y && curl -Ss https:/
 
 ## 路由测试
 
-路由测试用于自动生成Trojan/Vless链接，CN2匹配有bug，暂时用不了，现已支持 AS9929 AS2914 AS2497 AS2516 AS4725 AS9269 AS4635 AS4760 AS4637 AS58453 对应 CU-VIP NTT IIJ KDDI SoftBank HKBN HKIX HKT Telstra CMI。
+路由测试用于自动生成Trojan/Vless链接，CN2匹配有bug，暂时用不了，现已支持 `AS9929 AS2914 AS2497 AS2516 AS4725 AS9269 AS4635 AS4760 AS4637 AS58453` 对应 `CU-VIP NTT IIJ KDDI SoftBank HKBN HKIX HKT Telstra CMI`。
 
 ## 前提条件及使用要点 Usage instruction
 
