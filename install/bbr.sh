@@ -103,6 +103,7 @@ DefaultTimeoutStopSec=30s
 #DefaultRestartSec=100ms
 DefaultLimitCORE=infinity
 DefaultLimitNOFILE=infinity
+DefaultTasksMax=infinity
 EOF
     cat > '/etc/security/limits.conf' << EOF
 root     soft   nofile    1000000
