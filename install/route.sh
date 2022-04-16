@@ -61,6 +61,9 @@ done < route_all.txt
 
 for ip in "${ips[@]}"; do
     asns+=($(curl --retry 5 -s https://ipinfo.io/${ip}/org?token=56c375418c62c9 --connect-timeout 300 | cut -d' ' -f1 ))
+    if [[ $ip = 59.43* ]] ; then
+        route_vps+=(AS4809)
+    fi
 done
 
 for asn in "${asns[@]}"; do
