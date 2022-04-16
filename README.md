@@ -32,6 +32,10 @@ apt-get update --fix-missing && apt-get install sudo curl -y && curl -Ss https:/
 7. 安装完成后，**BBR 已默认启用**，无需手动配置。
 8. 如果需要通过Cloudflare CDN转发Vless(gRPC)流量,请在Cloudflare控制面板的**网络,SSL/TLS,防火墙**中按照下图进行设置。![grpc](images/grpc.png) ![ssl](images/ssl.png) ![cf_firewall](images/cf_firewall.png) ![0_rtt](images/rtt.png)
 
+## 隐私声明
+
+1. IP数据库使用[ipinfo.io](https://ipinfo.io/)，仅用于生成Vless以及Trojan链接。
+
 ## 免责声明 Disclaimer
 
 1. 本项目不对使用 Vultr 提供的机器造成的任何可能问题负责(this project is not responsible for any possible problems caused by Vultr machines) !
