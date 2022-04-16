@@ -103,10 +103,10 @@ if [[ -f /usr/bin/xray ]]; then
 echo -e " --- \${BLUE}Vless链接(低延迟 推荐使用 支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
 echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
-echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}#Trojan(${route_final} ${mycountry} ${mycity} ${myip})\${NOCOLOR}"
+echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}#Trojan(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
 else
 echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
-echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}#Trojan(${route_final} ${mycountry} ${mycity} ${myip})\${NOCOLOR}"
+echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}#Trojan(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
 fi
 if [[ -f /usr/sbin/ssserver ]]; then
 echo -e " --- \${BLUE}SS-rust链接\${NOCOLOR} ---"
