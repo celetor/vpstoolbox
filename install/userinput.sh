@@ -379,13 +379,17 @@ userinput_full() {
   #echo "" >> /etc/hosts
   #echo "$(jq -r '.ip' "/root/.trojan/ip.json") ${domain}" >> /etc/hosts
   if [[ ${install_trojan} = 1 ]]; then
-    while [[ -z ${password1} ]]; do
-      password1=$(whiptail --passwordbox --nocancel "VPSToolBox系统主密码 (***请勿添加特殊符号***)" 8 68 --title "password1 input" 3>&1 1>&2 2>&3)
-      if [[ -z ${password1} ]]; then
+    while [[ -z ${password1} ]] || [[ ${n} > 30 ]]; do
+        password1=$(whiptail --passwordbox --nocancel "VPSToolBox系统主密码 (**最长30字符，请勿添加特殊符号**)" 8 68 --title "设置主系统密码" 3>&1 1>&2 2>&3)
+        n=${#password1}
+      if [[ ${n} == 0 ]]; then
         password1=$(
           head /dev/urandom | tr -dc a-z0-9 | head -c 6
           echo ''
         )
+      fi
+      if [[ ${n} > 30 ]]; then
+        password1=""
       fi
     done
     while [[ -z ${password2} ]]; do
