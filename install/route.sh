@@ -2,32 +2,6 @@
 
 ## 路由追踪模组
 
-## AS4134 163
-
-## AS4837 169
-
-## AS4809 CN2
-
-## AS9929 CU-VIP
-
-## AS2914 NTT JP
-
-## AS2497 IIJ JP
-
-## AS2516 KDDI JP
-
-## AS4725 SoftBank JP
-
-## AS9269 HKBN HK
-
-## AS4635 HKIX HK
-
-## AS4760 HKT HK
-
-## AS4637 Telstra
-
-## AS58453 CMI(China Mobile International Limited)
-
 set +e
 
 apt-get -y install traceroute
