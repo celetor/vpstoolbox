@@ -85,7 +85,7 @@ for i in "${!route_vps[@]}"; do
     done
 done
 
-route_final=$(cat route.txt | sort | uniq | tr -d '\n')
+route_final=$(cat route.txt | sort | uniq | tr '\n' ' ')
 
 echo $route_final
 
