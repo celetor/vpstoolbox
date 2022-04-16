@@ -68,7 +68,7 @@ echo -e "Aria2c:\t\t\t 正常运行中"
   if [[ \$(systemctl is-active filebrowser) == active ]]; then
 echo -e "Filebrowser:\t\t 正常运行中"
   fi
-  if [[ \$(systemctl is-active netdata) == active]]; then
+  if [[ \$(systemctl is-active netdata) == active ]]; then
 echo -e "Netdata:\t\t 正常运行中"
   fi
   if [[ \$(systemctl is-active docker) == active ]]; then
