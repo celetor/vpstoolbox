@@ -19,33 +19,6 @@ apt-get install i2pd -y
   echo "fail"
  fi
   cat > '/etc/i2pd/i2pd.conf' << EOF
-## Configuration file for a typical i2pd user
-## See https://i2pd.readthedocs.io/en/latest/user-guide/configuration/
-## for more options you can use in this file.
-
-## Lines that begin with "## " try to explain what's going on. Lines
-## that begin with just "#" are disabled commands: you can enable them
-## by removing the "#" symbol.
-
-## Tunnels config file
-## Default: ~/.i2pd/tunnels.conf or /var/lib/i2pd/tunnels.conf
-# tunconf = /var/lib/i2pd/tunnels.conf
-
-## Tunnels config files path
-## Use that path to store separated tunnels in different config files.
-## Default: ~/.i2pd/tunnels.d or /var/lib/i2pd/tunnels.d
-# tunnelsdir = /var/lib/i2pd/tunnels.d
-
-## Where to write pidfile (default: i2pd.pid, not used in Windows)
-# pidfile = /run/i2pd.pid
-
-## Logging configuration section
-## By default logs go to stdout with level 'info' and higher
-##
-## Logs destination (valid values: stdout, file, syslog)
-##  * stdout - print log entries to stdout
-##  * file - log entries to a file
-##  * syslog - use syslog, see man 3 syslog
 log = syslog
 ## Path to logfile (default - autodetect)
 # logfile = /var/log/i2pd/i2pd.log
@@ -57,13 +30,6 @@ loglevel = error
 
 ## Daemon mode. Router will go to background after start
 # daemon = true
-
-## Specify a family, router belongs to (default - none)
-# family =
-
-## External IP address to listen for connections
-## By default i2pd sets IP automatically
-# host = 1.2.3.4
 
 ## Port to listen for connections
 ## By default i2pd picks random port. You MUST pick a random number too,
@@ -141,25 +107,14 @@ port = 4447
 [sam]
 ## Uncomment and set to 'true' to enable SAM Bridge
 enabled = false
-# singlethread = false
-## Address and port service will listen on
-# address = 127.0.0.1
-# port = 7656
 
 [bob]
 ## Uncomment and set to 'true' to enable BOB command channel
 # enabled = true
-## Address and port service will listen on
-# address = 127.0.0.1
-# port = 2827
 
 [i2cp]
 ## Uncomment and set to 'true' to enable I2CP protocol
 enabled = false
-# singlethread = false
-## Address and port service will listen on
-# address = 127.0.0.1
-# port = 7654
 
 [i2pcontrol]
 ## Uncomment and set to 'true' to enable I2PControl protocol
