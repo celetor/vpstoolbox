@@ -38,53 +38,56 @@ password2="$( jq -r '.password2' "/root/.trojan/config.json" )"
 neofetch
 echo -e " --- 欢迎使用VPSToolBox --- "
 echo -e " --- \${BLUE}服務狀態(Service Status)\${NOCOLOR} ---"
-  if [[ -f /usr/local/bin/trojan ]]; then
-echo -e "Trojan-GFW:\t\t"\$(systemctl is-active trojan)
+  if [[ \$(cat /etc/sysctl.conf | grep bbr) = *bbr* ]] ; then
+echo -e "BBR网络优化：已开启"
   fi
-  if [[ -f /usr/bin/xray ]]; then
-echo -e "Vless(Grpc):\t\t"\$(systemctl is-active grpc)
+  if [[ \$(systemctl is-active trojan) == active ]]; then
+echo -e "Trojan-GFW:\t\t 正常运行中"
   fi
-  if [[ -f /usr/sbin/ssserver ]]; then
-echo -e "SS-rust:\t\t"\$(systemctl is-active ssserver)
+  if [[ \$(systemctl is-active grpc) == active ]]; then
+echo -e "Vless(Grpc):\t\t 正常运行中"
   fi
-  if [[ -f /usr/sbin/nginx ]]; then
-echo -e "Nginx:\t\t\t"\$(systemctl is-active nginx)
+  if [[ \$(systemctl is-active ssserver) == active ]]; then
+echo -e "SS-rust:\t\t 正常运行中"
   fi
-  if [[ -f /usr/bin/hexo ]]; then
-echo -e "Hexo:\t\t\t"\$(systemctl is-active hexo)
+  if [[ \$(systemctl is-active nginx) == active ]]; then
+echo -e "Nginx:\t\t\t 正常运行中"
   fi
-  if [[ -f /usr/bin/qbittorrent-nox ]]; then
-echo -e "Qbittorrent:\t\t"\$(systemctl is-active qbittorrent)
+  if [[ \$(systemctl is-active hexo) == active ]]; then
+echo -e "Hexo:\t\t\t 正常运行中"
   fi
-  if [[ -f /usr/sbin/opentracker ]]; then
-echo -e "Bittorrent-tracker:\t"\$(systemctl is-active tracker)
+  if [[ \$(systemctl is-active qbittorrent) == active ]]; then
+echo -e "Qbittorrent:\t\t 正常运行中"
   fi
-  if [[ -f /usr/local/bin/aria2c ]]; then
-echo -e "Aria2c:\t\t\t"\$(systemctl is-active aria2)
+  if [[ \$(systemctl is-active tracker) == active ]]; then
+echo -e "Bittorrent-tracker:\t 正常运行中"
   fi
-  if [[ -f /usr/local/bin/filebrowser ]]; then
-echo -e "Filebrowser:\t\t"\$(systemctl is-active filebrowser)
+  if [[ \$(systemctl is-active aria2) == active ]]; then
+echo -e "Aria2c:\t\t\t 正常运行中"
   fi
-  if [[ -f /opt/netdata/usr/sbin/netdata ]]; then
-echo -e "Netdata:\t\t"\$(systemctl is-active netdata)
+  if [[ \$(systemctl is-active filebrowser) == active ]]; then
+echo -e "Filebrowser:\t\t 正常运行中"
   fi
-  if [[ -f /usr/bin/dockerd ]]; then
-echo -e "Docker:\t\t\t"\$(systemctl is-active docker)
+  if [[ \$(systemctl is-active netdata) == active]]; then
+echo -e "Netdata:\t\t 正常运行中"
   fi
-  if [[ -f /usr/sbin/mysqld ]]; then
-echo -e "MariaDB:\t\t"\$(systemctl is-active mariadb)
+  if [[ \$(systemctl is-active docker) == active ]]; then
+echo -e "Docker:\t\t\t 正常运行中"
   fi
-  if [[ -f /usr/sbin/php-fpm8.0 ]]; then
-echo -e "PHP:\t\t\t"\$(systemctl is-active php8.0-fpm)
+  if [[ \$(systemctl is-active mariadb) == active ]]; then
+echo -e "MariaDB:\t\t 正常运行中"
   fi
-  if [[ -f /usr/sbin/dovecot ]]; then
-echo -e "Dovecot:\t\t"\$(systemctl is-active dovecot)
+  if [[ \$(systemctl is-active php8.0-fpm) == active ]]; then
+echo -e "PHP:\t\t\t 正常运行中"
   fi
-  if [[ -f /usr/sbin/postfix ]]; then
-echo -e "Postfix:\t\t"\$(systemctl is-active postfix)
+  if [[ \$(systemctl is-active dovecot) == active ]]; then
+echo -e "Dovecot:\t\t 正常运行中"
   fi
-  if [[ -f /usr/bin/fail2ban-server ]]; then
-echo -e "Fail2ban:\t\t"\$(systemctl is-active fail2ban)
+  if [[ \$(systemctl is-active postfix) == active ]]; then
+echo -e "Postfix:\t\t 正常运行中"
+  fi
+  if [[ \$(systemctl is-active fail2ban) == active ]]; then
+echo -e "Fail2ban:\t\t 正常运行中"
   fi
 echo -e " --- \${BLUE}帶寬使用(Bandwith Usage)\${NOCOLOR} ---"
 echo -e "         接收(Receive)    发送(Transmit)"
@@ -97,7 +100,7 @@ day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
 echo -e "\e[40;33;1m [${domain}] 证书过期日期 : \${last_date} && [\${day_count} days] \e[0m"
 echo -e "*******************************************************************"
 if [[ -f /usr/bin/xray ]]; then
-echo -e " --- \${BLUE}Vless(grpc)链接(低延迟 推荐使用 支持Cloudflare CDN)\${NOCOLOR} ---"
+echo -e " --- \${BLUE}Vless链接(低延迟 推荐使用 支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${mycountry}_${mycity}_${myip})\${NOCOLOR}"
 echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}trojan://$password1@$domain:${trojanport}#Trojan(${mycountry}_${mycity}_${myip})\${NOCOLOR}"
