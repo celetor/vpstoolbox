@@ -72,8 +72,6 @@ fi
 cat > '/etc/php/8.0/fpm/pool.d/www.conf' << EOF
 [www]
 
-;prefix = /path/to/pools/\$pool
-
 user = nginx
 group = nginx
 
@@ -81,7 +79,6 @@ listen = /run/php/php8.0-fpm.sock
 
 listen.owner = nginx
 listen.group = nginx
-;listen.mode = 0660
 
 pm = dynamic
 
@@ -92,12 +89,6 @@ pm.start_servers = $(($(nproc --all)*4))
 pm.min_spare_servers = $(($(nproc --all)*2))
 
 pm.max_spare_servers = $(($(nproc --all)*4))
-
-; The number of requests each child process should execute before respawning.
-; This can be useful to work around memory leaks in 3rd party libraries. For
-; endless request processing specify '0'. Equivalent to PHP_FCGI_MAX_REQUESTS.
-; Default Value: 0
-;pm.max_requests = 500
 
 pm.status_path = /status
 

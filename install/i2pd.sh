@@ -166,13 +166,13 @@ verify = true
 ## Maximum active transit sessions (default:2500)
 transittunnels = 65535
 ## Limit number of open file descriptors (0 - use system limit)  
-# openfiles = 0
+openfiles = 0
 ## Maximum size of corefile in Kb (0 - use system limit) 
-# coresize = 0
+coresize = 0
 ## Threshold to start probabalistic backoff with ntcp sessions (0 - use system limit) 
-# ntcpsoft = 0
+ntcpsoft = 0
 ## Maximum number of ntcp sessions (0 - use system limit) 
-# ntcphard = 0
+ntcphard = 0
 
 [trust]
 ## Enable explicit trust options. false by default
@@ -197,7 +197,6 @@ enabled = true
 published = true
 
 [persist]
-## Save peer profiles on disk (default: true)
 profiles = true
 
 [cpuext]
