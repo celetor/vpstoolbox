@@ -84,8 +84,8 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 ### Trojan-GFW 链接
 
-1. trojan://$password1@$domain:${trojanport}
-2. trojan://$password2@$domain:${trojanport}
+1. trojan://${password1}@${domain}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip})
+2. trojan://${password2}@${domain}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip})
 
 #### 相关链接(重要!)
 
@@ -102,7 +102,7 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 Vless(grpc)链接(支持Cloudflare CDN)
 
-vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&encryption=none&type=grpc&serviceName=${path_new}&sni=${domain}#vless(grpc_${mycountry}_${myip})
+vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip})
 
 ---
 
