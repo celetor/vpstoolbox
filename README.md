@@ -22,6 +22,13 @@ apt-get update --fix-missing && apt-get install sudo curl -y && curl -Ss https:/
 
 路由测试用于自动生成Trojan/Vless链接，现已支持 `AS4134 AS4837 AS4809 AS9929 AS2914 AS2497 AS2516 AS4725 AS9269 AS4635 AS4760 AS4637 AS58453 AS64050` 对应 `163 169 CN2 CU-VIP NTT IIJ KDDI SoftBank HKBN HKIX HKT Telstra CMI BGPNET`。
 
+手动测试方法
+```bash
+curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/route.sh
+source route.sh
+route_test
+```
+
 ## 前提条件及使用要点 Usage instruction
 
 1. **Trojan-GFW 不支援 Cloudflare CDN ！！！** ( ![请勿开启CDN](images/cf1.png) )
