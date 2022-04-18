@@ -102,7 +102,8 @@ http {
   proxy_ssl_protocols TLSv1.2 TLSv1.3;
   proxy_set_header Host \$http_host;
   proxy_set_header X-Real-IP \$remote_addr;
-  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for; 	
+  proxy_socket_keepalive on;
 
   set_real_ip_from 103.21.244.0/22;
   set_real_ip_from 103.22.200.0/22;
