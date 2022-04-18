@@ -95,6 +95,7 @@ curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22auto_update_trac
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22idn_support_enabled%22:true%7D  --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22enable_multi_connections_from_same_ip%22:true%7D  --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22add_trackers_enabled%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22add_trackers%22:%22https:%2f%2f337hhh.xyz:443/announce%22%7D --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_tiers%22:true%7D  --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_trackers%22:true%7D  --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_trackers%22:true%7D  --cookie "${qbtcookie}"
