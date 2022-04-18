@@ -89,7 +89,6 @@ http {
   #fastcgi_cache phpcache;
   #fastcgi_cache_key "\$scheme\$proxy_host\$request_uri";
 
-  set_real_ip_from 127.0.0.1;
   autoindex_exact_size off;
   http2_push_preload on;
   aio threads;
@@ -105,6 +104,7 @@ http {
   proxy_set_header X-Real-IP \$remote_addr;
   proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
 
+  set_real_ip_from 127.0.0.1;
   real_ip_header X-Forwarded-For; 
   real_ip_recursive on;
 
