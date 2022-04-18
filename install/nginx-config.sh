@@ -182,9 +182,6 @@ echo "    location /emby/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:8096/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
@@ -200,8 +197,6 @@ echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:8989/sonarr/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
@@ -216,9 +211,6 @@ echo "    location /radarr/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:7878/radarr/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
@@ -233,9 +225,6 @@ echo "    location /lidarr/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:8686/lidarr/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
@@ -250,9 +239,6 @@ echo "    location /readarr/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:8787/readarr/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
@@ -268,8 +254,6 @@ echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:6767/bazarr/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
@@ -284,9 +268,6 @@ echo "    location /chinesesubfinder/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:19035/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
@@ -301,9 +282,6 @@ echo "    location /prowlarr/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:9696/prowlarr/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
@@ -318,9 +296,6 @@ echo "    location /jackett/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:9117/jackett/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
@@ -336,8 +311,6 @@ echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:3579/ombi/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
@@ -352,9 +325,6 @@ echo "    location /nzbget/ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:6789/;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass_request_headers on;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forward-Proto https;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header X-Forwarded-Host \$http_host;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
@@ -401,16 +371,6 @@ echo "        fastcgi_index index.php;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_param HTTPS on;" >> /etc/nginx/conf.d/default.conf
 echo "        fastcgi_param SCRIPT_FILENAME \$request_filename;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
-echo "        }" >> /etc/nginx/conf.d/default.conf
-fi
-if [[ $install_dnscrypt == 1 ]]; then
-echo "    location /dns-query {" >> /etc/nginx/conf.d/default.conf
-echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
-echo "        #proxy_redirect off;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_pass http://127.0.0.1:3000;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Upgrade \$http_upgrade;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Connection "upgrade";" >> /etc/nginx/conf.d/default.conf
-echo "        #error_page 502 = @errpage;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_speedtest == 1 ]]; then
@@ -492,9 +452,6 @@ echo "        }" >> /etc/nginx/conf.d/default.conf
 echo "    location ~ ^/announce$ {" >> /etc/nginx/conf.d/default.conf
 echo "        #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "        proxy_pass http://127.0.0.1:6969;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header Host \$host;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/conf.d/default.conf
-echo "        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/conf.d/default.conf
 echo "        }" >> /etc/nginx/conf.d/default.conf
 fi
 if [[ $install_netdata == 1 ]]; then
