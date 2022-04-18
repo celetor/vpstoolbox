@@ -18,7 +18,7 @@ sed -i 's/#FEATURES+=-DWANT_IP_FROM_PROXY/FEATURES+=-DWANT_IP_FROM_PROXY/' Makef
 sed -i 's/#FEATURES+=-DWANT_LOG_NUMWANT/FEATURES+=-DWANT_LOG_NUMWANT/' Makefile
 sed -i 's/#FEATURES+=-DWANT_SYSLOGS/FEATURES+=-DWANT_SYSLOGS/' Makefile
 sed -i 's/#FEATURES+=-DWANT_FULLLOG_NETWORKS/FEATURES+=-DWANT_FULLLOG_NETWORKS/' Makefile
-sed -i 's/#FEATURES+=-DWANT_SYNC_LIVE/FEATURES+=-DWANT_SYNC_LIVE/' Makefile
+#sed -i 's/#FEATURES+=-DWANT_SYNC_LIVE/FEATURES+=-DWANT_SYNC_LIVE/' Makefile
 make
 cp -f opentracker /usr/sbin/opentracker
   cat > '/etc/systemd/system/tracker.service' << EOF
