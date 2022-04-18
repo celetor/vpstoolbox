@@ -241,7 +241,7 @@ userinput_full() {
   "aria" "Aria2下载器" ${check_aria} \
   "onedrive" "Rclone Onedrive" ${check_rclone} \
   "下载" "下载" off \
-  "qbt" "Qbittorrent增强版" ${check_qbt} \
+  "qbt" "Qbittorrent增强版+高性能Tracker" ${check_qbt} \
   "file" "Filebrowser" ${check_file} \
   "通讯" "通讯" off \
   "chat" "Rocket Chat" ${check_chat} \
@@ -251,8 +251,7 @@ userinput_full() {
   "其他" "其他软件及选项" off \
   "net" "Netdata(监测伺服器运行状态)" off \
   "typecho" "Typecho" ${check_echo} \
-  "10" "Bt-Tracker(服务器)" ${check_tracker} \
-  "13" "Qbt原版(除PT站指明要求,请勿选中)" off 2>results
+  "13" "Qbt原版+高性能Tracker" off 2>results
 
   while read choice; do
     case $choice in
@@ -309,8 +308,10 @@ userinput_full() {
       install_redis=1
       ;;
     qbt)
+      check_tracker="on"
       check_qbt="on"
       install_qbt_e=1
+      install_tracker=1
       ;;
     aria)
       check_aria="on"
@@ -339,17 +340,15 @@ userinput_full() {
       install_php=1
       install_mariadb=1
       ;;
-    10)
-      check_tracker="on"
-      install_tracker=1
-      ;;
     tor)
       install_tor=1
       install_docker=1
       ;;
     13)
+      check_tracker="on"
       check_qbt_origin="on"
       install_qbt_o=1
+      install_tracker=1
       ;;
     port)
       trojan_other_port=1
