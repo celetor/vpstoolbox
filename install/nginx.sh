@@ -89,6 +89,7 @@ http {
   #fastcgi_cache phpcache;
   #fastcgi_cache_key "\$scheme\$proxy_host\$request_uri";
 
+  set_real_ip_from 127.0.0.1;
   autoindex_exact_size off;
   http2_push_preload on;
   aio threads;
