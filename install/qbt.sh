@@ -99,6 +99,7 @@ curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22add_trackers%22:
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_tiers%22:true%7D  --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_trackers%22:true%7D  --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22announce_to_all_trackers%22:true%7D  --cookie "${qbtcookie}"
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22recheck_completed_torrents%22:true%7D  --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22limit_utp_rate%22:true%7D  --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22limit_tcp_overhead%22:true%7D  --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22limit_lan_peers%22:false%7D  --cookie "${qbtcookie}"
