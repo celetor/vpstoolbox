@@ -54,6 +54,10 @@ systemctl restart qbittorrent.service
 cpu_thread_count=$(nproc --all)
 io_thread=$((${cpu_thread_count}*4))
 
+## 开启强制加密
+
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22encryption%22:1%7D  --cookie "${qbtcookie}"
+
 qbtcookie=$(curl -i --header 'Referer: http://localhost:8080' --data 'username=admin&password=adminadmin' http://localhost:8080/api/v2/auth/login | grep set-cookie | cut -c13-48)
 #curl http://localhost:8080/api/v2/app/version  --cookie "${qbtcookie}"
 #curl http://localhost:8080/api/v2/app/preferences  --cookie "${qbtcookie}"

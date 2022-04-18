@@ -85,6 +85,10 @@ mkdir /data/media/XXX/
 mkdir /data/torrents/Others/
 mkdir /data/media/Others/
 
+## 开启强制加密
+
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22encryption%22:1%7D  --cookie "${qbtcookie}"
+
 ## 修改性能设置
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22auto_delete_mode%22:1%7D  --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22async_io_threads%22:${io_thread}%7D  --cookie "${qbtcookie}"
