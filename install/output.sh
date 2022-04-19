@@ -102,7 +102,7 @@ if [[ -f /usr/bin/xray ]]; then
 echo -e " --- \${BLUE}Vless链接(低延迟 推荐使用 支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
 echo -e " --- \${BLUE}Vless二维码\${NOCOLOR} ---"
-  qrencode -t UTF8 -m 2 "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip})"\${NOCOLOR}"
+  qrencode -t UTF8 -m 2 "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip})"
 echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)"
 echo -e "    \${YELLOW}trojan://${password1}@${domain}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
 echo -e " --- \${BLUE}推荐的Vless客户端(安卓)\${NOCOLOR} ---"
