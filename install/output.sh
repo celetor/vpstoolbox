@@ -114,8 +114,8 @@ fi
 if [[ -f /usr/sbin/ssserver ]]; then
 echo -e " --- \${BLUE}SS-rust链接\${NOCOLOR} ---"
 ###
-echo -e "    \${YELLOW}ss://aes-128-gcm:${password1}@${myip}:8388#iplc-only\${NOCOLOR}"
-echo -e "    \${YELLOW}ss://$(echo "aes-128-gcm:${password1}@${myip}:8388" | base64)#iplc-only\${NOCOLOR}"
+echo -e "    \${YELLOW}ss://aes-128-gcm:${password1}@${myip}:8388#SS(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
+echo -e "    \${YELLOW}ss://$(echo "aes-128-gcm:${password1}@${myip}:8388" | base64)#SS(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
 ###
 fi
 if [[ -d /usr/share/nginx/nextcloud/ ]]; then
