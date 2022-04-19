@@ -104,6 +104,7 @@ http {
   proxy_set_header X-Real-IP \$remote_addr;
   proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
   proxy_socket_keepalive on;
+  proxy_max_temp_file_size 0;
 
   set_real_ip_from 103.21.244.0/22;
   set_real_ip_from 103.22.200.0/22;
