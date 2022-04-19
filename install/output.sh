@@ -77,9 +77,6 @@ echo -e "Docker:\t\t\t 正常运行中"
   if [[ \$(systemctl is-active mariadb) == active ]]; then
 echo -e "MariaDB:\t\t 正常运行中"
   fi
-  if [[ \$(systemctl is-active php8.0-fpm) == active ]]; then
-echo -e "PHP:\t\t\t 正常运行中"
-  fi
   if [[ \$(systemctl is-active dovecot) == active ]]; then
 echo -e "Dovecot:\t\t 正常运行中"
   fi
@@ -104,6 +101,8 @@ echo -e " --- \${BLUE}Vless链接(低延迟 推荐使用 支持Cloudflare CDN)\$
 echo -e "    \${YELLOW}vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
 echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}trojan://${password1}@${domain}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
+echo -e " --- \${BLUE}推荐的Vless客户端(安卓)\${NOCOLOR} ---"
+echo -e "    \${YELLOW}https://github.com/2dust/v2rayNG\${NOCOLOR}"
 else
 echo -e " --- \${BLUE}Trojan-GFW链接(不支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}trojan://${password1}@${domain}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
