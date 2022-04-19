@@ -156,6 +156,7 @@ cat << EOF > /etc/nginx/conf.d/grpc.conf
     lingering_close always;
     lingering_time 12h;
     lingering_timeout 1s;
+    proxy_buffering off;
 	}
 EOF
 fi
