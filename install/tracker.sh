@@ -11,7 +11,7 @@ apt-get install libowfat-dev make git build-essential zlib1g-dev libowfat-dev ma
 useradd -r opentracker --shell=/usr/sbin/nologin
 git clone https://erdgeist.org/gitweb/opentracker opentracker
 cd opentracker
-sed -i 's/#FEATURES+=-DWANT_V6/FEATURES+=-DWANT_V6/' Makefile
+#sed -i 's/#FEATURES+=-DWANT_V6/FEATURES+=-DWANT_V6/' Makefile
 sed -i 's/#FEATURES+=-DWANT_IP_FROM_QUERY_STRING/FEATURES+=-DWANT_IP_FROM_QUERY_STRING/' Makefile
 sed -i 's/#FEATURES+=-DWANT_COMPRESSION_GZIP/FEATURES+=-DWANT_COMPRESSION_GZIP/' Makefile
 sed -i 's/#FEATURES+=-DWANT_IP_FROM_PROXY/FEATURES+=-DWANT_IP_FROM_PROXY/' Makefile
@@ -33,7 +33,7 @@ Type=simple
 User=opentracker
 Group=opentracker
 RemainAfterExit=yes
-ExecStart=/usr/sbin/opentracker
+ExecStart=/usr/sbin/opentracker -d /etc/opentracker
 TimeoutStopSec=infinity
 LimitNOFILE=infinity
 Restart=on-failure
@@ -42,6 +42,7 @@ RestartSec=3s
 [Install]
 WantedBy=multi-user.target
 EOF
+mkdir /etc/opentracker
 systemctl daemon-reload
 systemctl enable tracker --now
 cd /usr/share/nginx/
