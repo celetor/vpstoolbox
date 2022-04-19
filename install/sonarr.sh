@@ -451,17 +451,17 @@ services:
     volumes:
       - /usr/share/nginx/prowlarr/config:/config
     restart: unless-stopped
-  jackett: #9117
-    network_mode: host
-    image: lscr.io/linuxserver/jackett
-    container_name: jackett
-    environment:
-      - PUID=0
-      - PGID=0
-      - TZ=Asia/Shanghai
-    volumes:
-      - /usr/share/nginx/jackett/config:/config
-    restart: unless-stopped
+  # jackett: #9117
+  #   network_mode: host
+  #   image: lscr.io/linuxserver/jackett
+  #   container_name: jackett
+  #   environment:
+  #     - PUID=0
+  #     - PGID=0
+  #     - TZ=Asia/Shanghai
+  #   volumes:
+  #     - /usr/share/nginx/jackett/config:/config
+  #   restart: unless-stopped
   # rsshub: # 1200
   #   image: diygod/rsshub
   #   container_name: rsshub

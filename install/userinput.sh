@@ -284,6 +284,7 @@ userinput_full() {
       install_jellyfin=1
       install_docker=1
       install_qbt_e=1
+      install_tracker=1
       ;;
     grpc)
       install_grpc=1
