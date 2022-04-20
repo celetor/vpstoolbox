@@ -59,6 +59,7 @@ cd /etc/grpc
   ],
   "routing": {
     "domainStrategy": "IPIfNonMatch",
+    "domainMatcher": "mph",
     "rules": [
       {
         "type": "field",
