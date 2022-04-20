@@ -80,50 +80,6 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 [Hostyun](https://my.hostyun.com/page.aspx?c=referral&u=27710)
 
----
-
-### 影音(包含qBittorrent加强版)
-
-前端
-<a href="https://$domain:${trojanport}/emby/" target="_blank" rel="noreferrer">emby</a>
-<a href="https://$domain:${trojanport}/ombi/" target="_blank" rel="noreferrer">ombi</a>
-中间层
-<a href="https://$domain:${trojanport}/sonarr/" target="_blank" rel="noreferrer">sonarr</a>
-<a href="https://$domain:${trojanport}/radarr/" target="_blank" rel="noreferrer">radarr</a>
-<a href="https://$domain:${trojanport}/lidarr/" target="_blank" rel="noreferrer">lidarr</a>
-<a href="https://$domain:${trojanport}/readarr/" target="_blank" rel="noreferrer">readarr</a>
-字幕
-<a href="https://$domain:${trojanport}/bazarr/" target="_blank" rel="noreferrer">bazarr</a>
-<a href="https://$domain:${trojanport}/chinesesubfinder/" target="_blank" rel="noreferrer">chinesesubfinder</a>
-索引器
-<a href="https://$domain:${trojanport}/prowlarr/" target="_blank" rel="noreferrer">prowlarr</a>
-下载器
-<a href="https://$domain:${trojanport}/qbt/" target="_blank" rel="noreferrer">qbt</a>
-<a href="https://$domain:${trojanport}/nzbget/" target="_blank" rel="noreferrer">nzbget</a>
-
----
-
-### Aria2
-
-#### AriaNG
-
-- <a href="https://$domain:443/ariang/" target="_blank" rel="noreferrer">https://$domain/ariang/</a>
-
-#### Aria2
-
-- https://$domain:443$ariapath
-- 密碼(Aria2 RPC金钥,token): **$ariapasswd**
-
----
-
-
-
-### Speedtest
-
-- <a href="https://$domain:443/${password1}_speedtest/" target="_blank" rel="noreferrer">https://$domain/${password1}_speedtest/</a>
-
----
-
 ### Netdata
 
 > 简介: 一款 **实时效能监测工具** 应用。

@@ -145,8 +145,36 @@ echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: admin\${NOCOLOR}"
 ###
 fi
-echo -e " --- 获取详细結果 ---"
-echo -e "    \${YELLOW}https://${domain}:${trojanport}/${password1}/\${NOCOLOR}"
+if [[ -d /usr/share/nginx/speedtest/ ]]; then
+echo -e " --- \${BLUE}Speedtest链接\${NOCOLOR} ---"
+###
+echo -e "    \${YELLOW}https://$domain:${trojanport}/${password1}_speedtest/\${NOCOLOR}"
+###
+fi
+if [[ -d /usr/share/nginx/nzbget ]]; then
+echo -e " --- \${BLUE}影音链接\${NOCOLOR} ---"
+###
+echo -e "    \${YELLOW}https://$domain:${trojanport}/emby/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/ombi/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/sonarr/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/radarr/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/lidarr/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/readarr/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/bazarr/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/chinesesubfinder/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/prowlarr/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/qbt/\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/nzbget/\${NOCOLOR}"
+###
+fi
+if [[ -d /etc/aria2/ ]]; then
+echo -e " --- \${BLUE}AriaNG+Aria2链接\${NOCOLOR} ---"
+###
+echo -e "    \${YELLOW}https://$domain:${trojanport}/ariang/\${NOCOLOR}"
+echo -e "    \${YELLOW}密码: ${ariapasswd}\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}${ariapath}\${NOCOLOR}"
+###
+fi
 echo -e "*********************"
 EOF
 chmod +x /etc/profile.d/mymotd.sh
