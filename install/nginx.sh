@@ -145,10 +145,28 @@ http {
 
   sendfile on;
   gzip on;
-  gzip_proxied off;
-  gzip_types text/html text/css text/javascript application/javascript application/x-javascript application/xml image/jpeg image/gif image/png;
+  gzip_proxied any;
+  gzip_types
+    application/javascript
+    application/x-javascript
+    text/javascript
+    text/css
+    text/xml
+    application/xhtml+xml
+    application/xml
+    application/atom+xml
+    application/rdf+xml
+    application/rss+xml
+    application/geo+json
+    application/json
+    application/ld+json
+    application/manifest+json
+    application/x-web-app-manifest+json
+    image/svg+xml
+    text/x-cross-domain-policy;
   gzip_comp_level 1;
   gzip_vary on;
+  gzip_disable "MSIE [1-6]\.";  
 
   include /etc/nginx/conf.d/default.conf;
 }
