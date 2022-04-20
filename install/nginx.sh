@@ -148,6 +148,7 @@ http {
   gzip_proxied off;
   gzip_types *;
   gzip_comp_level 1;
+  gzip_vary on;
 
   include /etc/nginx/conf.d/default.conf;
 }
