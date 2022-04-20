@@ -51,7 +51,8 @@ All applications support fully automated installation and configuration, ready t
   - [x] [Netdata has no minimum system hardware requirements](https://github.com/netdata/netdata)
 - front end
   - [x] [Nginx has no minimum system hardware requirements](https://github.com/nginx/nginx)
-  - [x] [Hexo Blog no minimum system hardware requirements](https://github.com/hexojs/hexo)
+  - [x] [Alist](https://github.com/Xhofe/alist)
+  - [ ] [Hexo Blog no minimum system hardware requirements](https://github.com/hexojs/hexo)
   - [ ] [Typecho has no minimum system hardware requirements](https://typecho.org/)
 - download
   - [ ] [Qbittorrent_enhanced_version High Storage Requirements](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
