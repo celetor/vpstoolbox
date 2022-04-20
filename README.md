@@ -68,7 +68,8 @@ route_test
   - [x] [Netdata 无最低配置要求](https://github.com/netdata/netdata)
 - 前端
   - [x] [Nginx 无最低配置要求](https://github.com/nginx/nginx)
-  - [x] [Hexo Blog 无最低配置要求](https://github.com/hexojs/hexo)
+  - [x] [Alist](https://github.com/Xhofe/alist)
+  - [ ] [Hexo Blog 无最低配置要求](https://github.com/hexojs/hexo)
   - [ ] [Typecho 无最低配置要求](https://typecho.org/)
 - 下载
   - [ ] [Qbittorrent_enhanced_version 高硬盘需求](https://github.com/c0re100/qBittorrent-Enhanced-Edition)
