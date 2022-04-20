@@ -22,7 +22,7 @@ userinput_standard() {
     check_dns="off"
   fi
   if [[ -z ${check_speed} ]]; then
-    check_speed="off"
+    check_speed="on"
   fi
   if [[ -z ${check_cloud} ]]; then
     check_cloud="off"
@@ -45,10 +45,10 @@ userinput_standard() {
   "trojan" "Trojan-GFW+TCP-BBR" on \
   "grpc" "Vless+gRPC(支持CDN)" on \
   "alist" "alist网盘管理器" on \
+  "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "port" "自定义Trojan-GFW/Vless(grpc)端口" off \
   "hexo" "Hexo Blog" off \
   "ss" "shadowsocks-rust(不支持CDN)" ${check_ss} \
-  "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
   "rss" "RSSHUB + Miniflux(RSS生成器+RSS阅读器)" ${check_rss} \
   "fail2ban" "Fail2ban(防SSH爆破用)" ${check_fail2ban} \
@@ -203,7 +203,7 @@ userinput_full() {
     check_file="off"
   fi
   if [[ -z ${check_speed} ]]; then
-    check_speed="off"
+    check_speed="on"
   fi
   if [[ -z ${check_mariadb} ]]; then
     check_mariadb="off"
@@ -245,10 +245,10 @@ userinput_full() {
   "trojan" "Trojan-GFW+TCP-BBR" on \
   "grpc" "Vless+gRPC+TLS(支持CDN)" on \
   "alist" "alist网盘管理器" on \
+  "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "port" "自定义Trojan-GFW/Vless(grpc)端口" off \
   "hexo" "Hexo Blog" off \
   "ss" "shadowsocks-rust(不支持CDN)" ${check_ss} \
-  "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "影音" "影音" off \
   "media" "Emby Sonarr Radarr Lidarr Prowlarr Qbt" off \
   "网盘" "网盘" off \
