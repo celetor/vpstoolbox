@@ -172,7 +172,7 @@ fi
 if [[ -d /opt/alist ]]; then
 echo -e " --- \${BLUE}Alist链接\${NOCOLOR} ---"
 echo -e "    \${YELLOW}https://$domain:${trojanport}\${NOCOLOR}"
-echo -e "    \${YELLOW}密码: $(/opt/alist/alist -password | awk -F'your password: ' '{print $2}' 2>&1)\${NOCOLOR}"
+echo -e "    \${YELLOW}密码: \$(/opt/alist/alist -password | awk -F'your password: ' '{print $2}' 2>&1)\${NOCOLOR}"
 fi
 echo -e "*********************"
 EOF
