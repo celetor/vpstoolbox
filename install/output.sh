@@ -128,6 +128,15 @@ echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 ###
 fi
+if [[ -d /usr/share/nginx/miniflux/ ]]; then
+echo -e " --- \${BLUE}Miniflux+RSSHUB链接\${NOCOLOR} ---"
+###
+echo -e "    \${YELLOW}https://$domain:${trojanport}/miniflux/\${NOCOLOR}"
+echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
+echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/rsshub/\${NOCOLOR}"
+###
+fi
 echo -e " --- 获取详细結果 ---"
 echo -e "    \${YELLOW}https://${domain}:${trojanport}/${password1}/\${NOCOLOR}"
 echo -e "*********************"

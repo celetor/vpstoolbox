@@ -103,20 +103,6 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 ---
 
-### Rsshub + Miniflux
-
-#### RSSHUB
-
-<a href="https://$domain/rsshub/" target="_blank" rel="noreferrer">https://$domain/rsshub/</a>
-
-#### Miniflux
-
-- <a href="https://$domain/miniflux/" target="_blank" rel="noreferrer">https://$domain/miniflux/</a>
-- 用户名(username): **admin**
-- 密碼(password): **${password1}**
-
----
-
 ### Aria2
 
 #### AriaNG
