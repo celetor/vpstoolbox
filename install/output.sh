@@ -137,6 +137,14 @@ echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/rsshub/\${NOCOLOR}"
 ###
 fi
+if [[ -d /etc/filebrowser/ ]]; then
+echo -e " --- \${BLUE}Filebrowser链接\${NOCOLOR} ---"
+###
+echo -e "    \${YELLOW}https://$domain:${trojanport}/file/\${NOCOLOR}"
+echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
+echo -e "    \${YELLOW}密码: admin\${NOCOLOR}"
+###
+fi
 echo -e " --- 获取详细結果 ---"
 echo -e "    \${YELLOW}https://${domain}:${trojanport}/${password1}/\${NOCOLOR}"
 echo -e "*********************"

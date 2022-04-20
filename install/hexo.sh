@@ -116,16 +116,6 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 ---
 
-### Filebrowser
-
-- <a href="https://$domain:443/file/" target="_blank" rel="noreferrer">https://$domain/file/</a>
-- 用户名(username): **admin**
-- 密碼(token): **admin**
-
-> *请自行修改初始用户名和密码！*
-
----
-
 
 
 ### Speedtest
