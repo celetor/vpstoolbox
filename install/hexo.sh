@@ -127,22 +127,6 @@ vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serv
 
 ---
 
-### Nextcloud
-
-<a href="https://$domain/nextcloud/" target="_blank" rel="noreferrer">https://$domain/nextcloud/</a>
-- 用户名(username): **admin**
-- 密碼(password): **${password1}**
-
----
-
-### Hexo
-
-{% blockquote %}
-cd /usr/share/nginx/hexo/source/_posts/
-{% endblockquote %}
-
----
-
 ### Rsshub + Miniflux
 
 #### RSSHUB
@@ -163,22 +147,10 @@ cd /usr/share/nginx/hexo/source/_posts/
 
 - <a href="https://$domain:443/ariang/" target="_blank" rel="noreferrer">https://$domain/ariang/</a>
 
-> 系统设定-->rpc-->填入下方内容(端口修改为443,填入Aria2 RPC金钥)即可。
-
 #### Aria2
 
 - https://$domain:443$ariapath
 - 密碼(Aria2 RPC金钥,token): **$ariapasswd**
-- <a href="https://play.google.com/store/apps/details?id=com.gianlu.aria2app" target="_blank" rel="noreferrer">Aria2 for Android</a>
-
----
-
-### Shadowsocks-rust
-
-ss://aes-128-gcm:${password1}@${domain}:8388#iplc-only
-ss://$(echo "aes-128-gcm:${password1}@${domain}:8388" | base64)#iplc-only
-
-PS: 仅推荐用于[iplc](https://relay.nekoneko.cloud?aff=2257)落地,不推荐直连使用。
 
 ---
 
@@ -230,60 +202,9 @@ PS: 仅推荐用于[iplc](https://relay.nekoneko.cloud?aff=2257)落地,不推荐
 
 ---
 
-### Bittorrent-trackers
-
-udp://$domain:6969/announce
-
-#### Info link
-
-<a href="https://$domain/tracker/" target="_blank" rel="noreferrer">https://$domain/tracker/</a>
-
----
-
 ### Typecho
 
 请自行注释掉*/etc/nginx/conf.d/default.conf*中的Hexo部分并去掉Typecho的注释以启用Typecho。
-
----
-
-### 相关链接
-
-##### Qbt相关链接
-
-1. <a href="https://play.google.com/store/apps/details?id=com.lgallardo.qbittorrentclientpro" target="_blank" rel="noreferrer">Android远程操控客户端</a>
-2. <a href="https://www.qbittorrent.org/" target="_blank" rel="noreferrer">https://www.qbittorrent.org/</a>
-3. <a href="https://thepiratebay.org/" target="_blank" rel="noreferrer">https://thepiratebay.org/</a>
-4. <a href="https://sukebei.nyaa.si/" target="_blank" rel="noreferrer">https://sukebei.nyaa.si/</a></li>
-5. <a href="https://rarbgprx.org/torrents.php" target="_blank" rel="noreferrer">https://rarbgprx.org/torrents.php</a>
-
-##### Rsshub相关链接
-
-1. <a href="https://docs.rsshub.app/" target="_blank" rel="noreferrer">RSSHUB docs</a>
-2. <a href="https://github.com/DIYgod/RSSHub-Radar" target="_blank" rel="noreferrer">RSSHub Radar</a>(推荐自行将默认的rsshub.app换成上述自建的)
-3. <a href="https://docs.rsshub.app/social-media.html" target="_blank" rel="noreferrer">RSSHUB路由</a>
-
-##### Aria相关链接
-
-1. <a href="https://github.com/aria2/aria2" target="_blank" rel="noreferrer">https://github.com/aria2/aria2</a>
-2. <a href="https://aria2.github.io/manual/en/html/index.html" target="_blank" rel="noreferrer">https://aria2.github.io/manual/en/html/index.html</a> 官方文档
-3. <a href="https://github.com/mayswind/AriaNg/releases" target="_blank" rel="noreferrer">AriaNG</a>
-
-##### Filebrowser相关链接
-
-1. <a href="https://github.com/filebrowser/filebrowser" target="_blank" rel="noreferrer">https://github.com/filebrowser/filebrowser</a>
-2. <a href="https://filebrowser.xyz/" target="_blank" rel="noreferrer">https://filebrowser.xyz/</a>
-
-##### Netdata相关链接
-
-1. <a href="https://play.google.com/store/apps/details?id=com.kpots.netdata" target="_blank" rel="noreferrer">https://play.google.com/store/apps/details?id=com.kpots.netdata</a>安卓客户端
-2. <a href="https://github.com/netdata/netdata" target="_blank" rel="noreferrer">https://github.com/netdata/netdata</a>
-
-##### Mail服务相关链接
-
-1. <a href="https://www.mail-tester.com/" target="_blank" rel="noreferrer">https://www.mail-tester.com/</a>
-2. <a href="https://lala.im/6838.html" target="_blank" rel="noreferrer">Debian10使用Postfix+Dovecot+Roundcube搭建邮件服务器</a>(仅供参考!)
-
-<iframe src="https://snowflake.torproject.org/embed.html" width="320" height="240" frameborder="0" scrolling="no"></iframe>
 
 EOF
 cd /usr/share/nginx/hexo/
