@@ -169,6 +169,11 @@ if [[ -d /usr/share/nginx/rocketchat ]]; then
 echo -e " --- \${BLUE}Rocketchat链接\${NOCOLOR} ---"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/chat/\${NOCOLOR}"
 fi
+if [[ -d /opt/alist ]]; then
+echo -e " --- \${BLUE}Alist链接\${NOCOLOR} ---"
+echo -e "    \${YELLOW}https://$domain:${trojanport}\${NOCOLOR}"
+echo -e "    \${YELLOW}密码: ${alist_password}\${NOCOLOR}"
+fi
 echo -e "*********************"
 EOF
 chmod +x /etc/profile.d/mymotd.sh

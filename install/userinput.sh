@@ -42,9 +42,11 @@ userinput_standard() {
 
   whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 18 65 10 \
   "Back" "返回上级菜单(Back to main menu)" off \
-  "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
-  "grpc" "Vless+gRPC+TLS(支持CDN)" ${fastopen} \
+  "trojan" "Trojan-GFW+TCP-BBR" on \
+  "grpc" "Vless+gRPC(支持CDN)" on \
+  "alist" "alist网盘管理器" on \
   "port" "自定义Trojan-GFW/Vless(grpc)端口" off \
+  "hexo" "Hexo Blog" off \
   "ss" "shadowsocks-rust(不支持CDN)" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
@@ -61,6 +63,14 @@ userinput_standard() {
     trojan)
       install_trojan=1
       install_bbr=1
+      ;;
+    alist)
+      install_hexo=0
+      install_alist=1
+      ;;
+    hexo)
+      install_hexo=1
+      install_alist=0
       ;;
     ss)
       check_ss="on"
@@ -102,6 +112,11 @@ userinput_standard() {
   done <results
 
   rm results
+
+  if [[ ${install_hexo} == 1 ]] && [[ ${install_alist} == 1 ]]; then
+    install_hexo=0
+    install_alist=1
+  fi
 
   if [[ ${trojan_other_port} == 1 ]]; then
     trojanport=$(whiptail --inputbox --nocancel "Trojan-GFW 端口(若不確定，請直接回車)" 8 68 443 --title "port input" 3>&1 1>&2 2>&3)
@@ -227,9 +242,11 @@ userinput_full() {
   whiptail --clear --ok-button "下一步" --backtitle "Hi,请按空格以及方向键来选择需要安装/更新的软件,请自行下拉以查看更多(Please press space and Arrow keys to choose)" --title "Install checklist" --checklist --separate-output --nocancel "请按空格及方向键来选择需要安装/更新的软件。" 24 65 16 \
   "Back" "返回上级菜单(Back to main menu)" off \
   "基础" "基础" off \
-  "trojan" "Trojan-GFW+TCP-BBR+Hexo Blog" on \
-  "grpc" "Vless+gRPC+TLS(支持CDN)" ${fastopen} \
+  "trojan" "Trojan-GFW+TCP-BBR" on \
+  "grpc" "Vless+gRPC+TLS(支持CDN)" on \
+  "alist" "alist网盘管理器" on \
   "port" "自定义Trojan-GFW/Vless(grpc)端口" off \
+  "hexo" "Hexo Blog" off \
   "ss" "shadowsocks-rust(不支持CDN)" ${check_ss} \
   "speed" "Speedtest(测试本地网络到VPS的延迟及带宽)" ${check_speed} \
   "影音" "影音" off \
@@ -262,6 +279,14 @@ userinput_full() {
     trojan)
       install_trojan=1
       install_bbr=1
+      ;;
+    alist)
+      install_hexo=0
+      install_alist=1
+      ;;
+    hexo)
+      install_hexo=1
+      install_alist=0
       ;;
     ss)
       check_ss="on"
@@ -360,6 +385,11 @@ userinput_full() {
   done <results
 
   rm results
+
+  if [[ ${install_hexo} == 1 ]] && [[ ${install_alist} == 1 ]]; then
+    install_hexo=0
+    install_alist=1
+  fi
 
   if [[ ${trojan_other_port} == 1 ]]; then
     trojanport=$(whiptail --inputbox --nocancel "Trojan-GFW 端口(若不確定，請直接回車)" 8 68 443 --title "port input" 3>&1 1>&2 2>&3)

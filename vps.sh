@@ -420,9 +420,16 @@ install_moudles(){
   source netdata.sh
   install_netdata
   fi
+  if [[ ${install_hexo} == 1 ]]; then
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/hexo.sh
   source hexo.sh
   install_hexo
+  fi
+  if [[ ${install_alist} == 1 ]]; then
+  curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/alist.sh
+  source alist.sh
+  install_alist
+  fi
   ## Install Trojan-gfw
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/trojan.sh
   source trojan.sh
