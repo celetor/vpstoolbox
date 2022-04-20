@@ -52,11 +52,6 @@ server {
   #if (\$host != "$domain") { return 404; }
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
   #add_header X-Cache-Status \$upstream_cache_status;
-  location / {
-    #proxy_pass http://127.0.0.1:4000/; # Hexo server
-    root /usr/share/nginx/hexo/public/; # Hexo public content
-    #error_page 404  /404.html;
-  }
 EOF
 
 if [[ $install_hexo == 1 ]]; then
