@@ -115,45 +115,34 @@ echo -e "    \${YELLOW}trojan://${password1}@${domain}:${trojanport}?security=tl
 fi
 if [[ -f /usr/sbin/ssserver ]]; then
 echo -e " --- \${BLUE}SS-rust链接\${NOCOLOR} ---"
-###
 echo -e "    \${YELLOW}ss://aes-128-gcm:${password1}@${myip}:8388#SS(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
 echo -e "    \${YELLOW}ss://$(echo "aes-128-gcm:${password1}@${myip}:8388" | base64)#SS(${route_final}${mycountry} ${mycity} ${myip})\${NOCOLOR}"
-###
 fi
 if [[ -d /usr/share/nginx/nextcloud/ ]]; then
 echo -e " --- \${BLUE}Nextcloud链接\${NOCOLOR}(Nextcloud links) ---"
-###
 echo -e "    \${YELLOW}https://${domain}:${trojanport}/nextcloud/\${NOCOLOR}"
 echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
-###
 fi
 if [[ -d /usr/share/nginx/miniflux/ ]]; then
 echo -e " --- \${BLUE}Miniflux+RSSHUB链接\${NOCOLOR} ---"
-###
 echo -e "    \${YELLOW}https://$domain:${trojanport}/miniflux/\${NOCOLOR}"
 echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/rsshub/\${NOCOLOR}"
-###
 fi
 if [[ -d /etc/filebrowser/ ]]; then
 echo -e " --- \${BLUE}Filebrowser链接\${NOCOLOR} ---"
-###
 echo -e "    \${YELLOW}https://$domain:${trojanport}/file/\${NOCOLOR}"
 echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: admin\${NOCOLOR}"
-###
 fi
 if [[ -d /usr/share/nginx/speedtest/ ]]; then
 echo -e " --- \${BLUE}Speedtest链接\${NOCOLOR} ---"
-###
 echo -e "    \${YELLOW}https://$domain:${trojanport}/${password1}_speedtest/\${NOCOLOR}"
-###
 fi
 if [[ -d /usr/share/nginx/nzbget ]]; then
 echo -e " --- \${BLUE}影音链接\${NOCOLOR} ---"
-###
 echo -e "    \${YELLOW}https://$domain:${trojanport}/emby/\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/ombi/\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/sonarr/\${NOCOLOR}"
@@ -165,27 +154,20 @@ echo -e "    \${YELLOW}https://$domain:${trojanport}/chinesesubfinder/\${NOCOLOR
 echo -e "    \${YELLOW}https://$domain:${trojanport}/prowlarr/\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/qbt/\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/nzbget/\${NOCOLOR}"
-###
 fi
 if [[ -d /etc/aria2/ ]]; then
 echo -e " --- \${BLUE}AriaNG+Aria2链接\${NOCOLOR} ---"
-###
 echo -e "    \${YELLOW}https://$domain:${trojanport}/ariang/\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${ariapasswd}\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}${ariapath}\${NOCOLOR}"
-###
 fi
 if [[ -d /opt/netdata/ ]]; then
 echo -e " --- \${BLUE}Netdata链接\${NOCOLOR} ---"
-###
 echo -e "    \${YELLOW}https://$domain:${trojanport}/${password1}_netdata/\${NOCOLOR}"
-###
 fi
 if [[ -d /usr/share/nginx/rocketchat ]]; then
 echo -e " --- \${BLUE}Rocketchat链接\${NOCOLOR} ---"
-###
 echo -e "    \${YELLOW}https://$domain:${trojanport}/chat/\${NOCOLOR}"
-###
 fi
 echo -e "*********************"
 EOF
