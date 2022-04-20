@@ -146,7 +146,7 @@ http {
   sendfile on;
   gzip on;
   gzip_proxied off;
-  gzip_types *;
+  gzip_types text/html text/css text/javascript application/javascript application/x-javascript application/xml image/jpeg image/gif image/png;
   gzip_comp_level 1;
   gzip_vary on;
 
