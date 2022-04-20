@@ -15,7 +15,6 @@ TERM=ansi whiptail --title "安装中" --infobox "安装Hexo中..." 7 68
   cd /usr/share/nginx/hexo
   npm audit fix
   npm prune
-  hexo new page ${password1}
   cd /usr/share/nginx/hexo/themes
   apt-get install git -y
   git clone https://github.com/theme-next/hexo-theme-next next
@@ -59,60 +58,6 @@ sed -i '0,/darkmode: false/s//darkmode: true/' /usr/share/nginx/hexo/themes/next
 sed -i '0,/lazyload: false/s//lazyload: true/' /usr/share/nginx/hexo/themes/next/_config.yml
 sed -i '0,/lazyload: false/s//lazyload: true/' /usr/share/nginx/hexo/themes/next/_config.yml
 
-cd /usr/share/nginx/hexo/source/${password1}
-if [[ -f index.md ]]; then
-  rm index.md
-fi
-cat > "index.md" << EOF
----
-title: VPS Toolbox Result
----
-
-欢迎使用[VPSToolBox](https://github.com/johnrosen1/vpstoolbox) ! 此页面由[Hexo](https://hexo.io/zh-tw/docs/)全自动生成,如果你在使用VPSToolBox时遇到任何问题,请仔细阅读以下所有链接以及信息或者**通过 [Telegram](https://t.me/vpstoolbox_chat)请求支援** !
-
-如果觉得好用，欢迎打钱帮助开发或者尝试以下服务，😃❤️🤣：
-
-ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
-
-[Namesilo](https://www.namesilo.com/?rid=685fb47qi)
-
-[阿里云](https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=fgdncdz2)
-
-[Hostyun](https://my.hostyun.com/page.aspx?c=referral&u=27710)
-
-### Netdata
-
-> 简介: 一款 **实时效能监测工具** 应用。
-
-- <a href="https://$domain:443/${password1}_netdata/" target="_blank" rel="noreferrer">https://${domain}/${password1}_netdata/</a>
-
----
-
-### Rocket Chat
-
-- <a href="https://$domain:443/chat/" target="_blank" rel="noreferrer">https://$domain/rocketchat/</a>
-
----
-
-### Mail Service
-
-#### Roundcube Webmail
-
-- <a href="https://${domain}/mail/" target="_blank" rel="noreferrer">Roundcube Webmail</a>
-- 用户名(username): ${mailuser}
-- 密碼(password): ${password1}
-- 收件地址: **${mailuser}@${domain}**
-
-#### Tips:
-
-1. 请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all
-2. 请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD
-
-EOF
-cd /usr/share/nginx/hexo/
-hexo g
-hexo d
-cd
 hexo_location=$(which hexo)
     cat > '/etc/systemd/system/hexo.service' << EOF
 [Unit]

@@ -175,6 +175,18 @@ echo -e "    \${YELLOW}密码: ${ariapasswd}\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}${ariapath}\${NOCOLOR}"
 ###
 fi
+if [[ -d /opt/netdata/ ]]; then
+echo -e " --- \${BLUE}Netdata链接\${NOCOLOR} ---"
+###
+echo -e "    \${YELLOW}https://$domain:${trojanport}/${password1}_netdata/\${NOCOLOR}"
+###
+fi
+if [[ -d /usr/share/nginx/rocketchat ]]; then
+echo -e " --- \${BLUE}Rocketchat链接\${NOCOLOR} ---"
+###
+echo -e "    \${YELLOW}https://$domain:${trojanport}/chat/\${NOCOLOR}"
+###
+fi
 echo -e "*********************"
 EOF
 chmod +x /etc/profile.d/mymotd.sh
