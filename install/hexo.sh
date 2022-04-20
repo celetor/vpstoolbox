@@ -82,14 +82,6 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 ---
 
-### Vless(Grpc)
-
-Vless(grpc)链接(支持Cloudflare CDN)
-
-vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip})
-
----
-
 ### 影音(包含qBittorrent加强版)
 
 前端
@@ -183,12 +175,6 @@ vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serv
 
 1. 请自行添加SPF(TXT) RECORD: v=spf1 mx ip4:${myip} a ~all
 2. 请自行运行sudo cat /etc/opendkim/keys/${domain}/default.txt 来获取生成的DKIM(TXT) RECORD
-
----
-
-### Typecho
-
-请自行注释掉*/etc/nginx/conf.d/default.conf*中的Hexo部分并去掉Typecho的注释以启用Typecho。
 
 EOF
 cd /usr/share/nginx/hexo/
