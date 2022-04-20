@@ -171,8 +171,11 @@ echo -e "    \${YELLOW}https://$domain:${trojanport}/chat/\${NOCOLOR}"
 fi
 if [[ -d /opt/alist ]]; then
 echo -e " --- \${BLUE}Alist链接\${NOCOLOR} ---"
+cd /opt/alist
+alist_password=\$(./alist -password | awk -F'your password: ' '{print $2}' 2>&1)
+cd
 echo -e "    \${YELLOW}https://$domain:${trojanport}\${NOCOLOR}"
-echo -e "    \${YELLOW}密码: \$(/opt/alist/alist -password | awk -F'your password: ' '{print $2}' 2>&1)\${NOCOLOR}"
+echo -e "    \${YELLOW}密码: \${alist_password}\${NOCOLOR}"
 fi
 echo -e "*********************"
 EOF

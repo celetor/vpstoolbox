@@ -11,8 +11,6 @@ install_alist(){
         curl -fsSL "https://nn.ci/alist.sh" | bash -s install
     fi
 
-    alist_password=$(/opt/alist/alist -password | awk -F'your password: ' '{print $2}' 2>&1)
-
 cat '/opt/alist/data/config.json' | jq '.address |= "127.0.0.1"' >> /opt/alist/data/config.json.tmp
 cp -f /opt/alist/data/config.json.tmp /opt/alist/data/config.json
 rm /opt/alist/data/config.json.tmp
