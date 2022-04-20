@@ -65,7 +65,8 @@ echo "    #proxy_pass http://127.0.0.1:4000/; # Hexo server" >> /etc/nginx/conf.
 echo "    root /usr/share/nginx/hexo/public/; # Hexo public content" >> /etc/nginx/conf.d/default.conf
 echo "    #error_page 404  /404.html;" >> /etc/nginx/conf.d/default.conf
 echo "  }" >> /etc/nginx/conf.d/default.conf
-else
+fi
+if [[ $install_alist == 1 ]]; then
 echo "  location / {" >> /etc/nginx/conf.d/default.conf
 echo "    #access_log off;" >> /etc/nginx/conf.d/default.conf
 echo "    client_max_body_size 0;" >> /etc/nginx/conf.d/default.conf
