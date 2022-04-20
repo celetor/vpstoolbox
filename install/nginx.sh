@@ -166,6 +166,7 @@ http {
     text/x-cross-domain-policy;
   gzip_comp_level 1;
   gzip_vary on;
+  gzip_static on;
   gzip_disable "MSIE [1-6]\.";  
 
   include /etc/nginx/conf.d/default.conf;
