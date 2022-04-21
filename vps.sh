@@ -569,7 +569,7 @@ MasterMenu() {
     clean_env
     ## 初始化Nextcloud
     if [[ ${install_nextcloud} == 1 ]] && [[ ${nextcloud_installed} != 1 ]]; then
-    curl https://${domain}/nextcloud/
+    curl https://${domain}:${trojanport}/nextcloud/
     sleep 10s;
     ## Delete last line
     sed -i '$d' /usr/share/nginx/nextcloud/config/config.php
