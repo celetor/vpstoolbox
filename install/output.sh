@@ -181,6 +181,8 @@ cd
 echo -e "    \${YELLOW}https://$domain:${trojanport}\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: \${alist_password}\${NOCOLOR}"
 fi
+echo -e " --- \${BLUE}Telegram群组链接\${NOCOLOR} ---"
+echo -e "    \${YELLOW}https://t.me/vpstoolbox_chat\${NOCOLOR}"
 echo -e "*********************"
 EOF
 chmod +x /etc/profile.d/mymotd.sh
