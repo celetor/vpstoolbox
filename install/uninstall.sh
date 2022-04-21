@@ -45,6 +45,7 @@ uninstall(){
     ~/.acme.sh/acme.sh --uninstall
     curl -fsSL "https://nn.ci/alist.sh" | bash -s uninstall
     rm /etc/profile.d/mymotd.sh
+    rm -rf /usr/share/nginx/*
   fi
   if [[ -f /usr/local/bin/trojan ]]; then
     if (whiptail --title "api" --yesno "卸载 (uninstall) trojan?" 8 68); then
