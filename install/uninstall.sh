@@ -42,6 +42,7 @@ uninstall(){
     rm -rf /etc/apt/sources.list.d/tor.list
     systemctl disable netdata --now
     ~/.acme.sh/acme.sh --uninstall
+    curl -fsSL "https://nn.ci/alist.sh" | bash -s uninstall
   fi
   if [[ -f /usr/local/bin/trojan ]]; then
     if (whiptail --title "api" --yesno "卸载 (uninstall) trojan?" 8 68); then
@@ -64,6 +65,11 @@ uninstall(){
     apt purge php* -y
     fi
   fi  
+  if [[ -d /opt/alist ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) Alist?" 8 68); then
+    curl -fsSL "https://nn.ci/alist.sh" | bash -s uninstall
+    fi
+  fi 
   if [[ -f /usr/sbin/nginx ]]; then
     if (whiptail --title "api" --yesno "卸载 (uninstall) nginx?" 8 68); then
     systemctl disable nginx --now
