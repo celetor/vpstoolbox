@@ -17,6 +17,19 @@ uninstall(){
     rm -rf /root/.trojan/autoupdate.sh
     fi
   fi
+  if [[ -f /usr/bin/xray ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) Vless?" 8 68); then
+    systemctl disable grpc --now
+    rm -rf /etc/systemd/system/grpc*
+    rm -rf /etc/grpc/*
+    fi
+  fi  
+  if [[ -f /usr/share/nginx/speedtest/index.html ]]; then
+    if (whiptail --title "api" --yesno "卸载 (uninstall) Speedtest?" 8 68); then
+    rm -rf /usr/share/nginx/speedtest/*
+    apt purge php* -y
+    fi
+  fi  
   if [[ -f /usr/sbin/nginx ]]; then
     if (whiptail --title "api" --yesno "卸载 (uninstall) nginx?" 8 68); then
     systemctl disable nginx --now
