@@ -139,8 +139,6 @@ ETH：0x9DB5737AB34E1F5d1303E9eD726776eebba3BF16
 
 [Hostyun](https://my.hostyun.com/page.aspx?c=referral&u=27710)
 
-## [懒人党的福音--顶级全自动化影音系统全方位深入剖析](https://johnrosen1.com/2022/03/18/media/)
-
 ## 尚未添加/整合/测试的软件 To be done
 
 咕咕咕。
