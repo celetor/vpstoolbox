@@ -276,7 +276,7 @@ if [[ $install_status != 1 ]]; then
       systemctl disable httpd --now
   fi
 fi
-curl --retry 5 -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
+curl --ipv4 --retry 5 -s https://ipinfo.io?token=56c375418c62c9 --connect-timeout 300 > /root/.trojan/ip.json
 myip="$( jq -r '.ip' "/root/.trojan/ip.json" )"
 mycountry="$( jq -r '.country' "/root/.trojan/ip.json" )"
 mycity="$( jq -r '.city' "/root/.trojan/ip.json" )"
