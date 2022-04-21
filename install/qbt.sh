@@ -130,6 +130,9 @@ curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22disk_cache%22:-1
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22auto_tmm_enabled%22:true%7D  --cookie "${qbtcookie}"
 curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22save_path%22:%22%2fdata%2ftorrents%2f%22%7D --cookie "${qbtcookie}"
 
+## IP动态更新
+curl http://127.0.0.1:8080/api/v2/app/setPreferences?json=%7B%22announce_ip%22:%22${myip}%22%7D --cookie "${qbtcookie}"
+
 ## 新增分类
 curl -X POST -F 'category=Series' -F 'savePath=/data/torrents/Series/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
 curl -X POST -F 'category=Movies' -F 'savePath=/data/torrents/Movies/' http://127.0.0.1:8080/api/v2/torrents/createCategory --cookie "${qbtcookie}"
