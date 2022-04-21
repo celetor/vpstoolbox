@@ -4,7 +4,9 @@
 
 厌倦了总是需要手动输入命令安装博客，网盘，RSS，邮箱，影音，代理了吗？VPSToolBox 提供了一整套全自动化的解决方案，解放双手，从今天开始！
 
-> 经观察，**证书自动续签的问题已解决**，方案已稳定，可长期正常使用。
+## 流程图
+
+![https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow.svg](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow.svg)
 
 ## 给纯新手小白看的教程
 
@@ -231,12 +233,6 @@ cat /root/.trojan/letcron.log
 
 1. 本项目主要采用 systemd+docker-compose 启动服务。
 2. 具体的懒得写了,`systemctl`查看运行状态,有问题记得反馈即可。
-
-## 流量示意图
-
-> 懒得更新,仅供参考。
-
-![https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow_zh_cn.png)
 
 ## License
 
