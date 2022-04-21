@@ -32,14 +32,13 @@ server {
 EOF
   systemctl restart nginx
   clear
-  colorEcho ${INFO} "正式证书申请ing(issuing) let\'s encrypt certificate"
+  colorEcho ${INFO} "申请证书中"
   ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt --issue --nginx /etc/nginx/conf.d/default.conf --cert-home /etc/certs -d $domain -k ec-256 --log --reloadcmd "systemctl restart trojan postfix dovecot nginx || true"
   if [[ -f /etc/certs/${domain}_ecc/fullchain.cer ]] && [[ -f /etc/certs/${domain}_ecc/${domain}.key ]]; then
     :
     else
     colorEcho ${ERROR} "证书申请失败，请**检查VPS控制面板防火墙是否完全关闭**,DNS是否解析完成!!!"
     colorEcho ${ERROR} "请访问https://letsencrypt.status.io/检测Let's encrypt服务是否正常!!!"
-    colorEcho ${ERROR} "Cert issue fail,Pleae Open all ports on VPS panel !!!"
     exit 1
   fi
   chmod +r /etc/certs/${domain}_ecc/fullchain.cer
