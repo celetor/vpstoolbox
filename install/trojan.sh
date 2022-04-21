@@ -175,7 +175,7 @@ systemctl enable trojan
 }
 EOF
 systemctl daemon-reload
-systemctl restart trojan-web
+systemctl enable trojan-web --now
 fi
 chmod -R 755 /usr/local/etc/trojan/
 systemctl daemon-reload
