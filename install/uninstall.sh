@@ -17,6 +17,7 @@ uninstall(){
     systemctl disable grpc --now
     rm -rf /etc/systemd/system/grpc*
     rm -rf /etc/grpc/*
+    rm /usr/bin/xray
     rm -rf /usr/share/nginx/speedtest/*
     apt purge php* -y    
     systemctl disable nginx --now
@@ -58,6 +59,7 @@ uninstall(){
     systemctl disable grpc --now
     rm -rf /etc/systemd/system/grpc*
     rm -rf /etc/grpc/*
+    rm /usr/bin/xray
     fi
   fi  
   if [[ -f /usr/share/nginx/speedtest/index.html ]]; then
