@@ -20,6 +20,8 @@ ip6tables -F &>/dev/null
 #tcp
 iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT  &>/dev/null #HTTPS
 iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT &>/dev/null #HTTP
+iptables -A INPUT -p tcp -m tcp --dport ${trojanport} -j ACCEPT  &>/dev/null #HTTPS
+iptables -A INPUT -p tcp -m tcp --dport ${trojanport} -j ACCEPT &>/dev/null #HTTP
 #udp
 iptables -A INPUT -p udp -m udp --dport 443 -j ACCEPT &>/dev/null
 iptables -A INPUT -p udp -m udp --dport 80 -j ACCEPT &>/dev/null
