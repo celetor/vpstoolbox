@@ -64,7 +64,7 @@ EOF
 #Global Settings###
 daemon=true
 async-dns=true
-#enable-async-dns6=true
+optimize-concurrent-downloads=true
 log-level=warn
 console-log-level=info
 human-readable=true
