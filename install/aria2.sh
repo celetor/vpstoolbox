@@ -14,7 +14,7 @@ set +e
 install_aria2(){
 TERM=ansi whiptail --title "安装中" --infobox "安装Aria2中..." 7 68
 cd /root/
-trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/all_aria2.txt)
+trackers_list=$(wget --no-check-certificate -qO- https://trackerslist.com/best_aria2.txt)
 ariaport=$(shuf -i 13000-19000 -n 1)
 mkdir /etc/aria2/
 ariaver1=$(curl -s "https://api.github.com/repos/aria2/aria2/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
