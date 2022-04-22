@@ -12,11 +12,13 @@ routes_name=(163 169 CMNET CERNET CN2 CU-VIP NTT IIJ KDDI SoftBank PCCW HKBN HKI
 ct_ip="116.228.111.118"
 cu_ip="210.22.70.3"
 cm_ip="211.136.112.50"
+inet_ip="1.1.1.1"
 
 route_test(){
 
 TERM=ansi whiptail --title "路由测试" --infobox "路由测试，请耐心等待。" 7 68
 
+traceroute ${inet_ip} -n -T -m 30 -w 2 | tail -n +2 &> route_all.txt
 traceroute ${ct_ip} -n -T -m 30 -w 2 | tail -n +2 &> route_all.txt
 traceroute ${cu_ip} -n -T -m 30 -w 2 | tail -n +2 &>> route_all.txt
 traceroute ${cm_ip} -n -T -m 30 -w 2 | tail -n +2 &>> route_all.txt
