@@ -119,6 +119,7 @@ bt-load-saved-metadata=true
 bt-require-crypto=true
 bt-force-encryption=true
 bt-min-crypto-level=arc4
+bt-max-open-files=1000000
 bt-max-peers=0
 bt-tracker=$trackers_list
 EOF
