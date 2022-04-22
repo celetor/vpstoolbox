@@ -59,7 +59,6 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
   cat > '/etc/aria2/aria2.conf' << EOF
-#!!! Do not change these settings unless you know what you are doing !!!
 #Upload Settings###
 #on-download-complete=/etc/aria2/autoupload.sh
 #Global Settings###
