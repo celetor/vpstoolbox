@@ -99,11 +99,11 @@ day_count=\$(( (\$(date -d "\${last_date}" +%s) - \$(date +%s))/(24*60*60) ))
 echo -e "\e[40;33;1m [${domain}] 证书过期日期 : [\${last_date}] 剩余 [\${day_count}] 天 \e[0m"
 echo -e "*******************************************************************"
 if [[ -f /usr/bin/xray ]]; then
-echo -e " --- \${BLUE}Vless链接(低延迟 支持Cloudflare CDN 不支持高并发)\${NOCOLOR} ---"
+echo -e " --- \${BLUE}Vless链接(低延迟 低并发 支持Cloudflare CDN)\${NOCOLOR} ---"
 echo -e "    \${YELLOW}vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip} ${myipv6})\${NOCOLOR}"
 echo -e " --- \${BLUE}Vless二维码\${NOCOLOR} ---"
   qrencode -t UTF8 -m 2 "vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip} ${myipv6})"
-echo -e " --- \${BLUE}Trojan-GFW链接(高延迟 不支持Cloudflare CDN 支持高并发)"
+echo -e " --- \${BLUE}Trojan-GFW链接(高延迟 高并发 不支持Cloudflare CDN)"
 echo -e "    \${YELLOW}trojan://${password1}@${myip}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip} ${myipv6})\${NOCOLOR}"
 echo -e " --- \${BLUE}Trojan-GFW二维码\${NOCOLOR} ---"
   qrencode -t UTF8 -m 2 "trojan://${password1}@${myip}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip} ${myipv6})"
