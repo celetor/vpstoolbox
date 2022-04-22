@@ -156,7 +156,6 @@ echo -e "    \${YELLOW}https://$domain:${trojanport}/readarr/\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/bazarr/\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/chinesesubfinder/\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/prowlarr/\${NOCOLOR}"
-echo -e "    \${YELLOW}https://$domain:${trojanport}/qbt/\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/nzbget/\${NOCOLOR}"
 fi
 if [[ -d /etc/aria2/ ]]; then
@@ -164,6 +163,12 @@ echo -e " --- \${BLUE}AriaNG+Aria2链接\${NOCOLOR} ---"
 echo -e "    \${YELLOW}https://$domain:${trojanport}/ariang/\${NOCOLOR}"
 echo -e "    \${YELLOW}密码: ${ariapasswd}\${NOCOLOR}"
 echo -e "    \${YELLOW}https://$domain:${trojanport}${ariapath}\${NOCOLOR}"
+fi
+if [[ -d /usr/share/nginx/qBittorrent/ ]]; then
+echo -e " --- \${BLUE}Qbittorrent链接\${NOCOLOR} ---"
+echo -e "    \${YELLOW}https://$domain:${trojanport}/qbt/\${NOCOLOR}"
+echo -e "    \${YELLOW}用户名: admin\${NOCOLOR}"
+echo -e "    \${YELLOW}密码: ${password1}\${NOCOLOR}"
 fi
 if [[ -d /opt/netdata/ ]]; then
 echo -e " --- \${BLUE}Netdata链接\${NOCOLOR} ---"
