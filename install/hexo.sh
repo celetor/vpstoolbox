@@ -58,6 +58,8 @@ sed -i '0,/darkmode: false/s//darkmode: true/' /usr/share/nginx/hexo/themes/next
 sed -i '0,/lazyload: false/s//lazyload: true/' /usr/share/nginx/hexo/themes/next/_config.yml
 sed -i '0,/lazyload: false/s//lazyload: true/' /usr/share/nginx/hexo/themes/next/_config.yml
 
+hexo g
+
 hexo_location=$(which hexo)
     cat > '/etc/systemd/system/hexo.service' << EOF
 [Unit]
@@ -77,4 +79,5 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 systemctl enable hexo --now
+cd
 }
