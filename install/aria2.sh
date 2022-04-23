@@ -59,6 +59,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
   cat > '/etc/aria2/aria2.conf' << EOF
+user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36
 #Upload Settings###
 #on-download-complete=/etc/aria2/autoupload.sh
 #Global Settings###
