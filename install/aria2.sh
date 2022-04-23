@@ -85,6 +85,7 @@ content-disposition-default-utf8=true
 #split=16
 ##Http(s) Settings#######
 enable-http-keep-alive=true
+enable-http-pipelining=true
 http-accept-gzip=true
 min-split-size=10M
 max-connection-per-server=128
