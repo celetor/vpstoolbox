@@ -88,6 +88,7 @@ content-disposition-default-utf8=true
 enable-http-keep-alive=true
 enable-http-pipelining=true
 http-accept-gzip=true
+http-no-cache=true
 min-split-size=10M
 max-connection-per-server=128
 lowest-speed-limit=0
