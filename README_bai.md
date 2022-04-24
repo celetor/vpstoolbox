@@ -81,7 +81,7 @@
 3. Windows：推荐[Netch](https://github.com/NetchX/Netch)与[V2rayN](https://github.com/2dust/v2rayN/releases/latest)，一样，点击`从剪贴板导入服务器`，模式选择`Bypass Lan and China`，点击`启动`，若连接成功则有`HTTP: xxx ms`字样出现。
 ![netch](images/netch.png)
 V2rayN的话下载这个文件
-![V2rayN](images/V2rayN.png)
+![V2rayN](images/V2rayn.png)
 4. Linux：推荐使用[v2rayA](https://github.com/v2rayA/v2rayA)，更多的请看官方文档。
 
 ## 博客的使用
