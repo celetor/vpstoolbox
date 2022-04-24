@@ -71,7 +71,7 @@ systemctl enable trojan
         "alpn_port_override": {
             "h2": 82
         },
-        "reuse_session": true,
+        "reuse_session": false,
         "session_ticket": false,
         "session_timeout": 600,
         "plain_http_response": "",
@@ -146,7 +146,7 @@ systemctl enable trojan
         "alpn_port_override": {
             "h2": 82
         },
-        "reuse_session": true,
+        "reuse_session": false,
         "session_ticket": false,
         "session_timeout": 600,
         "plain_http_response": "",
