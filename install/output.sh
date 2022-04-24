@@ -100,9 +100,9 @@ echo -e "\e[40;33;1m [${domain}] 证书过期日期 : [\${last_date}] 剩余 [\$
 echo -e "*******************************************************************"
 if [[ -f /usr/bin/xray ]]; then
 echo -e " --- \${BLUE}Vless链接(低延迟 低并发 支持Cloudflare CDN)\${NOCOLOR} ---"
-echo -e "    \${YELLOW}vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip} ${myipv6})\${NOCOLOR}"
+echo -e "    \${YELLOW}vless://${uuid_new}@${myip}:${trojanport}?mode=multi&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip} ${myipv6})\${NOCOLOR}"
 echo -e " --- \${BLUE}Vless二维码\${NOCOLOR} ---"
-  qrencode -t UTF8 -m 2 "vless://${uuid_new}@${myip}:${trojanport}?mode=gun&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip} ${myipv6})"
+  qrencode -t UTF8 -m 2 "vless://${uuid_new}@${myip}:${trojanport}?mode=multi&security=tls&type=grpc&serviceName=${path_new}&sni=${domain}#Vless(${route_final}${mycountry} ${mycity} ${myip} ${myipv6})"
 echo -e " --- \${BLUE}Trojan-GFW链接(高延迟 高并发 不支持Cloudflare CDN)"
 echo -e "    \${YELLOW}trojan://${password1}@${myip}:${trojanport}?security=tls&headerType=none&type=tcp&sni=${domain}#Trojan(${route_final}${mycountry} ${mycity} ${myip} ${myipv6})\${NOCOLOR}"
 echo -e " --- \${BLUE}Trojan-GFW二维码\${NOCOLOR} ---"
