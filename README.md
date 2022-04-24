@@ -6,7 +6,7 @@
 
 ## 流程图
 
-![流程图](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow3.svg)
+![流程图](https://raw.githubusercontent.com/johnrosen1/vpstoolbox/master/images/flow.svg)
 
 ## 给纯新手小白看的教程
 
