@@ -78,7 +78,7 @@
 
 1. 安卓：推荐使用[V2rayng](https://github.com/2dust/v2rayNG)，下载并安装，复制链接，点击右上角的`+`号，点击`从剪贴板导入`，选中服务器，点击右下角的`V`键，测试连接，点击最下面的`测试连接`，连接成功则有提示出现。
 2. IOS：鉴于我没有IOS设备，因此只能推荐软件而不能实际测试。推荐[shadowrocket](https://apps.apple.com/us/app/shadowrocket/id932747118)
-3. Windows：推荐[Netch](https://github.com/NetchX/Netch)与[V2rayN](https://github.com/2dust/v2rayN/releases/latest)，一样，点击`从剪贴板导入服务器`，模式选择`Bypass Lan and China`，点击`启动`，若连接成功则有`HTTP: xxx ms`字样出现。
+3. Windows：推荐[Netch](https://github.com/netchx/netch/releases/latest)与[V2rayN](https://github.com/2dust/v2rayN/releases/latest)，一样，点击`从剪贴板导入服务器`，模式选择`Bypass Lan and China`，点击`启动`，若连接成功则有`HTTP: xxx ms`字样出现。
 ![netch](images/netch.png)
 
 V2rayN的话下载这个文件
