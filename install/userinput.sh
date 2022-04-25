@@ -258,7 +258,7 @@ userinput_full() {
   "aria" "Aria2+AriaNG+Filebrowser" ${check_aria} \
   "onedrive" "Rclone Onedrive" ${check_rclone} \
   "下载" "下载" off \
-  "qbt" "Qbittorrent增强版+高性能Tracker+Fielbrowser" ${check_qbt} \
+  "qbt" "Qbittorrent增强版+高性能Tracker+Filebrowser" ${check_qbt} \
   "通讯" "通讯" off \
   "chat" "Rocket Chat" ${check_chat} \
   "mail" "Mail service(邮箱服务)" ${check_mail} \
@@ -267,7 +267,7 @@ userinput_full() {
   "其他" "其他软件及选项" off \
   "net" "Netdata(监测伺服器运行状态)" off \
   "typecho" "Typecho" ${check_echo} \
-  "13" "Qbt原版+高性能Tracker+Fielbrowser" off 2>results
+  "13" "Qbt原版+高性能Tracker+Filebrowser" off 2>results
 
   while read choice; do
     case $choice in
