@@ -255,11 +255,10 @@ userinput_full() {
   "nextcloud" "Nextcloud(私人网盘)" ${check_cloud} \
   "rss" "RSSHUB + Miniflux(RSS生成器+RSS阅读器)" ${check_rss} \
   "rclone" "Rclone" ${check_rclone} \
-  "aria" "Aria2下载器" ${check_aria} \
+  "aria" "Aria2+AriaNG+Filebrowser" ${check_aria} \
   "onedrive" "Rclone Onedrive" ${check_rclone} \
   "下载" "下载" off \
-  "qbt" "Qbittorrent增强版+高性能Tracker" ${check_qbt} \
-  "file" "Filebrowser" ${check_file} \
+  "qbt" "Qbittorrent增强版+高性能Tracker+Fielbrowser" ${check_qbt} \
   "通讯" "通讯" off \
   "chat" "Rocket Chat" ${check_chat} \
   "mail" "Mail service(邮箱服务)" ${check_mail} \
@@ -268,7 +267,7 @@ userinput_full() {
   "其他" "其他软件及选项" off \
   "net" "Netdata(监测伺服器运行状态)" off \
   "typecho" "Typecho" ${check_echo} \
-  "13" "Qbt原版+高性能Tracker" off 2>results
+  "13" "Qbt原版+高性能Tracker+Fielbrowser" off 2>results
 
   while read choice; do
     case $choice in
@@ -338,18 +337,18 @@ userinput_full() {
       check_qbt="on"
       install_qbt_e=1
       install_tracker=1
+      check_file="on"
+      install_filebrowser=1
       ;;
     aria)
       check_aria="on"
       install_aria=1
+      check_file="on"
+      install_filebrowser=1
       ;;
     rclone)
       check_rclone="on"
       install_rclone=1
-      ;;
-    file)
-      check_file="on"
-      install_filebrowser=1
       ;;
     speed)
       check_speed="on"
@@ -375,6 +374,8 @@ userinput_full() {
       check_qbt_origin="on"
       install_qbt_o=1
       install_tracker=1
+      check_file="on"
+      install_filebrowser=1
       ;;
     port)
       trojan_other_port=1
